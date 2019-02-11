@@ -2,15 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { DELETE_IDEA_MODAL } from '../../constants/modalTypes';
+import { ideaStatus } from '../../constants/api';
 import { showModal } from '../../redux/actions/modal';
 import {
     deleteMyIdea,
     fetchUserIdeas,
     fetchUserContributions,
 } from '../../redux/thunk/ideas';
-import { selectMyIdeas } from '../../redux/selectors/myIdeas';
-import { selectMyContributions } from '../../redux/selectors/myContributions';
 import MyIdeasModal from '../../components/Modal/MyIdeasModal';
+
+const {
+    FINALIZED,
+    PENDING,
+    DRAFT,
+} = ideaStatus;
 
 class MyIdeasContainer extends React.Component {
     componentDidMount() {
@@ -37,8 +42,8 @@ MyIdeasContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const myIdeasData = selectMyIdeas(state);
-    const myContributionsData = selectMyContributions(state);
+    const myIdeasData = state.myIdeas;
+    const myContributionsData = state.myContributions;
     return {
         data: {
             myIdeasData,
@@ -56,11 +61,17 @@ function mapDispatchToProps(dispatch) {
                 })
             ),
         initMyIdeas: () => {
-            // user ideas
-            dispatch(fetchUserIdeas());
+            // draft user ideas
+            dispatch(fetchUserIdeas({ status: DRAFT }));
+            // pending user ideas
+            dispatch(fetchUserIdeas({ status: PENDING }));
+            // finalized user ideas
+            dispatch(fetchUserIdeas({ status: FINALIZED }));
             // user contributions
             dispatch(fetchUserContributions());
         },
+        getMyIdeas: params => dispatch(fetchUserIdeas(params)),
+        getMyContribs: params => dispatch(fetchUserContributions(params)),
     };
 }
 

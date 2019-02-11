@@ -8,6 +8,7 @@ import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
 import { setMyContributions } from '../actions/myContributions';
 import { selectAuthUser, selectIsAuthenticated } from '../selectors/auth';
 import { MY_IDEAS_MODAL } from '../../constants/modalTypes';
+import { ideaStatus } from '../../constants/api';
 import { hideModal, showModal } from '../actions/modal';
 import { setThreads, setThreadComments } from '../actions/threads';
 import { redirectToSignin } from '../../helpers/navigation';
@@ -114,11 +115,19 @@ export function fetchIdea(id) {
     };
 }
 
+// used for both fetchUserIdeas and fetchUserContributions
+const DEFAULT_PARAMS = {
+    page_size: 5,
+    page: 1,
+};
 /**
- * Fetch ideas of current auth user
+ * Fetch ideas of current auth user. Results are namespaced by reducer
+ * according to the `status` key in the params argument.
  * @param {object} params Query params
  */
 export function fetchUserIdeas(params = {}) {
+    params = { ...DEFAULT_PARAMS, ...params };
+    params.status = params.status || ideaStatus.FINALIZED;
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {
@@ -133,7 +142,7 @@ export function fetchUserIdeas(params = {}) {
                 })
                 .then(res => res.data)
                 .then(({ items, metadata }) => {
-                    dispatch(setMyIdeas(items, metadata));
+                    dispatch(setMyIdeas(items, metadata, params.status));
                     dispatch(createRequestSuccess(FETCH_MY_IDEAS));
                 })
                 .catch((error) => {
@@ -148,6 +157,7 @@ export function fetchUserIdeas(params = {}) {
  * @param {object} params Query params
  */
 export function fetchUserContributions(params = {}) {
+    params = { ...DEFAULT_PARAMS, ...params };
     return (dispatch, getState, axios) => {
         const isAuthenticated = selectIsAuthenticated(getState());
         if (isAuthenticated) {

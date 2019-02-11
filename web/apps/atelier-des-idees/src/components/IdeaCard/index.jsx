@@ -3,7 +3,6 @@ import { ideaStatus } from '../../constants/api';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
 
 import VotingFooter from './VotingFooter';
 import ContributingFooter from './ContributingFooter';
@@ -65,7 +64,6 @@ class IdeaCard extends React.Component {
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
-                <ReactTooltip />
 
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">

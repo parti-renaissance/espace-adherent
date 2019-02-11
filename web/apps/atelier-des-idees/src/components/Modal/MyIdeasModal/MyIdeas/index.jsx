@@ -5,6 +5,13 @@ import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
 import Button from '../../../Button';
 import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
+import Pagination from '../../../Pagination';
+
+const {
+    DRAFT,
+    PENDING,
+    FINALIZED,
+} = ideaStatus;
 
 class MyIdeas extends React.Component {
     constructor(props) {
@@ -14,19 +21,25 @@ class MyIdeas extends React.Component {
                 showCat: 'showDraft',
                 label: 'brouillons',
                 empty: 'brouillon',
-                ideas: this.props.ideas.filter(idea => 'DRAFT' === idea.status),
+                ideas: props.ideas[DRAFT].items,
+                metadata: props.ideas[DRAFT].metadata,
+                status: DRAFT,
             },
             {
                 showCat: 'showPending',
                 label: 'propositions en cours d’élaboration',
                 empty: 'proposition en cours d’élaboration',
-                ideas: this.props.ideas.filter(idea => 'PENDING' === idea.status),
+                ideas: props.ideas[PENDING].items,
+                metadata: props.ideas[PENDING].metadata,
+                status: PENDING,
             },
             {
                 showCat: 'showFinalized',
                 label: 'propositions finalisées',
                 empty: 'proposition finalisée',
-                ideas: this.props.ideas.filter(idea => 'FINALIZED' === idea.status),
+                ideas: props.ideas[FINALIZED].items,
+                metadata: props.ideas[FINALIZED].metadata,
+                status: FINALIZED,
             },
         ];
 
@@ -40,7 +53,14 @@ class MyIdeas extends React.Component {
     render() {
         return (
             <div className="my-ideas">
-                {this.CAT_IDEAS_FILTER.map((cat) => {
+                {this.CAT_IDEAS_FILTER.map((cat, i) => {
+                    const {
+                        metadata: {
+                            current_page: page,
+                            total_items: total,
+                        },
+                        status,
+                    } = cat;
                     const categoryHeader = cat.ideas.length ? (
                         <button
                             className="my-ideas__category__button"
@@ -62,13 +82,13 @@ class MyIdeas extends React.Component {
                         <p className="my-ideas__category__button__label">{cat.label.toUpperCase()}</p>
                     );
                     return (
-                        <div className="my-ideas__category">
+                        <div className="my-ideas__category" key={i}>
                             {categoryHeader}
                             {cat.ideas.length ? (
                                 cat.ideas.map(
-                                    idea =>
+                                    (idea, j) =>
                                         this.state[cat.showCat] && (
-                                            <div className="my-ideas__category__idea">
+                                            <div className="my-ideas__category__idea" key={j}>
                                                 <p className="my-ideas__category__idea__date">
                                                     Créée le {new Date(idea.created_at).toLocaleDateString()}
                                                 </p>
@@ -95,6 +115,17 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
+                            {!!cat.ideas.length &&
+                                <Pagination
+                                    nextPage={() => this.props.getMyIdeas({ page: page + 1, status })}
+                                    prevPage={() => this.props.getMyIdeas({ page: page - 1, status })}
+                                    goTo={p => this.props.getMyIdeas({ page: p, status })}
+                                    total={total}
+                                    currentPage={page}
+                                    pageSize={5}
+                                    pagesToShow={5}
+                                />
+                            }
                         </div>
                     );
                 })}
@@ -103,15 +134,29 @@ class MyIdeas extends React.Component {
     }
 }
 
+const IDEA_TYPE = PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    created_at: PropTypes.string.isRequired, // ISO UTC
+    status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
+});
+
+
 MyIdeas.propTypes = {
-    ideas: PropTypes.arrayOf(
-        PropTypes.shape({
-            uuid: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            created_at: PropTypes.string.isRequired, // ISO UTC
-            status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
-        })
-    ).isRequired,
+    ideas: PropTypes.shape({
+        [DRAFT]: PropTypes.shape({
+            items: PropTypes.arrayOf(IDEA_TYPE),
+            metadata: PropTypes.object,
+        }),
+        [PENDING]: PropTypes.shape({
+            items: PropTypes.arrayOf(IDEA_TYPE),
+            metadata: PropTypes.object,
+        }),
+        [FINALIZED]: PropTypes.shape({
+            items: PropTypes.arrayOf(IDEA_TYPE),
+            metadata: PropTypes.object,
+        }),
+    }).isRequired,
     onDeleteIdea: PropTypes.func.isRequired,
 };
 

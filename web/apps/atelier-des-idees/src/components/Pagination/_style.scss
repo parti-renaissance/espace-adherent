@@ -1,0 +1,27 @@
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 0 auto 35px;
+
+  &__dots {
+    color: $marine-blue;
+  }
+
+  > * {
+    margin: 0 auto;
+  }
+
+  .pagination__prev {
+    margin-left: 0;
+  }
+
+  .pagination__next {
+    margin-right: 0;
+  }
+
+  &__current {
+    cursor: default;
+  }
+}
