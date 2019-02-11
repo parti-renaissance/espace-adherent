@@ -3,8 +3,19 @@
 }
 
 .idea-card-list__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 28px 0;
-  text-align: right;
+
+  .idea-card-list__actions__count {
+    font-size: 18px;
+    color: $dark-aurometalsaurus;
+
+    &__total {
+      color: $blue;
+    }
+  }
 
   .idea-card-list__actions__display__btn {
     @extend %reset-button;
