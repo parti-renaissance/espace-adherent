@@ -5,7 +5,6 @@ import icnThumbWhite from './../../../img/icn_20px_thumb.svg';
 import icnThumbGreen from './../../../img/icn_20px_thumb_green.svg';
 import VoteButton from '../../VoteButton';
 
-
 class VotingFooter extends React.Component {
     constructor(props) {
         super(props);
@@ -52,6 +51,7 @@ class VotingFooter extends React.Component {
                 className={classnames('voting-footer', {
                     'voting-footer--open': this.state.toggleVotes,
                     'voting-footer--close': !this.state.toggleFadeout,
+                    'voting-footer--condensed': this.props.condensed,
                 })}
                 ref={this.footerRef}
             >
@@ -88,33 +88,34 @@ class VotingFooter extends React.Component {
                         ) : (
                             <p />
                         ))}
-                    {!this.state.toggleVotes ? (
-                        <div className="voting-footer__container__action-vote">
-                            <button
-                                className={classnames(
-                                    'voting-footer__action-vote__btn',
-                                    'button button--primary button--lowercase',
-                                    {
-                                        'voting-footer__action-vote__btn--active': this.props.hasUserVoted,
+                    {!this.props.condensed &&
+                        (!this.state.toggleVotes ? (
+                            <div className="voting-footer__container__action-vote">
+                                <button
+                                    className={classnames(
+                                        'voting-footer__action-vote__btn',
+                                        'button button--primary button--lowercase',
+                                        {
+                                            'voting-footer__action-vote__btn--active': this.props.hasUserVoted,
+                                        }
+                                    )}
+                                    onClick={() =>
+                                        this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
+                                            this.props.onToggleVotePanel(true);
+                                            this.resetTimeout();
+                                        })
                                     }
-                                )}
-                                onClick={() =>
-                                    this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
-                                        this.props.onToggleVotePanel(true);
-                                        this.resetTimeout();
-                                    })
-                                }
-                            >
-                                <img
-                                    className="voting-footer__container__action-vote__icon"
-                                    src={this.props.hasUserVoted ? icnThumbGreen : icnThumbWhite}
-                                />
-                                {this.props.hasUserVoted ? 'J\'ai voté' : 'Je vote'}
-                            </button>
-                        </div>
-                    ) : (
-                        <p className="voting-footer__container__action-vote__text">Cette proposition est :</p>
-                    )}
+                                >
+                                    <img
+                                        className="voting-footer__container__action-vote__icon"
+                                        src={this.props.hasUserVoted ? icnThumbGreen : icnThumbWhite}
+                                    />
+                                    {this.props.hasUserVoted ? 'J\'ai voté' : 'Je vote'}
+                                </button>
+                            </div>
+                        ) : (
+                            <p className="voting-footer__container__action-vote__text">Cette proposition est :</p>
+                        ))}
                 </div>
 
                 {/* VOTES BUTTONS */}
@@ -130,7 +131,8 @@ class VotingFooter extends React.Component {
                                 'button',
                                 'voting-footer__vote',
                                 `voting-footer__vote-${index}`,
-                                { 'voting-footer__vote--selected': vote.isSelected }]}
+                                { 'voting-footer__vote--selected': vote.isSelected },
+                            ]}
                         />
                     ))}
             </div>
@@ -139,10 +141,12 @@ class VotingFooter extends React.Component {
 }
 
 VotingFooter.defaultProps = {
+    condensed: false,
     hasUserVoted: false,
 };
 
 VotingFooter.propTypes = {
+    condensed: PropTypes.bool,
     hasUserVoted: PropTypes.bool,
     votes: PropTypes.arrayOf(
         PropTypes.shape({

@@ -37,4 +37,5 @@ storiesOf('IdeaCard', module)
     .add('FINALIZED', () => <IdeaCard {...props} status="FINALIZED" onVote={action('Vote')} />)
     .add('with nickname', () => (
         <IdeaCard {...props} onVote={action('Vote')} author={{ ...props.author, nickname: 'bgdu06' }} />
-    ));
+    ))
+    .add('condensed', () => <IdeaCard {...props} onVote={action('Vote')} condensed={true} />);

@@ -22,6 +22,7 @@ const IdeaCardList = (props) => {
                 <div className="idea-card-list__wrapper" key={idea.uuid}>
                     <IdeaCard
                         {...idea}
+                        condensed={props.condensed}
                         onVote={(id, vote) => props.onVoteIdea(id, vote)}
                         hasBeenRead={props.readIdeas.includes(idea.uuid)}
                     />
@@ -32,6 +33,7 @@ const IdeaCardList = (props) => {
 };
 
 IdeaCardList.defaultProps = {
+    condensed: false,
     isLoading: false,
     mode: 'list',
     nbSkeletons: 6,
@@ -39,6 +41,7 @@ IdeaCardList.defaultProps = {
 };
 
 IdeaCardList.propTypes = {
+    condensed: PropTypes.bool,
     ideas: PropTypes.array.isRequired,
     isLoading: PropTypes.bool,
     mode: PropTypes.oneOf(['list', 'grid']),
