@@ -2,13 +2,13 @@
     <div class="spaces__search__filters">
         <ul>
             <li>
-                <legend class="label__header">Sexe</legend>
+                <legend class="label__header">Genre</legend>
                 <div class="l__row">
                     <div class="form__radio-button--tab">
                         <input type="radio" value="" id="parameter_gender_all"
                                name="{{ constant('PARAMETER_GENDER', filter) }}"
                                 {{ filter.queryGender|length == 0 ? 'checked="checked"' : '' }} />
-                        <label for="parameter_gender_all">
+                        <label class="label--small" for="parameter_gender_all">
                             Tous
                         </label>
                     </div>
@@ -16,7 +16,7 @@
                         <input type="radio" value="female" id="parameter_gender_female"
                                name="{{ constant('PARAMETER_GENDER', filter) }}"
                                 {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
-                        <label for="parameter_gender_female">
+                        <label class="label--small" for="parameter_gender_female">
                             Femme
                         </label>
                     </div>
@@ -24,8 +24,16 @@
                         <input type="radio" value="male" id="parameter_gender_male"
                                name="{{ constant('PARAMETER_GENDER', filter) }}"
                                 {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
-                        <label for="parameter_gender_male">
+                        <label class="label--small" for="parameter_gender_male">
                             Homme
+                        </label>
+                    </div>
+                    <div class="form__radio-button--tab">
+                        <input type="radio" value="other" id="parameter_gender_other"
+                               name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                {{ filter.queryGender is same as ('other') ? 'checked="checked"' : '' }} />
+                        <label class="label--small" for="parameter_gender_other">
+                            Autre
                         </label>
                     </div>
                 </div>

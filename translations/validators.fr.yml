@@ -10,7 +10,7 @@
 #
 # Common
 #
-common.gender.not_blank: Veuillez renseigner un sexe.
+common.gender.not_blank: Veuillez renseigner un genre.
 common.gender.invalid_choice: Ce sexe n'est pas valide.
 
 common.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.

@@ -277,6 +277,45 @@ class MembershipControllerTest extends WebTestCase
         $this->assertContains('Cette adresse e-mail est bloquée', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
     }
 
+    public function testCreateAdherentWithCustomGender(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/adhesion');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit(
+            $this->client->getCrawler()->selectButton('Je rejoins La République En Marche')->form(),
+            [
+                'g-recaptcha-response' => 'fake',
+                'adherent_registration' => [
+                    'firstName' => 'Test',
+                    'lastName' => 'Adhesion',
+                    'emailAddress' => [
+                        'first' => 'custom.gender@example.fr',
+                        'second' => 'custom.gender@example.fr',
+                    ],
+                    'password' => '12345678',
+                    'address' => [
+                        'address' => '1 rue des alouettes',
+                        'postalCode' => '94320',
+                        'cityName' => 'Thiais',
+                        'city' => '94320-94073',
+                        'country' => 'FR',
+                    ],
+                    'birthdate' => [
+                        'day' => 1,
+                        'month' => 1,
+                        'year' => 1989,
+                    ],
+                    'gender' => 'other',
+                    'customGender' => 'my custom gender',
+                    'conditions' => true,
+                    'allowNotifications' => true,
+                ],
+            ]
+        );
+    }
+
     private static function createFormData(): array
     {
         return [

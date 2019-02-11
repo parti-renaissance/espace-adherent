@@ -41,7 +41,8 @@ class AdherentFactory
             [],
             [],
             $request->getMandates(),
-            $request->nationality
+            $request->nationality,
+            $request->customGender
         );
     }
 
@@ -70,7 +71,8 @@ class AdherentFactory
             [],
             [],
             null,
-            $data['nationality'] ?? null
+            $data['nationality'] ?? null,
+            $data['custom_gender'] ?? null
         );
 
         if (!isset($data['isAdherent']) || $data['isAdherent']) {

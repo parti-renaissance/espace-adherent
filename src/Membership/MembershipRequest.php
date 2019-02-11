@@ -7,12 +7,14 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Validator\BannedAdherent;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
+use AppBundle\Validator\CustomGender as AssertCustomGender;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertUniqueMembership(groups={"Registration", "Update"})
+ * @AssertCustomGender(groups={"Registration", "Update"})
  */
 class MembershipRequest implements MembershipInterface
 {
@@ -28,6 +30,11 @@ class MembershipRequest implements MembershipInterface
      * )
      */
     public $gender;
+
+    /**
+     * @var string|null
+     */
+    public $customGender;
 
     /**
      * @var string
@@ -168,6 +175,7 @@ class MembershipRequest implements MembershipInterface
     public static function createFromAdherent(Adherent $adherent): self
     {
         $dto = new self();
+        $dto->customGender = $adherent->getCustomGender();
         $dto->gender = $adherent->getGender();
         $dto->firstName = $adherent->getFirstName();
         $dto->lastName = $adherent->getLastName();
