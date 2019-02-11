@@ -66,12 +66,13 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage",
                 "days_before_deadline": 0,
+                "hours_before_deadline": 0,
                 "contributors_count": 2,
                 "comments_count":2
             },
             {
                 "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-                "name": "Reduire le gaspillage alimentaire",
+                "name": "Réduire le gaspillage alimentaire",
                 "themes": [
                     {
                         "id": 3,
@@ -107,6 +108,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "reduire-le-gaspillage-alimentaire",
                 "days_before_deadline": 0,
+                "hours_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -119,117 +121,10 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas?status=PENDING"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "metadata": {
-            "total_items": 2,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 1
-        },
-        "items": [
-            {
-                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
-                "name": "Faire la paix",
-                "themes": [
-                    {
-                        "id": 1,
-                        "name": "Armées et défense",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                    }
-                ],
-                "category": {
-                    "id": 1,
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [
-                    {
-                        "id": 1,
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "nickname":"kikouslove",
-                    "first_name": null,
-                    "last_name": null
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": {
-                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-                    "created_at": "@string@.isDateTime()",
-                    "name": "En Marche Paris 8",
-                    "slug": "en-marche-paris-8"
-                },
-                "status": "PENDING",
-                "votes_count": {
-                    "important": "7",
-                    "feasible": "5",
-                    "innovative": "5",
-                    "total": 17
-                },
-                "author_category": "COMMITTEE",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "faire-la-paix",
-                "days_before_deadline": 13,
-                "contributors_count": 8,
-                "comments_count":13
-            },
-            {
-                "uuid": "bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-                "name": "Reduire le bruit dans les opens spaces",
-                "themes": [
-                    {
-                        "id": 3,
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "id": 1,
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [
-                    {
-                        "id": 1,
-                        "name": "Juridique",
-                        "enabled": true
-                    }
-                ],
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "nickname":null,
-                    "first_name": "Michel",
-                    "last_name": "V."
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "PENDING",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ELECTED",
-                "description": "Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-bruit-dans-les-opens-spaces",
-                "days_before_deadline": 8,
-                "contributors_count": 0,
-                "comments_count": 0
-            }
-        ]
-    }
-    """
+    And the JSON nodes should contain:
+      | metadata.total_items  | 2                                      |
+      | items[0].name         | Faire la paix                          |
+      | items[1].name         | Reduire le bruit dans les opens spaces |
 
   Scenario: As a non logged-in user I can filter ideas by name
     Given I add "Accept" header equal to "application/json"
@@ -295,6 +190,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 13,
+                "hours_before_deadline": 0,
                 "contributors_count": 8,
                 "comments_count":13
             }
@@ -372,6 +268,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "faire-la-paix",
                 "days_before_deadline": 13,
+                "hours_before_deadline": 0,
                 "contributors_count": 8,
                 "contributed_by_me": false,
                 "comments_count":13
@@ -433,12 +330,13 @@ Feature:
               "slug": "reduire-le-gaspillage",
               "status": "FINALIZED",
               "days_before_deadline": 0,
+              "hours_before_deadline": 0,
               "contributors_count": 2,
               "comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-              "name": "Reduire le gaspillage alimentaire",
+              "name": "Réduire le gaspillage alimentaire",
               "themes": [
                   {
                       "id": 3,
@@ -473,6 +371,7 @@ Feature:
               "slug": "reduire-le-gaspillage-alimentaire",
               "status": "FINALIZED",
               "days_before_deadline": 0,
+              "hours_before_deadline": 0,
               "contributors_count": 0,
               "comments_count": 0
           }
@@ -533,12 +432,13 @@ Feature:
               "created_at": "@string@.isDateTime()",
               "slug": "reduire-le-gaspillage",
               "days_before_deadline": 0,
+              "hours_before_deadline": 0,
               "contributors_count": 2,
               "comments_count":2
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
-             "name":"Reduire le gaspillage alimentaire",
+             "name":"Réduire le gaspillage alimentaire",
              "themes":[
                 {
                    "id": 3,
@@ -573,6 +473,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "slug":"reduire-le-gaspillage-alimentaire",
              "days_before_deadline":0,
+              "hours_before_deadline": 0,
              "contributors_count":0,
              "comments_count":0
           }
@@ -633,6 +534,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "slug": "aider-les-gens",
                 "days_before_deadline": 0,
+                "hours_before_deadline": 0,
                 "contributors_count": 0,
                 "comments_count": 0
             }
@@ -645,117 +547,10 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas?needs.name=Juridique"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":2,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":1
-       },
-       "items":[
-          {
-             "uuid":"e4ac3efc-b539-40ac-9417-b60df432bdc5",
-             "name":"Faire la paix",
-             "themes":[
-                {
-                   "id": 1,
-                   "name":"Armées et défense",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
-                }
-             ],
-             "category":{
-                "id": 1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "id": 1,
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "nickname":"kikouslove",
-                "first_name":null,
-                "last_name":null
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at":"@string@.isDateTime()",
-             "committee":{
-                "uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818",
-                "created_at":"2017-01-12T13:25:54+01:00",
-                "name":"En Marche Paris 8",
-                "slug":"en-marche-paris-8"
-             },
-             "status":"PENDING",
-             "votes_count":{
-                "important":"7",
-                "feasible":"5",
-                "innovative":"5",
-                "total":17
-             },
-             "author_category":"COMMITTEE",
-             "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"faire-la-paix",
-             "days_before_deadline":13,
-             "contributors_count":8,
-             "comments_count":13
-          },
-          {
-             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-             "name":"Reduire le bruit dans les opens spaces",
-             "themes":[
-                {
-                    "id": 3,
-                    "name": "Écologie",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "id": 1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "id": 1,
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "nickname":null,
-                "first_name":"Michel",
-                "last_name":"V."
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at":"@string@.isDateTime()",
-             "committee":null,
-             "status":"PENDING",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ELECTED",
-             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-bruit-dans-les-opens-spaces",
-             "days_before_deadline":8,
-             "contributors_count":0,
-             "comments_count":0
-          }
-       ]
-    }
-    """
+    And the JSON nodes should contain:
+      | metadata.total_items   | 2         |
+      | items[0].needs[0].name | Juridique |
+      | items[1].needs[0].name | Juridique |
 
   Scenario: As a logged-in user I can add my idea only with a name
     Given I am logged as "martine.lindt@gmail.com"
@@ -799,6 +594,7 @@ Feature:
         "name": "Mon idée",
         "slug": "mon-idee",
         "days_before_deadline": @integer@,
+        "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
         "comments_count": 0
@@ -847,6 +643,7 @@ Feature:
         "slug": "ma-proposition",
         "status": "DRAFT",
         "days_before_deadline": @integer@,
+        "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
         "comments_count": 0
@@ -992,6 +789,7 @@ Feature:
         "created_at": "@string@.isDateTime()",
         "slug": "mon-idee",
         "days_before_deadline": @integer@,
+        "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
         "comments_count": 0
@@ -1114,6 +912,7 @@ Feature:
         "slug": "mon-idee-2",
         "status": "PENDING",
         "days_before_deadline": 13,
+        "hours_before_deadline":0,
         "contributors_count": 8,
         "contributed_by_me": false,
         "comments_count":14
@@ -1177,6 +976,7 @@ Feature:
              "slug":"reduire-le-gaspillage",
              "status":"FINALIZED",
              "days_before_deadline":0,
+             "hours_before_deadline":0,
              "contributors_count":2,
              "contributed_by_me": true,
              "comments_count":2
@@ -1233,6 +1033,7 @@ Feature:
              "slug":"faire-la-paix",
              "status":"PENDING",
              "days_before_deadline":13,
+             "hours_before_deadline":0,
              "contributors_count":8,
              "contributed_by_me": true,
              "comments_count":13
@@ -1298,6 +1099,7 @@ Feature:
              "slug":"reduire-le-gaspillage",
              "status":"FINALIZED",
              "days_before_deadline":0,
+             "hours_before_deadline":0,
              "contributors_count":2,
              "contributed_by_me": true,
              "comments_count":2
@@ -1354,6 +1156,7 @@ Feature:
              "slug":"faire-la-paix",
              "status":"PENDING",
              "days_before_deadline":13,
+             "hours_before_deadline":0,
              "contributors_count":8,
              "contributed_by_me": true,
              "comments_count":13
@@ -1922,12 +1725,13 @@ Feature:
              "slug":"reduire-le-gaspillage",
              "status":"FINALIZED",
              "days_before_deadline":0,
+             "hours_before_deadline":0,
              "contributors_count":2,
              "comments_count":2
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
-             "name":"Reduire le gaspillage alimentaire",
+             "name":"Réduire le gaspillage alimentaire",
              "themes":[
                 {
                    "id": 3,
@@ -1964,6 +1768,7 @@ Feature:
              "slug":"reduire-le-gaspillage-alimentaire",
              "status":"FINALIZED",
              "days_before_deadline":0,
+             "hours_before_deadline":0,
              "contributors_count":0,
              "comments_count":0
           }
@@ -2041,12 +1846,13 @@ Feature:
                "slug":"reduire-le-gaspillage",
                "status":"FINALIZED",
                "days_before_deadline":0,
+               "hours_before_deadline":0,
                "contributors_count":2,
                "comments_count":2
             },
             {
                "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
-               "name":"Reduire le gaspillage alimentaire",
+               "name":"Réduire le gaspillage alimentaire",
                "themes":[
                   {
                      "id": 3,
@@ -2083,6 +1889,7 @@ Feature:
                "slug":"reduire-le-gaspillage-alimentaire",
                "status":"FINALIZED",
                "days_before_deadline":0,
+               "hours_before_deadline":0,
                "contributors_count":0,
                "comments_count":0
             }
@@ -2145,12 +1952,13 @@ Feature:
              "created_at":"@string@.isDateTime()",
              "slug":"reduire-le-gaspillage",
              "days_before_deadline":0,
+             "hours_before_deadline":0,
              "contributors_count":2,
              "comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-              "name": "Reduire le gaspillage alimentaire",
+              "name": "Réduire le gaspillage alimentaire",
               "themes": [
                   {
                       "id": 3,
@@ -2185,6 +1993,7 @@ Feature:
               "created_at": "@string@.isDateTime()",
               "slug": "reduire-le-gaspillage-alimentaire",
               "days_before_deadline": 0,
+              "hours_before_deadline":0,
               "contributors_count": 0,
               "comments_count": 0
           }
@@ -2256,6 +2065,7 @@ Feature:
              "created_at": "@string@.isDateTime()",
              "slug":"faire-la-paix",
              "days_before_deadline":13,
+             "hours_before_deadline":0,
              "contributors_count":8,
              "comments_count":13
           }
@@ -2268,63 +2078,6 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas?name=Reduire le bruit dans les opens spaces"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":1,
-          "items_per_page":2,
-          "count":1,
-          "current_page":1,
-          "last_page":1
-       },
-       "items":[
-          {
-             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-             "name":"Reduire le bruit dans les opens spaces",
-             "themes":[
-                {
-                   "id":3,
-                   "name":"Écologie",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "id":1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "id":1,
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "nickname":null,
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "first_name":"Michel",
-                "last_name":"V."
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at":"@string@.isDateTime()",
-             "committee":null,
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ELECTED",
-             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-bruit-dans-les-opens-spaces",
-             "status":"PENDING",
-             "days_before_deadline":8,
-             "contributors_count":0,
-             "comments_count":0
-          }
-       ]
-    }
-    """
+    And the JSON nodes should contain:
+      | items[0].name           | Reduire le bruit dans les opens spaces  |
+      | items[0].comments_count | 0                                       |

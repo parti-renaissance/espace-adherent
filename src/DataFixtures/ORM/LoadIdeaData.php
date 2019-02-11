@@ -114,8 +114,8 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
             'Reduire le bruit dans les opens spaces',
             'Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.',
             AuthorCategoryEnum::ELECTED,
-            new \DateTime('-2 days 1 minute'),
-            new \DateTime('+8 days 1 minute'),
+            new \DateTime('-9 days 15 hours'),
+            new \DateTime('+9 hours'),
             true,
             $adherent13,
             Uuid::fromString(self::IDEA_06_UUID),
@@ -127,7 +127,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $this->addReference('idea-noise', $ideaReduceNoise);
 
         $ideaReduceFoodWaste = new Idea(
-            'Reduire le gaspillage alimentaire',
+            'Réduire le gaspillage alimentaire',
             'Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.',
             AuthorCategoryEnum::ELECTED,
             new \DateTime('-23 days 1 minute'),
