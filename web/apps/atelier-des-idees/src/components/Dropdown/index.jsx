@@ -26,23 +26,27 @@ function Dropdown(props) {
         <RCDropdown
             trigger={['click']}
             overlay={menu}
-            overlayClassName="dropdown-menu"
+            overlayClassName={'dropdown-menu'}
             align={{
                 points: ['tr', 'br'],
             }}
         >
-            <button className="dropdown-button">{props.label || <img src={moreIcn} />}</button>
+            <button className={classNames('dropdown-button', props.className)}>
+                {props.label || <img src={moreIcn} />}
+            </button>
         </RCDropdown>
     );
 }
 
 Dropdown.defaultProps = {
+    className: '',
     label: undefined,
 };
 
 Dropdown.propTypes = {
-    onSelect: PropTypes.func.isRequired,
+    className: PropTypes.string,
     label: PropTypes.string,
+    onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(
         PropTypes.shape({ label: PropTypes.string, value: PropTypes.string, isImportant: PropTypes.bool })
     ),

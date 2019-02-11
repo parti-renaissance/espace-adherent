@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ideaStatus } from '../../../constants/api';
 import CreateIdeaActions from '../CreateIdeaActions';
 import Switch from '../../../components/Switch';
+import Dropdown from '../../../components/Dropdown';
 import icn_close from '../../../img/icn_close.svg';
 
 class IdeaPageHeader extends React.Component {
@@ -36,12 +37,11 @@ class IdeaPageHeader extends React.Component {
                                         }
                                     />
                                 ) : (
-                                    <button
-                                        className="button create-idea-actions__report"
-                                        onClick={this.props.onReportClicked}
-                                    >
-                                        Signaler la proposition
-                                    </button>
+                                    <Dropdown
+                                        className="create-idea-actions__report"
+                                        onSelect={this.props.onReportClicked}
+                                        options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
+                                    />
                                 ))}
                         </React.Fragment>
                     )}
