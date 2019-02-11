@@ -27,9 +27,6 @@ class PreProposal extends React.PureComponent {
                         >
 							Suivre l'avancée du programme
                         </a>
-                        <p className="pre-proposal__container__text">
-              Ou <a href="{{ path('react_app_ideas_workshop_contribute') }}">contribuez aux propositions en cours d'élaboration</a> par les autres marcheurs.
-                        </p>
                     </div>
                 </div>
                 <p className="pre-proposal__footer">
