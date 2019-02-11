@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
@@ -7,20 +8,24 @@ import { ideaStatus } from '../../constants/api';
 import { selectLoadingState } from '../../redux/selectors/loading';
 import { selectIdeasWithStatus, selectIdeasMetadata } from '../../redux/selectors/ideas';
 import { selectStatic } from '../../redux/selectors/static';
+import { selectVisitedIdeas } from '../../redux/selectors/session';
 import { fetchIdeas, fetchNextIdeas, voteIdea } from '../../redux/thunk/ideas';
 import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
 import IdeaFilters from '../../components/IdeaFilters';
 import noIdeaImg from '../../img/no-idea-result.svg';
-import { selectVisitedIdeas } from '../../redux/selectors/session';
+import condensedIcn from '../../img/icn_20px_autosave.svg';
+import defaultIcn from '../../img/icn_hourglass.svg';
 
 class IdeaCardListContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             params: {},
+            condensed: false,
         };
         this.onFilterChange = this.onFilterChange.bind(this);
+        this.onDisplayModeChange = this.onDisplayModeChange.bind(this);
         this.fetchIdeas = this.fetchIdeas.bind(this);
     }
 
@@ -30,6 +35,12 @@ class IdeaCardListContainer extends React.Component {
 
     onFilterChange(filters, options) {
         this.setState({ params: filters }, () => this.fetchIdeas(options));
+    }
+
+    onDisplayModeChange(condensed) {
+        if (condensed !== this.state.condensed) {
+            this.setState({ condensed });
+        }
     }
 
     render() {
@@ -43,9 +54,33 @@ class IdeaCardListContainer extends React.Component {
                     disabled={this.props.isLoading}
                     defaultValues={this.props.defaultFilterValues}
                 />
+                <div className="idea-card-list__actions">
+                    <div className="idea-card-list__actions__display">
+                        {[
+                            { title: 'Affichage par défaut', condensed: false },
+                            { title: 'Affichage condensé', condensed: true },
+                        ].map(item => (
+                            <button
+                                className={classNames('idea-card-list__actions__display__btn', {
+                                    'idea-card-list__actions__display__btn--selected':
+                                        this.state.condensed === item.condensed,
+                                })}
+                                data-tip={item.title}
+                                data-effect="solid"
+                                data-type="light"
+                                data-class="idea-card-list__actions__display__btn-tip"
+                                onClick={() => this.onDisplayModeChange(item.condensed)}
+                                title={item.title}
+                            >
+                                <img src={item.condensed ? condensedIcn : defaultIcn} />
+                            </button>
+                        ))}
+                    </div>
+                </div>
                 {this.props.isLoading || this.props.ideas.length ? (
                     <React.Fragment>
                         <IdeaCardList
+                            condensed={this.state.condensed}
                             ideas={this.props.ideas}
                             isLoading={this.props.isLoading}
                             mode={this.props.mode}

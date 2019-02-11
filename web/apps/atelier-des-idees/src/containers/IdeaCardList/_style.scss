@@ -2,6 +2,39 @@
   text-align: center;
 }
 
+.idea-card-list__actions {
+  margin: 28px 0;
+  text-align: right;
+
+  .idea-card-list__actions__display__btn {
+    @extend %reset-button;
+    display: inline-flex;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: 5px;
+    cursor: pointer;
+
+    &:hover,
+    &--selected {
+      border-radius: 2px;
+      background-color: $white;
+    }
+
+    &--selected {
+      border: 1px solid $columbia-blue;
+    }
+
+    &-tip {
+      white-space: nowrap;
+      font-family: $font-roboto;
+      border-radius: 3px;
+      padding: 10px 13px;
+      font-size: 16px;
+    }
+  }
+}
+
 .idea-card-list__empty {
   width: 33%;
   margin: 0 auto;
