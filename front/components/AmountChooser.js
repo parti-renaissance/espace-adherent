@@ -8,7 +8,6 @@ export default class AmountChooser extends React.Component {
 
         this.state = {
             amount: props.value,
-            abonnement: props.abonnement,
         };
 
         this.handleButtonClicked = this.handleButtonClicked.bind(this);
@@ -57,36 +56,6 @@ export default class AmountChooser extends React.Component {
 
         return (
             <div className="amount-chooser">
-
-                <div className="amount-chooser__monthly form__radio">
-                    <div>
-                        <input
-                            type="radio"
-                            name="abonnement"
-                            id="donation-one-time"
-                            value="0"
-                            defaultChecked={!this.props.abonnement} />
-
-                        <label htmlFor="donation-one-time"
-                               id="donation-one-time_label">
-                            Je donne une fois
-                        </label>
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            name="abonnement"
-                            id="donation-monthly"
-                            value="1"
-                            defaultChecked={this.props.abonnement} />
-
-                        <label htmlFor="donation-monthly"
-                               id="donation-monthly_label">
-                            Je donne chaque mois (paiement automatique)
-                        </label>
-                    </div>
-                </div>
-
                 <input type="hidden" name={this.props.name} value={state} />
 
                 {defaultAmounts.map(amount => (
@@ -105,32 +74,32 @@ export default class AmountChooser extends React.Component {
                         id="amount-chooser__other__input"
                         placeholder="Autre"
                         min="0.01"
-                        max="7500"
+                        max={this.props.maxValue}
                         step="0.01"
                         ref="other_amount"
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         onKeyPress={this.handleInputKeyPress}
-                        defaultValue={-1 < defaultAmounts.indexOf(this.props.value) ? null : this.props.value} />
+                        defaultValue={-1 < defaultAmounts.indexOf(this.props.value) ? null : this.props.value}
+                    />
 
-                    <label htmlFor="amount-chooser__other__input"
-                           className="amount-chooser__other__label">
-                        <span>Entrez un autre montant</span>
-                        €
+                    <label htmlFor="amount-chooser__other__input" className="amount-chooser__other__label">
+                        <span>Entrez un autre montant</span>€
                     </label>
-                </div>
-                <div className="amount-chooser__help">
-
                 </div>
             </div>
         );
     }
 }
 
+AmountChooser.defaultProps = {
+    maxValue: 7500,
+};
+
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
-    abonnement: PropTypes.bool,
+    maxValue: PropTypes.number,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func,
 };

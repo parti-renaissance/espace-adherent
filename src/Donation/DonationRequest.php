@@ -9,6 +9,7 @@ use AppBundle\Validator\MaxFiscalYearDonation;
 use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
 use AppBundle\Validator\UniqueDonationSubscription;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use AppBundle\Validator\MaxMonthDonation;
 use AppBundle\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueDonationSubscription
+ * @MaxMonthDonation
  */
 class DonationRequest
 {
