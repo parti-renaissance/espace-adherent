@@ -89,6 +89,22 @@
         &--flex {
             display: flex;
             align-items: center;
+
+            #form__mandates {
+                .select2-container {
+                    width: 100%;
+
+                    .select2-search-choice-close {
+                        border-bottom: none;
+                    }
+                }
+
+                .form__field {
+                    padding-left: 0;
+                    padding-right: 0;
+                    height: auto;
+                }
+            }
         }
 
         &--line {
