@@ -3,6 +3,7 @@
 #
 common.gender.man: Homme
 common.gender.woman: Femme
+common.gender.other: Autre
 common.civility.mr: Monsieur
 common.civility.mrs: Madame
 common.email_address: Adresse email

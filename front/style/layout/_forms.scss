@@ -221,7 +221,9 @@ label {
 
     &__radio-button--tab {
         label {
-            border: 1px solid $gray--light;
+            border-top: 1px solid $gray--light;
+            border-left: 1px solid $gray--light;
+            border-bottom: 1px solid $gray--light;
             background: white;
             display: inline-block;
             padding: 10px 20px;
@@ -232,16 +234,18 @@ label {
             &:hover {
                 background-color: $gray--lighter;
             }
+            &.label--small {
+                padding: 5px 9px;
+            }
         }
 
         &:first-child label {
             border-radius: 3px 0 0 3px;
-            border-right: 0;
         }
 
         &:last-child label {
             border-radius: 0 3px 3px 0;
-            border-left: 0;
+            border-right: 1px solid $gray--light;
         }
 
         input[type='radio'] {

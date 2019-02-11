@@ -125,6 +125,9 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('gender', null, [
                     'label' => 'Genre',
                 ])
+                ->add('customGender', null, [
+                    'label' => 'Genre personnalisé',
+                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -212,6 +215,13 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('gender', GenderType::class, [
                     'label' => 'Genre',
+                ])
+                ->add('customGender', TextType::class, [
+                    'required' => false,
+                    'label' => 'Genre personnalisé',
+                    'attr' => [
+                        'max' => 80,
+                    ],
                 ])
                 ->add('lastName', TextType::class, [
                     'label' => 'Nom',

@@ -119,6 +119,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $gender;
 
     /**
+     * @ORM\Column(length=80, nullable=true)
+     */
+    private $customGender;
+
+    /**
      * @ORM\Column
      *
      * @JMS\Groups({"adherent_change_diff", "user_profile", "public"})
@@ -398,8 +403,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $registeredAt = 'now',
         ?array $tags = [],
         ?array $referentTags = [],
-        ?array $mandates = null,
-        string $nationality = null
+        array $mandates = null,
+        string $nationality = null,
+        string $customGender = null
     ) {
         $adherent = new self();
 
@@ -422,6 +428,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->referentTags = new ArrayCollection($referentTags);
         $adherent->mandates = $mandates;
         $adherent->nationality = $nationality;
+        $adherent->customGender = $customGender;
 
         return $adherent;
     }
@@ -618,6 +625,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->gender;
     }
 
+    public function getCustomGender(): ?string
+    {
+        return $this->customGender;
+    }
+
     public function isForeignResident(): bool
     {
         return 'FR' !== strtoupper($this->getCountry());
@@ -792,6 +804,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function updateMembership(MembershipRequest $membership, PostAddress $postAddress): void
     {
+        $this->customGender = $membership->customGender;
         $this->gender = $membership->gender;
         $this->firstName = $membership->firstName;
         $this->lastName = $membership->lastName;
