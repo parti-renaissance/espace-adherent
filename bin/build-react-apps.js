@@ -7,6 +7,10 @@ const childProcess = require('child_process');
 const appsDir = __dirname+'/../web/apps';
 
 fs.readdirSync(appsDir).forEach(appName => {
+    if ('example' === appName) {
+        return;
+    }
+
     const appDir = appsDir+'/'+appName;
 
     if (fs.statSync(appDir).isDirectory()) {
