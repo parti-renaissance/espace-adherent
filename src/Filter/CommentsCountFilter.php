@@ -18,7 +18,7 @@ final class CommentsCountFilter extends AbstractFilter
     ): void {
         if (Idea::class !== $resourceClass
             || !array_key_exists($property, $this->properties)
-            || !\in_array($value, ['desc', 'asc'])
+            || !\in_array($value = strtolower($value), ['desc', 'asc'])
         ) {
             return;
         }

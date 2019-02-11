@@ -1968,109 +1968,18 @@ Feature:
 
   Scenario: As a non logged-in user I can order ideas by number of comments
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?commentsCount=asc"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?commentsCount=ASC&page=2"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":4,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":2
-       },
-       "items":[
-          {
-             "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
-             "name":"Reduire le gaspillage alimentaire",
-             "themes":[
-                {
-                   "id": 3,
-                   "name":"Écologie",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "id": 1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[],
-             "author":{
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "nickname":null,
-                "first_name":"Michel",
-                "last_name":"V."
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at":"@string@.isDateTime()",
-             "committee":null,
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ELECTED",
-             "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-             "created_at":"@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage-alimentaire",
-             "status":"FINALIZED",
-             "days_before_deadline":0,
-             "contributors_count":0,
-             "comments_count":0
-          },
-          {
-             "uuid":"bbf35ba6-52ba-4913-aae8-5948449d0c1d",
-             "name":"Reduire le bruit dans les opens spaces",
-             "themes":[
-                {
-                   "id": 3,
-                   "name":"Écologie",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "id": 1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-                {
-                   "id": 1,
-                   "name":"Juridique",
-                   "enabled":true
-                }
-             ],
-             "author":{
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "nickname":null,
-                "first_name":"Michel",
-                "last_name":"V."
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at":"@string@.isDateTime()",
-             "committee":null,
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ELECTED",
-             "description":"Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.",
-             "created_at":"@string@.isDateTime()",
-             "slug":"reduire-le-bruit-dans-les-opens-spaces",
-             "status":"PENDING",
-             "days_before_deadline":8,
-             "contributors_count":0,
-             "comments_count":0
-          }
-       ]
-    }
-    """
+    And the JSON nodes should contain:
+      | items[0].comments_count | 2  |
+      | items[1].comments_count | 13 |
+    When I send a "GET" request to "/api/ideas-workshop/ideas?commentsCount=DESC"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should contain:
+      | items[0].comments_count | 13 |
+      | items[1].comments_count | 2  |
 
   Scenario: As a non logged-in user I can order ideas by number of votes
     Given I add "Accept" header equal to "application/json"
@@ -2349,8 +2258,7 @@ Feature:
     }
     """
 
-  Scenario: As a non logged-in user I can count contributors based on enabled (and not deleted)
-    thread and threadComment author's
+  Scenario: As a non logged-in user I can count contributors based on enabled (and not deleted) thread and threadComment author's
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?name=Reduire le bruit dans les opens spaces"
     Then the response status code should be 200
