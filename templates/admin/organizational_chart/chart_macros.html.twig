@@ -1,0 +1,39 @@
+{% macro orga_chart_row(items, referent, editable, admin) %}
+    {% import _self as oc %}
+    <ul{% if items is not empty and items|first.level <= 2 %} class="organizational-chart"{% endif %}>
+        {% for item in items %}
+            <li>
+                {{ oc.orga_chart_item(item, referent, editable, admin) }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{% macro orga_chart_item(item, referent, editable, admin) %}
+    {% import _self as oc %}
+    {% if item.referentPersonLinks is defined %}
+        {% if editable or admin %}
+            <a href="{{ admin ? admin.generateObjectUrl('edit', item, admin.listFieldDescriptions['batch'].options.route.parameters) : path('app_referent_referent_person_link_edit', {id: item.id}) }}">
+        {% endif %}
+        <span class="function">{{ item.label }}</span>
+        <br/>
+        <span>
+            {% set ref_person_link = get_ref_person_link(item, referent) %}
+            {% if ref_person_link %}
+                {{ ref_person_link.firstName }} {{ ref_person_link.lastName }}
+            {% endif %}
+        </span>
+        {% if editable %}
+            </a>
+        {% endif %}
+    {% elseif admin %}
+        <a href="{{ admin.generateObjectUrl('edit', item, admin.listFieldDescriptions['batch'].options.route.parameters) }}">
+            {{ item.label }}
+        </a>
+    {% else %}
+        {{ item.label }}
+    {% endif %}
+    {% if item.children|length %}
+        {{ oc.orga_chart_row(item.children, referent, editable, admin) }}
+    {% endif %}
+{% endmacro %}
