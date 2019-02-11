@@ -49,6 +49,23 @@
       border-radius: 2px;
       text-transform: none;
     }
+
+    &__link.contributing-footer__container__link--active {
+      border-color: $blue;
+      background: $white;
+      color: $blue;
+
+      &:hover {
+        border-color: $marine-blue;
+        background: $white;
+        color: $marine-blue;
+      }
+    }
+
+    &__link__icon {
+      height: 17px;
+      margin-right: 3px;
+    }
   }
 
   /* Responsive */
