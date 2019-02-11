@@ -64,7 +64,6 @@ class IdeaCard extends React.Component {
     render() {
         return (
             <div className="idea-card" ref={this.cardRef}>
-
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
@@ -174,6 +173,7 @@ class IdeaCard extends React.Component {
                     <ContributingFooter
                         remainingDays={this.props.days_before_deadline}
                         link={`/atelier-des-idees/proposition/${this.props.uuid}`}
+                        hasUserContributed={this.props.contributed_by_me}
                     />
                 )}
             </div>
@@ -183,6 +183,7 @@ class IdeaCard extends React.Component {
 
 IdeaCard.defaultProps = {
     comments_count: 0,
+    contributed_by_me: false,
     contributors_count: 0,
     thumbnail: undefined,
     hasBeenRead: false,
@@ -211,6 +212,7 @@ IdeaCard.propTypes = {
     contributors_count: PropTypes.number,
     themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
     days_before_deadline: PropTypes.number.isRequired,
+    contributed_by_me: PropTypes.bool,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
     onVote: PropTypes.func,
     hasBeenRead: PropTypes.bool,
