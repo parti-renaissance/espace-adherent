@@ -15,56 +15,15 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/thread_comments?page=1"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":9,
-          "items_per_page":3,
-          "count":3,
-          "current_page":1,
-          "last_page":3
-       },
-       "items":[
-          {
-             "uuid":"9e49e935-ba51-4ae5-981c-5f48e55fdf28",
-             "content":"Commentaire d'un adhérent",
-             "author":{
-                "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
-                "nickname":null,
-                "first_name":"Benjamin",
-                "last_name":"D."
-             },
-             "approved":false,
-             "created_at":"@string@.isDateTime()"
-          },
-          {
-             "uuid":"37116c8b-a36e-4a0d-8346-baba91cd1330",
-             "content":"Commentaire de l'adhérent à desadhérer",
-             "author":{
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "nickname":null,
-                "first_name":"Michel",
-                "last_name":"V."
-             },
-             "approved":false,
-             "created_at":"@string@.isDateTime()"
-          },
-          {
-             "uuid":"ecbe9136-3dc0-477d-b817-a25878dd639a",
-             "content":"<p>Commentaire signalé</p>",
-             "author":{
-                "uuid":"93de5d98-383a-4863-9f47-eb7a348873a8",
-                "nickname":null,
-                "first_name":"Laura",
-                "last_name":"D."
-             },
-             "approved":false,
-             "created_at":"@string@.isDateTime()"
-          }
-       ]
-    }
-    """
+    And the JSON nodes should contain:
+      | metadata.total_items    | 9                                       |
+      | metadata.items_per_page | 3                                       |
+      | metadata.count          | 3                                       |
+      | metadata.last_page      | 3                                       |
+      | items[0].content        | Commentaire d'un adhérent               |
+      | items[1].content        | Commentaire de l'adhérent à desadhérer  |
+      | items[2].content        | <p>Commentaire signalé</p>              |
+
 
   Scenario: As a non logged-in user I can see visible thread comments for a specific thread
     When I send a "GET" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/comments"

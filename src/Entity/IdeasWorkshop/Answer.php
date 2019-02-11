@@ -65,6 +65,7 @@ class Answer
 
     /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"createdAt": "ASC"})
      *
      * @SymfonySerializer\Groups({"idea_read"})
      */
