@@ -112,6 +112,8 @@ class TextEditor extends React.Component {
                         localization={{
                             locale: 'fr',
                             translations: {
+                                'components.controls.list.unordered': 'Liste désordonnée',
+                                'components.controls.list.ordered': 'Liste ordonnée',
                                 'components.controls.link.linkTitle': 'Nom de votre lien',
                                 'components.controls.link.linkTarget': 'Votre lien url',
                                 'components.controls.link.link': 'Insérer un lien',
