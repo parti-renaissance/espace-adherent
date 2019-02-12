@@ -68,8 +68,7 @@ Feature:
                 "days_before_deadline": 0,
                 "hours_before_deadline": 0,
                 "contributors_count": 2,
-                "comments_count":2,
-                "new_comments_count":2
+                "comments_count":2
             },
             {
                 "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -111,8 +110,7 @@ Feature:
                 "days_before_deadline": 0,
                 "hours_before_deadline": 0,
                 "contributors_count": 0,
-                "comments_count": 0,
-                "new_comments_count": 0
+                "comments_count": 0
             }
         ]
     }
@@ -202,8 +200,7 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline": 0,
               "contributors_count": 2,
-              "comments_count":2,
-              "new_comments_count":2
+              "comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -244,8 +241,7 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline": 0,
               "contributors_count": 0,
-              "comments_count": 0,
-              "new_comments_count": 0
+              "comments_count": 0
           }
        ]
     }
@@ -306,8 +302,7 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline": 0,
               "contributors_count": 2,
-              "comments_count":2,
-              "new_comments_count":2
+              "comments_count":2
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -348,8 +343,7 @@ Feature:
              "days_before_deadline":0,
               "hours_before_deadline": 0,
              "contributors_count":0,
-             "comments_count":0,
-             "new_comments_count":0
+             "comments_count":0
           }
       ]
     }
@@ -410,8 +404,7 @@ Feature:
                 "days_before_deadline": 0,
                 "hours_before_deadline": 0,
                 "contributors_count": 0,
-                "comments_count": 0,
-                "new_comments_count": 0
+                "comments_count": 0
             }
         ]
     }
@@ -472,8 +465,7 @@ Feature:
         "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
-        "comments_count": 0,
-        "new_comments_count": 0
+        "comments_count": 0
     }
     """
 
@@ -522,8 +514,7 @@ Feature:
         "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
-        "comments_count": 0,
-        "new_comments_count": 0
+        "comments_count": 0
     }
     """
 
@@ -669,8 +660,7 @@ Feature:
         "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
-        "comments_count": 0,
-        "new_comments_count": 0
+        "comments_count": 0
     }
     """
 
@@ -1131,8 +1121,7 @@ Feature:
         },
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
         "created_at": "@string@.isDateTime()",
-        "status": "PENDING",
-        "new_comments_count":14
+        "status": "PENDING"
     }
     """
 
@@ -1216,8 +1205,7 @@ Feature:
        },
        "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
        "created_at":"@string@.isDateTime()",
-       "status":"FINALIZED",
-       "new_comments_count":2
+       "status":"FINALIZED"
     }
     """
 
@@ -1238,13 +1226,13 @@ Feature:
 
   Scenario: As a non logged-in user I can order ideas by number of comments
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?commentsCount=ASC&page=2"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?order[commentsCount]=ASC&page=2"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should contain:
       | items[0].comments_count | 2  |
       | items[1].comments_count | 14 |
-    When I send a "GET" request to "/api/ideas-workshop/ideas?commentsCount=DESC"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?order[commentsCount]=DESC"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should contain:
@@ -1308,8 +1296,7 @@ Feature:
                "days_before_deadline":0,
                "hours_before_deadline":0,
                "contributors_count":2,
-               "comments_count":2,
-               "new_comments_count":2
+               "comments_count":2
             },
             {
                "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -1352,8 +1339,7 @@ Feature:
                "days_before_deadline":0,
                "hours_before_deadline":0,
                "contributors_count":0,
-               "comments_count":0,
-               "new_comments_count":0
+               "comments_count":0
             }
         ]
     }
@@ -1416,8 +1402,7 @@ Feature:
              "days_before_deadline":0,
              "hours_before_deadline":0,
              "contributors_count":2,
-             "comments_count":2,
-             "new_comments_count":2
+             "comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -1458,8 +1443,7 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline":0,
               "contributors_count": 0,
-              "comments_count": 0,
-              "new_comments_count": 0
+              "comments_count": 0
           }
        ]
     }

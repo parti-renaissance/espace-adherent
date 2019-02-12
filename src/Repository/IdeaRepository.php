@@ -12,6 +12,8 @@ use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class IdeaRepository extends ServiceEntityRepository
@@ -113,42 +115,6 @@ SQL;
         ;
     }
 
-    public function countAllComments(Idea $idea): int
-    {
-        return $this->countThreads($idea) + $this->countThreadComments($idea);
-    }
-
-    private function countThreads(Idea $idea): int
-    {
-        return $this
-            ->createQueryBuilder('idea')
-            ->select('COUNT(thread)')
-            ->innerJoin('idea.answers', 'answer')
-            ->innerJoin('answer.threads', 'thread')
-            ->where('idea = :idea')
-            ->setParameter('idea', $idea)
-            ->andWhere('thread.deletedAt IS NULL')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    private function countThreadComments(Idea $idea): int
-    {
-        return $this
-            ->createQueryBuilder('idea')
-            ->select('COUNT(threadComment)')
-            ->innerJoin('idea.answers', 'answer')
-            ->innerJoin('answer.threads', 'thread')
-            ->innerJoin('thread.comments', 'threadComment')
-            ->where('idea = :idea')
-            ->setParameter('idea', $idea)
-            ->andWhere('threadComment.deletedAt IS NULL')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function countVotesByType(Idea $idea): array
     {
         $votes = $this
@@ -219,7 +185,10 @@ SQL;
         ;
     }
 
-    public function addStatusFilter($queryBuilder, string $alias, string $status)
+    /**
+     * @param QueryBuilder|ProxyQuery $queryBuilder
+     */
+    public function addStatusFilter($queryBuilder, string $alias, string $status): void
     {
         switch ($status) {
             case IdeaStatusEnum::UNPUBLISHED:
