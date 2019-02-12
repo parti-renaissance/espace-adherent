@@ -3,16 +3,15 @@
 namespace AppBundle\EntityListener;
 
 use AppBundle\Entity\IdeasWorkshop\Vote;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 class VoteListener
 {
-    public function prePersist(Vote $vote, LifecycleEventArgs $args)
+    public function prePersist(Vote $vote): void
     {
         $vote->getIdea()->incrementVotesCount();
     }
 
-    public function preRemove(Vote $vote, LifecycleEventArgs $args)
+    public function preRemove(Vote $vote): void
     {
         $vote->getIdea()->decrementVotesCount();
     }

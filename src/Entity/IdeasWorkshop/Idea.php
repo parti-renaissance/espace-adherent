@@ -330,6 +330,11 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     private $votesCount = 0;
 
     /**
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     */
+    private $commentsCount = 0;
+
+    /**
      * @ORM\Column(length=9)
      *
      * @Assert\Choice(choices=AuthorCategoryEnum::ALL_CATEGORIES, strict=true)
@@ -514,9 +519,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
             return IdeaStatusEnum::PENDING;
         }
 
-        if ($this->isFinalized()) {
-            return IdeaStatusEnum::FINALIZED;
-        }
+        return IdeaStatusEnum::FINALIZED;
     }
 
     public function addAnswer(Answer $answer): void
@@ -649,6 +652,29 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     public function decrementVotesCount(int $increment = 1): void
     {
         $this->votesCount -= $increment;
+    }
+
+    /**
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
+     */
+    public function getNewCommentsCount(): int
+    {
+        return $this->commentsCount;
+    }
+
+    public function getCommentsCount(): int
+    {
+        return $this->commentsCount;
+    }
+
+    public function incrementCommentsCount(int $increment = 1): void
+    {
+        $this->commentsCount += $increment;
+    }
+
+    public function decrementCommentsCount(int $increment = 1): void
+    {
+        $this->commentsCount -= $increment;
     }
 
     public function getDescription(): ?string

@@ -68,7 +68,8 @@ Feature:
                 "days_before_deadline": 0,
                 "hours_before_deadline": 0,
                 "contributors_count": 2,
-                "comments_count":2
+                "comments_count":2,
+                "new_comments_count":2
             },
             {
                 "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -110,7 +111,8 @@ Feature:
                 "days_before_deadline": 0,
                 "hours_before_deadline": 0,
                 "contributors_count": 0,
-                "comments_count": 0
+                "comments_count": 0,
+                "new_comments_count": 0
             }
         ]
     }
@@ -200,7 +202,8 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline": 0,
               "contributors_count": 2,
-              "comments_count":2
+              "comments_count":2,
+              "new_comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -241,7 +244,8 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline": 0,
               "contributors_count": 0,
-              "comments_count": 0
+              "comments_count": 0,
+              "new_comments_count": 0
           }
        ]
     }
@@ -302,7 +306,8 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline": 0,
               "contributors_count": 2,
-              "comments_count":2
+              "comments_count":2,
+              "new_comments_count":2
           },
           {
              "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -343,7 +348,8 @@ Feature:
              "days_before_deadline":0,
               "hours_before_deadline": 0,
              "contributors_count":0,
-             "comments_count":0
+             "comments_count":0,
+             "new_comments_count":0
           }
       ]
     }
@@ -404,7 +410,8 @@ Feature:
                 "days_before_deadline": 0,
                 "hours_before_deadline": 0,
                 "contributors_count": 0,
-                "comments_count": 0
+                "comments_count": 0,
+                "new_comments_count": 0
             }
         ]
     }
@@ -465,7 +472,8 @@ Feature:
         "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
-        "comments_count": 0
+        "comments_count": 0,
+        "new_comments_count": 0
     }
     """
 
@@ -514,7 +522,8 @@ Feature:
         "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
-        "comments_count": 0
+        "comments_count": 0,
+        "new_comments_count": 0
     }
     """
 
@@ -660,7 +669,8 @@ Feature:
         "hours_before_deadline": @integer@,
         "contributors_count": 0,
         "contributed_by_me": false,
-        "comments_count": 0
+        "comments_count": 0,
+        "new_comments_count": 0
     }
     """
 
@@ -1205,7 +1215,8 @@ Feature:
        },
        "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
        "created_at":"@string@.isDateTime()",
-       "status":"FINALIZED"
+       "status":"FINALIZED",
+       "new_comments_count":2
     }
     """
 
@@ -1296,7 +1307,8 @@ Feature:
                "days_before_deadline":0,
                "hours_before_deadline":0,
                "contributors_count":2,
-               "comments_count":2
+               "comments_count":2,
+               "new_comments_count":2
             },
             {
                "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -1339,7 +1351,8 @@ Feature:
                "days_before_deadline":0,
                "hours_before_deadline":0,
                "contributors_count":0,
-               "comments_count":0
+               "comments_count":0,
+               "new_comments_count":0
             }
         ]
     }
@@ -1402,7 +1415,8 @@ Feature:
              "days_before_deadline":0,
              "hours_before_deadline":0,
              "contributors_count":2,
-             "comments_count":2
+             "comments_count":2,
+             "new_comments_count":2
           },
           {
               "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
@@ -1443,7 +1457,8 @@ Feature:
               "days_before_deadline": 0,
               "hours_before_deadline":0,
               "contributors_count": 0,
-              "comments_count": 0
+              "comments_count": 0,
+              "new_comments_count": 0
           }
        ]
     }
