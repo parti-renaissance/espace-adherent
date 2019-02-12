@@ -111,6 +111,11 @@ class TextEditor extends React.Component {
                         onEditorStateChange={this.onEditorStateChange}
                         localization={{
                             locale: 'fr',
+                            translations: {
+                                'components.controls.link.linkTitle': 'Nom de votre lien',
+                                'components.controls.link.linkTarget': 'Votre lien url',
+                                'components.controls.link.link': 'Insérer un lien',
+                            },
                         }}
                     />
                     {this.props.maxLength && (
