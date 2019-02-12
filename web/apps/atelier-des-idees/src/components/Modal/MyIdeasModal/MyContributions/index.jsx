@@ -17,9 +17,11 @@ class MyContributions extends React.Component {
         };
 
         this.paginate = this.paginate.bind(this);
+        this.el = React.createRef();
     }
 
     paginate(page) {
+        this.el.scrollIntoView(true);
         this.props.getMyContribs({ page });
     }
 
@@ -32,7 +34,7 @@ class MyContributions extends React.Component {
             },
         } = this.props.ideas;
         return (
-            <div className="my-contributions">
+            <div className="my-contributions" ref={this.el}>
                 {ideas.length ? (
                     <button
                         className="my-contributions__category__button"
