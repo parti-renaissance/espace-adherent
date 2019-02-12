@@ -181,6 +181,7 @@ class IdeaCard extends React.Component {
                     <ContributingFooter
                         condensed={this.props.condensed}
                         remainingDays={this.props.days_before_deadline}
+                        remainingHours={this.props.hours_before_deadline}
                         link={`/atelier-des-idees/proposition/${this.props.uuid}`}
                         hasUserContributed={this.props.contributed_by_me}
                     />
@@ -214,6 +215,7 @@ IdeaCard.propTypes = {
     days_before_deadline: PropTypes.number.isRequired,
     description: PropTypes.string, // this is null sometimes
     hasBeenRead: PropTypes.bool,
+    hours_before_deadline: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     onVote: PropTypes.func,
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
