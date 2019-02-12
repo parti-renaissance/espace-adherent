@@ -38,13 +38,17 @@
 
   .question-block__content {
     // reset main css override
-    p {
-      margin: 0;
-    }
 
     ul {
       padding-left: 40px;
       list-style-type: initial;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: $font-roboto;
     }
   }
 
