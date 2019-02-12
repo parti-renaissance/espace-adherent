@@ -373,6 +373,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->citizenProjectMemberships = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->ideas = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public static function create(
