@@ -101,7 +101,9 @@ class IdeaCard extends React.Component {
                                         {0 < this.props.contributors_count && (
                                             <span
                                                 className="idea-card__content__infos__ideas__contributors"
-                                                data-tip={`${this.props.contributors_count} contributeurs`}
+                                                data-tip={`${this.props.contributors_count} contributeur${
+                                                    1 < this.props.contributors_count ? 's' : ''
+                                                }`}
                                                 data-effect="solid"
                                                 data-type="light"
                                                 data-class="idea-card__tip"
@@ -119,7 +121,9 @@ class IdeaCard extends React.Component {
                                         {0 < this.props.comments_count && (
                                             <span
                                                 className="idea-card__content__infos__ideas__comments"
-                                                data-tip={`${this.props.comments_count} commentaires`}
+                                                data-tip={`${this.props.comments_count} commentaire${
+                                                    1 < this.props.comments_count ? 's' : ''
+                                                }`}
                                                 data-effect="solid"
                                                 data-type="light"
                                                 data-class="idea-card__tip"
