@@ -208,18 +208,10 @@ export default class ReqwestApiClient {
         });
     }
 
-    getCitizenProjectLandingPage(city, callback) {
-        const request = this._reqwest({
-            url: '/projets-citoyens/landing/results?city=' + city,
-            type: 'html',
-        });
-
-        request.then((response) => {
-            callback(response);
-        });
-
-        request.fail((response) => {
-            callback(response);
-        });
+    getMessageStatus(messageId, callback, errorCallback) {
+        this._reqwest({
+            url: '/api/adherent_messages/' + messageId,
+            type: 'json',
+        }).then(response => callback(response)).fail((response) => errorCallback(response));
     }
 }

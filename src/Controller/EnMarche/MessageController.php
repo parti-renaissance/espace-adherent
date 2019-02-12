@@ -222,13 +222,10 @@ class MessageController extends Controller
             $message->resetFilter();
             $manager->flush();
 
-            return $this->redirectToRoute(
-                'app_message_filter',
-                [
-                    'prefix' => $prefix,
-                    'uuid' => $message->getUuid()->toString(),
-                ]
-            );
+            return $this->redirectToRoute('app_message_filter', [
+                'prefix' => $prefix,
+                'uuid' => $message->getUuid()->toString(),
+            ]);
         }
 
         $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());

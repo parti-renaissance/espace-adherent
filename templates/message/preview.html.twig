@@ -9,21 +9,22 @@
 {% block message_content %}
     <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;" src="{{ path('app_message_content', {uuid: message.uuid}) }}" ></iframe>
     <hr/>
-    <div class="text--center space--45-5 l__wrapper--500 background--lighter">
-        {% if message.recipientCount is not null %}
-            <div>
-                {%  if message.recipientCount == 0 %}
-                    <p>Votre filtre ne correspond à aucun adhérent :(</p>
-                {% else %}
-                    <p>Votre filtre correspond à {{ message.recipientCount }} adhérent(s) !</p>
-                {% endif %}
-            </div>
-        {% endif %}
-
+    <div class="l__wrapper--slim background--lighter b__nudge--top-40 text--center">
         {% if not message.isSent %}
-            <a class="btn" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
-            <a class="btn" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier les filtres</a>
-            <a class="btn {{ not message.recipientCount ? 'btn--disabled' : 'btn--blue' }}" href="{{ message.recipientCount ? path('app_message_send', route_params|default({})|merge({uuid: message.uuid})) : 'javascript:void(0);' }}">Envoyer</a>
+            <div class="space--60-0">
+                {% if message.recipientCount is not null %}
+                    <div>
+                        {% if message.recipientCount == 0 %}
+                            <p>Votre filtre ne correspond à aucun adhérent !</p>
+                        {% else %}
+                            <p>Votre filtre correspond à <b>{{ message.recipientCount }} adhérent(s) !</b></p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <a class="btn" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+                <a class="btn" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier les filtres</a>
+                <a class="btn {{ not message.recipientCount ? 'btn--disabled' : 'btn--blue' }}" href="{{ message.recipientCount ? path('app_message_send', route_params|default({})|merge({uuid: message.uuid})) : 'javascript:void(0);' }}">Envoyer</a>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

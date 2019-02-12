@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\AdherentMessage;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -22,6 +24,18 @@ use Ramsey\Uuid\UuidInterface;
  *     AdherentMessageTypeEnum::REFERENT: "ReferentAdherentMessage",
  *     AdherentMessageTypeEnum::DEPUTY: "DeputyAdherentMessage"
  * })
+ *
+ * @ApiResource(
+ *     shortName="AdherentMessage",
+ *     collectionOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "access_control": "object.getAuthor() == user",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "normalization_context": {"groups": {"message_read"}}
+ *         }
+ *     }
+ * )
  */
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
@@ -39,6 +53,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"message_read"})
      */
     private $label;
 
@@ -67,6 +83,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var string
      *
      * @ORM\Column
+     *
+     * @Groups({"message_read"})
      */
     private $status = AdherentMessageStatusEnum::DRAFT;
 
@@ -74,6 +92,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @Groups({"message_read"})
      */
     private $synchronized = false;
 
@@ -94,6 +114,8 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Groups({"message_read"})
      */
     private $recipientCount;
 
