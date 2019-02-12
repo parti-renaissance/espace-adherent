@@ -24,6 +24,7 @@ class MyIdeas extends React.Component {
                 ideas: props.ideas[DRAFT].items,
                 metadata: props.ideas[DRAFT].metadata,
                 status: DRAFT,
+                el: React.createRef(),
             },
             {
                 showCat: 'showPending',
@@ -32,6 +33,7 @@ class MyIdeas extends React.Component {
                 ideas: props.ideas[PENDING].items,
                 metadata: props.ideas[PENDING].metadata,
                 status: PENDING,
+                el: React.createRef(),
             },
             {
                 showCat: 'showFinalized',
@@ -40,6 +42,7 @@ class MyIdeas extends React.Component {
                 ideas: props.ideas[FINALIZED].items,
                 metadata: props.ideas[FINALIZED].metadata,
                 status: FINALIZED,
+                el: React.createRef(),
             },
         ];
 
@@ -53,6 +56,7 @@ class MyIdeas extends React.Component {
     }
 
     paginate(page, status, ref) {
+        ref.current.scrollIntoView(true);
         this.props.getMyIdeas({ page, status });
     }
 
@@ -88,7 +92,7 @@ class MyIdeas extends React.Component {
                         <p className="my-ideas__category__button__label">{cat.label.toUpperCase()}</p>
                     );
                     return (
-                        <div className="my-ideas__category" key={i}>
+                        <div className="my-ideas__category" key={i} ref={cat.el}>
                             {categoryHeader}
                             {cat.ideas.length ? (
                                 cat.ideas.map(
