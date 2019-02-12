@@ -125,7 +125,7 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
-                            {!!cat.ideas.length &&
+                            {!!cat.ideas.length && this.state[cat.showCat] &&
                                 <Pagination
                                     nextPage={() => this.paginate(page + 1, status, cat.el)}
                                     prevPage={() => this.paginate(page - 1, status, cat.el)}

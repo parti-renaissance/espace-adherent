@@ -78,7 +78,7 @@ class MyContributions extends React.Component {
                 ) : (
                     <p className="my-contributions__category__empty-label">Vous n’avez pas encore de contribution</p>
                 )}
-                {!!ideas.length &&
+                {!!ideas.length && this.state.showList &&
                     <Pagination
                         nextPage={() => this.paginate(page + 1)}
                         prevPage={() => this.paginate(page - 1)}
