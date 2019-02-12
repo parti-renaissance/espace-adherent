@@ -14,7 +14,6 @@ use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Filter\CommentsCountFilter;
 use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
 use AppBundle\Report\ReportType;
@@ -158,7 +157,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "groups": {"idea_write"}
  *         },
  *         "order": {"createdAt": "ASC"},
- *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class, IdeaStatusFilter::class}
+ *         "filters": {ContributorsCountFilter::class, IdeaStatusFilter::class}
  *     },
  *     subresourceOperations={
  *         "votes_get_subresource": {
@@ -176,7 +175,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "category.name": "exact",
  *     "needs.name": "exact"
  * })
- * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount"})
+ * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
  *
@@ -331,6 +330,8 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
 
     /**
      * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read"})
      */
     private $commentsCount = 0;
 
@@ -652,14 +653,6 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     public function decrementVotesCount(int $increment = 1): void
     {
         $this->votesCount -= $increment;
-    }
-
-    /**
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
-     */
-    public function getNewCommentsCount(): int
-    {
-        return $this->commentsCount;
     }
 
     public function getCommentsCount(): int

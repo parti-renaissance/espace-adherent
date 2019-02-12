@@ -2,6 +2,7 @@
 
 namespace AppBundle\Normalizer;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -33,6 +34,7 @@ class IdeaNormalizer implements NormalizerInterface
                 ['total' => $data['votes_count']]
             );
 
+            /** @var Adherent|null $loggedUser */
             if (\is_object($loggedUser = $this->tokenStorage->getToken()->getUser())) {
                 $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);
             } else {
@@ -45,7 +47,6 @@ class IdeaNormalizer implements NormalizerInterface
                 if ($loggedUser) {
                     $data['contributed_by_me'] = $countContributors['contributed_by_me'];
                 }
-                $data['comments_count'] = $this->ideaRepository->countAllComments($object);
             }
         }
 
