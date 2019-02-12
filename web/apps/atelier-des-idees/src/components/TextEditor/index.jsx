@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
-
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import linkIcn from '../../img/icn_link.svg';
 
 // see https://jpuri.github.io/react-draft-wysiwyg/#/docs for more about this
 const initialToolbar = {
@@ -29,6 +28,7 @@ const initialToolbar = {
         popupClassName: 'text-editor__toolbar__link-modal',
         options: ['link'],
         defaultTargetOption: '_blank',
+        link: { icon: linkIcn },
     },
 };
 
@@ -111,6 +111,13 @@ class TextEditor extends React.Component {
                         onEditorStateChange={this.onEditorStateChange}
                         localization={{
                             locale: 'fr',
+                            translations: {
+                                'components.controls.list.unordered': 'Liste désordonnée',
+                                'components.controls.list.ordered': 'Liste ordonnée',
+                                'components.controls.link.linkTitle': 'Nom de votre lien',
+                                'components.controls.link.linkTarget': 'Votre lien url',
+                                'components.controls.link.link': 'Insérer un lien',
+                            },
                         }}
                     />
                     {this.props.maxLength && (
