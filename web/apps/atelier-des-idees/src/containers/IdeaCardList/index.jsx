@@ -14,8 +14,8 @@ import Button from '../../components/Button';
 import IdeaCardList from '../../components/IdeaCardList';
 import IdeaFilters from '../../components/IdeaFilters';
 import noIdeaImg from '../../img/no-idea-result.svg';
-import condensedIcn from '../../img/icn_20px_autosave.svg';
-import defaultIcn from '../../img/icn_hourglass.svg';
+import condensedIcn from '../../img/icn_card-display-condensed.svg';
+import defaultIcn from '../../img/icn_card-display-default.svg';
 
 class IdeaCardListContainer extends React.Component {
     constructor(props) {
