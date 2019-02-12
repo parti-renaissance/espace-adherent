@@ -12,6 +12,10 @@ class ContributingFooter extends React.PureComponent {
         }`;
     }
 
+    getRemaininghours() {
+        return `${this.props.remainingHours}h restante${1 < this.props.remainingHours ? 's' : ''}`;
+    }
+
     render() {
         return (
             <div
@@ -23,7 +27,7 @@ class ContributingFooter extends React.PureComponent {
                     <img className="contributing-footer__remaining-days__icon" src={hourglassIcnGreen} />
                     <span className="contributing-footer__remaining-days__text">
                         <span className="contributing-footer__remaining-days__text--pending">En cours</span> -{' '}
-                        {this.getRemainingDays()}
+                        {this.props.remainingDays ? this.getRemainingDays() : this.getRemaininghours()}
                     </span>
                 </div>
                 {!this.props.condensed && (
@@ -64,6 +68,7 @@ ContributingFooter.propTypes = {
     hasUserContributed: PropTypes.bool,
     link: PropTypes.string.isRequired,
     remainingDays: PropTypes.number.isRequired,
+    remainingHours: PropTypes.number.isRequired,
 };
 
 export default ContributingFooter;
