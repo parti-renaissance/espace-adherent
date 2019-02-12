@@ -132,7 +132,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadCommentRepository")
- *
+ * @ORM\EntityListeners({"AppBundle\EntityListener\IdeaThreadCommentListener"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @Algolia\Index(autoIndex=false)
@@ -140,6 +140,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class ThreadComment extends BaseComment implements AuthorInterface, ReportableInterface
 {
     /**
+     * @var Thread
+     *
      * @ORM\ManyToOne(targetEntity="Thread", inversedBy="comments")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
@@ -197,5 +199,10 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
     public function getIdeaAuthor(): Adherent
     {
         return $this->getThread()->getIdeaAuthor();
+    }
+
+    public function getIdea(): Idea
+    {
+        return $this->thread->getIdea();
     }
 }

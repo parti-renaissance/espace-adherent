@@ -3,11 +3,14 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\IdeasWorkshop\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,9 +25,12 @@ class AdminThreadController extends Controller
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_disable")
      */
-    public function disableAction(Thread $thread, ObjectManager $manager): Response
+    public function disableAction(Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
     {
         $thread->disable();
+
+        $dispatcher->dispatch(Events::THREAD_DISABLE, new GenericEvent($thread));
+
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été modéré avec succès.', $thread->getId()));
 
@@ -36,9 +42,12 @@ class AdminThreadController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_enable")
      */
-    public function enableAction(Thread $thread, ObjectManager $manager): Response
+    public function enableAction(Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
     {
         $thread->enable();
+
+        $dispatcher->dispatch(Events::THREAD_ENABLE, new GenericEvent($thread));
+
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été activé avec succès.', $thread->getId()));
 

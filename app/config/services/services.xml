@@ -423,6 +423,7 @@
         <service id="AppBundle\Validator\CommitteeMemberValidator" />
         <service id="AppBundle\IdeasWorkshop\Listener\IdeaPublishListener" />
         <service id="AppBundle\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
+        <service id="AppBundle\IdeasWorkshop\Listener\EnableThreadListener" />
         <service id="AppBundle\IdeasWorkshop\Handler\SendMailForApprovedThreadCommentHandler">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>
