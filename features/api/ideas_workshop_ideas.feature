@@ -1131,7 +1131,8 @@ Feature:
         },
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
         "created_at": "@string@.isDateTime()",
-        "status": "PENDING"
+        "status": "PENDING",
+        "new_comments_count":14
     }
     """
 
