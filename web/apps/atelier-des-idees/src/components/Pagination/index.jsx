@@ -90,7 +90,11 @@ class Pagination extends Component {
         return (
             <div className="pagination">
                 {1 !== currentPage &&
-                  <button className="pagination__prev button button--transparent" onClick={prevPage}>&lsaquo; Précédent</button>
+                  <button
+                      className="pagination__prev button button--transparent"
+                      onClick={prevPage}>
+                        &lsaquo; Précédent
+                  </button>
                 }
 
                 {pages.map((page, i) => <PageNumber key={i} goTo={goTo} page={page} />)}
