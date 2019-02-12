@@ -14,7 +14,6 @@ use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Filter\CommentsCountFilter;
 use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
 use AppBundle\Report\ReportType;
@@ -158,7 +157,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "groups": {"idea_write"}
  *         },
  *         "order": {"createdAt": "ASC"},
- *         "filters": {CommentsCountFilter::class, ContributorsCountFilter::class, IdeaStatusFilter::class}
+ *         "filters": {ContributorsCountFilter::class, IdeaStatusFilter::class}
  *     },
  *     subresourceOperations={
  *         "votes_get_subresource": {
@@ -176,7 +175,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "category.name": "exact",
  *     "needs.name": "exact"
  * })
- * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount"})
+ * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
  *
@@ -328,6 +327,13 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      * @SymfonySerializer\Groups({"idea_list_read", "idea_read"})
      */
     private $votesCount = 0;
+
+    /**
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
+     *
+     * @SymfonySerializer\Groups({"idea_list_read"})
+     */
+    private $commentsCount = 0;
 
     /**
      * @ORM\Column(length=9)
@@ -514,9 +520,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
             return IdeaStatusEnum::PENDING;
         }
 
-        if ($this->isFinalized()) {
-            return IdeaStatusEnum::FINALIZED;
-        }
+        return IdeaStatusEnum::FINALIZED;
     }
 
     public function addAnswer(Answer $answer): void
@@ -578,6 +582,18 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         return $this->finalizedAt->diff(new \DateTime('now'))->d;
     }
 
+    /**
+     * @SymfonySerializer\Groups("idea_list_read")
+     */
+    public function getHoursBeforeDeadline(): int
+    {
+        if (!$this->isPending()) {
+            return 0;
+        }
+
+        return $this->finalizedAt->diff(new \DateTime('now'))->h;
+    }
+
     public function isDraft(): bool
     {
         return null === $this->publishedAt;
@@ -637,6 +653,21 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     public function decrementVotesCount(int $increment = 1): void
     {
         $this->votesCount -= $increment;
+    }
+
+    public function getCommentsCount(): int
+    {
+        return $this->commentsCount;
+    }
+
+    public function incrementCommentsCount(int $increment = 1): void
+    {
+        $this->commentsCount += $increment;
+    }
+
+    public function decrementCommentsCount(int $increment = 1): void
+    {
+        $this->commentsCount -= $increment;
     }
 
     public function getDescription(): ?string

@@ -1,6 +1,6 @@
 .pagination {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   margin: 0 auto 35px;
@@ -9,19 +9,17 @@
     color: $marine-blue;
   }
 
-  > * {
-    margin: 0 auto;
-  }
-
-  .pagination__prev {
-    margin-left: 0;
-  }
-
-  .pagination__next {
-    margin-right: 0;
+  > * + * {
+    margin-left: 15px;
   }
 
   &__current {
     cursor: default;
+    padding: 0;
+  }
+
+  &__prev,
+  &__next {
+    padding: 5px 0;
   }
 }

@@ -12,7 +12,7 @@ class IdeaFilters extends React.Component {
                 options: [
                     { value: 'order[publishedAt]/DESC', label: 'Plus récentes' },
                     { value: 'order[publishedAt]/ASC', label: 'Plus anciennes' },
-                    { value: 'commentsCount/DESC', label: 'Plus commentées' },
+                    { value: 'order[commentsCount]/DESC', label: 'Plus commentées' },
                     {
                         value: 'order[votesCount]/DESC',
                         label: 'Plus votées',

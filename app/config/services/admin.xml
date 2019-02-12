@@ -574,10 +574,18 @@
         ######################################################
          -->
         <service id="app.admin.ideas_workshop_idea" class="AppBundle\Admin\IdeasWorkshopIdeaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Propositions thématiques" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="Propositions" group="Atelier des idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Idea</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.ideas_workshop_thread" class="AppBundle\Admin\IdeasWorkshopThreadAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Fils de discussion" group="Atelier des idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\IdeasWorkshop\Thread</argument>
             <argument />
         </service>
 
@@ -598,7 +606,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_category" class="AppBundle\Admin\IdeasWorkshopCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Echelles des propositions" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="Echelles" group="Atelier des idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Category</argument>
@@ -606,7 +614,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_need" class="AppBundle\Admin\IdeasWorkshopNeedAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Besoins des propositions" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="Besoins" group="Atelier des idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Need</argument>
@@ -614,7 +622,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_theme" class="AppBundle\Admin\IdeasWorkshopThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Thèmes des propositions" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="Thèmes" group="Atelier des idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Theme</argument>
@@ -626,7 +634,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_guideline" class="AppBundle\Admin\IdeasWorkshopGuidelineAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trame de la proposition (sections)" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="Trame (sections)" group="Atelier des idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Guideline</argument>
@@ -634,18 +642,10 @@
         </service>
 
         <service id="app.admin.ideas_workshop_question" class="AppBundle\Admin\IdeasWorkshopQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trame de la proposition (questions)" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="Trame (questions)" group="Atelier des idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Question</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.ideas_workshop_thread" class="AppBundle\Admin\IdeasWorkshopThreadAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Fils de discussion" group="Atelier des idées" />
-
-            <argument />
-            <argument>AppBundle\Entity\IdeasWorkshop\Thread</argument>
             <argument />
         </service>
 

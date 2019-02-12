@@ -44,7 +44,7 @@ class MyNicknameModal extends React.Component {
                             Si vous souhaitez rester anonyme lors de la publication de propositions ou de commentaires sur l'Atelier des idées, vous pouvez choisir librement un pseudonyme, à condition qu’il ne porte pas atteinte à l'ordre public ou aux bonnes mœurs et qu’il soit conforme aux <a
                                 href="/atelier-des-idees/conditions-generales-utilisation"
                                 target="_blank"
-                            >conditions générales d'utilisation</a> de l’Atelier des idées.
+                            >Conditions Générales d'Utilisation</a> de l’Atelier des idées.
                         </p>
                         <form
                             className="my-nickname-modal__form"

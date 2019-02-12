@@ -24,6 +24,7 @@ class MyIdeas extends React.Component {
                 ideas: props.ideas[DRAFT].items,
                 metadata: props.ideas[DRAFT].metadata,
                 status: DRAFT,
+                el: React.createRef(),
             },
             {
                 showCat: 'showPending',
@@ -32,6 +33,7 @@ class MyIdeas extends React.Component {
                 ideas: props.ideas[PENDING].items,
                 metadata: props.ideas[PENDING].metadata,
                 status: PENDING,
+                el: React.createRef(),
             },
             {
                 showCat: 'showFinalized',
@@ -40,6 +42,7 @@ class MyIdeas extends React.Component {
                 ideas: props.ideas[FINALIZED].items,
                 metadata: props.ideas[FINALIZED].metadata,
                 status: FINALIZED,
+                el: React.createRef(),
             },
         ];
 
@@ -48,6 +51,13 @@ class MyIdeas extends React.Component {
             showPending: true,
             showFinalized: true,
         };
+
+        this.paginate = this.paginate.bind(this);
+    }
+
+    paginate(page, status, ref) {
+        ref.current.scrollIntoView(true);
+        this.props.getMyIdeas({ page, status });
     }
 
     render() {
@@ -82,7 +92,7 @@ class MyIdeas extends React.Component {
                         <p className="my-ideas__category__button__label">{cat.label.toUpperCase()}</p>
                     );
                     return (
-                        <div className="my-ideas__category" key={i}>
+                        <div className="my-ideas__category" key={i} ref={cat.el}>
                             {categoryHeader}
                             {cat.ideas.length ? (
                                 cat.ideas.map(
@@ -115,11 +125,11 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
-                            {!!cat.ideas.length &&
+                            {!!cat.ideas.length && this.state[cat.showCat] &&
                                 <Pagination
-                                    nextPage={() => this.props.getMyIdeas({ page: page + 1, status })}
-                                    prevPage={() => this.props.getMyIdeas({ page: page - 1, status })}
-                                    goTo={p => this.props.getMyIdeas({ page: p, status })}
+                                    nextPage={() => this.paginate(page + 1, status, cat.el)}
+                                    prevPage={() => this.paginate(page - 1, status, cat.el)}
+                                    goTo={p => this.paginate(p, status, cat.el)}
                                     total={total}
                                     currentPage={page}
                                     pageSize={5}

@@ -15,6 +15,14 @@ class MyContributions extends React.Component {
         this.categoryData = {
             label: 'vous avez contribué',
         };
+
+        this.paginate = this.paginate.bind(this);
+        this.el = React.createRef();
+    }
+
+    paginate(page) {
+        this.el.scrollIntoView(true);
+        this.props.getMyContribs({ page });
     }
 
     render() {
@@ -26,7 +34,7 @@ class MyContributions extends React.Component {
             },
         } = this.props.ideas;
         return (
-            <div className="my-contributions">
+            <div className="my-contributions" ref={this.el}>
                 {ideas.length ? (
                     <button
                         className="my-contributions__category__button"
@@ -70,11 +78,11 @@ class MyContributions extends React.Component {
                 ) : (
                     <p className="my-contributions__category__empty-label">Vous n’avez pas encore de contribution</p>
                 )}
-                {!!ideas.length &&
+                {!!ideas.length && this.state.showList &&
                     <Pagination
-                        nextPage={() => this.props.getMyContribs({ page: page + 1 })}
-                        prevPage={() => this.props.getMyContribs({ page: page - 1 })}
-                        goTo={p => this.props.getMyContribs({ page: p })}
+                        nextPage={() => this.paginate(page + 1)}
+                        prevPage={() => this.paginate(page - 1)}
+                        goTo={p => this.paginate(p)}
                         total={total}
                         currentPage={page}
                         pageSize={5}

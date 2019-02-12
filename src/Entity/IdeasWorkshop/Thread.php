@@ -141,12 +141,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ApiFilter(SearchFilter::class, properties={"answer.id": "exact"})
  *
- * @ORM\Table(name="ideas_workshop_thread",
+ * @ORM\Table(
+ *     name="ideas_workshop_thread",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="threads_uuid_unique", columns="uuid")
  *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ThreadRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\IdeaThreadListener"})
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
@@ -244,7 +246,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
         return $this->getAnswer()->getIdea()->getAuthor();
     }
 
-    public function getIdea(): ?Idea
+    public function getIdea(): Idea
     {
         return $this->getAnswer()->getIdea();
     }
@@ -260,5 +262,15 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
         }
 
         return $contributors;
+    }
+
+    public function countEnabledComment(): int
+    {
+        return $this->comments
+            ->filter(function (ThreadComment $comment) {
+                return $comment->isEnabled();
+            })
+            ->count()
+        ;
     }
 }

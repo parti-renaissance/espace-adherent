@@ -14,8 +14,7 @@
       }
     }
 
-    .create-idea-actions__back,
-    .create-idea-actions__report {
+    .create-idea-actions__back {
       @extend %reset-button;
       cursor: pointer;
       color: $saphir;
@@ -25,7 +24,12 @@
     }
 
     .create-idea-actions__report {
+      display: inline-flex;
       margin-left: auto;
+
+      > img {
+        width: 30px;
+      }
     }
 
     .create-idea-actions {

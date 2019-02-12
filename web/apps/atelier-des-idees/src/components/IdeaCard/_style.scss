@@ -41,7 +41,7 @@
       color: $black;
 
       line-height: #{$title-height / 2};
-      height: 56px;
+      height: $title-height;
 
       overflow: hidden;
       overflow-wrap: break-word;
@@ -178,6 +178,25 @@
     &__icon {
       width: 76px;
       height: 76px;
+    }
+  }
+
+  &--condensed {
+    .idea-card__main {
+      padding: 25px 25px 10px;
+    }
+
+    .idea-card__content__title {
+      $title-height: 50px;
+      font-size: 22px;
+
+      line-height: #{$title-height / 2};
+      height: $title-height;
+    }
+
+    .idea-card__theme__icon {
+      width: 60px;
+      height: 60px;
     }
   }
 

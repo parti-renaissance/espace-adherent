@@ -184,10 +184,6 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Date de création',
             ])
-            ->add('daysBeforeDeadline', null, [
-                'label' => 'Temps restant',
-                'template' => 'admin/ideas_workshop/idea/list_deadline.html.twig',
-            ])
             ->add('author', null, [
                 'label' => 'Créateur',
                 'template' => 'admin/list/list_author.html.twig',
@@ -207,6 +203,7 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ])
             ->add('status', null, [
                 'label' => 'Statut',
+                'header_style' => 'width:125px;',
                 'template' => 'admin/ideas_workshop/idea/list_status.html.twig',
             ])
             ->add('_action', null, [

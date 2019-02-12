@@ -65,6 +65,7 @@ class Answer
 
     /**
      * @ORM\OneToMany(targetEntity="Thread", mappedBy="answer", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"createdAt": "ASC"})
      *
      * @SymfonySerializer\Groups({"idea_read"})
      */
@@ -125,7 +126,7 @@ class Answer
         return $this->threads;
     }
 
-    public function getIdea(): ?Idea
+    public function getIdea(): Idea
     {
         return $this->idea;
     }

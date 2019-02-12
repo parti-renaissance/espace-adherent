@@ -34,4 +34,5 @@ storiesOf('IdeaCardList', module)
     .add('default', () => <IdeaCardList ideas={ideas} />)
     .add('grid mode', () => <IdeaCardList ideas={ideas} mode="grid" />)
     .add('loading', () => <IdeaCardList ideas={ideas} isLoading={true} />)
-    .add('grid:loading', () => <IdeaCardList mode="grid" isLoading={true} />);
+    .add('grid:loading', () => <IdeaCardList mode="grid" isLoading={true} />)
+    .add('grid:condensed', () => <IdeaCardList mode="grid" ideas={ideas} condensed={true} />);

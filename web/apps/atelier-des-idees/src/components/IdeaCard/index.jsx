@@ -63,8 +63,12 @@ class IdeaCard extends React.Component {
 
     render() {
         return (
-            <div className="idea-card" ref={this.cardRef}>
-
+            <div
+                className={classnames('idea-card', {
+                    'idea-card--condensed': this.props.condensed,
+                })}
+                ref={this.cardRef}
+            >
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
@@ -133,9 +137,11 @@ class IdeaCard extends React.Component {
                                     </div>
                                 )}
                             </div>
-                            <p className="idea-card__content__description">{this.props.description}</p>
+                            {!this.props.condensed && (
+                                <p className="idea-card__content__description">{this.props.description}</p>
+                            )}
                         </div>
-                        {!!this.props.themes.length && (
+                        {!this.props.condensed && !!this.props.themes.length && (
                             <ul className="idea-card__content__tags">
                                 {this.props.themes.map((theme, index) => (
                                     <li key={`theme__${index}`} className="idea-card__content__tags__item">
@@ -161,6 +167,7 @@ class IdeaCard extends React.Component {
                 {/* FOOTER */}
                 {'FINALIZED' === this.props.status ? (
                     <VotingFooter
+                        condensed={this.props.condensed}
                         key={`voting-footer__${this.state.votesState}`}
                         totalVotes={this.props.votes_count.total}
                         votes={formatVotes(this.props.votes_count)}
@@ -172,8 +179,11 @@ class IdeaCard extends React.Component {
                     />
                 ) : (
                     <ContributingFooter
+                        condensed={this.props.condensed}
                         remainingDays={this.props.days_before_deadline}
+                        remainingHours={this.props.hours_before_deadline}
                         link={`/atelier-des-idees/proposition/${this.props.uuid}`}
+                        hasUserContributed={this.props.contributed_by_me}
                     />
                 )}
             </div>
@@ -183,6 +193,8 @@ class IdeaCard extends React.Component {
 
 IdeaCard.defaultProps = {
     comments_count: 0,
+    condensed: false,
+    contributed_by_me: false,
     contributors_count: 0,
     thumbnail: undefined,
     hasBeenRead: false,
@@ -195,11 +207,21 @@ IdeaCard.propTypes = {
         nickname: PropTypes.string,
     }).isRequired,
     author_category: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string,
+    comments_count: PropTypes.number,
+    condensed: PropTypes.bool,
+    contributed_by_me: PropTypes.bool,
+    contributors_count: PropTypes.number,
     created_at: PropTypes.string.isRequired, // ISO UTC
+    days_before_deadline: PropTypes.number.isRequired,
     description: PropTypes.string, // this is null sometimes
-    uuid: PropTypes.string.isRequired,
+    hasBeenRead: PropTypes.bool,
+    hours_before_deadline: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    onVote: PropTypes.func,
+    status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
+    themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
+    thumbnail: PropTypes.string,
+    uuid: PropTypes.string.isRequired,
     votes_count: PropTypes.shape({
         important: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         feasible: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -207,13 +229,6 @@ IdeaCard.propTypes = {
         total: PropTypes.number.isRequired,
         my_votes: PropTypes.object,
     }).isRequired,
-    comments_count: PropTypes.number,
-    contributors_count: PropTypes.number,
-    themes: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string, thumbnail: PropTypes.string })),
-    days_before_deadline: PropTypes.number.isRequired,
-    status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
-    onVote: PropTypes.func,
-    hasBeenRead: PropTypes.bool,
 };
 
 export default IdeaCard;
