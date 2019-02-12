@@ -30,6 +30,8 @@ const initialToolbar = {
         defaultTargetOption: '_blank',
         link: { icon: linkIcn },
     },
+    // pass an empty array as options to disable type related shortcut (shortcuts are activated by default even if button not shown)
+    blockType: { options: [] },
 };
 
 /**
