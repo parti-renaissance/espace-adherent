@@ -126,7 +126,7 @@ class Answer
         return $this->threads;
     }
 
-    public function getIdea(): ?Idea
+    public function getIdea(): Idea
     {
         return $this->idea;
     }
