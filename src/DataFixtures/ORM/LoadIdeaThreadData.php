@@ -22,6 +22,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
     public const THREAD_09_UUID = 'f5cfb1c0-e6a4-4775-a595-ebd2625c4831';
     public const THREAD_10_UUID = 'c8b67e90-18b2-42d7-9e62-3fa612a2efb8';
     public const THREAD_11_UUID = 'f3f52bb4-5a83-4d21-9720-73cd443c42c8';
+    public const THREAD_12_UUID = 'be9cb632-7ebf-46c5-8f1d-068d10800272';
 
     public function load(ObjectManager $manager)
     {
@@ -75,6 +76,16 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
             $adherent5,
             $this->getReference('answer-q-compare'),
             new \DateTime('-10 minutes'),
+            false
+        );
+        $this->setReference('thread-reported', $threadReported);
+
+        $threadOnSecondPage = Thread::create(
+            Uuid::fromString(self::THREAD_12_UUID),
+            'Une discussion en 2 eme page.',
+            $adherent5,
+            $this->getReference('answer-q-compare'),
+            new \DateTime('-8 minutes'),
             false
         );
         $this->setReference('thread-reported', $threadReported);
@@ -146,6 +157,7 @@ class LoadIdeaThreadData extends AbstractFixture implements DependentFixtureInte
         $manager->persist($threadDisabled);
         $manager->persist($threadDisabledOnPublishedIdea);
         $manager->persist($threadDeletedOnPublishedIdea);
+        $manager->persist($threadOnSecondPage);
 
         $manager->flush();
 
