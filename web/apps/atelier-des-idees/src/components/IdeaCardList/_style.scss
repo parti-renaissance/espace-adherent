@@ -1,5 +1,5 @@
 .idea-card-list {
-  .idea-card {
+  .idea-card:not(.idea-card--condensed) {
     margin: 0 auto 10px auto;
     width: 99.5%;
     min-height: 315px;
@@ -14,7 +14,6 @@
     //         }
     //     }
     // }
-
   }
 
   &--grid {
@@ -24,13 +23,13 @@
     .idea-card-list__wrapper {
       flex-basis: 50%;
       max-width: 50%;
-      padding-bottom: 10px;
+      padding-bottom: 20px;
 
-      &:nth-child(2n) {
+      &:nth-child(odd) {
         padding-left: 10px;
       }
 
-      &:nth-child(2n + 1) {
+      &:nth-child(even) {
         padding-right: 10px;
       }
     }

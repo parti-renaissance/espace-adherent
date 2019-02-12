@@ -14,7 +14,11 @@ class ContributingFooter extends React.PureComponent {
 
     render() {
         return (
-            <div className="contributing-footer">
+            <div
+                className={classnames('contributing-footer', {
+                    'contributing-footer--condensed': this.props.condensed,
+                })}
+            >
                 <div className="contributing-footer__remaining-days">
                     <img className="contributing-footer__remaining-days__icon" src={hourglassIcnGreen} />
                     <span className="contributing-footer__remaining-days__text">
@@ -22,37 +26,41 @@ class ContributingFooter extends React.PureComponent {
                         {this.getRemainingDays()}
                     </span>
                 </div>
-                <div className="contributing-footer__container">
-                    <Link
-                        className={classnames(
-                            'contributing-footer__container__link',
-                            'button button--primary button--lowercase',
-                            {
-                                'contributing-footer__container__link--active': this.props.hasUserContributed,
-                            }
-                        )}
-                        to={this.props.link}
-                    >
-                        {this.props.hasUserContributed ? (
-                            <React.Fragment>
-                                <img src={greenCheckIcn} className="contributing-footer__container__link__icon" />
-                                J'ai contribué
-                            </React.Fragment>
-                        ) : (
-                            '+ Je contribue'
-                        )}
-                    </Link>
-                </div>
+                {!this.props.condensed && (
+                    <div className="contributing-footer__container">
+                        <Link
+                            className={classnames(
+                                'contributing-footer__container__link',
+                                'button button--primary button--lowercase',
+                                {
+                                    'contributing-footer__container__link--active': this.props.hasUserContributed,
+                                }
+                            )}
+                            to={this.props.link}
+                        >
+                            {this.props.hasUserContributed ? (
+                                <React.Fragment>
+                                    <img src={greenCheckIcn} className="contributing-footer__container__link__icon" />
+                                    J'ai contribué
+                                </React.Fragment>
+                            ) : (
+                                '+ Je contribue'
+                            )}
+                        </Link>
+                    </div>
+                )}
             </div>
         );
     }
 }
 
 ContributingFooter.defaultProps = {
+    condensed: false,
     hasUserContributed: false,
 };
 
 ContributingFooter.propTypes = {
+    condensed: PropTypes.bool,
     hasUserContributed: PropTypes.bool,
     link: PropTypes.string.isRequired,
     remainingDays: PropTypes.number.isRequired,
