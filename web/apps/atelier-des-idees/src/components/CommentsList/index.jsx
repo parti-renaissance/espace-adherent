@@ -49,6 +49,9 @@ class CommentsList extends React.Component {
     }
 
     render() {
+        // check if any comment has replies
+        const hasReplies = this.props.comments.reduce((acc, comment) => acc || !!comment.nbReplies, false);
+        // render
         return (
             <div
                 className={classNames('comments-list', {
@@ -149,7 +152,8 @@ class CommentsList extends React.Component {
                         <button
                             className="comments-list__more-btn"
                             onClick={() => this.props.onLoadMore()}
-                        >{`Afficher plus de réponses (${this.props.total - this.props.comments.length})`}</button>
+                        >{`Afficher plus de ${hasReplies ? 'réponses' : 'contributions'} (${this.props.total -
+                            this.props.comments.length})`}</button>
                     </div>
                 )}
                 {this.state.showForm &&
