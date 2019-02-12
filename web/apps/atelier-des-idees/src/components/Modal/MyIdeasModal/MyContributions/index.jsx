@@ -15,6 +15,12 @@ class MyContributions extends React.Component {
         this.categoryData = {
             label: 'vous avez contribué',
         };
+
+        this.paginate = this.paginate.bind(this);
+    }
+
+    paginate(page) {
+        this.props.getMyContribs({ page });
     }
 
     render() {
@@ -72,9 +78,9 @@ class MyContributions extends React.Component {
                 )}
                 {!!ideas.length &&
                     <Pagination
-                        nextPage={() => this.props.getMyContribs({ page: page + 1 })}
-                        prevPage={() => this.props.getMyContribs({ page: page - 1 })}
-                        goTo={p => this.props.getMyContribs({ page: p })}
+                        nextPage={() => this.paginate(page + 1)}
+                        prevPage={() => this.paginate(page - 1)}
+                        goTo={p => this.paginate(p)}
                         total={total}
                         currentPage={page}
                         pageSize={5}

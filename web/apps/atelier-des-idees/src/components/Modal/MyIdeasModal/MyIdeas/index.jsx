@@ -48,6 +48,12 @@ class MyIdeas extends React.Component {
             showPending: true,
             showFinalized: true,
         };
+
+        this.paginate = this.paginate.bind(this);
+    }
+
+    paginate(page, status, ref) {
+        this.props.getMyIdeas({ page, status });
     }
 
     render() {
@@ -117,9 +123,9 @@ class MyIdeas extends React.Component {
                             )}
                             {!!cat.ideas.length &&
                                 <Pagination
-                                    nextPage={() => this.props.getMyIdeas({ page: page + 1, status })}
-                                    prevPage={() => this.props.getMyIdeas({ page: page - 1, status })}
-                                    goTo={p => this.props.getMyIdeas({ page: p, status })}
+                                    nextPage={() => this.paginate(page + 1, status, cat.el)}
+                                    prevPage={() => this.paginate(page - 1, status, cat.el)}
+                                    goTo={p => this.paginate(p, status, cat.el)}
                                     total={total}
                                     currentPage={page}
                                     pageSize={5}
