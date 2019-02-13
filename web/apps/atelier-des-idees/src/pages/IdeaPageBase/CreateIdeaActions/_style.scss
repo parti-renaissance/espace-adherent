@@ -1,14 +1,14 @@
-.create-idea-actions {
+.idea-page-actions {
   display: flex;
   justify-content: space-between;
 
-  .create-idea-actions__delete {
+  .idea-page-actions__delete {
     @extend %reset-button;
     cursor: pointer;
     color: $saphir;
   }
 
-  .create-idea-actions__publish {
+  .idea-page-actions__publish {
     margin-left: 15px;
   }
 
@@ -17,8 +17,8 @@
     flex-direction: column;
     text-align: center;
 
-    .create-idea-actions__publish,
-    .create-idea-actions__save {
+    .idea-page-actions__publish,
+    .idea-page-actions__save {
       margin-left: 0;
       margin-top: 15px;
     }

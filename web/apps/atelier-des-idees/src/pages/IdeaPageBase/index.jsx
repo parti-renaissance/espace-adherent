@@ -192,7 +192,7 @@ class IdeaPageBase extends React.Component {
     render() {
         const { idea } = this.props;
         return (
-            <div className="create-idea-page">
+            <div className="idea-page">
                 <IdeaPageHeader
                     canToggleReadingMode={idea.status !== ideaStatus.FINALIZED && !!this.state.name}
                     closeSaveBanner={() => {
@@ -215,24 +215,24 @@ class IdeaPageBase extends React.Component {
                     toggleReadingMode={this.onToggleReadingMode}
                     isReading={this.state.readingMode}
                 />
-                <div className="create-idea-page__content">
+                <div className="idea-page__content">
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
-                        <div className="create-idea-page__auto-save">
-                            <p className="create-idea-page__auto-save__label">
-                                <img className="create-idea-page__auto-save__icon" src={autoSaveIcn} />
+                        <div className="idea-page__auto-save">
+                            <p className="idea-page__auto-save__label">
+                                <img className="idea-page__auto-save__icon" src={autoSaveIcn} />
                                 <span>Votre contenu sera sauvegardé toutes les minutes</span>
                             </p>
                         </div>
                     )}
-                    <div className="create-idea-page__content__main l__wrapper--medium">
+                    <div className="idea-page__content__main l__wrapper--medium">
                         {this.props.isLoading ? (
                             <IdeaPageSkeleton />
                         ) : (
                             <React.Fragment>
                                 {idea.status !== ideaStatus.DRAFT && (
-                                    <p className="create-idea-page__status-label">
+                                    <p className="idea-page__status-label">
                                         <img
-                                            className="create-idea-page__status-label__icn"
+                                            className="idea-page__status-label__icn"
                                             src={idea.status === ideaStatus.PENDING ? greenHourglassIcn : greenCheckIcn}
                                         />
                                         <span>
@@ -268,7 +268,7 @@ class IdeaPageBase extends React.Component {
                                     fullAnswers={idea.answers}
                                 />
                                 {idea.status === ideaStatus.DRAFT && (
-                                    <div className="create-idea-page__footer">
+                                    <div className="idea-page__footer">
                                         {this.props.isAuthor && !this.state.readingMode && (
                                             <CreateIdeaActions
                                                 onDeleteClicked={this.props.onDeleteClicked}

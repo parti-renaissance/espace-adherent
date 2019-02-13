@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import TextEditor from '../../../components/TextEditor';
 import Collapse from '../../../components/Collapse';
 import IdeaThread from '../../../containers/IdeaThread';
@@ -148,7 +149,11 @@ class QuestionBlock extends React.Component {
     render() {
         const { label, question, nbQuestion, isRequired, initialContent, mode } = this.props;
         return (
-            <div className="question-block">
+            <div
+                className={classNames('question-block', {
+                    'question-block--reading': 'read' === this.props.mode,
+                })}
+            >
                 {'read' === mode || this.props.isRequired ? (
                     <React.Fragment>
                         <QuestionBlockHeader

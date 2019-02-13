@@ -22,24 +22,19 @@ function formatVotes(votesCount) {
         }));
 }
 
-
 function VotingFooterIdeaPage(props) {
     const votes = formatVotes(props.votesCount);
     return (
         <div className="voting-footer-idea-page">
             <h2 className="voting-footer-idea-page__title">Je soutiens cette proposition car elle est&nbsp;: </h2>
             <div className="voting-footer-idea-page__vote">
-                {votes.map(vote =>
+                {votes.map(vote => (
                     <VoteButton
                         vote={vote}
                         onSelected={props.onVote}
-                        classes={[
-                            'button',
-                            'voting-footer-idea-page__vote__button',
-                            { 'voting-footer-idea-page__vote__button--selected': vote.isSelected },
-                        ]}
-                        prefix="voting-footer-idea-page__vote__button"
-                    />)}
+                        className="voting-footer-idea-page__vote__button"
+                    />
+                ))}
             </div>
         </div>
     );

@@ -10,11 +10,11 @@ import icn_close from '../../../img/icn_close.svg';
 class IdeaPageHeader extends React.Component {
     render() {
         return (
-            <section className="create-idea-page__header">
-                <div className="create-idea-page__header__inner l__wrapper">
+            <section className="idea-page-header">
+                <div className="idea-page-header__inner l__wrapper">
                     {this.props.showContent && (
                         <React.Fragment>
-                            <button className="button create-idea-actions__back" onClick={this.props.onBackClicked}>
+                            <button className="button idea-page-header__back" onClick={this.props.onBackClicked}>
                                 ← Retour
                             </button>
                             {this.props.status !== ideaStatus.FINALIZED && this.props.canToggleReadingMode && (
@@ -38,7 +38,7 @@ class IdeaPageHeader extends React.Component {
                                 />
                             )}
                             {this.props.status !== ideaStatus.DRAFT && (
-                                <div className="create-idea-page__header__right">
+                                <div className="idea-page-header__right">
                                     <ShareButtons
                                         title={`Consultez cette proposition "${
                                             this.props.ideaTitle
@@ -46,7 +46,7 @@ class IdeaPageHeader extends React.Component {
                                     />
                                     {this.props.isAuthenticated && !this.props.isAuthor && (
                                         <Dropdown
-                                            className="create-idea-actions__report"
+                                            className="idea-page-header__report"
                                             onSelect={this.props.onReportClicked}
                                             options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
                                         />
@@ -57,10 +57,10 @@ class IdeaPageHeader extends React.Component {
                     )}
                 </div>
                 {this.props.showSaveBanner && (
-                    <div className="create-idea-page__success-banner">
+                    <div className="idea-page-header__success-banner">
                         <span>Votre brouillon a bien été enregistré</span>
                         <button
-                            className="create-idea-page__success-banner__close"
+                            className="idea-page-header__success-banner__close"
                             onClick={() => {
                                 this.props.closeSaveBanner();
                                 clearTimeout(this.saveBannerTimer);
