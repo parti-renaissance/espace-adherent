@@ -17,4 +17,9 @@ class ReferentMessageController extends AbstractMessageController
     {
         return AdherentMessageTypeEnum::REFERENT;
     }
+
+    public function disableInProduction(): void
+    {
+        // Override parent method for activating this feature in production
+    }
 }
