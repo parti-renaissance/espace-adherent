@@ -18,110 +18,23 @@ Feature:
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?status=FINALIZED"
     Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-        "metadata": {
-            "total_items": 2,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 1
-        },
-        "items": [
-            {
-                "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-                "name": "Réduire le gaspillage",
-                "themes": [
-                    {
-                        "id": 3,
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "id": 1,
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                    "nickname":"kikouslove",
-                    "first_name": null,
-                    "last_name": null
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ADHERENT",
-                "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage",
-                "days_before_deadline": 0,
-                "hours_before_deadline": 0,
-                "contributors_count": 2,
-                "comments_count":2
-            },
-            {
-                "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-                "name": "Réduire le gaspillage alimentaire",
-                "themes": [
-                    {
-                        "id": 3,
-                        "id": 3,
-                        "name": "Écologie",
-                        "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                    }
-                ],
-                "category": {
-                    "id": 1,
-                    "name": "Echelle Européenne",
-                    "enabled": true
-                },
-                "needs": [],
-                "author": {
-                    "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                    "nickname":null,
-                    "first_name": "Michel",
-                    "last_name": "V."
-                },
-                "published_at": "@string@.isDateTime()",
-                "finalized_at": "@string@.isDateTime()",
-                "committee": null,
-                "status": "FINALIZED",
-                "votes_count": {
-                    "important": 0,
-                    "feasible": 0,
-                    "innovative": 0,
-                    "total": 0
-                },
-                "author_category": "ELECTED",
-                "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-                "created_at": "@string@.isDateTime()",
-                "slug": "reduire-le-gaspillage-alimentaire",
-                "days_before_deadline": 0,
-                "hours_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
-            }
-        ]
-    }
-    """
+    And the JSON nodes should match:
+      | metadata.total_items  | 2                                 |
+      | items[0].name         | Réduire le gaspillage             |
+      | items[0].status       | FINALIZED                         |
+      | items[0].published_at | @string@.isDateTime()             |
+      | items[0].finalized_at | @string@.isDateTime()             |
+      | items[1].name         | Réduire le gaspillage alimentaire |
+      | items[1].status       | FINALIZED                         |
+      | items[1].published_at | @string@.isDateTime()             |
+      | items[1].finalized_at | @string@.isDateTime()             |
 
   Scenario: As a non logged-in user I can see pending ideas
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?status=PENDING"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | metadata.total_items  | 2                                      |
       | items[0].name         | Faire la paix                          |
       | items[1].name         | Reduire le bruit dans les opens spaces |
@@ -129,229 +42,6 @@ Feature:
   Scenario: As a non logged-in user I can filter ideas by name
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?name=paix"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON nodes should contain:
-      | metadata.total_items  | 1                                      |
-      | items[0].name         | Faire la paix                          |
-
-  Scenario: As a logged-in user I can filter ideas by name
-    Given I am logged as "jacques.picard@en-marche.fr"
-    When I add "Accept" header equal to "application/json"
-    And I send a "GET" request to "/api/ideas-workshop/ideas?name=paix"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON nodes should contain:
-      | metadata.total_items  | 1                                      |
-      | items[0].name         | Faire la paix                          |
-
-  Scenario: As a non logged-in user I can filter ideas by theme
-    Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?themes.name=ecologie"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":3,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":2
-       },
-       "items":[
-          {
-              "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-              "name": "Réduire le gaspillage",
-              "themes": [
-                  {
-                      "id": 3,
-                      "name": "Écologie",
-                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                  }
-              ],
-              "category": {
-                  "id": 1,
-                  "name": "Echelle Européenne",
-                  "enabled": true
-              },
-              "needs": [],
-              "author": {
-                  "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                  "nickname":"kikouslove",
-                  "first_name": null,
-                  "last_name": null
-              },
-              "published_at": "@string@.isDateTime()",
-              "finalized_at": "@string@.isDateTime()",
-              "committee": null,
-              "votes_count": {
-                  "important": 0,
-                  "feasible": 0,
-                  "innovative": 0,
-                  "total": 0
-              },
-              "author_category": "ADHERENT",
-              "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-              "created_at": "@string@.isDateTime()",
-              "slug": "reduire-le-gaspillage",
-              "status": "FINALIZED",
-              "days_before_deadline": 0,
-              "hours_before_deadline": 0,
-              "contributors_count": 2,
-              "comments_count":2
-          },
-          {
-              "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-              "name": "Réduire le gaspillage alimentaire",
-              "themes": [
-                  {
-                      "id": 3,
-                      "name": "Écologie",
-                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                  }
-              ],
-              "category": {
-                  "id": 1,
-                  "name": "Echelle Européenne",
-                  "enabled": true
-              },
-              "needs": [],
-              "author": {
-                  "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                  "nickname":null,
-                  "first_name": "Michel",
-                  "last_name": "V."
-              },
-              "published_at": "@string@.isDateTime()",
-              "finalized_at": "@string@.isDateTime()",
-              "committee": null,
-              "votes_count": {
-                  "important": 0,
-                  "feasible": 0,
-                  "innovative": 0,
-                  "total": 0
-              },
-              "author_category": "ELECTED",
-              "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-              "created_at": "@string@.isDateTime()",
-              "slug": "reduire-le-gaspillage-alimentaire",
-              "status": "FINALIZED",
-              "days_before_deadline": 0,
-              "hours_before_deadline": 0,
-              "contributors_count": 0,
-              "comments_count": 0
-          }
-       ]
-    }
-    """
-
-  Scenario: As a non logged-in user I can filter ideas by category's name
-    Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?category.name=Echelle Européenne"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":4,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":2
-       },
-      "items": [
-          {
-              "uuid": "c14937d6-fd42-465c-8419-ced37f3e6194",
-              "name": "Réduire le gaspillage",
-              "themes": [
-                  {
-                      "id": 3,
-                      "name": "Écologie",
-                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                  }
-              ],
-              "category": {
-                  "id": 1,
-                  "name": "Echelle Européenne",
-                  "enabled": true
-              },
-              "needs": [],
-              "author": {
-                  "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-                  "nickname":"kikouslove",
-                  "first_name": null,
-                  "last_name": null
-              },
-              "published_at": "@string@.isDateTime()",
-              "finalized_at": "@string@.isDateTime()",
-              "committee": null,
-              "status": "FINALIZED",
-              "votes_count": {
-                  "important": 0,
-                  "feasible": 0,
-                  "innovative": 0,
-                  "total": 0
-              },
-              "author_category": "ADHERENT",
-              "description": "In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-              "created_at": "@string@.isDateTime()",
-              "slug": "reduire-le-gaspillage",
-              "days_before_deadline": 0,
-              "hours_before_deadline": 0,
-              "contributors_count": 2,
-              "comments_count":2
-          },
-          {
-             "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
-             "name":"Réduire le gaspillage alimentaire",
-             "themes":[
-                {
-                   "id": 3,
-                   "name":"Écologie",
-                   "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "id": 1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[],
-             "author":{
-                "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                "nickname":null,
-                "first_name":"Michel",
-                "last_name":"V."
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at": "@string@.isDateTime()",
-             "committee":null,
-             "status":"FINALIZED",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ELECTED",
-             "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-             "created_at": "@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage-alimentaire",
-             "days_before_deadline":0,
-              "hours_before_deadline": 0,
-             "contributors_count":0,
-             "comments_count":0
-          }
-      ]
-    }
-    """
-
-  Scenario: As a non logged-in user I can filter ideas by author uuid
-    Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -366,8 +56,8 @@ Feature:
         },
         "items": [
             {
-                "uuid": "aa093ce6-8b20-4d86-bfbc-91a73fe47285",
-                "name": "Aider les gens",
+                "uuid": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+                "name": "Faire la paix",
                 "themes": [
                     {
                         "id": 1,
@@ -380,42 +70,96 @@ Feature:
                     "name": "Echelle Européenne",
                     "enabled": true
                 },
-                "needs": [],
+                "needs": [
+                    {
+                        "id": 1,
+                        "name": "Juridique",
+                        "enabled": true
+                    }
+                ],
                 "author": {
-                    "uuid": "acc73b03-9743-47d8-99db-5a6c6f55ad67",
-                    "nickname":null,
-                    "first_name": "Benjamin",
-                    "last_name": "D."
+                    "nickname": "kikouslove",
+                    "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                    "first_name": null,
+                    "last_name": null
                 },
-                "published_at": null,
-                "finalized_at": null,
-                "committee": null,
-                "status": "DRAFT",
+                "published_at": "@string@.isDateTime()",
+                "finalized_at": "@string@.isDateTime()",
+                "committee": {
+                    "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
+                    "created_at": "@string@.isDateTime()",
+                    "name": "En Marche Paris 8",
+                    "slug": "en-marche-paris-8"
+                },
                 "votes_count": {
                     "important": "7",
                     "feasible": "5",
                     "innovative": "5",
                     "total": 17
                 },
-                "author_category": "QG",
-                "description": "Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+                "author_category": "COMMITTEE",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
                 "created_at": "@string@.isDateTime()",
-                "slug": "aider-les-gens",
-                "days_before_deadline": 0,
-                "hours_before_deadline": 0,
-                "contributors_count": 0,
-                "comments_count": 0
+                "slug": "faire-la-paix",
+                "status": "PENDING",
+                "days_before_deadline": @integer@,
+                "hours_before_deadline": @integer@,
+                "contributors_count": @integer@,
+                "comments_count": @integer@
             }
         ]
     }
     """
+
+  Scenario: As a logged-in user I can filter ideas by name
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I add "Accept" header equal to "application/json"
+    And I send a "GET" request to "/api/ideas-workshop/ideas?name=paix"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items  | 1             |
+      | items[0].name         | Faire la paix |
+
+  Scenario: As a non logged-in user I can filter ideas by theme
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?themes.name=ecologie"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+     | metadata.total_items    | 3                                 |
+     | items[0].name           | Réduire le gaspillage             |
+     | items[0].themes[0].name | Écologie                          |
+     | items[1].name           | Réduire le gaspillage alimentaire |
+     | items[1].themes[0].name | Écologie                          |
+
+  Scenario: As a non logged-in user I can filter ideas by category's name
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?category.name=Echelle Européenne"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items      | 4                                 |
+      | items[0].name             | Réduire le gaspillage             |
+      | items[0].category.name    | Echelle Européenne                |
+      | items[1].name             | Réduire le gaspillage alimentaire |
+      | items[1].category.name    | Echelle Européenne                |
+
+  Scenario: As a non logged-in user I can filter ideas by author uuid
+    Given I add "Accept" header equal to "application/json"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?author.uuid=acc73b03-9743-47d8-99db-5a6c6f55ad67"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items | 1                                    |
+      | items[0].author.uuid | acc73b03-9743-47d8-99db-5a6c6f55ad67 |
 
   Scenario: As a non logged-in user I can filter ideas by need's name
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?needs.name=Juridique"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | metadata.total_items   | 2         |
       | items[0].needs[0].name | Juridique |
       | items[1].needs[0].name | Juridique |
@@ -431,43 +175,18 @@ Feature:
     """
     Then the response status code should be 201
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "themes": [],
-        "category": null,
-        "needs": [],
-        "author": {
-            "uuid": "d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
-            "nickname":null,
-            "first_name": "Martine",
-            "last_name": "Lindt"
-        },
-        "published_at": null,
-        "finalized_at": null,
-        "committee": null,
-        "answers":[],
-        "status": "DRAFT",
-        "votes_count": {
-            "important": 0,
-            "feasible": 0,
-            "innovative": 0,
-            "total": 0,
-            "my_votes": []
-        },
-        "uuid": "@uuid@",
-        "author_category": "ADHERENT",
-        "description": null,
-        "created_at": "@string@.isDateTime()",
-        "name": "Mon idée",
-        "slug": "mon-idee",
-        "days_before_deadline": @integer@,
-        "hours_before_deadline": @integer@,
-        "contributors_count": 0,
-        "contributed_by_me": false,
-        "comments_count": 0
-    }
-    """
+    And the JSON nodes should match:
+      | author.uuid           | d4b1e7e1-ba18-42a9-ace9-316440b30fa7 |
+      | status                | DRAFT                                |
+      | uuid                  | @uuid@                               |
+      | author_category       | ADHERENT                             |
+      | created_at            | @string@.isDateTime()                |
+      | name                  | Mon idée                             |
+      | slug                  | mon-idee                             |
+      | days_before_deadline  | @integer@                            |
+      | hours_before_deadline | @integer@                            |
+      | contributors_count    | @integer@                            |
+      | comments_count        | @integer@                            |
 
   Scenario: As a logged-in user with mandats (elected adherent) I can add my idea
     Given I am logged as "michel.vasseur@example.ch"
@@ -480,43 +199,18 @@ Feature:
     """
     Then the response status code should be 201
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "uuid": "@uuid@",
-        "name": "Ma proposition",
-        "themes": [],
-        "category": null,
-        "needs": [],
-        "author": {
-            "nickname": null,
-            "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-            "first_name": "Michel",
-            "last_name": "VASSEUR"
-        },
-        "published_at": null,
-        "finalized_at": null,
-        "committee": null,
-        "answers": [],
-        "votes_count": {
-            "important": 0,
-            "feasible": 0,
-            "innovative": 0,
-            "total": 0,
-            "my_votes": []
-        },
-        "author_category": "ELECTED",
-        "description": null,
-        "created_at": "@string@.isDateTime()",
-        "slug": "ma-proposition",
-        "status": "DRAFT",
-        "days_before_deadline": @integer@,
-        "hours_before_deadline": @integer@,
-        "contributors_count": 0,
-        "contributed_by_me": false,
-        "comments_count": 0
-    }
-    """
+    And the JSON nodes should match:
+      | author.uuid           | 46ab0600-b5a0-59fc-83a7-cc23ca459ca0 |
+      | status                | DRAFT                                |
+      | uuid                  | @uuid@                               |
+      | author_category       | ELECTED                              |
+      | created_at            | @string@.isDateTime()                |
+      | name                  | Ma proposition                       |
+      | slug                  | ma-proposition                       |
+      | days_before_deadline  | @integer@                            |
+      | hours_before_deadline | @integer@                            |
+      | contributors_count    | @integer@                            |
+      | comments_count        | @integer@                            |
 
   Scenario: As a logged-in user I can't link an idea with a committee i don't belong to
     Given I am logged as "martine.lindt@gmail.com"
@@ -579,90 +273,18 @@ Feature:
     """
     Then the response status code should be 201
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "name": "Mon idée",
-        "themes": [
-            {
-                "id": 2,
-                "name": "Trésorerie",
-                "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/tresory.png"
-            }
-        ],
-        "category": {
-            "id": 2,
-            "name": "Echelle Nationale",
-            "enabled": true
-        },
-        "needs": [
-            {
-                "id": 1,
-                "name": "Juridique",
-                "enabled": true
-            },
-            {
-                "id": 2,
-                "name": "Rédactionnel",
-                "enabled": true
-            }
-        ],
-        "author": {
-            "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
-            "nickname":"kikouslove",
-            "first_name": null,
-            "last_name": null
-        },
-        "published_at": null,
-        "finalized_at": null,
-        "committee": {
-            "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
-            "created_at": "@string@.isDateTime()",
-            "name": "En Marche Paris 8",
-            "slug": "en-marche-paris-8"
-        },
-        "answers":[
-          {
-            "id": "@integer@",
-            "question": { "id": 1 },
-            "content":"@string@"
-          },
-          {
-            "id": "@integer@",
-            "question": { "id": 2 },
-            "content":"Réponse à la question 2"
-          },
-          {
-            "id": "@integer@",
-            "question": { "id": 3 },
-            "content":"Réponse à la question 3"
-          },
-          {
-            "id": "@integer@",
-            "question": { "id": 4 },
-            "content":""
-          }
-        ],
-        "status": "DRAFT",
-        "votes_count": {
-            "important": 0,
-            "feasible": 0,
-            "innovative": 0,
-            "total": 0,
-            "my_votes": []
-        },
-        "author_category": "QG",
-        "description": "Mon idée",
-        "uuid": "@uuid@",
-        "created_at": "@string@.isDateTime()",
-        "slug": "mon-idee",
-        "days_before_deadline": @integer@,
-        "hours_before_deadline": @integer@,
-        "contributors_count": 0,
-        "contributed_by_me": false,
-        "comments_count": 0
-    }
-    """
+    And the JSON nodes should match:
+      | name                   | Mon idée                             |
+      | description            | Mon idée                             |
+      | themes[0].id           | 2                                    |
+      | category.id            | 2                                    |
+      | committee.uuid         | 515a56c0-bde8-56ef-b90c-4745b1c93818 |
+      | needs[0].id            | 1                                    |
+      | needs[1].id            | 2                                    |
+      | answers[0].question.id | 1                                    |
+      | answers[1].question.id | 2                                    |
+      | answers[2].question.id | 3                                    |
+      | answers[3].question.id | 4                                    |
 
   Scenario: As a logged-in user I can modify my idea
     Given I am logged as "jacques.picard@en-marche.fr"
@@ -697,7 +319,7 @@ Feature:
     """
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | name            | Mon idée 2                           |
       | description     | Mon idée 2                           |
       | themes[0].id    | 2                                    |
@@ -715,7 +337,7 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas/my-contributions"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | metadata.total_items | 2                     |
       | items[0].name        | Réduire le gaspillage |
       | items[1].name        | Faire la paix         |
@@ -806,7 +428,7 @@ Feature:
     When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | name   | Aider les gens |
       | status | PENDING        |
     And I should have 1 email "IdeaPublishMessage" for "benjyd@aol.com" with payload:
@@ -1130,97 +752,21 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "name":"Réduire le gaspillage",
-       "themes":[
-          {
-             "id":3,
-             "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-          }
-       ],
-       "category":{
-          "id":1
-       },
-       "needs":[
-
-       ],
-       "author":{
-          "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-          "nickname":"kikouslove",
-          "first_name":null,
-          "last_name":null
-       },
-       "published_at":"@string@.isDateTime()",
-       "finalized_at":"@string@.isDateTime()",
-       "answers":[
-          {
-             "id":10,
-             "content":"Vestibulum ante ipsum primis.",
-             "question":{
-                "id":1
-             },
-             "threads":{
-                "total_items":1,
-                "items":[
-                   {
-                      "comments":{
-                         "total_items":1,
-                         "items":[
-                            {
-                               "uuid":"9e49e935-ba51-4ae5-981c-5f48e55fdf28",
-                               "content":"Commentaire d'un adhérent",
-                               "author":{
-                                  "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
-                                  "nickname":null,
-                                  "first_name":"Benjamin",
-                                  "last_name":"D."
-                               },
-                               "approved":false,
-                               "created_at":"@string@.isDateTime()"
-                            }
-                         ]
-                      },
-                      "uuid":"1474504d-8024-4e54-85f7-59666a11cd77",
-                      "content":"[Reduce Waste] Une discussion avec un commentaire",
-                      "author":{
-                         "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                         "nickname":"kikouslove",
-                         "first_name":null,
-                         "last_name":null
-                      },
-                      "approved":false,
-                      "created_at":"@string@.isDateTime()"
-                   }
-                ]
-             }
-          }
-       ],
-       "votes_count":{
-          "important":0,
-          "feasible":0,
-          "innovative":0,
-          "total":0
-       },
-       "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-       "created_at":"@string@.isDateTime()",
-       "status":"FINALIZED"
-    }
-    """
+    And the JSON nodes should match:
+      | name | Réduire le gaspillage |
 
   Scenario: As a non logged-in user I can order ideas by publishedAt property
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?order[publishedAt]=asc"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].name        | Réduire le gaspillage                  |
       | items[1].name        | Réduire le gaspillage alimentaire      |
     When I send a "GET" request to "/api/ideas-workshop/ideas?order[publishedAt]=desc"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].name        | Faire la paix                          |
       | items[1].name        | Reduire le bruit dans les opens spaces |
 
@@ -1229,13 +775,13 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas?order[commentsCount]=ASC&page=2"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].comments_count | 2  |
       | items[1].comments_count | 14 |
     When I send a "GET" request to "/api/ideas-workshop/ideas?order[commentsCount]=DESC"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].comments_count | 14 |
       | items[1].comments_count | 2  |
 
@@ -1244,217 +790,37 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas?order[votesCount]=asc"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "metadata": {
-            "total_items": 4,
-            "items_per_page": 2,
-            "count": 2,
-            "current_page": 1,
-            "last_page": 2
-        },
-        "items": [
-            {
-               "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-               "name":"Réduire le gaspillage",
-               "themes":[
-                  {
-                     "id": 3,
-                     "name":"Écologie",
-                     "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                  }
-               ],
-               "category":{
-                  "id": 1,
-                  "name":"Echelle Européenne",
-                  "enabled":true
-               },
-               "needs":[
-
-               ],
-               "author":{
-                  "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                  "nickname":"kikouslove",
-                  "first_name":null,
-                  "last_name":null
-               },
-               "published_at":"@string@.isDateTime()",
-               "finalized_at":"@string@.isDateTime()",
-               "committee":null,
-               "votes_count":{
-                  "important":0,
-                  "feasible":0,
-                  "innovative":0,
-                  "total":0
-               },
-               "author_category":"ADHERENT",
-               "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-               "created_at":"@string@.isDateTime()",
-               "slug":"reduire-le-gaspillage",
-               "status":"FINALIZED",
-               "days_before_deadline":0,
-               "hours_before_deadline":0,
-               "contributors_count":2,
-               "comments_count":2
-            },
-            {
-               "uuid":"982bd810-a3ef-4611-a998-ebfadc335d66",
-               "name":"Réduire le gaspillage alimentaire",
-               "themes":[
-                  {
-                     "id": 3,
-                     "name":"Écologie",
-                     "thumbnail":"http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                  }
-               ],
-               "category":{
-                  "id": 1,
-                  "name":"Echelle Européenne",
-                  "enabled":true
-               },
-               "needs":[
-
-               ],
-               "author":{
-                  "uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                  "nickname":null,
-                  "first_name":"Michel",
-                  "last_name":"V."
-               },
-               "published_at":"@string@.isDateTime()",
-               "finalized_at":"@string@.isDateTime()",
-               "committee":null,
-               "votes_count":{
-                  "important":0,
-                  "feasible":0,
-                  "innovative":0,
-                  "total":0
-               },
-               "author_category":"ELECTED",
-               "description":"Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-               "created_at":"@string@.isDateTime()",
-               "slug":"reduire-le-gaspillage-alimentaire",
-               "status":"FINALIZED",
-               "days_before_deadline":0,
-               "hours_before_deadline":0,
-               "contributors_count":0,
-               "comments_count":0
-            }
-        ]
-    }
-    """
+    And the JSON nodes should match:
+      | items[0].votes_count.total | 0 |
+      | items[1].votes_count.total | 0 |
+    When I send a "GET" request to "/api/ideas-workshop/ideas?order[votesCount]=desc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | items[0].votes_count.total | 17 |
+      | items[1].votes_count.total | 0  |
 
   Scenario: As a non logged-in user I can order ideas by number of contributors
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?contributorsCount=asc?page=2"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?contributorsCount=asc"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "metadata":{
-          "total_items":4,
-          "items_per_page":2,
-          "count":2,
-          "current_page":1,
-          "last_page":2
-       },
-       "items":[
-          {
-             "uuid":"c14937d6-fd42-465c-8419-ced37f3e6194",
-             "name":"Réduire le gaspillage",
-             "themes":[
-                {
-                    "id": 3,
-                    "name": "Écologie",
-                    "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                }
-             ],
-             "category":{
-                "id": 1,
-                "name":"Echelle Européenne",
-                "enabled":true
-             },
-             "needs":[
-
-             ],
-             "author":{
-                "uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda",
-                "nickname":"kikouslove",
-                "first_name":null,
-                "last_name":null
-             },
-             "published_at":"@string@.isDateTime()",
-             "finalized_at":"@string@.isDateTime()",
-             "committee":null,
-             "status":"FINALIZED",
-             "votes_count":{
-                "important":0,
-                "feasible":0,
-                "innovative":0,
-                "total":0
-             },
-             "author_category":"ADHERENT",
-             "description":"In nec risus vitae lectus luctus fringilla. Suspendisse vitae enim interdum, maximus justo a, elementum lectus. Mauris et augue et magna imperdiet eleifend a nec tortor.",
-             "created_at":"@string@.isDateTime()",
-             "slug":"reduire-le-gaspillage",
-             "days_before_deadline":0,
-             "hours_before_deadline":0,
-             "contributors_count":2,
-             "comments_count":2
-          },
-          {
-              "uuid": "982bd810-a3ef-4611-a998-ebfadc335d66",
-              "name": "Réduire le gaspillage alimentaire",
-              "themes": [
-                  {
-                      "id": 3,
-                      "name": "Écologie",
-                      "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/ecology.png"
-                  }
-              ],
-              "category": {
-                  "id": 1,
-                  "name": "Echelle Européenne",
-                  "enabled": true
-              },
-              "needs": [],
-              "author": {
-                  "uuid": "46ab0600-b5a0-59fc-83a7-cc23ca459ca0",
-                  "nickname":null,
-                  "first_name": "Michel",
-                  "last_name": "V."
-              },
-              "published_at": "@string@.isDateTime()",
-              "finalized_at": "@string@.isDateTime()",
-              "committee": null,
-              "status": "FINALIZED",
-              "votes_count": {
-                  "important": 0,
-                  "feasible": 0,
-                  "innovative": 0,
-                  "total": 0
-              },
-              "author_category": "ELECTED",
-              "description": "Morbi massa lacus, pulvinar ac eros in, imperdiet egestas velit.",
-              "created_at": "@string@.isDateTime()",
-              "slug": "reduire-le-gaspillage-alimentaire",
-              "days_before_deadline": 0,
-              "hours_before_deadline":0,
-              "contributors_count": 0,
-              "comments_count": 0
-          }
-       ]
-    }
-    """
+    And the JSON nodes should match:
+      | items[0].contributors_count | 0 |
+      | items[1].contributors_count | 0 |
+    When I send a "GET" request to "/api/ideas-workshop/ideas?contributorsCount=desc"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | items[0].contributors_count | 8 |
+      | items[1].contributors_count | 2 |
 
   Scenario: As a non logged-in user I can filter ideas by author category
     Given I add "Accept" header equal to "application/json"
     When I send a "GET" request to "/api/ideas-workshop/ideas?authorCategory=COMMITTEE"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | metadata.total_items     | 1         |
       | items[0].author_category | COMMITTEE |
 
@@ -1463,6 +829,6 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/ideas?name=Reduire le bruit dans les opens spaces"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].name               | Reduire le bruit dans les opens spaces  |
       | items[0].contributors_count | 0                                       |

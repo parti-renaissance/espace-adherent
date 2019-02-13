@@ -14,12 +14,12 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/threads?page=1"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
     | metadata.total_items    | 9                                           |
     | metadata.items_per_page | 3                                           |
     | metadata.count          | 3                                           |
     | metadata.last_page      | 3                                           |
-    | items[0].content        | J'ouvre une discussion sur le problème      |
+    | items[0].content        | J'ouvre une discussion sur le problème.     |
     | items[1].content        | J'ouvre une discussion sur la solution.     |
     | items[2].content        | J'ouvre une discussion sur la comparaison.  |
 
@@ -27,14 +27,14 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/threads?answer.id=3&page=1"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].content | J'ouvre une discussion sur la comparaison. |
       | items[1].content | Une nouvelle discussion.                   |
       | items[2].content | Une discussion signalée.                   |
     When I send a "GET" request to "/api/ideas-workshop/threads?answer.id=3&page=2"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | items[0].content | Une discussion en 2 eme page. |
 
   Scenario: As a logged-in user I can't add my thread to an answer if I didn't send the terms of use checkbox status
@@ -75,24 +75,9 @@ Feature:
     """
     Then the response status code should be 201
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "answer":{
-          "id":1
-       },
-       "uuid":"@uuid@",
-       "content":"LOREM IPSUM",
-       "author":{
-          "uuid":"d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
-          "nickname":null,
-          "first_name":"Martine",
-          "last_name":"Lindt"
-       },
-       "created_at":"@string@.isDateTime()",
-       "approved": false
-    }
-    """
+    And the JSON nodes should match:
+      | answer.id | 1           |
+      | content   | LOREM IPSUM |
 
   Scenario Outline: As a logged-in user I can not approve/disapprove other threads
     Given I am logged as "carl999@example.fr"
@@ -151,24 +136,8 @@ Feature:
     When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/disapprove"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "answer":{
-          "id":1
-       },
-       "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
-       "content":"J'ouvre une discussion sur le probl\u00e8me.",
-       "author":{
-          "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-          "nickname":null,
-          "first_name":"Carl",
-          "last_name":"Mirabeau"
-       },
-       "created_at":"@string@.isDateTime()",
-       "approved": false
-    }
-    """
+    And the JSON nodes should match:
+      | approved | false |
 
   Scenario: As a non logged-in user I can not delete a thread
     When I send a "DELETE" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1"
