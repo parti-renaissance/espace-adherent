@@ -79,7 +79,6 @@ class IdeaCardListContainer extends React.Component {
                                     data-type="light"
                                     data-class="idea-card-list__actions__display__btn-tip"
                                     onClick={() => this.onDisplayModeChange(item.condensed)}
-                                    title={item.title}
                                 >
                                     <img src={item.condensed ? condensedIcn : defaultIcn} />
                                 </button>
