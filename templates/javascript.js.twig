@@ -389,3 +389,22 @@ $(document).ready(function() {
     });
 });
 {% endmacro %}
+
+{% macro toggleMandatesSelect(checkboxSelector, selectSelector) %}
+    (function (checkboxSelector, selectSelector) {
+        const formElected = $(checkboxSelector);
+        const selectMandates = $(selectSelector);
+
+        formElected.click(function() {
+            const isChecked = $(this).is(':checked');
+
+            selectMandates.parent().toggle(isChecked);
+            selectMandates.attr('required', isChecked);
+
+            if (!isChecked) {
+                selectMandates.val('');
+            }
+        });
+        formElected.triggerHandler('click');
+    })('{{ checkboxSelector }}', '{{ selectSelector }}');
+{% endmacro %}

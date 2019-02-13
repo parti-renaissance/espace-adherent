@@ -2,25 +2,21 @@
 
 
 {% block stylesheets %}
-    <link href="{{ asset('bundles/sonatacore/vendor/select2/select2.css') }}" rel="stylesheet">
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('bundles/sonatacore/vendor/select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
     {% import 'javascript.js.twig' as js %}
-    {% include 'membership/_mandates_script.html.twig' %}
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address, { cityAutocomplete: true }) }}
-            $('.multi_mandate').select2({
-                placeholder: "{{ 'adherent.form.mandate.placeholder'|trans }}",
-                formatNoMatches: function() {
-                    return "{{ 'adherent.form.mandate.no_result'|trans }}";
-                },
-            });
+            $('.multi_mandate').select2({placeholder: '{{ 'adherent.form.mandate.placeholder'|trans }}'});
+            {{ js.toggleMandatesSelect('#'~form.elected.vars.id, '#'~form.mandates.vars.id) }}
         });
     </script>
 {% endblock %}
