@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     context: path.join(__dirname, './front'),
@@ -68,6 +69,11 @@ module.exports = {
             filename: '[hash].app.css',
             allChunks: true,
         }),
+        new CopyWebpackPlugin([
+            { from: './../node_modules/select2/dist/js/select2.min.js', to: './../select2/' },
+            { from: './../node_modules/select2/dist/js/i18n/fr.js', to: './../select2/' },
+            { from: './../node_modules/select2/dist/css/select2.min.css', to: './../select2/' },
+        ]),
 
         function symfonyAssetsVersion() {
             this.plugin('done', (stats) => {

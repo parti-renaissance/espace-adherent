@@ -19,7 +19,6 @@ use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\Mandates;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -56,7 +55,6 @@ class AdherentAdmin extends AbstractAdmin
     ];
 
     private $dispatcher;
-    private $ideaRepository;
     private $emailSubscriptionHistoryManager;
 
     /**
@@ -65,20 +63,17 @@ class AdherentAdmin extends AbstractAdmin
      * @var Adherent
      */
     private $beforeUpdate;
-    private $isLaREMBeforeUpdate;
 
     public function __construct(
         $code,
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        IdeaRepository $ideaRepository,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
-        $this->ideaRepository = $ideaRepository;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
     }
 
@@ -152,6 +147,10 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('position', null, [
                     'label' => 'Statut',
+                ])
+                ->add('mandates', null, [
+                    'label' => 'adherent.mandate.admin.label',
+                    'template' => 'admin/adherent/show_mandates.html.twig',
                 ])
                 ->add('subscriptionTypes', null, [
                     'label' => 'Abonné aux notifications via e-mail et mobile',
@@ -255,6 +254,12 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('position', ActivityPositionType::class, [
                     'label' => 'Statut',
+                ])
+                ->add('mandates', ChoiceType::class, [
+                    'label' => 'adherent.mandate.admin.label',
+                    'choices' => Mandates::CHOICES,
+                    'required' => false,
+                    'multiple' => true,
                 ])
                 ->add('subscriptionTypes', null, [
                     'label' => 'Abonné aux mails :',
@@ -537,10 +542,6 @@ class AdherentAdmin extends AbstractAdmin
             $this->beforeUpdate = clone $subject;
         }
 
-        if (null === $this->isLaREMBeforeUpdate) {
-            $this->isLaREMBeforeUpdate = $subject->isLaREM();
-        }
-
         parent::setSubject($subject);
     }
 
@@ -556,12 +557,6 @@ class AdherentAdmin extends AbstractAdmin
     {
         // No need to handle referent tags update as they are not update-able from admin
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
-
-        // Update author category for adherent's ideas
-        if ($object->isElected() != $this->beforeUpdate->isElected()
-            || $object->isLaREM() != $this->isLaREMBeforeUpdate) {
-            $this->ideaRepository->updateAuthorCategoryForIdeasOf($object);
-        }
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $subscriptionTypes));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));

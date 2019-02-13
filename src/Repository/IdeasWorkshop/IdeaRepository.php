@@ -214,6 +214,11 @@ SQL;
 
     public function updateAuthorCategoryForIdeasOf(Adherent $adherent): void
     {
+        // We disable 'enabled' doctrine filter to update even disabled ideas
+        if ($isFilterEnabled = $this->_em->getFilters()->isEnabled('enabled')) {
+            $this->_em->getFilters()->disable('enabled');
+        }
+
         $qb = $this->createQueryBuilder('idea');
         $categoryType = null;
 
@@ -247,6 +252,11 @@ SQL;
                 ->getQuery()
                 ->execute()
             ;
+        }
+
+        // We enable 'enabled' doctrine filter, if we disabled it at the beginning of the method
+        if ($isFilterEnabled) {
+            $this->_em->getFilters()->enable('enabled');
         }
     }
 }
