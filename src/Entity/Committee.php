@@ -23,7 +23,7 @@ use Ramsey\Uuid\UuidInterface;
  *         "get_my_committees": {
  *             "method": "GET",
  *             "path": "/committees/me",
- *             "access_control": "is_granted('IS_AUTHENTICATED_FULLY')",
+ *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "controller": "AppBundle\Controller\Api\CommitteesController::myCommitteesAction",
  *             "normalization_context": {
  *                 "groups": {"my_committees"},

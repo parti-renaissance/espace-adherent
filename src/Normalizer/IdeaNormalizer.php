@@ -34,8 +34,7 @@ class IdeaNormalizer implements NormalizerInterface
                 ['total' => $data['votes_count']]
             );
 
-            /** @var Adherent|null $loggedUser */
-            if (\is_object($loggedUser = $this->tokenStorage->getToken()->getUser())) {
+            if ($loggedUser = $this->getCurrentUser()) {
                 $data['votes_count']['my_votes'] = $this->ideaRepository->getAdherentVotesForIdea($object, $loggedUser);
             } else {
                 $loggedUser = null;
@@ -56,5 +55,14 @@ class IdeaNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Idea;
+    }
+
+    private function getCurrentUser(): ?Adherent
+    {
+        if (!($user = $this->tokenStorage->getToken()->getUser()) instanceof Adherent) {
+            return null;
+        }
+
+        return $user;
     }
 }
