@@ -6,7 +6,7 @@ Il est possible grâce à un système de délégation de Symfony de créer des a
 classiques (create-react-app) au sein de l'application Symfony En Marche.
 Ce document décrit les quelques étapes requises pour cela.
 
-N'hésitez pas à inspecter l'application d'exemple (`web/apps/example`) pour mieux comprendre
+N'hésitez pas à inspecter l'application d'exemple (`public/apps/example`) pour mieux comprendre
 les propos de ce document si nécessaire.
 
 ## Créer l'application
@@ -14,14 +14,14 @@ les propos de ce document si nécessaire.
 Une application React intégrée dans le projet En Marche doit être créée avec le format standard
 `create-react-app`: https://github.com/facebook/create-react-app.
 
-Elle doit être créée dans un dossier au sein de `web/apps` et posséder un nom unique et explicite
+Elle doit être créée dans un dossier au sein de `public/apps` et posséder un nom unique et explicite
 (par exemple : "projets-citoyens").
 
 ## Processus de développement
 
 Il y a deux façons possibles de développer votre application React. Vous pouvez :
 
-- soit utiliser le template simple `web/apps/example/public/index.html` qui vous fournira des
+- soit utiliser le template simple `public/apps/example/public/index.html` qui vous fournira des
   éléments de base au sein des quels vous pourrez développer votre application normalement.
 - soit développer en intégrant directement votre application dans Symfony en local (cela requiert
   d'avoir le projet Symfony fonctionnel localement).
@@ -72,7 +72,7 @@ class MyReactApp implements ReactAppInterface
 
     public function getDirectory(): string
     {
-        // Indiquez ici le nom du dossier dans web/apps
+        // Indiquez ici le nom du dossier dans public/apps
         return 'my-react-app'; 
     }
 

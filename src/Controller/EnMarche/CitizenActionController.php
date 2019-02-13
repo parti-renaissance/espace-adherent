@@ -7,6 +7,7 @@ use AppBundle\CitizenAction\CitizenActionRegistrationCommandHandler;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Event\EventRegistrationManager;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\EventRegistrationType;
@@ -115,10 +116,8 @@ class CitizenActionController extends Controller
      * )
      * @Method("GET")
      */
-    public function attendConfirmationAction(Request $request, CitizenAction $citizenAction): Response
+    public function attendConfirmationAction(Request $request, CitizenAction $citizenAction, EventRegistrationManager $manager): Response
     {
-        $manager = $this->get('app.event.registration_manager');
-
         try {
             if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
                 throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));

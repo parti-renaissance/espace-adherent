@@ -2,6 +2,7 @@
 
 namespace AppBundle\React;
 
+use AppBundle\Controller\ReactController;
 use AppBundle\React\App\IdeasWorkshopApp;
 use AppBundle\React\App\CitizenProjectApp;
 use Symfony\Component\Routing\RouteCollection;
@@ -31,7 +32,7 @@ class ReactAppRegistry
 
     public function readManifest(ReactAppInterface $app): ?array
     {
-        $filename = __DIR__.'/../../web/apps/'.$app->getDirectory().'/build/asset-manifest.json';
+        $filename = __DIR__.'/../../public/apps/'.$app->getDirectory().'/build/asset-manifest.json';
 
         try {
             $data = \GuzzleHttp\json_decode(file_get_contents($filename), true);
@@ -59,7 +60,7 @@ class ReactAppRegistry
         foreach ($this->apps as $appName => $app) {
             foreach ($app->getRoutes() as $routeName => $route) {
                 $route->setDefault('_react_app', $appName);
-                $route->setDefault('_controller', 'AppBundle:React:app');
+                $route->setDefault('_controller', ReactController::class);
 
                 $collection->add('react_app_'.$appName.'_'.$routeName, $route);
             }

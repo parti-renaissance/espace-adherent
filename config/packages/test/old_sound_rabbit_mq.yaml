@@ -1,0 +1,22 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            vhost: '/test'
+            read_write_timeout: 40
+            heartbeat: 20
+
+    # The goal of these consumers is to create queues for the exchanges that dispatch events
+    # The real consumers are in others projects like api.en-marche.fr
+    consumers:
+        api_sync:
+            connection: default
+            exchange_options: { name: 'api', type: topic }
+            queue_options:
+                name: api_sync
+                routing_keys:
+                    - user.*
+                    - event.*
+                    - committee.*
+                    - citizen_action.*
+                    - citizen_project.*
+            callback: Tests\AppBundle\Consumer\DummyConsumer

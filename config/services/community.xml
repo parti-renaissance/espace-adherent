@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- Newsletter -->
+        <service id="app.newsletter_subscription.factory" class="AppBundle\Newsletter\NewsletterSubscriptionFactory" />
+
+        <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailer.transactional" />
+        </service>
+
+        <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailer.transactional" />
+            <argument type="service" id="router" />
+        </service>
+
+        <!-- Invitation -->
+        <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailer.campaign" />
+        </service>
+
+        <service id="app.validator.was_not_invited_recently_validator" class="AppBundle\Validator\WasNotInvitedRecentlyValidator">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="property_accessor" />
+
+            <tag name="validator.constraint_validator" />
+        </service>
+
+        <!-- Procuration -->
+        <service id="AppBundle\Procuration\ProcurationProxyMessageFactory" public="false">
+            <argument type="service" id="app.routing.remote_url_generator" />
+            <argument>%procurations_reply_to_email%</argument>
+        </service>
+
+        <service id="app.procuration.reminder_handler" class="AppBundle\Procuration\ProcurationReminderHandler">
+            <argument type="service" id="app.mailer.transactional" />
+            <argument type="service" id="AppBundle\Procuration\ProcurationProxyMessageFactory"/>
+        </service>
+
+        <!-- Je Marche -->
+         <service id="app.je_marche_report_handler" class="AppBundle\JeMarche\JeMarcheReportHandler">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="app.mailer.transactional" />
+        </service>
+
+        <!-- Ton Macron -->
+         <service id="app.ton_macron.invitation_processor_handler" class="AppBundle\TonMacron\InvitationProcessorHandler">
+             <argument type="service" id="app.ton_macron.message_body_builder"/>
+             <argument type="service" id="doctrine.orm.entity_manager"/>
+             <argument type="service" id="app.mailer.campaign"/>
+             <argument type="service" id="state_machine.ton_macron_invitation"/>
+         </service>
+
+        <service id="app.ton_macron.message_body_builder" class="AppBundle\TonMacron\TonMacronMessageBodyBuilder">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="AppBundle\Repository\TonMacronChoiceRepository"/>
+        </service>
+
+        <service id="app.ton_macron.serializer" class="AppBundle\TonMacron\TonMacronSerializer" />
+
+        <!-- Interactives -->
+        <service id="app.interactive.purchasing_power_processor_handler" class="AppBundle\Interactive\PurchasingPowerProcessorHandler">
+            <argument type="service" id="app.purchasing_power.message_body_builder"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="app.mailer.transactional"/>
+            <argument type="service" id="state_machine.purchasing_power"/>
+        </service>
+
+        <service id="app.purchasing_power.message_body_builder" class="AppBundle\Interactive\PurchasingPowerMessageBodyBuilder">
+            <argument type="service" id="twig"/>
+            <argument type="service" id="AppBundle\Repository\PurchasingPowerChoiceRepository"/>
+        </service>
+
+        <service id="app.purchasing_power.serializer" class="AppBundle\Interactive\PurchasingPowerSerializer" />
+
+        <!-- Facebook filters -->
+        <service id="app.facebook.profile_importer" class="AppBundle\Facebook\ProfileImporter">
+            <argument type="service" id="app.facebook.api" />
+            <argument type="service" id="AppBundle\Repository\FacebookProfileRepository" />
+        </service>
+
+        <service id="app.facebook.picture_importer" class="AppBundle\Facebook\PictureImporter">
+            <argument type="service" id="csa_guzzle.client.facebook_graph_api" />
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <service id="app.facebook.picture_filterer" class="AppBundle\Facebook\PictureFilterer">
+            <argument type="service" id="app.imagine" />
+        </service>
+
+        <service id="app.facebook.picture_uploader" class="AppBundle\Facebook\PictureUploader">
+            <argument type="service" id="app.facebook.api" />
+            <argument type="service" id="filesystem" />
+            <argument>%kernel.cache_dir%</argument>
+        </service>
+
+        <!-- Summary -->
+        <service id="AppBundle\Summary\SummaryFactory">
+            <argument type="service" id="cocur_slugify" />
+        </service>
+
+        <service id="AppBundle\Summary\SummaryManager">
+            <argument type="service" id="AppBundle\Summary\SummaryFactory" />
+            <argument type="service" id="AppBundle\Repository\SummaryRepository" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="app.storage" />
+            <argument type="service" id="app.glide" />
+            <argument>%kernel.secret%</argument>
+        </service>
+
+    </services>
+</container>

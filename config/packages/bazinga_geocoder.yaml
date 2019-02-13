@@ -1,0 +1,9 @@
+bazinga_geocoder:
+    providers:
+        cache:
+            adapter:  app.geocoder.cache_adapter
+            provider: google_maps
+        google_maps:
+            locale:  "%locale%"
+            use_ssl: true
+            api_key: "%env(GMAPS_API_KEY)%"

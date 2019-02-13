@@ -8,9 +8,9 @@ use AppBundle\OAuth\PersistentTokenFactory;
 use AppBundle\Repository\OAuth\AccessTokenRepository;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface as OAuthAccessTokenRepository;
+use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
-class AccessTokenStore implements OAuthAccessTokenRepository
+class AccessTokenStore implements AccessTokenRepositoryInterface
 {
     private $persistentTokenFactory;
     private $accessTokenRepository;

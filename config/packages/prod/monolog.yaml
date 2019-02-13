@@ -1,0 +1,22 @@
+monolog:
+    handlers:
+        main:
+            type:                   fingers_crossed
+            action_level:           error
+            activation_strategy:    app.logging.activation_strategy
+            handler:                nested
+        nested:
+            type:                   group
+            members:                [file, buffer]
+        file:
+            type:                   stream
+            path:                   "%kernel.logs_dir%/%kernel.environment%.log"
+        buffer:
+            type:                   buffer
+            handler:                sentry
+        sentry:
+            type:                   service
+            id:                     app.logging.sentry_handler
+
+        console:
+            type:                   console

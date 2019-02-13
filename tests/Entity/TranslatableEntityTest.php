@@ -2,17 +2,16 @@
 
 namespace Tests\AppBundle\Entity;
 
-use AppBundle\Entity\EntityTranslatableTrait;
 use AppBundle\Entity\EntityTranslationInterface;
+use AppBundle\Entity\Timeline\Profile;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
-class EntityTranslatableTraitTest extends TestCase
+class TranslatableEntityTest extends TestCase
 {
     public function testRemoveEmptyTranslations()
     {
-        /* @var $translatable EntityTranslatableTrait */
-        $translatable = $this->getMockForTrait(EntityTranslatableTrait::class);
+        $translatable = new Profile();
 
         $translatable->setTranslations(new ArrayCollection([
             $french = $this->createTranslation('fr', false),
@@ -31,8 +30,7 @@ class EntityTranslatableTraitTest extends TestCase
 
     public function testTranslate()
     {
-        /* @var $translatable EntityTranslatableTrait */
-        $translatable = $this->getMockForTrait(EntityTranslatableTrait::class);
+        $translatable = new Profile();
 
         $translatable->setTranslations(new ArrayCollection([
             $french = $this->createTranslation('fr', false),

@@ -1,0 +1,40 @@
+imports:
+    - { resource: services_dev.yaml }
+
+parameters:
+    ssl_public_key: '%env(SSL_PUBLIC_KEY)%'
+    ssl_private_key: '%env(SSL_PRIVATE_KEY)%'
+    ssl_encryption_key: '%env(SSL_ENCRYPTION_KEY)%'
+    app_host: "test.%env(APP_HOST)%"
+    amp_host: "test.%env(AMP_HOST)%"
+    legislatives_host: "test.legislatives.%app_host%"
+
+services:
+    _defaults:
+        public: true
+
+    app.map.google_maps_static_provider:
+        class: 'Tests\AppBundle\Test\Map\DummyStaticMapProvider'
+
+    app.glide.cache_adapter:
+        class: 'League\Flysystem\Memory\MemoryAdapter'
+
+    old_sound_rabbit_mq.mailer_campaign_producer:
+        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
+        public: false
+
+    old_sound_rabbit_mq.mailer_transactional_producer:
+        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
+        public: false
+
+    old_sound_rabbit_mq.referent_message_dispatcher_producer:
+        class: 'Tests\AppBundle\Test\Producer\ReferentMessageNullProducer'
+
+    old_sound_rabbit_mq.deputy_message_dispatcher_producer:
+        class: 'Tests\AppBundle\Test\Producer\DeputyMessageNullProducer'
+
+    Tests\AppBundle\Consumer\DummyConsumer: ~
+
+    Tests\AppBundle\Test\Payment\PayboxProvider:
+        arguments:
+            - '%env(SSL_PRIVATE_KEY)%'

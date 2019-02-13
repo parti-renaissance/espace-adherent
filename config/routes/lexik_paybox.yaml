@@ -1,0 +1,4 @@
+lexik_paybox:
+    host:     "%app_host%"
+    resource: "@LexikPayboxBundle/Resources/config/routing.yml"
+    prefix:   "/don"

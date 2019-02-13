@@ -22,7 +22,7 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp var/public.key perm  ## Install and start the project
+start: build up db rabbitmq-fabric public/built assets-amp var/public.key perm  ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill
@@ -36,7 +36,7 @@ clear: perm rm-docker-dev.lock                                                  
 	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
 	-$(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
-	rm -rf web/built
+	rm -rf public/built
 	rm var/.php_cs.cache
 
 clean: clear                                                                                           ## Clear and remove dependencies
@@ -132,7 +132,7 @@ test-debug:                                                                     
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
-tu: vendor app/config/assets_version.yml                                                               ## Run the PHP unit tests
+tu: vendor config/packages/assets_version.yaml                                                                  ## Run the PHP unit tests
 	$(PHPUNIT) --exclude-group functional
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
@@ -186,7 +186,7 @@ security-check: vendor                                                          
 ## Dependencies
 ##---------------------------------------------------------------------------
 
-deps: vendor web/built                                                                                 ## Install the project PHP and JS dependencies
+deps: vendor public/built                                                                                 ## Install the project PHP and JS dependencies
 
 ##
 
@@ -218,17 +218,14 @@ vendor: composer.lock
 composer.lock: composer.json
 	@echo composer.lock is not up to date.
 
-app/config/parameters.yml: app/config/parameters.yml.dist vendor
-	$(EXEC) composer -n run-script post-install-cmd
-
 node_modules: yarn.lock
 	$(EXEC) yarn install
 
 yarn.lock: package.json
 	@echo yarn.lock is not up to date.
 
-web/built: front node_modules
+public/built: front node_modules
 	$(EXEC) yarn build-dev
 
-app/config/assets_version.yml:
+config/packages/assets_version.yaml:
 	 $(EXEC) yarn build-prod

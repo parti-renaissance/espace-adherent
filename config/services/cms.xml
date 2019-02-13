@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Markdown -->
+        <service id="League\CommonMark\CommonMarkConverter" />
+
+        <!-- Content -->
+        <prototype namespace="AppBundle\Content\" resource="../../src/Content" />
+
+        <!-- Feed -->
+        <service id="app.feed_generator.article" class="AppBundle\Feed\ArticleFeedGenerator">
+            <argument>%locale%</argument>
+            <argument>%feed_ttl%</argument>
+            <argument type="service" id="router" />
+            <argument type="service" id="League\CommonMark\CommonMarkConverter" />
+        </service>
+
+        <!-- Sitemap -->
+        <service id="AppBundle\Sitemap\SitemapFactory">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="router" />
+            <argument type="service" id="cache.app" />
+        </service>
+
+        <!-- Documents -->
+        <service id="AppBundle\Documents\DocumentRepository" public="false">
+            <argument type="service" id="app.storage" />
+        </service>
+
+        <service id="app.document_manager" class="AppBundle\Documents\DocumentManager">
+            <argument type="service" id="AppBundle\Documents\DocumentRepository"/>
+            <argument type="service" id="app.committee.manager"/>
+        </service>
+
+        <!-- Filesystem -->
+        <service id="app.storage" class="League\Flysystem\Filesystem">
+            <argument type="service">
+                <service class="League\Flysystem\Adapter\AdapterInterface">
+                    <factory class="AppBundle\Storage\FilesystemAdapterFactory" method="createAdapter" />
+                    <argument>%kernel.environment%</argument>
+                    <argument>%kernel.project_dir%/app/data</argument>
+                    <argument>%env(GCLOUD_PROJECT_ID)%</argument>
+                    <argument>%kernel.project_dir%/gcloud-service-key.json</argument>
+                    <argument>%env(GCLOUD_BUCKET)%</argument>
+                </service>
+            </argument>
+        </service>
+        <service id="League\Flysystem\Filesystem" alias="app.storage" />
+
+        <!-- Medias -->
+        <service id="app.glide.cache_adapter" class="Danhunsaker\Flysystem\Redis\RedisAdapter" public="false" lazy="true">
+            <argument type="service" id="snc_redis.default" />
+        </service>
+
+        <service id="app.glide" class="League\Glide\Server">
+            <factory class="League\Glide\ServerFactory" method="create" />
+
+            <argument type="collection">
+                <argument key="source" type="service" id="app.storage" />
+                <argument key="cache" type="service">
+                    <service class="League\Flysystem\Filesystem">
+                        <argument type="service" id="app.glide.cache_adapter" />
+                    </service>
+                </argument>
+
+                <!-- Max image size in numer of pixels (2000x2000) -->
+                <argument key="max_image_size">4000000</argument>
+            </argument>
+        </service>
+        <service id="League\Glide\Server" alias="app.glide" />
+
+    </services>
+</container>

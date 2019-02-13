@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    AppBundle\Command\:
+        resource: '../../src/Command/*'
+
+    AppBundle\Command\NotifyIdeaAuthorCommand:
+        arguments:
+            $mailer: "@app.mailer.transactional"
+
+    AppBundle\Command\MailchimpCreateTagFromReferentTagCommand:
+        arguments:
+            $client: "@csa_guzzle.client.mailchimp_api"
+            $mailchimpListId: "%env(MAILCHIMP_MEMBER_LIST_ID)%"
+
+    AppBundle\Command\MailchimpUpdateReferentTagExternalIdFromMailchimpCommand:
+        arguments:
+            $client: "@csa_guzzle.client.mailchimp_api"
+            $mailchimpListId: "%env(MAILCHIMP_MEMBER_LIST_ID)%"

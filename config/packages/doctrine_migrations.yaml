@@ -1,0 +1,5 @@
+doctrine_migrations:
+    dir_name: "%kernel.project_dir%/app/migrations"
+    namespace: Migrations
+    table_name: migrations
+    name: En Marche migrations

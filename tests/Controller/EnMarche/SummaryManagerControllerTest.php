@@ -1051,7 +1051,7 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
         $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[member_interests][4]' => 'egalite',
+            'summary[member_interests][4]' => 'education',
             'summary[member_interests][10]' => 'jeunesse',
             'summary[personal_data_collection]' => true,
         ]));
@@ -1069,7 +1069,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $this->assertCount(2, $interests->filter('li'));
         $this->assertSame('Jeunesse', trim($interests->filter('li')->eq(0)->text()));
-        $this->assertSame('Egalité F / H', trim($interests->filter('li')->eq(1)->text()));
+        $this->assertSame('Éducation', trim($interests->filter('li')->eq(1)->text()));
     }
 
     /**

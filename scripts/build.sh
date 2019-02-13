@@ -2,7 +2,7 @@
 set -xe
 
 # Inject commit hash as app version
-perl -pi -e "s/default/$CIRCLE_SHA1/g" ./app/config/app_version.yml
+perl -pi -e "s/default/$CIRCLE_SHA1/g" ./config/app_version.yaml
 
 VERSION=${CIRCLE_TAG:-$CIRCLE_BRANCH}
 DOCKER_IMAGE_TAG="eu.gcr.io/$GCLOUD_PROJECT/app:$VERSION-$CIRCLE_SHA1"

@@ -103,10 +103,8 @@ class EventController extends Controller
      * )
      * @Method("GET")
      */
-    public function attendConfirmationAction(Request $request, Event $event): Response
+    public function attendConfirmationAction(Request $request, Event $event, EventRegistrationManager $manager): Response
     {
-        $manager = $this->get('app.event.registration_manager');
-
         try {
             if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
                 throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));
