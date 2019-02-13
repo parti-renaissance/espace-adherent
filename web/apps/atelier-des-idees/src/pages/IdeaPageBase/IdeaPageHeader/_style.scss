@@ -23,9 +23,19 @@
       margin-right: 40px;
     }
 
-    .create-idea-actions__report {
+    .create-idea-page__header__right {
       display: inline-flex;
       margin-left: auto;
+
+      .share-buttons:not(:only-child) {
+        margin-right: 20px;
+        border-right: 1px solid $platinum;
+        padding-right: 20px;
+      }
+    }
+
+    .create-idea-actions__report {
+      display: inline-flex;
 
       > img {
         width: 30px;
