@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ideaStatus } from '../../../constants/api';
 import CreateIdeaActions from '../CreateIdeaActions';
 import Switch from '../../../components/Switch';
+import ShareButtons from '../../../components/ShareButtons';
 import Dropdown from '../../../components/Dropdown';
 import icn_close from '../../../img/icn_close.svg';
 
@@ -23,26 +24,35 @@ class IdeaPageHeader extends React.Component {
                                     label="Passer en mode lecture"
                                 />
                             )}
-                            {this.props.isAuthenticated &&
-                                (this.props.isAuthor ? (
-                                    <CreateIdeaActions
-                                        onDeleteClicked={this.props.onDeleteClicked}
-                                        onPublishClicked={this.props.onPublishClicked}
-                                        onSaveClicked={this.props.onSaveClicked}
-                                        isDraft={this.props.status === ideaStatus.DRAFT}
-                                        isSaving={this.props.isSaving}
-                                        canPublish={
-                                            this.props.status === ideaStatus.DRAFT ||
-                                            this.props.status === ideaStatus.PENDING
-                                        }
+                            {this.props.status === ideaStatus.DRAFT && this.props.isAuthor && (
+                                <CreateIdeaActions
+                                    onDeleteClicked={this.props.onDeleteClicked}
+                                    onPublishClicked={this.props.onPublishClicked}
+                                    onSaveClicked={this.props.onSaveClicked}
+                                    isDraft={this.props.status === ideaStatus.DRAFT}
+                                    isSaving={this.props.isSaving}
+                                    canPublish={
+                                        this.props.status === ideaStatus.DRAFT ||
+                                        this.props.status === ideaStatus.PENDING
+                                    }
+                                />
+                            )}
+                            {this.props.status !== ideaStatus.DRAFT && (
+                                <div className="create-idea-page__header__right">
+                                    <ShareButtons
+                                        title={`Consultez cette proposition "${
+                                            this.props.ideaTitle
+                                        }" faite sur l’Atelier des idées de La République En Marche !`}
                                     />
-                                ) : (
-                                    <Dropdown
-                                        className="create-idea-actions__report"
-                                        onSelect={this.props.onReportClicked}
-                                        options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
-                                    />
-                                ))}
+                                    {this.props.isAuthenticated && !this.props.isAuthor && (
+                                        <Dropdown
+                                            className="create-idea-actions__report"
+                                            onSelect={this.props.onReportClicked}
+                                            options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
+                                        />
+                                    )}
+                                </div>
+                            )}
                         </React.Fragment>
                     )}
                 </div>
@@ -67,6 +77,7 @@ class IdeaPageHeader extends React.Component {
 
 IdeaPageHeader.defaultProps = {
     canToggleReadingMode: false,
+    ideaTitle: '',
     isAuthenticated: false,
     isAuthor: false,
     isSaving: false,
@@ -77,6 +88,7 @@ IdeaPageHeader.defaultProps = {
 IdeaPageHeader.propTypes = {
     canToggleReadingMode: PropTypes.bool,
     closeSaveBanner: PropTypes.func.isRequired,
+    ideaTitle: PropTypes.string,
     isAuthenticated: PropTypes.bool,
     isAuthor: PropTypes.bool,
     isSaving: PropTypes.bool,
