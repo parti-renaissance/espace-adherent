@@ -78,13 +78,14 @@
     .idea-card-list__wrapper {
       flex-basis: initial;
       max-width: initial;
+      margin-bottom: 10px;
       padding: 0;
 
-      &:nth-child(2n) {
+      &:nth-child(odd) {
         padding-left: 0;
       }
 
-      &:nth-child(2n + 1) {
+      &:nth-child(even) {
         padding-right: 0;
       }
     }
