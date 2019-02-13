@@ -7,13 +7,13 @@ import greenCheckIcn from '../../../img/icn_checklist.svg';
 
 class ContributingFooter extends React.PureComponent {
     getRemainingDays() {
-        return `${this.props.remainingDays} jour${1 < this.props.remainingDays ? 's' : ''} restant${
-            1 < this.props.remainingDays ? 's' : ''
-        }`;
+        const suffix = 1 < this.props.remainingDays ? 's' : '';
+        return `${this.props.remainingDays} jour${suffix} restant${suffix}`;
     }
 
     getRemaininghours() {
-        return `${this.props.remainingHours}h restante${1 < this.props.remainingHours ? 's' : ''}`;
+        const suffix = 1 < this.props.remainingHours ? 's' : '';
+        return `${this.props.remainingHours} heure${suffix} restante${suffix}`;
     }
 
     render() {
