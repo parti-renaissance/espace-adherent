@@ -200,6 +200,7 @@ class IdeaPageBase extends React.Component {
                             clearTimeout(this.saveBannerTimer);
                         });
                     }}
+                    ideaTitle={idea.name}
                     isAuthenticated={this.props.isAuthenticated}
                     isAuthor={this.props.isAuthor}
                     isSaving={this.props.isSaving}

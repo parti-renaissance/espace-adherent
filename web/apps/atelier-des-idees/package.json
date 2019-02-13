@@ -23,6 +23,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
     "react-select": "^2.1.2",
+    "react-share": "^2.4.0",
     "react-slick": "^0.23.2",
     "react-test-renderer": "^16.6.3",
     "react-tooltip": "^3.9.2",
