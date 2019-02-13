@@ -72,4 +72,17 @@
   .question-block__threads {
     margin-top: 30px;
   }
+
+  &--reading {
+    .question-block-header {
+      .question-block-header__label,
+      .question-block-header__question {
+        font-size: 20px;
+      }
+
+      .question-block-header__question {
+        color: $weldon-blue;
+      }
+    }
+  }
 }
