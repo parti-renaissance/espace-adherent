@@ -62,37 +62,19 @@
   }
 
   &__vote {
-    cursor: pointer;
-    outline: none;
     flex: 1;
-    display: flex;
-    justify-content: space-between;
     height: 40px;
     margin-right: 10px;
-    border: 1px solid $grey-sky;
-    border-radius: 3px;
     padding: 10px;
-    background-color: $white;
-    font-family: $font-roboto;
-    color: $sky;
     font-size: 14px;
-    text-transform: initial;
 
-    position: relative;
-
-    &--selected {
-      border: 1px solid $france;
-      color: $france;
+    &:last-child {
+      margin-right: 0;
     }
-  }
 
-  &__vote__name {
-    margin-right: 5px;
-  }
-
-  &__vote:hover {
-    border: 1px solid $france;
-    color: $france;
+    .vote-button__name {
+      margin-right: 5px;
+    }
   }
 
   &--condensed {
