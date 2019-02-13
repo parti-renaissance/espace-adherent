@@ -6,17 +6,17 @@
 @import './VotingFooterIdeaPage/style';
 @import './IdeaPageSkeleton/style';
 
-.create-idea-page {
+.idea-page {
   position: relative;
   border-top: 1px solid $gainsboro;
   word-wrap: break-word;
 
-  .create-idea-page__content {
+  .idea-page__content {
     padding: 70px 0;
     background-color: $snow;
   }
 
-  .create-idea-page__content__main {
+  .idea-page__content__main {
     margin-top: 30px;
     border-radius: 2px;
     padding: 80px 100px;
@@ -24,7 +24,7 @@
     background-color: $white;
   }
 
-  .create-idea-page__status-label {
+  .idea-page__status-label {
     display: inline-flex;
     align-items: center;
     height: 23px;
@@ -42,14 +42,14 @@
     }
   }
 
-  .create-idea-page__footer {
+  .idea-page__footer {
     margin-top: 80px;
   }
 
-  .create-idea-page__auto-save {
+  .idea-page__auto-save {
     text-align: center;
 
-    .create-idea-page__auto-save__label {
+    .idea-page__auto-save__label {
       display: inline-flex;
       margin: 0;
       border-radius: 20px;
@@ -58,7 +58,7 @@
       font-size: 14px;
       color: $slate-grey;
 
-      .create-idea-page__auto-save__icon {
+      .idea-page__auto-save__icon {
         margin-right: 8px;
       }
     }
@@ -68,27 +68,23 @@
   @media #{$mobile} {
     border-top: 0;
 
-    .create-idea-page__content {
+    .idea-page__content {
       padding: 50px 0;
     }
 
-    .create-idea-page__content__main {
+    .idea-page__content__main {
       width: 100%;
       margin: 0;
       padding: 40px 20px;
     }
 
-    .create-idea-actions__back {
-      margin-bottom: 20px;
-    }
-
-    .create-idea-page__auto-save {
+    .idea-page__auto-save {
       margin-bottom: 30px;
     }
   }
 
   @media #{$tablet} {
-    .create-idea-page__content__main {
+    .idea-page__content__main {
       padding: 40px;
     }
   }
