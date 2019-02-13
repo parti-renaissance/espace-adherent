@@ -4,17 +4,17 @@ import Button from '../../../components/Button';
 
 function CreateIdeaActions(props) {
     return (
-        <div className="create-idea-actions">
-            <div className="create-idea-actions--left">
-                <button className="button create-idea-actions__delete" onClick={() => props.onDeleteClicked()}>
+        <div className="idea-page-actions">
+            <div className="idea-page-actions--left">
+                <button className="button idea-page-actions__delete" onClick={() => props.onDeleteClicked()}>
                     Supprimer la proposition
                 </button>
             </div>
             {(props.isDraft || props.canPublish) && (
-                <div className="create-idea-actions--right">
+                <div className="idea-page-actions--right">
                     {props.isDraft && (
                         <Button
-                            className="create-idea-actions__save"
+                            className="idea-page-actions__save"
                             label="Enregistrer le brouillon"
                             mode="secondary"
                             onClick={props.onSaveClicked}
@@ -23,7 +23,7 @@ function CreateIdeaActions(props) {
                     )}
                     {props.canPublish && (
                         <Button
-                            className="create-idea-actions__publish"
+                            className="idea-page-actions__publish"
                             label={props.isDraft ? 'Publier la proposition' : 'Modifier les informations'}
                             onClick={props.onPublishClicked}
                         />
