@@ -57,7 +57,7 @@ class AdherentMessageTypeType extends AbstractType
     {
         $this->choices = [];
 
-        foreach (AdherentMessageTypeEnum::toArray() as $type) {
+        foreach ([AdherentMessageTypeEnum::REFERENT] as $type) {
             if (method_exists($adherent, $methodName = 'is'.ucfirst($type)) && $adherent->{$methodName}()) {
                 $this->choices['adherent_message.'.$type] = $type;
             }
