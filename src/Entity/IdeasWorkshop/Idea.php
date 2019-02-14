@@ -287,6 +287,13 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     private $finalizedAt;
 
     /**
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastContributionNotificationDate;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": 1})
@@ -471,6 +478,16 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     public function setFinalizedAt(\DateTimeInterface $finalizedAt): void
     {
         $this->finalizedAt = $finalizedAt;
+    }
+
+    public function getLastContributionNotificationDate(): ?\DateTimeInterface
+    {
+        return $this->lastContributionNotificationDate;
+    }
+
+    public function setLastContributionNotificationDate(\DateTimeInterface $lastContributionNotificationDate): void
+    {
+        $this->lastContributionNotificationDate = $lastContributionNotificationDate;
     }
 
     public function isEnabled(): bool
