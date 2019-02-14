@@ -1,0 +1,17 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block actions %}
+    <li>
+        <a href="{{ path('admin_app_institutionalevent_edit', { id: object.id }) }}" class="sonata-action-element" title="Editer">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            Éditer
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_app_institutionalevent_list') }}" class="sonata-action-element" title="Éditer">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Retourner à la liste
+        </a>
+    </li>
+{% endblock %}
+

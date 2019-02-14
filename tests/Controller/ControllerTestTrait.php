@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
+use AppBundle\Entity\InstitutionalEventCategory;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -170,6 +171,13 @@ trait ControllerTestTrait
     private function getEventCategoryIdForName(string $categoryName): int
     {
         return $this->manager->getRepository(EventCategory::class)->findOneBy(['name' => $categoryName])->getId();
+    }
+
+    private function getInstitutionalEventCategoryIdByName(string $categoryName): int
+    {
+        return $this->manager->getRepository(InstitutionalEventCategory::class)
+            ->findOneBy(['name' => $categoryName])->getId()
+        ;
     }
 
     private static function assertAdherentHasReferentTag(Adherent $adherent, string $code): void

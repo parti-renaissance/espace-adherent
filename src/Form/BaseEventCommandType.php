@@ -87,7 +87,7 @@ class BaseEventCommandType extends AbstractType
      * ex 2:
      *     with time 16h52m it returns 17h00
      */
-    private function createBeginDate(array $minutes): \DateTime
+    protected function createBeginDate(array $minutes): \DateTime
     {
         $now = new \DateTime();
         $nowMinute = $now->format('i');
@@ -111,7 +111,7 @@ class BaseEventCommandType extends AbstractType
         return $now;
     }
 
-    private function getTimezones()
+    protected function getTimezones()
     {
         $timezones = [];
         $dateTime = new \DateTime('now');

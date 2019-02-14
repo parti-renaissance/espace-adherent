@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
@@ -121,6 +122,83 @@ class ReferentControllerTest extends WebTestCase
         $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
 
         $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'referent@en-marche-dev.fr');
+    }
+
+    public function testCreateInstitutionalEventSuccessful()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/evenements-institutionnels/creer');
+
+        $data = [];
+        $data['institutional_event']['name'] = 'Un événement institutionnel en Suisse';
+        $data['institutional_event']['category'] = $this->getInstitutionalEventCategoryIdByName('Comité politique');
+        $data['institutional_event']['beginAt']['date']['day'] = 14;
+        $data['institutional_event']['beginAt']['date']['month'] = 6;
+        $data['institutional_event']['beginAt']['date']['year'] = date('Y');
+        $data['institutional_event']['beginAt']['time']['hour'] = preg_replace('/0/', '', date('H'), 1);
+        $data['institutional_event']['beginAt']['time']['minute'] = 0;
+        $data['institutional_event']['finishAt']['date']['day'] = 15;
+        $data['institutional_event']['finishAt']['date']['month'] = 6;
+        $data['institutional_event']['finishAt']['date']['year'] = date('Y');
+        $data['institutional_event']['finishAt']['time']['hour'] = 23;
+        $data['institutional_event']['finishAt']['time']['minute'] = 0;
+        $data['institutional_event']['address']['address'] = 'Pilgerweg 58';
+        $data['institutional_event']['address']['cityName'] = 'Kilchberg';
+        $data['institutional_event']['address']['postalCode'] = '8802';
+        $data['institutional_event']['address']['country'] = 'CH';
+        $data['institutional_event']['description'] = 'Premier événement institutionel en Suisse';
+        $data['institutional_event']['timeZone'] = 'Europe/Zurich';
+
+        $this->client->submit(
+            $this->client->getCrawler()->selectButton('Créer cet événement institutionnel')->form(), $data
+        );
+
+        /** @var InstitutionalEvent $event */
+        $event = $this->getInstitutionalEventRepository()->findOneBy(
+            ['name' => 'Un événement institutionnel en Suisse']
+        );
+
+        $this->assertInstanceOf(InstitutionalEvent::class, $event);
+        $this->assertClientIsRedirectedTo('/espace-referent/evenements-institutionnels', $this->client);
+
+        $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains(
+            'Le nouvel événement institutionnel a bien été créé.',
+            $this->client->getCrawler()->filter('div.notice-flashes')->html()
+        );
+    }
+
+    public function testCreateInstitutionalEventFailed()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/evenements-institutionnels/creer');
+
+        // Submit the form with empty values
+        $this->client->submit($this->client->getCrawler()
+            ->selectButton('Créer cet événement institutionnel')->form(), [])
+        ;
+
+        $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#institutional_event-name-field > .form__errors > li')->text()
+        );
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#institutional_event-description-field > .form__errors > li')->text()
+        );
+
+        $this->assertSame("L'adresse est obligatoire.",
+            $this->client->getCrawler()->filter(
+                '#institutional_event-address-address-field > .form__errors > li')->text()
+        );
+
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.",
+            $this->client->getCrawler()->filter('#institutional_event-address > .form__errors > li')->text()
+        );
     }
 
     public function testSearchUserToSendMail()

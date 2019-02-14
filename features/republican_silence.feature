@@ -38,20 +38,20 @@ Feature:
       And I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
 
   Scenario Outline: As CP host I cannot access to the CP pages
-    Given I am logged as "lolodie.dutemps@hotnix.tld"
+    Given I am logged as "francis.brioul@yahoo.com"
     When I go to "<uri>"
     Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
     Examples:
-      | uri                                                             |
-      | /projets-citoyens/13003-en-marche-projet-citoyen/actions/creer  |
+      | uri                                                                              |
+      | /projets-citoyens/91000-formation-en-ligne-ouverte-a-tous-a-evry/actions/creer   |
 
   @javascript
   Scenario: As CP host I cannot access to member contact page
-    Given I am logged as "lolodie.dutemps@hotnix.tld"
-    And I am on "/projets-citoyens/13003-en-marche-projet-citoyen/acteurs"
+    Given I am logged as "francis.brioul@yahoo.com"
+    And I am on "/projets-citoyens/91000-formation-en-ligne-ouverte-a-tous-a-evry/acteurs"
     And I check "members[]"
     When I click the "members-contact-button" element
-    Then I should be on "/projets-citoyens/13003-en-marche-projet-citoyen/acteurs/contact"
+    Then I should be on "/projets-citoyens/91000-formation-en-ligne-ouverte-a-tous-a-evry/acteurs/contact"
     And I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
 
   Scenario: As deputy of 75001 I cannot communicate with adherents from my deputy space.

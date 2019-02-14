@@ -10,6 +10,7 @@ use AppBundle\Entity\Administrator;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
+use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
@@ -54,6 +55,7 @@ use AppBundle\Repository\EmailSubscriptionHistoryRepository;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\InstitutionalEventRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
@@ -181,6 +183,11 @@ trait TestHelperTrait
     public function getEventRepository(): EventRepository
     {
         return $this->getRepository(Event::class);
+    }
+
+    public function getInstitutionalEventRepository(): InstitutionalEventRepository
+    {
+        return $this->getRepository(InstitutionalEvent::class);
     }
 
     public function getCommitteeFeedItemRepository(): CommitteeFeedItemRepository
