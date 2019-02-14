@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FacebookShareButton, TwitterShareButton, TelegramShareButton } from 'react-share';
-import { FacebookIcon, TwitterIcon, TelegramIcon } from 'react-share';
+import { FacebookIcon, TwitterIcon } from 'react-share';
 
 class ShareButtons extends React.PureComponent {
     render() {
@@ -21,7 +21,7 @@ class ShareButtons extends React.PureComponent {
                     <TwitterIcon {...iconProps} />
                 </TwitterShareButton>
                 <TelegramShareButton url={url} title={this.props.title}>
-                    <TelegramIcon {...iconProps} />
+                    <div className="share-buttons__icon share-buttons__icon--telegram" />
                 </TelegramShareButton>
             </div>
         );
