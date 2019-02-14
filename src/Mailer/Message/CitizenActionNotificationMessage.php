@@ -64,11 +64,11 @@ class CitizenActionNotificationMessage extends Message
             'host_first_name' => self::escape($host->getFirstName()),
             'citizen_project_name' => self::escape($citizenAction->getCitizenProject()->getName()),
             'citizen_action_name' => self::escape($citizenAction->getName()),
-            'citizen_action_date' => static::formatDate($citizenAction->getBeginAt(), 'EEEE d MMMM y'),
+            'citizen_action_date' => static::formatDate($citizenAction->getLocalBeginAt(), 'EEEE d MMMM y'),
             'citizen_action_hour' => sprintf(
                 '%sh%s',
-                static::formatDate($citizenAction->getBeginAt(), 'HH'),
-                static::formatDate($citizenAction->getBeginAt(), 'mm')
+                static::formatDate($citizenAction->getLocalBeginAt(), 'HH'),
+                static::formatDate($citizenAction->getLocalBeginAt(), 'mm')
             ),
             'citizen_action_address' => self::escape($citizenAction->getInlineFormattedAddress()),
             'citizen_action_attend_link' => $citizenActionAttendLink,
