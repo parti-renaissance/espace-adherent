@@ -44,11 +44,29 @@
       max-width: initial;
       padding: 0;
 
-      &:nth-child(2n) {
+      &:nth-child(odd) {
         padding-left: 0;
       }
 
-      &:nth-child(2n + 1) {
+      &:nth-child(even) {
+        padding-right: 0;
+      }
+    }
+  }
+
+  @media (min-width: $width-lg) and (max-width: #{$width-xl - 1px}) {
+    flex-direction: column;
+
+    .idea-card-list__wrapper {
+      flex-basis: initial;
+      max-width: initial;
+      padding: 0;
+
+      &:nth-child(odd) {
+        padding-left: 0;
+      }
+
+      &:nth-child(even) {
         padding-right: 0;
       }
     }
@@ -60,13 +78,14 @@
     .idea-card-list__wrapper {
       flex-basis: initial;
       max-width: initial;
+      margin-bottom: 10px;
       padding: 0;
 
-      &:nth-child(2n) {
+      &:nth-child(odd) {
         padding-left: 0;
       }
 
-      &:nth-child(2n + 1) {
+      &:nth-child(even) {
         padding-right: 0;
       }
     }

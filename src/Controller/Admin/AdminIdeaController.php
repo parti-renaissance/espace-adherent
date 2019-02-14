@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,18 +19,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminIdeaController extends Controller
 {
+    use RedirectToTargetTrait;
+
     /**
      * @Route("/{id}/contribute", name="app_admin_idea_contribute", methods={"GET"})
      */
     public function contributeAction(Idea $idea, ObjectManager $manager): Response
     {
         if (!$idea->isFinalized()) {
-            $this->addFlash('warning', 'L\'idée a déjà été remise en contribution');
+            $this->addFlash('warning', 'La proposition a déjà été remise en contribution');
         } else {
             $idea->publish();
             $manager->flush();
 
-            $this->addFlash('success', 'L\'idée a bien été remise en contribution');
+            $this->addFlash('success', 'La proposition a bien été remise en contribution');
         }
 
         return $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
@@ -51,36 +54,38 @@ class AdminIdeaController extends Controller
      * @Route("/{uuid}/enable", name="app_admin_idea_enable", methods={"GET"})
      * @Entity("idea", expr="repository.findOneByUuid(uuid, true)")
      */
-    public function enableAction(Idea $idea, EntityManagerInterface $manager): Response
+    public function enableAction(Request $request, Idea $idea, EntityManagerInterface $manager): Response
     {
         if ($idea->isEnabled()) {
-            $this->addFlash('warning', 'L\'idée a déjà été démodéré');
+            $this->addFlash('warning', 'La proposition a déjà été démodéré');
         } else {
             $idea->setEnabled(true);
             $manager->flush();
 
-            $this->addFlash('success', 'L\'idée a bien été démodéré');
+            $this->addFlash('success', 'La proposition a bien été démodéré');
         }
 
-        return $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
+        return $this->prepareRedirectFromRequest($request)
+            ?? $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
     }
 
     /**
      * @Route("/{uuid}/disable", name="app_admin_idea_disable", methods={"GET"})
      * @Entity("idea", expr="repository.findOneByUuid(uuid, true)")
      */
-    public function disableAction(Idea $idea, ObjectManager $manager): Response
+    public function disableAction(Request $request, Idea $idea, ObjectManager $manager): Response
     {
         if (!$idea->isEnabled()) {
-            $this->addFlash('warning', 'L\'idée a déjà été modéré');
+            $this->addFlash('warning', 'La proposition a déjà été modéré');
         } else {
             $idea->setEnabled(false);
             $manager->flush();
 
-            $this->addFlash('success', 'L\'idée a bien été modéré');
+            $this->addFlash('success', 'La proposition a bien été modéré');
         }
 
-        return $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
+        return $this->prepareRedirectFromRequest($request)
+            ?? $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
     }
 
     /**
@@ -89,14 +94,14 @@ class AdminIdeaController extends Controller
     public function finalizeAction(Idea $idea, ObjectManager $manager): Response
     {
         if ($idea->isFinalized()) {
-            $this->addFlash('warning', 'L\'idée a déjà été finalisé');
+            $this->addFlash('warning', 'La proposition a déjà été finalisé');
         } else {
             $idea->setPublishedAt(new \DateTime());
             $idea->finalize();
 
             $manager->flush();
 
-            $this->addFlash('success', 'L\'idée a bien été finalisé');
+            $this->addFlash('success', 'La proposition a bien été finalisé');
         }
 
         return $this->redirectToRoute('admin_app_ideasworkshop_idea_list');

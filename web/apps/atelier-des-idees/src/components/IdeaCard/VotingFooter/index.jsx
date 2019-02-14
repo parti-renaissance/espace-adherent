@@ -126,13 +126,7 @@ class VotingFooter extends React.Component {
                             index={index}
                             onSelected={this.props.onSelected}
                             resetTimeout={this.resetTimeout}
-                            prefix="voting-footer__vote"
-                            classes={[
-                                'button',
-                                'voting-footer__vote',
-                                `voting-footer__vote-${index}`,
-                                { 'voting-footer__vote--selected': vote.isSelected },
-                            ]}
+                            className="voting-footer__vote"
                         />
                     ))}
             </div>

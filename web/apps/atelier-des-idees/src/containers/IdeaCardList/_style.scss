@@ -26,6 +26,7 @@
     margin-left: 5px;
     opacity: 0.5;
     cursor: pointer;
+    outline: none;
 
     &:hover,
     &--selected {
@@ -37,15 +38,16 @@
     &--selected {
       border: 1px solid $columbia-blue;
     }
-
-    &-tip {
-      white-space: nowrap;
-      font-family: $font-roboto;
-      border-radius: 3px;
-      padding: 10px 13px;
-      font-size: 16px;
-    }
   }
+}
+
+.__react_component_tooltip.idea-card-list__actions__display__btn-tip {
+  white-space: nowrap;
+  font-family: $font-roboto;
+  border-radius: 3px;
+  padding: 10px 13px;
+  box-shadow: 0 3px 10px 0px rgba($light-grey, 0.25);
+  font-size: 16px;
 }
 
 .idea-card-list__empty {

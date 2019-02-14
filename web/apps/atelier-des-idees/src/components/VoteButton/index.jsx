@@ -1,34 +1,51 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-class VoteButton extends Component {
+class VoteButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     render() {
-        const { vote, onSelected, resetTimeout, classes, prefix } = this.props;
+        const { vote, onSelected, resetTimeout, className } = this.props;
         return (
             <button
                 key={vote.id}
-                className={classNames(this.state.animate, ...classes)}
+                className={classNames('vote-button', this.state.animate, className, {
+                    'vote-button--selected': vote.isSelected,
+                })}
                 onClick={() => {
                     this.setState({
                         animate: vote.isSelected ? 'down' : 'up',
                     });
                     onSelected(vote.id);
-                    if (resetTimeout) { resetTimeout(); }
+                    if (resetTimeout) {
+                        resetTimeout();
+                    }
                 }}
             >
-                <span className={`${prefix}__name`}>{vote.name}</span>
-                <span className={`${prefix}__count`}>{vote.count}</span>
-                <span className={`${prefix}__flag vote-button-flag`}>
-                    {'down' === this.state.animate ? '-' : '+'}1
-                </span>
+                <span className={'vote-button__name'}>{vote.name}</span>
+                <span className={'vote-button__count'}>{vote.count}</span>
+                <span className={'vote-button__flag'}>{'down' === this.state.animate ? '-' : '+'}1</span>
             </button>
         );
     }
 }
+
+VoteButton.defaultProps = {
+    className: '',
+};
+
+VoteButton.propTypes = {
+    className: PropTypes.string,
+    onSelected: PropTypes.func.isRequired,
+    vote: PropTypes.shape({
+        count: PropTypes.number,
+        isSelected: PropTypes.bool,
+        name: PropTypes.string,
+    }).isRequired,
+};
 
 export default VoteButton;

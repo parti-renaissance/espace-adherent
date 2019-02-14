@@ -26,7 +26,7 @@ class CreateIdeaPage extends React.Component {
             <IdeaPageBase
                 {...this.props}
                 isLoading={!this.props.guidelines.length}
-                key={`create-idea-page__${!!this.props.guidelines.length}`}
+                key={`idea-page__${!!this.props.guidelines.length}`}
             />
         );
     }

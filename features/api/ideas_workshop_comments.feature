@@ -15,7 +15,7 @@ Feature:
     When I send a "GET" request to "/api/ideas-workshop/thread_comments?page=1"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON nodes should contain:
+    And the JSON nodes should match:
       | metadata.total_items    | 9                                       |
       | metadata.items_per_page | 3                                       |
       | metadata.count          | 3                                       |
@@ -23,7 +23,6 @@ Feature:
       | items[0].content        | Commentaire d'un adhérent               |
       | items[1].content        | Commentaire de l'adhérent à desadhérer  |
       | items[2].content        | <p>Commentaire signalé</p>              |
-
 
   Scenario: As a non logged-in user I can see visible thread comments for a specific thread
     When I send a "GET" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/comments"
@@ -118,36 +117,9 @@ Feature:
     """
     Then the response status code should be 201
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "thread":{
-          "answer":{
-             "id":1
-          },
-          "content":"J'ouvre une discussion sur le probl\u00e8me.",
-          "author":{
-             "uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458",
-             "nickname":null,
-             "first_name":"Carl",
-             "last_name":"Mirabeau"
-          },
-          "created_at": "@string@.isDateTime()",
-          "uuid":"dfd6a2f2-5579-421f-96ac-98993d0edea1",
-          "approved": false
-       },
-       "content":"Phasellus vitae enim faucibus",
-       "author":{
-          "uuid":"d4b1e7e1-ba18-42a9-ace9-316440b30fa7",
-          "nickname":null,
-          "first_name":"Martine",
-          "last_name":"Lindt"
-       },
-       "created_at": "@string@.isDateTime()",
-       "uuid": "@uuid@",
-       "approved": false
-    }
-    """
+    And the JSON nodes should match:
+      | thread.uuid | dfd6a2f2-5579-421f-96ac-98993d0edea1 |
+      | content     | Phasellus vitae enim faucibus        |
 
   Scenario Outline: As a logged-in user I can not approve/disapprove other comments
     Given I am logged as "carl999@example.fr"
@@ -204,21 +176,8 @@ Feature:
     When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove"
     Then the response status code should be 200
     And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "content":"Aenean viverra efficitur lorem",
-       "author":{
-          "nickname":null,
-          "uuid":"acc73b03-9743-47d8-99db-5a6c6f55ad67",
-          "first_name":"Benjamin",
-          "last_name":"Duroc"
-       },
-       "created_at": "@string@.isDateTime()",
-       "uuid":"b99933f3-180c-4248-82f8-1b0eb950740d",
-       "approved": false
-    }
-    """
+    And the JSON nodes should match:
+      | approved | false |
 
   Scenario: As a non logged-in user I can not delete a comment
     When I send a "DELETE" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d"

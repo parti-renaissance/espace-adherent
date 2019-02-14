@@ -49,6 +49,9 @@ class CommentsList extends React.Component {
     }
 
     render() {
+        // check if any comment has replies
+        const hasReplies = this.props.comments.reduce((acc, comment) => acc || !!comment.nbReplies, false);
+        // render
         return (
             <div
                 className={classNames('comments-list', {
@@ -120,6 +123,7 @@ class CommentsList extends React.Component {
                                               placeholder="Écrivez votre réponse"
                                               emptyLabel={null}
                                               total={comment.nbReplies}
+                                              totalComments={comment.nbReplies}
                                               isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
                                               isFormActive={this.state.replyingTo === comment.uuid}
                                               isAuthenticated={this.props.isAuthenticated}
@@ -144,12 +148,14 @@ class CommentsList extends React.Component {
                             </span>
                         </button>
                     )}
-                {this.state.showComments && 0 < this.props.total - this.props.comments.length && (
+                {this.state.showComments && 0 < this.props.totalComments - this.props.comments.length && (
                     <div className="comments-list__more">
                         <button
                             className="comments-list__more-btn"
                             onClick={() => this.props.onLoadMore()}
-                        >{`Afficher plus de réponses (${this.props.total - this.props.comments.length})`}</button>
+                        >{`Afficher plus de ${
+                                hasReplies || !!this.props.parentId ? 'réponses' : 'contributions'
+                            } (${this.props.totalComments - this.props.comments.length})`}</button>
                     </div>
                 )}
                 {this.state.showForm &&
@@ -250,6 +256,7 @@ CommentsList.defaultProps = {
     sendingReplies: [],
     showForm: false,
     total: 0,
+    totalComments: 0,
     withCGU: false,
 };
 
@@ -281,7 +288,8 @@ CommentsList.propTypes = {
     placeholder: PropTypes.string,
     sendingReplies: PropTypes.array,
     showForm: PropTypes.bool,
-    total: PropTypes.number,
+    total: PropTypes.number, // total number of comments + replies
+    totalComments: PropTypes.number, // total number of comments
     withCGU: PropTypes.bool,
 };
 

@@ -1,69 +1,104 @@
-.vote-button-flag {
-  font-family: $font-roboto;
-  font-size: 15px;
-  font-weight: bold;
-  color: $pale-cerulean;
+.vote-button {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-width: 90px;
+  min-height: 30px;
+  border: 1px solid $grey-sky;
+  border-radius: 2px;
+  background-color: $white;
+  color: $sky;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
 
-  position: absolute;
-  right: 8px;
+  &:hover {
+    border-color: $french-sky-blue;
+    opacity: 1;
+    color: $french-sky-blue;
 
-  z-index: 5;
+    .vote-button__count {
+      color: $light-green;
+    }
+  }
 
-  opacity: 0;
+  &--selected {
+    border-color: $blue;
+    color: $blue;
 
-  .up > & {
+    .vote-button__count {
+      color: $ufo-green;
+    }
+  }
+  &--selected:hover {
+    border-color: $grey-sky;
+    color: $sky;
+  }
+
+  .vote-button__flag {
+    font-family: $font-roboto;
+    font-size: 15px;
+    font-weight: bold;
+    color: $pale-cerulean;
+
+    position: absolute;
+    right: 8px;
+
+    z-index: 5;
+
+    opacity: 0;
+  }
+  &.up > .vote-button__flag {
     animation: slide-up 500ms ease-out;
   }
-  .down > & {
+  &.down > .vote-button__flag {
     animation: slide-down 500ms ease-out;
   }
-}
 
-@media #{$mobile} {
-  .vote-button-flag {
-    font-size: 18px;
-    right: 8px;
-  }
-}
-
-
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
+  @media #{$mobile} {
+    .vote-button__flag {
+      font-size: 18px;
+      right: 8px;
+    }
   }
 
-  25% {
-    opacity: 1;
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    25% {
+      opacity: 1;
+    }
+
+    70% {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
   }
 
-  70% {
-    opacity: 1;
-  }
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
 
-  to {
-    opacity: 0;
-    transform: translateY(-40px);
-  }
-}
+    25% {
+      opacity: 1;
+    }
 
-@keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+    70% {
+      opacity: 1;
+    }
 
-  25% {
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-    transform: translateY(40px);
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
   }
 }

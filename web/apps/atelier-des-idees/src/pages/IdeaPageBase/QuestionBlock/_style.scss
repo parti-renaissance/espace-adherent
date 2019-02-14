@@ -38,13 +38,24 @@
 
   .question-block__content {
     // reset main css override
-    p {
-      margin: 0;
-    }
 
     ul {
       padding-left: 40px;
       list-style-type: initial;
+    }
+
+    p {
+      display: inline-block;
+      width: 100%;
+      min-height: 25px;
+      margin: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: $font-roboto;
     }
   }
 
@@ -67,5 +78,19 @@
 
   .question-block__threads {
     margin-top: 30px;
+  }
+
+  &--reading {
+    .question-block-header {
+      .question-block-header__label,
+      .question-block-header__question {
+        font-size: 20px;
+      }
+
+      .question-block-header__question {
+        font-weight: 300;
+        color: $weldon-blue;
+      }
+    }
   }
 }
