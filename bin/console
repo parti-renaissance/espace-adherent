@@ -25,15 +25,8 @@ if ($input->hasParameterOption('--no-debug', true)) {
 
 require dirname(__DIR__).'/config/bootstrap.php';
 
-if ($_SERVER['APP_DEBUG']) {
-    // if you don't want to setup permissions the proper way, just uncomment the following PHP line
-    // read http://symfony.com/doc/current/setup.html#checking-symfony-application-configuration-and-setup
-    // for more information
-    //umask(0000);
-
-    if (class_exists(Debug::class)) {
-        Debug::enable();
-    }
+if ($_SERVER['APP_DEBUG'] && class_exists(Debug::class)) {
+    Debug::enable();
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
