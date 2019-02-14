@@ -7,6 +7,7 @@ use AppBundle\Membership\MembershipRequest;
 use AppBundle\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -38,6 +39,9 @@ class AdherentRegistrationType extends AbstractType
                 'set_address_region' => true,
                 'label' => false,
                 'child_error_bubbling' => false,
+            ])
+            ->add('nationality', CountryType::class, [
+                'placeholder' => 'Nationalité',
             ])
         ;
 

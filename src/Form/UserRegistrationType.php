@@ -7,6 +7,7 @@ use AppBundle\Membership\MembershipRequest;
 use AppBundle\Validator\Repeated;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -24,6 +25,9 @@ class UserRegistrationType extends AbstractType
             ])
             ->add('lastName', TextType::class, [
                 'format_identity_case' => true,
+            ])
+            ->add('nationality', CountryType::class, [
+                'placeholder' => 'Nationalité',
             ])
             ->add('address', AddressType::class)
             ->add('allowNotifications', CheckboxType::class, [

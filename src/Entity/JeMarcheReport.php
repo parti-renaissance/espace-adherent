@@ -48,7 +48,7 @@ class JeMarcheReport
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */

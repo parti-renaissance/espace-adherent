@@ -199,6 +199,7 @@ class AdherentControllerTest extends WebTestCase
                 'gender' => 'male',
                 'firstName' => '',
                 'lastName' => '',
+                'nationality' => '',
                 'address' => [
                     'address' => '',
                     'country' => 'FR',
@@ -217,7 +218,7 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(4, $errors->count());
+        $this->assertSame(5, $errors->count());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
         $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
         $this->assertSame('Veuillez renseigner un code postal.', $errors->eq(2)->text());
@@ -229,6 +230,7 @@ class AdherentControllerTest extends WebTestCase
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
+                'nationality' => 'FR',
                 'address' => [
                     'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
                     'country' => 'FR',

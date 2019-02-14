@@ -43,7 +43,7 @@ class Address implements AddressInterface, GeocodableInterface
     private $cityName;
 
     /**
-     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update"})
+     * @Assert\NotBlank(groups={"Default", "Registration", "Update"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update"})
      */
     private $country;

@@ -27,7 +27,7 @@ class DonationRequest
     private $uuid;
 
     /**
-     * @Assert\NotBlank(message="donation.amount.not_blank")
+     * @Assert\NotBlank
      * @Assert\GreaterThan(value=0, message="donation.amount.greater_than_0")
      * @MaxFiscalYearDonation
      */
@@ -44,7 +44,7 @@ class DonationRequest
     public $gender = Genders::FEMALE;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -55,7 +55,7 @@ class DonationRequest
     public $firstName;
 
     /**
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -66,7 +66,7 @@ class DonationRequest
     public $lastName;
 
     /**
-     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
@@ -153,6 +153,7 @@ class DonationRequest
         $dto->city = $adherent->getCity();
         $dto->cityName = $adherent->getCityName();
         $dto->country = $adherent->getCountry();
+        $dto->nationality = $adherent->getNationality();
 
         return $dto;
     }

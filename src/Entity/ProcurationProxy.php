@@ -108,7 +108,7 @@ class ProcurationProxy
      *
      * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank(message="procuration.first_names.not_blank", groups={"front"})
+     * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(
      *     min=2,
      *     max=100,
@@ -181,7 +181,7 @@ class ProcurationProxy
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"front"})
+     * @Assert\NotBlank(groups={"front"})
      * @Assert\Email(message="common.email.invalid", groups={"front"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"front"})
      */

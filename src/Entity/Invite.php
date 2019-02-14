@@ -31,7 +31,7 @@ class Invite
      *
      * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -46,7 +46,7 @@ class Invite
      *
      * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="common.last_name.not_blank")
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -61,7 +61,7 @@ class Invite
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="common.email.not_blank")
+     * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
