@@ -10,6 +10,7 @@
   color: $sky;
   font-weight: 500;
   cursor: pointer;
+  outline: none;
 
   &:hover {
     border-color: $french-sky-blue;
@@ -84,7 +85,7 @@
   @keyframes slide-down {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(-40px);
     }
 
     25% {
@@ -97,7 +98,7 @@
 
     to {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(-20px);
     }
   }
 }
