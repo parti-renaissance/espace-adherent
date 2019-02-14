@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,12 +21,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminThreadCommentController extends Controller
 {
+    use RedirectToTargetTrait;
+
     /**
      * Moderates a thread comment.
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_comment_disable")
      */
-    public function disableAction(ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
+    public function disableAction(Request $request, ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
     {
         $comment->disable();
 
@@ -34,7 +37,8 @@ class AdminThreadCommentController extends Controller
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le commentaire « %s » a été modéré avec succès.', $comment->getUuid()));
 
-        return $this->redirectToRoute('admin_app_ideasworkshop_thread_show', ['id' => $comment->getThread()->getId()]);
+        return $this->prepareRedirectFromRequest($request)
+            ?? $this->redirectToRoute('admin_app_ideasworkshop_thread_show', ['id' => $comment->getThread()->getId()]);
     }
 
     /**
@@ -42,7 +46,7 @@ class AdminThreadCommentController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_comment_enable")
      */
-    public function enableAction(ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
+    public function enableAction(Request $request, ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
     {
         $comment->enable();
 
@@ -51,6 +55,7 @@ class AdminThreadCommentController extends Controller
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le commentaire « %s » a été activé avec succès.', $comment->getUuid()));
 
-        return $this->redirectToRoute('admin_app_ideasworkshop_thread_show', ['id' => $comment->getThread()->getId()]);
+        return $this->prepareRedirectFromRequest($request)
+            ?? $this->redirectToRoute('admin_app_ideasworkshop_thread_show', ['id' => $comment->getThread()->getId()]);
     }
 }
