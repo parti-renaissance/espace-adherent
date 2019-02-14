@@ -452,6 +452,30 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can't publish my idea if there is a mandatory question without answer
+    Given I am logged as "benjyd@aol.com"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285" with body:
+    """
+    {
+      "needs": [1,2],
+      "answers": [
+        {
+          "question":1,
+          "content":"Réponse à la question 1"
+        },
+        {
+          "question":3,
+          "content":"Réponse à la question 3"
+        }
+      ]
+    }
+    """
+    Then the response status code should be 200
+    Given I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/aa093ce6-8b20-4d86-bfbc-91a73fe47285/publish"
+    Then the response status code should be 400
+
   Scenario: As a logged-in user I can get full information about one idea
     Given I am logged as "benjyd@aol.com"
     And I add "Accept" header equal to "application/json"

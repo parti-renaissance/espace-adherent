@@ -3,12 +3,13 @@
 namespace AppBundle\Controller\Api\IdeasWorkshop;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Repository\IdeaWorkshopQuestionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class IdeaPublishController
 {
-    public function __invoke(Request $request): Idea
+    public function __invoke(Request $request, IdeaWorkshopQuestionRepository $questionRepository): Idea
     {
         /** @var Idea $idea */
         $idea = $request->attributes->get('data');
@@ -17,7 +18,11 @@ class IdeaPublishController
             throw new BadRequestHttpException('You can publish only draft idea');
         }
 
-        $idea->publish();
+        foreach ($idea->getAnswers() as $answer) {
+            if (!\in_array($answer->getQuestion(), $questionRepository->getMandatoryQuestions())) {
+                throw new BadRequestHttpException('You can publish only when all mandatory questions are answered');
+            }
+        }
 
         return $idea;
     }
