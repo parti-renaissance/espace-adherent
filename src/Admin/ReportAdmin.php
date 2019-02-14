@@ -232,10 +232,12 @@ class ReportAdmin extends AbstractAdmin
             ->add('subject', null, [
                 'label' => 'Nom de l\'objet',
                 'template' => 'admin/report/list_subject.html.twig', // This is needed because the concrette class type of objects is not detected for list
+                'header_style' => 'width: 250px',
                 'row_align' => 'none;word-break: break-all;',
             ])
             ->add('author', null, [
                 'label' => 'Requêteur',
+                'row_align' => 'none;word-break: break-all;',
                 'template' => 'admin/report/list_author.html.twig',
             ])
             ->add('reasons', null, [

@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,12 +21,14 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminThreadController extends Controller
 {
+    use RedirectToTargetTrait;
+
     /**
      * Moderates a thread.
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_disable")
      */
-    public function disableAction(Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
+    public function disableAction(Request $request, Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
     {
         $thread->disable();
 
@@ -34,7 +37,8 @@ class AdminThreadController extends Controller
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été modéré avec succès.', $thread->getId()));
 
-        return $this->redirectToRoute('admin_app_ideasworkshop_thread_list');
+        return $this->prepareRedirectFromRequest($request)
+            ?? $this->redirectToRoute('admin_app_ideasworkshop_thread_list');
     }
 
     /**
@@ -42,7 +46,7 @@ class AdminThreadController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_enable")
      */
-    public function enableAction(Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
+    public function enableAction(Request $request, Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
     {
         $thread->enable();
 
@@ -51,6 +55,7 @@ class AdminThreadController extends Controller
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été activé avec succès.', $thread->getId()));
 
-        return $this->redirectToRoute('admin_app_ideasworkshop_thread_list');
+        return $this->prepareRedirectFromRequest($request)
+            ?? $this->redirectToRoute('admin_app_ideasworkshop_thread_list');
     }
 }
