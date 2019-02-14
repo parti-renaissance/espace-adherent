@@ -28,7 +28,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     "event": "AppBundle\Entity\Event",
- *     "citizen_action": "AppBundle\Entity\CitizenAction"
+ *     "citizen_action": "AppBundle\Entity\CitizenAction",
+ *     "institutional_event": "AppBundle\Entity\InstitutionalEvent"
  * })
  *
  * @Algolia\Index
@@ -37,6 +38,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
 {
     const EVENT_TYPE = 'event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';
+    const INSTITUTIONAL_EVENT_TYPE = 'institutional_event';
 
     const STATUS_SCHEDULED = 'SCHEDULED';
     const STATUS_CANCELLED = 'CANCELLED';
@@ -141,7 +143,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
     protected $organizer;
 
     /**
-     * @var int|null
+     * @var int
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *

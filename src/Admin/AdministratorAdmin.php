@@ -84,6 +84,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_COMMITTEES',
                     'ROLE_ADMIN_COMMITTEES_MERGE',
                     'ROLE_ADMIN_EVENTS',
+                    'ROLE_ADMIN_INSTITUTIONAL_EVENTS',
                     'ROLE_ADMIN_CITIZEN_ACTIONS',
                     'ROLE_ADMIN_CITIZEN_PROJECTS',
                     'ROLE_ADMIN_TURNKEY_PROJECTS',

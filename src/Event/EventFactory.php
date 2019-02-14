@@ -7,7 +7,9 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\CitizenAction\CitizenActionCommand;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\CitizenAction;
+use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\PostAddress;
+use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
 
@@ -47,6 +49,36 @@ class EventFactory
             $data['capacity'],
             $data['is_for_legislatives'] ?? false
         );
+        if (!empty($data['time_zone'])) {
+            $event->setTimeZone($data['time_zone']);
+        }
+
+        $this->referentTagManager->assignReferentLocalTags($event);
+
+        return $event;
+    }
+
+    public function createInstitutionalEventFromArray(array $data): InstitutionalEvent
+    {
+        foreach (['uuid', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
+            if (empty($data[$key])) {
+                throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
+            }
+        }
+
+        $uuid = Uuid::fromString($data['uuid']);
+
+        $event = new InstitutionalEvent(
+            $uuid,
+            $data['organizer'] ?? null,
+            $data['name'],
+            $data['category'],
+            $data['description'],
+            $data['address'],
+            $data['begin_at'],
+            $data['finish_at']
+        );
+
         if (!empty($data['time_zone'])) {
             $event->setTimeZone($data['time_zone']);
         }
@@ -98,6 +130,26 @@ class EventFactory
             $command->getCapacity(),
             $command->isForLegislatives()
         );
+        $event->setTimeZone($command->getTimeZone());
+
+        $this->referentTagManager->assignReferentLocalTags($event);
+
+        return $event;
+    }
+
+    public function createFromInstitutionalEventCommand(InstitutionalEventCommand $command): InstitutionalEvent
+    {
+        $event = new InstitutionalEvent(
+            $command->getUuid(),
+            $command->getAuthor(),
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->createPostAddress($command->getAddress()),
+            $command->getBeginAt()->format(\DATE_ATOM),
+            $command->getFinishAt()->format(\DATE_ATOM)
+        );
+
         $event->setTimeZone($command->getTimeZone());
 
         $this->referentTagManager->assignReferentLocalTags($event);

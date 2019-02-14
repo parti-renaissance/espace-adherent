@@ -256,6 +256,16 @@
             <argument type="service" id="app.mailer.campaign" />
         </service>
 
+        <!-- Institutional Events -->
+        <service
+                id="app.institutional_event.handler"
+                class="AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler"
+        >
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="AppBundle\Event\EventFactory"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
         <!-- CitizenActions -->
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionManager"/>
         <service autowire="true" id="AppBundle\CitizenAction\CitizenActionCommandHandler" />
