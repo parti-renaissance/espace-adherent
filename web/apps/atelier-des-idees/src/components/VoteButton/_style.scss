@@ -10,20 +10,26 @@
   cursor: pointer;
 
   &:hover {
-    border: 1px solid $french-sky-blue;
+    border-color: $french-sky-blue;
     opacity: 1;
     color: $french-sky-blue;
+
+    .vote-button__count {
+      color: $light-green;
+    }
   }
 
   &--selected {
-    border: 1px solid $blue;
+    border-color: $blue;
     color: $blue;
-    background-color: $alice-blue;
+
+    .vote-button__count {
+      color: $ufo-green;
+    }
   }
   &--selected:hover {
-    border: 1px solid $blue;
-    color: $blue;
-    background-color: white;
+    border-color: $grey-sky;
+    color: $sky;
   }
 
   .vote-button__flag {
