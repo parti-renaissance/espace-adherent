@@ -6,7 +6,6 @@ export default (formType) => {
     const emailField = dom('#user_registration_emailAddress_first');
     const confirmEmailField = dom('#user_registration_emailAddress_second');
     const zipCodeField = dom('#user_registration_address_postalCode');
-    const captchaBlock = dom('div.g-recaptcha');
 
     /**
      * Display/hide the second email field according the value of first email field
@@ -21,20 +20,7 @@ export default (formType) => {
         }
     };
 
-    /**
-     * Display captcha block when the ZipCode is filled and remove the listener from ZipCode field
-     *
-     * @param event
-     */
-    const displayCaptcha = (event) => {
-        if (event.target.value && -1 !== captchaBlock.parentElement.className.indexOf('visually-hidden')) {
-            removeClass(captchaBlock.parentElement, 'visually-hidden');
-            off(zipCodeField, 'input', displayCaptcha);
-        }
-    };
-
     on(emailField, 'input', checkEmail);
-    on(zipCodeField, 'input', displayCaptcha);
 
     emailField.dispatchEvent(new Event('input'));
     zipCodeField.dispatchEvent(new Event('input'));

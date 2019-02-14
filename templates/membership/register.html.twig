@@ -82,7 +82,7 @@
                     {{ form_label(form.allowNotifications, 'J\'accepte de recevoir par courrier électronique des sollicitations ou informations à des fins de communication politique de la part de En Marche') }}
                 </li>
 
-                <li class="visually-hidden">
+                <li>
                     <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                     {% if recaptcha_public_key is not empty %}
                         {% for flashMessage in app.flashes("error_recaptcha") %}
