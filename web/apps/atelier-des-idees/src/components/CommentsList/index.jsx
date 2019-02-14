@@ -153,8 +153,9 @@ class CommentsList extends React.Component {
                         <button
                             className="comments-list__more-btn"
                             onClick={() => this.props.onLoadMore()}
-                        >{`Afficher plus de ${hasReplies ? 'réponses' : 'contributions'} (${this.props.totalComments -
-                            this.props.comments.length})`}</button>
+                        >{`Afficher plus de ${
+                                hasReplies || !!this.props.parentId ? 'réponses' : 'contributions'
+                            } (${this.props.totalComments - this.props.comments.length})`}</button>
                     </div>
                 )}
                 {this.state.showForm &&

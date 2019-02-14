@@ -45,7 +45,9 @@
     }
 
     p {
-      height: 25px;
+      display: inline-block;
+      width: 100%;
+      min-height: 25px;
       margin: 0;
     }
 
@@ -86,6 +88,7 @@
       }
 
       .question-block-header__question {
+        font-weight: 300;
         color: $weldon-blue;
       }
     }
