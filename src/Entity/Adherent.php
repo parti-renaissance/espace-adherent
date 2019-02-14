@@ -367,6 +367,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $twitterPageUrl;
 
+    /**
+     * @ORM\Column(length=2, nullable=true)
+     */
+    private $nationality;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -393,7 +398,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $registeredAt = 'now',
         ?array $tags = [],
         ?array $referentTags = [],
-        ?array $mandates = null
+        ?array $mandates = null,
+        string $nationality = null
     ) {
         $adherent = new self();
 
@@ -415,6 +421,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->tags = new ArrayCollection($tags);
         $adherent->referentTags = new ArrayCollection($referentTags);
         $adherent->mandates = $mandates;
+        $adherent->nationality = $nationality;
 
         return $adherent;
     }
@@ -793,6 +800,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->phone = $membership->getPhone();
         $this->emailAddress = $membership->getEmailAddress();
         $this->mandates = $membership->getMandates();
+        $this->nationality = $membership->nationality;
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -1411,5 +1419,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setDisplayMedia(bool $displayMedia): void
     {
         $this->displayMedia = $displayMedia;
+    }
+
+    public function getNationality(): ?string
+    {
+        return $this->nationality;
     }
 }

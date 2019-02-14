@@ -15,6 +15,7 @@ Feature:
       | adherent_registration[emailAddress][first]  | jp@test.com         |
       | adherent_registration[emailAddress][second] | jp@test.com         |
       | adherent_registration[password]             | testtest            |
+      | adherent_registration[nationality]          | FR                  |
       | adherent_registration[address][address]     | 1 rue des alouettes |
       | adherent_registration[address][postalCode]  | 94320               |
       | adherent_registration[address][cityName]    | Thiais              |
@@ -105,6 +106,7 @@ Feature:
       | Mot de passe       | testtest    |
       | Code postal        | 38000       |
       | Pays               | CH          |
+      | Nationalité        | CH          |
     And I resolved the captcha
     And I clean the "api_sync" queue
     And I press "Créer mon compte"
@@ -261,6 +263,7 @@ Feature:
     And I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
+      | become_adherent[nationality]         | CH                 |
       | become_adherent[address][country]    | CH                 |
       | become_adherent[address][address]    | 32 Zeppelinstrasse |
       | become_adherent[address][postalCode] | 8057               |
@@ -295,6 +298,7 @@ Feature:
     And I am on "/adhesion"
     And I fill in the following:
       | become_adherent[address][country] | FR                  |
+      | become_adherent[nationality]      | FR                  |
       | become_adherent[address][address] | 1 rue des alouettes |
       | become_adherent[gender]           | male                |
       | become_adherent[phone][number]    | 06 12 34 56 78      |
@@ -325,6 +329,7 @@ Feature:
       | Mot de passe       | testte           |
       | Code postal        | 0000000000000000 |
       | Pays               | FR               |
+      | Nationalité        | FR               |
     And I press "Créer mon compte"
     Then the response status code should be 200
     And I should see 7 ".form__error" elements

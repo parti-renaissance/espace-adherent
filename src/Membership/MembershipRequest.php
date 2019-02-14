@@ -32,7 +32,7 @@ class MembershipRequest implements MembershipInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
+     * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -46,7 +46,7 @@ class MembershipRequest implements MembershipInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="common.first_name.not_blank", groups={"Registration", "Update"})
+     * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -91,6 +91,14 @@ class MembershipRequest implements MembershipInterface
      */
     public $conditions;
 
+    /**
+     * @var string|null
+     *
+     * @Assert\NotBlank(groups={"Registration", "Update"})
+     * @Assert\Country(message="common.nationality.invalid")
+     */
+    public $nationality;
+
     private $allowNotifications = false;
 
     /**
@@ -104,7 +112,7 @@ class MembershipRequest implements MembershipInterface
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"Registration", "Update"})
+     * @Assert\NotBlank(groups={"Registration", "Update"})
      * @Assert\Email(message="common.email.invalid", groups={"Registration", "Update"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Registration", "Update"})
      * @BannedAdherent(groups={"Registration"})
@@ -170,6 +178,7 @@ class MembershipRequest implements MembershipInterface
         $dto->emailAddress = $adherent->getEmailAddress();
         $dto->mandates = $adherent->getMandates();
         $dto->elected = $adherent->hasMandate();
+        $dto->nationality = $adherent->getNationality();
 
         return $dto;
     }

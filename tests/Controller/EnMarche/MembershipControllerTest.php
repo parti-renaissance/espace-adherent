@@ -50,6 +50,7 @@ class MembershipControllerTest extends WebTestCase
         $data = static::createFormData();
         $data['user_registration']['emailAddress']['first'] = $emailAddress;
         $data['user_registration']['emailAddress']['second'] = $emailAddress;
+        $data['user_registration']['nationality'] = 'FR';
         $crawler = $this->client->submit($crawler->selectButton('Créer mon compte')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -156,6 +157,7 @@ class MembershipControllerTest extends WebTestCase
                 'adherent_registration' => [
                     'firstName' => 'Test',
                     'lastName' => 'Adhesion',
+                    'nationality' => 'FR',
                     'emailAddress' => [
                         'first' => 'test@test.com',
                         'second' => 'test@test.com',
@@ -201,6 +203,7 @@ class MembershipControllerTest extends WebTestCase
             $this->client->getCrawler()->selectButton('Je rejoins La République En Marche')->form(),
             [
                 'become_adherent' => [
+                    'nationality' => 'FR',
                     'address' => [
                         'address' => '32 Zeppelinstrasse',
                         'cityName' => 'Zürich',
@@ -281,6 +284,7 @@ class MembershipControllerTest extends WebTestCase
             'user_registration' => [
                 'firstName' => 'jean-pauL',
                 'lastName' => 'duPont',
+                'nationality' => 'FR',
                 'emailAddress' => [
                     'first' => 'jean-paul@dupont.tld',
                     'second' => 'jean-paul@dupont.tld',

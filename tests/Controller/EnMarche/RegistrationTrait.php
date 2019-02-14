@@ -29,6 +29,7 @@ trait RegistrationTrait
             'adherent_registration' => [
                 'firstName' => 'Paul',
                 'lastName' => 'Dupont',
+                'nationality' => 'FR',
                 'emailAddress' => [
                     'first' => 'paul@dupont.tld',
                     'second' => 'paul@dupont.tld',

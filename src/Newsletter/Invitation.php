@@ -8,7 +8,7 @@ class Invitation
 {
     /**
      * @Assert\Type("string")
-     * @Assert\NotBlank(message="common.first_name.not_blank")
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -20,7 +20,7 @@ class Invitation
 
     /**
      * @Assert\Type("string")
-     * @Assert\NotBlank(message="common.last_name.not_blank")
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -35,7 +35,7 @@ class Invitation
      * @Assert\Count(min=1, minMessage="newsletter.guests.min")
      * @Assert\All({
      *     @Assert\Email(message="common.email.invalid"),
-     *     @Assert\NotBlank(message="common.email.not_blank"),
+     *     @Assert\NotBlank,
      *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */

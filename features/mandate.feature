@@ -19,6 +19,7 @@ Feature:
       | adherent_registration[birthdate][month]     | 1                   |
       | adherent_registration[birthdate][year]      | 1989                |
       | adherent_registration[gender]               | male                |
+      | adherent_registration[nationality]          | FR                  |
     And I fill in hidden field "adherent_registration_address_city" with "94320-94073"
     And I fill in hidden field "adherent_registration_address_country" with "FR"
     And I fill in hidden field "adherent_registration_mandates" with "regional_councilor"

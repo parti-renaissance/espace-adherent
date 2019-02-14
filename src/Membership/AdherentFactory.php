@@ -40,7 +40,8 @@ class AdherentFactory
             'now',
             [],
             [],
-            $request->getMandates()
+            $request->getMandates(),
+            $request->nationality
         );
     }
 
@@ -65,7 +66,11 @@ class AdherentFactory
             $data['nickname'] ?? null,
             $data['nickname_used'] ?? false,
             Adherent::DISABLED,
-            isset($data['registered_at']) ? $data['registered_at'] : 'now'
+            isset($data['registered_at']) ? $data['registered_at'] : 'now',
+            [],
+            [],
+            null,
+            $data['nationality'] ?? null
         );
 
         if (!isset($data['isAdherent']) || $data['isAdherent']) {
