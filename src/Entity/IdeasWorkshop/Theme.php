@@ -59,7 +59,7 @@ class Theme implements EnabledInterface
      *
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"theme_read", "idea_list_read"})
+     * @SymfonySerializer\Groups({"theme_read", "idea_list_read", "idea_read"})
      */
     protected $name;
 
