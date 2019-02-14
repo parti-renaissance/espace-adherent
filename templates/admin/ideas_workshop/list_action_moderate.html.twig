@@ -5,7 +5,7 @@
     {% if object.enabled %}
         {% set action_url = path("app_admin_#{url_type}_disable", { uuid: object.uuid }) %}
 
-        <a href="{{ is_deleted ? '#' : action_url }}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
+        <a href="{{ is_deleted ? '#' : action_url }}{{ targetRoute is defined ? '?target_route='~targetRoute : ''}}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
            title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Modérer' }}" rel="noopener noreferrer">
             <i class="fa fa-minus-circle" aria-hidden="true" style="color: red;"></i>
             Modérer
@@ -13,7 +13,7 @@
     {% else %}
         {% set action_url = path("app_admin_#{url_type}_enable", { uuid: object.uuid }) %}
 
-        <a href="{{ is_deleted ? '#' : action_url }}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
+        <a href="{{ is_deleted ? '#' : action_url }}{{ targetRoute is defined ? '?target_route='~targetRoute : ''}}" class="btn btn-sm btn-default view_link {{ is_deleted ? 'disabled' : '' }}"
            title="{{ is_deleted ? 'Action impossible, l\'objet a été supprimé' : 'Réactiver' }}" rel="noopener noreferrer">
             <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i>
             Réactiver
