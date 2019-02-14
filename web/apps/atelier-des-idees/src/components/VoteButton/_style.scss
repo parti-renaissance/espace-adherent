@@ -2,6 +2,8 @@
   position: relative;
   display: flex;
   justify-content: space-between;
+  min-width: 90px;
+  min-height: 30px;
   border: 1px solid $grey-sky;
   border-radius: 2px;
   background-color: $white;
@@ -44,13 +46,12 @@
     z-index: 5;
 
     opacity: 0;
-
-    .up > & {
-      animation: slide-up 500ms ease-out;
-    }
-    .down > & {
-      animation: slide-down 500ms ease-out;
-    }
+  }
+  &.up > .vote-button__flag {
+    animation: slide-up 500ms ease-out;
+  }
+  &.down > .vote-button__flag {
+    animation: slide-down 500ms ease-out;
   }
 
   @media #{$mobile} {
