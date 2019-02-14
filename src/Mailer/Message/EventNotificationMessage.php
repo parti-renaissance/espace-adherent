@@ -35,11 +35,11 @@ class EventNotificationMessage extends Message
         $vars = static::getTemplateVars(
             $host->getFirstName(),
             $event->getName(),
-            static::formatDate($event->getBeginAt(), 'EEEE d MMMM y'),
+            static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
             sprintf(
                 '%sh%s',
-                static::formatDate($event->getBeginAt(), 'HH'),
-                static::formatDate($event->getBeginAt(), 'mm')
+                static::formatDate($event->getLocalBeginAt(), 'HH'),
+                static::formatDate($event->getLocalBeginAt(), 'mm')
             ),
             $event->getInlineFormattedAddress(),
             $eventLink,
@@ -53,7 +53,7 @@ class EventNotificationMessage extends Message
             $recipient->getFullName(),
             sprintf(
                 '%s - %s : Nouvel événement de %s : %s',
-                static::formatDate($event->getBeginAt(), 'd MMMM'),
+                static::formatDate($event->getLocalBeginAt(), 'd MMMM'),
                 $vars['event_hour'],
                 $event->getCommittee()->getName(),
                 $vars['event_name']
