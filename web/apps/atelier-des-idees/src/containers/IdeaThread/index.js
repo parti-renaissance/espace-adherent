@@ -53,6 +53,9 @@ function mapStateToProps(state, { questionId }) {
         }
         return acc;
     }, []);
+    const totalThreads = currentAnswer && currentAnswer.threads.total_items; // total number of threads
+    const totalThreadComments = answerThreads.reduce((acc, thread) => acc + thread.nbReplies, 0); // total number of thread comments
+    const total = totalThreads + totalThreadComments; // total number of contributions (threads + comments)
     return {
         comments: sortEntitiesByDate(answerThreads),
         isAuthenticated,
@@ -61,7 +64,8 @@ function mapStateToProps(state, { questionId }) {
         sendingReplies: sendingThreadComments,
         currentUserId: currentUser.uuid,
         ownerId: currentIdea.author && currentIdea.author.uuid,
-        total: currentAnswer && currentAnswer.threads.total_items,
+        total,
+        totalComments: totalThreads,
         withCGU: !currentUser.comments_cgu_accepted,
     };
 }
