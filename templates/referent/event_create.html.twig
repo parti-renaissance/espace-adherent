@@ -23,6 +23,8 @@
     <hr />
 
     <div class="l__wrapper--slim">
+        {{ include('components/alert_european_elections.html.twig') }}
+
         {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
         {{ form_errors(form) }}
 
