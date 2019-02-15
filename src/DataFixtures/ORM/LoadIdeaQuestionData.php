@@ -98,7 +98,7 @@ class LoadIdeaQuestionData extends AbstractFixture implements DependentFixtureIn
             'Masquée',
             'Elle n\'est pas affichée.',
             9,
-            false,
+            true,
             false
         );
         $guidelineImplementation->addQuestion($questionDisabled);

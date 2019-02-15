@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;

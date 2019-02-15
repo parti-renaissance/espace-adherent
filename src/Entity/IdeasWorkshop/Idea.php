@@ -18,6 +18,7 @@ use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
 use AppBundle\Report\ReportType;
 use AppBundle\Validator\CommitteeMember;
+use AppBundle\Validator\MandatoryQuestion;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -177,7 +178,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * })
  * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeaRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeasWorkshop\IdeaRepository")
  *
  * @ORM\Table(
  *     name="ideas_workshop_idea",
@@ -314,8 +315,9 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     /**
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea", cascade={"all"}, orphanRemoval=true)
      *
-     * @Assert\Count(min=1, minMessage="idea.answers.min_count", groups={"idea_publish"})
      * @Assert\Valid
+     *
+     * @MandatoryQuestion(groups={"idea_publish"})
      *
      * @SymfonySerializer\Groups({"idea_write", "idea_read", "with_answers"})
      */
