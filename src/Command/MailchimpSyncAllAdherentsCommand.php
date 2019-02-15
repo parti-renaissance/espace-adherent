@@ -3,10 +3,11 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeChangeCommand;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +35,10 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('limit', null, InputOption::VALUE_REQUIRED, null, 0);
+        $this
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
+            ->addOption('ref-tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+        ;
     }
 
     public function initialize(InputInterface $input, OutputInterface $output)
@@ -44,41 +48,62 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $count = $this->adherentRepository->countActiveAdherents();
         $limit = (int) $input->getOption('limit');
+        if ($limit < 1) {
+            throw new InvalidOptionException(sprintf('Limit value is invalid (%d)', $limit));
+        }
 
-        $this->io->progressStart($limit && $limit < $count ? $limit : $count);
+        $paginator = $this->getQueryBuilder($input->getOption('ref-tags'));
+
+        $count = $paginator->count();
+        $total = $limit && $limit < $count ? $limit : $count;
+
+        if (false === $this->io->confirm(sprintf('Are you sure to sync %d adherents?', $total), false)) {
+            return 1;
+        }
+
+        $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
+
+        $this->io->progressStart($total);
         $offset = 0;
 
-        /** @var Adherent[] $result */
-        while ($result = $this->getAdherents($limit, $offset)) {
-            foreach ($result as $index => $adherent) {
+        do {
+            foreach ($paginator->getIterator() as $adherent) {
                 $this->bus->dispatch(new AdherentChangeChangeCommand(
                     $adherent->getUuid(),
                     $adherent->getEmailAddress()
                 ));
                 $this->io->progressAdvance();
-
-                if ($limit && $limit <= $offset + $index + 1) {
-                    break;
+                ++$offset;
+                if ($limit && $limit <= $offset) {
+                    break 2;
                 }
             }
 
-            $this->entityManager->clear();
+            $paginator->getQuery()->setFirstResult($offset);
 
-            $offset += \count($result);
-        }
+            $this->entityManager->clear();
+        } while ($offset < $count && (!$limit || $offset < $limit));
 
         $this->io->progressFinish();
     }
 
-    private function getAdherents(int $limit, int $offset): array
+    private function getQueryBuilder(array $refTags): Paginator
     {
-        return $this->adherentRepository->findBy(
-            ['status' => Adherent::ENABLED],
-            null,
-            $limit && $limit < 5 ? $limit : 5,
-            $offset
-        );
+        $queryBuilder = $this->adherentRepository
+            ->createQueryBuilder('adherent')
+            ->where('adherent.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+        ;
+
+        if ($refTags) {
+            $queryBuilder
+                ->innerJoin('adherent.referentTags', 'tag')
+                ->andWhere('tag.code IN(:tags)')
+                ->setParameter('tags', $refTags)
+            ;
+        }
+
+        return new Paginator($queryBuilder->getQuery());
     }
 }
