@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Listener;
 
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\IdeasWorkshop\Answer;
 use AppBundle\Entity\UserDocument;
 use AppBundle\Entity\UserDocumentInterface;
 use AppBundle\UserDocument\UserDocumentManager;
@@ -35,6 +36,11 @@ class ContainingUserDocumentListener
         $this->prePersist($args, $event->getDescription(), $event);
     }
 
+    public function prePersistAnswer(Answer $answer, LifecycleEventArgs $args): void
+    {
+        $this->prePersist($args, $answer->getContent(), $answer);
+    }
+
     public function preUpdateCommitteeFeed(CommitteeFeedItem $committeeFeedItem, LifecycleEventArgs $args): void
     {
         $this->preUpdate($args, 'content', $committeeFeedItem);
@@ -43,6 +49,11 @@ class ContainingUserDocumentListener
     public function preUpdateEvent(Event $event, PreUpdateEventArgs $args): void
     {
         $this->preUpdate($args, 'description', $event);
+    }
+
+    public function preUpdateAnswer(Answer $answer, PreUpdateEventArgs $args): void
+    {
+        $this->preUpdate($args, 'content', $answer);
     }
 
     public function postUpdate(UserDocumentInterface $object, LifecycleEventArgs $args): void
@@ -82,7 +93,7 @@ class ContainingUserDocumentListener
 
     private function preUpdate(LifecycleEventArgs $args, string $field, $object): void
     {
-        if ($object instanceof UserDocumentInterface && method_exists($object, 'getUuid')) {
+        if ($object instanceof UserDocumentInterface) {
             if (!$args->hasChangedField($field)) {
                 return;
             }

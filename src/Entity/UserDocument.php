@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,12 +29,14 @@ class UserDocument
     public const TYPE_COMMITTEE_FEED = 'committee_feed';
     public const TYPE_EVENT = 'event';
     public const TYPE_REFERENT = 'referent';
+    public const TYPE_IDEA_ANSWER = 'idea_answer';
 
     public const ALL_TYPES = [
         self::TYPE_COMMITTEE_CONTACT,
         self::TYPE_COMMITTEE_FEED,
         self::TYPE_EVENT,
         self::TYPE_REFERENT,
+        self::TYPE_IDEA_ANSWER,
     ];
 
     /**
@@ -193,5 +196,20 @@ class UserDocument
             $uploadedFile->getClientOriginalExtension(),
             $uploadedFile->getClientSize()
         );
+    }
+
+    public static function create(UuidInterface $uuid, string $type, string $mimeType, string $name, string $extension, int $size): self
+    {
+        $document = new self(
+            $mimeType,
+            $name,
+            $extension,
+            $size
+        );
+
+        $document->uuid = $uuid;
+        $document->type = $type;
+
+        return $document;
     }
 }

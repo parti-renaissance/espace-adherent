@@ -18,7 +18,7 @@ class IdeaReport extends Report
      * @var Idea
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\IdeasWorkshop\Idea")
-     * @ORM\JoinColumn(name="idea_id")
+     * @ORM\JoinColumn(name="idea_id", onDelete="CASCADE")
      */
     protected $subject;
 }
