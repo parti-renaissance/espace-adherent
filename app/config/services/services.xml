@@ -436,6 +436,7 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>
         </service>
+        <service id="AppBundle\Validator\MandatoryQuestionValidator" />
 
         <!-- ParamConverter -->
         <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
@@ -551,7 +552,7 @@
             <argument type="service" id="logger" on-invalid="ignore"/>
             <argument type="collection"><argument key="status"/></argument>
             <call method="setIdeaRepository">
-                <argument type="service" id="AppBundle\Repository\IdeaRepository" />
+                <argument type="service" id="AppBundle\Repository\IdeasWorkshop\IdeaRepository" />
             </call>
         </service>
     </services>

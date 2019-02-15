@@ -5,7 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\IdeaContributionsMessage;
-use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
