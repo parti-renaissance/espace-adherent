@@ -7,6 +7,10 @@
     margin-right: 5px;
     font-size: 16px;
     color: $dark-aurometalsaurus;
+
+    @media #{$mobile} {
+        display: none;
+    }
   }
 
   .SocialMediaShareButton {
