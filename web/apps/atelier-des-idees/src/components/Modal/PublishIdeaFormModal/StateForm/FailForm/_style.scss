@@ -7,11 +7,17 @@
 	align-items: center;
 
 	&__title {
-		margin-top: 76px;
+		margin-top: 60px;
+    	font-size: 26px;
 	}
 
 	&__subtitle {
-		margin: 0 0 35px;
+		margin: 15px 0 35px;
+
+		a {
+			color: $saphir;
+			border: none;
+		}
 	}
 
 	&__button {
