@@ -465,6 +465,7 @@ Feature:
         "themes": [
             {
                 "id": 1,
+                "name": "Armées et défense",
                 "thumbnail": "http://test.enmarche.code/assets/images/ideas_workshop/themes/default.png"
             }
         ],
