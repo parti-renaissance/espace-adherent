@@ -76,7 +76,7 @@ db: vendor wait-for-db                                                          
 	$(CONSOLE) doctrine:fixtures:load -n
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
-	$(CONSOLE) doctrine:migration:diff
+	$(CONSOLE) doctrine:migration:diff --formatted
 
 db-diff-dump: vendor wait-for-db                                                                       ## Generate a migration by comparing your current database to your mapping information and display it in console
 	$(CONSOLE) doctrine:schema:update --dump-sql
