@@ -7,7 +7,6 @@
             <th>{{ 'citizen_project.list.support_committees'|trans }}</th>
             <th>{{ 'citizen_project.list.place'|trans }}</th>
             <th>{{ 'citizen_project.about'|trans }}</th>
-            <th>{{ 'citizen_project.list.comment'|trans }}</th>
             <th>{{ 'citizen_project.list.status'|trans }}</th>
         </tr>
     </thead>
@@ -76,10 +75,7 @@
                                 {% endfor %}
                             </ul>
                         {% endfor %}
-                        {{ form_widget(form.coordinatorComment, {attr: {class: 'form__field--textarea-120'}}) }}
-                    {% else %}
-                        {{ project.coordinatorComment|escape|read_more(100, 'comment' ~ project.id, 'common.show_more'|trans, 'common.show_less'|trans) }}
-                    {% endif %}
+                   {% endif %}
                 </td>
                 <td>
                     {% if project.isPending %}
