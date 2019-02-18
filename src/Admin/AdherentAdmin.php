@@ -19,7 +19,7 @@ use AppBundle\Intl\UnitedNationsBundle;
 use AppBundle\Membership\Mandates;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
-use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;

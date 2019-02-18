@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace AppBundle\Repository\IdeasWorkshop;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Answer;
@@ -10,6 +10,7 @@ use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
+use AppBundle\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
