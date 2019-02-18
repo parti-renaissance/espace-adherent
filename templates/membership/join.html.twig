@@ -206,7 +206,7 @@
                     </div>
 
                     {% if not has_role_user %}
-                        <div class="visually-hidden form__captcha">
+                        <div class="form__captcha">
                             <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                             {% if recaptcha_public_key is not empty %}
                                 {% for flashMessage in app.flashes("error_recaptcha") %}
