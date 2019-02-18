@@ -221,11 +221,21 @@
 
       &__title {
         font-size: 22px;
-        margin-bottom: 15px;
+        height: auto;
+      }
+
+      &__description {
+          height: auto;
+          margin-top: 5px;
+          margin-bottom: 15px;
       }
 
       &__infos {
         flex-direction: column;
+
+        &__ideas {
+            margin-top: 5px;
+        }
       }
     }
 
