@@ -21,7 +21,7 @@ class MyContributions extends React.Component {
     }
 
     paginate(page) {
-        this.el.scrollIntoView(true);
+        this.el.current.scrollIntoView(true);
         this.props.getMyContribs({ page });
     }
 
