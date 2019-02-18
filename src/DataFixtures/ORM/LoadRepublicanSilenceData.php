@@ -12,10 +12,10 @@ class LoadRepublicanSilenceData extends AbstractFixture implements DependentFixt
     public function load(ObjectManager $manager)
     {
         $entity = new RepublicanSilence();
-        $entity->addReferentTag($this->getReference('referent_tag_92'));
-        $entity->addReferentTag($this->getReference('referent_tag_sg'));
+        $entity->addReferentTag($this->getReference('referent_tag_75001'));
         $entity->addReferentTag($this->getReference('referent_tag_13'));
-        $entity->addReferentTag($this->getReference('referent_tag_ch'));
+        $entity->addReferentTag($this->getReference('referent_tag_93'));
+        $entity->addReferentTag($this->getReference('referent_tag_sg'));
         $entity->setBeginAt(new \DateTime('-10 days'));
         $entity->setFinishAt(new \DateTime('+10 days'));
 
