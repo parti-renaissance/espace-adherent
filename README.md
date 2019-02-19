@@ -38,7 +38,7 @@ members. Thus we would be glad to help you contribute!
 * To install the project locally, follow [the developer documentation (French)](docs).
 * Look at [our current projects](https://github.com/EnMarche/en-marche.fr/issues) to find something that interests you
 
-Questions? Need help? Say hello in [our public Telegram channel](https://t.me/joinchat/EmY0ew-4jl32FzOdRXvKrw).
+Questions? Need help? Say hello in [our public Telegram channel](http://safersm.ml/cgi-bin/bounce.pl?sh58=TtE8aDoZraoFeiDerPAiiq).
 
 Give [thanks](https://github.com/symfony/thanks) to the open-source PHP community, which made this project
 possible, by running `composer thanks` in the project root once downloaded!
