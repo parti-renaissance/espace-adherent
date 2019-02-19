@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class ReferentZoneFilter extends AbstractAdherentMessageFilter
+class AdherentZoneFilter extends AbstractAdherentMessageFilter
 {
     /**
      * @var ReferentTag[]|Collection

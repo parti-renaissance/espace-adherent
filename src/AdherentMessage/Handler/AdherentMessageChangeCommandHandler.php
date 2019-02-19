@@ -2,6 +2,7 @@
 
 namespace AppBundle\AdherentMessage\Handler;
 
+use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Repository\AdherentMessageRepository;
