@@ -27,9 +27,6 @@
 
         <!-- CitizenProject -->
         <service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
-        <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
-            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
-        </service>
         <service id="AppBundle\CitizenProject\CitizenProjectManager">
             <call method="setGlide">
                 <argument type="service" id="app.glide" />
@@ -151,7 +148,6 @@
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
 
         <!-- Form -->
-        <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
         <service id="AppBundle\Form\AdherentMessageTypeType"/>
         <service id="AppBundle\Form\ReferentTagChoiceType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>

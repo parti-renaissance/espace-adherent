@@ -9,7 +9,6 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CitizenProjectApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationCoordinatorNotificationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationNotificationMessage;
@@ -72,15 +71,6 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
             $hosts,
             $followerAddedEvent->getNewFollower()
         ));
-    }
-
-    public function sendCommentCreatedEmail(CitizenProjectCommentEvent $commentCreatedEvent): void
-    {
-        if ($commentCreatedEvent->isSendMail()) {
-            foreach ($this->getOptinCitizenProjectFollowersChunks($commentCreatedEvent->getCitizenProject()) as $chunk) {
-                $this->mailer->sendMessage(CitizenProjectCommentMessage::create($chunk, $commentCreatedEvent->getComment()));
-            }
-        }
     }
 
     public function sendAdherentNotificationCreation(Adherent $adherent, CitizenProject $citizenProject, Adherent $creator): void

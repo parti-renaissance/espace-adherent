@@ -2,10 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\CitizenProject\CitizenProjectCommentCommand;
-use AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler;
 use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\CitizenProjectCategorySkill;
@@ -13,9 +10,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\TurnkeyProjectFile;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
-use AppBundle\Form\CitizenProjectCommentCommandType;
-use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use AppBundle\Storage\FileRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -60,44 +54,6 @@ class CitizenProjectController extends Controller
             'citizen_actions' => $citizenProjectManager->getCitizenProjectActions($citizenProject),
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
             'form_committee_support' => $this->createForm(FormType::class)->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{slug}/discussions", name="app_citizen_project_show_comments")
-     * @Method("GET|POST")
-     * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
-     */
-    public function showCommentsAction(
-        Request $request,
-        CitizenProject $citizenProject,
-        CitizenProjectManager $citizenProjectManager,
-        CitizenActionRepository $actionRepository,
-        CitizenProjectCommentRepository $projectCommentRepository
-    ): Response {
-        $form = null;
-
-        if ($this->isGranted(CitizenProjectPermissions::COMMENT, $citizenProject)) {
-            $commentCommand = new CitizenProjectCommentCommand($citizenProject, $this->getUser());
-            $form = $this->createForm(CitizenProjectCommentCommandType::class, $commentCommand)
-                ->handleRequest($request)
-            ;
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->get(CitizenProjectCommentCreationCommandHandler::class)->handle($commentCommand);
-                $this->addFlash('info', 'Votre commentaire a bien été publié.');
-
-                return $this->redirectToRoute('app_citizen_project_show_comments', ['slug' => $citizenProject->getSlug()]);
-            }
-        }
-
-        return $this->render('citizen_project/show_comments.html.twig', [
-            'citizen_project' => $citizenProject,
-            'citizen_actions' => $actionRepository->findNextCitizenActionsForCitizenProject($citizenProject),
-            'form_committee_support' => $this->createForm(FormType::class)->createView(),
-            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
-            'comments' => $projectCommentRepository->findForProject($citizenProject),
-            'form' => $form ? $form->createView() : null,
         ]);
     }
 
