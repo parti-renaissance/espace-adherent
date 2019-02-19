@@ -24,7 +24,7 @@ class DeputyControllerTest extends WebTestCase
 
     public function testSendMailSuccessful()
     {
-        $deputyEmail = 'deputy@en-marche-dev.fr';
+        $deputyEmail = 'deputy-ch-li@en-marche-dev.fr';
         $this->authenticateAsAdherent($this->client, $deputyEmail);
 
         $this->client->request(Request::METHOD_GET, '/espace-depute/utilisateurs/message');
