@@ -3,37 +3,13 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Exception\CoordinatorAreaAlreadyTreatedException;
-use Doctrine\ORM\Mapping as ORM;
 
 trait CoordinatorAreaTrait
 {
     /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $coordinatorComment;
-
-    /**
      * @var Adherent|null
      */
     private $creator;
-
-    /**
-     * @return string
-     */
-    public function getCoordinatorComment(): ?string
-    {
-        return $this->coordinatorComment;
-    }
-
-    /**
-     * @param string $coordinatorComment
-     */
-    public function setCoordinatorComment(?string $coordinatorComment): void
-    {
-        $this->coordinatorComment = $coordinatorComment;
-    }
 
     public function getCreator(): ?Adherent
     {

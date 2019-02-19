@@ -14,7 +14,6 @@ use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
@@ -45,7 +44,6 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\AdherentResetPasswordTokenRepository;
 use AppBundle\Repository\AdministratorRepository;
 use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\CitizenProjectCommentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -173,11 +171,6 @@ trait TestHelperTrait
     public function getTurnkeyProjectRepository(): TurnkeyProjectRepository
     {
         return $this->getRepository(TurnkeyProject::class);
-    }
-
-    public function getCitizenProjectCommentRepository(): CitizenProjectCommentRepository
-    {
-        return $this->getRepository(CitizenProjectComment::class);
     }
 
     public function getCitizenActionRepository(): CitizenActionRepository

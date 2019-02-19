@@ -7,7 +7,6 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
@@ -64,7 +63,6 @@ class AdherentRegistry
 
         $this->em->getRepository(EventRegistration::class)->anonymizeAdherentRegistrations($adherent);
         $this->em->getRepository(CommitteeFeedItem::class)->removeAuthorItems($adherent);
-        $this->em->getRepository(CitizenProjectComment::class)->removeForAuthor($adherent);
         $this->em->getRepository(Report::class)->anonymizeAuthorReports($adherent);
 
         if ($token = $this->em->getRepository(AdherentActivationToken::class)->findOneBy(['adherentUuid' => $adherent->getUuid()->toString()])) {

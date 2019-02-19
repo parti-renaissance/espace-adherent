@@ -124,12 +124,6 @@
                 <a class="{{ currentRoute == 'app_citizen_project_show' ? 'active' }}" href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}">{{ 'citizen_project.our_field_action'|trans }}</a>
             </li>
             <hr>
-            {% if can_see_comment_citizen_project(citizen_project) %}
-                <li>
-                    <a class="{{ currentRoute == 'app_citizen_project_show_comments' ? 'active' }}" href="{{ path('app_citizen_project_show_comments', {slug: citizen_project.slug}) }}">{{ 'citizen_project.thread'|trans }}</a>
-                </li>
-                <hr>
-            {% endif %}
         </ul>
         <section>
             {% block citizen_project_show_content %}{% endblock %}
