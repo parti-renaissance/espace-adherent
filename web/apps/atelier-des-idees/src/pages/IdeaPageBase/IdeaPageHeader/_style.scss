@@ -28,17 +28,22 @@
       margin-left: auto;
 
       .share-buttons:not(:only-child) {
-        margin-right: 20px;
+        margin-right: 10px;
         border-right: 1px solid $platinum;
-        padding-right: 20px;
+        padding-right: 15px;
       }
     }
 
     .idea-page-header__report {
       display: inline-flex;
+      outline: 0;
+      width: 30px;
+      height: 30px;
+      padding: 4px;
 
       > img {
-        width: 30px;
+        width: 22px;
+        transform: rotate(90deg);
       }
     }
 
@@ -67,20 +72,26 @@
   /* Responsive */
   @media #{$mobile} {
     .idea-page-header__inner {
-      flex-direction: column;
       height: initial;
-      padding: 30px 0;
+      padding: 20px 0;
+      flex-wrap: wrap;
 
       .idea-page-header__back {
         margin: 0;
+        order: 1;
+      }
+
+      .switch-wrapper {
+        margin: 15px auto 0;
+        order: 3;
       }
       .idea-page-header__report {
         margin: 0;
       }
 
       .idea-page-header__right {
-        margin-top: 20px;
-        margin-left: 0;
+        margin-left: auto;
+        order: 2;
       }
     }
   }

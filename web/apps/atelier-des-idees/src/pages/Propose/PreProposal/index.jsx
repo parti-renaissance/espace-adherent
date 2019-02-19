@@ -30,7 +30,8 @@ class PreProposal extends React.PureComponent {
                     </div>
                 </div>
                 <p className="pre-proposal__footer">
-					Vous avez des questions ? Écrivez-nous à{' '}
+					Vous avez des questions ou des suggestions à nous faire ?<br/>
+                    Écrivez-nous à{' '}
                     <a className="pre-proposal__footer__highlighted" href="mailto:atelier-des-idees@en-marche.fr">
 						atelier-des-idees@en-marche.fr
                     </a>{' '}

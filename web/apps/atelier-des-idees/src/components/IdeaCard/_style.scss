@@ -192,6 +192,10 @@
 
       line-height: #{$title-height / 2};
       height: $title-height;
+
+      @media #{$mobile} {
+          height: auto;
+      }
     }
 
     .idea-card__theme__icon {
@@ -211,6 +215,7 @@
 
   /* Responsive */
   @media #{$mobile} {
+
     &__main {
       padding: 20px;
       padding-bottom: 25px;
@@ -221,11 +226,22 @@
 
       &__title {
         font-size: 22px;
-        margin-bottom: 15px;
+        height: auto;
+        max-height: 50px;
+      }
+
+      &__description {
+          height: auto;
+          margin-top: 5px;
+          margin-bottom: 15px;
       }
 
       &__infos {
         flex-direction: column;
+
+        &__ideas {
+            margin-top: 5px;
+        }
       }
     }
 
