@@ -148,7 +148,6 @@
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
 
         <!-- Form -->
-        <service id="AppBundle\Form\AdherentMessageTypeType"/>
         <service id="AppBundle\Form\ReferentTagChoiceType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
@@ -489,6 +488,9 @@
         </service>
 
         <service id="AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+        <service id="AppBundle\AdherentMessage\Handler\CreateDefaultMessageFilterHandler">
             <tag name="messenger.message_handler" />
         </service>
 

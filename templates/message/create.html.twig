@@ -32,18 +32,6 @@
             {{ form_start(form) }}
             {{ form_errors(form) }}
 
-            {% if form.type is defined %}
-                {% if form.type.vars.label is same as (false) %}
-                    {{ form_widget(form.type) }}
-                {% else %}
-                    <div class="form__row">
-                        {{ form_label(form.type, 'Type de message') }}
-                        {{ form_errors(form.type) }}
-                        {{ form_widget(form.type, {attr: {class: 'form--full'}}) }}
-                    </div>
-                {% endif %}
-            {% endif %}
-
             <div class="form__row subject">
                 {{ form_label(form.label, 'Label') }}
                 {{ form_errors(form.label) }}

@@ -25,7 +25,11 @@ interface AdherentMessageInterface extends AuthoredInterface, AdherentMessageSyn
 
     public function getFilter(): ?AdherentMessageFilterInterface;
 
+    public function setFilter(AdherentMessageFilterInterface $filter): void;
+
     public function getFromName(): ?string;
 
     public function getReplyTo(): ?string;
+
+    public function hasReadOnlyFilter(): bool;
 }

@@ -5,7 +5,7 @@ namespace AppBundle\AdherentMessage\Filter;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\Filter\ReferentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 
 abstract class FilterFactory
 {
@@ -14,6 +14,8 @@ abstract class FilterFactory
         switch ($messageType) {
             case AdherentMessageTypeEnum::REFERENT:
                 return static::createReferentFilter($user);
+            case AdherentMessageTypeEnum::DEPUTY:
+                return static::createDeputyFilter($user);
         }
     }
 
@@ -34,9 +36,18 @@ abstract class FilterFactory
         }
 
         if ($count = \count($validTags)) {
-            return $count > 1 ? new ReferentZoneFilter($validTags) : new ReferentUserFilter(current($validTags));
+            return $count > 1 ? new AdherentZoneFilter($validTags) : new ReferentUserFilter(current($validTags));
         }
 
         throw new \RuntimeException(sprintf('[AdherentMessage] The current referent "%s" does not have a valid referent tag for creating a filter', $user->getEmailAddress()));
+    }
+
+    private static function createDeputyFilter(Adherent $user): AdherentMessageFilterInterface
+    {
+        if (!$user->isDeputy()) {
+            throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a deputy');
+        }
+
+        return new AdherentZoneFilter([$user->getManagedDistrict()->getReferentTag()]);
     }
 }

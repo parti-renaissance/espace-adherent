@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Handler;
+namespace AppBundle\AdherentMessage\Command;
 
 use AppBundle\Messenger\Message\AsyncMessageInterface;
 use Ramsey\Uuid\UuidInterface;
