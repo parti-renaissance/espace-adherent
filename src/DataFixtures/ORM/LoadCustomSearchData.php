@@ -23,7 +23,7 @@ class LoadCustomSearchData implements FixtureInterface, ContainerAwareInterface
         $description = 'Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, '.
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';
 
-        $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
+        $mediaFile = new File(__DIR__.'/../../../data/dist/10decembre.jpg');
         $storage->put('images/custom_search.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $mediaFactory->createFromFile('Custom search image', 'custom_search.jpg', $mediaFile);
 

@@ -152,7 +152,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
                 continue;
             }
             $mediaFile = new File(sprintf(
-              '%s/app/data/dist/%s',
+              '%s/data/dist/%s',
               $this->getContainer()->getParameter('kernel.project_dir'),
               $item['path']
             ));

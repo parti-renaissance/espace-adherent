@@ -23,7 +23,7 @@ class LoadProposalData implements FixtureInterface, ContainerAwareInterface
         $em = $this->container->get('doctrine.orm.entity_manager');
 
         // Media
-        $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
+        $mediaFile = new File(__DIR__.'/../../../data/dist/guadeloupe.jpg');
         $storage->put('images/proposal.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $mediaFactory->createFromFile('Proposition image', 'proposal.jpg', $mediaFile);
         $em->persist($media);

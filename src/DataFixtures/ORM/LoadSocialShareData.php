@@ -24,7 +24,7 @@ class LoadSocialShareData implements FixtureInterface, ContainerAwareInterface
         $medias = [];
 
         for ($i = 1; $i <= 4; ++$i) {
-            $mediaFile = new File(__DIR__.'/../../../app/data/dist/social'.$i.'.jpg');
+            $mediaFile = new File(__DIR__.'/../../../data/dist/social'.$i.'.jpg');
             $storage->put('images/social'.$i.'.jpg', file_get_contents($mediaFile->getPathname()));
 
             $manager->persist($media = $mediaFactory->createFromFile('Social image '.$i, 'social'.$i.'.jpg', $mediaFile));

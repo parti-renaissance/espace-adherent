@@ -1,2 +1,0 @@
-parameters:
-    env(APP_VERSION): default # to modify with commit hash by CI

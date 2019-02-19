@@ -20,7 +20,7 @@ class LoadOrderArticleData extends Fixture
         $storage = $this->container->get('app.storage');
 
         // Media
-        $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
+        $mediaFile = new File(__DIR__.'/../../../data/dist/guadeloupe.jpg');
         $storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $mediaFactory->createFromFile('Order article image', 'order_article.jpg', $mediaFile);
 

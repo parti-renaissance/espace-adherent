@@ -35,7 +35,7 @@ if ('prod' === $env) {
     }
 }
 
-require __DIR__.'/../app/trusted_proxies.php';
+require __DIR__.'/../config/trusted_proxies.php';
 
 if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts(explode(',', $trustedHosts));

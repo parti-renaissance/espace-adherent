@@ -41,7 +41,7 @@
                 <service class="League\Flysystem\Adapter\AdapterInterface">
                     <factory class="AppBundle\Storage\FilesystemAdapterFactory" method="createAdapter" />
                     <argument>%kernel.environment%</argument>
-                    <argument>%kernel.project_dir%/app/data</argument>
+                    <argument>%kernel.project_dir%/data</argument>
                     <argument>%env(GCLOUD_PROJECT_ID)%</argument>
                     <argument>%kernel.project_dir%/gcloud-service-key.json</argument>
                     <argument>%env(GCLOUD_BUCKET)%</argument>

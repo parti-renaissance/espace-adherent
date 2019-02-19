@@ -1222,7 +1222,7 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertFileInStorage('images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
-        unlink(__DIR__.'/../../../app/data/images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg');
+        unlink(__DIR__.'/../../../data/images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg');
     }
 
     public function testAddProfilePictureToSummary()
@@ -1252,7 +1252,7 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertFileInStorage('images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
-        unlink(__DIR__.'/../../../app/data/images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
+        unlink(__DIR__.'/../../../data/images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
     }
 
     public function testShowHideRecentActivities()

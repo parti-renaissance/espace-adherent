@@ -145,7 +145,7 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db: wait-for-db                                                                                    ## Init databases for tests
-	$(EXEC) rm -rf /tmp/data.db app/data/dumped_referents_users || true
+	$(EXEC) rm -rf /tmp/data.db || true
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test
 	$(CONSOLE) doctrine:database:create --env=test
 	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
@@ -207,7 +207,7 @@ up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans
 
 perm:
-	$(EXEC) chmod -R 777 var app/data/images app/data/files
+	$(EXEC) chmod -R 777 var data/images data/files
 	$(EXEC) chmod 660 var/public.key var/private.key
 
 # Rules from files

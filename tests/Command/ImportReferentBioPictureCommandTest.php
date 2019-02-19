@@ -87,7 +87,7 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $archive = new \ZipArchive();
 
         $archive->open(self::VALID_ARCHIVE_NAME, \ZipArchive::CREATE);
-        $pathToImage = $this->getContainer()->getParameter('kernel.project_dir').'/app/data/dist/';
+        $pathToImage = $this->getContainer()->getParameter('kernel.project_dir').'/data/dist/';
         $archive->addFromString('nicolas_bordes.jpg', file_get_contents($pathToImage.'macron.jpg'));
         $archive->addFromString('alban_martin.jpg', file_get_contents($pathToImage.'richardferrand.jpg'));
         $csvData = [
@@ -111,7 +111,7 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $archive = new \ZipArchive();
 
         $archive->open(self::ARCHIVE_WITHOUT_CSV_NAME, \ZipArchive::CREATE);
-        $pathToImage = $this->getContainer()->getParameter('kernel.project_dir').'/app/data/dist/';
+        $pathToImage = $this->getContainer()->getParameter('kernel.project_dir').'/data/dist/';
         $archive->addFromString('nicolas_bordes.jpg', file_get_contents($pathToImage.'macron.jpg'));
         $archive->addFromString('alban_martin.jpg', file_get_contents($pathToImage.'richardferrand.jpg'));
 
@@ -143,7 +143,7 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $archive = new \ZipArchive();
 
         $archive->open(self::ARCHIVE_WITH_MISSING_IMAGE_FILE, \ZipArchive::CREATE);
-        $pathToImage = $this->getContainer()->getParameter('kernel.project_dir').'/app/data/dist/';
+        $pathToImage = $this->getContainer()->getParameter('kernel.project_dir').'/data/dist/';
         $archive->addFromString('alban_martin.jpg', file_get_contents($pathToImage.'richardferrand.jpg'));
         $csvData = [
             ['id', 'first_name', 'last_name', 'bio', 'image'],

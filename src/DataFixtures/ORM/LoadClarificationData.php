@@ -24,7 +24,7 @@ class LoadClarificationData implements FixtureInterface, ContainerAwareInterface
         $storage = $this->container->get('app.storage');
 
         // Media
-        $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
+        $mediaFile = new File(__DIR__.'/../../../data/dist/10decembre.jpg');
         $storage->put('images/clarification.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $mediaFactory->createFromFile('Clarification image', 'clarification.jpg', $mediaFile);
 

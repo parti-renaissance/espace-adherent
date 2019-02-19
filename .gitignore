@@ -1,8 +1,7 @@
 /config/packages/assets_version.yaml
-/app/data/images/
-/app/data/files/
-/app/data/user_documents/
-/app/data/dumped_referents_users
+/data/images/
+/data/files/
+/data/user_documents/
 /templates/amp/style.css.twig
 /templates/jquery.collection.html.twig
 /public/built/
