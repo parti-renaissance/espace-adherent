@@ -12,7 +12,6 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
-        'phpdoc_to_comment' => false,
         'phpdoc_summary' => false,
         'no_unneeded_final_method' => false,
         'no_superfluous_phpdoc_tags' => true,
