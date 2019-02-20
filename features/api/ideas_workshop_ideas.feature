@@ -37,7 +37,7 @@ Feature:
     And the JSON nodes should match:
       | metadata.total_items  | 2                                      |
       | items[0].name         | Faire la paix                          |
-      | items[1].name         | Reduire le bruit dans les opens spaces |
+      | items[1].name         | Réduire le bruit dans les opens spaces |
 
   Scenario: As a non logged-in user I can filter ideas by name
     Given I add "Accept" header equal to "application/json"
@@ -110,6 +110,27 @@ Feature:
         ]
     }
     """
+
+  Scenario: As a non logged-in user I can get ideas by name for dropdown list
+    Given I add "Accept" header equal to "application/json"
+    And I send a "GET" request to "/api/ideas-workshop/ideas?name_contains=reduire%20dans%20les"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items        | 3                                     |
+      | items[0].name               | Réduire le gaspillage                 |
+      | items[0].uuid               | c14937d6-fd42-465c-8419-ced37f3e6194  |
+      | items[0].status             | FINALIZED                             |
+      | items[0].votes_count.total  | 0                                     |
+      | items[0].comments_count     | 2                                     |
+      | items[0].contributors_count | 2                                     |
+      | items[1].name               | Réduire le gaspillage alimentaire     |
+    When I send a "GET" request to "/api/ideas-workshop/ideas?name_contains=reduire%20dans%20les&page=2"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | metadata.total_items    | 3                                       |
+      | items[0].name           | Réduire le bruit dans les opens spaces  |
 
   Scenario: As a logged-in user I can filter ideas by name
     Given I am logged as "jacques.picard@en-marche.fr"
@@ -769,7 +790,7 @@ Feature:
     And the response should be in JSON
     And the JSON nodes should match:
       | items[0].name        | Faire la paix                          |
-      | items[1].name        | Reduire le bruit dans les opens spaces |
+      | items[1].name        | Réduire le bruit dans les opens spaces |
 
   Scenario: As a non logged-in user I can order ideas by number of comments
     Given I add "Accept" header equal to "application/json"
@@ -827,9 +848,9 @@ Feature:
 
   Scenario: As a non logged-in user I can count contributors based on enabled (and not deleted) thread and threadComment author's
     Given I add "Accept" header equal to "application/json"
-    When I send a "GET" request to "/api/ideas-workshop/ideas?name=Reduire le bruit dans les opens spaces"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?name=Réduire le bruit dans les opens spaces"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
-      | items[0].name               | Reduire le bruit dans les opens spaces  |
+      | items[0].name               | Réduire le bruit dans les opens spaces  |
       | items[0].contributors_count | 0                                       |

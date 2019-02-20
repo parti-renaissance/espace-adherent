@@ -16,6 +16,7 @@ use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
+use AppBundle\Filter\OrTextSearchFilter;
 use AppBundle\Report\ReportType;
 use AppBundle\Validator\CommitteeMember;
 use AppBundle\Validator\MandatoryQuestion;
@@ -177,6 +178,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "needs.name": "exact"
  * })
  * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
+ * @ApiFilter(OrTextSearchFilter::class, properties={"name"})
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\IdeasWorkshop\IdeaRepository")
  *

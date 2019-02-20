@@ -555,5 +555,6 @@
                 <argument type="service" id="AppBundle\Repository\IdeasWorkshop\IdeaRepository" />
             </call>
         </service>
+        <service id="AppBundle\Filter\OrTextSearchFilter" />
     </services>
 </container>
