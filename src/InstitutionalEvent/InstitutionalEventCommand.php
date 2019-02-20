@@ -6,8 +6,6 @@ use AppBundle\Address\Address;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEventCategory;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\InstitutionalEventCategory;
 use AppBundle\Event\BaseEventCommand;

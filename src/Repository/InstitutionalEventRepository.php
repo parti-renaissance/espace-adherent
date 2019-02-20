@@ -15,23 +15,6 @@ class InstitutionalEventRepository extends EventRepository
         parent::__construct($registry, InstitutionalEvent::class);
     }
 
-    public function findOneInstitutionalEventBySlug(string $slug): ?InstitutionalEvent
-    {
-        $query = $this
-            ->createQueryBuilder('institutionalEvent')
-            ->select('institutionalEvent', 'category', 'organizer')
-            ->leftJoin('institutionalEvent.institutionalEventCategory', 'category')
-            ->leftJoin('institutionalEvent.organizer', 'organizer')
-            ->where('institutionalEvent.slug = :slug')
-            ->andWhere('institutionalEvent.published = :published')
-            ->setParameter('slug', $slug)
-            ->setParameter('published', true)
-            ->getQuery()
-        ;
-
-        return $query->getOneOrNullResult();
-    }
-
     /**
      * @return InstitutionalEvent[]
      */
@@ -39,18 +22,18 @@ class InstitutionalEventRepository extends EventRepository
     {
         $this->checkReferent($referent);
 
-        $qb = $this->createQueryBuilder('institutionalEvent')
+        return $this
+            ->createQueryBuilder('institutionalEvent')
             ->select('institutionalEvent', 'category', 'organizer')
             ->leftJoin('institutionalEvent.category', 'category')
             ->leftJoin('institutionalEvent.organizer', 'organizer')
-            ->where('institutionalEvent.published = :published')
+            ->andWhere('institutionalEvent.published = true')
             ->andWhere('organizer = :organizer')
             ->orderBy('institutionalEvent.beginAt', 'DESC')
             ->addOrderBy('institutionalEvent.name', 'ASC')
             ->setParameter('organizer', $referent)
-            ->setParameter('published', true)
+            ->getQuery()
+            ->getResult()
         ;
-
-        return $qb->getQuery()->getResult();
     }
 }

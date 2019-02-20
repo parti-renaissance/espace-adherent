@@ -124,6 +124,9 @@
             <argument type="service" id="app.mailer.transactional" />
         </service>
 
+        <!-- Institutional Events -->
+        <service id="AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler" />
+
         <!-- EventListener -->
         <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />

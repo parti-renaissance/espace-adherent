@@ -21,7 +21,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 
 class InstitutionalEventAdmin extends AbstractAdmin
 {
@@ -52,58 +51,55 @@ class InstitutionalEventAdmin extends AbstractAdmin
     {
         $showMapper
             ->with('Événement', ['class' => 'col-md-7'])
-            ->add('name', null, [
-                'label' => 'Nom',
-                'format_title_case' => true,
-            ])
-            ->add('category', null, [
-                'label' => 'Catégorie',
-            ])
-            ->add('description', null, [
-                'label' => 'Description',
-                'attr' => [
-                    'rows' => '3',
-                ],
-            ])
-            ->add('beginAt', null, [
-                'label' => 'Date de début',
-            ])
-            ->add('finishAt', null, [
-                'label' => 'Date de fin',
-            ])
-            ->add('createdAt', null, [
-                'label' => 'Date de création',
-            ])
-            ->add('status', 'trans', [
-                'label' => 'Statut',
-                'catalogue' => 'forms',
-            ])
-            ->add('published', null, [
-                'label' => 'Publié',
-            ])
+                ->add('name', null, [
+                    'label' => 'Nom',
+                    'format_title_case' => true,
+                ])
+                ->add('category', null, [
+                    'label' => 'Catégorie',
+                ])
+                ->add('description', null, [
+                    'label' => 'Description',
+                ])
+                ->add('beginAt', null, [
+                    'label' => 'Date de début',
+                ])
+                ->add('finishAt', null, [
+                    'label' => 'Date de fin',
+                ])
+                ->add('createdAt', null, [
+                    'label' => 'Date de création',
+                ])
+                ->add('status', 'trans', [
+                    'label' => 'Statut',
+                    'catalogue' => 'forms',
+                ])
+                ->add('published', null, [
+                    'label' => 'Publié',
+                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
-            ->add('postAddress.address', TextType::class, [
-                'label' => 'Rue',
-            ])
-            ->add('postAddress.postalCode', TextType::class, [
-                'label' => 'Code postal',
-            ])
-            ->add('postAddress.cityName', TextType::class, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', UnitedNationsCountryType::class, [
-                'label' => 'Pays',
-            ])
-            ->add('postAddress.latitude', TextType::class, [
-                'label' => 'Latitude',
-            ])
-            ->add('postAddress.longitude', TextType::class, [
-                'label' => 'Longitude',
-            ])
-            ->add('timeZone', TimezoneType::class, [
-                'label' => 'Fuseau horaire',
-            ])
+                ->add('postAddress.address', null, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', null, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', null, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', null, [
+                    'label' => 'Pays',
+                ])
+                ->add('postAddress.latitude', null, [
+                    'label' => 'Latitude',
+                ])
+                ->add('postAddress.longitude', null, [
+                    'label' => 'Longitude',
+                ])
+                ->add('timeZone', null, [
+                    'label' => 'Fuseau horaire',
+                ])
             ->end()
         ;
     }
@@ -121,58 +117,55 @@ class InstitutionalEventAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Événement', ['class' => 'col-md-7'])
-            ->add('name', null, [
-                'label' => 'Nom',
-            ])
-            ->add('category', InstitutionalEventCategoryType::class, [
-                'label' => 'Catégorie',
-            ])
-            ->add('description', null, [
-                'label' => 'Description',
-                'attr' => [
-                    'rows' => '3',
-                ],
-            ])
-            ->add('beginAt', null, [
-                'label' => 'Date de début',
-            ])
-            ->add('finishAt', null, [
-                'label' => 'Date de fin',
-            ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'Statut',
-                'choices' => InstitutionalEvent::STATUSES,
-                'choice_translation_domain' => 'forms',
-                'choice_label' => function (?string $choice) {
-                    return $choice;
-                },
-            ])
-            ->add('published', null, [
-                'label' => 'Publié',
-            ])
+                ->add('name', null, [
+                    'label' => 'Nom',
+                ])
+                ->add('category', InstitutionalEventCategoryType::class, [
+                    'label' => 'Catégorie',
+                ])
+                ->add('description', null, [
+                    'label' => 'Description',
+                ])
+                ->add('beginAt', null, [
+                    'label' => 'Date de début',
+                ])
+                ->add('finishAt', null, [
+                    'label' => 'Date de fin',
+                ])
+                ->add('status', ChoiceType::class, [
+                    'label' => 'Statut',
+                    'choices' => InstitutionalEvent::STATUSES,
+                    'choice_translation_domain' => 'forms',
+                    'choice_label' => function (?string $choice) {
+                        return $choice;
+                    },
+                ])
+                ->add('published', null, [
+                    'label' => 'Publié',
+                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
-            ->add('postAddress.address', TextType::class, [
-                'label' => 'Rue',
-            ])
-            ->add('postAddress.postalCode', TextType::class, [
-                'label' => 'Code postal',
-            ])
-            ->add('postAddress.cityName', TextType::class, [
-                'label' => 'Ville',
-            ])
-            ->add('postAddress.country', UnitedNationsCountryType::class, [
-                'label' => 'Pays',
-            ])
-            ->add('postAddress.latitude', TextType::class, [
-                'label' => 'Latitude',
-            ])
-            ->add('postAddress.longitude', TextType::class, [
-                'label' => 'Longitude',
-            ])
-            ->add('timeZone', null, [
-                'label' => 'Fuseau horaire',
-            ])
+                ->add('postAddress.address', TextType::class, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', TextType::class, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', TextType::class, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', UnitedNationsCountryType::class, [
+                    'label' => 'Pays',
+                ])
+                ->add('postAddress.latitude', TextType::class, [
+                    'label' => 'Latitude',
+                ])
+                ->add('postAddress.longitude', TextType::class, [
+                    'label' => 'Longitude',
+                ])
+                ->add('timeZone', null, [
+                    'label' => 'Fuseau horaire',
+                ])
             ->end()
         ;
     }

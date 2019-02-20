@@ -31,7 +31,7 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
 
     public function getType(): ?string
     {
-        return $this->type ?? $this::INSTITUTIONAL_EVENT_TYPE;
+        return $this->type ?? self::INSTITUTIONAL_EVENT_TYPE;
     }
 
     public function getReportType(): string
@@ -87,7 +87,7 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
 
     public function removeReferentTag(ReferentTag $referentTag): void
     {
-        $this->referentTags->remove($referentTag);
+        $this->referentTags->removeElement($referentTag);
     }
 
     public function clearReferentTags(): void
@@ -98,15 +98,6 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
     public function getCategory(): InstitutionalEventCategory
     {
         return $this->category;
-    }
-
-    public function getEventCategoryName(): ?string
-    {
-        if (!$category = $this->getCategory()) {
-            return null;
-        }
-
-        return $category->getName();
     }
 
     public function getReferentTagsCodes(): array

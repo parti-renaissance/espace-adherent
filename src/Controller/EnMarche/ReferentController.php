@@ -17,6 +17,7 @@ use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Form\Jecoute\SurveyFormType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
+use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
 use AppBundle\Referent\ManagedCommitteesExporter;
@@ -175,7 +176,10 @@ class ReferentController extends Controller
      * @Route("/evenements-institutionnels/creer", name="app_referent_institutional_events_create")
      * @Method("GET|POST")
      */
-    public function institutionalEventsCreateAction(Request $request, GeoCoder $geoCoder): Response
+    public function institutionalEventsCreateAction(
+        Request $request,
+        InstitutionalEventCommandHandler $institutionalEventCommandHandler,
+        GeoCoder $geoCoder): Response
     {
         $command = new InstitutionalEventCommand($this->getUser());
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
@@ -186,7 +190,7 @@ class ReferentController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('app.institutional_event.handler')->handle($command);
+            $institutionalEventCommandHandler->handle($command);
 
             $this->addFlash('info', 'referent.institutional_event.creation.success');
 

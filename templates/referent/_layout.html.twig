@@ -34,6 +34,10 @@
                         'label': 'Événements'
                     },
                     {
+                        'route': 'app_referent_institutional_events',
+                        'label': 'Événements institutionnels'
+                    },
+                    {
                         'route': 'app_referent_committees',
                         'label': 'Comités'
                     },
@@ -55,13 +59,6 @@
                         'label': 'J\'écoute'
                     }
                 ] %}
-
-                {% if app.user.isReferent %}
-                    {% set pages = pages|merge([{
-                        'route': 'app_referent_institutional_events',
-                        'label': 'Événements institutionnels'
-                    }]) %}
-                {% endif %}
 
                 {% if enable_canary %}
                     {% set pages = pages|merge([{
