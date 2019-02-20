@@ -145,7 +145,7 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
 
     public function getType(): ?string
     {
-        return $this->type ?? $this::EVENT_TYPE;
+        return $this->type ?? self::EVENT_TYPE;
     }
 
     public function getCommittee(): ?Committee
