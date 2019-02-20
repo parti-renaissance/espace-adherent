@@ -191,6 +191,17 @@
     }
 }
 
+@mixin btn--blue--adi {
+    color: white;
+    background: $blue--adi;
+    border-color: $blue--adi;
+
+    &:hover {
+        background-color: $blue--azure;
+        border-color: $blue--azure;
+    }
+}
+
 @mixin btn--blue--soft {
     color: white;
     background: $blue--soft;
@@ -258,6 +269,10 @@ button.btn {
 
 .btn {
     @include btn;
+
+    &--circle {
+        border-radius: 50%;
+    }
 
     &--small {
         font-size: $text--size-smallest;
@@ -332,6 +347,10 @@ button.btn {
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--blue--adi {
+        @include btn--blue--adi;
     }
 
     &--blue--soft {

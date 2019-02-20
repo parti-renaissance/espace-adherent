@@ -31,6 +31,10 @@ class SitemapFactory
     private const TYPE_EVENTS = 'events';
     private const TYPE_IMAGES = 'images';
     private const TYPE_MAIN = 'main';
+    private const SKIP_PAGES = [
+        'espace-formation',
+        'espace-formation-intro',
+    ];
 
     private $manager;
     private $router;
@@ -293,6 +297,11 @@ class SitemapFactory
         $sitemap->add($this->generateUrl('page_elles_marchent'), null, ChangeFrequency::WEEKLY, 0.6);
 
         foreach ($this->manager->getRepository(Page::class)->findAll() as $page) {
+            $slug = $page->getSlug();
+            if (\in_array($slug, self::SKIP_PAGES)) {
+                continue;
+            }
+
             $sitemap->add($this->generateUrl('app_static_page', ['slug' => $page->getSlug()]));
         }
     }

@@ -144,6 +144,17 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
+            span {
+                font-size: $text--size-xs;
+                background: $green;
+                color: $green--forest;
+                padding: 3px 7px 2px;
+                border-radius: 50px;
+                text-transform: uppercase;
+                font-weight: bold;
+                margin-left: 5px;
+            }
         }
     }
 
