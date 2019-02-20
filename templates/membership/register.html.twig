@@ -29,13 +29,13 @@
                 <li class="form--split">
                     <ul>
                         <li>
-                            {{ form_label(form.firstName,'Prénom',{ label_attr: {class: 'visually-hidden'} }) }}
+                            {{ form_label(form.firstName, 'Prénom', { label_attr: {class: 'visually-hidden'} }) }}
                             {{ form_errors(form.firstName) }}
                             {{ form_widget(form.firstName, {attr: {placeholder: 'Prénom'} }) }}
                         </li>
 
                         <li>
-                            {{ form_label(form.lastName,'Nom',{ label_attr: {class: 'visually-hidden'} }) }}
+                            {{ form_label(form.lastName, 'Nom', { label_attr: {class: 'visually-hidden'} }) }}
                             {{ form_errors(form.lastName) }}
                             {{ form_widget(form.lastName, {attr: {placeholder: 'Nom'} }) }}
                         </li>
@@ -43,28 +43,34 @@
                 </li>
 
                 <li>
-                    {{ form_label(form.emailAddress.first,'E-mail',{ label_attr: {class: 'visually-hidden'} }) }}
+                    {{ form_label(form.emailAddress.first, 'E-mail', { label_attr: {class: 'visually-hidden'} }) }}
                     {{ form_errors(form.emailAddress.first) }}
                     {{ form_widget(form.emailAddress.first, {attr: {placeholder: 'E-mail'} }) }}
                 </li>
 
                 <li class="visually-hidden">
-                    {{ form_label(form.emailAddress.second,'Re-saisir l\'e-mail',{ label_attr: {class: 'visually-hidden'} }) }}
+                    {{ form_label(form.emailAddress.second, 'Re-saisir l\'e-mail', { label_attr: {class: 'visually-hidden'} }) }}
                     {{ form_errors(form.emailAddress.second) }}
                     {{ form_widget(form.emailAddress.second, {attr: {placeholder: 'Re-saisir l\'e-mail'} }) }}
                 </li>
 
                 <li>
-                    {{ form_label(form.password,'Mot de passe',{ label_attr: {class: 'visually-hidden'} }) }}
+                    {{ form_label(form.password, 'Mot de passe', { label_attr: {class: 'visually-hidden'} }) }}
                     {{ form_errors(form.password) }}
                     {{ form_widget(form.password, {attr: {placeholder: 'Mot de passe', autocomplete: "new-password"} }) }}
+                </li>
+
+                <li>
+                    {{ form_label(form.nationality, 'Nationalité', { label_attr: {class: 'visually-hidden'} }) }}
+                    {{ form_errors(form.nationality) }}
+                    {{ form_widget(form.nationality) }}
                 </li>
 
                 {{ form_errors(form.address) }}
                 <li class="form--split">
                     <ul>
                         <li>
-                            {{ form_label(form.address.postalCode,'Code postal',{ label_attr: {class: 'visually-hidden'} }) }}
+                            {{ form_label(form.address.postalCode, 'Code postal', { label_attr: {class: 'visually-hidden'} }) }}
                             {{ form_errors(form.address.postalCode) }}
                             {{ form_widget(form.address.postalCode, {attr: {placeholder: 'Code postal'} }) }}
                         </li>

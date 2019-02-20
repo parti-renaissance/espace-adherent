@@ -131,6 +131,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       | Mot de passe         | testtest    |
       | Code postal          | 38000       |
       | Pays                 | FR          |
+      | Nationalité          | FR          |
     And I resolved the captcha
     And I press "Créer mon compte"
     Then I should be on "/presque-fini"

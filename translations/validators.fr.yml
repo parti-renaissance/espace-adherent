@@ -13,21 +13,19 @@
 common.gender.not_blank: Veuillez renseigner un sexe.
 common.gender.invalid_choice: Ce sexe n'est pas valide.
 
-common.first_name.not_blank: Cette valeur ne doit pas être vide.
 common.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
 common.first_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
 
-common.last_name.not_blank: Cette valeur ne doit pas être vide.
 common.last_name.min_length: Votre prénom doit comporter au moins 2 caractères.
 common.last_name.max_length: Votre prénom ne peut pas dépasser 50 caractères.
 
-common.email.not_blank: Cette valeur ne doit pas être vide.
 common.email.invalid: Ceci n'est pas une adresse e-mail valide.
 common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.
 common.email.repeated: Les adresses email ne correspondent pas.
 
-common.country.not_blank: Cette valeur ne doit pas être vide.
 common.country.invalid: Ce pays n'est pas valide.
+
+common.nationality.invalid: Cette nationalité n'est pas valide.
 
 common.postal_code.invalid: Cette valeur n'est pas un code postal français valide.
 common.postal_code.not_blank: Veuillez renseigner un code postal.
@@ -124,7 +122,6 @@ donation.subscription.not_unique: Vous faites déjà un don mensuel à La Répub
 donation.subscription.not_unique_from_anonymous: Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez <a href="https://contact.en-marche.fr/">nous contacter pour l’annuler</a> ou <a href="{{ donation_url }}">faire un nouveau don unique</a>.
 donation.max_fiscal_year_donation: Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné {{ total_current_amount }} euros cette année. Les dons étant limités à {{ max_amount_per_fiscal_year }} euros par an et par personne, vous pouvez encore donner {{ max_donation_remaining_possible }} euros.
 donation.max_fiscal_month_donation: Votre don mensuel ne peut dépasser {{ max_amount }} euros. Si vous souhaitez donner plus, vous pourrez compléter avec un don ponctuel.
-donation.amount.not_blank: Cette valeur ne doit pas être vide.
 donation.amount.greater_than_0: La valeur minimale d'un don est de 0.01 €.
 donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
 
@@ -197,7 +194,6 @@ procuration.last_name.not_blank: Votre nom de naissance est requis.
 procuration.last_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
 procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
 
-procuration.first_names.not_blank: Cette valeur ne doit pas être vide.
 procuration.first_names.min_length: Votre prénom doit comporter au moins 2 caractères.
 procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
 

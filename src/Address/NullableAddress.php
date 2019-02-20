@@ -39,7 +39,7 @@ class NullableAddress implements AddressInterface, GeocodableInterface
     private $cityName;
 
     /**
-     * @Assert\NotBlank(message="common.country.not_blank")
+     * @Assert\NotBlank
      * @AssertUnitedNationsCountry(message="common.country.invalid")
      */
     private $country;

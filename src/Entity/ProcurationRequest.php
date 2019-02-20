@@ -120,7 +120,7 @@ class ProcurationRequest
      *
      * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank(message="procuration.first_names.not_blank", groups={"profile"})
+     * @Assert\NotBlank(groups={"profile"})
      * @Assert\Length(
      *     min=2,
      *     max=100,
@@ -193,7 +193,7 @@ class ProcurationRequest
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="common.email.not_blank", groups={"profile"})
+     * @Assert\NotBlank(groups={"profile"})
      * @Assert\Email(message="common.email.invalid", groups={"profile"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"profile"})
      */
