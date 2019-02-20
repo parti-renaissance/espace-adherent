@@ -111,7 +111,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $this->addReference('idea-reduce-pupils', $ideaReducePupils);
 
         $ideaReduceNoise = new Idea(
-            'Reduire le bruit dans les opens spaces',
+            'Réduire le bruit dans les opens spaces',
             'Curabitur sed leo nec massa lobortis pretium sed ac lacus. In aliquet varius ante.',
             AuthorCategoryEnum::ELECTED,
             new \DateTime('-9 days 15 hours'),
