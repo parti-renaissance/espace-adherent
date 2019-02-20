@@ -179,11 +179,29 @@
             <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
         </service>
 
+        <service id="app.admin.institutional_event" class="AppBundle\Admin\InstitutionalEventAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Événements institutionnels" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\InstitutionalEvent</argument>
+            <argument />
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
+        </service>
+
         <service id="app.admin.event_category" class="AppBundle\Admin\EventCategoryAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements" group="Territoire" />
 
             <argument />
             <argument>AppBundle\Entity\EventCategory</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.institutional_event_category" class="AppBundle\Admin\InstitutionalEventCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements institutionnels" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\InstitutionalEventCategory</argument>
             <argument />
         </service>
 

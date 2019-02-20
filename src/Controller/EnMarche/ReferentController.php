@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Entity\Projection\ReferentManagedUser;
@@ -11,19 +12,24 @@ use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
+use AppBundle\Form\InstitutionalEventCommandType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Form\Jecoute\SurveyFormType;
+use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
+use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
+use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Referent\SurveyExporter;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
+use AppBundle\Repository\InstitutionalEventRepository;
 use AppBundle\Repository\Jecoute\DataAnswerRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
@@ -133,6 +139,7 @@ class ReferentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Event $event */
             $event = $this->get('app.event.handler')->handle($command);
 
             $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
@@ -146,6 +153,51 @@ class ReferentController extends Controller
         }
 
         return $this->render('referent/event_create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/evenements-institutionnels", name="app_referent_institutional_events")
+     * @Method("GET")
+     */
+    public function institutionalEventsAction(
+        InstitutionalEventRepository $institutionalEventRepository,
+        ManagedInstitutionalEventsExporter $exporter): Response
+    {
+        return $this->render('referent/institutional_events_list.html.twig', [
+            'managedInstitutionalEventsJson' => $exporter->exportAsJson(
+                $institutionalEventRepository->findByOrganizer($this->getUser())
+            ),
+        ]);
+    }
+
+    /**
+     * @Route("/evenements-institutionnels/creer", name="app_referent_institutional_events_create")
+     * @Method("GET|POST")
+     */
+    public function institutionalEventsCreateAction(
+        Request $request,
+        InstitutionalEventCommandHandler $institutionalEventCommandHandler,
+        GeoCoder $geoCoder): Response
+    {
+        $command = new InstitutionalEventCommand($this->getUser());
+        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
+
+        $form = $this
+            ->createForm(InstitutionalEventCommandType::class, $command)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $institutionalEventCommandHandler->handle($command);
+
+            $this->addFlash('info', 'referent.institutional_event.creation.success');
+
+            return $this->redirectToRoute('app_referent_institutional_events');
+        }
+
+        return $this->render('referent/institutional_event_create.html.twig', [
             'form' => $form->createView(),
         ]);
     }

@@ -69,6 +69,10 @@ class DummyGeocoder implements GeocoderInterface
             'lat' => 48.8761,
             'lon' => 2.3082,
         ],
+        '44 rue des courcelles, 75008 paris 8e, fr' => [
+            'lat' => 48.8761,
+            'lon' => 2.3082,
+        ],
         'paris 9e, france' => [
             'lat' => 48.8790183,
             'lon' => 2.3379062,

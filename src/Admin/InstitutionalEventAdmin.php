@@ -2,10 +2,10 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventEvent;
+use AppBundle\Entity\InstitutionalEvent;
+use AppBundle\InstitutionalEvent\InstitutionalEventEvent;
 use AppBundle\Events;
-use AppBundle\Form\EventCategoryType;
+use AppBundle\Form\InstitutionalEventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -19,11 +19,10 @@ use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class EventAdmin extends AbstractAdmin
+class InstitutionalEventAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_page' => 1,
@@ -48,19 +47,6 @@ class EventAdmin extends AbstractAdmin
         $this->referentTagManager = $referentTagManager;
     }
 
-    public function getTemplate($name)
-    {
-        if ('show' === $name) {
-            return 'admin/event/show.html.twig';
-        }
-
-        if ('edit' === $name) {
-            return 'admin/event/edit.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -72,14 +58,8 @@ class EventAdmin extends AbstractAdmin
                 ->add('category', null, [
                     'label' => 'Catégorie',
                 ])
-                ->add('committee', null, [
-                    'label' => 'Comité organisateur',
-                ])
                 ->add('description', null, [
                     'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
                 ])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
@@ -89,9 +69,6 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('createdAt', null, [
                     'label' => 'Date de création',
-                ])
-                ->add('participantsCount', null, [
-                    'label' => 'Nombre de participants',
                 ])
                 ->add('status', 'trans', [
                     'label' => 'Statut',
@@ -131,9 +108,9 @@ class EventAdmin extends AbstractAdmin
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $event = new EventEvent($object->getOrganizer(), $object);
+        $event = new InstitutionalEventEvent($object->getOrganizer(), $object);
 
-        $this->dispatcher->dispatch(Events::EVENT_UPDATED, $event);
+        $this->dispatcher->dispatch(Events::INSTITUTIONAL_EVENT_UPDATED, $event);
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -143,17 +120,11 @@ class EventAdmin extends AbstractAdmin
                 ->add('name', null, [
                     'label' => 'Nom',
                 ])
-                ->add('category', EventCategoryType::class, [
+                ->add('category', InstitutionalEventCategoryType::class, [
                     'label' => 'Catégorie',
-                ])
-                ->add('committee', null, [
-                    'label' => 'Comité organisateur',
                 ])
                 ->add('description', null, [
                     'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
                 ])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
@@ -163,7 +134,7 @@ class EventAdmin extends AbstractAdmin
                 ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut',
-                    'choices' => Event::STATUSES,
+                    'choices' => InstitutionalEvent::STATUSES,
                     'choice_translation_domain' => 'forms',
                     'choice_label' => function (?string $choice) {
                         return $choice;
@@ -207,7 +178,7 @@ class EventAdmin extends AbstractAdmin
             ])
             ->add('category', null, [
                 'label' => 'Type',
-                'field_type' => EventCategoryType::class,
+                'field_type' => InstitutionalEventCategoryType::class,
                 'show_filter' => true,
             ])
             ->add('createdAt', DateRangeFilter::class, [
@@ -241,20 +212,6 @@ class EventAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('referent', CallbackFilter::class, [
-                'label' => 'Événements du référent',
-                'show_filter' => true,
-                'field_type' => CheckboxType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('%s.committee IS NULL', $alias));
-
-                    return true;
-                },
-            ])
             ->add('published', BooleanFilter::class, [
                 'label' => 'Publié',
             ])
@@ -266,9 +223,6 @@ class EventAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
-            ])
-            ->add('committee', null, [
-                'label' => 'Comité organisateur',
             ])
             ->add('organizer', null, [
                 'label' => 'Organisateur',
@@ -285,16 +239,17 @@ class EventAdmin extends AbstractAdmin
             ->add('category', null, [
                 'label' => 'Catégorie',
             ])
-            ->add('participantsCount', null, [
-                'label' => 'Participants',
-            ])
             ->add('status', null, [
                 'label' => 'Statut',
                 'template' => 'admin/event/list_status.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
-                'template' => 'admin/event/list_actions.html.twig',
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ],
             ])
         ;
     }

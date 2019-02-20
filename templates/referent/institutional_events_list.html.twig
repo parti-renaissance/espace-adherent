@@ -1,0 +1,61 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runManagedList(
+                [
+                    {
+                        key: 'id',
+                        name: 'ID',
+                        style: {
+                            width: 25
+                        }
+                    },
+                    {
+                        key: 'name',
+                        name: 'Nom',
+                    },
+                    {
+                        key: 'beginAt',
+                        name: 'Date',
+                        style: {
+                            width: 150
+                        }
+                    },
+                    {
+                        key: 'postalCode',
+                        name: 'Code postal',
+                        style: {
+                            width: 100
+                        }
+                    },
+                    {
+                        key: 'organizer',
+                        name: 'Organisateur',
+                        className: 'datagrid__table__col--hide-mobile',
+                        style: {
+                            width: 150
+                        }
+                    },
+                ],
+                {{ managedInstitutionalEventsJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}
+
+{% block referent_content %}
+    <div>
+        <a href="{{ path('app_referent_institutional_events_create') }}" class="btn btn--blue--soft referent__btn-create-event">
+            Créer un événement institutionnel
+        </a>
+        <h3>
+            Événements institutionnels
+        </h3>
+    </div>
+
+    <hr />
+
+    <div id="datagrid"></div>
+{% endblock %}

@@ -15,7 +15,7 @@
             <br />
             {{ author.phone|phone_number_format }}
         {% endif %}
-        {% if author.isReferent and not object.committee %}
+        {% if author.isReferent %}
             <br />
             (Référent)
         {% endif %}
