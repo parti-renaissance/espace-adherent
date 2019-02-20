@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Mailer\Message\CitizenProjectCommentMessage;
 use AppBundle\Mailer\Message\CitizenProjectNewFollowerMessage;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,13 +99,6 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $this->client->getCrawler()->selectLink('Signaler un abus'));
-
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
-        $this->assertTrue($this->seeCommentSection());
-        $this->assertSeeComments([
-            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
-            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
-        ]);
     }
 
     public function testFollowerCanSeeACitizenProject(): void
@@ -115,80 +107,6 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertTrue($this->seeReportLink());
-
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
-        $this->assertTrue($this->seeCommentSection());
-        $this->assertSeeComments([
-            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
-            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
-        ]);
-    }
-
-    /**
-     * @depends testAdministratorCanSeeACitizenProject
-     * @depends testFollowerCanSeeACitizenProject
-     */
-    public function testFollowerCanAddCommentToCitizenProject(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->client->submit(
-            $this->client->getCrawler()->selectButton('Publier')->form([
-                'citizen_project_comment_command[content]' => 'Commentaire Test',
-            ])
-        );
-
-        $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeCommentSection());
-        $this->assertSeeComments([
-            ['Mirabeau', 'Commentaire Test'],
-            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
-            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
-        ]);
-    }
-
-    /**
-     * @depends testFollowerCanSeeACitizenProject
-     */
-    public function testFollowerCanNotSendCommentToCitizenProjectInMail(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(0, $this->client->getCrawler()->filter('label:contains("Envoyer aussi par e-mail")'));
-    }
-
-    /**
-     * @depends testAdministratorCanSeeACitizenProject
-     */
-    public function testAdministratorCanAddCommentToCitizenProjectWithSendingMail(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/discussions');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $this->client->getCrawler()->filter('label:contains("Envoyer aussi par e-mail")'));
-
-        $this->client->submit(
-            $this->client->getCrawler()->selectButton('Publier')->form([
-                'citizen_project_comment_command[content]' => 'Commentaire Test avec l\'envoi de mail',
-                'citizen_project_comment_command[sendMail]' => true,
-            ])
-        );
-
-        $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeCommentSection());
-        $this->assertSeeComments([
-            ['Picard', 'Commentaire Test avec l\'envoi de mail'],
-            ['Carl Mirabeau', 'Jean-Paul à Maurice : tout va bien ! Je répète ! Tout va bien !'],
-            ['Lucie Olivera', 'Maurice à Jean-Paul : tout va bien aussi !'],
-        ]);
-        $this->assertCountMails(1, CitizenProjectCommentMessage::class, 'jacques.picard@en-marche.fr');
     }
 
     public function testAjaxSearchCommittee()

@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectCommentEvent;
 use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
@@ -14,7 +13,6 @@ use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectComment;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -140,31 +138,6 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
 
-    public function testSendFollowerNotificationWhenAdministratorAddCommentToCitizenProject()
-    {
-        $mailer = $this->createMock(MailerService::class);
-        $member = $this->createAdministrator(LoadAdherentData::ADHERENT_2_UUID);
-        $comment = $this->createComment();
-        $manager = $this->createManager(null, $member);
-        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
-        $committeeManager = $this->createMock(CommitteeManager::class);
-        $router = $this->createMock(RouterInterface::class);
-
-        $manager
-            ->expects($this->once())
-            ->method('getCitizenProjectMembers')
-            ->willReturn(new AdherentCollection())
-        ;
-        $mailer
-            ->expects($this->once())
-            ->method('sendMessage')
-        ;
-
-        $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $manager, $mailer, $committeeManager, $router);
-        $commentCreatedEvent = new CitizenProjectCommentEvent($citizenProject, $comment, true);
-        $citizenProjectMessageNotifier->sendCommentCreatedEmail($commentCreatedEvent);
-    }
-
     private function createCitizenProject(string $uuid, string $cityName): CitizenProject
     {
         $citizenProjectUuid = Uuid::fromString($uuid);
@@ -201,23 +174,6 @@ class CitizenProjectMessageNotifierTest extends TestCase
             ->expects($this->any())
             ->method('getFirstName')
             ->willReturn('Pierre')
-        ;
-
-        return $administrator;
-    }
-
-    private function createComment(): CitizenProjectComment
-    {
-        $administrator = $this->createMock(CitizenProjectComment::class);
-        $administrator
-            ->expects($this->any())
-            ->method('getContent')
-            ->willReturn('Mon message')
-        ;
-        $administrator
-            ->expects($this->any())
-            ->method('getAuthor')
-            ->willReturn($this->createAuthor())
         ;
 
         return $administrator;

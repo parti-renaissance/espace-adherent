@@ -105,6 +105,13 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     ];
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $coordinatorComment;
+
+    /**
      * The group description.
      *
      * @ORM\Column(type="text")
@@ -204,6 +211,22 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         foreach ($referentTags as $referentTag) {
             $this->addReferentTag($referentTag);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoordinatorComment(): ?string
+    {
+        return $this->coordinatorComment;
+    }
+
+    /**
+     * @param string $coordinatorComment
+     */
+    public function setCoordinatorComment(?string $coordinatorComment): void
+    {
+        $this->coordinatorComment = $coordinatorComment;
     }
 
     public function getPostAddress(): PostAddress

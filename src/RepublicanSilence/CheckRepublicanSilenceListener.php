@@ -27,7 +27,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_committee_manager_add_event' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
 
         // Citizen Project
-        'app_citizen_project_show_comments' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
         'app_citizen_project_contact_actors' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
         'app_citizen_action_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
 

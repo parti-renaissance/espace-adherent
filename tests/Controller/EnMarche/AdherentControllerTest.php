@@ -1057,8 +1057,6 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
         $this->assertSame("$nbFollowers adhérents", $crawler->filter('.committee-members')->text());
 
-        $this->assertCount($nbComments, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
-
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
         $reasons = Unregistration::REASONS_LIST_ADHERENT;
         $reasonsValues = array_values($reasons);
@@ -1106,7 +1104,6 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
-        $this->assertCount(0, $this->getCitizenProjectCommentRepository()->findForAuthor($adherentBeforeUnregistration));
         $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
 
         if (LoadAdherentData::ADHERENT_13_UUID === $uuid) {
