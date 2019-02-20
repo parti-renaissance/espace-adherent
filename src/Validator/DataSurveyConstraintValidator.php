@@ -26,7 +26,7 @@ class DataSurveyConstraintValidator extends ConstraintValidator
         if (!$dataSurvey->getEmailAddress() && $dataSurvey->getAgreedToStayInContact()) {
             $this
                 ->context
-                ->buildViolation($constraint->emailAddresseRequired)
+                ->buildViolation($constraint->emailAddressRequired)
                 ->atPath('agreedToStayInContact')
                 ->addViolation()
             ;
