@@ -5,8 +5,11 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
+use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+use AppBundle\AdherentMessage\Command\CreateDefaultMessageFilterCommand;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
+use AppBundle\AdherentMessage\Utils;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -19,11 +22,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @Route("/{prefix}messagerie", defaults={"prefix": ""}, requirements={"prefix": "|espace-referent/"})
+ * @Route("/{prefix}messagerie", requirements={"prefix": "espace-referent/|espace-depute/"})
  *
  * @Security("is_granted('ROLE_ADHERENT_MESSAGE')")
  */
@@ -53,7 +57,7 @@ class MessageController extends Controller
         return $this->renderTemplate(
             $prefix,
             'message/list.html.twig',
-            ['messages' => $repository->findAllByAuthor($adherent, $status)]
+            ['messages' => $repository->findAllByAuthor($adherent, $status, Utils::getMessageTypeFromUri($prefix))]
         );
     }
 
@@ -66,7 +70,8 @@ class MessageController extends Controller
         string $prefix,
         Request $request,
         UserInterface $adherent,
-        ObjectManager $manager
+        ObjectManager $manager,
+        MessageBusInterface $bus
     ): Response {
         $this->disableInProduction();
 
@@ -76,9 +81,16 @@ class MessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = AdherentMessageFactory::create($adherent, $form->getData());
+            $message = AdherentMessageFactory::create(
+                $adherent,
+                $form->getData(),
+                Utils::getMessageTypeFromUri($prefix)
+            );
 
             $manager->persist($message);
+
+            $bus->dispatch(new CreateDefaultMessageFilterCommand($message));
+
             $manager->flush();
 
             $this->addFlash('info', 'adherent_message.created_successfully');
@@ -123,11 +135,7 @@ class MessageController extends Controller
         }
 
         $form = $this
-            ->createForm(
-                AdherentMessageType::class,
-                $dataObject = AdherentMessageDataObject::createFromEntity($message),
-                ['is_creation' => false]
-            )
+            ->createForm(AdherentMessageType::class, $dataObject = AdherentMessageDataObject::createFromEntity($message))
             ->handleRequest($request)
         ;
 
@@ -230,6 +238,10 @@ class MessageController extends Controller
 
         $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());
 
+        if ($message->hasReadOnlyFilter()) {
+            return $this->renderTemplate($prefix, 'message/filter.html.twig', ['message' => $message]);
+        }
+
         $form = $formFactory
             ->createForm($message->getType(), $data)
             ->handleRequest($request)
@@ -292,9 +304,13 @@ class MessageController extends Controller
 
     private function renderTemplate(string $uriPrefix, string $template, array $parameters = []): Response
     {
-        switch (rtrim($uriPrefix, '/')) {
-            case 'espace-referent':
+        switch (Utils::getMessageTypeFromUri($uriPrefix)) {
+            case AdherentMessageTypeEnum::REFERENT:
                 $baseTemplate = 'message/_base_referent.html.twig';
+                break;
+
+            case AdherentMessageTypeEnum::DEPUTY:
+                $baseTemplate = 'message/_base_deputy.html.twig';
                 break;
 
             default:

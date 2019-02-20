@@ -13,10 +13,6 @@ class AdherentMessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['is_creation']) {
-            $builder->add('type', AdherentMessageTypeType::class);
-        }
-
         $builder
             ->add('label', TextType::class, [
                 'filter_emojis' => true,
@@ -39,12 +35,8 @@ class AdherentMessageType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => AdherentMessageDataObject::class,
-                'is_creation' => true,
-            ])
-            ->setAllowedTypes('is_creation', ['boolean'])
-        ;
+        $resolver->setDefaults([
+            'data_class' => AdherentMessageDataObject::class,
+        ]);
     }
 }

@@ -6,7 +6,7 @@ use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\Filter\ReferentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
 use AppBundle\Mailchimp\Manager;
@@ -81,7 +81,7 @@ class CampaignRequestBuilder
     {
         if ($filter instanceof ReferentUserFilter) {
             $conditions = $this->buildReferentConditions($filter);
-        } elseif ($filter instanceof ReferentZoneFilter) {
+        } elseif ($filter instanceof AdherentZoneFilter) {
             $conditions = $this->buildReferentZoneConditions($filter->getReferentTags());
             $match = 'any';
         }

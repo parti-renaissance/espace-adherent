@@ -2,6 +2,7 @@
 
 namespace AppBundle\AdherentMessage\Handler;
 
+use AppBundle\AdherentMessage\Command\AdherentMessageDeleteCommand;
 use AppBundle\Mailchimp\Manager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

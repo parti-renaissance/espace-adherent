@@ -4,7 +4,7 @@ namespace AppBundle\AdherentMessage\Filter;
 
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\Filter\ReferentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Exception\InvalidAdherentMessageType;
 use AppBundle\Form\AdherentMessageReferentFilterType;
 use AppBundle\Form\AdherentMessageReferentZoneFilterType;
@@ -27,7 +27,7 @@ class FilterFormFactory
                 if ($data instanceof ReferentUserFilter) {
                     return $this->formFactory->create(AdherentMessageReferentFilterType::class, $data);
                 }
-                if ($data instanceof ReferentZoneFilter) {
+                if ($data instanceof AdherentZoneFilter) {
                     return $this->formFactory->create(AdherentMessageReferentZoneFilterType::class, $data);
                 }
         }

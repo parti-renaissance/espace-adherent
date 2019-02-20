@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\AdherentMessage\Filter\ReferentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +17,7 @@ class AdherentMessageReferentZoneFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ReferentZoneFilter::class,
+            'data_class' => AdherentZoneFilter::class,
         ]);
     }
 }

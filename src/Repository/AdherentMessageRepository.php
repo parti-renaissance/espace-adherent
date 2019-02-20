@@ -16,11 +16,27 @@ class AdherentMessageRepository extends ServiceEntityRepository
         parent::__construct($registry, AbstractAdherentMessage::class);
     }
 
-    public function findAllByAuthor(Adherent $adherent, string $status = null): array
+    public function findAllByAuthor(Adherent $adherent, string $status = null, string $type = null): array
     {
-        return $this->findBy(array_merge(
-            ['author' => $adherent],
-            $status ? ['status' => $status] : []
-        ));
+        $queryBuilder = $this->createQueryBuilder('message')
+            ->where('message.author = :author')
+            ->setParameter('author', $adherent)
+        ;
+
+        if ($status) {
+            $queryBuilder
+                ->andWhere('message.status = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        if ($type) {
+            $queryBuilder
+                ->andWhere('message INSTANCE OF :type')
+                ->setParameter('type', $type)
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

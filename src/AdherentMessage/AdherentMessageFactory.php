@@ -10,9 +10,9 @@ use Ramsey\Uuid\Uuid;
 
 class AdherentMessageFactory
 {
-    public static function create(Adherent $adherent, AdherentMessageDataObject $dataObject): AdherentMessageInterface
+    public static function create(Adherent $adherent, AdherentMessageDataObject $dataObject, string $type): AdherentMessageInterface
     {
-        switch ($dataObject->getType()) {
+        switch ($type) {
             case AdherentMessageTypeEnum::DEPUTY:
                 $message = new DeputyAdherentMessage(Uuid::uuid4(), $adherent);
                 break;
@@ -20,10 +20,9 @@ class AdherentMessageFactory
             case AdherentMessageTypeEnum::REFERENT:
                 $message = new ReferentAdherentMessage(Uuid::uuid4(), $adherent);
                 break;
-        }
 
-        if (!isset($message)) {
-            throw new \InvalidArgumentException(sprintf('Message type "%s" is undefined', $dataObject->getType()));
+            default:
+                throw new \InvalidArgumentException(sprintf('Message type "%s" is undefined', $type));
         }
 
         return $message->updateFromDataObject($dataObject);

@@ -2,9 +2,9 @@
 
 namespace AppBundle\AdherentMessage\Listener;
 
+use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
+use AppBundle\AdherentMessage\Command\AdherentMessageDeleteCommand;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommand;
-use AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommand;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;

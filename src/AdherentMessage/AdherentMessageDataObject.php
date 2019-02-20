@@ -11,13 +11,6 @@ class AdherentMessageDataObject
      * @var string|null
      *
      * @Assert\NotBlank
-     */
-    private $type;
-
-    /**
-     * @var string|null
-     *
-     * @Assert\NotBlank
      * @Assert\Length(min="3", max="255")
      */
     private $label;
@@ -42,22 +35,11 @@ class AdherentMessageDataObject
     {
         $dataObject = new self();
 
-        $dataObject->setType(AdherentMessageTypeEnum::getType(\get_class($message)));
         $dataObject->setSubject($message->getSubject());
         $dataObject->setLabel($message->getLabel());
         $dataObject->setContent($message->getContent());
 
         return $dataObject;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): void
-    {
-        $this->type = $type;
     }
 
     public function getLabel(): ?string
