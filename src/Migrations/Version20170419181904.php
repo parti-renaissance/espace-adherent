@@ -2,21 +2,21 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20170419181904 extends AbstractMigration
 {
     private $adherents = [];
 
-    public function preUp(Schema $schema)
+    public function preUp(Schema $schema): void
     {
         foreach ($this->connection->fetchAll('SELECT DISTINCT candidate_id FROM legislative_candidates') as $record) {
             $this->adherents[] = $record['candidate_id'];
         }
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE legislative_district_zones (id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL, area_code VARCHAR(4) NOT NULL, area_type VARCHAR(20) NOT NULL, name VARCHAR(100) NOT NULL, keywords LONGTEXT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE adherents ADD legislative_candidate TINYINT(1) DEFAULT \'0\' NOT NULL');
@@ -32,7 +32,7 @@ class Version20170419181904 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX legislative_district_zones_area_code_unique ON legislative_district_zones (area_code)');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         if (\count($this->adherents)) {
             $this->connection->executeUpdate('UPDATE adherents SET legislative_candidate = 1 WHERE id IN(?)', [implode(',', $this->adherents)]);
@@ -41,7 +41,7 @@ class Version20170419181904 extends AbstractMigration
         $this->adherents = [];
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE legislative_candidates DROP FOREIGN KEY FK_AE55AF9B23F5C396');
         $this->addSql('DROP TABLE legislative_district_zones');

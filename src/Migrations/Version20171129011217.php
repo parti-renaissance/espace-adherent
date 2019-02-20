@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171129011217 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE citizen_project_categories (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, status VARCHAR(10) DEFAULT \'ENABLED\' NOT NULL, UNIQUE INDEX citizen_project_category_name_unique (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE citizen_projects ADD category_id INT UNSIGNED DEFAULT NULL, ADD committee_id INT UNSIGNED DEFAULT NULL, ADD subtitle VARCHAR(255) NOT NULL, ADD problem_description LONGTEXT DEFAULT NULL, ADD proposed_solution LONGTEXT DEFAULT NULL, ADD required_means LONGTEXT DEFAULT NULL, ADD assistance_needed TINYINT(1) DEFAULT \'0\' NOT NULL, ADD assistance_content VARCHAR(255) DEFAULT NULL, DROP description');
@@ -17,7 +17,7 @@ class Version20171129011217 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_6514902ED1A100B ON citizen_projects (committee_id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE citizen_projects DROP FOREIGN KEY FK_651490212469DE2');
         $this->addSql('DROP TABLE citizen_project_categories');

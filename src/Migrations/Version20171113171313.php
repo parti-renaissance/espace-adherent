@@ -3,12 +3,12 @@
 namespace Migrations;
 
 use AppBundle\DataFixtures\ORM\LoadPurchasingPowerData;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171113171313 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->connection->executeQuery('SET foreign_key_checks = 0');
         $this->connection->executeQuery('TRUNCATE TABLE interactive_choices');
@@ -26,7 +26,7 @@ class Version20171113171313 extends AbstractMigration
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

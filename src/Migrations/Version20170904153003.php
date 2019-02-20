@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use AppBundle\DataFixtures\ORM\LoadSkillData;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -12,7 +12,7 @@ class Version20170904153003 extends AbstractMigration implements ContainerAwareI
 {
     use ContainerAwareTrait;
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         foreach (LoadSkillData::SKILL_CI as $skill) {
             $skillSlug = $this->container->get('sonata.core.slugify.cocur')->slugify($skill);
@@ -24,7 +24,7 @@ class Version20170904153003 extends AbstractMigration implements ContainerAwareI
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

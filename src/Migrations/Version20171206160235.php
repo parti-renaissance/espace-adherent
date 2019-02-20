@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171206160235 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('DROP TABLE citizen_project_feed_items');
 
@@ -26,7 +26,7 @@ class Version20171206160235 extends AbstractMigration
         $this->addSql('ALTER TABLE citizen_project_comment ADD CONSTRAINT FK_A57DD65FF675F31B FOREIGN KEY (author_id) REFERENCES adherents (id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('DROP TABLE citizen_project_comment');
 

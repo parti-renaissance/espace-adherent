@@ -3,12 +3,12 @@
 namespace Migrations;
 
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180523160911 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql(
             <<<'SQL'
@@ -67,7 +67,7 @@ SQL
         $this->addSql('ALTER TABLE committee_membership_history_referent_tag ADD CONSTRAINT FK_B6A8C7189C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id) ON DELETE CASCADE');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('DROP TABLE committee_membership_history_referent_tag');
         $this->addSql('DROP TABLE committees_membership_histories');

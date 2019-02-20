@@ -3,21 +3,21 @@
 namespace Migrations;
 
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20170517100000 extends AbstractMigration
 {
     private $events;
 
-    public function preUp(Schema $schema)
+    public function preUp(Schema $schema): void
     {
         foreach ($this->connection->fetchAll('SELECT id, category FROM events') as $event) {
             $this->events[LoadEventCategoryData::LEGACY_EVENT_CATEGORIES[$event['category']]][] = $event['id'];
         }
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE events_categories (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, UNIQUE INDEX event_category_name_unique (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
 
@@ -26,7 +26,7 @@ class Version20170517100000 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5387574A12469DE2 ON events (category_id)');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         foreach (LoadEventCategoryData::LEGACY_EVENT_CATEGORIES as $category) {
             $this->connection->insert('events_categories', ['name' => $category]);
@@ -42,14 +42,14 @@ class Version20170517100000 extends AbstractMigration
         }
     }
 
-    public function preDown(Schema $schema)
+    public function preDown(Schema $schema): void
     {
         foreach ($this->connection->fetchAll('SELECT id, category_id FROM events') as $event) {
             $this->events[($event['category_id'] > 9 ? 'CE0' : 'CE00').$event['category_id']][] = $event['id'];
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A12469DE2');
         $this->addSql('DROP INDEX IDX_5387574A12469DE2 ON events');
@@ -58,7 +58,7 @@ class Version20170517100000 extends AbstractMigration
         $this->addSql('DROP TABLE events_categories');
     }
 
-    public function postDown(Schema $schema)
+    public function postDown(Schema $schema): void
     {
         foreach ($this->events as $categoryId => $events) {
             $this->connection->executeUpdate(

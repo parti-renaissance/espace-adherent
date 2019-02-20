@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180125175213 extends AbstractMigration
 {
-    public function preUp(Schema $schema)
+    public function preUp(Schema $schema): void
     {
         if ($schema->hasTable('web_hook_callbacks')) {
             $this->addSql('ALTER TABLE web_hook_callbacks DROP FOREIGN KEY FK_74BE63305A7D4251');
@@ -17,7 +17,7 @@ class Version20180125175213 extends AbstractMigration
         }
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE web_hooks (
                 id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
@@ -34,7 +34,7 @@ class Version20180125175213 extends AbstractMigration
         $this->addSql('ALTER TABLE web_hooks ADD CONSTRAINT FK_CDB836AD19EB6921 FOREIGN KEY (client_id) REFERENCES oauth_clients (id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('DROP TABLE web_hooks');
     }

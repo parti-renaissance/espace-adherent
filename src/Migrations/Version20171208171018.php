@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20171208171018 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A12469DE2');
         $this->addSql('ALTER TABLE events DROP FOREIGN KEY FK_5387574A712CD107');
@@ -15,7 +15,7 @@ class Version20171208171018 extends AbstractMigration
         $this->addSql('ALTER TABLE events DROP citizen_action_category_id');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE events ADD citizen_action_category_id INT UNSIGNED DEFAULT NULL');
         $this->addSql('ALTER TABLE events ADD CONSTRAINT FK_5387574A12469DE2 FOREIGN KEY (category_id) REFERENCES events_categories (id)');

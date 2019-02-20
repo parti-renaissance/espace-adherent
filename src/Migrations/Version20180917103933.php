@@ -4,8 +4,8 @@ namespace Migrations;
 
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20180917103933 extends AbstractMigration
 {
@@ -16,7 +16,7 @@ final class Version20180917103933 extends AbstractMigration
         $this->addSql('UPDATE subscription_type SET position = 3 WHERE code = ? LIMIT 1', [SubscriptionTypeEnum::REFERENT_EMAIL]);
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $this->connection->insert('subscription_type', [
             'label' => 'Recevoir les e-mails de votre député(e)',

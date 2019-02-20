@@ -3,8 +3,8 @@
 namespace Migrations;
 
 use AppBundle\Coordinator\CoordinatorAreaSectors;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 final class Version20180911093716 extends AbstractMigration
 {

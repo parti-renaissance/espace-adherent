@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20180522140022 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('DROP INDEX adherent_has_joined_citizen_project ON citizen_project_memberships');
         $this->addSql('ALTER TABLE citizen_project_memberships ADD citizen_project_id INT UNSIGNED NOT NULL, CHANGE adherent_id adherent_id INT UNSIGNED NOT NULL');
@@ -22,7 +22,7 @@ class Version20180522140022 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX adherent_has_joined_citizen_project ON citizen_project_memberships (adherent_id, citizen_project_id)');
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE citizen_project_memberships DROP FOREIGN KEY FK_2E41816B3584533');
         $this->addSql('DROP INDEX IDX_2E41816B3584533 ON citizen_project_memberships');

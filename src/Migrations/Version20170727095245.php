@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version20170727095245 extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE skills (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, UNIQUE INDEX skill_slug_unique (slug), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE summary_skills (summary_id INT NOT NULL, skill_id INT NOT NULL, INDEX IDX_2FD2B63C2AC2D45C (summary_id), INDEX IDX_2FD2B63C5585C142 (skill_id), PRIMARY KEY(summary_id, skill_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
@@ -54,7 +54,7 @@ SQL;
         $this->addSql($sqlTransferSkills);
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE summary_skills DROP FOREIGN KEY FK_2FD2B63C5585C142');
         $this->addSql('DROP TABLE skills');
