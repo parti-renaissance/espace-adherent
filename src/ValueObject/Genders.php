@@ -4,20 +4,23 @@ namespace AppBundle\ValueObject;
 
 final class Genders
 {
-    const MALE = 'male';
-    const FEMALE = 'female';
+    public const MALE = 'male';
+    public const FEMALE = 'female';
+    public const OTHER = 'other';
 
-    const ALL = [
+    public const ALL = [
         self::MALE,
         self::FEMALE,
+        self::OTHER,
     ];
 
-    const CHOICES = [
+    public const CHOICES = [
         'common.gender.man' => self::MALE,
         'common.gender.woman' => self::FEMALE,
+        'common.gender.other' => self::OTHER,
     ];
 
-    const CIVILITY_CHOICES = [
+    public const CIVILITY_CHOICES = [
         'common.civility.mrs' => self::FEMALE,
         'common.civility.mr' => self::MALE,
     ];
@@ -26,7 +29,7 @@ final class Genders
     {
     }
 
-    public static function all()
+    public static function all(): array
     {
         return self::ALL;
     }

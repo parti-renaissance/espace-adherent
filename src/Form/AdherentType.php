@@ -39,6 +39,9 @@ class AdherentType extends AbstractType
                 'placeholder' => 'common.i.am',
             ])
             ->add('gender', GenderType::class)
+            ->add('customGender', TextType::class, [
+                'required' => false,
+            ])
             ->add('birthdate', BirthdayType::class, [
                 'widget' => 'choice',
                 'years' => $options['years'],

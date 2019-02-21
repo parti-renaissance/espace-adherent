@@ -1,0 +1,19 @@
+<script type="text/javascript">
+    const genderField = dom(`#adherent_gender`);
+    const customGenderField = dom(`#adherent_customGender`);
+
+    const checkGender = () => {
+        if ('other' === genderField.value) {
+            customGenderField.required = true;
+            removeClass(customGenderField.parentElement, 'visually-hidden');
+        } else {
+            addClass(customGenderField.parentElement, 'visually-hidden');
+            customGenderField.required = false;
+            customGenderField.value = '';
+        }
+    };
+
+    on(genderField, 'change', checkGender);
+    checkGender();
+
+</script>
