@@ -41,7 +41,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('ROLE_ADHERENT')")
      * @Route("/users/me", name="app_api_user_show_me")
      * @Method("GET")
      */
