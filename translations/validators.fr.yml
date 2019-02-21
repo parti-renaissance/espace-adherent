@@ -207,6 +207,10 @@ procuration.proposal_conditions.required: Vous devez vous engager à voter selon
 
 procuration.authorization.required: Vous devez nous autoriser à utiliser ces informations dans le cadre du processus de procuration.
 
+procuration.vote_country.conditions.fr: Attention, vous ne pouvez être mandataire que pour une seule procuration établie en France et une établie à l'étranger.
+procuration.vote_country.conditions.other: Attention, vous ne pouvez être mandataire que pour une seule procuration établie en France et deux établies à l'étranger.
+procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
+
 #
 # Event
 #
