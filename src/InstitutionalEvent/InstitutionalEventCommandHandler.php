@@ -26,15 +26,42 @@ class InstitutionalEventCommandHandler
 
     public function handle(InstitutionalEventCommand $command): InstitutionalEvent
     {
-        $event = $this->factory->createFromInstitutionalEventCommand($command);
+        $institutionalEvent = $this->factory->createFromInstitutionalEventCommand($command);
 
-        $this->entityManager->persist($event);
+        $this->entityManager->persist($institutionalEvent);
         $this->entityManager->flush();
 
         $this->dispatcher->dispatch(
-            Events::INSTITUTIONAL_EVENT_CREATED, new InstitutionalEventEvent($command->getAuthor(), $event)
+            Events::INSTITUTIONAL_EVENT_CREATED, new InstitutionalEventEvent($institutionalEvent)
         );
 
-        return $event;
+        return $institutionalEvent;
+    }
+
+    public function handleUpdate(
+        InstitutionalEventCommand $command,
+        InstitutionalEvent $institutionalEvent
+    ): InstitutionalEvent {
+        $this->factory->updateFromInstitutionalEventCommand($command, $institutionalEvent);
+
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(
+            Events::INSTITUTIONAL_EVENT_UPDATED, new InstitutionalEventEvent($institutionalEvent)
+        );
+
+        return $institutionalEvent;
+    }
+
+    public function handleDelete(InstitutionalEvent $institutionalEvent): InstitutionalEvent
+    {
+        $this->entityManager->remove($institutionalEvent);
+        $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(
+            Events::INSTITUTIONAL_EVENT_DELETED, new InstitutionalEventEvent($institutionalEvent)
+        );
+
+        return $institutionalEvent;
     }
 }

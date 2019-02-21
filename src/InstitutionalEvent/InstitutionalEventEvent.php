@@ -2,7 +2,6 @@
 
 namespace AppBundle\InstitutionalEvent;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Geocoder\GeocodableEntityEventInterface;
 use AppBundle\Geocoder\GeocodableInterface;
@@ -10,27 +9,20 @@ use Symfony\Component\EventDispatcher\Event;
 
 class InstitutionalEventEvent extends Event implements GeocodableEntityEventInterface
 {
-    protected $author;
-    protected $event;
+    protected $institutionalEvent;
 
-    public function __construct(?Adherent $author, InstitutionalEvent $event)
+    public function __construct(InstitutionalEvent $institutionalEvent)
     {
-        $this->author = $author;
-        $this->event = $event;
+        $this->institutionalEvent = $institutionalEvent;
     }
 
-    public function getAuthor(): ?Adherent
+    public function getInstitutionalEvent(): InstitutionalEvent
     {
-        return $this->author;
-    }
-
-    public function getEvent(): InstitutionalEvent
-    {
-        return $this->event;
+        return $this->institutionalEvent;
     }
 
     public function getGeocodableEntity(): GeocodableInterface
     {
-        return $this->event;
+        return $this->institutionalEvent;
     }
 }

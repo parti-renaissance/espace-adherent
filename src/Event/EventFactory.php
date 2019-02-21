@@ -147,7 +147,8 @@ class EventFactory
             $command->getDescription(),
             $this->createPostAddress($command->getAddress()),
             $command->getBeginAt()->format(\DATE_ATOM),
-            $command->getFinishAt()->format(\DATE_ATOM)
+            $command->getFinishAt()->format(\DATE_ATOM),
+            $command->getInvitations()
         );
 
         $event->setTimeZone($command->getTimeZone());
@@ -155,6 +156,22 @@ class EventFactory
         $this->referentTagManager->assignReferentLocalTags($event);
 
         return $event;
+    }
+
+    public function updateFromInstitutionalEventCommand(
+        InstitutionalEventCommand $command,
+        InstitutionalEvent $institutionalEvent
+    ): void {
+        $institutionalEvent->update(
+            $command->getName(),
+            $command->getCategory(),
+            $command->getDescription(),
+            $this->createPostAddress($command->getAddress()),
+            $command->getInvitations(),
+            $command->getBeginAt(),
+            $command->getFinishAt(),
+            $command->getTimeZone()
+        );
     }
 
     public function updateFromEventCommand(Event $event, EventCommand $command): Event
