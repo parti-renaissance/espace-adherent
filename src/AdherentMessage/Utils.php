@@ -4,7 +4,7 @@ namespace AppBundle\AdherentMessage;
 
 final class Utils
 {
-    public static function getMessageTypeFromUri(string $uri): string
+    public static function getMessageTypeFromUri(string $uri): ?string
     {
         if (false !== strpos($uri, 'espace-referent/')) {
             return AdherentMessageTypeEnum::REFERENT;
@@ -14,6 +14,6 @@ final class Utils
             return AdherentMessageTypeEnum::DEPUTY;
         }
 
-        throw new \InvalidArgumentException(sprintf('Invalid URI (%s)', $uri));
+        return null;
     }
 }
