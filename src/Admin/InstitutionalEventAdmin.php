@@ -74,9 +74,6 @@ class InstitutionalEventAdmin extends AbstractAdmin
                     'label' => 'Statut',
                     'catalogue' => 'forms',
                 ])
-                ->add('published', null, [
-                    'label' => 'Publié',
-                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', null, [
@@ -101,6 +98,14 @@ class InstitutionalEventAdmin extends AbstractAdmin
                     'label' => 'Fuseau horaire',
                 ])
             ->end()
+            ->with('Invitations', ['class' => 'col-md-5'])
+                ->add('invitationsCount', null, [
+                    'label' => "Nombre d'invités",
+                ])
+                ->add('getInvitations', 'array', [
+                    'label' => 'Liste des invités',
+                ])
+            ->end()
         ;
     }
 
@@ -108,7 +113,7 @@ class InstitutionalEventAdmin extends AbstractAdmin
     {
         $this->referentTagManager->assignReferentLocalTags($object);
 
-        $event = new InstitutionalEventEvent($object->getOrganizer(), $object);
+        $event = new InstitutionalEventEvent($object);
 
         $this->dispatcher->dispatch(Events::INSTITUTIONAL_EVENT_UPDATED, $event);
     }
@@ -231,6 +236,9 @@ class InstitutionalEventAdmin extends AbstractAdmin
             ->add('beginAt', null, [
                 'label' => 'Date de début',
             ])
+            ->add('finishAt', null, [
+                'label' => 'Date de fin',
+            ])
             ->add('_location', null, [
                 'label' => 'Lieu',
                 'virtual_field' => true,
@@ -238,6 +246,9 @@ class InstitutionalEventAdmin extends AbstractAdmin
             ])
             ->add('category', null, [
                 'label' => 'Catégorie',
+            ])
+            ->add('invitationsCount', null, [
+                'label' => 'Invitations',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
@@ -252,5 +263,20 @@ class InstitutionalEventAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function getExportFields()
+    {
+        return [
+            'Nom' => 'name',
+            'Organisateur' => 'organizer.getFullName',
+            'Description' => 'description',
+            'Date de début' => 'beginAt',
+            'Date de fin' => 'finishAt',
+            'Lieu' => 'getInlineFormattedAddress',
+            'Catégorie' => 'category',
+            "Nombre d'invités" => 'invitationsCount',
+            'Liste des invités' => 'getInvitationsAsString',
+        ];
     }
 }

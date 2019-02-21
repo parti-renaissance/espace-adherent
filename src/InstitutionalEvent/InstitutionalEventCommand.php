@@ -11,6 +11,7 @@ use AppBundle\Entity\InstitutionalEventCategory;
 use AppBundle\Event\BaseEventCommand;
 use AppBundle\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @DateRange(
@@ -27,6 +28,11 @@ class InstitutionalEventCommand extends BaseEventCommand
      */
     protected $event;
 
+    /**
+     * @Assert\NotBlank
+     */
+    private $invitations;
+
     public function __construct(
         ?Adherent $author,
         UuidInterface $uuid = null,
@@ -34,9 +40,12 @@ class InstitutionalEventCommand extends BaseEventCommand
         \DateTimeInterface $beginAt = null,
         \DateTimeInterface $finishAt = null,
         InstitutionalEvent $event = null,
-        string $timezone = GeoCoder::DEFAULT_TIME_ZONE
+        string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
+        array $invitations = []
     ) {
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone);
+
+        $this->invitations = $invitations;
     }
 
     public static function createFromInstitutionalEvent(InstitutionalEvent $event): self
@@ -48,7 +57,8 @@ class InstitutionalEventCommand extends BaseEventCommand
             $event->getBeginAt(),
             $event->getFinishAt(),
             $event,
-            $event->getTimeZone()
+            $event->getTimeZone(),
+            $event->getInvitations()
         );
 
         $command->category = $event->getCategory();
@@ -72,5 +82,15 @@ class InstitutionalEventCommand extends BaseEventCommand
     protected function getCategoryClass(): string
     {
         return InstitutionalEventCategory::class;
+    }
+
+    public function getInvitations(): array
+    {
+        return $this->invitations;
+    }
+
+    public function setInvitations(array $invitations): void
+    {
+        $this->invitations = $invitations;
     }
 }

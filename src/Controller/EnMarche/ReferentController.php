@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Entity\Projection\ReferentManagedUser;
@@ -165,7 +166,7 @@ class ReferentController extends Controller
         InstitutionalEventRepository $institutionalEventRepository,
         ManagedInstitutionalEventsExporter $exporter): Response
     {
-        return $this->render('referent/institutional_events_list.html.twig', [
+        return $this->render('referent/institutional_events/list.html.twig', [
             'managedInstitutionalEventsJson' => $exporter->exportAsJson(
                 $institutionalEventRepository->findByOrganizer($this->getUser())
             ),
@@ -192,14 +193,76 @@ class ReferentController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $institutionalEventCommandHandler->handle($command);
 
-            $this->addFlash('info', 'referent.institutional_event.creation.success');
+            $this->addFlash('info', 'referent.institutional_event.create.success');
 
             return $this->redirectToRoute('app_referent_institutional_events');
         }
 
-        return $this->render('referent/institutional_event_create.html.twig', [
+        return $this->render('referent/institutional_events/create.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/evenements-institutionnels/{uuid}/editer",
+     *     name="app_referent_institutional_events_edit",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET", "POST"}
+     * )
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', institutionalEvent)")
+     */
+    public function institutionalEventsEditAction(
+        Request $request,
+        InstitutionalEvent $institutionalEvent,
+        InstitutionalEventCommandHandler $institutionalEventCommandHandler
+    ): Response {
+        $form = $this
+            ->createForm(
+                InstitutionalEventCommandType::class,
+                $command = InstitutionalEventCommand::createFromInstitutionalEvent($institutionalEvent),
+                ['view' => InstitutionalEventCommandType::EDIT_VIEW]
+            )
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $institutionalEventCommandHandler->handleUpdate($command, $institutionalEvent);
+
+            $this->addFlash('info', 'referent.institutional_event.update.success');
+
+            return $this->redirectToRoute('app_referent_institutional_events');
+        }
+
+        return $this->render('referent/institutional_events/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/evenements-institutionnels/{uuid}/supprimer",
+     *     name="app_referent_institutional_events_delete",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"}
+     * )
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', institutionalEvent)")
+     */
+    public function institutionalEventsDeleteAction(
+        InstitutionalEvent $institutionalEvent,
+        InstitutionalEventCommandHandler $institutionalEventCommandHandler
+    ): Response {
+        $institutionalEventCommandHandler->handleDelete($institutionalEvent);
+
+        $this->addFlash('info', 'referent.institutional_event.delete.success');
+
+        return $this->redirectToRoute('app_referent_institutional_events');
     }
 
     /**

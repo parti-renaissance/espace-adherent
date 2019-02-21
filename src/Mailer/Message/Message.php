@@ -15,6 +15,7 @@ class Message
     protected $senderEmail;
     protected $senderName;
     protected $cc;
+    protected $bcc;
 
     /**
      * Message constructor.
@@ -45,6 +46,7 @@ class Message
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->cc = [];
+        $this->bcc = [];
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
@@ -143,6 +145,16 @@ class Message
     public function addCC(string $cc): void
     {
         $this->cc[] = $cc;
+    }
+
+    public function getBCC(): array
+    {
+        return $this->bcc;
+    }
+
+    public function addBCC(string $bcc): void
+    {
+        $this->bcc[] = $bcc;
     }
 
     public function setReplyTo(string $replyTo): void

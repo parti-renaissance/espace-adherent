@@ -7,6 +7,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\InstitutionalEventInvitationMessage;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -149,6 +150,7 @@ class ReferentControllerTest extends WebTestCase
         $data['institutional_event']['address']['country'] = 'CH';
         $data['institutional_event']['description'] = 'Premier événement institutionel en Suisse';
         $data['institutional_event']['timeZone'] = 'Europe/Zurich';
+        $data['institutional_event']['invitations'] = 'jean@exemple.fr;michel@exemple.fr;marcel@exemple.fr';
 
         $this->client->submit(
             $this->client->getCrawler()->selectButton('Créer cet événement institutionnel')->form(), $data
@@ -168,6 +170,8 @@ class ReferentControllerTest extends WebTestCase
             'Le nouvel événement institutionnel a bien été créé.',
             $this->client->getCrawler()->filter('div.notice-flashes')->html()
         );
+
+        $this->assertCountMails(1, InstitutionalEventInvitationMessage::class, 'referent@en-marche-dev.fr');
     }
 
     public function testCreateInstitutionalEventFailed()
@@ -181,7 +185,7 @@ class ReferentControllerTest extends WebTestCase
             ->selectButton('Créer cet événement institutionnel')->form(), [])
         ;
 
-        $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#institutional_event-name-field > .form__errors > li')->text()
@@ -196,8 +200,12 @@ class ReferentControllerTest extends WebTestCase
                 '#institutional_event-address-address-field > .form__errors > li')->text()
         );
 
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.",
-            $this->client->getCrawler()->filter('#institutional_event-address > .form__errors > li')->text()
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#institutional_event-invitations-field > .form__errors > li')->text()
+        );
+
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('#institutional_event-description-field > .form__errors > li')->text()
         );
     }
 

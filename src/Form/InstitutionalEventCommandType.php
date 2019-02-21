@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\InstitutionalEventCategory;
 use AppBundle\Form\DataTransformer\EventDateTimeZoneTransformer;
+use AppBundle\Form\DataTransformer\StringToArrayTransformer;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,10 +12,15 @@ use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InstitutionalEventCommandType extends BaseEventCommandType
 {
+    public const CREATE_VIEW = 'create';
+    public const EDIT_VIEW = 'edit';
+
     public function getParent()
     {
         return BaseEventCommandType::class;
@@ -46,6 +52,10 @@ class InstitutionalEventCommandType extends BaseEventCommandType
                 'years' => $options['years'],
                 'minutes' => $options['minutes'],
             ])
+            ->add('invitations', PurifiedTextareaType::class, [
+                'filter_emojis' => true,
+                'purifier_type' => 'enrich_content',
+            ])
             ->remove('capacity')
         ;
 
@@ -62,6 +72,10 @@ class InstitutionalEventCommandType extends BaseEventCommandType
         });
 
         $builder->addModelTransformer(new EventDateTimeZoneTransformer());
+
+        $builder->get('invitations')->addModelTransformer(
+            new StringToArrayTransformer(StringToArrayTransformer::SEPARATOR_SEMICOLON)
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -70,8 +84,14 @@ class InstitutionalEventCommandType extends BaseEventCommandType
             ->setDefaults([
                 'data_class' => InstitutionalEventCommand::class,
                 'event_category_class' => InstitutionalEventCategory::class,
+                'view' => self::CREATE_VIEW,
             ])
         ;
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['view'] = $options['view'];
     }
 
     public function getBlockPrefix()

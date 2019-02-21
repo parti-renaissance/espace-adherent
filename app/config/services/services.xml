@@ -126,6 +126,9 @@
 
         <!-- Institutional Events -->
         <service id="AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler" />
+        <service id="AppBundle\InstitutionalEvent\InstitutionalEventMessageNotifier">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
 
         <!-- EventListener -->
         <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
