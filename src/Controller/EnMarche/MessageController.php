@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @Route("/{prefix}messagerie", requirements={"prefix": "espace-referent/|espace-depute/"})
+ * @Route("/{prefix}messagerie", defaults={"prefix": ""}, requirements={"prefix": "|espace-referent/|espace-depute/"})
  *
  * @Security("is_granted('ROLE_ADHERENT_MESSAGE')")
  */
@@ -96,22 +96,16 @@ class MessageController extends Controller
             $this->addFlash('info', 'adherent_message.created_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToRoute(
-                    'app_message_filter',
-                    [
-                        'prefix' => $prefix,
-                        'uuid' => $message->getUuid()->toString(),
-                    ]
-                );
+                return $this->redirectToRoute('app_message_filter', [
+                    'prefix' => $prefix,
+                    'uuid' => $message->getUuid()->toString(),
+                ]);
             }
 
-            return $this->redirectToRoute(
-                'app_message_update',
-                [
-                    'prefix' => $prefix,
-                    'uuid' => $message->getUuid(),
-                ]
-            );
+            return $this->redirectToRoute('app_message_update', [
+                'prefix' => $prefix,
+                'uuid' => $message->getUuid(),
+            ]);
         }
 
         return $this->renderTemplate($prefix, 'message/create.html.twig', ['form' => $form->createView()]);
@@ -147,13 +141,10 @@ class MessageController extends Controller
             $this->addFlash('info', 'adherent_message.updated_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToRoute(
-                    'app_message_filter',
-                    [
-                        'prefix' => $prefix,
-                        'uuid' => $message->getUuid()->toString(),
-                    ]
-                );
+                return $this->redirectToRoute('app_message_filter', [
+                    'prefix' => $prefix,
+                    'uuid' => $message->getUuid()->toString(),
+                ]);
             }
 
             return $this->redirectToRoute('app_message_update', ['prefix' => $prefix, 'uuid' => $message->getUuid()]);
@@ -318,15 +309,12 @@ class MessageController extends Controller
                 break;
         }
 
-        return $this->render(
-            $template,
-            array_merge(
-                $parameters,
-                [
-                    'base_template' => $baseTemplate,
-                    'route_params' => ['prefix' => $uriPrefix],
-                ]
-            )
-        );
+        return $this->render($template, array_merge(
+            $parameters,
+            [
+                'base_template' => $baseTemplate,
+                'route_params' => ['prefix' => $uriPrefix],
+            ]
+        ));
     }
 }
