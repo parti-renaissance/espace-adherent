@@ -192,7 +192,7 @@
 }
 
 @mixin btn--blue--adi {
-    color: white;
+    color: white !important;
     background: $blue--adi;
     border-color: $blue--adi;
 

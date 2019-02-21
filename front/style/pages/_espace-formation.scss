@@ -80,6 +80,11 @@
         }
     }
 
+    article {
+        h2 { @include text--medium }
+        h3 {@include text--medium-small }
+    }
+
     p, li {
         color: $gray--dark;
     }
