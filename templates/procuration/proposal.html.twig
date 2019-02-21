@@ -13,6 +13,7 @@
 {% block footer '' %}
 
 {% block javascripts %}
+    <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
@@ -30,6 +31,28 @@
                 '{{ procuration_form.voteCityName.vars.id }}',
                 '{{ procuration_form.voteOffice.vars.id }}'
             );
+
+            updateNbOfProxiesProposed();
+
+            $('#{{ procuration_form.voteCountry.vars.id }}').change(function() {
+                updateNbOfProxiesProposed();
+            });
+
+            function updateNbOfProxiesProposed() {
+                var nbOfProxiesProposedSelected = '#{{ procuration_form.nbOfProxiesProposed.vars.id }}';
+                var radioButtons = $(nbOfProxiesProposedSelected+' > div');
+                var radioButtonsHelper = $(nbOfProxiesProposedSelected+'_helper');
+
+                if ('FR' === $('#{{ procuration_form.voteCountry.vars.id }}').val()) {
+                    $(nbOfProxiesProposedSelected+'_'+1).prop('checked', true);
+                    radioButtons.last().hide();
+                    radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.fr'|trans({}, 'validators')|e('js') }}')
+                } else {
+                    $(nbOfProxiesProposedSelected+'_'+2).prop('checked', true);
+                    radioButtons.last().show();
+                    radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.other'|trans({}, 'validators')|e('js') }}');
+                }
+            }
         });
     </script>
 {% endblock %}
@@ -150,6 +173,14 @@
                             {{ form_label(procuration_form.voteOffice, 'Nom ou localisation de votre bureau de vote') }}
                             {{ form_errors(procuration_form.voteOffice) }}
                             {{ form_widget(procuration_form.voteOffice, { attr: { class: 'form--full', placeholder: 'Bureau de vote' } }) }}
+                        </div>
+
+                        <div class="form__row" id="nbOfProxiesProposed">
+                            {{ form_label(procuration_form.nbOfProxiesProposed, 'Nombre de procurations proposées') }}
+                            {{ form_errors(procuration_form.nbOfProxiesProposed) }}
+                            {{ form_widget(procuration_form.nbOfProxiesProposed) }}
+
+                            <div id="app_procuration_proposal_nbOfProxiesProposed_helper"></div>
                         </div>
                     </div>
 

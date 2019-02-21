@@ -5,9 +5,13 @@ namespace AppBundle\Form\Procuration;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
@@ -43,6 +47,14 @@ class ProcurationProxyType extends AbstractProcurationType
                 'filter_emojis' => true,
             ])
             ->add('voteOffice', TextType::class)
+            ->add('nbOfProxiesProposed', ChoiceType::class, [
+                'expanded' => true,
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                ],
+            ])
             ->add('electionRounds', ElectionRoundsChoiceType::class, [
                 'election_context' => $options['election_context'],
             ])
@@ -68,6 +80,18 @@ class ProcurationProxyType extends AbstractProcurationType
                 ]),
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (2 === (int) $data['nbOfProxiesProposed'] && 'FR' === $data['country']) {
+                $event->getForm()->get('nbOfProxiesProposed')->addError(
+                    new FormError(
+                    'Attention, vous ne pouvez être mandataire que pour une seule procuration établie en France et une établie à l\'étranger.'
+                    )
+                );
+            }
+        });
     }
 
     public function getBlockPrefix()

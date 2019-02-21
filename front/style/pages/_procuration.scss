@@ -126,6 +126,13 @@
                     min-width: 0;
                 }
             }
+
+            #nbOfProxiesProposed {
+                label:before {
+                    content: none;
+                }
+            }
+
         }
     }
 

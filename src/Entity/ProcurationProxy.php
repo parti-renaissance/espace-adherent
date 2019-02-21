@@ -287,6 +287,26 @@ class ProcurationProxy
      */
     public $recaptcha = '';
 
+    /**
+     * @var int
+     *
+     * @Assert\Range(
+     *     min=1,
+     *     max=3,
+     *     minMessage="procuration.vote_country.conditions",
+     *     maxMessage="procuration.vote_country.conditions",
+     *     groups={"front"}
+     * )
+     * @Assert\Expression(
+     *     "(this.getVoteCountry() == 'FR' and value <= 2) or (this.getVoteCountry() != 'FR' and value <= 3)",
+     *     message="procuration.vote_country.conditions",
+     *     groups={"front"}
+     * )
+     *
+     * @ORM\Column(type="integer",  options={"unsigned": true, "default": 1})
+     */
+    public $nbOfProxiesProposed = 1;
+
     public function __construct(?Adherent $referent)
     {
         $this->referent = $referent;
@@ -635,5 +655,15 @@ class ProcurationProxy
         }
 
         return true;
+    }
+
+    public function getNbOfProxiesProposed(): int
+    {
+        return $this->nbOfProxiesProposed;
+    }
+
+    public function setNbOfProxiesProposed(int $nbOfProxiesProposed): void
+    {
+        $this->nbOfProxiesProposed = $nbOfProxiesProposed;
     }
 }

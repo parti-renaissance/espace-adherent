@@ -70,14 +70,6 @@ class AdherentType extends AbstractType
                 }
             })
         ;
-
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $data = $event->getData();
-            if (array_key_exists('elected', $data) && false === $data['elected']) {
-                unset($data['mandates']);
-                $event->setData($data);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
