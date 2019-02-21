@@ -175,6 +175,17 @@
             }
         }
     }
+
+    .form {
+        &__radio-button {
+            input[type='radio'] {
+                &:checked + label:before {
+                    border-color: $gray--dark;
+                    background: $gray--dark;
+                }
+            }
+        }
+    }
 }
 
 .procuration-manager {
