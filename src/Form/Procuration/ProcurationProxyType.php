@@ -5,6 +5,7 @@ namespace AppBundle\Form\Procuration;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,6 +44,14 @@ class ProcurationProxyType extends AbstractProcurationType
                 'filter_emojis' => true,
             ])
             ->add('voteOffice', TextType::class)
+            ->add('proxiesCount', ChoiceType::class, [
+                'expanded' => true,
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                ],
+            ])
             ->add('electionRounds', ElectionRoundsChoiceType::class, [
                 'election_context' => $options['election_context'],
             ])
