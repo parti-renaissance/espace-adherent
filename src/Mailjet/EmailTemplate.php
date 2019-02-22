@@ -61,6 +61,14 @@ final class EmailTemplate extends AbstractEmailTemplate
             $body['Recipients'] = $this->recipients;
         }
 
+        if ($this->bcc) {
+            foreach ($this->bcc as $email) {
+                $bcc[] = $email;
+            }
+
+            $body['Bcc'] = implode(', ', $bcc);
+        }
+
         if ($this->replyTo) {
             $body['Headers'] = [
                 'Reply-To' => $this->replyTo,

@@ -254,7 +254,9 @@ search.geocoding.exception: Nous ne sommes pas parvenus à reconnaître la ville
 #
 referent.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 referent.event.creation.success: Le nouvel événement a bien été créé.
-referent.institutional_event.creation.success: Le nouvel événement institutionnel a bien été créé.
+referent.institutional_event.create.success: Le nouvel événement institutionnel a bien été créé.
+referent.institutional_event.update.success: L'événement institutionnel a bien été mis à jour.
+referent.institutional_event.delete.success: L'événement institutionnel a bien été supprimé.
 referent.label.tags: Référent
 referent.button.accept: J'ai lu et j'accepte
 referent.popup.title: Charte de bonne utilisation des outils numériques

@@ -15,7 +15,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
+class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity, AuthoredInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\InstitutionalEventCategory")
@@ -28,6 +28,13 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
      */
     private $referentTags;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array")
+     */
+    private $invitations;
 
     public function getType(): ?string
     {
@@ -48,6 +55,7 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
         PostAddress $address,
         string $beginAt,
         string $finishAt,
+        array $invitations = [],
         string $createdAt = null,
         string $slug = null,
         array $referentTags = [],
@@ -60,6 +68,7 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
         $this->category = $category;
         $this->description = $description;
         $this->postAddress = $address;
+        $this->invitations = $invitations;
         $this->participantsCount = 0;
         $this->beginAt = new \DateTime($beginAt);
         $this->finishAt = new \DateTime($finishAt);
@@ -68,6 +77,30 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
         $this->status = self::STATUS_SCHEDULED;
         $this->referentTags = new ArrayCollection($referentTags);
         $this->timeZone = $timeZone;
+        $this->invitations = $invitations;
+    }
+
+    public function update(
+        string $name,
+        InstitutionalEventCategory $category,
+        string $description,
+        PostAddress $address,
+        array $invitations,
+        \DateTimeInterface $beginAt,
+        \DateTimeInterface $finishAt,
+        string $timeZone
+    ) {
+        $this->setName($name);
+        $this->category = $category;
+        $this->beginAt = $beginAt;
+        $this->finishAt = $finishAt;
+        $this->description = $description;
+        $this->timeZone = $timeZone;
+        $this->invitations = $invitations;
+
+        if (!$this->postAddress->equals($address)) {
+            $this->postAddress = $address;
+        }
     }
 
     /**
@@ -110,5 +143,30 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity
     public function isReferentEvent(): bool
     {
         return true;
+    }
+
+    public function getInvitations(): array
+    {
+        return $this->invitations;
+    }
+
+    public function setInvitations(array $invitations): void
+    {
+        $this->invitations = $invitations;
+    }
+
+    public function getInvitationsCount(): int
+    {
+        return \count($this->invitations);
+    }
+
+    public function getInvitationsAsString(): string
+    {
+        return implode(', ', $this->invitations);
+    }
+
+    public function getAuthor(): ?Adherent
+    {
+        return $this->organizer;
     }
 }

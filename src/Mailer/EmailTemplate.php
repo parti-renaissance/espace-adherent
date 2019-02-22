@@ -13,6 +13,7 @@ abstract class EmailTemplate implements \JsonSerializable
     protected $replyTo;
     protected $subject;
     protected $cc;
+    protected $bcc;
     protected $recipients;
     protected $template;
     private $httpRequestPayload;
@@ -25,7 +26,8 @@ abstract class EmailTemplate implements \JsonSerializable
         string $senderEmail,
         string $senderName = null,
         string $replyTo = null,
-        array $cc = []
+        array $cc = [],
+        array $bcc = []
     ) {
         $this->uuid = $uuid;
         $this->template = $template;
@@ -34,6 +36,7 @@ abstract class EmailTemplate implements \JsonSerializable
         $this->senderName = $senderName;
         $this->replyTo = $replyTo;
         $this->cc = $cc;
+        $this->bcc = $bcc;
         $this->recipients = [];
     }
 
@@ -42,7 +45,16 @@ abstract class EmailTemplate implements \JsonSerializable
         $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
         $senderName = $message->getSenderName() ?: $defaultSenderName;
 
-        $email = new static($message->getUuid(), $message->getTemplate(), $message->getSubject(), $senderEmail, $senderName, $message->getReplyTo(), $message->getCC());
+        $email = new static(
+            $message->getUuid(),
+            $message->getTemplate(),
+            $message->getSubject(),
+            $senderEmail,
+            $senderName,
+            $message->getReplyTo(),
+            $message->getCC(),
+            $message->getBCC()
+        );
 
         foreach ($message->getRecipients() as $recipient) {
             $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
