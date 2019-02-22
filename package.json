@@ -22,6 +22,7 @@
     "babel-preset-react": "^6.16.0",
     "chai": "^3.5.0",
     "clipboard": "^1.6.1",
+    "copy-webpack-plugin": "4.6.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.24.0",
     "eslint": "^3.12.2",
@@ -46,6 +47,7 @@
     "react-dom": "^15.3.2",
     "reqwest": "^2.0.5",
     "sass-loader": "^4.0.0",
+    "select2": "^4.0.6-rc.1",
     "stackblur-canvas": "^1.4.0",
     "style-loader": "^0.13.1",
     "webpack": "^2.2.0"
