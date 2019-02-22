@@ -96,7 +96,6 @@ abstract class AbstractBiography
      *     maxWidth="1200",
      *     maxHeight="1200",
      *     minWidth="300",
-     *     allowLandscape=false,
      * )
      */
     protected $image;
