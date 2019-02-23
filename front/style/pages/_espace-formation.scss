@@ -9,6 +9,11 @@
     position: absolute;
 }
 
+@mixin module-bullet {
+    background-color: $green--pale;
+    color: $green--apple;
+}
+
 @mixin module-header {
     color: $blue--gray;
     text-transform: uppercase;
@@ -29,6 +34,7 @@
     stroke: $blue--azure;
     border: 0;
     transition: all 0.45s;
+    margin-left: 20px;
 }
 
 .espace-formation {
@@ -82,7 +88,7 @@
 
     article {
         h2 { @include text--medium }
-        h3 {@include text--medium-small }
+        h3 { @include text--medium-small }
     }
 
     p, li {
@@ -108,6 +114,8 @@
     }
 
     &__intro {
+        margin-bottom: 50px;
+
         section {
             padding: 20px 0;
         }
@@ -157,6 +165,18 @@
                     content: "Axe " counter(objectives);
                     @include axis-bullet;
                     margin-left: -80px;
+                }
+            }
+
+            &__module {
+                li {
+                    padding-left: 115px;
+
+                    &:before {
+                        content: "Module " counter(objectives);
+                        @include module-bullet;
+                        margin-left: -115px;
+                    }
                 }
             }
         }
@@ -236,11 +256,6 @@
 
                     h1 {
                         color: black;
-                    }
-
-                    .button {
-                        background: rgba($blue--azure, .3);
-                        polyline { stroke: $blue--azure; }
                     }
                 }
             }
