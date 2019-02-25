@@ -23,13 +23,15 @@
                             Chaque vote compte.
                         </h1>
                         {% block subtitle %}
-                        <h2 class="text--medium b__nudge--top l__hide--on-mobile">
-                            La procuration avec<br/>La République En Marche !
-                        </h2>
+                            <h2 class="text--medium b__nudge--top l__hide--on-mobile">
+                                La procuration avec<br/>La République En Marche !
+                            </h2>
                         {% endblock %}
                     </div>
             </section>
             <section>
+                {% include 'procuration/_faq.html.twig' %}
+
                 {% block procuration_content %}{% endblock %}
             </section>
         </div>
