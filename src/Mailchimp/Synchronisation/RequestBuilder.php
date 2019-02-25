@@ -35,6 +35,7 @@ class RequestBuilder
     public function updateFromAdherent(Adherent $adherent): self
     {
         return $this
+            ->setEmail($adherent->getEmailAddress())
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
             ->setLastName($adherent->getLastName())
