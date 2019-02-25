@@ -106,14 +106,14 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             'René',
             'thomas.rene@example.gb',
             '95, Faubourg Saint Honoré',
-            '75020',
-            '75020-75120',
+            '75008',
+            '75008-75108',
             null,
             '33 0099887766',
             '1962-10-11',
             'FR',
             '75020',
-            '75020-75120',
+            '75008-75108',
             null,
             'Lycée Faubourg',
             $partialLegislativeElections->getRounds(),
@@ -178,6 +178,107 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             'École de la république',
             $partialLegislativeElections->getRounds(),
             ProcurationRequest::REASON_TRAINING
+        ));
+
+        $manager->persist($request3 = $this->createRequest(
+            'male',
+            'Jean',
+            'Dell',
+            'jean.dell@example.gb',
+            '100 Roy Square, Main Street',
+            'E14 8BY',
+            'London',
+            'London',
+            '44 9999888111',
+            '1972-11-23',
+            'FR',
+            '75008',
+            '75008-75108',
+            null,
+            'Gymnase de Iéna',
+            $partialLegislativeElections->getRounds(),
+            ProcurationRequest::REASON_RESIDENCY,
+            false
+        ));
+
+        $manager->persist($this->createRequest(
+            'female',
+            'Aurélie',
+            'Baumé',
+            'aurelie.baume@example.gb',
+            '24, Carrer de Pelai',
+            '08001',
+            'Barcelona',
+            'Barcelona',
+            '34 9999888222',
+            '1985-01-20',
+            'ES',
+            '08001',
+            'Barcelona',
+            'Barcelona',
+            'Institut Català de la Salut',
+            $partialLegislativeElections->getRounds()
+        ));
+
+        $manager->persist($this->createRequest(
+            'male',
+            'René',
+            'Rage',
+            'rene.rage@example.gb',
+            '100 Roy Square, Main Street',
+            'E14 8BY',
+            null,
+            'London',
+            '44 9999888111',
+            '1972-11-23',
+            'GB',
+            'E14 8BY',
+            null,
+            'London',
+            'Lycée international Winston Churchill',
+            $partialLegislativeElections->getRounds()
+        ));
+
+        $manager->persist($this->createRequest(
+            'male',
+            'Jean-Michel',
+            'Amoitié',
+            'jeanmichel.amoitié@example.es',
+            '4Q Covent Garden',
+            'GV6H',
+            'London',
+            null,
+            '44 234567891',
+            '1989-12-20',
+            'GB',
+            'GV6H',
+            'London',
+            null,
+            'Camden',
+            $partialLegislativeElections->getRounds(),
+            ProcurationRequest::REASON_HEALTH,
+            0
+        ));
+
+        $manager->persist($this->createRequest(
+            'male',
+            'Jean-Michel',
+            'Gastro',
+            'jeanmichel.gastro@example.es',
+            '4Q Covent Garden',
+            'GV6H',
+            'London',
+            null,
+            '44 234567891',
+            '1989-12-20',
+            'GB',
+            'GV6H',
+            'London',
+            null,
+            'Camden',
+            $partialLegislativeElections->getRounds(),
+            ProcurationRequest::REASON_HEALTH,
+            0
         ));
 
         $referent = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::REFERENT_1_UUID);
@@ -267,7 +368,8 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
                 $partialLegislativeElections->getRounds()->toArray()
             ),
             5,
-            'Responsable procuration'
+            'Responsable procuration',
+            2
         ));
 
         $manager->persist($this->createProxyProposal(
@@ -314,15 +416,66 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
             'Responsable procuration'
         ));
 
+        $manager->persist($this->createProxyProposal(
+            $referent,
+            'female',
+            'Annie',
+            'Versaire',
+            'annie.versaire@exemple.org',
+            '100 Roy Square, Main Street',
+            'E14 8BY',
+            null,
+            'London',
+            '44 9999888111',
+            '1972-11-23',
+            'GB',
+            'E14 8BY',
+            null,
+            'London',
+            'Lycée international Winston Churchill',
+            $partialLegislativeElections->getRounds(),
+            5,
+            'Désactivé',
+            1,
+            1
+        ));
+
+        $manager->persist($this->createProxyProposal(
+            $referent,
+            'male',
+            'Jean-Michel',
+            'Gastro',
+            'jeanmichel.gastro@example.es',
+            '4Q Covent Garden',
+            'GV6H',
+            'London',
+            null,
+            '44 234567891',
+            '1989-12-21',
+            'GB',
+            'GV6H',
+            'London',
+            null,
+            'Camden',
+            $partialLegislativeElections->getRounds(),
+            5,
+            'Responsable procuration',
+            3
+        ));
+
         $manager->flush();
 
         $manager->refresh($request1);
         $manager->refresh($request2);
+        $manager->refresh($request3);
         $manager->refresh($proxy1);
         $manager->refresh($proxy2);
+
         $finder = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_4_UUID);
+
         $request1->process($proxy1, $finder);
         $request2->process($proxy2, $finder);
+        $request3->process($proxy2, $finder);
 
         $reflectionClass = new \ReflectionClass(ProcurationRequest::class);
         $reflectionProperty = $reflectionClass->getProperty('processedAt');
@@ -358,7 +511,8 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
         ?string $voteCityName,
         string $voteOffice,
         iterable $electionRounds,
-        string $reason = ProcurationRequest::REASON_HOLIDAYS
+        string $reason = ProcurationRequest::REASON_HOLIDAYS,
+        bool $requestFromFrance = true
     ): ProcurationRequest {
         if ($phone) {
             $phone = $this->createPhone($phone);
@@ -382,6 +536,7 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
         $request->setVoteOffice($voteOffice);
         $request->setElectionRounds($electionRounds);
         $request->setReason($reason);
+        $request->setRequestFromFrance($requestFromFrance);
 
         return $request;
     }
@@ -405,7 +560,9 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
         string $voteOffice,
         iterable $electionRounds,
         int $reliability = 0,
-        string $reliabilityDescription = ''
+        string $reliabilityDescription = '',
+        int $proxiesCount = 1,
+        bool $disabled = false
     ): ProcurationProxy {
         if ($phone) {
             $phone = $this->createPhone($phone);
@@ -430,6 +587,8 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
         $proxy->setElectionRounds($electionRounds);
         $proxy->setReliability($reliability);
         $proxy->setReliabilityDescription($reliabilityDescription);
+        $proxy->setDisabled($disabled);
+        $proxy->setProxiesCount($proxiesCount);
 
         return $proxy;
     }

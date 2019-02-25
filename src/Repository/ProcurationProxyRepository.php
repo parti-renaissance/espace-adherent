@@ -86,38 +86,25 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @return array
-     */
-    public function findMatchingProxies(ProcurationRequest $procurationRequest)
+    public function findMatchingProxies(ProcurationRequest $procurationRequest): array
     {
         $qb = $this->createQueryBuilder('pp');
-        $qb->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
-            ->where($qb->expr()->orX(
-                $qb->expr()->andX(
-                    'pp.voteCountry = \'FR\'',
-                    'SUBSTRING(pp.votePostalCode, 1, 2) = SUBSTRING(:votePostalCode, 1, 2)',
-                    'pp.voteCityName = :voteCityName'
-                ),
-                $qb->expr()->andX(
-                    'pp.voteCountry != \'FR\'',
-                    'pp.voteCountry = :voteCountry'
-                )
-            ))
-            ->andWhere('pp.foundRequest IS NULL')
+
+        $qb
+            ->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
-            ->setParameter('votePostalCode', $procurationRequest->getVotePostalCode())
+            ->setParameter('votePostalCodePrefix', $procurationRequest->getVotePostalCode())
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
             ->addOrderBy('pp.lastName', 'ASC')
         ;
 
-        return $this->andWhereMatchingRounds($qb, $procurationRequest)
-            ->getQuery()
-            ->getResult()
-        ;
+        $this->addAndWhereCountryConditions($qb, $procurationRequest->isRequestFromFrance());
+        $this->andWhereMatchingRounds($qb, $procurationRequest);
+
+        return $qb->getQuery()->getResult();
     }
 
     private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
@@ -165,5 +152,42 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         }
 
         return implode(' + ', $score ?? []);
+    }
+
+    public static function addAndWhereCountryConditions(QueryBuilder $qb, bool $requestFromFrance): QueryBuilder
+    {
+        if ($requestFromFrance) {
+            return $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        'pp.voteCountry = \'FR\'',
+                        'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                        'pp.voteCityName = :voteCityName',
+                        'pp.frenchRequestAvailable = true'
+                    ),
+                    $qb->expr()->andX(
+                        'pp.voteCountry != \'FR\'',
+                        'pp.voteCountry = :voteCountry',
+                        'pp.frenchRequestAvailable = true'
+                    )
+                )
+            );
+        }
+
+        return $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    'pp.voteCountry = \'FR\'',
+                    'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
+                    'pp.voteCityName = :voteCityName',
+                    'pp.foreignRequestAvailable = true'
+                ),
+                $qb->expr()->andX(
+                    'pp.voteCountry != \'FR\'',
+                    'pp.voteCountry = :voteCountry',
+                    'pp.foreignRequestAvailable = true'
+                )
+            )
+        );
     }
 }

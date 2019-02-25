@@ -36,14 +36,28 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
         parent::apply($qb, $alias);
 
         $status = $this->getStatus();
+
+        $qb->andWhere("$alias.disabled = :disabled");
+
         if (self::UNASSOCIATED === $status) {
-            $qb->andWhere("$alias.foundRequest IS NULL");
+            $qb
+                ->andWhere(
+                    $qb->expr()->orX(
+                        "$alias.frenchRequestAvailable != 0",
+                        "$alias.foreignRequestAvailable != 0"
+                    )
+                )
+                ->setParameter('disabled', false)
+             ;
         } elseif (self::ASSOCIATED === $status) {
-            $qb->andWhere("$alias.foundRequest IS NOT NULL");
+            $qb
+                ->andWhere("$alias.frenchRequestAvailable = 0")
+                ->andWhere("$alias.foreignRequestAvailable = 0")
+                ->setParameter('disabled', false)
+            ;
         } elseif (self::DISABLED === $status) {
             $qb
-                ->andWhere("$alias.disabled = :disabled")
-                ->setParameter('disabled', 1)
+                ->setParameter('disabled', true)
             ;
         }
 

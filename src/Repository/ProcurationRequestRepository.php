@@ -143,33 +143,21 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         $qb
             ->select('COUNT(DISTINCT pp.id)')
             ->from('AppBundle:ProcurationProxy', 'pp')
-            ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
-            ->andWhere($qb->expr()->orX(
-                $qb->expr()->andX(
-                    'pp.voteCountry = \'FR\'',
-                    'SUBSTRING(pp.votePostalCode, 1, 2) = :votePostalCodePrefix',
-                    'pp.voteCityName = :voteCityName'
-                ),
-                $qb->expr()->andX(
-                    'pp.voteCountry != \'FR\'',
-                    'pp.voteCountry = :voteCountry'
-                )
-            ))
         ;
 
         foreach ($requests as $key => $request) {
-            $proxiesCountQuery = $this->andWhereRoundsMatch(clone $qb, $request['electionRounds'])
-                ->getQuery()
-            ;
+            $proxiesCountQuery = $this->andWhereRoundsMatch(clone $qb, $request['electionRounds']);
+            $proxiesCountQuery = ProcurationProxyRepository::addAndWhereCountryConditions($proxiesCountQuery, $request['requestFromFrance']);
+
             $proxiesCountQuery->setParameter('votePostalCodePrefix', substr($request['votePostalCode'], 0, 2));
             $proxiesCountQuery->setParameter('voteCityName', $request['voteCityName']);
             $proxiesCountQuery->setParameter('voteCountry', $request['voteCountry']);
 
             $requests[$key] = [
                 'data' => $request,
-                'matchingProxiesCount' => (int) $proxiesCountQuery->getSingleScalarResult(),
+                'matchingProxiesCount' => (int) $proxiesCountQuery->getQuery()->getSingleScalarResult(),
             ];
         }
 

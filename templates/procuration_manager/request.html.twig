@@ -172,10 +172,7 @@
                         Disponibilités
                     </div>
                     <div class="profile-value">
-                        {{ include('procuration_manager/_matching_election_rounds.html.twig', {
-                            proxy_rounds: request.foundProxy.electionRounds,
-                            request: request,
-                        }, with_context=false) }}
+                        {{ request.foundProxy.getAvailableRoundsAsString|nl2br }}
                     </div>
                 {% endif %}
             {% else %}
@@ -236,10 +233,7 @@
                                     {% endif %}
                                     <br />
                                     <em>Disponibilités :</em><br />
-                                    {{ include('procuration_manager/_matching_election_rounds.html.twig', {
-                                        proxy_rounds: proxy.availableRounds,
-                                        request: request,
-                                    }, with_context=false) }}
+                                    {{ proxy.getAvailableRoundsAsString|nl2br }}
                                 </td>
                                 <td class="datagrid__table__col--left">
                                     <em>Lieu de vote :</em><br />

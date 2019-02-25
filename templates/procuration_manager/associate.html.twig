@@ -148,10 +148,7 @@
             </div>
             <div class="profile-value">
                 <span id="proxy-election">
-                    {{ include('procuration_manager/_matching_election_rounds.html.twig', {
-                        proxy_rounds: proxy.electionRounds,
-                        request: request
-                    }, with_context=false) }}
+                    {{ proxy.getAvailableRoundsAsString|nl2br }}}
                 </span>
             </div>
         </div>

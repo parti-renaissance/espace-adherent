@@ -6,8 +6,13 @@
         <td class="datagrid__table__col--left">
             {{ request.data.firstNames }} {{ request.data.lastName }}<br />
             <span class="datagrid__table__col--hide-mobile">
-                <em>Lieu de vote :</em>
+                <em>Lieu de vote :</em><br>
                 {{ request.data.votePostalCode }} {{ request.data.voteCityName }} {{ request.data.voteCountry }}
+            </span>
+            <br>
+            <span class="datagrid__table__col--hide-mobile">
+                <em>Lieu de résidence :</em><br>
+                {{ request.data.postalCode }} {{ request.data.cityName }} {{ request.data.country }}
             </span>
         </td>
         <td>

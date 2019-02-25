@@ -14,7 +14,7 @@
     </div>
 
     <div style="width: 160px; margin-top: 5px;">
-        {% if not object.foundRequest %}
+        {% if object.foundRequests.isEmpty %}
             <a href="{{ path('admin_app_procurationproxy_delete', { id: object.id }) }}" class="btn btn-xs btn-default" title="Supprimer">
                 <i class="fa fa-times" aria-hidden="true"></i>
                 Supprimer

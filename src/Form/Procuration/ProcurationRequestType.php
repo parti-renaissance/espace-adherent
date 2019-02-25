@@ -68,6 +68,14 @@ class ProcurationRequestType extends AbstractProcurationType
 
             case ProcurationRequest::STEP_URI_ELECTION_ROUNDS:
                 $builder
+                    ->add('requestFromFrance', ChoiceType::class, [
+                        'label' => 'Type',
+                        'choices' => [
+                            'France' => true,
+                            'Étranger' => false,
+                        ],
+                        'expanded' => true,
+                    ])
                     ->add('electionRounds', ElectionRoundsChoiceType::class, [
                         'election_context' => $options['election_context'],
                     ])

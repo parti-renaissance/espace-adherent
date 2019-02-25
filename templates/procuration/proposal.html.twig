@@ -43,11 +43,11 @@
 
                 if ('FR' === $('#{{ procuration_form.voteCountry.vars.id }}').val()) {
                     $(proxiesCountSelected+'_'+1).prop('checked', true);
-                    radioButtons.last().hide();
+                    radioButtons.last().addClass("hidden");
                     radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.fr'|trans({}, 'validators')|e('js') }}')
                 } else {
                     $(proxiesCountSelected+'_'+2).prop('checked', true);
-                    radioButtons.last().show();
+                    radioButtons.last().removeClass("hidden");
                     radioButtonsHelper.text('{{ 'procuration.vote_country.conditions.other'|trans({}, 'validators')|e('js') }}');
                 }
             }
