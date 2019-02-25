@@ -3,7 +3,7 @@
 {% block message_page_title 'Filtrer pour envoyer' %}
 
 {% block messages_header_left_block %}
-    <a href="{{ path('app_message_list', route_params|default({})) }}">← Retour</a>
+    <a href="{{ path("app_message_#{message_type}_list") }}">← Retour</a>
 {% endblock %}
 
 {% block messages_header_right_block %}

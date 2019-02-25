@@ -62,8 +62,7 @@
 
                 {% if enable_canary %}
                     {% set pages = pages|merge([{
-                        'route': 'app_message_list',
-                        'params': {'prefix': 'espace-referent/'},
+                        'route': 'app_message_referent_list',
                         'label': 'Envoyer un message ✨'
                     }]) %}
                 {% endif %}

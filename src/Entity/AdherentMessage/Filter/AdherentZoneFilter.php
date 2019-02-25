@@ -18,6 +18,7 @@ class AdherentZoneFilter extends AbstractAdherentMessageFilter
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
      *
+     * @Assert\NotBlank
      * @Assert\Count(min=1)
      */
     private $referentTags;

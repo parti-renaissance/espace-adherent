@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block messages_header_left_block %}
-    <a href="{{ path('app_message_list', route_params|default({})) }}">← Retour</a>
+    <a href="{{ path("app_message_#{message_type}_list") }}">← Retour</a>
 {% endblock %}
 
 {% block messages_header_right_block %}
@@ -64,7 +64,7 @@
             </legend>
 
             <div class="text--right">
-                <a href="{{ path('app_message_list', route_params|default({})) }}" class="pull-left">Annuler</a>
+                <a href="{{ path("app_message_#{message_type}_list") }}" class="pull-left">Annuler</a>
                 {{ form_widget(form.save, {label: 'Enregistrer le brouillon', attr: {class: 'btn'}}) }}
                 {{ form_widget(form.next, {label: 'Suivant', attr: {class: 'btn btn--blue'}}) }}
             </div>
