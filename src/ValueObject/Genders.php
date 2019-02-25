@@ -9,14 +9,14 @@ final class Genders
     public const OTHER = 'other';
 
     public const ALL = [
-        self::MALE,
         self::FEMALE,
+        self::MALE,
         self::OTHER,
     ];
 
     public const CHOICES = [
-        'common.gender.man' => self::MALE,
         'common.gender.woman' => self::FEMALE,
+        'common.gender.man' => self::MALE,
         'common.gender.other' => self::OTHER,
     ];
 
