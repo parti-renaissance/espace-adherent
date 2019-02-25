@@ -50,7 +50,7 @@ class Manager implements LoggerAwareInterface
 
             // Active/Inactive member's tags
             $result = $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($message->getEmailAddress(), $message->getRemovedTags())
+                $requestBuilder->createMemberTagsRequest($adherent->getEmailAddress(), $message->getRemovedTags())
             );
 
             if ($result) {
