@@ -200,7 +200,7 @@ class ReferentControllerTest extends WebTestCase
                 '#institutional_event-address-address-field > .form__errors > li')->text()
         );
 
-        $this->assertSame('Cette valeur ne doit pas être vide.',
+        $this->assertSame('Vous devez saisir au moins une adresse email.',
             $this->client->getCrawler()->filter('#institutional_event-invitations-field > .form__errors > li')->text()
         );
 

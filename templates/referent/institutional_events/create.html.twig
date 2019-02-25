@@ -100,13 +100,13 @@
         </div>
 
         <div class="form__row b__nudge--top-15" id="institutional_event-invitations-field">
-            {{ form_errors(form.invitations) }}
             {{ form_label(form.invitations, 'Invitations', { label_attr: { class: 'text--bold' }}) }}
             <p class="text--small text--muted b__nudge--top-0">
                 Pour la liste des invités, vous devez saisir leurs adresses emails séparées par des points virgules.<br/>
                 Exemple : <span class="text--bold">jean@exemple.fr;michel@exemple.fr;marcel@exemple.fr</span>
             </p>
             {{ form_widget(form.invitations, { attr: { class: 'form--full form__field--textarea-120', placeholder: 'Entrez ici les adresses emails des invités séparées par des points virgules.', rows: '20', cols: '70' } }) }}
+            {{ form_errors(form.invitations) }}
         </div>
 
         {% if is_edit_view %}

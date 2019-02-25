@@ -219,6 +219,12 @@ event.invitation.message.max_length: Le message contient {{ limit }} caractères
 event.invitation.guests.min: Merci de saisir au moins une adresse e-mail.
 
 #
+# Institutional event
+#
+institutional_event.invitations.min: Vous devez saisir au moins une adresse email.
+institutional_event.invitations.max: Vous ne pouvez pas ajouter plus de {{ limit }} adresses emails.
+
+#
 # Ton Macron
 #
 ton_macron.invitation.friend_interests.count: Vous devez sélectionner 2 intérêts.
