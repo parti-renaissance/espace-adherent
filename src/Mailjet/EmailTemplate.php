@@ -36,20 +36,21 @@ final class EmailTemplate extends AbstractEmailTemplate
         $body['Subject'] = $this->subject;
         $body['MJ-TemplateID'] = $this->template;
         $body['MJ-TemplateLanguage'] = true;
+        $body['Recipients'] = $this->recipients;
 
+        /**
+         * CC :
+         *  - We don't use the recipients option
+         *  - We put the recipients and CC emails into the To option
+         */
         if ($this->cc) {
+            unset($body['Recipients']);
+
             $to = [];
 
             if ($this->recipients) {
                 $body['Vars'] = $this->recipients[0]['Vars'];
-
-                foreach ($this->recipients as $recipient) {
-                    if (isset($recipient['Name'])) {
-                        $to[] = sprintf('"%s" <%s>', $recipient['Name'], $recipient['Email']);
-                    } else {
-                        $to[] = $recipient['Email'];
-                    }
-                }
+                $to = $this->createToByRecipients();
             }
 
             foreach ($this->cc as $cc) {
@@ -57,11 +58,25 @@ final class EmailTemplate extends AbstractEmailTemplate
             }
 
             $body['To'] = implode(', ', $to);
-        } else {
-            $body['Recipients'] = $this->recipients;
         }
 
+        /**
+         * BCC :
+         * - We don't use the recipients option
+         * - We put the recipients and the CC emails if the CC option is used, into the To option
+         * - We put the BCC emails into the Bcc option
+         */
         if ($this->bcc) {
+            unset($body['Recipients']);
+
+            if ($this->recipients) {
+                $body['Vars'] = $this->recipients[0]['Vars'];
+
+                if (!isset($body['To'])) {
+                    $body['To'] = implode(', ', $this->createToByRecipients());
+                }
+            }
+
             foreach ($this->bcc as $email) {
                 $bcc[] = $email;
             }
@@ -76,6 +91,23 @@ final class EmailTemplate extends AbstractEmailTemplate
         }
 
         return $body;
+    }
+
+    private function createToByRecipients(): array
+    {
+        $to = [];
+
+        if ($this->recipients) {
+            foreach ($this->recipients as $recipient) {
+                if (isset($recipient['Name'])) {
+                    $to[] = sprintf('"%s" <%s>', $recipient['Name'], $recipient['Email']);
+                } else {
+                    $to[] = $recipient['Email'];
+                }
+            }
+        }
+
+        return $to;
     }
 
     private function fixMailjetParsing(?string $string): ?string

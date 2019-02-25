@@ -29,7 +29,12 @@ class InstitutionalEventCommand extends BaseEventCommand
     protected $event;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\Count(
+     *     min=1,
+     *     max=50,
+     *     minMessage="institutional_event.invitations.min",
+     *     maxMessage="institutional_event.invitations.max"
+     * )
      */
     private $invitations;
 
