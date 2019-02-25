@@ -21,7 +21,7 @@ class LoadElectionData implements FixtureInterface
     Les élections présidentielles ont lieu les 24 avril et 7 mai 2017 en France (15 et 29 avril pour les Français de l'étranger du continent Américain et 16 et 30 avril pour les autres Français de l'étranger).
 </h2>
 <div class="text--body">
-    Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.
+    Si vous ne votez pas en France métropolitaine, <a href="https://www.diplomatie.gouv.fr/fr/services-aux-citoyens/droit-de-vote-et-elections-a-l-etranger/elections-europeennes-2019-mode-d-emploi-pour-les-francais-residant-a-l-62666" class="link--white">renseignez-vous sur les dates</a>.
 </div>
 INTRODUCTION
         );
@@ -48,7 +48,7 @@ INTRODUCTION
     Les élections législatives ont lieu les 11 et 18 juin 2017 en France (3 et 17 juin pour les Français de l'étranger du continent Américain et 4 et 18 juin pour les autres Français de l'étranger).
 </h2>
 <div class="text--body">
-    Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.
+    Si vous ne votez pas en France métropolitaine, <a href="https://www.diplomatie.gouv.fr/fr/services-aux-citoyens/droit-de-vote-et-elections-a-l-etranger/elections-europeennes-2019-mode-d-emploi-pour-les-francais-residant-a-l-62666" class="link--white">renseignez-vous sur les dates</a>.
 </div>
 INTRODUCTION
         );
@@ -75,7 +75,7 @@ INTRODUCTION
     L'élection législative partielle pour la 1ère circonscription du Val-d'Oise aura lieu les 28 janvier et 4 février 2018.
 </h2>
 <div class="text--body">
-    Si vous ne votez pas en France métropolitaine, <a href="https://www.service-public.fr/particuliers/actualites/A10598" class="link--white">renseignez-vous sur les dates</a>.
+    Si vous ne votez pas en France métropolitaine, <a href="https://www.diplomatie.gouv.fr/fr/services-aux-citoyens/droit-de-vote-et-elections-a-l-etranger/elections-europeennes-2019-mode-d-emploi-pour-les-francais-residant-a-l-62666" class="link--white">renseignez-vous sur les dates</a>.
 </div>
 INTRODUCTION
         );
