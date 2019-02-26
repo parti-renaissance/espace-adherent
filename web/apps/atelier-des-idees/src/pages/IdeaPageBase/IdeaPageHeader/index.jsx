@@ -15,13 +15,13 @@ class IdeaPageHeader extends React.Component {
                     {this.props.showContent && (
                         <React.Fragment>
                             <button className="button idea-page-header__back" onClick={this.props.onBackClicked}>
-                                ← Retour
+								← Retour
                             </button>
                             {this.props.status !== ideaStatus.FINALIZED && this.props.canToggleReadingMode && (
                                 <Switch
                                     onChange={this.props.toggleReadingMode}
                                     checked={this.props.isReading}
-                                    label="Passer en mode lecture"
+                                    label={this.props.isReading ? 'Passer en mode lecture' : 'Passer en mode édition'}
                                 />
                             )}
                             {this.props.status === ideaStatus.DRAFT && this.props.isAuthor && (
@@ -33,7 +33,7 @@ class IdeaPageHeader extends React.Component {
                                     isSaving={this.props.isSaving}
                                     canPublish={
                                         this.props.status === ideaStatus.DRAFT ||
-                                        this.props.status === ideaStatus.PENDING
+										this.props.status === ideaStatus.PENDING
                                     }
                                 />
                             )}
