@@ -1,11 +1,7 @@
 import { SET_MY_IDEAS, REMOVE_MY_IDEA } from '../constants/actionTypes';
 import { ideaStatus } from '../../constants/api';
 
-const {
-    FINALIZED,
-    DRAFT,
-    PENDING,
-} = ideaStatus;
+const { FINALIZED, DRAFT, PENDING } = ideaStatus;
 
 export const initialState = {
     [DRAFT]: {
@@ -33,7 +29,7 @@ const ideasReducer = (state = initialState, action) => {
         };
     }
     case REMOVE_MY_IDEA: {
-        return { ...state, items: state.items.filter(idea => idea.uuid !== payload.id) };
+        return { ...state, items: state.items && state.items.filter(idea => idea.uuid !== payload.id) };
     }
     default:
         return state;
