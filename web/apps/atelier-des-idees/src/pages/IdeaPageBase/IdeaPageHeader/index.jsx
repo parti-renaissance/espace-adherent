@@ -21,14 +21,18 @@ class IdeaPageHeader extends React.Component {
                                 <Switch
                                     onChange={this.props.toggleReadingMode}
                                     checked={this.props.isReading}
-                                    label={this.props.isReading ? 'Passer en mode lecture' : 'Passer en mode édition'}
+                                    label={
+                                        this.props.isReading ? 'Activer le mode lecture' : 'Désactiver le mode lecture'
+                                    }
                                 />
                             )}
-                            {this.props.status === ideaStatus.DRAFT && this.props.isAuthor && (
+                            {this.props.isAuthor && (
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
-                                    onPublishClicked={this.props.onPublishClicked}
-                                    onSaveClicked={this.props.onSaveClicked}
+                                    onPublishClicked={
+                                        this.props.status === ideaStatus.DRAFT && this.props.onPublishClicked
+                                    }
+                                    onSaveClicked={this.props.status === ideaStatus.DRAFT && this.props.onSaveClicked}
                                     isDraft={this.props.status === ideaStatus.DRAFT}
                                     isSaving={this.props.isSaving}
                                     canPublish={
