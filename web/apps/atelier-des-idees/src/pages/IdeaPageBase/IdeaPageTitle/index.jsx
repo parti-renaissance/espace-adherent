@@ -88,12 +88,12 @@ class IdeaPageTitle extends React.Component {
                                     {new Date(this.props.publishedAt).toLocaleDateString()}
                                 </span>
                             )}
-                            {this.props.themes &&
-								this.props.themes.map(theme => (
-								    <ul>
-								        <li className="idea-page-title__tags__item">{theme.name}</li>
-								    </ul>
-								))}
+                            <ul>
+                                {this.props.themes &&
+									this.props.themes.map(theme => (
+									    <li className="idea-page-title__tags__item">{theme.name}</li>
+									))}
+                            </ul>
                         </div>
                     </React.Fragment>
                 )}
