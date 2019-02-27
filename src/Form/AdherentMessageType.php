@@ -22,7 +22,7 @@ class AdherentMessageType extends AbstractType
             ])
             ->add('content', PurifiedTextareaType::class, [
                 'attr' => [
-                    'maxlength' => 5000,
+                    'maxlength' => 6000,
                 ],
                 'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
