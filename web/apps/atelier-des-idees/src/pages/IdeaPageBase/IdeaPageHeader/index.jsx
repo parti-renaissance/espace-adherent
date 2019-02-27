@@ -15,25 +15,29 @@ class IdeaPageHeader extends React.Component {
                     {this.props.showContent && (
                         <React.Fragment>
                             <button className="button idea-page-header__back" onClick={this.props.onBackClicked}>
-                                ← Retour
+								← Retour
                             </button>
                             {this.props.status !== ideaStatus.FINALIZED && this.props.canToggleReadingMode && (
                                 <Switch
                                     onChange={this.props.toggleReadingMode}
                                     checked={this.props.isReading}
-                                    label="Passer en mode lecture"
+                                    label={
+                                        this.props.isReading ? 'Activer le mode lecture' : 'Désactiver le mode lecture'
+                                    }
                                 />
                             )}
-                            {this.props.status === ideaStatus.DRAFT && this.props.isAuthor && (
+                            {this.props.isAuthor && (
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
-                                    onPublishClicked={this.props.onPublishClicked}
-                                    onSaveClicked={this.props.onSaveClicked}
+                                    onPublishClicked={
+                                        this.props.status === ideaStatus.DRAFT && this.props.onPublishClicked
+                                    }
+                                    onSaveClicked={this.props.status === ideaStatus.DRAFT && this.props.onSaveClicked}
                                     isDraft={this.props.status === ideaStatus.DRAFT}
                                     isSaving={this.props.isSaving}
                                     canPublish={
                                         this.props.status === ideaStatus.DRAFT ||
-                                        this.props.status === ideaStatus.PENDING
+										this.props.status === ideaStatus.PENDING
                                     }
                                 />
                             )}
