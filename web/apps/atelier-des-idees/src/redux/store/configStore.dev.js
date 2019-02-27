@@ -8,6 +8,7 @@ import { initApp } from '../thunk/navigation';
 const baseURL = process.env.REACT_APP_ADI_BASE_URL || null;
 const axiosInstance = axios.create({
     baseURL,
+    withCredentials: true,
     headers: {
         Accept: 'application/json',
     },

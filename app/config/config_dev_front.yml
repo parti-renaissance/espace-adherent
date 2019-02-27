@@ -1,0 +1,11 @@
+imports:
+    - { resource: config_dev.yml }
+
+parameters:
+    app_host: "front.%env(APP_HOST)%"
+
+debug: false
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false

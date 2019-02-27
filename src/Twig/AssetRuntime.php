@@ -24,8 +24,8 @@ class AssetRuntime
         $this->env = $env;
         $this->hash = $hash;
 
-        if ('dev' !== $env && !$this->hash) {
-            throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments but dev. Please build them.');
+        if (false === strpos($env, 'dev') && !$this->hash) {
+            throw new \RuntimeException('The "assets_hash" parameter is mandatory for all environments except dev. Please build them.');
         }
     }
 
@@ -59,14 +59,14 @@ class AssetRuntime
 
     public function webpackAsset(string $path, $packageName = null): string
     {
-        if ('dev' === $this->env) {
+        if (false !== strpos($this->env, 'dev')) {
             return $this->symfonyAssetExtension->getAssetUrl('built/'.$path, $packageName);
         }
 
         return $this->symfonyAssetExtension->getAssetUrl('built/'.$this->hash.'.'.$path, $packageName);
     }
 
-    private function generateAssetUrl(string $path, array $parameters = [], int $referenceType): string
+    private function generateAssetUrl(string $path, array $parameters, int $referenceType): string
     {
         $parameters['fm'] = 'pjpg';
 
