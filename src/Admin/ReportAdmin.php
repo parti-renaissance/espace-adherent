@@ -255,10 +255,6 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'Date du signalement',
                 'format' => self::DATE_FORMAT,
             ])
-            ->add('details', null, [
-                'label' => 'Détails',
-                'template' => 'admin/report/details_column.html.twig',
-            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -311,6 +307,10 @@ class ReportAdmin extends AbstractAdmin
             ->add('resolvedAt', null, [
                 'label' => 'Date de résolution',
                 'format' => self::DATE_FORMAT,
+            ])
+            ->add('details', null, [
+                'label' => 'Détails de l\'objet',
+                'template' => 'admin/report/show_details.html.twig',
             ])
         ;
     }

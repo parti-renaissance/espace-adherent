@@ -65,4 +65,20 @@ class ReportRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+
+    public function findByClassAndSubject(string $class, $subject): array
+    {
+        if (!is_subclass_of($class, Report::class)) {
+            throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
+        }
+
+        return $this->_em->createQueryBuilder('report')
+            ->select('report')
+            ->from($class, 'report')
+            ->where('report.subject = :subject')
+            ->setParameter('subject', $subject)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

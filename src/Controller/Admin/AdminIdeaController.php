@@ -3,6 +3,9 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
+use AppBundle\Report\ReportManager;
+use AppBundle\Repository\ReportRepository;
 use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminIdeaController extends Controller
 {
     use RedirectToTargetTrait;
+    use ResolveReportTrait;
 
     /**
      * @Route("/{id}/contribute", name="app_admin_idea_contribute", methods={"GET"})
@@ -54,15 +58,21 @@ class AdminIdeaController extends Controller
      * @Route("/{uuid}/enable", name="app_admin_idea_enable", methods={"GET"})
      * @Entity("idea", expr="repository.findOneByUuid(uuid, true)")
      */
-    public function enableAction(Request $request, Idea $idea, EntityManagerInterface $manager): Response
-    {
+    public function enableAction(
+        Request $request,
+        Idea $idea,
+        EntityManagerInterface $manager,
+        ReportRepository $reportRepository,
+        ReportManager $reportManager
+    ): Response {
         if ($idea->isEnabled()) {
-            $this->addFlash('warning', 'La proposition a déjà été démodéré');
+            $this->addFlash('warning', 'La proposition a déjà été démodérée.');
         } else {
             $idea->setEnabled(true);
+            $this->resolveReportsFor(IdeaReport::class, $idea, $reportRepository, $reportManager);
             $manager->flush();
 
-            $this->addFlash('success', 'La proposition a bien été démodéré');
+            $this->addFlash('success', 'La proposition a bien été démodérée.');
         }
 
         return $this->prepareRedirectFromRequest($request)
@@ -73,15 +83,21 @@ class AdminIdeaController extends Controller
      * @Route("/{uuid}/disable", name="app_admin_idea_disable", methods={"GET"})
      * @Entity("idea", expr="repository.findOneByUuid(uuid, true)")
      */
-    public function disableAction(Request $request, Idea $idea, ObjectManager $manager): Response
-    {
+    public function disableAction(
+        Request $request,
+        Idea $idea,
+        ObjectManager $manager,
+        ReportRepository $reportRepository,
+        ReportManager $reportManager
+    ): Response {
         if (!$idea->isEnabled()) {
-            $this->addFlash('warning', 'La proposition a déjà été modéré');
+            $this->addFlash('warning', 'La proposition a déjà été modérée.');
         } else {
             $idea->setEnabled(false);
+            $this->resolveReportsFor(IdeaReport::class, $idea, $reportRepository, $reportManager);
             $manager->flush();
 
-            $this->addFlash('success', 'La proposition a bien été modéré');
+            $this->addFlash('success', 'La proposition a bien été modérée.');
         }
 
         return $this->prepareRedirectFromRequest($request)

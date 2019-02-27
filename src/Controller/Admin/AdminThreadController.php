@@ -3,7 +3,10 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
 use AppBundle\IdeasWorkshop\Events;
+use AppBundle\Report\ReportManager;
+use AppBundle\Repository\ReportRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,17 +25,25 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminThreadController extends Controller
 {
     use RedirectToTargetTrait;
+    use ResolveReportTrait;
 
     /**
      * Moderates a thread.
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_disable")
      */
-    public function disableAction(Request $request, Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function disableAction(
+        Request $request,
+        Thread $thread,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher,
+        ReportRepository $reportRepository,
+        ReportManager $reportManager
+    ): Response {
         $thread->disable();
 
         $dispatcher->dispatch(Events::THREAD_DISABLE, new GenericEvent($thread));
+        $this->resolveReportsFor(ThreadReport::class, $thread, $reportRepository, $reportManager);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été modéré avec succès.', $thread->getId()));
@@ -46,11 +57,18 @@ class AdminThreadController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_enable")
      */
-    public function enableAction(Request $request, Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function enableAction(
+        Request $request,
+        Thread $thread,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher,
+        ReportRepository $reportRepository,
+        ReportManager $reportManager
+    ): Response {
         $thread->enable();
 
         $dispatcher->dispatch(Events::THREAD_ENABLE, new GenericEvent($thread));
+        $this->resolveReportsFor(ThreadReport::class, $thread, $reportRepository, $reportManager);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le fil de discussion « %s » a été activé avec succès.', $thread->getId()));

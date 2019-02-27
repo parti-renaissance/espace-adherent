@@ -3,7 +3,10 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
+use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
 use AppBundle\IdeasWorkshop\Events;
+use AppBundle\Report\ReportManager;
+use AppBundle\Repository\ReportRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,17 +25,25 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminThreadCommentController extends Controller
 {
     use RedirectToTargetTrait;
+    use ResolveReportTrait;
 
     /**
      * Moderates a thread comment.
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_comment_disable")
      */
-    public function disableAction(Request $request, ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function disableAction(
+        Request $request,
+        ThreadComment $comment,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher,
+        ReportRepository $reportRepository,
+        ReportManager $reportManager
+    ): Response {
         $comment->disable();
 
         $dispatcher->dispatch(Events::THREAD_COMMENT_DISABLE, new GenericEvent($comment));
+        $this->resolveReportsFor(ThreadCommentReport::class, $comment, $reportRepository, $reportManager);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le commentaire « %s » a été modéré avec succès.', $comment->getUuid()));
@@ -46,11 +57,18 @@ class AdminThreadCommentController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_comment_enable")
      */
-    public function enableAction(Request $request, ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function enableAction(
+        Request $request,
+        ThreadComment $comment,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher,
+        ReportRepository $reportRepository,
+        ReportManager $reportManager
+    ): Response {
         $comment->enable();
 
         $dispatcher->dispatch(Events::THREAD_COMMENT_ENABLE, new GenericEvent($comment));
+        $this->resolveReportsFor(ThreadCommentReport::class, $comment, $reportRepository, $reportManager);
 
         $manager->flush();
         $this->addFlash('sonata_flash_success', sprintf('Le commentaire « %s » a été activé avec succès.', $comment->getUuid()));
