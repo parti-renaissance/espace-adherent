@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/espace-formation")
- * @Security("is_granted('ROLE_SUPERVISOR')")
+ * @Security("is_granted('ROLE_HOST')")
  */
 class FormationController extends Controller
 {
