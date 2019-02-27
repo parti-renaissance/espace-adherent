@@ -6,7 +6,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
-use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\QueryBuilder;
 
 final class IdeaStatusFilter extends AbstractFilter

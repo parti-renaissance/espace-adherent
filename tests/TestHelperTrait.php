@@ -54,7 +54,7 @@ use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\EmailSubscriptionHistoryRepository;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
-use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
 use AppBundle\Repository\InvitationRepository;
 use AppBundle\Repository\JeMarcheReportRepository;

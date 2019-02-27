@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace AppBundle\Repository\IdeasWorkshop;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\IdeasWorkshop\Answer;
@@ -10,6 +10,7 @@ use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
+use AppBundle\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
@@ -213,6 +214,11 @@ SQL;
 
     public function updateAuthorCategoryForIdeasOf(Adherent $adherent): void
     {
+        // We disable 'enabled' doctrine filter to update even disabled ideas
+        if ($isFilterEnabled = $this->_em->getFilters()->isEnabled('enabled')) {
+            $this->_em->getFilters()->disable('enabled');
+        }
+
         $qb = $this->createQueryBuilder('idea');
         $categoryType = null;
 
@@ -246,6 +252,11 @@ SQL;
                 ->getQuery()
                 ->execute()
             ;
+        }
+
+        // We enable 'enabled' doctrine filter, if we disabled it at the beginning of the method
+        if ($isFilterEnabled) {
+            $this->_em->getFilters()->enable('enabled');
         }
     }
 }

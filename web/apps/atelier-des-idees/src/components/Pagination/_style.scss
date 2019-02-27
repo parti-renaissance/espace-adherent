@@ -5,21 +5,64 @@
 
   margin: 0 auto 35px;
 
-  &__dots {
-    color: $marine-blue;
-  }
+  font-size: 14px;
+  font-family: $font-roboto;
 
   > * + * {
     margin-left: 15px;
   }
 
-  &__current {
-    cursor: default;
-    padding: 0;
+  &__prev,
+  &__next,
+  &__number,
+  &__dots {
+    color: $dark-aurometalsaurus;
+  }
+
+  &__dots {
+    align-self: flex-end;
+    margin-bottom: 5px;
   }
 
   &__prev,
   &__next {
     padding: 5px 0;
+  }
+
+  &__prev:before {
+    content: '←';
+    font-family: LucidaGrande;
+    margin-right: 8px;
+  }
+
+  &__next:after {
+    content: '→';
+    font-family: LucidaGrande;
+    margin-left: 8px;
+  }
+
+  &__current,
+  &__number {
+    border-radius: 50%;
+
+    height: 30px;
+    width: 30px;
+    padding: 0;
+  }
+
+  &__current,
+  &__number:hover {
+    background-color: $blue;
+    color: white;
+
+    opacity: 1;
+  }
+
+  &__current {
+    cursor: default;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }

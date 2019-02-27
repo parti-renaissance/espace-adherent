@@ -18,7 +18,7 @@ class ThreadCommentReport extends Report
      * @var ThreadComment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\IdeasWorkshop\ThreadComment")
-     * @ORM\JoinColumn(name="thread_comment_id")
+     * @ORM\JoinColumn(name="thread_comment_id", onDelete="CASCADE")
      */
     protected $subject;
 }

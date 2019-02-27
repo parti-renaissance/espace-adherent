@@ -243,6 +243,7 @@ class IdeaPageBase extends React.Component {
                                     </p>
                                 )}
                                 <IdeaPageTitle
+                                    themes={idea.themes}
                                     authorName={idea.authorName}
                                     publishedAt={idea.published_at}
                                     onTitleChange={(value, withSave) => this.onNameChange(value, withSave)}
@@ -308,6 +309,13 @@ IdeaPageBase.propTypes = {
                 id: PropTypes.number,
                 content: PropTypes.string,
                 question: PropTypes.shape({ id: PropTypes.number }),
+            })
+        ),
+        themes: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number,
+                name: PropTypes.string,
+                thumbnail: PropTypes.string,
             })
         ),
         status: PropTypes.oneOf(Object.keys(ideaStatus)),

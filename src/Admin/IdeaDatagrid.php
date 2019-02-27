@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Repository\IdeaRepository;
+use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class IdeaDatagrid extends DatagridDecorator

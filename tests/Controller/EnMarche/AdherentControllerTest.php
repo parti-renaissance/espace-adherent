@@ -9,6 +9,7 @@ use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
@@ -319,6 +320,62 @@ class AdherentControllerTest extends WebTestCase
         $this->assertCount(6, $histories73Unsubscriptions);
         $this->assertCount(6, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
+    }
+
+    public function testEditMandates(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
+
+        $adherent = $this->getAdherentRepository()->findOneByEmail('michel.vasseur@example.ch');
+        $ideas = $this->getIdeaRepository()->findBy(['author' => $adherent]);
+
+        $this->checkIdeasAuthorCategory($ideas, AuthorCategoryEnum::ELECTED);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/modifier');
+
+        $form = $crawler->selectButton('adherent[submit]')->form();
+        $form['adherent[elected]']->untick();
+
+        // Submit the profile form with valid data
+        $this->client->submit($form, [
+            'adherent' => [
+                'gender' => 'male',
+                'firstName' => 'Michel',
+                'lastName' => 'VASSEUR',
+                'address' => [
+                    'address' => '12 Pilgerweg',
+                    'country' => 'CH',
+                    'postalCode' => '8802',
+                    'cityName' => 'Kilchberg',
+                ],
+                'nationality' => 'CH',
+                'phone' => [
+                    'country' => 'CH',
+                    'number' => '31 359 21 11',
+                ],
+                'position' => 'employed',
+                'birthdate' => [
+                    'year' => '1987',
+                    'month' => '10',
+                    'day' => '13',
+                ],
+            ],
+        ]);
+
+        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
+
+        $crawler = $this->client->followRedirect();
+
+        $this->seeFlashMessage($crawler, 'Vos informations ont été mises à jour avec succès.');
+
+        // We need to reload the manager reference to get the updated data
+        $this->manager->clear();
+        /** @var Adherent $adherent */
+        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('michel.vasseur@example.ch');
+        $ideas = $this->getIdeaRepository()->findBy(['author' => $adherent]);
+
+        $this->assertSame([], $adherent->getMandates());
+        $this->checkIdeasAuthorCategory($ideas, AuthorCategoryEnum::ADHERENT);
     }
 
     public function testEditAdherentInterests(): void
@@ -1182,5 +1239,12 @@ class AdherentControllerTest extends WebTestCase
         return array_map(function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
         }, $this->getSubscriptionTypeRepository()->findAll());
+    }
+
+    private function checkIdeasAuthorCategory(array $ideas, string $categoryName)
+    {
+        foreach ($ideas as $idea) {
+            $this->assertSame($categoryName, $idea->getAuthorCategory());
+        }
     }
 }

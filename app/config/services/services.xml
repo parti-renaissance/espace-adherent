@@ -143,6 +143,10 @@
         <service id="AppBundle\EventListener\RemoveEmojisListener">
             <tag name="doctrine.event_listener" event="onFlush" />
         </service>
+        <service id="AppBundle\EventSubscriber\ChangeIdeaAuthorCategoryListener">
+            <tag name="doctrine.event_listener" event="preUpdate" lazy="true" />
+            <tag name="doctrine.event_listener" event="postUpdate" lazy="true" />
+        </service>
         <service id="AppBundle\Security\EventListener\LastVisitedPageOnGetListener">
             <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
         </service>
@@ -436,6 +440,7 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>
         </service>
+        <service id="AppBundle\Validator\MandatoryQuestionValidator" />
 
         <!-- ParamConverter -->
         <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
@@ -551,8 +556,9 @@
             <argument type="service" id="logger" on-invalid="ignore"/>
             <argument type="collection"><argument key="status"/></argument>
             <call method="setIdeaRepository">
-                <argument type="service" id="AppBundle\Repository\IdeaRepository" />
+                <argument type="service" id="AppBundle\Repository\IdeasWorkshop\IdeaRepository" />
             </call>
         </service>
+        <service id="AppBundle\Filter\OrTextSearchFilter" />
     </services>
 </container>

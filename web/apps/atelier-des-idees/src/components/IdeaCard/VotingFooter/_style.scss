@@ -79,7 +79,7 @@
 
   &--condensed {
     height: 45px;
-    padding: 0 0 25px 25px;
+    padding: 0 25px 25px 25px;
     background-color: $white;
 
     .voting-footer__total-votes {
@@ -161,15 +161,23 @@
   }
 
   @media #{$mobile} {
-    flex-direction: column;
-    height: 100%;
-    padding: 20px;
+
+
+    &:not(.voting-footer--condensed){
+        flex-direction: column;
+        height: 100%;
+        padding: 10px 20px;
+    }
 
     // hide desktop elements
-    &__total-votes,
     &__container__action-vote,
     &__container__action-vote__text {
       display: none;
+    }
+
+    &__total-votes {
+        margin: 0;
+        order: 1;
     }
 
     &__total-votes--mobile {
@@ -189,6 +197,10 @@
       width: 100%;
       height: 50px;
       padding: 0 10px;
+
+      &:nth-child(2) {
+        margin-top: 10px;
+      }
 
       &:last-child {
         margin-bottom: 0;
@@ -215,13 +227,16 @@
         color: $blue;
         border: none;
         cursor: pointer;
+        outline: 0;
+        order: 2;
 
         &__arrow {
           position: relative;
+          top: 1px;
           right: 5px;
           width: 0;
           height: 0;
-          margin-left: 10px;
+          margin-left: 20px;
           border-top: 7px solid transparent;
           border-bottom: 7px solid transparent;
           border-left: 7px solid $blue;
@@ -229,9 +244,16 @@
       }
 
       &__action-vote--mobile__text {
-        flex: 1;
         margin: 0;
+        margin-left: auto;
       }
+    }
+
+    &--condensed {
+        .voting-footer__container__action-vote--mobile {
+            display: none;
+        }
+
     }
 
     .rotate {

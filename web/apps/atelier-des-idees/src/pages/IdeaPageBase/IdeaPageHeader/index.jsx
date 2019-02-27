@@ -15,26 +15,24 @@ class IdeaPageHeader extends React.Component {
                     {this.props.showContent && (
                         <React.Fragment>
                             <button className="button idea-page-header__back" onClick={this.props.onBackClicked}>
-                                ← Retour
+								← Retour
                             </button>
                             {this.props.status !== ideaStatus.FINALIZED && this.props.canToggleReadingMode && (
                                 <Switch
                                     onChange={this.props.toggleReadingMode}
                                     checked={this.props.isReading}
-                                    label="Passer en mode lecture"
+                                    label={this.props.isReading ? 'Mode lecture activé' : 'Mode lecture désactivé'}
                                 />
                             )}
-                            {this.props.status === ideaStatus.DRAFT && this.props.isAuthor && (
+                            {this.props.isAuthor && (
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
-                                    onPublishClicked={this.props.onPublishClicked}
-                                    onSaveClicked={this.props.onSaveClicked}
-                                    isDraft={this.props.status === ideaStatus.DRAFT}
-                                    isSaving={this.props.isSaving}
-                                    canPublish={
-                                        this.props.status === ideaStatus.DRAFT ||
-                                        this.props.status === ideaStatus.PENDING
+                                    onPublishClicked={
+                                        this.props.status === ideaStatus.DRAFT && this.props.onPublishClicked
                                     }
+                                    onSaveClicked={this.props.status === ideaStatus.DRAFT && this.props.onSaveClicked}
+                                    isSaving={this.props.isSaving}
+                                    status={this.props.status}
                                 />
                             )}
                             {this.props.status !== ideaStatus.DRAFT && (
@@ -44,11 +42,26 @@ class IdeaPageHeader extends React.Component {
                                             this.props.ideaTitle
                                         }" faite sur l’Atelier des idées de La République En Marche !`}
                                     />
-                                    {this.props.isAuthenticated && !this.props.isAuthor && (
+                                    {this.props.isAuthenticated &&
+										(!this.props.isAuthor && (
+										    <Dropdown
+										        className="idea-page-header__report"
+										        onSelect={this.props.onReportClicked}
+										        options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
+										    />
+										))}
+
+                                    {this.props.isAuthenticated && this.props.isAuthor && (
                                         <Dropdown
                                             className="idea-page-header__report"
-                                            onSelect={this.props.onReportClicked}
-                                            options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
+                                            onSelect={() => this.props.onDeleteClicked()}
+                                            options={[
+                                                {
+                                                    value: 'delete',
+                                                    label: 'Supprimer la proposition',
+                                                    isImportant: true,
+                                                },
+                                            ]}
                                         />
                                     )}
                                 </div>

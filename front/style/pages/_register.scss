@@ -92,17 +92,11 @@
 
             #form__mandates {
                 .select2-container {
-                    width: 100%;
-
-                    .select2-search-choice-close {
-                        border-bottom: none;
+                    &.select2-container--default.select2-container--focus .select2-selection--multiple {
+                        border-color: $blue--europe;
                     }
-                }
 
-                .form__field {
-                    padding-left: 0;
-                    padding-right: 0;
-                    height: auto;
+                    height: 30px;
                 }
             }
         }

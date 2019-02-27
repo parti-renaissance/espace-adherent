@@ -70,7 +70,7 @@
 
   &--condensed {
     height: 45px;
-    padding: 0 0 25px 25px;
+    padding: 0 25px 25px 25px;
     background-color: $white;
 
     .contributing-footer__remaining-days {
@@ -84,6 +84,15 @@
     justify-content: initial;
     height: 100%;
     padding: 20px;
+
+    &--condensed {
+        padding: 0 25px 25px 25px;
+
+        .contributing-footer__remaining-days {
+          margin: 0;
+          justify-content: flex-start;
+        }
+    }
 
     > * {
       width: 100%;

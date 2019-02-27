@@ -291,6 +291,11 @@
             <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="postUpdate"/>
             <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="preRemove"/>
             <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\CommitteeFeedItem" event="postRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\IdeasWorkshop\Answer" event="prePersist" method="prePersistAnswer"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\IdeasWorkshop\Answer" event="preUpdate" method="preUpdateAnswer"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\IdeasWorkshop\Answer" event="postUpdate"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\IdeasWorkshop\Answer" event="preRemove"/>
+            <tag name="doctrine.orm.entity_listener" entity="AppBundle\Entity\IdeasWorkshop\Answer" event="postRemove"/>
             <argument type="service" id="service_container"/>
             <!--Using Object Manager or service injecting Object Manager as argument causes a Circular reference-->
             <!--Concerned issue https://github.com/symfony/symfony/issues/24775-->

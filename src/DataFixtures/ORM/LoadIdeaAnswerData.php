@@ -124,6 +124,7 @@ class LoadIdeaAnswerData extends AbstractFixture implements DependentFixtureInte
         return [
             LoadIdeaData::class,
             LoadIdeaQuestionData::class,
+            LoadUserDocumentData::class,
         ];
     }
 }

@@ -12,6 +12,7 @@
 /web/bundles/
 /web/built/
 /web/js/jquery.collection.js
+/web/select2/
 /.tmp
 /docker-compose.override.yml
 /gcloud-service-key.json

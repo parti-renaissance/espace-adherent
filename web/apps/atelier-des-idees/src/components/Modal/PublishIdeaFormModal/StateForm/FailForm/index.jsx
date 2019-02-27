@@ -10,8 +10,8 @@ class FailForm extends React.PureComponent {
         return (
             <div className="fail-form">
                 <img src={icn_state_fail} />
-                <h3 className="fail-form__title">OUPS</h3>
-                <p className="fail-form__subtitle">Quelque chose s'est mal passé</p>
+                <h3 className="fail-form__title">Oups</h3>
+                <p className="fail-form__subtitle">Quelque chose s'est mal passé. Si le problème persiste, vérifiez que vous possédez une version à jour de votre navigateur <a href="https://browsehappy.com/?locale=fr_FR" target="_blank">ici</a></p>
                 <button className="button--secondary" onClick={() => this.props.submitAgain()}>
 					Réessayer
                 </button>

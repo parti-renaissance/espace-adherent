@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\IdeasWorkshop\Answer;
 use AppBundle\Entity\UserDocument;
 use Doctrine\ORM\EntityRepository;
 
@@ -39,6 +40,22 @@ class UserDocumentRepository extends EntityRepository
             ->getResult()
         ;
 
-        return $committeeFeed && $committeeFeed[0] > 0;
+        if ($committeeFeed && $committeeFeed[0] > 0) {
+            return true;
+        }
+
+        $ideaAnswer = $this
+            ->getEntityManager()->createQueryBuilder()
+            ->from(Answer::class, 'answer')
+            ->select('answer.id')
+            ->join('answer.documents', 'documents')
+            ->where('documents.id = :documentId')
+            ->setParameter('documentId', $document->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        return $ideaAnswer && $ideaAnswer[0] > 0;
     }
 }
