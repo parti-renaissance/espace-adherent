@@ -348,6 +348,7 @@ class AdherentControllerTest extends WebTestCase
                     'postalCode' => '8802',
                     'cityName' => 'Kilchberg',
                 ],
+                'nationality' => 'CH',
                 'phone' => [
                     'country' => 'CH',
                     'number' => '31 359 21 11',
