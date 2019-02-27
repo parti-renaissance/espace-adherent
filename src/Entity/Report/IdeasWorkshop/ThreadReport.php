@@ -18,7 +18,7 @@ class ThreadReport extends Report
      * @var Thread
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\IdeasWorkshop\Thread")
-     * @ORM\JoinColumn(name="thread_id")
+     * @ORM\JoinColumn(name="thread_id", onDelete="CASCADE")
      */
     protected $subject;
 }
