@@ -3,6 +3,7 @@
 namespace AppBundle\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class AdherentMessageDataObject
@@ -27,7 +28,7 @@ class AdherentMessageDataObject
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Length(min="3", max="5000")
+     * @AssertWysiwygLength(min="3", max="6000")
      */
     private $content;
 

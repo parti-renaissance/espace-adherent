@@ -4,6 +4,7 @@ namespace AppBundle\Referent;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ReferentManagedUsersMessage;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,9 +39,9 @@ class ReferentMessage
      * @var string|null
      *
      * @Assert\NotBlank
-     * @Assert\Length(
+     * @AssertWysiwygLength(
      *     min=10,
-     *     max=5000,
+     *     max=6000,
      *     minMessage="referent.message.min_length",
      *     maxMessage="referent.message.max_length",
      * )

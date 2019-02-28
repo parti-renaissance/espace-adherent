@@ -4,6 +4,7 @@ namespace AppBundle\Committee\Feed;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,9 +20,9 @@ class CommitteeMessage
 
     /**
      * @Assert\NotBlank
-     * @Assert\Length(
+     * @AssertWysiwygLength(
      *     min=10,
-     *     max=5000,
+     *     max=6000,
      *     minMessage="committee.message.min_length",
      *     maxMessage="committee.message.max_length"
      * )

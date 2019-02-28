@@ -5,6 +5,7 @@ namespace AppBundle\Deputy;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\DeputyManagedUsersMessage;
 use AppBundle\Entity\District;
+use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,9 +33,9 @@ class DeputyMessage
      * @var string|null
      *
      * @Assert\NotBlank(message="message.not_blank")
-     * @Assert\Length(
+     * @AssertWysiwygLength(
      *     min=10,
-     *     max=5000,
+     *     max=6000,
      *     minMessage="message.min_length",
      *     maxMessage="message.max_length",
      * )
