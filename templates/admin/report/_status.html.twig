@@ -2,4 +2,10 @@
     <span class="label {{ object.resolved ? 'label-success' : 'label-danger' }}">
         {{ object.status|trans({}, 'reports') }}
     </span>
+    {% if (is_idea(object.subject) or is_thread(object.subject) or is_thread_comment(object.subject)) and not object.subject.enabled %}
+        <br />
+        <span class="label label-success">
+            {{ 'moderated'|trans({}, 'reports') }}
+         </span>
+    {% endif %}
 {% endspaceless -%}

@@ -1,5 +1,5 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
-{% block field %}
+{% block field_value %}
     {{ include('admin/partial/_details.html.twig', { object: object.subject }) }}
 {% endblock %}
