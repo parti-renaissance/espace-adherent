@@ -1,11 +1,5 @@
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field_value %}
-    {% if object.subject is instanceof('AppBundle\\Entity\\EntitySoftDeletedInterface') and object.subject.getDeletedAt() is not null %}
-        <span class="badge bg-yellow">supprimé</span>
-    {% endif %}
-
-    {% if object.subject.isApproved is defined and object.subject.isApproved %}
-        <span class="badge bg-green">approuvé</span>
-    {% endif %}
+    {{ include('admin/partial/_details.html.twig', { object: object.subject }) }}
 {% endblock %}

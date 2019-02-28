@@ -3,9 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
-use AppBundle\Report\ReportManager;
-use AppBundle\Repository\ReportRepository;
+use AppBundle\IdeasWorkshop\Events;
 use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminIdeaController extends Controller
 {
     use RedirectToTargetTrait;
-    use ResolveReportTrait;
 
     /**
      * @Route("/{id}/contribute", name="app_admin_idea_contribute", methods={"GET"})
@@ -62,14 +61,13 @@ class AdminIdeaController extends Controller
         Request $request,
         Idea $idea,
         EntityManagerInterface $manager,
-        ReportRepository $reportRepository,
-        ReportManager $reportManager
+        EventDispatcherInterface $dispatcher
     ): Response {
         if ($idea->isEnabled()) {
             $this->addFlash('warning', 'La proposition a déjà été démodérée.');
         } else {
             $idea->setEnabled(true);
-            $this->resolveReportsFor(IdeaReport::class, $idea, $reportRepository, $reportManager);
+            $dispatcher->dispatch(Events::IDEA_ENABLE, new GenericEvent($idea));
             $manager->flush();
 
             $this->addFlash('success', 'La proposition a bien été démodérée.');
@@ -87,14 +85,13 @@ class AdminIdeaController extends Controller
         Request $request,
         Idea $idea,
         ObjectManager $manager,
-        ReportRepository $reportRepository,
-        ReportManager $reportManager
+        EventDispatcherInterface $dispatcher
     ): Response {
         if (!$idea->isEnabled()) {
             $this->addFlash('warning', 'La proposition a déjà été modérée.');
         } else {
             $idea->setEnabled(false);
-            $this->resolveReportsFor(IdeaReport::class, $idea, $reportRepository, $reportManager);
+            $dispatcher->dispatch(Events::IDEA_DISABLE, new GenericEvent($idea));
             $manager->flush();
 
             $this->addFlash('success', 'La proposition a bien été modérée.');

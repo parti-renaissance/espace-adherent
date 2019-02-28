@@ -2,6 +2,6 @@
     <span class="badge bg-yellow">supprimé</span>
 {% endif %}
 
-{% if object.isApproved is defined %}
-    <span class="badge bg-{{ object.isApproved() ? 'green' : 'red' }}">{{ object.isApproved() ? '' : 'dés' }}approuvé</span>
+{% if object.isApproved is defined and object.isApproved %}
+    <span class="badge bg-green">approuvé</span>
 {% endif %}

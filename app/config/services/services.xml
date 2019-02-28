@@ -200,7 +200,8 @@
 
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />
-        <service id="AppBundle\Report\ReportCreationCommandHandler"/>
+        <service id="AppBundle\Report\ReportCreationCommandHandler" />
+        <service id="AppBundle\Report\Listener\EnableSubjectForResolvingReportsListener" />
 
         <!-- Repository -->
         <prototype namespace="AppBundle\Repository\" resource="../../../src/Repository/*" />
