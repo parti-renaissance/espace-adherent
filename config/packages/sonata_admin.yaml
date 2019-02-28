@@ -1,0 +1,7 @@
+sonata_admin:
+    title_logo: logo/small_bg_white.jpg
+    templates:
+        layout:  admin/layout.html.twig
+    security:
+        handler: sonata.admin.security.handler.role
+    persist_filters: true

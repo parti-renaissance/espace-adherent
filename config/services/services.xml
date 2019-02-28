@@ -1,0 +1,494 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false">
+            <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
+            <bind key="$environment">%kernel.environment%</bind>
+        </defaults>
+
+        <!-- Adherents -->
+        <service id="AppBundle\Membership\AdherentManager" />
+        <service id="AppBundle\Membership\AdherentRegistry" public="true" />
+
+        <!-- Algolia -->
+        <service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
+        <service id="AppBundle\Algolia\ManualIndexer" />
+
+        <!-- Content -->
+        <service class="AppBundle\Content\ClarificationFactory" />
+        <service class="AppBundle\Content\MediaFactory" />
+
+        <!-- CitizenProject -->
+        <service id="AppBundle\CitizenProject\CitizenProjectAuthority" />
+        <service id="AppBundle\CitizenProject\CitizenProjectCommentCreationCommandHandler" public="true">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+        </service>
+        <service id="AppBundle\CitizenProject\CitizenProjectManager">
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+        <service id="AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator" public="true">
+            <argument type="service" id="knp_snappy.pdf"/>
+        </service>
+        <service id="AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator" public="true">
+            <argument type="service" id="knp_snappy.image"/>
+        </service>
+
+        <service id="AppBundle\CitizenProject\CitizenProjectFactory" public="true" />
+
+        <!-- CitizenActions -->
+        <service id="AppBundle\CitizenAction\CitizenActionMessageNotifier">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+
+        <service id="AppBundle\CitizenAction\CitizenActionParticipantsExporter" public="true" />
+
+        <service id="AppBundle\CitizenAction\CitizenActionContactParticipantsCommandHandler" public="true">
+            <argument type="service" id="app.mailer.campaign" />
+        </service>
+
+        <!-- Committee -->
+        <service id="AppBundle\Committee\CommitteeMergeCommandHandler" public="true" />
+        <service id="AppBundle\Form\Admin\CommitteeIdType"/>
+
+        <!-- TurnkeyProject -->
+        <service id="AppBundle\TurnkeyProject\TurnkeyProjectManager">
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+        <service id="AppBundle\Validator\UniqueTurnkeyProjectPinnedValidator" />
+
+        <!-- Biography -->
+        <service id="AppBundle\Biography\BiographyManager" />
+        <service id="AppBundle\Validator\UniqueExecutiveOfficerValidator" />
+
+        <!-- Donation -->
+        <service id="AppBundle\Validator\PayboxSubscriptionValidator" />
+        <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
+        <service id="AppBundle\Validator\MaxFiscalYearDonationValidator" />
+        <service id="AppBundle\Donation\DonationFactory" />
+        <service id="AppBundle\Donation\PayboxPaymentUnsubscription">
+            <argument type="service" key="$mailer" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\Donation\TransactionSubscriber">
+            <argument type="service" key="$mailer" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\Donation\TransactionCallbackHandler"/>
+        <service id="AppBundle\Donation\DonationRequestHandler"/>
+        <service id="AppBundle\Donation\DonationRequestUtils" />
+
+        <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+            <argument type="collection">
+                <argument key="validator" type="service" id="validator" />
+                <argument key="session" type="service" id="session" />
+                <argument key="security.csrf.token_manager" type="service" id="security.csrf.token_manager" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="AppBundle\Donation\PayboxFormFactory" />
+
+        <!-- Membership -->
+        <service id="AppBundle\Membership\MembershipRegistrationProcess"/>
+        <service id="AppBundle\Membership\AdherentChangeEmailHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\Membership\EventListener\ChangeEmailFlashMessageSubscriber" />
+        <service id="AppBundle\Validator\BannedAdherentValidator">
+            <argument type="service" id="AppBundle\Repository\BannedAdherentRepository" />
+        </service>
+        <service id="AppBundle\Membership\AdherentAccountActivationHandler" />
+
+        <!-- Event -->
+        <service id="AppBundle\Event\EventFactory" public="true" />
+        <service id="AppBundle\Event\EventCanceledHandler" />
+
+        <service id="AppBundle\Event\EventRegistrationSubscriber">
+            <argument type="service" id="app.mailer.transactional" />
+        </service>
+
+        <!-- EventListener -->
+        <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\EventListener\ControllerListener">
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" priority="8" />
+        </service>
+        <service id="AppBundle\EventListener\RemoveEmojisListener">
+            <tag name="doctrine.event_listener" event="onFlush" />
+        </service>
+        <service id="AppBundle\Security\EventListener\LastVisitedPageOnGetListener">
+            <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
+        </service>
+
+        <!-- EventSubscriber -->
+        <service id="AppBundle\EventSubscriber\CommentsCguSubscriber"/>
+
+        <!-- Form -->
+        <service id="AppBundle\Form\CitizenProjectCommentCommandType"/>
+        <service id="AppBundle\Form\AdherentMessageTypeType"/>
+        <service id="AppBundle\Form\ReferentTagChoiceType"/>
+        <service id="AppBundle\Form\CitizenProjectCommandType"/>
+        <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
+        <service id="AppBundle\Form\EventRegistrationType"/>
+        <service id="AppBundle\Form\ColorChoiceType"/>
+        <service id="AppBundle\Form\DonationRequestType"/>
+        <service id="AppBundle\Form\PurifiedTextareaType">
+            <argument type="collection">
+                <argument key="default" type="service" id="app.html_purifier.default"/>
+                <argument key="enrich_content" type="service" id="app.html_purifier.enrich_content"/>
+            </argument>
+        </service>
+        <service id="AppBundle\Form\CommitteeAroundAdherentType"/>
+
+        <!-- GeoCoder -->
+        <service id="GeoIp2\WebService\Client">
+            <argument>%env(MAXMIND_USER_ID)%</argument>
+            <argument>%env(MAXMIND_LICENSE_KEY)%</argument>
+        </service>
+        <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
+        <service id="AppBundle\Address\GeoCoder"/>
+
+        <!-- Procuration -->
+        <service id="AppBundle\Procuration\ProcurationManager" public="true" />
+        <service id="AppBundle\Procuration\ProcurationRequestSerializer" />
+        <service id="AppBundle\Procuration\ProcurationSession" />
+
+        <!-- Referent -->
+        <service id="AppBundle\Referent\ReferentTagManager" />
+        <service id="AppBundle\Referent\ManagedCommitteesExporter" />
+        <service id="AppBundle\Referent\ManagedEventsExporter" />
+
+        <!-- J'écoute -->
+        <service id="AppBundle\Form\Jecoute\DataSurveyFormType" />
+        <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
+        <service id="AppBundle\Validator\DataSurveyAnswerTypeChoiceValidator" />
+
+        <!-- Report -->
+        <service id="AppBundle\Report\ReportManager" />
+        <service id="AppBundle\Report\ReportCreationCommandHandler"/>
+
+        <!-- Security -->
+        <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
+        <service id="AppBundle\Security\Http\Session\AnonymousFollowerSession" public="true" />
+        <service id="AppBundle\Security\LoginFormAuthenticator">
+            <argument key="$apiPathPrefix" type="string">%api_path_prefix%</argument>
+        </service>
+        <service id="AppBundle\Security\UserChecker"/>
+        <service id="app.security.user_provider" class="AppBundle\Security\UserProvider">
+            <argument key="$classOrAlias" type="string">AppBundle\Entity\Adherent</argument>
+        </service>
+        <service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
+            <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
+        </service>
+
+        <!-- Serializer -->
+        <service id="AppBundle\Serializer\CitizenProjectSerializerSubscriber">
+            <tag name="jms_serializer.event_subscriber" />
+        </service>
+        <service id="AppBundle\Serializer\MoocSerializerSubscriber">
+            <tag name="jms_serializer.event_subscriber" />
+        </service>
+
+        <!-- Normalizer -->
+        <service id="AppBundle\Normalizer\ItemCollectionNormalizer" />
+        <service id="AppBundle\Normalizer\IdeaNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item" />
+        </service>
+        <service id="AppBundle\Normalizer\IdeaDenormalizer" />
+        <service id="AppBundle\Normalizer\AuthorDenormalizer" />
+        <service id="AppBundle\Normalizer\AuthorNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+        </service>
+        <service id="AppBundle\Normalizer\ThemeNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+        </service>
+        <service id="AppBundle\Normalizer\ThreadNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+            <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
+        </service>
+        <service id="AppBundle\Normalizer\AnswerNormalizer">
+            <argument type="service" id="api_platform.serializer.normalizer.item"/>
+            <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
+        </service>
+
+        <!-- Timeline -->
+        <service id="AppBundle\Form\EventListener\EmptyTranslationRemoverListener">
+            <argument>%locales%</argument>
+            <argument>%locale%</argument>
+        </service>
+        <service id="AppBundle\Timeline\TimelineFactory" />
+        <service id="AppBundle\Timeline\TimelineImageFactory" public="true">
+            <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
+            <argument key="$webDirectory">%kernel.project_dir%%/public</argument>
+        </service>
+
+        <!-- UserDocument -->
+        <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
+
+        <!-- HTML Purifiers -->
+        <service id="app.html_purifier.default" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
+            <argument type="service" id="exercise_html_purifier.default"/>
+        </service>
+        <service id="app.html_purifier.enrich_content" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
+            <argument type="service" id="exercise_html_purifier.enrich_content"/>
+        </service>
+        <service id="AppBundle\HTMLPurifier\Injector\ImageDimension">
+            <argument>%image_max_length%</argument>
+        </service>
+
+        <!-- Validators -->
+        <service id="AppBundle\Validator\DateRangeValidator" />
+
+        <!-- History -->
+        <service id="AppBundle\History\EmailSubscriptionHistoryHandler" />
+
+        <!-- Republican Silence -->
+        <service id="AppBundle\RepublicanSilence\CheckRepublicanSilenceListener" />
+        <service id="AppBundle\RepublicanSilence\RepublicanSilenceManager">
+            <argument type="service" key="$cache">
+                <service class="Symfony\Component\Cache\Simple\Psr6Cache">
+                    <argument type="service" id="app.cache.republican_silence" />
+                </service>
+            </argument>
+        </service>
+
+        <!-- Deputy -->
+        <service id="AppBundle\Deputy\Subscriber\BindAdherentDistrictSubscriber" />
+        <service id="AppBundle\Deputy\DistrictLoader" public="true" />
+        <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
+        <service id="AppBundle\Deputy\DeputyMessageNotifier" public="true">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="old_sound_rabbit_mq.deputy_message_dispatcher_producer" />
+        </service>
+
+        <!-- Subscription -->
+        <service id="AppBundle\Subscription\SubscriptionListener" />
+        <service id="AppBundle\Subscription\SubscriptionHandler" public="true" />
+
+        <!-- User subscriber -->
+        <service id="AppBundle\Membership\EventListener\UserSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
+        </service>
+
+        <!-- Committee subscriber -->
+        <service id="AppBundle\Committee\EventListener\CommitteeSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
+        </service>
+
+        <!-- Event subscriber -->
+        <service id="AppBundle\Event\EventListener\EventSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
+        </service>
+
+        <!-- CitizenProject subscriber -->
+        <service id="AppBundle\CitizenProject\EventListener\CitizenProjectSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
+        </service>
+
+        <service id="AppBundle\Statistics\Acquisition\Aggregator" />
+
+        <!-- Statistics Calculators -->
+        <service id="AppBundle\Statistics\Acquisition\Calculator\AdherentCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="1"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\NewAdherentCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="2"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\UnsubscribeAdherentsCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="3"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\ApprovedCommitteeCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="4"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\PendingCommitteeCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="5"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\CommitteeMemberCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="6"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\RatioCommitteeMemberAdherentCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="7"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\EventCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="8"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\EventSubscriptionCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="9"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\EventAdherentSubscriptionCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="10"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\EventUserSubscriptionCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="11"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\NewsletterSubscriptionGlobalListCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="12"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\NewsletterSubscriptionFridayListCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="13"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\NewsletterAdherentSubscriptionFridayListCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="14"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\NewsletterReferentSubscriptionCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="15"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\PunctualDonationCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="16"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\PunctualAdherentDonationCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="17"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\AmountPunctualDonationCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="18"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\MonthlyDonationCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="19"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\MonthlyAdherentDonationCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="20"/>
+        </service>
+        <service id="AppBundle\Statistics\Acquisition\Calculator\AmountMonthlyDonationCalculator">
+            <tag name="app.acquisition_statistics.calculator" priority="21"/>
+        </service>
+
+        <!-- Storage -->
+        <service id="AppBundle\Storage\ImageStorage" />
+
+        <!-- Ideas Workshop -->
+        <service id="AppBundle\IdeasWorkshop\ThemeManager" />
+        <service id="AppBundle\Validator\CommitteeMemberValidator" />
+        <service id="AppBundle\IdeasWorkshop\Listener\IdeaPublishListener" />
+        <service id="AppBundle\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
+        <service id="AppBundle\IdeasWorkshop\Listener\EnableThreadListener" />
+        <service id="AppBundle\IdeasWorkshop\Handler\SendMailForApprovedThreadCommentHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+            <tag name="messenger.message_handler"/>
+        </service>
+        <service id="AppBundle\IdeasWorkshop\Handler\SendMailForPublishedIdeaHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+            <tag name="messenger.message_handler"/>
+        </service>
+
+        <!-- ParamConverter -->
+        <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
+            <tag name="request.param_converter" converter="querystring" priority="false" />
+            <argument type="service" id="doctrine" on-invalid="ignore" />
+            <argument type="service" id="sensio_framework_extra.converter.doctrine.orm.expression_language" on-invalid="null" />
+        </service>
+
+        <!-- DoctrineExtension -->
+        <service id="AppBundle\Doctrine\VisibleStatusesExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
+        <service id="AppBundle\Doctrine\MyIdeaContributionExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
+        <service id="AppBundle\Doctrine\IdeaExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
+        <service id="AppBundle\Doctrine\ConsultationExtension">
+            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
+        </service>
+
+        <!-- Mailchimp -->
+        <service id="AppBundle\Mailchimp\Synchronisation\EventListener\AdherentEventSubscriber" />
+        <service id="AppBundle\Mailchimp\Driver">
+            <argument type="service" id="csa_guzzle.client.mailchimp_api" />
+            <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
+            <tag name="monolog.logger" channel="mailchimp_sync"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="AppBundle\Mailchimp\Manager">
+            <argument key="$requestBuildersLocator" type="service" id="app.mailchimp.request_builders_locator" />
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <tag name="monolog.logger" channel="mailchimp_sync" />
+        </service>
+
+        <service id="app.mailchimp.request_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+            <argument type="collection">
+                <argument key="AppBundle\Mailchimp\Synchronisation\RequestBuilder" type="service" id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
+                <argument key="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler">
+            <tag name="messenger.message_handler" />
+            <tag name="monolog.logger" channel="mailchimp_sync"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+        </service>
+
+        <service id="AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="AppBundle\AdherentMessage\Filter\FilterFormFactory" />
+
+        <service id="AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping">
+            <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
+            <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>
+        </service>
+
+        <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder">
+            <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
+        </service>
+        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder">
+            <argument key="$listId" type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
+            <argument key="$interestIds" type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
+            <argument key="$memberGroupInterestGroupId" type="string">%env(MAILCHIMP_MEMBER_GROUP_INTEREST_GROUP_ID)%</argument>
+            <argument key="$memberInterestInterestGroupId" type="string">%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%</argument>
+            <argument key="$replyEmailAddress" type="string">%campaign_sender_email%</argument>
+            <argument key="$fromName" type="string">%campaign_sender_name%</argument>
+        </service>
+
+        <service id="AppBundle\AdherentMessage\Listener\AdherentMessageChangeSubscriber">
+            <tag name="doctrine.event_subscriber"/>
+        </service>
+
+        <service id="AppBundle\Normalizer\UuidNormalizer" />
+
+        <!-- Swagger -->
+        <service id="AppBundle\Swagger\SwaggerDecorator"
+            decorates="api_platform.swagger.normalizer.documentation"
+            autoconfigure="false">
+            <argument key="$decorated" type="service" id="AppBundle\Swagger\SwaggerDecorator.inner"/>
+            <argument key="$apiPathPrefix">%api_path_prefix%</argument>
+            <argument key="$operationPathResolver" type="service" id="api_platform.operation_path_resolver"/>
+        </service>
+
+        <!-- Filter -->
+        <service id="AppBundle\Filter\ContributorsCountFilter">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="collection"><argument key="contributorsCount"/></argument>
+        </service>
+        <service id="AppBundle\Filter\IdeaStatusFilter">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="logger" on-invalid="ignore"/>
+            <argument type="collection"><argument key="status"/></argument>
+            <call method="setIdeaRepository">
+                <argument type="service" id="AppBundle\Repository\IdeaRepository" />
+            </call>
+        </service>
+    </services>
+</container>

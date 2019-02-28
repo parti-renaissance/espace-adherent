@@ -1,0 +1,348 @@
+security:
+    # Providers auth exceptions must not be hidden to customize the error message
+    # see usages of App\Security\Exception\BadCredentialsException
+    hide_user_not_found: false
+    erase_credentials: false
+
+    encoders:
+        AppBundle\Entity\Administrator: bcrypt
+        AppBundle\Entity\Adherent: bcrypt
+        legacy_encoder:
+            algorithm:        sha1
+            encode_as_base64: false
+            iterations:       1
+
+    role_hierarchy:
+        ROLE_ADMIN_DASHBOARD: ~
+
+        ROLE_ADMIN_MEDIAS:
+            - ROLE_APP_ADMIN_MEDIA_ALL
+
+        ROLE_ADMIN_CONTENT:
+            - ROLE_APP_ADMIN_ARTICLE_ALL
+            - ROLE_APP_ADMIN_ARTICLE_CATEGORY_ALL
+            - ROLE_APP_ADMIN_PAGE_CREATE
+            - ROLE_APP_ADMIN_PAGE_LIST
+            - ROLE_APP_ADMIN_PAGE_EDIT
+            - ROLE_APP_ADMIN_FACEBOOK_VIDEO_ALL
+            - ROLE_APP_ADMIN_CLARIFICATION_ALL
+            - ROLE_APP_ADMIN_SOCIAL_SHARE_CATEGORY_ALL
+            - ROLE_APP_ADMIN_SOCIAL_SHARE_ALL
+            - ROLE_APP_ADMIN_CUSTOM_SEARCH_RESULT_ALL
+
+        ROLE_ADMIN_HOME:
+            - ROLE_APP_ADMIN_HOME_BLOCK_EDIT
+            - ROLE_APP_ADMIN_HOME_BLOCK_LIST
+            - ROLE_APP_ADMIN_LIVE_LINK_ALL
+
+        ROLE_ADMIN_PROPOSALS:
+            - ROLE_APP_ADMIN_PROPOSAL_THEME_ALL
+            - ROLE_APP_ADMIN_PROPOSAL_ALL
+
+        ROLE_ADMIN_ORDERS:
+            - ROLE_APP_ADMIN_ORDER_SECTION_ALL
+            - ROLE_APP_ADMIN_ORDER_ARTICLE_ALL
+
+        ROLE_ADMIN_FACEBOOK_PROFILES:
+            - ROLE_APP_ADMIN_FACEBOOK_PROFILE_LIST
+            - ROLE_APP_ADMIN_FACEBOOK_PROFILE_VIEW
+
+        ROLE_ADMIN_REDIRECTIONS:
+            - ROLE_APP_ADMIN_REDIRECTION_ALL
+
+        ROLE_ADMIN_NEWSLETTER:
+            - ROLE_APP_ADMIN_INVITE_EXPORT
+            - ROLE_APP_ADMIN_INVITE_LIST
+            - ROLE_APP_ADMIN_INVITE_VIEW
+            - ROLE_APP_ADMIN_INVITE_DELETE
+
+        ROLE_ADMIN_JE_MARCHE:
+            - ROLE_APP_ADMIN_JE_MARCHE_EXPORT
+            - ROLE_APP_ADMIN_JE_MARCHE_LIST
+            - ROLE_APP_ADMIN_JE_MARCHE_VIEW
+            - ROLE_APP_ADMIN_JE_MARCHE_DELETE
+
+        ROLE_ADMIN_TON_MACRON:
+            - ROLE_APP_ADMIN_TON_MACRON_CHOICE_LIST
+            - ROLE_APP_ADMIN_TON_MACRON_CHOICE_CREATE
+            - ROLE_APP_ADMIN_TON_MACRON_CHOICE_EDIT
+            - ROLE_APP_ADMIN_TON_MACRON_CHOICE_DELETE
+            - ROLE_APP_ADMIN_TON_MACRON_FRIEND_INVITATION_LIST
+            - ROLE_APP_ADMIN_TON_MACRON_FRIEND_INVITATION_VIEW
+
+        ROLE_ADMIN_PURCHASING_POWER:
+            - ROLE_APP_ADMIN_PURCHASING_POWER_CHOICE_LIST
+            - ROLE_APP_ADMIN_PURCHASING_POWER_CHOICE_CREATE
+            - ROLE_APP_ADMIN_PURCHASING_POWER_CHOICE_EDIT
+            - ROLE_APP_ADMIN_PURCHASING_POWER_CHOICE_DELETE
+            - ROLE_APP_ADMIN_PURCHASING_POWER_INVITATION_LIST
+            - ROLE_APP_ADMIN_PURCHASING_POWER_INVITATION_VIEW
+
+        ROLE_ADMIN_LEGISLATIVES:
+            - ROLE_APP_ADMIN_LEGISLATIVE_CANDIDATE_ALL
+            - ROLE_APP_ADMIN_LEGISLATIVE_DISTRICT_ZONE_ALL
+
+        ROLE_ADMIN_ADHERENTS:
+            - ROLE_ALLOWED_TO_SWITCH
+            - ROLE_APP_ADMIN_ADHERENT_EXPORT
+            - ROLE_APP_ADMIN_ADHERENT_LIST
+            - ROLE_APP_ADMIN_ADHERENT_VIEW
+            - ROLE_APP_ADMIN_ADHERENT_EDIT
+
+        ROLE_ADMIN_UNREGISTRATIONS:
+            - ROLE_APP_ADMIN_UNREGISTRATION_LIST
+            - ROLE_APP_ADMIN_UNREGISTRATION_VIEW
+            - ROLE_APP_ADMIN_UNREGISTRATION_EXPORT
+
+        ROLE_ADMIN_SUMMARY:
+            - ROLE_APP_ADMIN_SUMMARY_MISSION_TYPE_ALL
+            - ROLE_APP_ADMIN_SUMMARY_LIST
+            - ROLE_APP_ADMIN_SUMMARY_EXPORT
+
+        ROLE_ADMIN_SKILLS:
+            - ROLE_APP_ADMIN_SKILL_ALL
+
+        ROLE_ADMIN_COMMITTEES:
+            - ROLE_APP_ADMIN_COMMITTEE_EXPORT
+            - ROLE_APP_ADMIN_COMMITTEE_LIST
+            - ROLE_APP_ADMIN_COMMITTEE_VIEW
+            - ROLE_APP_ADMIN_COMMITTEE_EDIT
+            - ROLE_APP_ADMIN_COMMITTEE_DELETE
+
+        ROLE_ADMIN_COMMITTEES_MERGE:
+            - ROLE_APP_ADMIN_REPORTING_COMMITTEE_MERGE_HISTORY_LIST
+
+        ROLE_ADMIN_CITIZEN_PROJECTS:
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_EXPORT
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_LIST
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_VIEW
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_EDIT
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_DELETE
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_CATEGORY_ALL
+            - ROLE_APP_ADMIN_CITIZEN_PROJECT_SKILL_ALL
+
+        ROLE_ADMIN_TURNKEY_PROJECTS:
+            - ROLE_APP_ADMIN_TURNKEY_PROJECT_ALL
+
+        ROLE_ADMIN_EVENTS:
+            - ROLE_APP_ADMIN_EVENT_EXPORT
+            - ROLE_APP_ADMIN_EVENT_LIST
+            - ROLE_APP_ADMIN_EVENT_VIEW
+            - ROLE_APP_ADMIN_EVENT_EDIT
+            - ROLE_APP_ADMIN_EVENT_DELETE
+            - ROLE_APP_ADMIN_EVENT_CATEGORY_ALL
+
+        ROLE_ADMIN_CITIZEN_ACTIONS:
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_EXPORT
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_LIST
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_VIEW
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_EDIT
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_DELETE
+            - ROLE_APP_ADMIN_CITIZEN_ACTION_CATEGORY_ALL
+
+        ROLE_ADMIN_PROCURATIONS:
+            - ROLE_APP_ADMIN_PROCURATION_REQUEST_ALL
+            - ROLE_APP_ADMIN_PROCURATION_PROXY_EXPORT
+            - ROLE_APP_ADMIN_PROCURATION_PROXY_LIST
+            - ROLE_APP_ADMIN_PROCURATION_PROXY_VIEW
+            - ROLE_APP_ADMIN_PROCURATION_PROXY_EDIT
+            - ROLE_APP_ADMIN_PROCURATION_PROXY_DELETE
+
+        ROLE_ADMIN_ELECTIONS:
+            - ROLE_APP_ADMIN_ELECTION_LIST
+            - ROLE_APP_ADMIN_ELECTION_VIEW
+            - ROLE_APP_ADMIN_ELECTION_EDIT
+            - ROLE_APP_ADMIN_ELECTION_CREATE
+            - ROLE_APP_ADMIN_ELECTION_DELETE
+
+        ROLE_ADMIN_DONATIONS:
+            - ROLE_APP_ADMIN_DONATION_EXPORT
+            - ROLE_APP_ADMIN_DONATION_LIST
+            - ROLE_APP_ADMIN_DONATION_VIEW
+
+        ROLE_ADMIN_EMAIL:
+            - ROLE_APP_ADMIN_EMAIL_EXPORT
+            - ROLE_APP_ADMIN_EMAIL_LIST
+            - ROLE_APP_ADMIN_EMAIL_VIEW
+
+        ROLE_ADMIN_ORGANIGRAMM:
+            - ROLE_APP_ADMIN_ORGANIZATIONAL_CHART_ITEM_ADMIN_ALL
+
+        ROLE_ADMIN_ADHERENT_TAGS:
+            - ROLE_APP_ADMIN_ADHERENT_TAG_ALL
+
+        ROLE_ADMIN_REFERENT_TAGS:
+            - ROLE_APP_ADMIN_REFERENT_TAG_ALL
+
+        ROLE_ADMIN_REFERENTS:
+            - ROLE_APP_ADMIN_REFERENT_ALL
+
+        ROLE_ADMIN_REFERENTS_AREAS:
+            - ROLE_APP_ADMIN_REFERENT_AREA_ALL
+
+        ROLE_ADMIN_BOARD_MEMBER_ROLES:
+            - ROLE_APP_ADMIN_ROLE_ALL
+
+        ROLE_ADMIN_REPORTS:
+            - ROLE_APP_ADMIN_REPORT_APPROVE
+            - ROLE_APP_ADMIN_REPORT_VIEW
+            - ROLE_APP_ADMIN_REPORT_LIST
+
+        ROLE_ADMIN_TIMELINE:
+            - ROLE_APP_ADMIN_TIMELINE_PROFILE_ALL
+            - ROLE_APP_ADMIN_TIMELINE_THEME_ALL
+            - ROLE_APP_ADMIN_TIMELINE_MEASURE_ALL
+
+        ROLE_ADMIN_MOOC:
+            - ROLE_APP_ADMIN_MOOC_MOOC_ALL
+            - ROLE_APP_ADMIN_MOOC_CHAPTER_ALL
+            - ROLE_APP_ADMIN_MOOC_ELEMENT_ALL
+
+        ROLE_ADMIN_CLIENTS:
+            - ROLE_APP_ADMIN_CLIENT_ALL
+
+        ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES:
+            - ROLE_APP_ADMIN_SUBSCRIPTION_TYPE_ALL
+
+        ROLE_ADMIN_BIOGRAPHY:
+            - ROLE_APP_ADMIN_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBER_ALL
+
+        ROLE_ADMIN_JECOUTE:
+            - ROLE_APP_ADMIN_JECOUTE_SUGGESTED_QUESTION_ALL
+            - ROLE_APP_ADMIN_JECOUTE_SURVEY_ALL
+
+        ROLE_ADMIN_BAN:
+            - ROLE_APP_ADMIN_BAN
+
+        ROLE_ADMIN_IDEAS_WORKSHOP:
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_CONSULTATION_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_CONSULTATION_REPORT_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_CATEGORY_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_NEED_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_THEME_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_GUIDELINE_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_QUESTION_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_IDEA_ALL
+            - ROLE_APP_ADMIN_IDEAS_WORKSHOP_THREAD_ALL
+
+        ROLE_SUPER_ADMIN:
+            - ROLE_ADMIN_DASHBOARD
+            - ROLE_ADMIN_MEDIAS
+            - ROLE_ADMIN_CONTENT
+            - ROLE_ADMIN_HOME
+            - ROLE_ADMIN_PROPOSALS
+            - ROLE_ADMIN_ORDERS
+            - ROLE_ADMIN_FACEBOOK_PROFILES
+            - ROLE_ADMIN_REDIRECTIONS
+            - ROLE_ADMIN_NEWSLETTER
+            - ROLE_ADMIN_JE_MARCHE
+            - ROLE_ADMIN_TON_MACRON
+            - ROLE_ADMIN_PURCHASING_POWER
+            - ROLE_ADMIN_LEGISLATIVES
+            - ROLE_ADMIN_ADHERENTS
+            - ROLE_ADMIN_UNREGISTRATIONS
+            - ROLE_ADMIN_SUMMARY
+            - ROLE_ADMIN_SKILLS
+            - ROLE_ADMIN_COMMITTEES
+            - ROLE_ADMIN_COMMITTEES_MERGE
+            - ROLE_ADMIN_EVENTS
+            - ROLE_ADMIN_CITIZEN_ACTIONS
+            - ROLE_ADMIN_CITIZEN_PROJECTS
+            - ROLE_ADMIN_REPORTS
+            - ROLE_ADMIN_PROCURATIONS
+            - ROLE_ADMIN_ELECTIONS
+            - ROLE_ADMIN_DONATIONS
+            - ROLE_ADMIN_EMAIL
+            - ROLE_ADMIN_ADHERENT_TAGS
+            - ROLE_ADMIN_REFERENT_TAGS
+            - ROLE_APP_ADMIN_PAGE_CREATE
+            - ROLE_ADMIN_REFERENTS
+            - ROLE_ADMIN_REFERENTS_AREAS
+            - ROLE_ADMIN_BOARD_MEMBER_ROLES
+            - ROLE_ADMIN_TIMELINE
+            - ROLE_ADMIN_MOOC
+            - ROLE_ADMIN_CLIENTS
+            - ROLE_ADMIN_ORGANIGRAMM
+            - ROLE_ADMIN_EMAIL_SUBSCRIPTION_TYPES
+            - ROLE_ADMIN_BIOGRAPHY
+            - ROLE_ADMIN_JECOUTE
+            - ROLE_ADMIN_BAN
+            - ROLE_ADMIN_IDEAS_WORKSHOP
+
+    access_decision_manager:
+        strategy: unanimous
+
+    providers:
+        admins_db:
+            id: app.security.admin_provider
+        users_db:
+            id: app.security.user_provider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        api_oauth:
+            pattern: ^/api/(me|webhooks|statistics/|jecoute/)
+            stateless: true
+            guard:
+                authenticators:
+                    - 'AppBundle\OAuth\OAuthAuthenticator'
+
+        admin:
+            context: main_context
+            pattern: ^/admin
+            provider: admins_db
+            anonymous:
+                secret: '%env(APP_SECRET)%'
+            form_login:
+                login_path: app_admin_login
+                check_path: app_admin_login_check
+
+                default_target_path: sonata_admin_dashboard
+                always_use_default_target_path: true
+
+                username_parameter: _login_email
+                password_parameter: _login_password
+                csrf_parameter: _login_csrf
+                csrf_token_id: authenticate
+                csrf_token_generator: security.csrf.token_manager
+
+                failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
+            logout:
+                path: logout
+                target: homepage
+
+        main:
+            context: main_context
+            stateless: false
+            # No pattern means every path is behind this firewall
+            provider: users_db
+            switch_user:
+                provider: users_db
+            anonymous:
+                secret: '%env(APP_SECRET)%'
+            logout:
+                path: logout
+                target: homepage
+            user_checker: AppBundle\Security\UserChecker
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            guard:
+                authenticators:
+                    - AppBundle\Security\LoginFormAuthenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
+                entry_point: AppBundle\Security\LoginFormAuthenticator
+
+    access_control:
+        - { path: '^/parametres', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent/creer-mon-projet-citoyen$', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
+        - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
+        - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
+        - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
+        - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }

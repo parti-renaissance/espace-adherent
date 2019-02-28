@@ -1,0 +1,17 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    templating:
+        engines: ['twig']
+    session:
+        name: enmarche
+        handler_id: snc_redis.session.handler
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
+    trusted_hosts:   ~
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true

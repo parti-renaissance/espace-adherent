@@ -6,10 +6,7 @@
     "autoload": {
         "psr-4": {
             "AppBundle\\": "src/"
-        },
-        "classmap": [
-            "app/AppKernel.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -24,7 +21,8 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
-        "a2lix/i18n-doctrine-bundle": "^0.1.0",
+        "ext-zip": "*",
+        "a2lix/i18n-doctrine-bundle": "^0.2.0",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/algolia-search-bundle": "^2.2",
         "api-platform/api-pack": "^1.1",
@@ -47,7 +45,6 @@
         "h4cc/wkhtmltoimage-amd64": "^0.12.4",
         "h4cc/wkhtmltopdf-amd64": "^0.12.4",
         "imagine/imagine": "^0.6.3",
-        "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.1",
         "knplabs/knp-snappy-bundle": "^1.5",
         "knplabs/knp-time-bundle": "^1.7",
@@ -71,8 +68,8 @@
         "ramsey/uuid-doctrine": "^1.2",
         "sabre/dav": "^3.2",
         "scheb/two-factor-bundle": "^2.8",
-        "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "4.0.x-dev",
+        "sensiolabs/security-checker": "^5.0",
         "sentry/sentry": "^1.6",
         "snc/redis-bundle": "^2.0",
         "sonata-project/core-bundle": "^3.4.0",
@@ -80,12 +77,34 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "suin/php-rss-writer": "^1.5",
         "superbalist/flysystem-google-storage": "^3.0",
-        "symfony/messenger": "~4.2",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/psr-http-message-bridge": "^1.0",
-        "symfony/symfony": "3.4.*",
-        "symfony/thanks": "^1.0",
+        "symfony/asset": "3.4.*",
+        "symfony/cache": "3.4.*",
+        "symfony/config": "3.4.*",
+        "symfony/doctrine-bridge": "3.4.*",
+        "symfony/dotenv": "3.4.*",
+        "symfony/event-dispatcher": "3.4.*",
+        "symfony/expression-language": "3.4.*",
+        "symfony/flex": "^1.1",
+        "symfony/http-foundation": "3.4.*",
+        "symfony/http-kernel": "3.4.*",
+        "symfony/inflector": "3.4.*",
+        "symfony/intl": "3.4.*",
+        "symfony/messenger": "4.2",
+        "symfony/monolog-bundle": "^3.3",
+        "symfony/polyfill-apcu": "^1.10",
+        "symfony/property-info": "3.4.*",
+        "symfony/psr-http-message-bridge": "^1.1",
+        "symfony/routing": "3.4.*",
+        "symfony/security": "3.4.*",
+        "symfony/security-bundle": "3.4.*",
+        "symfony/serializer": "3.4.*",
+        "symfony/templating": "3.4.*",
+        "symfony/thanks": "^1.1",
+        "symfony/translation": "3.4.*",
+        "symfony/twig-bridge": "3.4.*",
+        "symfony/twig-bundle": "3.4.*",
+        "symfony/validator": "3.4.*",
+        "symfony/workflow": "3.4.*",
         "syslogic/doctrine-json-functions": "^2.1",
         "tackk/cartographer": "^1.1",
         "twig/twig": "^1.0||^2.0",
@@ -105,24 +124,24 @@
         "friendsofphp/php-cs-fixer": "^2.10.0",
         "liip/functional-test-bundle": "^1.8",
         "phpunit/phpunit": "^6.2",
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/debug-bundle": "3.4.*",
+        "symfony/phpunit-bridge": "3.4.*",
+        "symfony/web-profiler-bundle": "3.4.*"
     },
     "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
-        ],
         "post-install-cmd": [
-            "Fuz\\Symfony\\Collection\\ScriptHandler::postInstall",
-            "@symfony-scripts"
+            "@auto-scripts",
+            "Fuz\\Symfony\\Collection\\ScriptHandler::postInstall"
         ],
         "post-update-cmd": [
-            "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate",
-            "@symfony-scripts"
-        ]
+            "@auto-scripts",
+            "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate"
+        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
+        }
     },
     "extra": {
         "symfony-app-dir": "app",
@@ -131,8 +150,11 @@
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+        "symfony": {
+            "require": "3.4.*"
         }
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     }
 }

@@ -1,4 +1,4 @@
-![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/web/logo/em-logo.svg)
+![En Marche !, le mouvement d'Emmanuel Macron](https://github.com/EnMarche/en-marche.fr/blob/master/public/logo/em-logo.svg)
 
 [![CircleCI](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master.svg?style=svg)](https://circleci.com/gh/EnMarche/en-marche.fr/tree/master)
 

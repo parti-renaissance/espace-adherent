@@ -5,22 +5,22 @@ namespace AppBundle\EntityListener;
 use AppBundle\Entity\Article;
 use AppBundle\Redirection\Dynamic\RedirectionManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ArticleListener
 {
     private $redirectionManager;
-    private $router;
+    private $urlGenerator;
 
     /**
      * @var array[]
      */
     private $redirections = [];
 
-    public function __construct(RedirectionManager $redirectionManager, Router $router)
+    public function __construct(RedirectionManager $redirectionManager, UrlGeneratorInterface $urlGenerator)
     {
         $this->redirectionManager = $redirectionManager;
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function preUpdate(Article $article, PreUpdateEventArgs $preUpdateEventArgs): void
@@ -44,12 +44,12 @@ class ArticleListener
         }
 
         $this->redirections[$article->getId()] = [
-            'source' => $this->router->generate('article_view',
+            'source' => $this->urlGenerator->generate('article_view',
                 [
                     'articleSlug' => $articleSlugOld,
                     'categorySlug' => $categoryOld->getSlug(),
                 ]),
-            'target' => $this->router->generate('article_view',
+            'target' => $this->urlGenerator->generate('article_view',
                 [
                     'articleSlug' => $articleSlugNew,
                     'categorySlug' => $categoryNew->getSlug(),

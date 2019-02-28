@@ -39,10 +39,10 @@
                 </p>
 
                 <h3 class="b__nudge--bottom">Les comités que je suis</h3>
-                <div>{{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees', { noResultMessage: 'Aucun comité pour l\'instant' })) }}</div>
+                <div>{{ render(controller('AppBundle\\Controller\\EnMarche\\AdherentController:listMyCommitteesAction', { noResultMessage: 'Aucun comité pour l\'instant' })) }}</div>
 
                 <h3 class="b__nudge--bottom b__nudge--top">Les projets citoyens que je suis</h3>
-                <div>{{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects', { noResultMessage: 'Aucun projet pour l\'instant' })) }}</div>
+                <div>{{ render(controller('AppBundle\\Controller\\EnMarche\\AdherentController:listMyCitizenProjectsAction', { noResultMessage: 'Aucun projet pour l\'instant' })) }}</div>
             </div>
         {% endif %}
     {{ form_end(form) }}

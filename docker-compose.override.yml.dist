@@ -35,7 +35,7 @@ version: "3.2"
 #                    - test.enmarche.code
 #                    - enmarche.code
 #        volumes:
-#            - "~/.composer:/root/.composer"
+#            - "~/.composer:/home/enmarche/.composer"
 #        environment:
 #            - BLACKFIRE_CLIENT_ID
 #            - BLACKFIRE_CLIENT_TOKEN

@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -142,7 +143,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
         $qb
             ->select('COUNT(DISTINCT pp.id)')
-            ->from('AppBundle:ProcurationProxy', 'pp')
+            ->from(ProcurationProxy::class, 'pp')
             ->andWhere('pp.foundRequest IS NULL')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')

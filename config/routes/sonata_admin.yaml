@@ -1,0 +1,16 @@
+admin_dashboard:
+    host:     "%app_host%"
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix:   "/admin"
+
+admin_crud:
+    host:     "%app_host%"
+    resource: .
+    type:     sonata_admin
+    prefix:   "/admin"
+
+app_admin:
+    host:     "%app_host%"
+    resource: "../src/Controller/Admin"
+    type:     "annotation"
+    prefix:   "/admin"

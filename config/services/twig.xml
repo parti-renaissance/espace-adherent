@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <prototype namespace="AppBundle\Twig\" resource="../../src/Twig" />
+
+        <service id="AppBundle\Twig\AdminReportRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\AdherentExtension">
+            <argument>%adherent_interests%</argument>
+        </service>
+
+        <service id="Twig\Extensions\IntlExtension" />
+
+        <!-- Twig runtimes must be tagged -->
+        <service id="AppBundle\Twig\AssetRuntime">
+            <argument type="service" id="router" />
+            <argument type="service" id="twig.extension.assets" />
+            <argument>%kernel.secret%</argument>
+            <argument>%kernel.environment%</argument>
+            <argument>%assets_hash%</argument>
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\CommitteeRuntime">
+            <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="app.committee.manager"/>
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\CitizenProjectRuntime">
+            <tag name="twig.runtime"/>
+        </service>
+
+        <service id="AppBundle\Twig\FormRuntime">
+            <tag name="twig.runtime"/>
+        </service>
+
+        <service id="AppBundle\Twig\MarkdownRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\ReportRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\AnonymousRuntime">
+            <tag name="twig.runtime" />
+        </service>
+
+        <service id="AppBundle\Twig\CitizenActionExtension" />
+
+        <service id="AppBundle\Twig\CitizenActionRuntime">
+            <argument type="service" id="security.authorization_checker"/>
+            <tag name="twig.runtime"/>
+        </service>
+
+        <service id="AppBundle\Twig\MoocElementExtension" />
+        <service id="AppBundle\Twig\PaymentExtension" />
+
+        <service id="AppBundle\Twig\EventRuntime">
+            <tag name="twig.runtime"/>
+        </service>
+
+        <service id="AppBundle\Twig\IdeasWorkshopRuntime">
+            <tag name="twig.runtime" />
+        </service>
+    </services>
+</container>

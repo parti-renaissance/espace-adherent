@@ -9,7 +9,7 @@ default:
                 - FixtureContext:
                     manager: "@doctrine.orm.default_entity_manager"
                 - RestContext:
-                    sslPrivateKey: "%%env(SSL_PRIVATE_KEY)%%"
+                    sslPrivateKey: "%%ssl_private_key%%"
                     entityManager: "@doctrine.orm.default_entity_manager"
                 - JsonContext
                 - RabbitMqContext:
@@ -26,8 +26,8 @@ default:
     extensions:
         Behat\Symfony2Extension:
             kernel:
-                class: AppKernel
-                env: test
+                bootstrap: features/bootstrap/bootstrap.php
+                class: AppBundle\Kernel
         Behat\MinkExtension:
             base_url: "http://test.enmarche.code"
             sessions:

@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    AppBundle\Security\Voter\:
+        resource: '../../src/Security/Voter/*'

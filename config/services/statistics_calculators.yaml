@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    AppBundle\Statistics\Acquisition\Calculator\:
+        resource: '../../src/Statistics/Acquisition/Calculator/*Calculator.php'
+        tags: [app.acquisition_statistics.calculator]

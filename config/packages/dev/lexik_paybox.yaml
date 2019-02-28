@@ -1,0 +1,3 @@
+lexik_paybox:
+    parameters:
+        production: false

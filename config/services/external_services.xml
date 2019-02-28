@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <!-- Recaptcha -->
+        <service id="app.recaptcha.api_client" class="AppBundle\Recaptcha\RecaptchaApiClient" public="false">
+            <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
+            <argument type="collection">
+                <argument key="timeout">2.0</argument>
+                <argument key="environment">%kernel.environment%</argument>
+            </argument>
+            <argument type="service" id="request_stack"/>
+        </service>
+
+        <service id="app.validator.recaptcha" class="AppBundle\Validator\RecaptchaValidator">
+            <argument type="service" id="app.recaptcha.api_client"/>
+            <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
+        </service>
+
+        <!-- Mailer (transactional) -->
+        <service id="app.mailer.transactional" class="AppBundle\Mailer\MailerService" public="false">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.mailer.transport.rabbitmq_transactional"/>
+            <argument type="service" id="app.mailer.message_factory.transactional"/>
+        </service>
+
+        <service id="app.mailer.transactional_client" class="AppBundle\Mailjet\EmailClient" public="false">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
+        </service>
+
+        <service id="app.mailer.transport.rabbitmq_transactional" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
+            <argument type="service" id="old_sound_rabbit_mq.mailer_transactional_producer" />
+        </service>
+
+        <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+            <argument>%transactional_sender_email%</argument>
+            <argument>%transactional_sender_name%</argument>
+            <argument>AppBundle\Mailjet\EmailTemplate</argument>
+        </service>
+
+        <!-- Mailer (campaign) -->
+        <service id="app.mailer.campaign" class="AppBundle\Mailer\MailerService" public="false">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="app.mailer.transport.rabbitmq_campaign"/>
+            <argument type="service" id="app.mailer.message_factory.campaign"/>
+        </service>
+
+        <service id="app.mailer.campaign_client" class="AppBundle\Mailjet\EmailClient" public="false">
+            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
+            <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
+            <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
+        </service>
+
+        <service id="app.mailer.transport.rabbitmq_campaign" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
+            <argument type="service" id="old_sound_rabbit_mq.mailer_campaign_producer" />
+        </service>
+
+        <service id="app.mailer.message_factory.campaign" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+            <argument>%campaign_sender_email%</argument>
+            <argument>%campaign_sender_name%</argument>
+            <argument>AppBundle\Mailjet\EmailTemplate</argument>
+        </service>
+
+        <service id="AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="AppBundle\Repository\EmailRepository"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <!-- Facebook API -->
+        <service id="app.facebook.api" class="Facebook\Facebook">
+            <argument type="collection">
+                <argument key="app_id">%env(FACEBOOK_APP_ID)%</argument>
+                <argument key="app_secret">%env(FACEBOOK_APP_SECRET)%</argument>
+                <argument key="default_graph_version">v2.8</argument>
+            </argument>
+        </service>
+
+        <!-- Imagine -->
+        <service id="app.imagine" class="Imagine\Gd\Imagine"/>
+    </services>
+</container>

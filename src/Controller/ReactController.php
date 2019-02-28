@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReactController extends Controller
 {
-    public function appAction(ReactAppRegistry $registry, Request $request): Response
+    public function __invoke(ReactAppRegistry $registry, Request $request): Response
     {
         $app = $registry->getApp($request->attributes->get('_react_app'));
 

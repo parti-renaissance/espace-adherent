@@ -60,7 +60,7 @@ class TransactionSubscriberTest extends WebTestCase
     private function createSignature(array $params): string
     {
         $queryParams = http_build_query($params);
-        $privateKey = openssl_pkey_get_private($this->container->getParameter('env(SSL_PRIVATE_KEY)'));
+        $privateKey = openssl_pkey_get_private($this->container->getParameter('ssl_private_key'));
         openssl_sign($queryParams, $signature, $privateKey, 'sha1WithRSAEncryption');
 
         return base64_encode($signature);

@@ -22,6 +22,7 @@ use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use AppBundle\OAuth\CallbackManager;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Security\AuthenticationUtils;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -141,7 +142,7 @@ class MembershipController extends Controller
 
             $this->get('security.token_storage')->setToken(null);
             $request->getSession()->invalidate();
-            $this->get('app.security.authentication_utils')->authenticateAdherent($user);
+            $this->get(AuthenticationUtils::class)->authenticateAdherent($user);
 
             $this->addFlash('info', 'adherent.activation.success');
 
