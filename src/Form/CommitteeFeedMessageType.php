@@ -26,7 +26,7 @@ class CommitteeFeedMessageType extends AbstractType
             ->add('content', PurifiedTextareaType::class, [
                 'label' => false,
                 'attr' => [
-                    'maxlength' => 5000,
+                    'maxlength' => 6000,
                     'placeholder' => 'Écrivez ici votre message',
                 ],
                 'filter_emojis' => true,

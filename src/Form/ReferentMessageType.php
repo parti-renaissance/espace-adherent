@@ -21,7 +21,7 @@ class ReferentMessageType extends AbstractType
             ->add('content', PurifiedTextareaType::class, [
                 'label' => false,
                 'attr' => [
-                    'maxlength' => 5000,
+                    'maxlength' => 6000,
                     'placeholder' => 'Écrivez votre message',
                 ],
                 'filter_emojis' => true,
