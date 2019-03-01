@@ -3,11 +3,13 @@
 {% block message_page_title 'Prévisualiser mon message' %}
 
 {% block messages_header_left_block %}
-    <a href="{{ path('app_message_list', route_params|default({})) }}" class="link--blue link--no-decor">← Retour</a>
+    <a href="{{ path("app_message_#{message_type}_list") }}" class="link--blue link--no-decor">← Retour</a>
 {% endblock %}
 
 {% block message_content %}
-    <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;" src="{{ path('app_message_content', {uuid: message.uuid}) }}" ></iframe>
+    <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"
+            src="{{ path("app_message_#{message_type}_content", {uuid: message.uuid}) }}"
+    ></iframe>
     <hr/>
     <div class="l__wrapper--slim background--lighter b__nudge--top-40 text--center">
         {% if not message.isSent %}
@@ -21,9 +23,11 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                <a class="btn" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
-                <a class="btn" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier les filtres</a>
-                <a class="btn {{ not message.recipientCount ? 'btn--disabled' : 'btn--blue' }}" href="{{ message.recipientCount ? path('app_message_send', route_params|default({})|merge({uuid: message.uuid})) : 'javascript:void(0);' }}">Envoyer</a>
+                <a class="btn" href="{{ path("app_message_#{message_type}_update", {uuid: message.uuid}) }}">Modifier</a>
+                <a class="btn" href="{{ path("app_message_#{message_type}_filter", {uuid: message.uuid}) }}">Modifier les filtres</a>
+                <a class="btn {{ not message.recipientCount ? 'btn--disabled' : 'btn--blue' }}"
+                   href="{{ message.recipientCount ? path("app_message_#{message_type}_send", {uuid: message.uuid}) : 'javascript:void(0);' }}"
+                >Envoyer</a>
             </div>
         {% endif %}
     </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace AppBundle\Controller\EnMarche\AdherentMessage;
 
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
@@ -9,7 +9,6 @@ use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\Command\CreateDefaultMessageFilterCommand;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
-use AppBundle\AdherentMessage\Utils;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -26,22 +25,16 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @Route("/{prefix}messagerie", defaults={"prefix": ""}, requirements={"prefix": "|espace-referent/|espace-depute/"})
- *
- * @Security("is_granted('ROLE_ADHERENT_MESSAGE')")
- */
-class MessageController extends Controller
+abstract class AbstractMessageController extends Controller
 {
     use CanaryControllerTrait;
 
     /**
-     * @Route(name="app_message_list", methods={"GET"})
+     * @Route(name="list", methods={"GET"})
      *
      * @param Adherent|UserInterface $adherent
      */
     public function messageListAction(
-        string $prefix,
         Request $request,
         UserInterface $adherent,
         AdherentMessageRepository $repository
@@ -55,19 +48,17 @@ class MessageController extends Controller
         }
 
         return $this->renderTemplate(
-            $prefix,
             'message/list.html.twig',
-            ['messages' => $repository->findAllByAuthor($adherent, $status, Utils::getMessageTypeFromUri($prefix))]
+            ['messages' => $repository->findAllByAuthor($adherent, $status, $this->getMessageType())]
         );
     }
 
     /**
-     * @Route("/creer", name="app_message_create", methods={"GET", "POST"})
+     * @Route("/creer", name="create", methods={"GET", "POST"})
      *
      * @param Adherent|UserInterface $adherent
      */
     public function createMessageAction(
-        string $prefix,
         Request $request,
         UserInterface $adherent,
         ObjectManager $manager,
@@ -81,11 +72,7 @@ class MessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = AdherentMessageFactory::create(
-                $adherent,
-                $form->getData(),
-                Utils::getMessageTypeFromUri($prefix)
-            );
+            $message = AdherentMessageFactory::create($adherent, $form->getData(), $this->getMessageType());
 
             $manager->persist($message);
 
@@ -96,28 +83,21 @@ class MessageController extends Controller
             $this->addFlash('info', 'adherent_message.created_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToRoute('app_message_filter', [
-                    'prefix' => $prefix,
-                    'uuid' => $message->getUuid()->toString(),
-                ]);
+                return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
             }
 
-            return $this->redirectToRoute('app_message_update', [
-                'prefix' => $prefix,
-                'uuid' => $message->getUuid(),
-            ]);
+            return $this->redirectToMessageRoute('update', ['uuid' => $message->getUuid()]);
         }
 
-        return $this->renderTemplate($prefix, 'message/create.html.twig', ['form' => $form->createView()]);
+        return $this->renderTemplate('message/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @Route("/{uuid}/modifier", name="app_message_update", methods={"GET", "POST"})
+     * @Route("/{uuid}/modifier", name="update", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function updateMessageAction(
-        string $prefix,
         Request $request,
         AbstractAdherentMessage $message,
         ObjectManager $manager
@@ -141,24 +121,21 @@ class MessageController extends Controller
             $this->addFlash('info', 'adherent_message.updated_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToRoute('app_message_filter', [
-                    'prefix' => $prefix,
-                    'uuid' => $message->getUuid()->toString(),
-                ]);
+                return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
             }
 
-            return $this->redirectToRoute('app_message_update', ['prefix' => $prefix, 'uuid' => $message->getUuid()]);
+            return $this->redirectToMessageRoute('update', ['uuid' => $message->getUuid()]);
         }
 
-        return $this->renderTemplate($prefix, 'message/update.html.twig', ['form' => $form->createView()]);
+        return $this->renderTemplate('message/update.html.twig', ['form' => $form->createView()]);
     }
 
     /**
-     * @Route("/{uuid}/visualiser", name="app_message_preview", methods={"GET"})
+     * @Route("/{uuid}/visualiser", name="preview", methods={"GET"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function previewMessageAction(string $prefix, AbstractAdherentMessage $message): Response
+    public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
         $this->disableInProduction();
 
@@ -166,15 +143,15 @@ class MessageController extends Controller
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
 
-        return $this->renderTemplate($prefix, 'message/preview.html.twig', ['message' => $message]);
+        return $this->renderTemplate('message/preview.html.twig', ['message' => $message]);
     }
 
     /**
-     * @Route("/{uuid}/supprimer", name="app_message_delete", methods={"GET"})
+     * @Route("/{uuid}/supprimer", name="delete", methods={"GET"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function deleteMessageAction(string $prefix, AbstractAdherentMessage $message, ObjectManager $manager): Response
+    public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
         $this->disableInProduction();
 
@@ -183,11 +160,11 @@ class MessageController extends Controller
 
         $this->addFlash('info', 'adherent_message.deleted_successfully');
 
-        return $this->redirectToRoute('app_message_list', ['prefix' => $prefix]);
+        return $this->redirectToMessageRoute('list');
     }
 
     /**
-     * @Route("/{uuid}/content", name="app_message_content", methods={"GET"})
+     * @Route("/{uuid}/content", name="content", methods={"GET"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
@@ -199,12 +176,11 @@ class MessageController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/filtrer", name="app_message_filter", methods={"GET", "POST"})
+     * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function filterMessageAction(
-        string $prefix,
         Request $request,
         AbstractAdherentMessage $message,
         FilterFormFactory $formFactory,
@@ -221,8 +197,7 @@ class MessageController extends Controller
             $message->resetFilter();
             $manager->flush();
 
-            return $this->redirectToRoute('app_message_filter', [
-                'prefix' => $prefix,
+            return $this->redirectToMessageRoute('filter', [
                 'uuid' => $message->getUuid()->toString(),
             ]);
         }
@@ -230,7 +205,7 @@ class MessageController extends Controller
         $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());
 
         if ($message->hasReadOnlyFilter()) {
-            return $this->renderTemplate($prefix, 'message/filter.html.twig', ['message' => $message]);
+            return $this->renderTemplate('message/filter.html.twig', ['message' => $message]);
         }
 
         $form = $formFactory
@@ -244,25 +219,21 @@ class MessageController extends Controller
 
             $this->addFlash('info', 'adherent_message.filter_updated');
 
-            return $this->redirectToRoute('app_message_filter', [
-                'prefix' => $prefix,
-                'uuid' => $message->getUuid()->toString(),
-            ]);
+            return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        return $this->renderTemplate($prefix, 'message/filter.html.twig', [
+        return $this->renderTemplate('message/filter.html.twig', [
             'message' => $message,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{uuid}/send", name="app_message_send", methods={"GET"})
+     * @Route("/{uuid}/send", name="send", methods={"GET"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function sendMessageAction(
-        string $prefix,
         AbstractAdherentMessage $message,
         Manager $manager,
         ObjectManager $entityManager
@@ -290,12 +261,14 @@ class MessageController extends Controller
             $this->addFlash('info', 'adherent_message.campaign_sent_failure');
         }
 
-        return $this->redirectToRoute('app_message_list', ['prefix' => $prefix]);
+        return $this->redirectToMessageRoute('list');
     }
 
-    private function renderTemplate(string $uriPrefix, string $template, array $parameters = []): Response
+    abstract protected function getMessageType(): string;
+
+    private function renderTemplate(string $template, array $parameters = []): Response
     {
-        switch (Utils::getMessageTypeFromUri($uriPrefix)) {
+        switch ($messageType = $this->getMessageType()) {
             case AdherentMessageTypeEnum::REFERENT:
                 $baseTemplate = 'message/_base_referent.html.twig';
                 break;
@@ -313,8 +286,13 @@ class MessageController extends Controller
             $parameters,
             [
                 'base_template' => $baseTemplate,
-                'route_params' => ['prefix' => $uriPrefix],
+                'message_type' => $messageType,
             ]
         ));
+    }
+
+    private function redirectToMessageRoute(string $subName, array $parameters = []): Response
+    {
+        return $this->redirectToRoute("app_message_{$this->getMessageType()}_${subName}", $parameters);
     }
 }

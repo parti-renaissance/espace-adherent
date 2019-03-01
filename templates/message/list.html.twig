@@ -9,7 +9,7 @@
                 <option {{ app.request.query.get('status') == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
             </select>
         </form>
-        <a class="btn btn--blue" href="{{ path("app_message_create", route_params|default({})) }}">Nouveau message</a>
+        <a class="btn btn--blue" href="{{ path("app_message_#{message_type}_create") }}">Nouveau message</a>
     </div>
 
     <table class="table__default">
@@ -40,11 +40,11 @@
                             </a>
                             <div class="action-dropdown-menu">
                                 {% if not message.isSent %}
-                                    <a class="link--blue" href="{{ path('app_message_update', route_params|default({})|merge({uuid: message.uuid})) }}">Modifier</a>
+                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_update", {uuid: message.uuid}) }}">Modifier</a>
                                 {% endif %}
 
                                 {% if message.isSynchronized %}
-                                    <a class="link--no-decor" href="{{ path('app_message_preview', route_params|default({})|merge({uuid: message.uuid})) }}">Visualiser</a>
+                                    <a class="link--no-decor" href="{{ path("app_message_#{message_type}_preview", {uuid: message.uuid}) }}">Visualiser</a>
                                 {% else %}
                                     <a class="btn--disabled" href="javascript:void(0);">
                                         <span class="text--small">
@@ -55,10 +55,10 @@
                                 {% endif %}
 
                                 {% if not message.isSent %}
-                                    <a class="link--blue" href="{{ path('app_message_filter', route_params|default({})|merge({uuid: message.uuid})) }}">Filtrer</a>
+                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_filter", {uuid: message.uuid}) }}">Filtrer</a>
                                 {% endif %}
 
-                                <a class="link--red" href="{{ path('app_message_delete', route_params|default({})|merge({uuid: message.uuid})) }}">Supprimer</a>
+                                <a class="link--red" href="{{ path("app_message_#{message_type}_delete", {uuid: message.uuid}) }}">Supprimer</a>
                             </div>
                         </div>
                     </td>
