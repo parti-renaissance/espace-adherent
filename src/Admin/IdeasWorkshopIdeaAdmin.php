@@ -201,6 +201,10 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
             ->add('needs', null, [
                 'label' => 'Besoins',
             ])
+            ->add('extensionsCountAndLastExtensionDate', null, [
+                'label' => 'Prolongation',
+                'template' => 'admin/ideas_workshop/idea/list_extensions.html.twig',
+            ])
             ->add('status', null, [
                 'label' => 'Statut',
                 'header_style' => 'width:125px;',
@@ -222,6 +226,9 @@ class IdeasWorkshopIdeaAdmin extends AbstractAdmin
                     ],
                     'finalize' => [
                         'template' => 'admin/ideas_workshop/idea/list_action_finalize.html.twig',
+                    ],
+                    'extend' => [
+                        'template' => 'admin/ideas_workshop/idea/list_action_extend.html.twig',
                     ],
                     'delete' => [],
                 ],

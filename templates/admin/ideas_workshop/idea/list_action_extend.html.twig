@@ -1,0 +1,7 @@
+{% if (object.isFinalized or object.isPending) and object.enabled %}
+    <a href="{{ path('app_admin_idea_extend', { id: object.id }) }}" class="btn btn-sm btn-default view_link"
+       title="Prolonger" rel="noopener noreferrer">
+        <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+        Prolonger
+    </a>
+{% endif %}

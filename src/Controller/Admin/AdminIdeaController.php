@@ -106,4 +106,22 @@ class AdminIdeaController extends Controller
 
         return $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
     }
+
+    /**
+     * @Route("/{id}/extend", name="app_admin_idea_extend", methods={"GET"})
+     */
+    public function extendAction(Idea $idea, ObjectManager $manager): Response
+    {
+        if ($idea->isDraft()) {
+            $this->addFlash('warning', 'La proposition est un brouillon');
+        } else {
+            $idea->publish();
+
+            $manager->flush();
+
+            $this->addFlash('success', 'La proposition a bien été prolongée');
+        }
+
+        return $this->redirectToRoute('admin_app_ideasworkshop_idea_list');
+    }
 }
