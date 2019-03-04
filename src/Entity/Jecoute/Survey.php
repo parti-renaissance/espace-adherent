@@ -54,6 +54,7 @@ class Survey implements AuthoredInterface
      * @var SurveyQuestion[]|Collection
      *
      * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"position": "ASC"})
      *
      * @Assert\Valid
      */
