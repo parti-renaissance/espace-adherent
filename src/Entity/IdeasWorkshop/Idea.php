@@ -121,9 +121,29 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *             "access_control": "object.getAuthor() == user",
  *             "path": "/ideas-workshop/ideas/{id}/publish",
  *             "requirements": {"id": "%pattern_uuid%"},
- *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\IdeaPublishController",
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\IdeaController::publish",
  *             "normalization_context": {"groups": {"idea_list_read"}},
  *             "validation_groups": {"idea_publish"},
+ *             "swagger_context": {
+ *                 "parameters": {
+ *                     {
+ *                         "name": "id",
+ *                         "in": "path",
+ *                         "type": "uuid",
+ *                         "description": "The UUID of the Idea resource.",
+ *                         "example": "e4ac3efc-b539-40ac-9417-b60df432bdc5",
+ *                     }
+ *                 }
+ *             }
+ *         },
+ *         "extend": {
+ *             "method": "PUT",
+ *             "denormalization_context": {"api_allow_update": false},
+ *             "access_control": "object.getAuthor() == user",
+ *             "path": "/ideas-workshop/ideas/{id}/extend",
+ *             "requirements": {"id": "%pattern_uuid%"},
+ *             "controller": "AppBundle\Controller\Api\IdeasWorkshop\IdeaController::extend",
+ *             "normalization_context": {"groups": {"idea_read"}},
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -202,6 +222,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
+    public const EXTEND_COUNT_LIMIT = 2;
     private const PUBLISHED_INTERVAL = 'P10D';
 
     /**
@@ -374,6 +395,20 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      */
     private $description;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint", options={"unsigned": true})
+     */
+    private $extensionsCount;
+
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastExtensionDate;
+
     public function __construct(
         string $name,
         string $description = null,
@@ -383,7 +418,9 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         bool $enabled = true,
         Adherent $author = null,
         UuidInterface $uuid = null,
-        \DateTimeInterface $createdAt = null
+        \DateTimeInterface $createdAt = null,
+        int $extensionsCount = 0,
+        \DateTimeInterface $lastExtensionDate = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;
@@ -398,6 +435,8 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         $this->answers = new ArrayCollection();
         $this->votes = new ArrayCollection();
         $this->createdAt = $createdAt ?: new \DateTime();
+        $this->extensionsCount = $extensionsCount;
+        $this->lastExtensionDate = $lastExtensionDate;
     }
 
     public function getId(): ?int
@@ -641,6 +680,13 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
         $this->finalizedAt = $now->add(new \DateInterval(self::PUBLISHED_INTERVAL));
     }
 
+    public function extend(): void
+    {
+        $this->incrementExtensionsCount();
+        $this->lastExtensionDate = new \DateTime();
+        $this->publish();
+    }
+
     public function finalize(): void
     {
         $this->finalizedAt = new \DateTime();
@@ -704,6 +750,34 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
     public function getReportType(): string
     {
         return ReportType::IDEAS_WORKSHOP_IDEA;
+    }
+
+    /**
+     * @SymfonySerializer\Groups("idea_read")
+     */
+    public function isExtendable(): bool
+    {
+        return !$this->isDraft() && $this->extensionsCount < self::EXTEND_COUNT_LIMIT;
+    }
+
+    public function getExtensionsCount(): int
+    {
+        return $this->extensionsCount;
+    }
+
+    public function incrementExtensionsCount(int $increment = 1): void
+    {
+        $this->extensionsCount += $increment;
+    }
+
+    public function getLastExtensionDate(): ?\DateTimeInterface
+    {
+        return $this->lastExtensionDate;
+    }
+
+    public function setLastExtensionDate(\DateTimeInterface $lastExtensionDate): void
+    {
+        $this->lastExtensionDate = $lastExtensionDate;
     }
 
     public function __toString(): string

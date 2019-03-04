@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.extensionsCount > 0 %}
+        {{ 'common.ordinal_number_feminine'|transchoice(object.extensionsCount) }} : {{ object.lastExtensionDate|date('d/m/Y') }}
+    {% else %}
+        -
+    {% endif %}
+{% endblock %}

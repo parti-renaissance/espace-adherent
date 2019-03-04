@@ -473,6 +473,54 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can extend my idea which is in FINALIZE state only 2 times
+    Given I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/extend"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name   | Réduire le gaspillage |
+      | status | PENDING               |
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/extend"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name   | Réduire le gaspillage |
+      | status | PENDING               |
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/extend"
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I can extend my idea which is in PENDING state
+    Given I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5/extend"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name   | Faire la paix |
+      | status | PENDING       |
+    And I should have 1 email "IdeaExtendMessage" for "jacques.picard@en-marche.fr" with payload:
+    """
+    {
+      "FromEmail": "atelier-des-idees@en-marche.fr",
+      "FromName": "La République En Marche !",
+      "Subject": "Votre proposition a 10 jours supplémentaires pour des contributions !",
+      "MJ-TemplateID": "716215",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+          {
+              "Email": "jacques.picard@en-marche.fr",
+              "Name": "Jacques Picard",
+              "Vars": {
+                  "first_name": "Jacques",
+                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
+              }
+          }
+      ]
+    }
+    """
+
   Scenario: As a logged-in user I can get full information about one idea
     Given I am logged as "benjyd@aol.com"
     And I add "Accept" header equal to "application/json"
@@ -765,7 +813,8 @@ Feature:
         },
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
         "created_at": "@string@.isDateTime()",
-        "status": "PENDING"
+        "status": "PENDING",
+        "extendable": true
     }
     """
 
