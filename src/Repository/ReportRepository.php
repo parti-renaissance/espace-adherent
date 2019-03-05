@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Report\Report;
+use AppBundle\Entity\Report\ReportStatusEnum;
 use AppBundle\Report\ReportType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -66,7 +67,7 @@ class ReportRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByClassAndSubject(string $class, $subject): array
+    public function findNotResolvedByClassAndSubject(string $class, $subject): array
     {
         if (!is_subclass_of($class, Report::class)) {
             throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
@@ -76,7 +77,9 @@ class ReportRepository extends ServiceEntityRepository
             ->select('report')
             ->from($class, 'report')
             ->where('report.subject = :subject')
+            ->andWhere('report.status != :resolved')
             ->setParameter('subject', $subject)
+            ->setParameter('resolved', ReportStatusEnum::STATUS_RESOLVED)
             ->getQuery()
             ->getResult()
         ;

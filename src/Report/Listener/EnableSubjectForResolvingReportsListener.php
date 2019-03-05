@@ -54,7 +54,7 @@ class EnableSubjectForResolvingReportsListener implements EventSubscriberInterfa
             default: throw new BadRequestHttpException('The class of reported object is not known.');
         }
 
-        if ($reports = $this->reportRepository->findByClassAndSubject($class, $object)) {
+        if ($reports = $this->reportRepository->findNotResolvedByClassAndSubject($class, $object)) {
             try {
                 foreach ($reports as $report) {
                     $this->reportManager->resolve($report);
