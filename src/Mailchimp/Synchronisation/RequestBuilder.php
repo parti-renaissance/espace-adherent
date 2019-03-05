@@ -8,7 +8,6 @@ use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
-use AppBundle\Subscription\SubscriptionTypeEnum;
 
 class RequestBuilder
 {
@@ -204,18 +203,20 @@ class RequestBuilder
              *
              * This is a hack to migrate progressively the ID stored
              * into DB (subscription_types.external_id column), after that we will be able to use this method:
-             * array_fill_keys(array_intersect($interestIds, $adherent->getSubscriptionExternalIds()), true)
+             * array_fill_keys(array_intersect($this->mailchimpInterestIds, $adherent->getSubscriptionExternalIds()), true),
              */
-            array_fill_keys(array_filter(array_map(function (SubscriptionType $type) {
-                switch ($type->getCode()) {
-                    case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL: return 'af139e7383';
-                    case SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL: return '700951ee3e';
-                    case SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL: return 'd6135f452e';
-                    case SubscriptionTypeEnum::DEPUTY_EMAIL: return '3465334fa2';
-                    case SubscriptionTypeEnum::LOCAL_HOST_EMAIL: return 'f34541ec0f';
-                    case SubscriptionTypeEnum::REFERENT_EMAIL: return 'c4e1880afe';
-                }
-            }, $adherent->getSubscriptionTypes())), true),
+            array_fill_keys(
+                array_intersect_key(
+                    $this->mailchimpInterestIds,
+                    array_flip(
+                        array_map(
+                            function (SubscriptionType $type) { return $type->getCode(); },
+                            $adherent->getSubscriptionTypes()
+                        )
+                    )
+                ),
+                true
+            ),
 
             // Activate Member group interest
             array_fill_keys(

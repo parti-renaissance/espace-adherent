@@ -6,6 +6,7 @@ use AppBundle\Entity\ReferentTag;
 use AppBundle\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,10 +58,16 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
 
         /** @var ReferentTag $tag */
         foreach ($referentTags as $tag) {
-            $response = $this->client->request('POST', $url, ['json' => [
-                'name' => $tag->getCode(),
-                'static_segment' => [],
-            ]]);
+            try {
+                $response = $this->client->request('POST', $url, ['json' => [
+                    'name' => $tag->getCode(),
+                    'static_segment' => [],
+                ]]);
+            } catch (RequestException $e) {
+                $this->io->warning($e->getRequest() ? (string) $e->getResponse()->getBody() : $e->getMessage());
+                $this->io->progressAdvance();
+                continue;
+            }
 
             if (200 === $response->getStatusCode()) {
                 $data = json_decode((string) $response->getBody(), true);
