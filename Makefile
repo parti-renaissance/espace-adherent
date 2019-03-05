@@ -77,6 +77,8 @@ db: vendor wait-for-db                                                          
 
 db-diff: vendor wait-for-db                                                                            ## Generate a migration by comparing your current database to your mapping information
 	$(CONSOLE) doctrine:migration:diff
+	$(PHPCSFIXER) fix $(git ls-files --others --exclude-standard src/Migrations)
+	$(EXEC) ./scripts/new_migration_clean.sh
 
 db-diff-dump: vendor wait-for-db                                                                       ## Generate a migration by comparing your current database to your mapping information and display it in console
 	$(CONSOLE) doctrine:schema:update --dump-sql
