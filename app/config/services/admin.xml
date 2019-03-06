@@ -197,6 +197,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.event_group_category" class="AppBundle\Admin\EventGroupCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Groupe de Catégories d'événements" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\EventGroupCategory</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.institutional_event_category" class="AppBundle\Admin\InstitutionalEventCategoryAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Catégories d'événements institutionnels" group="Territoire" />
 

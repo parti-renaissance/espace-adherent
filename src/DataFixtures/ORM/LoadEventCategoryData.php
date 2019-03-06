@@ -2,11 +2,12 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\BaseEventCategory;
 use AppBundle\Entity\EventCategory;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadEventCategoryData implements FixtureInterface
+class LoadEventCategoryData extends Fixture
 {
     const LEGACY_EVENT_CATEGORIES = [
         'CE001' => 'Kiosque',
@@ -21,16 +22,62 @@ class LoadEventCategoryData implements FixtureInterface
         'CE010' => 'Marche',
         'CE011' => 'Support party',
     ];
-    const HIDDEN_CATEGORY_NAME = 'Catégorie masquée';
+
+    public const LEGACY_EVENT_CATEGORIES_GROUPED = [
+        'CE012' => [
+            'name' => 'ancrage local',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-1',
+        ],
+        'CE013' => [
+            'name' => 'projets citoyens',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-1',
+        ],
+        'CE014' => [
+            'name' => 'Un An',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-1',
+        ],
+        'CE015' => [
+            'name' => 'Débat',
+            'status' => BaseEventCategory::ENABLED,
+            'group' => 'event-group-category-2',
+        ],
+        'CE016' => [
+            'name' => 'Catégorie masquée',
+            'status' => BaseEventCategory::DISABLED,
+            'group' => 'event-group-category-0',
+        ],
+    ];
 
     public function load(ObjectManager $manager)
     {
-        foreach (self::LEGACY_EVENT_CATEGORIES as $name) {
-            $manager->persist(new EventCategory($name));
+        foreach (self::LEGACY_EVENT_CATEGORIES as $reference => $name) {
+            $category = new EventCategory($name);
+            $category->setEventGroupCategory($this->getReference('event-group-category-0'));
+
+            $this->addReference($reference, $category);
+
+            $manager->persist($category);
         }
 
-        $manager->persist(new EventCategory(self::HIDDEN_CATEGORY_NAME, EventCategory::DISABLED));
+        foreach (self::LEGACY_EVENT_CATEGORIES_GROUPED as $reference => $dataCategory) {
+            $category = new EventCategory($dataCategory['name'], $dataCategory['status']);
+            if ($dataCategory['group']) {
+                $category->setEventGroupCategory($this->getReference($dataCategory['group']));
+            }
+            $this->addReference($reference, $category);
+            $manager->persist($category);
+        }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadEventGroupCategoryData::class,
+        ];
     }
 }

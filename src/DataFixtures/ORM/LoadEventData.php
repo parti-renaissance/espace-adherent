@@ -8,77 +8,74 @@ use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event as EntityEvent;
-use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Event\EventFactory;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadEventData implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadEventData extends Fixture
 {
-    const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
-    const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
-    const EVENT_3_UUID = '47e5a8bf-8be1-4c38-aae8-b41e6908a1b3';
-    const EVENT_4_UUID = '5f10be0f-184b-47b8-9e45-39b9ec46f079';
-    const EVENT_5_UUID = '24a01f4f-94ea-43eb-8601-579385c59a82';
-    const EVENT_6_UUID = '5ba0daee-d9a7-47a8-8dbb-454500284af8';
-    const EVENT_7_UUID = '00871ce7-21bd-448c-9775-a23b808e1666';
-    const EVENT_8_UUID = '113876dd-87d2-426a-a12a-60ffd5107b10';
-    const EVENT_9_UUID = '633d4cdf-c7b9-4188-ad7a-96d18e80bc09';
-    const EVENT_10_UUID = '5c2471c7-8def-4757-9bec-8e0fa24361d8';
-    const EVENT_11_UUID = 'f48c4863-dc9b-404c-8fd5-72b1c002788c';
-    const EVENT_12_UUID = '50dd58d7-f370-4874-8fbb-3746ca06d5d5';
-    const EVENT_13_UUID = '30dd58d7-c540-3874-8fbb-6b26ca06d5d5';
-    const EVENT_14_UUID = 'f0574b51-40e0-4236-a2ff-62c42cb16029';
-    const EVENT_15_UUID = 'a6709808-b3fa-40fc-95a4-da49ddc314ff';
-    const EVENT_16_UUID = '15acb775-3425-4f3a-97fb-9c7725c53bbc';
-    const EVENT_17_UUID = '84e124a7-7afd-4f63-a2a7-e18545f18e24';
-    const EVENT_18_UUID = 'c09fde77-cc05-4139-a127-f71c2702f281';
-    const EVENT_19_UUID = '67e75e81-ad27-4414-bb0b-9e0c6e12b275';
-    const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
-    const EVENT_21_UUID = '0e5f9f02-fa33-4c2c-a700-4235d752315b';
+    public const EVENT_1_UUID = '1fc69fd0-2b34-4bd4-a0cc-834480480934';
+    public const EVENT_2_UUID = 'defd812f-265c-4196-bd33-72fe39e5a2a1';
+    public const EVENT_3_UUID = '47e5a8bf-8be1-4c38-aae8-b41e6908a1b3';
+    public const EVENT_4_UUID = '5f10be0f-184b-47b8-9e45-39b9ec46f079';
+    public const EVENT_5_UUID = '24a01f4f-94ea-43eb-8601-579385c59a82';
+    public const EVENT_6_UUID = '5ba0daee-d9a7-47a8-8dbb-454500284af8';
+    public const EVENT_7_UUID = '00871ce7-21bd-448c-9775-a23b808e1666';
+    public const EVENT_8_UUID = '113876dd-87d2-426a-a12a-60ffd5107b10';
+    public const EVENT_9_UUID = '633d4cdf-c7b9-4188-ad7a-96d18e80bc09';
+    public const EVENT_10_UUID = '5c2471c7-8def-4757-9bec-8e0fa24361d8';
+    public const EVENT_11_UUID = 'f48c4863-dc9b-404c-8fd5-72b1c002788c';
+    public const EVENT_12_UUID = '50dd58d7-f370-4874-8fbb-3746ca06d5d5';
+    public const EVENT_13_UUID = '30dd58d7-c540-3874-8fbb-6b26ca06d5d5';
+    public const EVENT_14_UUID = 'f0574b51-40e0-4236-a2ff-62c42cb16029';
+    public const EVENT_15_UUID = 'a6709808-b3fa-40fc-95a4-da49ddc314ff';
+    public const EVENT_16_UUID = '15acb775-3425-4f3a-97fb-9c7725c53bbc';
+    public const EVENT_17_UUID = '84e124a7-7afd-4f63-a2a7-e18545f18e24';
+    public const EVENT_18_UUID = 'c09fde77-cc05-4139-a127-f71c2702f281';
+    public const EVENT_19_UUID = '67e75e81-ad27-4414-bb0b-9e0c6e12b275';
+    public const EVENT_20_UUID = '65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e';
+    public const EVENT_21_UUID = '0e5f9f02-fa33-4c2c-a700-4235d752315b';
 
     use ContainerAwareTrait;
 
     public function load(ObjectManager $manager)
     {
-        $eventCategory1 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE001']]);
-        $eventCategory2 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE002']]);
-        $eventCategory3 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']]);
-        $eventCategory5 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE005']]);
-        $eventCategory6 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE006']]);
-        $eventCategory9 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE009']]);
-        $eventCategory10 = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE010']]);
-        $hiddenEventCategory = $manager->getRepository(EventCategory::class)->findOneBy(['name' => LoadEventCategoryData::HIDDEN_CATEGORY_NAME]);
+        $eventCategory1 = $this->getReference('CE001');
+        $eventCategory2 = $this->getReference('CE002');
+        $eventCategory3 = $this->getReference('CE003');
+        $eventCategory5 = $this->getReference('CE005');
+        $eventCategory6 = $this->getReference('CE006');
+        $eventCategory9 = $this->getReference('CE009');
+        $eventCategory10 = $this->getReference('CE010');
+        $hiddenEventCategory = $this->getReference('CE016');
 
-        $author3 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_3_UUID);
-        $author7 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_7_UUID);
-        $author11 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_11_UUID);
-        $author12 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_12_UUID);
-        $author13 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_13_UUID);
-        $referent75and77 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::REFERENT_2_UUID);
+        $author3 = $this->getReference('adherent-3');
+        $author7 = $this->getReference('adherent-7');
+        $author11 = $this->getReference('adherent-11');
+        $author12 = $this->getReference('adherent-12');
+        $author13 = $this->getReference('adherent-13');
+        $referent75and77 = $this->getReference('adherent-19');
 
-        $adherent4 = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::ADHERENT_4_UUID);
-        $coordinator = $manager->getRepository(Adherent::class)->findByUuid(LoadAdherentData::COORDINATOR_2_UUID);
+        $adherent4 = $this->getReference('adherent-4');
+        $coordinator = $this->getReference('adherent-17');
 
-        $committee1 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
-        $committee2 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
-        $committee3 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_3_UUID);
-        $committee4 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_4_UUID);
-        $committee5 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_5_UUID);
-        $committee10 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_10_UUID);
+        $committee1 = $this->getReference('committee-1');
+        $committee2 = $this->getReference('committee-2');
+        $committee3 = $this->getReference('committee-3');
+        $committee4 = $this->getReference('committee-4');
+        $committee5 = $this->getReference('committee-5');
+        $committee10 = $this->getReference('committee-10');
 
         // Singapore
-        $committee8 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_8_UUID);
+        $committee8 = $this->getReference('committee-8');
 
         // New York
-        $committee9 = $manager->getRepository(Committee::class)->findOneByUuid(LoadAdherentData::COMMITTEE_9_UUID);
+        $committee9 = $this->getReference('committee-9');
 
         $committeeEventFactory = $this->getEventFactory();
         $registrationFactory = $this->getEventRegistrationFactory();

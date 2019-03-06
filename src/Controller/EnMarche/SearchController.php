@@ -7,6 +7,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\EntityPostAddressTrait;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
+use AppBundle\Entity\EventGroupCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Search\SearchResultsProvidersManager;
@@ -52,7 +53,7 @@ class SearchController extends Controller
         }
 
         return $this->render('search/search_events.html.twig', [
-            'event_categories' => $this->getDoctrine()->getRepository(EventCategory::class)->findAllEnabledOrderedByName(),
+            'event_categories' => $this->getDoctrine()->getRepository(EventGroupCategory::class)->findAllEnabledOrderedByName(),
             'search' => $search,
             'results' => $results ?? [],
             'errors' => $errors ?? [],

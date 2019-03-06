@@ -390,14 +390,21 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $options = $crawler->filter('.search__bar__options__types option');
+        $optgroup = $crawler->filter('.search__bar__options__types optgroup');
         $array = $options->getIterator();
         $labels = [];
         foreach ($array as $element) {
             /* @var \DOMElement $element */
             $labels[] = $element->textContent;
         }
-        $this->assertFalse(\in_array('Catégorie masquée', $labels));
-        $this->assertSame(\count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES) + 2, $options->count());
+
+        $countCategories = \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES);
+        $countCategories += \count(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES_GROUPED);
+
+        ++$countCategories; // add citizen_action
+        $this->assertNotContains('Catégorie masquée', $labels);
+        self::assertSame($countCategories, $options->count());
+        self::assertSame(3, $optgroup->count());
     }
 
     public function testAdherentCanUnregisterToEvent()
