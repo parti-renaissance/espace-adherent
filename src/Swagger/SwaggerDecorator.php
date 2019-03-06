@@ -56,8 +56,11 @@ final class SwaggerDecorator implements NormalizerInterface
         return $this->decorated->supportsNormalization($data, $format);
     }
 
-    private function overridePaginatedResponseFormat(array $docs, ResourceMetadata $resourceMetadata, ?string $group): array
-    {
+    private function overridePaginatedResponseFormat(
+        array $docs,
+        ResourceMetadata $resourceMetadata,
+        ?string $group
+    ): array {
         $path = sprintf('%s%s', $this->apiPathPrefix, $this->getPath($resourceMetadata->getShortName(), ['get'], 'collection'));
 
         if ($group) {

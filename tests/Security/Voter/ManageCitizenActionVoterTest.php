@@ -197,8 +197,11 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
         return $project;
     }
 
-    private function assertMembershipRepositoryMock(bool $hasAdministrator = null, Adherent $host = null, CitizenProject $project = null): void
-    {
+    private function assertMembershipRepositoryMock(
+        bool $hasAdministrator = null,
+        Adherent $host = null,
+        CitizenProject $project = null
+    ): void {
         if (null !== $hasAdministrator) {
             $this->membershipRepository->expects($this->once())
                 ->method('administrateCitizenProject')

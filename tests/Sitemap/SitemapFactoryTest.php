@@ -198,8 +198,12 @@ class SitemapFactoryTest extends TestCase
         parent::tearDown();
     }
 
-    private function invokeReflectionMethod(string $methodName, Sitemap $sitemap = null, int $page = null, int $perpage = null)
-    {
+    private function invokeReflectionMethod(
+        string $methodName,
+        Sitemap $sitemap = null,
+        int $page = null,
+        int $perpage = null
+    ) {
         $reflection = new \ReflectionMethod(SitemapFactory::class, $methodName);
         $reflection->setAccessible(true);
 

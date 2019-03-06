@@ -7,8 +7,10 @@ use AppBundle\Entity\Unregistration;
 
 class UnregistrationFactory
 {
-    public function createFromUnregistrationCommandAndAdherent(UnregistrationCommand $command, Adherent $adherent): Unregistration
-    {
+    public function createFromUnregistrationCommandAndAdherent(
+        UnregistrationCommand $command,
+        Adherent $adherent
+    ): Unregistration {
         $unregistration = new Unregistration(
             $adherent->getUuid(),
             $command->getReasons(),

@@ -109,8 +109,11 @@ class SecurityController extends Controller
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("resetPasswordToken", expr="repository.findByToken(reset_password_token)")
      */
-    public function resetPasswordAction(Request $request, Adherent $adherent, AdherentResetPasswordToken $resetPasswordToken)
-    {
+    public function resetPasswordAction(
+        Request $request,
+        Adherent $adherent,
+        AdherentResetPasswordToken $resetPasswordToken
+    ) {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_search_events');
         }
@@ -143,8 +146,11 @@ class SecurityController extends Controller
      * @Route("/renvoyer-validation", name="adherent_resend_validation")
      * @Method("GET")
      */
-    public function resendValidationEmailAction(MembershipRequestHandler $membershipRequestHandler, AuthenticationUtils $authenticationUtils, AdherentRepository $adherentRepository): Response
-    {
+    public function resendValidationEmailAction(
+        MembershipRequestHandler $membershipRequestHandler,
+        AuthenticationUtils $authenticationUtils,
+        AdherentRepository $adherentRepository
+    ): Response {
         /** @var Adherent $adherent */
         $adherent = $adherentRepository->loadUserByUsername($authenticationUtils->getLastUsername());
 

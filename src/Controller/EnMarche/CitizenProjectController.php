@@ -41,8 +41,11 @@ class CitizenProjectController extends Controller
      * @Method("GET")
      * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
      */
-    public function showAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
-    {
+    public function showAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectManager $citizenProjectManager
+    ): Response {
         if ($this->isGranted('IS_ANONYMOUS')
             && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
         ) {
@@ -123,8 +126,11 @@ class CitizenProjectController extends Controller
      * @Security("is_granted('ROLE_SUPERVISOR')")
      * @Method("GET|POST")
      */
-    public function committeeSupportAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
-    {
+    public function committeeSupportAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectManager $citizenProjectManager
+    ): Response {
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
 
@@ -172,8 +178,10 @@ class CitizenProjectController extends Controller
      * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function listActorsAction(CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
-    {
+    public function listActorsAction(
+        CitizenProject $citizenProject,
+        CitizenProjectManager $citizenProjectManager
+    ): Response {
         return $this->render('citizen_project/list_actors.html.twig', [
             'citizen_project' => $citizenProject,
             'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),

@@ -59,8 +59,11 @@ class HostEventVoterTest extends AbstractAdherentVoterTest
     /**
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getAdherentMock(bool $isOrganizer = false, bool $isHost = null, Committee $committee = null): Adherent
-    {
+    private function getAdherentMock(
+        bool $isOrganizer = false,
+        bool $isHost = null,
+        Committee $committee = null
+    ): Adherent {
         $adherent = $this->createAdherentMock();
 
         if ($isOrganizer) {

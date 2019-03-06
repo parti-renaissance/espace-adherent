@@ -184,28 +184,49 @@ class LoadPurchasingPowerData implements FixtureInterface
         return $choices;
     }
 
-    private static function createNoStepChoice(string $uuid, string $key, string $label, string $content): PurchasingPowerChoice
-    {
+    private static function createNoStepChoice(
+        string $uuid,
+        string $key,
+        string $label,
+        string $content
+    ): PurchasingPowerChoice {
         return static::createChoice($uuid, 0, $key, $label, $content);
     }
 
-    private static function createFirstStepChoice(string $uuid, string $key, string $label, string $content): PurchasingPowerChoice
-    {
+    private static function createFirstStepChoice(
+        string $uuid,
+        string $key,
+        string $label,
+        string $content
+    ): PurchasingPowerChoice {
         return static::createChoice($uuid, 1, $key, $label, $content);
     }
 
-    private static function createSecondStepChoice(string $uuid, string $key, string $label, string $content): PurchasingPowerChoice
-    {
+    private static function createSecondStepChoice(
+        string $uuid,
+        string $key,
+        string $label,
+        string $content
+    ): PurchasingPowerChoice {
         return static::createChoice($uuid, 2, $key, $label, $content);
     }
 
-    private static function createThirdStepChoice(string $uuid, string $key, string $label, string $content): PurchasingPowerChoice
-    {
+    private static function createThirdStepChoice(
+        string $uuid,
+        string $key,
+        string $label,
+        string $content
+    ): PurchasingPowerChoice {
         return static::createChoice($uuid, 3, $key, $label, $content);
     }
 
-    private static function createChoice(string $uuid, int $step, string $key, string $label, string $content): PurchasingPowerChoice
-    {
+    private static function createChoice(
+        string $uuid,
+        int $step,
+        string $key,
+        string $label,
+        string $content
+    ): PurchasingPowerChoice {
         return new PurchasingPowerChoice(Uuid::fromString($uuid), $step, $key, $label, $content);
     }
 }

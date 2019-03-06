@@ -181,8 +181,11 @@ class EventController extends Controller
      * @Route("/desinscription", name="app_event_unregistration", condition="request.isXmlHttpRequest()")
      * @Method("GET|POST")
      */
-    public function unregistrationAction(Request $request, Event $event, EventRegistrationManager $eventRegistrationManager): JsonResponse
-    {
+    public function unregistrationAction(
+        Request $request,
+        Event $event,
+        EventRegistrationManager $eventRegistrationManager
+    ): JsonResponse {
         if (!$this->isCsrfTokenValid('event.unregistration', $token = $request->request->get('token'))) {
             throw new BadRequestHttpException('Invalid CSRF protection token to unregister from the citizen action.');
         }

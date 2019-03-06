@@ -95,8 +95,12 @@ class AdminCommitteeController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
-    public function changePrivilegeAction(Request $request, Committee $committee, Adherent $adherent, string $privilege): Response
-    {
+    public function changePrivilegeAction(
+        Request $request,
+        Committee $committee,
+        Adherent $adherent,
+        string $privilege
+    ): Response {
         if (!$committee->isApproved()) {
             throw new BadRequestHttpException('Committee must be approved to change member privileges.');
         }

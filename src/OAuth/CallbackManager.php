@@ -37,8 +37,11 @@ class CallbackManager
      *
      * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
      */
-    public function generateUrl(string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
-    {
+    public function generateUrl(
+        string $name,
+        array $parameters = [],
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ): string {
         $callbackParameters = $this->validateRedirectUriAndClient();
 
         return $this->urlGenerator->generate($name, $parameters + $callbackParameters, $referenceType);

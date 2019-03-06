@@ -94,13 +94,8 @@ class UserDocument
      */
     private $createdAt;
 
-    private function __construct(
-        string $type,
-        string $name,
-        string $extension,
-        int $size,
-        string $createdAt = 'now'
-    ) {
+    private function __construct(string $type, string $name, string $extension, int $size, string $createdAt = 'now')
+    {
         $this->uuid = Uuid::uuid4();
         $this->originalName = $name;
         $this->extension = $extension;
@@ -198,8 +193,14 @@ class UserDocument
         );
     }
 
-    public static function create(UuidInterface $uuid, string $type, string $mimeType, string $name, string $extension, int $size): self
-    {
+    public static function create(
+        UuidInterface $uuid,
+        string $type,
+        string $mimeType,
+        string $name,
+        string $extension,
+        int $size
+    ): self {
         $document = new self(
             $mimeType,
             $name,

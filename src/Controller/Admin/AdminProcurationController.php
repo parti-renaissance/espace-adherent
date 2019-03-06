@@ -39,8 +39,10 @@ class AdminProcurationController extends Controller
      * @Route("/export")
      * @Method("GET")
      */
-    public function exportMailsAction(ProcurationRequestRepository $repository, ProcurationRequestSerializer $serializer): Response
-    {
+    public function exportMailsAction(
+        ProcurationRequestRepository $repository,
+        ProcurationRequestSerializer $serializer
+    ): Response {
         return new Response($serializer->serialize($repository->findAllForExport()), 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="procurations-matched.csv"',

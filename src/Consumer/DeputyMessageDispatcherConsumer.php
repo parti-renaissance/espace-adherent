@@ -82,8 +82,12 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
         }
     }
 
-    public function sendMessage(DeputyManagedUsersMessage $savedMessage, DeputyMessage $message, array $recipients, int $count)
-    {
+    public function sendMessage(
+        DeputyManagedUsersMessage $savedMessage,
+        DeputyMessage $message,
+        array $recipients,
+        int $count
+    ) {
         $delivered = $this->getMailer()->sendMessage(Message::create($message, $recipients));
 
         if ($delivered) {
@@ -116,8 +120,9 @@ class DeputyMessageDispatcherConsumer extends AbstractConsumer
         return $this->adherentRepository;
     }
 
-    public function setDeputyManagedUsersMessageRepository(DeputyManagedUsersMessageRepository $deputyManagedUsersMessageRepository): void
-    {
+    public function setDeputyManagedUsersMessageRepository(
+        DeputyManagedUsersMessageRepository $deputyManagedUsersMessageRepository
+    ): void {
         $this->deputyManagedUsersMessageRepository = $deputyManagedUsersMessageRepository;
     }
 

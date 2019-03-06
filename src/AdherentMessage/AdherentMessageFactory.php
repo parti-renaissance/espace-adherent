@@ -10,8 +10,11 @@ use Ramsey\Uuid\Uuid;
 
 class AdherentMessageFactory
 {
-    public static function create(Adherent $adherent, AdherentMessageDataObject $dataObject, string $type): AdherentMessageInterface
-    {
+    public static function create(
+        Adherent $adherent,
+        AdherentMessageDataObject $dataObject,
+        string $type
+    ): AdherentMessageInterface {
         switch ($type) {
             case AdherentMessageTypeEnum::DEPUTY:
                 $message = new DeputyAdherentMessage(Uuid::uuid4(), $adherent);

@@ -504,8 +504,13 @@ class LoadTonMacronData implements FixtureInterface
         return static::createChoice($uuid, 4, $key, $label, $content);
     }
 
-    private static function createChoice(string $uuid, int $step, string $key, string $label, string $content): TonMacronChoice
-    {
+    private static function createChoice(
+        string $uuid,
+        int $step,
+        string $key,
+        string $label,
+        string $content
+    ): TonMacronChoice {
         return new TonMacronChoice(Uuid::fromString($uuid), $step, $key, $label, $content);
     }
 }

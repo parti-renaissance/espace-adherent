@@ -164,8 +164,8 @@ class ReferentController extends Controller
      */
     public function institutionalEventsAction(
         InstitutionalEventRepository $institutionalEventRepository,
-        ManagedInstitutionalEventsExporter $exporter): Response
-    {
+        ManagedInstitutionalEventsExporter $exporter
+    ): Response {
         return $this->render('referent/institutional_events/list.html.twig', [
             'managedInstitutionalEventsJson' => $exporter->exportAsJson(
                 $institutionalEventRepository->findByOrganizer($this->getUser())
@@ -180,8 +180,8 @@ class ReferentController extends Controller
     public function institutionalEventsCreateAction(
         Request $request,
         InstitutionalEventCommandHandler $institutionalEventCommandHandler,
-        GeoCoder $geoCoder): Response
-    {
+        GeoCoder $geoCoder
+    ): Response {
         $command = new InstitutionalEventCommand($this->getUser());
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
@@ -269,8 +269,10 @@ class ReferentController extends Controller
      * @Route("/comites", name="app_referent_committees")
      * @Method("GET")
      */
-    public function committeesAction(CommitteeRepository $committeeRepository, ManagedCommitteesExporter $committeesExporter): Response
-    {
+    public function committeesAction(
+        CommitteeRepository $committeeRepository,
+        ManagedCommitteesExporter $committeesExporter
+    ): Response {
         return $this->render('referent/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
         ]);
@@ -427,8 +429,10 @@ class ReferentController extends Controller
      * @Route("/organigramme", name="app_referent_organizational_chart")
      * @Security("is_granted('IS_ROOT_REFERENT')")
      */
-    public function organizationalChartAction(OrganizationalChartItemRepository $organizationalChartItemRepository, ReferentRepository $referentRepository)
-    {
+    public function organizationalChartAction(
+        OrganizationalChartItemRepository $organizationalChartItemRepository,
+        ReferentRepository $referentRepository
+    ) {
         return $this->render('referent/organizational_chart.html.twig', [
             'organization_chart_items' => $organizationalChartItemRepository->getRootNodes(),
             'referent' => $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress()),
@@ -439,8 +443,12 @@ class ReferentController extends Controller
      * @Route("/organigramme/{id}", name="app_referent_referent_person_link_edit")
      * @Security("is_granted('IS_ROOT_REFERENT')")
      */
-    public function editReferentPersonLink(Request $request, ReferentPersonLinkRepository $referentPersonLinkRepository, ReferentRepository $referentRepository, PersonOrganizationalChartItem $personOrganizationalChartItem)
-    {
+    public function editReferentPersonLink(
+        Request $request,
+        ReferentPersonLinkRepository $referentPersonLinkRepository,
+        ReferentRepository $referentRepository,
+        PersonOrganizationalChartItem $personOrganizationalChartItem
+    ) {
         $form = $this->createForm(
             ReferentPersonLinkType::class,
             $referentPersonLinkRepository->findOrCreateByOrgaItemAndReferent(
@@ -484,10 +492,8 @@ class ReferentController extends Controller
      *
      * @Security("is_granted('IS_AUTHOR_OF', survey)")
      */
-    public function jecouteSurveyStatsDownloadAction(
-        Survey $survey,
-        StatisticsExporter $statisticsExporter
-    ): Response {
+    public function jecouteSurveyStatsDownloadAction(Survey $survey, StatisticsExporter $statisticsExporter): Response
+    {
         $dataFile = $statisticsExporter->export($survey);
 
         return new Response($dataFile['content'], Response::HTTP_OK, [

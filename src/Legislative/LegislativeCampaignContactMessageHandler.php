@@ -11,8 +11,11 @@ class LegislativeCampaignContactMessageHandler
     private $financialHotlineEmailAddress;
     private $standardHotlineEmailAddress;
 
-    public function __construct(MailerService $mailer, string $financialHotlineEmailAddress, string $standardHotlineEmailAddress)
-    {
+    public function __construct(
+        MailerService $mailer,
+        string $financialHotlineEmailAddress,
+        string $standardHotlineEmailAddress
+    ) {
         $this->mailer = $mailer;
         $this->financialHotlineEmailAddress = $financialHotlineEmailAddress;
         $this->standardHotlineEmailAddress = $standardHotlineEmailAddress;

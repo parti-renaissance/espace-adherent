@@ -38,18 +38,28 @@ class LoadCommitteeMembershipHistoryData extends Fixture
         $manager->flush();
     }
 
-    private function createJoinHistory(Adherent $adherent, Committee $committee, string $date): CommitteeMembershipHistory
-    {
+    private function createJoinHistory(
+        Adherent $adherent,
+        Committee $committee,
+        string $date
+    ): CommitteeMembershipHistory {
         return $this->createHistory(CommitteeMembershipAction::JOIN(), $adherent, $committee, $date);
     }
 
-    private function createLeaveHistory(Adherent $adherent, Committee $committee, string $date): CommitteeMembershipHistory
-    {
+    private function createLeaveHistory(
+        Adherent $adherent,
+        Committee $committee,
+        string $date
+    ): CommitteeMembershipHistory {
         return $this->createHistory(CommitteeMembershipAction::LEAVE(), $adherent, $committee, $date);
     }
 
-    private function createHistory(CommitteeMembershipAction $action, Adherent $adherent, Committee $committee, string $date): CommitteeMembershipHistory
-    {
+    private function createHistory(
+        CommitteeMembershipAction $action,
+        Adherent $adherent,
+        Committee $committee,
+        string $date
+    ): CommitteeMembershipHistory {
         $membership = $adherent->getMembershipFor($committee);
 
         return new CommitteeMembershipHistory($membership, $action, new Chronos($date));

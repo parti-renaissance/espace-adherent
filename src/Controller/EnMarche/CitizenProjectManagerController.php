@@ -29,8 +29,11 @@ class CitizenProjectManagerController extends Controller
      * @Route("/editer", name="app_citizen_project_manager_edit")
      * @Method("GET|POST")
      */
-    public function editAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $manager): Response
-    {
+    public function editAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectManager $manager
+    ): Response {
         $command = CitizenProjectUpdateCommand::createFromCitizenProject($citizenProject);
         $form = $this->createForm(CitizenProjectCommandType::class, $command, [
             'from_turnkey_project' => $citizenProject->isFromTurnkeyProject(),
@@ -59,8 +62,11 @@ class CitizenProjectManagerController extends Controller
      * @Route("/acteurs/contact", name="app_citizen_project_contact_actors")
      * @Method("POST")
      */
-    public function contactActorsAction(Request $request, CitizenProject $citizenProject, CitizenProjectManager $citizenProjectManager): Response
-    {
+    public function contactActorsAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectManager $citizenProjectManager
+    ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.contact_actors', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to contact actors.');
         }

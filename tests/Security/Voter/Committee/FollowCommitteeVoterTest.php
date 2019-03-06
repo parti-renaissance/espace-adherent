@@ -128,8 +128,12 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     /**
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getAdherentMock(Committee $committee = null, bool $isFollower = null, bool $isSupervisor = null, bool $isHost = false): Adherent
-    {
+    private function getAdherentMock(
+        Committee $committee = null,
+        bool $isFollower = null,
+        bool $isSupervisor = null,
+        bool $isHost = false
+    ): Adherent {
         $adherent = $this->createAdherentMock();
 
         if ($committee) {
@@ -150,8 +154,11 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
     /**
      * @return CommitteeMembership|\PHPUnit_Framework_MockObject_MockObject|null
      */
-    private function getMembershipMock(?bool $isFollower, ?bool $isSupervisor, bool $isHost = false): ?CommitteeMembership
-    {
+    private function getMembershipMock(
+        ?bool $isFollower,
+        ?bool $isSupervisor,
+        bool $isHost = false
+    ): ?CommitteeMembership {
         if (!$isFollower) {
             return null;
         }

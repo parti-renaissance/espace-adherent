@@ -61,7 +61,8 @@ class BaseEventCommand
     private $address;
 
     protected function __construct(
-        ?Adherent $author, // Author may be null if unregistered when editing an event
+        ?Adherent $author,
+        // Author may be null if unregistered when editing an event
         UuidInterface $uuid = null,
         Address $address = null,
         \DateTimeInterface $beginAt = null,

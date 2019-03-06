@@ -91,8 +91,11 @@ class CitizenProjectMembership
         $this->joinedAt = new \DateTime($subscriptionDate);
     }
 
-    public static function createForAdministrator(CitizenProject $citizenProject, Adherent $administrator, string $subscriptionDate = 'now'): self
-    {
+    public static function createForAdministrator(
+        CitizenProject $citizenProject,
+        Adherent $administrator,
+        string $subscriptionDate = 'now'
+    ): self {
         return static::createForAdherent(
             $citizenProject,
             $administrator,

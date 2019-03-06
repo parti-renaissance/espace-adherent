@@ -28,8 +28,12 @@ class AdminThreadController extends Controller
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_disable")
      */
-    public function disableAction(Request $request, Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function disableAction(
+        Request $request,
+        Thread $thread,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher
+    ): Response {
         $thread->disable();
 
         $dispatcher->dispatch(Events::THREAD_DISABLE, new GenericEvent($thread));
@@ -46,8 +50,12 @@ class AdminThreadController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_enable")
      */
-    public function enableAction(Request $request, Thread $thread, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function enableAction(
+        Request $request,
+        Thread $thread,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher
+    ): Response {
         $thread->enable();
 
         $dispatcher->dispatch(Events::THREAD_ENABLE, new GenericEvent($thread));

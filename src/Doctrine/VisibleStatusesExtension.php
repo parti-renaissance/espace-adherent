@@ -10,8 +10,13 @@ use Doctrine\ORM\QueryBuilder;
 
 class VisibleStatusesExtension implements ContextAwareQueryCollectionExtensionInterface
 {
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
-    {
+    public function applyToCollection(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        string $operationName = null,
+        array $context = []
+    ) {
         if (Idea::class !== $resourceClass || !isset($context['filters']['author.uuid'])) {
             $this->modifyQuery($queryBuilder, $resourceClass);
         }

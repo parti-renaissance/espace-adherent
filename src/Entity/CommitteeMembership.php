@@ -97,8 +97,11 @@ class CommitteeMembership
         return [self::COMMITTEE_SUPERVISOR, self::COMMITTEE_HOST];
     }
 
-    public static function createForSupervisor(Committee $committee, Adherent $supervisor, string $subscriptionDate = 'now'): self
-    {
+    public static function createForSupervisor(
+        Committee $committee,
+        Adherent $supervisor,
+        string $subscriptionDate = 'now'
+    ): self {
         return static::createForAdherent($committee, $supervisor, self::COMMITTEE_SUPERVISOR, $subscriptionDate);
     }
 

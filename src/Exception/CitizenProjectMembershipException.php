@@ -15,8 +15,10 @@ class CitizenProjectMembershipException extends \RuntimeException
         $this->membershipUuid = $membershipUuid;
     }
 
-    public static function createNotPromotableAdministratorPrivilegeException(UuidInterface $membershipUuid, \Exception $previous = null): self
-    {
+    public static function createNotPromotableAdministratorPrivilegeException(
+        UuidInterface $membershipUuid,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('Citizen project membership "%s" cannot be promoted to the administrator privilege.', $membershipUuid),
@@ -24,8 +26,10 @@ class CitizenProjectMembershipException extends \RuntimeException
         );
     }
 
-    public static function createNotDemotableFollowerPrivilegeException(UuidInterface $membershipUuid, \Exception $previous = null): self
-    {
+    public static function createNotDemotableFollowerPrivilegeException(
+        UuidInterface $membershipUuid,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('CitizenProject membership "%s" cannot be demoted to the simple follower.', $membershipUuid),

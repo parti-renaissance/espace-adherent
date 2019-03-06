@@ -51,8 +51,10 @@ class UserController extends Controller
      * @Route("/mes-dons", name="app_user_profile_donation")
      * @Method("GET")
      */
-    public function profileDonationAction(DonationRepository $donationRepository, TransactionRepository $transactionRepository): Response
-    {
+    public function profileDonationAction(
+        DonationRepository $donationRepository,
+        TransactionRepository $transactionRepository
+    ): Response {
         $userEmail = $this->getUser()->getEmailAddress();
 
         return $this->render('user/my_donation.html.twig', [

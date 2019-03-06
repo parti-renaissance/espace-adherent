@@ -81,8 +81,11 @@ class CommitteeController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
-    public function timelineEditAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
-    {
+    public function timelineEditAction(
+        Request $request,
+        Committee $committee,
+        CommitteeFeedItem $committeeFeedItem
+    ): Response {
         $form = $this
             ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
             ->handleRequest($request)
@@ -115,8 +118,11 @@ class CommitteeController extends Controller
      * @Method("DELETE")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
-    public function timelineDeleteAction(Request $request, Committee $committee, CommitteeFeedItem $committeeFeedItem): Response
-    {
+    public function timelineDeleteAction(
+        Request $request,
+        Committee $committee,
+        CommitteeFeedItem $committeeFeedItem
+    ): Response {
         $form = $this->createDeleteForm('', 'committee_feed_delete', $request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {

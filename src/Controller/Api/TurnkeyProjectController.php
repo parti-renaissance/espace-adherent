@@ -22,8 +22,10 @@ class TurnkeyProjectController extends Controller
      * @Route(name="api_approved_turnkey_projects")
      * @Method("GET")
      */
-    public function getApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
-    {
+    public function getApprovedTurnkeyProjectAction(
+        TurnkeyProjectRepository $repository,
+        Serializer $serializer
+    ): Response {
         return new JsonResponse(
             $serializer->serialize($repository->findApprovedOrdered(), 'json', SerializationContext::create()->setGroups(['turnkey_project_list'])),
             JsonResponse::HTTP_OK,
@@ -48,8 +50,10 @@ class TurnkeyProjectController extends Controller
      * @Route("/pinned", name="api_pinned_turnkey_project")
      * @Method("GET")
      */
-    public function getPinnedTurnkeyProjectAction(TurnkeyProjectRepository $repository, Serializer $serializer): Response
-    {
+    public function getPinnedTurnkeyProjectAction(
+        TurnkeyProjectRepository $repository,
+        Serializer $serializer
+    ): Response {
         return new JsonResponse(
             $serializer->serialize($repository->findPinned(), 'json', SerializationContext::create()->setGroups(['turnkey_project_read'])),
             JsonResponse::HTTP_OK,

@@ -144,8 +144,10 @@ class CommitteeManager
         return $this->getAdherentRepository()->findReferentsByCommittee($committee);
     }
 
-    public function getCommitteeFollowers(Committee $committee, bool $withHosts = self::INCLUDE_HOSTS): AdherentCollection
-    {
+    public function getCommitteeFollowers(
+        Committee $committee,
+        bool $withHosts = self::INCLUDE_HOSTS
+    ): AdherentCollection {
         return $this->getMembershipRepository()->findFollowers($committee, $withHosts);
     }
 
@@ -416,8 +418,12 @@ class CommitteeManager
         return $this->getCommitteeRepository()->countApprovedCommittees();
     }
 
-    public function changePrivilege(Adherent $adherent, Committee $committee, string $privilege, bool $flush = true): void
-    {
+    public function changePrivilege(
+        Adherent $adherent,
+        Committee $committee,
+        string $privilege,
+        bool $flush = true
+    ): void {
         if (!$committeeMembership = $this->getCommitteeMembership($adherent, $committee)) {
             return;
         }
@@ -471,8 +477,10 @@ class CommitteeManager
         return $this->getCommitteeRepository()->findLastApprovedCommittees($count);
     }
 
-    private function createCommitteeMembershipHistory(CommitteeMembership $membership, CommitteeMembershipAction $action): CommitteeMembershipHistory
-    {
+    private function createCommitteeMembershipHistory(
+        CommitteeMembership $membership,
+        CommitteeMembershipAction $action
+    ): CommitteeMembershipHistory {
         return new CommitteeMembershipHistory($membership, $action);
     }
 

@@ -11,8 +11,10 @@ class MemberActivityTracker
     private $eventRegistrationRepository;
     private $eventRepository;
 
-    public function __construct(EventRegistrationRepository $eventRegistrationRepository, EventRepository $eventRepository)
-    {
+    public function __construct(
+        EventRegistrationRepository $eventRegistrationRepository,
+        EventRepository $eventRepository
+    ) {
         $this->eventRegistrationRepository = $eventRegistrationRepository;
         $this->eventRepository = $eventRepository;
     }

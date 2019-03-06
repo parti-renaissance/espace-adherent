@@ -20,10 +20,13 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
     private $orderArticleRepository;
 
     public function __construct(
-        RedirectionsProvider $provider, RouterInterface $router, EventRepository $eventRepository,
-        ArticleRepository $articleRepository, ProposalRepository $proposalRepository,
-        OrderArticleRepository $orderArticleRepository)
-    {
+        RedirectionsProvider $provider,
+        RouterInterface $router,
+        EventRepository $eventRepository,
+        ArticleRepository $articleRepository,
+        ProposalRepository $proposalRepository,
+        OrderArticleRepository $orderArticleRepository
+    ) {
         $this->provider = $provider;
         $this->router = $router;
         $this->eventRepository = $eventRepository;

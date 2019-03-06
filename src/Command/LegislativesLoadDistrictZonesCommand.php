@@ -108,8 +108,11 @@ class LegislativesLoadDistrictZonesCommand extends ContainerAwareCommand
         }
     }
 
-    private function createCandidate(LegislativeDistrictZone $district, string $areaNumber, array $data): LegislativeCandidate
-    {
+    private function createCandidate(
+        LegislativeDistrictZone $district,
+        string $areaNumber,
+        array $data
+    ): LegislativeCandidate {
         $slugifier = $this->getContainer()->get('sonata.core.slugify.cocur');
 
         $position = ((int) $district->getZoneNumber()) * 100 + ((int) $areaNumber);

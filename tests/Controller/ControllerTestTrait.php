@@ -41,8 +41,12 @@ trait ControllerTestTrait
         $this->assertSame($statusCode, $response->getStatusCode(), $message);
     }
 
-    public function assertClientIsRedirectedTo(string $path, Client $client, bool $withSchemes = false, bool $permanent = false)
-    {
+    public function assertClientIsRedirectedTo(
+        string $path,
+        Client $client,
+        bool $withSchemes = false,
+        bool $permanent = false
+    ) {
         $response = $client->getResponse();
 
         $this->assertResponseStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND, $response);
@@ -113,8 +117,11 @@ trait ControllerTestTrait
         return 1 === \count($flash);
     }
 
-    protected function appendCollectionFormPrototype(\DOMElement $collection, string $newIndex = '0', string $prototypeName = '__name__'): void
-    {
+    protected function appendCollectionFormPrototype(
+        \DOMElement $collection,
+        string $newIndex = '0',
+        string $prototypeName = '__name__'
+    ): void {
         $prototypeHTML = $collection->getAttribute('data-prototype');
         $prototypeHTML = str_replace($prototypeName, $newIndex, $prototypeHTML);
         $prototypeFragment = new \DOMDocument();
@@ -124,8 +131,13 @@ trait ControllerTestTrait
         }
     }
 
-    protected function assertSeeCommitteeTimelineMessage(Crawler $crawler, int $position, string $author, string $role, string $text)
-    {
+    protected function assertSeeCommitteeTimelineMessage(
+        Crawler $crawler,
+        int $position,
+        string $author,
+        string $role,
+        string $text
+    ) {
         $message = $crawler->filter('.committee__timeline__message')->eq($position);
 
         $this->assertContains($author, $message->filter('h3')->text());

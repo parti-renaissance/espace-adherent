@@ -17,8 +17,12 @@ final class IdeaFinalizeMessage extends Message
         return static::createMessage($adherent, $ideaLink, '648151', 'Plus que 3 jours pour finaliser votre proposition !');
     }
 
-    private static function createMessage(Adherent $adherent, string $ideaLink, string $templateId, string $subject): self
-    {
+    private static function createMessage(
+        Adherent $adherent,
+        string $ideaLink,
+        string $templateId,
+        string $subject
+    ): self {
         $message = new self(
             Uuid::uuid4(),
             $templateId,

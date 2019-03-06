@@ -56,8 +56,11 @@ class AdministrateCitizenProjectVoterTest extends AbstractAdherentVoterTest
     /**
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getAdherentMock(bool $getUuidIsCalled, CitizenProject $project = null, bool $isAdministrator = null): Adherent
-    {
+    private function getAdherentMock(
+        bool $getUuidIsCalled,
+        CitizenProject $project = null,
+        bool $isAdministrator = null
+    ): Adherent {
         $adherent = $this->createAdherentMock();
 
         if ($getUuidIsCalled) {

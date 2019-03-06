@@ -71,8 +71,12 @@ class SummaryItemDisplayOrdererTest extends TestCase
         SummaryItemDisplayOrderer::removeItem([$item1, $item2, $item3], $item3);
     }
 
-    private function createDummyItem(int $position, bool $willBeChecked = false, bool $willBeOrdered = false, int $newPosition = null): SummaryItemPositionableInterface
-    {
+    private function createDummyItem(
+        int $position,
+        bool $willBeChecked = false,
+        bool $willBeOrdered = false,
+        int $newPosition = null
+    ): SummaryItemPositionableInterface {
         $mock = $this->createMock(SummaryItemPositionableInterface::class);
 
         if ($willBeChecked) {

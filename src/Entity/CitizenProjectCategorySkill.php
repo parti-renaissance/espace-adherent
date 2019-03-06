@@ -49,8 +49,11 @@ class CitizenProjectCategorySkill
      */
     private $promotion;
 
-    public function __construct(?CitizenProjectCategory $category = null, ?CitizenProjectSkill $skill = null, ?bool $promotion = false)
-    {
+    public function __construct(
+        ?CitizenProjectCategory $category = null,
+        ?CitizenProjectSkill $skill = null,
+        ?bool $promotion = false
+    ) {
         $this->category = $category;
         $this->skill = $skill;
         $this->promotion = $promotion;

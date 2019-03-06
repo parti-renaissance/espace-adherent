@@ -441,8 +441,11 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    private function retrieveTopCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5, bool $mostActive = true): array
-    {
+    private function retrieveTopCommitteesInReferentManagedArea(
+        Adherent $referent,
+        int $limit = 5,
+        bool $mostActive = true
+    ): array {
         $this->checkReferent($referent);
 
         $result = $this->createQueryBuilder('committee')

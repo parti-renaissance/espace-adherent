@@ -10,10 +10,8 @@ class ClientManager
     private $em;
     private $tokenRevocationAuthority;
 
-    public function __construct(
-        EntityManagerInterface $em,
-        TokenRevocationAuthority $tokenRevocationAuthority
-    ) {
+    public function __construct(EntityManagerInterface $em, TokenRevocationAuthority $tokenRevocationAuthority)
+    {
         $this->em = $em;
         $this->tokenRevocationAuthority = $tokenRevocationAuthority;
     }

@@ -87,8 +87,10 @@ class CallbackManagerTest extends TestCase
     /**
      * @dataProvider providesInvalidClientOrRedirectUri
      */
-    public function testItGeneratesUrlWithCallbackInformationWhenRedirectUriOrClientIdIsNotValid(string $redirectUri, string $clientId): void
-    {
+    public function testItGeneratesUrlWithCallbackInformationWhenRedirectUriOrClientIdIsNotValid(
+        string $redirectUri,
+        string $clientId
+    ): void {
         $this->request->query->set('redirect_uri', $redirectUri);
         $this->request->query->set('client_id', $clientId);
 

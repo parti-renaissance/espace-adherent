@@ -14,11 +14,8 @@ class CitizenActionCommandHandler
     private $factory;
     private $manager;
 
-    public function __construct(
-        EventDispatcherInterface $dispatcher,
-        EventFactory $factory,
-        ObjectManager $manager
-    ) {
+    public function __construct(EventDispatcherInterface $dispatcher, EventFactory $factory, ObjectManager $manager)
+    {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->factory = $factory;

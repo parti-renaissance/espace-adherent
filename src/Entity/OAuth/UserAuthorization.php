@@ -52,12 +52,8 @@ class UserAuthorization
      *
      * @throws \LogicException $scopes does not contain the right object
      */
-    public function __construct(
-        ?UuidInterface $uuid,
-        Adherent $user,
-        Client $client,
-        array $scopes = []
-    ) {
+    public function __construct(?UuidInterface $uuid, Adherent $user, Client $client, array $scopes = [])
+    {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->user = $user;
         $this->client = $client;

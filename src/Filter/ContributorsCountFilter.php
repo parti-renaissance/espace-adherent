@@ -10,7 +10,8 @@ use Doctrine\ORM\QueryBuilder;
 final class ContributorsCountFilter extends AbstractFilter
 {
     protected function filterProperty(
-        string $property, $value,
+        string $property,
+        $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,

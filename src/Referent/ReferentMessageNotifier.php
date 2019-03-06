@@ -11,10 +11,8 @@ class ReferentMessageNotifier
     private $manager;
     private $producer;
 
-    public function __construct(
-        ObjectManager $manager,
-        ReferentMessageDispatcherProducerInterface $producer
-    ) {
+    public function __construct(ObjectManager $manager, ReferentMessageDispatcherProducerInterface $producer)
+    {
         $this->manager = $manager;
         $this->producer = $producer;
     }

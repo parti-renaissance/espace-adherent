@@ -840,8 +840,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_FOLLOWER, $subscriptionDate);
     }
 
-    private function joinCommittee(Committee $committee, string $privilege, string $subscriptionDate): CommitteeMembership
-    {
+    private function joinCommittee(
+        Committee $committee,
+        string $privilege,
+        string $subscriptionDate
+    ): CommitteeMembership {
         $committee->incrementMembersCount();
 
         return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate);
@@ -850,21 +853,28 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Joins a citizen project as a ADMINISTRATOR privileged person.
      */
-    public function administrateCitizenProject(CitizenProject $citizenProject, string $subscriptionDate = 'now'): CitizenProjectMembership
-    {
+    public function administrateCitizenProject(
+        CitizenProject $citizenProject,
+        string $subscriptionDate = 'now'
+    ): CitizenProjectMembership {
         return $this->joinCitizenProject($citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR, $subscriptionDate);
     }
 
     /**
      * Joins a citizen project as a simple FOLLOWER privileged person.
      */
-    public function followCitizenProject(CitizenProject $citizenProject, string $subscriptionDate = 'now'): CitizenProjectMembership
-    {
+    public function followCitizenProject(
+        CitizenProject $citizenProject,
+        string $subscriptionDate = 'now'
+    ): CitizenProjectMembership {
         return $this->joinCitizenProject($citizenProject, CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER, $subscriptionDate);
     }
 
-    private function joinCitizenProject(CitizenProject $citizenProject, string $privilege, string $subscriptionDate): CitizenProjectMembership
-    {
+    private function joinCitizenProject(
+        CitizenProject $citizenProject,
+        string $privilege,
+        string $subscriptionDate
+    ): CitizenProjectMembership {
         $citizenProject->incrementMembersCount();
 
         $memberShip = CitizenProjectMembership::createForAdherent($citizenProject, $this, $privilege, $subscriptionDate);
@@ -1276,8 +1286,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->citizenProjectCreationEmailSubscriptionRadius;
     }
 
-    public function setCitizenProjectCreationEmailSubscriptionRadius(int $citizenProjectCreationEmailSubscriptionRadius): void
-    {
+    public function setCitizenProjectCreationEmailSubscriptionRadius(
+        int $citizenProjectCreationEmailSubscriptionRadius
+    ): void {
         $this->citizenProjectCreationEmailSubscriptionRadius = $citizenProjectCreationEmailSubscriptionRadius;
     }
 

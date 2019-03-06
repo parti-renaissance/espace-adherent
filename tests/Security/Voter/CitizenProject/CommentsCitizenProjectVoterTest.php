@@ -31,8 +31,11 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
     /**
      * @dataProvider provideCommentsCases
      */
-    public function testCitizenProjectMemberCanCommentIfProjectApproved(string $attribute, bool $approved, bool $isMember)
-    {
+    public function testCitizenProjectMemberCanCommentIfProjectApproved(
+        string $attribute,
+        bool $approved,
+        bool $isMember
+    ) {
         $project = $this->getCitizenProjectMock($approved);
         $adherent = $this->getAdherentMock($approved, $project, $isMember);
 

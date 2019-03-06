@@ -84,8 +84,11 @@ class CommitteeMembershipHistory
      */
     private $date;
 
-    public function __construct(CommitteeMembership $committeeMembership, CommitteeMembershipAction $action, \DateTimeImmutable $date = null)
-    {
+    public function __construct(
+        CommitteeMembership $committeeMembership,
+        CommitteeMembershipAction $action,
+        \DateTimeImmutable $date = null
+    ) {
         $this->adherentUuid = $committeeMembership->getAdherentUuid();
         $this->committee = $committeeMembership->getCommittee();
         $this->referentTags = $this->committee->getReferentTags();

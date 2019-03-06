@@ -21,8 +21,11 @@ class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
     /**
      * Count active adherents (not users) history for each specified subscription types in the referent managed area before the specified date.
      */
-    public function countAllByTypeForReferentManagedArea(Adherent $referent, array $subscriptionTypeCodes, \DateTimeInterface $until): array
-    {
+    public function countAllByTypeForReferentManagedArea(
+        Adherent $referent,
+        array $subscriptionTypeCodes,
+        \DateTimeInterface $until
+    ): array {
         $this->checkReferent($referent);
 
         $qb = $this->createQueryBuilder('history')

@@ -301,8 +301,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findByNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
-    {
+    public function findByNearCitizenProjectOrAcceptAllNotification(
+        CitizenProject $citizenProject,
+        int $offset = 0,
+        bool $excludeSupervisor = true,
+        int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN
+    ): Paginator {
         $qb = $this->createNearbyQueryBuilder(
                 new Coordinates(
                     $citizenProject->getLatitude(),
@@ -386,8 +390,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    private function createBoardMemberFilterQueryBuilder(BoardMemberFilter $filter, Adherent $excludedMember): QueryBuilder
-    {
+    private function createBoardMemberFilterQueryBuilder(
+        BoardMemberFilter $filter,
+        Adherent $excludedMember
+    ): QueryBuilder {
         $qb = $this->createBoardMemberQueryBuilder();
 
         $qb->andWhere('a != :member');
@@ -605,8 +611,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this->formatCount($result);
     }
 
-    public function countCommitteeMembersInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
-    {
+    public function countCommitteeMembersInReferentManagedArea(
+        Adherent $referent,
+        StatisticsParametersFilter $filter = null,
+        int $months = 5
+    ): array {
         $this->checkReferent($referent);
 
         $query = $this->createQueryBuilder('adherent', 'adherent.gender')

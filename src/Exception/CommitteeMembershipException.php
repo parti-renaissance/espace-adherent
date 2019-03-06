@@ -15,8 +15,10 @@ class CommitteeMembershipException extends \RuntimeException
         $this->membershipUuid = $membershipUuid;
     }
 
-    public static function createNotPromotableHostPrivilegeException(UuidInterface $membershipUuid, \Exception $previous = null): self
-    {
+    public static function createNotPromotableHostPrivilegeException(
+        UuidInterface $membershipUuid,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('Committee membership "%s" cannot be promoted to the host privilege.', $membershipUuid),
@@ -24,8 +26,10 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
-    public static function createNotDemotableFollowerPrivilegeException(UuidInterface $membershipUuid, \Exception $previous = null): self
-    {
+    public static function createNotDemotableFollowerPrivilegeException(
+        UuidInterface $membershipUuid,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('Committee membership "%s" cannot be demoted to the simple follower.', $membershipUuid),
@@ -33,8 +37,10 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
-    public static function createNotPromotableSupervisorPrivilegeException(UuidInterface $membershipUuid, \Exception $previous = null): self
-    {
+    public static function createNotPromotableSupervisorPrivilegeException(
+        UuidInterface $membershipUuid,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege. Only one supervisor per committee allowed.', $membershipUuid),
@@ -42,8 +48,11 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
-    public static function createNotPromotableSupervisorPrivilegeForSupervisorException(UuidInterface $membershipUuid, string $emailAddress, \Exception $previous = null): self
-    {
+    public static function createNotPromotableSupervisorPrivilegeForSupervisorException(
+        UuidInterface $membershipUuid,
+        string $emailAddress,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege. Adherent with email "%s" is supervisor of another committee.', $membershipUuid, $emailAddress),
@@ -51,8 +60,11 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
-    public static function createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException(UuidInterface $membershipUuid, string $committeeName, \Exception $previous = null): self
-    {
+    public static function createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException(
+        UuidInterface $membershipUuid,
+        string $committeeName,
+        \Exception $previous = null
+    ): self {
         return new self(
             $membershipUuid,
             sprintf('Committee membership "%s" cannot be promoted to the supervisor privilege. Please approve the committee "%s" before add a supervisor.', $membershipUuid, $committeeName),

@@ -10,8 +10,10 @@ class CitizenProjectSearchResultsProvider implements SearchResultsProviderInterf
     private $citizenProjectRepository;
     private $citizenProjectManager;
 
-    public function __construct(CitizenProjectRepository $citizenProjectRepository, CitizenProjectManager $citizenProjectManager)
-    {
+    public function __construct(
+        CitizenProjectRepository $citizenProjectRepository,
+        CitizenProjectManager $citizenProjectManager
+    ) {
         $this->citizenProjectRepository = $citizenProjectRepository;
         $this->citizenProjectManager = $citizenProjectManager;
     }

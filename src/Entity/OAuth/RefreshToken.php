@@ -23,8 +23,12 @@ class RefreshToken extends AbstractToken
      */
     private $accessToken;
 
-    public function __construct(UuidInterface $uuid, AccessToken $accessToken, string $identifier, \DateTime $expiryDateTime)
-    {
+    public function __construct(
+        UuidInterface $uuid,
+        AccessToken $accessToken,
+        string $identifier,
+        \DateTime $expiryDateTime
+    ) {
         parent::__construct($uuid, $identifier, $expiryDateTime);
 
         $this->accessToken = $accessToken;

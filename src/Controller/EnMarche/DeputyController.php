@@ -71,8 +71,10 @@ class DeputyController extends Controller
      * @Route("/comites", name="app_deputy_committees")
      * @Method("GET")
      */
-    public function listCommitteesAction(CommitteeRepository $committeeRepository, ManagedCommitteesExporter $committeesExporter): Response
-    {
+    public function listCommitteesAction(
+        CommitteeRepository $committeeRepository,
+        ManagedCommitteesExporter $committeesExporter
+    ): Response {
         $this->disableInProduction();
 
         return $this->render('deputy/committees_list.html.twig', [

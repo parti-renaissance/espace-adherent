@@ -8,10 +8,8 @@ use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyFoundMessage extends Message
 {
-    public static function create(
-        ProcurationRequest $request,
-        string $infosUrl
-    ): self {
+    public static function create(ProcurationRequest $request, string $infosUrl): self
+    {
         $proxy = $request->getFoundProxy();
         $message = new self(
             Uuid::uuid4(),

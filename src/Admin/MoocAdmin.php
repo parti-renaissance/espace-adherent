@@ -23,12 +23,8 @@ class MoocAdmin extends AbstractAdmin
      */
     private $moocManager;
 
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        MoocManager $moocManager
-    ) {
+    public function __construct(string $code, string $class, string $baseControllerName, MoocManager $moocManager)
+    {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->moocManager = $moocManager;

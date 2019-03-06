@@ -608,8 +608,11 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @return EmailSubscriptionHistory[]
      */
-    public function findEmailSubscriptionHistoryByAdherent(Adherent $adherent, string $action = null, string $referentTagCode = null): array
-    {
+    public function findEmailSubscriptionHistoryByAdherent(
+        Adherent $adherent,
+        string $action = null,
+        string $referentTagCode = null
+    ): array {
         $qb = $this
             ->getEmailSubscriptionHistoryRepository()
             ->createQueryBuilder('history')
@@ -639,8 +642,10 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @return EmailSubscriptionHistory[]
      */
-    public function findAllEmailSubscriptionHistoryByAdherentAndType(Adherent $adherent, string $subscriptionType): array
-    {
+    public function findAllEmailSubscriptionHistoryByAdherentAndType(
+        Adherent $adherent,
+        string $subscriptionType
+    ): array {
         return $this
             ->getEmailSubscriptionHistoryRepository()
             ->createQueryBuilder('history')
@@ -1084,8 +1089,13 @@ class AdherentControllerTest extends WebTestCase
     /**
      * @dataProvider provideAdherentCredentials
      */
-    public function testAdherentTerminatesMembership(string $userEmail, string $uuid, int $nbComments, string $committee, int $nbFollowers): void
-    {
+    public function testAdherentTerminatesMembership(
+        string $userEmail,
+        string $uuid,
+        int $nbComments,
+        string $committee,
+        int $nbFollowers
+    ): void {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
         $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load

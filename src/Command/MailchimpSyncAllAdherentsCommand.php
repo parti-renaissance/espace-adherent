@@ -25,8 +25,11 @@ class MailchimpSyncAllAdherentsCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    public function __construct(AdherentRepository $adherentRepository, ObjectManager $entityManager, MessageBusInterface $bus)
-    {
+    public function __construct(
+        AdherentRepository $adherentRepository,
+        ObjectManager $entityManager,
+        MessageBusInterface $bus
+    ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;
         $this->bus = $bus;

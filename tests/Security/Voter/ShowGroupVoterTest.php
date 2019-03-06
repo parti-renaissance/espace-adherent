@@ -50,8 +50,11 @@ class ShowGroupVoterTest extends AbstractAdherentVoterTest
     /**
      * @dataProvider provideGroupCases
      */
-    public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(string $groupClass, bool $approved, string $attribute)
-    {
+    public function testAdherentIsGrantedWhenGroupIsNotApprovedIfCreator(
+        string $groupClass,
+        bool $approved,
+        string $attribute
+    ) {
         $adherent = $this->getAdherentMock(!$approved);
         $group = $this->getGroupMock($groupClass, $approved, true);
 

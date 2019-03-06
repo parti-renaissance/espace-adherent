@@ -48,8 +48,10 @@ class LegislativesControllerTest extends WebTestCase
     /**
      * @dataProvider provideLegislativeCandidatesContacts
      */
-    public function testLegislativeCandidateIsAllowedToSendContactMessage(string $expectedRecipient, string $selectedRecipient)
-    {
+    public function testLegislativeCandidateIsAllowedToSendContactMessage(
+        string $expectedRecipient,
+        string $selectedRecipient
+    ) {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-candidat-legislatives/contact');

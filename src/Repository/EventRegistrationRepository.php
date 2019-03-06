@@ -162,8 +162,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countEventParticipantsInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
-    {
+    public function countEventParticipantsInReferentManagedArea(
+        Adherent $referent,
+        StatisticsParametersFilter $filter = null,
+        int $months = 5
+    ): array {
         $this->checkReferent($referent);
 
         $query = $this->createQueryBuilderForEventParticipantsInReferentManagedArea($referent, $months);
@@ -175,8 +178,11 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
     }
 
-    public function countEventParticipantsAsAdherentInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null, int $months = 5): array
-    {
+    public function countEventParticipantsAsAdherentInReferentManagedArea(
+        Adherent $referent,
+        StatisticsParametersFilter $filter = null,
+        int $months = 5
+    ): array {
         $this->checkReferent($referent);
 
         $query = $this->createQueryBuilderForEventParticipantsInReferentManagedArea($referent, $months)
@@ -190,8 +196,10 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return RepositoryUtils::aggregateCountByMonth($query->getQuery()->getArrayResult());
     }
 
-    private function createQueryBuilderForEventParticipantsInReferentManagedArea(Adherent $referent, int $months): QueryBuilder
-    {
+    private function createQueryBuilderForEventParticipantsInReferentManagedArea(
+        Adherent $referent,
+        int $months
+    ): QueryBuilder {
         return $this->createQueryBuilder('eventRegistrations')
             ->select('DISTINCT eventRegistrations.emailAddress, COUNT(DISTINCT eventRegistrations) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
             ->join(Event::class, 'event', Join::WITH, 'eventRegistrations.event = event.id')

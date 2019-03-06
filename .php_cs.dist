@@ -20,9 +20,13 @@ return PhpCsFixer\Config::create()
         'phpdoc_to_comment' => false,
         'native_constant_invocation' => true,
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
-        'array_syntax' => ['syntax' => 'short']
+        'array_syntax' => ['syntax' => 'short'],
+        'PedroTroller/line_break_between_method_arguments' => [ 'max-args' => 20, 'max-length' => 120, 'automatic-argument-merge' => true ],
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php_cs.cache')
+    ->registerCustomFixers(
+        new PedroTroller\CS\Fixer\Fixers()
+    )
 ;

@@ -12,10 +12,8 @@ class CitizenProjectManagementAuthority
     private $manager;
     private $eventDispatcher;
 
-    public function __construct(
-        CitizenProjectManager $manager,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct(CitizenProjectManager $manager, EventDispatcherInterface $eventDispatcher)
+    {
         $this->manager = $manager;
         $this->eventDispatcher = $eventDispatcher;
     }

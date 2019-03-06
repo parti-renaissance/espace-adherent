@@ -72,8 +72,11 @@ class LoadDonationData extends Fixture
         $manager->flush();
     }
 
-    public function createDonation(Adherent $adherent, float $amount = 50.0, int $duration = PayboxPaymentSubscription::NONE): Donation
-    {
+    public function createDonation(
+        Adherent $adherent,
+        float $amount = 50.0,
+        int $duration = PayboxPaymentSubscription::NONE
+    ): Donation {
         $donation = new Donation(
             $uuid = Uuid::uuid4(),
             $uuid->toString().'_'.$this->slugify->slugify($adherent->getFullName()),

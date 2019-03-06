@@ -19,8 +19,12 @@ class ScopeStore implements ScopeRepositoryInterface
         return new Scope($identifier);
     }
 
-    public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
-    {
+    public function finalizeScopes(
+        array $scopes,
+        $grantType,
+        ClientEntityInterface $clientEntity,
+        $userIdentifier = null
+    ) {
         if (!$clientEntity instanceof Client) {
             throw new \LogicException(sprintf('Only %s instances are supported', Client::class));
         }

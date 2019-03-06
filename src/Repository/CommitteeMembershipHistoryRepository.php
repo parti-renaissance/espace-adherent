@@ -21,8 +21,11 @@ class CommitteeMembershipHistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, CommitteeMembershipHistory::class);
     }
 
-    public function countAdherentMemberOfAtLeastOneCommitteeManagedBy(Adherent $referent, \DateTimeInterface $until, StatisticsParametersFilter $filter = null): int
-    {
+    public function countAdherentMemberOfAtLeastOneCommitteeManagedBy(
+        Adherent $referent,
+        \DateTimeInterface $until,
+        StatisticsParametersFilter $filter = null
+    ): int {
         $this->checkReferent($referent);
 
         $query = $this->createQueryBuilder('history')

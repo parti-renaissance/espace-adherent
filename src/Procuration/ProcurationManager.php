@@ -33,8 +33,13 @@ class ProcurationManager
         $this->dispatcher = $dispatcher;
     }
 
-    public function processProcurationRequest(ProcurationRequest $request, ProcurationProxy $proxy = null, Adherent $referent = null, bool $notify = false, bool $flush = true): void
-    {
+    public function processProcurationRequest(
+        ProcurationRequest $request,
+        ProcurationProxy $proxy = null,
+        Adherent $referent = null,
+        bool $notify = false,
+        bool $flush = true
+    ): void {
         $request->process($proxy, $referent);
 
         if ($flush) {
@@ -44,8 +49,12 @@ class ProcurationManager
         $this->dispatcher->dispatch(ProcurationEvents::REQUEST_PROCESSED, new ProcurationRequestEvent($request, $notify));
     }
 
-    public function unprocessProcurationRequest(ProcurationRequest $request, Adherent $referent = null, bool $notify = false, bool $flush = true): void
-    {
+    public function unprocessProcurationRequest(
+        ProcurationRequest $request,
+        Adherent $referent = null,
+        bool $notify = false,
+        bool $flush = true
+    ): void {
         $request->unprocess();
 
         if ($flush) {

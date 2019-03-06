@@ -18,10 +18,8 @@ class EventFactory
     private $addressFactory;
     private $referentTagManager;
 
-    public function __construct(
-        ReferentTagManager $referentTagManager,
-        PostAddressFactory $addressFactory = null
-    ) {
+    public function __construct(ReferentTagManager $referentTagManager, PostAddressFactory $addressFactory = null)
+    {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
         $this->referentTagManager = $referentTagManager;
     }

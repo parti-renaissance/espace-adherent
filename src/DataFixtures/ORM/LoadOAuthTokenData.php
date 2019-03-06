@@ -91,8 +91,12 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
         $manager->flush();
     }
 
-    private function createAuthorizationCode(string $identifier, string $userUuid, string $clientUuid, string $expiryDateTime): AuthorizationCode
-    {
+    private function createAuthorizationCode(
+        string $identifier,
+        string $userUuid,
+        string $clientUuid,
+        string $expiryDateTime
+    ): AuthorizationCode {
         return new AuthorizationCode(
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
             $this->adherentRepository->findByUuid(Uuid::fromString($userUuid)),
@@ -103,8 +107,12 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
         );
     }
 
-    private function createAccessToken(string $identifier, string $userUuid, string $clientUuid, string $expiryDateTime): AccessToken
-    {
+    private function createAccessToken(
+        string $identifier,
+        string $userUuid,
+        string $clientUuid,
+        string $expiryDateTime
+    ): AccessToken {
         return new AccessToken(
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
             $this->adherentRepository->findByUuid(Uuid::fromString($userUuid)),
@@ -114,8 +122,11 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
         );
     }
 
-    private function createRefreshToken(AccessToken $accessToken, string $identifier, string $expiryDateTime): RefreshToken
-    {
+    private function createRefreshToken(
+        AccessToken $accessToken,
+        string $identifier,
+        string $expiryDateTime
+    ): RefreshToken {
         return new RefreshToken(
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
             $accessToken,

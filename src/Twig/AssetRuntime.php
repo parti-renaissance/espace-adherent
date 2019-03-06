@@ -16,8 +16,13 @@ class AssetRuntime
     private $env;
     private $hash;
 
-    public function __construct(Router $router, BaseAssetExtension $symfonyAssetExtension, string $secret, string $env, ?string $hash)
-    {
+    public function __construct(
+        Router $router,
+        BaseAssetExtension $symfonyAssetExtension,
+        string $secret,
+        string $env,
+        ?string $hash
+    ) {
         $this->router = $router;
         $this->symfonyAssetExtension = $symfonyAssetExtension;
         $this->secret = $secret;
@@ -29,15 +34,21 @@ class AssetRuntime
         }
     }
 
-    public function transformedStaticAsset(string $path, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
-    {
+    public function transformedStaticAsset(
+        string $path,
+        array $parameters = [],
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ): string {
         $parameters['cache'] = $this->hash;
 
         return $this->generateAssetUrl('static/'.$path, $parameters, $referenceType);
     }
 
-    public function transformedMediaAsset(Media $media, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
-    {
+    public function transformedMediaAsset(
+        Media $media,
+        array $parameters = [],
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+    ): string {
         $parameters['cache'] = substr(md5($media->getUpdatedAt()->format('U')), 0, 20);
 
         if ($media->isVideo()) {

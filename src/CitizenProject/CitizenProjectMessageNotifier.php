@@ -73,8 +73,11 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         ));
     }
 
-    public function sendAdherentNotificationCreation(Adherent $adherent, CitizenProject $citizenProject, Adherent $creator): void
-    {
+    public function sendAdherentNotificationCreation(
+        Adherent $adherent,
+        CitizenProject $citizenProject,
+        Adherent $creator
+    ): void {
         $this->mailer->sendMessage(CitizenProjectCreationNotificationMessage::create($adherent, $citizenProject, $creator));
     }
 

@@ -105,6 +105,7 @@
         "fabpot/goutte": "^3.2",
         "friendsofphp/php-cs-fixer": "^2.10.0",
         "liip/functional-test-bundle": "^1.8",
+        "pedrotroller/php-cs-custom-fixer": "2.11.0",
         "phpunit/phpunit": "^6.2",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"

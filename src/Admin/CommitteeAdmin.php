@@ -43,8 +43,14 @@ class CommitteeAdmin extends AbstractAdmin
     private $adherentRepository;
     private $dispatcher;
 
-    public function __construct($code, $class, $baseControllerName, CommitteeManager $manager, ObjectManager $om, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        CommitteeManager $manager,
+        ObjectManager $om,
+        EventDispatcherInterface $dispatcher
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->manager = $manager;

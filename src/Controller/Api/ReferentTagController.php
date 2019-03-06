@@ -18,8 +18,11 @@ class ReferentTagController extends Controller
      * @Route("/referent-tags", name="api_referent_tag")
      * @Method("GET")
      */
-    public function getReferentTagsAction(Request $request, ReferentTagRepository $repository, SerializerInterface $serializer): Response
-    {
+    public function getReferentTagsAction(
+        Request $request,
+        ReferentTagRepository $repository,
+        SerializerInterface $serializer
+    ): Response {
         $limit = $request->query->getInt('_per_page', 10);
         $offset = ($request->query->getInt('_page', 1) - 1) * $limit;
 

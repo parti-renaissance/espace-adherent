@@ -34,8 +34,12 @@ class ReportAdmin extends AbstractAdmin
     ];
     private $reportRepository;
 
-    public function __construct(string $code, string $class, string $baseControllerName, ReportRepository $reportRepository)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        ReportRepository $reportRepository
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->reportRepository = $reportRepository;

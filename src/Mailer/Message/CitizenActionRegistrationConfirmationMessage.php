@@ -27,11 +27,8 @@ final class CitizenActionRegistrationConfirmationMessage extends Message
         );
     }
 
-    private static function getTemplateVars(
-        string $eventName,
-        string $organizerName,
-        string $calendarEventUrl
-    ): array {
+    private static function getTemplateVars(string $eventName, string $organizerName, string $calendarEventUrl): array
+    {
         return [
             'citizen_action_name' => self::escape($eventName),
             'citizen_action_organiser' => self::escape($organizerName),
