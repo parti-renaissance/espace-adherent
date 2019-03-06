@@ -27,6 +27,7 @@ class FilterFormFactory
                 if ($data instanceof ReferentUserFilter) {
                     return $this->formFactory->create(AdherentMessageReferentFilterType::class, $data);
                 }
+
                 if ($data instanceof AdherentZoneFilter) {
                     return $this->formFactory->create(AdherentMessageReferentZoneFilterType::class, $data);
                 }

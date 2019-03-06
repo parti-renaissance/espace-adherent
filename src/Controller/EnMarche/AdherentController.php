@@ -74,6 +74,7 @@ class AdherentController extends Controller
             } catch (GeocodingException $exception) {
             }
         }
+
         if ($request->query->getBoolean('from_activation')) {
             $this->addFlash('info', 'adherent.activation.success');
         }
@@ -186,6 +187,7 @@ class AdherentController extends Controller
         } else {
             $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
         }
+
         if ($name = $request->query->get('name', false)) {
             $command->name = $name;
         }

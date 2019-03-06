@@ -181,12 +181,15 @@ final class InvitationProcessor
         if ($this->friendPosition) {
             $collection->add($this->friendPosition);
         }
+
         if ($this->friendProject) {
             $collection->add($this->friendProject);
         }
+
         foreach ($this->friendInterests as $interest) {
             $collection->add($interest);
         }
+
         foreach ($this->selfReasons as $reason) {
             $collection->add($reason);
         }
@@ -197,6 +200,7 @@ final class InvitationProcessor
         if ($this->friendPosition) {
             $this->friendPosition = $manager->merge($this->friendPosition);
         }
+
         if ($this->friendProject) {
             $this->friendProject = $manager->merge($this->friendProject);
         }

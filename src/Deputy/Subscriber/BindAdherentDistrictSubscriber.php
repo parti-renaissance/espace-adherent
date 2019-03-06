@@ -37,6 +37,7 @@ class BindAdherentDistrictSubscriber implements EventSubscriberInterface
                     if (!\in_array($adherent->getCountry(), $district->getCountries())) {
                         continue;
                     }
+
                     if (!$adherent->getReferentTags()->contains($district->getReferentTag())) {
                         $adherent->addReferentTag($district->getReferentTag());
                     }

@@ -22,6 +22,7 @@ return PhpCsFixer\Config::create()
         'native_function_invocation' => ['include' => ['@compiler_optimized']],
         'array_syntax' => ['syntax' => 'short'],
         'PedroTroller/line_break_between_method_arguments' => [ 'max-args' => 20, 'max-length' => 120, 'automatic-argument-merge' => true ],
+        'PedroTroller/line_break_between_statements' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)

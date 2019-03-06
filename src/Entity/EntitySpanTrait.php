@@ -76,6 +76,7 @@ trait EntitySpanTrait
         if ($period->y) {
             $length .= $period->y.' an'.($period->y > 1 ? 's' : '');
         }
+
         if ($period->m) {
             $length .= ($period->y ? ' et ' : '').$period->m.' mois';
         }

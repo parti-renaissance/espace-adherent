@@ -18,6 +18,7 @@ class CommentsCitizenProjectVoterTest extends AbstractAdherentVoterTest
         foreach (CitizenProjectPermissions::COMMENTS as $permission) {
             yield [false, true, $permission, $this->getCitizenProjectMock(true)];
         }
+
         foreach (CitizenProjectPermissions::COMMENTS as $permission) {
             yield [false, false, $permission, $this->getCitizenProjectMock(false)];
         }

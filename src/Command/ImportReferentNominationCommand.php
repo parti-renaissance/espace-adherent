@@ -182,6 +182,7 @@ class ImportReferentNominationCommand extends ContainerAwareCommand
                 if (false !== strpos($row['area_code'], ',')) {
                     $parisDistrictZip = explode(',', $row['area_code']);
                 }
+
                 foreach ($parisDistrictZip as $zipCode) {
                     $areas[$zipCode] = [
                           'name' => sprintf(

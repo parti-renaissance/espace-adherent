@@ -647,42 +647,55 @@ class Summary
         if ($this->member->getPosition()) {
             ++$complete;
         }
+
         if ($this->contributionWish) {
             ++$complete;
         }
+
         if (0 < \count($this->availabilities)) {
             ++$complete;
         }
+
         if (0 < \count($this->jobLocations)) {
             ++$complete;
         }
+
         if ($this->professionalSynopsis) {
             ++$complete;
         }
+
         if (0 < \count($this->missionTypeWishes)) {
             ++$complete;
         }
+
         if ($this->motivation) {
             ++$complete;
         }
+
         if (0 < $this->experiences->count()) {
             ++$complete;
         }
+
         if (0 < $this->skills->count()) {
             ++$complete;
         }
+
         if (0 < $this->languages->count()) {
             ++$complete;
         }
+
         if (0 < $this->trainings->count()) {
             ++$complete;
         }
+
         if (0 < \count($this->member->getInterests())) {
             ++$complete;
         }
+
         if ($this->contactEmail) {
             ++$complete;
         }
+
         if ($this->hasPictureUploaded()) {
             ++$complete;
         }
