@@ -133,9 +133,6 @@ class CommitteeCommand
         return $this->address;
     }
 
-    /**
-     * @return null|UploadedFile
-     */
     public function getPhoto(): ?UploadedFile
     {
         return $this->photo;
