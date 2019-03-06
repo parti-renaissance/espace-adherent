@@ -5,9 +5,10 @@
 </div>
 
 <div class="form__row form__new">
-    {{ form_errors(form.city) }}
-    {{ form_label(form.city, 'Ville', { label_attr: { class: 'label__header--large' } }) }}
+    <label class="label__header--large form form__label required">Zone concernée</label>
+    {{ form_widget(form.concernedAreaChoice, { attr: { class: 'l__row--h-stretch form__radio-button' } }) }}
     {{ form_widget(form.city, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
+    {{ form_errors(form.city) }}
 </div>
 
 <div class="form__row form__new">

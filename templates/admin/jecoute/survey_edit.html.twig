@@ -27,6 +27,28 @@
            $('.question-disabled').each(function() {
                $(this).find($("ul[id$='_question_type'] .radio label")).unbind('click');
            });
+
+           const selectConcernedZoneChoices = function (selectedInput) {
+               const cityBloc = $("div.form-group[id$='_city']");
+
+               if ('{{ constant('AppBundle\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}'
+                   === $(selectedInput).val())
+               {
+                   cityBloc.show();
+               } else {
+                   cityBloc.hide();
+                   $("input[name$='[city]']").val('');
+               }
+           };
+
+           $("ul[id$='_concernedAreaChoice'] .radio label").click(function() {
+               selectConcernedZoneChoices($(this).find('input'));
+           });
+
+           $("input[name$='[concernedAreaChoice]']:checked").each(function() {
+               selectConcernedZoneChoices($(this));
+           });
+
        });
     </script>
 {% endblock %}

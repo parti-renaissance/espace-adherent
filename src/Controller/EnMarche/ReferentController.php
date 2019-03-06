@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Jecoute\Survey;
@@ -285,6 +286,7 @@ class ReferentController extends Controller
         SurveyExporter $surveyExporter,
         UserInterface $user
     ): Response {
+        /** @var Adherent $user */
         return $this->render('referent/surveys/list.html.twig', [
             'surveysListJson' => $surveyExporter->exportAsJson(
                 $surveyRepository->findAllByAuthor($user)
@@ -302,6 +304,7 @@ class ReferentController extends Controller
         SuggestedQuestionRepository $suggestedQuestionRepository,
         UserInterface $user
     ): Response {
+        /** @var Adherent $user */
         $form = $this
             ->createForm(SurveyFormType::class, new Survey($user))
             ->handleRequest($request)

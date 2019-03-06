@@ -195,6 +195,7 @@
         <!-- J'écoute -->
         <service id="AppBundle\Command\ImportJecouteSurveysCommand" />
         <service id="AppBundle\Form\Jecoute\DataSurveyFormType" />
+        <service id="AppBundle\Form\Jecoute\SurveyFormType" />
         <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
         <service id="AppBundle\Validator\DataSurveyAnswerTypeChoiceValidator" />
 

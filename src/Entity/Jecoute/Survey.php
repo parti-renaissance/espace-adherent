@@ -36,7 +36,7 @@ class Survey implements AuthoredInterface
     private $name;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
      *
@@ -114,7 +114,7 @@ class Survey implements AuthoredInterface
         return $this->city;
     }
 
-    public function setCity(string $city): void
+    public function setCity(?string $city): void
     {
         $this->city = $city;
     }
