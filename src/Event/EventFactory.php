@@ -91,7 +91,7 @@ class EventFactory
     public function createCitizenActionFromArray(array $data): CitizenAction
     {
         foreach (['uuid', 'organizer', 'citizen_project', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at'] as $key) {
-            if (!array_key_exists($key, $data)) {
+            if (!\array_key_exists($key, $data)) {
                 throw new \InvalidArgumentException(sprintf('Key "%s" is missing.', $key));
             }
         }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Migrations;
 
@@ -10,10 +12,10 @@ use Doctrine\DBAL\Schema\Schema;
  */
 final class Version20190305155124 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE events_groups_categories (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
@@ -32,10 +34,10 @@ final class Version20190305155124 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_EF0AF3E9A267D842 ON events_categories (event_group_category_id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE events_categories DROP FOREIGN KEY FK_EF0AF3E9A267D842');
         $this->addSql('DROP TABLE events_groups_categories');

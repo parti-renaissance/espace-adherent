@@ -453,7 +453,7 @@ class CommitteeManager
         string $postalCode,
         int $count = self::COMMITTEE_PROPOSALS_COUNT
     ): array {
-        $postalCodePrefix = array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
+        $postalCodePrefix = \array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
             ? substr($postalCode, 0, 3)
             : null
         ;

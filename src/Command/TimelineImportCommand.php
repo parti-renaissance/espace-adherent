@@ -98,7 +98,7 @@ class TimelineImportCommand extends Command
             }
 
             $isFeatured = strtolower($isFeatured);
-            if (!array_key_exists($isFeatured, self::BOOLEAN_CHOICES)) {
+            if (!\array_key_exists($isFeatured, self::BOOLEAN_CHOICES)) {
                 throw new \RuntimeException(sprintf(
                     'Invalid featured flag label "%s" given for theme "%s". Valid values are: "%s". (line %d)',
                     $isFeatured,
@@ -157,7 +157,7 @@ class TimelineImportCommand extends Command
                 ));
             }
 
-            if (!array_key_exists($status, Measure::STATUSES)) {
+            if (!\array_key_exists($status, Measure::STATUSES)) {
                 throw new \RuntimeException(sprintf(
                     'Invalid status for measure "%s": "%s" given, valid values are "%s". (line %d)',
                     $title,
@@ -172,7 +172,7 @@ class TimelineImportCommand extends Command
                 foreach (explode(',', $themes) as $themeTitle) {
                     $themeTitle = trim($themeTitle);
 
-                    if (!array_key_exists($themeTitle, $savedThemes)) {
+                    if (!\array_key_exists($themeTitle, $savedThemes)) {
                         throw new \RuntimeException(sprintf(
                             'No theme found with title "%s" for measure "%s". (line %d)',
                             $themeTitle,
@@ -190,7 +190,7 @@ class TimelineImportCommand extends Command
                 foreach (explode(',', $profiles) as $profileTitle) {
                     $profileTitle = trim($profileTitle);
 
-                    if (!array_key_exists($profileTitle, $savedProfiles)) {
+                    if (!\array_key_exists($profileTitle, $savedProfiles)) {
                         throw new \RuntimeException(sprintf(
                             'No profile found with title "%s" for measure "%s". (line %d)',
                             $profileTitle,

@@ -130,7 +130,7 @@ class Administrator implements UserInterface, TwoFactorInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getEmailAddress()
     {
@@ -138,7 +138,7 @@ class Administrator implements UserInterface, TwoFactorInterface
     }
 
     /**
-     * @param null|string $emailAddress
+     * @param string|null $emailAddress
      */
     public function setEmailAddress($emailAddress)
     {
@@ -154,7 +154,7 @@ class Administrator implements UserInterface, TwoFactorInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getGoogleAuthenticatorSecret()
     {
@@ -162,7 +162,7 @@ class Administrator implements UserInterface, TwoFactorInterface
     }
 
     /**
-     * @param null|string $googleAuthenticatorSecret
+     * @param string|null $googleAuthenticatorSecret
      */
     public function setGoogleAuthenticatorSecret($googleAuthenticatorSecret)
     {

@@ -27,7 +27,7 @@ class RedirectionsProvider
 
     public function get(string $type): array
     {
-        if (!array_key_exists($type, self::REDIRECTIONS)) {
+        if (!\array_key_exists($type, self::REDIRECTIONS)) {
             return [];
         }
 

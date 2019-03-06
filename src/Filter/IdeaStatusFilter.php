@@ -24,7 +24,7 @@ final class IdeaStatusFilter extends AbstractFilter
         string $operationName = null
     ): void {
         if (Idea::class !== $resourceClass
-            || !array_key_exists($property, $this->properties)
+            || !\array_key_exists($property, $this->properties)
             || !\in_array($value, IdeaStatusEnum::ALL_STATUSES)
         ) {
             return;

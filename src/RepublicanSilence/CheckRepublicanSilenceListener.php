@@ -82,7 +82,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     private function supportRoute(string $route): bool
     {
-        return array_key_exists($route, self::ROUTES);
+        return \array_key_exists($route, self::ROUTES);
     }
 
     private function supportUser($user): bool

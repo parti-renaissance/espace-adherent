@@ -201,7 +201,7 @@ class Invite
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getMessage()
     {
@@ -209,7 +209,7 @@ class Invite
     }
 
     /**
-     * @param null|string $message
+     * @param string|null $message
      *
      * @return Invite
      */
