@@ -22,8 +22,11 @@ class AdminTurnkeyProjectController extends Controller
      * @Method("GET")
      * @Security("has_role('ROLE_ADMIN_TURNKEY_PROJECTS')")
      */
-    public function removeImageAction(Request $request, TurnkeyProject $turnkeyProject, TurnkeyProjectManager $turnkeyProjectManager): Response
-    {
+    public function removeImageAction(
+        Request $request,
+        TurnkeyProject $turnkeyProject,
+        TurnkeyProjectManager $turnkeyProjectManager
+    ): Response {
         if (!$this->isCsrfTokenValid(sprintf('turnkey_project.remove_image.%s', $turnkeyProject->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }

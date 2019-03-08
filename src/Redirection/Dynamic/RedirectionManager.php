@@ -15,8 +15,11 @@ class RedirectionManager
 
     private $serializer;
 
-    public function __construct(CacheItemPoolInterface $cache, EntityManagerInterface $entityManager, Serializer $serializer)
-    {
+    public function __construct(
+        CacheItemPoolInterface $cache,
+        EntityManagerInterface $entityManager,
+        Serializer $serializer
+    ) {
         $this->cache = $cache;
         $this->entityManager = $entityManager;
         $this->serializer = $serializer;

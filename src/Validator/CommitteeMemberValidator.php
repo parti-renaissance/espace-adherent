@@ -18,10 +18,8 @@ class CommitteeMemberValidator extends ConstraintValidator
     private $committeeMembershipRepository;
     private $security;
 
-    public function __construct(
-        CommitteeMembershipRepository $committeeMembershipRepository,
-        Security $security
-    ) {
+    public function __construct(CommitteeMembershipRepository $committeeMembershipRepository, Security $security)
+    {
         $this->committeeMembershipRepository = $committeeMembershipRepository;
         $this->security = $security;
     }

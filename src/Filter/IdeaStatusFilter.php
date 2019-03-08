@@ -17,7 +17,8 @@ final class IdeaStatusFilter extends AbstractFilter
     private $ideaRepository;
 
     protected function filterProperty(
-        string $property, $value,
+        string $property,
+        $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,

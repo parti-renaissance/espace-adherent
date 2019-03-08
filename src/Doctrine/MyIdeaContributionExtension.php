@@ -17,8 +17,12 @@ class MyIdeaContributionExtension implements QueryCollectionExtensionInterface
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
-    {
+    public function applyToCollection(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        string $operationName = null
+    ) {
         if ('get_my_contributions' === $operationName && Idea::class === $resourceClass) {
             $alias = $queryBuilder->getRootAliases()[0];
 

@@ -91,8 +91,12 @@ class CitizenActionManagerController extends Controller
      * @Method("GET|POST")
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
-    public function editAction(Request $request, CitizenProject $project, CitizenAction $action, CitizenProjectManager $citizenProjectManager): Response
-    {
+    public function editAction(
+        Request $request,
+        CitizenProject $project,
+        CitizenAction $action,
+        CitizenProjectManager $citizenProjectManager
+    ): Response {
         $command = CitizenActionCommand::createFromCitizenAction($action);
         $form = $this->createForm(CitizenActionCommandType::class, $command)
             ->handleRequest($request)
@@ -182,8 +186,12 @@ class CitizenActionManagerController extends Controller
      * @Method("POST")
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
-    public function contactParticipantsAction(Request $request, CitizenAction $citizenAction, CitizenProject $project, CitizenActionManager $citizenActionManager): Response
-    {
+    public function contactParticipantsAction(
+        Request $request,
+        CitizenAction $citizenAction,
+        CitizenProject $project,
+        CitizenActionManager $citizenActionManager
+    ): Response {
         $registrations = $this->getRegistrations($request, $citizenAction, self::ACTION_CONTACT);
 
         if (0 == $registrations->count()) {
@@ -254,8 +262,11 @@ class CitizenActionManagerController extends Controller
         );
     }
 
-    private function getRegistrations(Request $request, CitizenAction $citizenAction, string $action): EventRegistrationCollection
-    {
+    private function getRegistrations(
+        Request $request,
+        CitizenAction $citizenAction,
+        string $action
+    ): EventRegistrationCollection {
         if (!\in_array($action, self::ACTIONS)) {
             throw new \InvalidArgumentException("Action '$action' is not allowed.");
         }

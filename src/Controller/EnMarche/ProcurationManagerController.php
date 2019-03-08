@@ -167,8 +167,12 @@ class ProcurationManagerController extends Controller
      * )
      * @Method("GET")
      */
-    public function requestTransformAction(int $id, string $action, string $token, ProcurationManager $manager): Response
-    {
+    public function requestTransformAction(
+        int $id,
+        string $action,
+        string $token,
+        ProcurationManager $manager
+    ): Response {
         if (!$this->isCsrfTokenValid('request_action', $token)) {
             throw $this->createNotFoundException('Invalid token.');
         }
@@ -197,8 +201,11 @@ class ProcurationManagerController extends Controller
      * @Method("GET|POST")
      * @ParamConverter("proxy", class="AppBundle\Entity\ProcurationProxy", options={"id": "proxyId"})
      */
-    public function requestAssociateAction(Request $sfRequest, ProcurationRequest $request, ProcurationProxy $proxy): Response
-    {
+    public function requestAssociateAction(
+        Request $sfRequest,
+        ProcurationRequest $request,
+        ProcurationProxy $proxy
+    ): Response {
         $manager = $this->getDoctrine()->getManager();
 
         if (!$manager->getRepository(ProcurationRequest::class)->isManagedBy($this->getUser(), $request)) {
@@ -240,8 +247,11 @@ class ProcurationManagerController extends Controller
      * )
      * @Method("GET|POST")
      */
-    public function requestDessociateAction(Request $sfRequest, ProcurationRequest $request, ProcurationRequestRepository $repository): Response
-    {
+    public function requestDessociateAction(
+        Request $sfRequest,
+        ProcurationRequest $request,
+        ProcurationRequestRepository $repository
+    ): Response {
         if (!$request->hasFoundProxy()) {
             throw $this->createNotFoundException('This request has no proxy.');
         }
@@ -269,8 +279,11 @@ class ProcurationManagerController extends Controller
         ]);
     }
 
-    private function tryRedirectCatchingDeadLock(callable $try, string $retryRoute, array $retryParams): RedirectResponse
-    {
+    private function tryRedirectCatchingDeadLock(
+        callable $try,
+        string $retryRoute,
+        array $retryParams
+    ): RedirectResponse {
         try {
             return $try();
         } catch (DriverException $e) {

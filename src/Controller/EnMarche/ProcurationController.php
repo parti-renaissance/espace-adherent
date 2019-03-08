@@ -44,8 +44,11 @@ class ProcurationController extends Controller
      * )
      * @Method("GET|POST")
      */
-    public function chooseElectionAction(Request $request, string $action, ProcurationSession $procurationSession): Response
-    {
+    public function chooseElectionAction(
+        Request $request,
+        string $action,
+        ProcurationSession $procurationSession
+    ): Response {
         $form = $this->createForm(ElectionContextType::class)
             ->handleRequest($request)
         ;
@@ -75,8 +78,12 @@ class ProcurationController extends Controller
      * )
      * @Method("GET|POST")
      */
-    public function requestAction(Request $request, ProcurationSession $procurationSession, ?string $step, string $_route): Response
-    {
+    public function requestAction(
+        Request $request,
+        ProcurationSession $procurationSession,
+        ?string $step,
+        string $_route
+    ): Response {
         if ('app_procuration_index_legacy' === $_route) {
             return $this->redirectToRoute('app_procuration_request', ['step' => ProcurationRequest::STEP_URI_VOTE], Response::HTTP_MOVED_PERMANENTLY);
         }

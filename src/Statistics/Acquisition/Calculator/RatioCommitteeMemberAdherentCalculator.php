@@ -12,8 +12,10 @@ class RatioCommitteeMemberAdherentCalculator extends AbstractCalculator
     private $adherentCalculator;
     private $committeeMemberCalculator;
 
-    public function __construct(AdherentCalculator $adherentCalculator, CommitteeMemberCalculator $committeeMemberCalculator)
-    {
+    public function __construct(
+        AdherentCalculator $adherentCalculator,
+        CommitteeMemberCalculator $committeeMemberCalculator
+    ) {
         $this->adherentCalculator = $adherentCalculator;
         $this->committeeMemberCalculator = $committeeMemberCalculator;
     }

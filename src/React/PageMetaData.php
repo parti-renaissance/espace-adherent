@@ -10,8 +10,13 @@ class PageMetaData implements PageMetaDataInterface
     private $imageHeight;
     private $imageUrl;
 
-    public function __construct(string $title, string $description = null, int $imageWidth = null, int $imageHeight = null, string $imageUrl = null)
-    {
+    public function __construct(
+        string $title,
+        string $description = null,
+        int $imageWidth = null,
+        int $imageHeight = null,
+        string $imageUrl = null
+    ) {
         $this->title = $title;
         $this->description = $description;
         $this->imageWidth = $imageWidth;

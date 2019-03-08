@@ -91,8 +91,13 @@ class TonMacronFriendInvitation
      */
     private $choices;
 
-    public function __construct(UuidInterface $uuid, string $friendFirstName, string $friendAge, string $friendGender, string $createdAt = 'now')
-    {
+    public function __construct(
+        UuidInterface $uuid,
+        string $friendFirstName,
+        string $friendAge,
+        string $friendGender,
+        string $createdAt = 'now'
+    ) {
         $this->uuid = $uuid;
         $this->friendFirstName = $friendFirstName;
         $this->friendAge = $friendAge;

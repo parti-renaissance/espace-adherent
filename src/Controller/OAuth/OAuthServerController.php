@@ -24,10 +24,8 @@ class OAuthServerController extends Controller
     private $authorizationServer;
     private $httpFoundationFactory;
 
-    public function __construct(
-        AuthorizationServer $authorizationServer,
-        HttpFoundationFactory $httpFoundationFactory
-    ) {
+    public function __construct(AuthorizationServer $authorizationServer, HttpFoundationFactory $httpFoundationFactory)
+    {
         $this->authorizationServer = $authorizationServer;
         $this->httpFoundationFactory = $httpFoundationFactory;
     }

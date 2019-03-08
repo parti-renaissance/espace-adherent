@@ -16,8 +16,10 @@ class ReferentPersonLinkExtension extends AbstractExtension
         ];
     }
 
-    public function getRefPersonLink(PersonOrganizationalChartItem $personOrganizationalChartItem, ?Referent $referent): ?ReferentPersonLink
-    {
+    public function getRefPersonLink(
+        PersonOrganizationalChartItem $personOrganizationalChartItem,
+        ?Referent $referent
+    ): ?ReferentPersonLink {
         if (!$referent) {
             return null;
         }

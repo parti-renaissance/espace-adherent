@@ -42,8 +42,12 @@ class MembershipController extends Controller
      * @Route("/inscription-utilisateur", name="app_membership_register")
      * @Method("GET|POST")
      */
-    public function registerAction(Request $request, GeoCoder $geoCoder, AuthorizationChecker $authorizationChecker, CallbackManager $callbackManager): Response
-    {
+    public function registerAction(
+        Request $request,
+        GeoCoder $geoCoder,
+        AuthorizationChecker $authorizationChecker,
+        CallbackManager $callbackManager
+    ): Response {
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $callbackManager->redirectToClientIfValid();
         }

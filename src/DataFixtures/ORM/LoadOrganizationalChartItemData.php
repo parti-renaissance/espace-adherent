@@ -129,15 +129,21 @@ class LoadOrganizationalChartItemData extends Fixture
         $manager->flush();
     }
 
-    private function createTree(ObjectManager $manager, array $mapping, AbstractOrganizationalChartItem $parent = null): void
-    {
+    private function createTree(
+        ObjectManager $manager,
+        array $mapping,
+        AbstractOrganizationalChartItem $parent = null
+    ): void {
         foreach ($mapping as $item) {
             $this->createItem($manager, $item, $parent);
         }
     }
 
-    private function createItem(ObjectManager $manager, array $item, AbstractOrganizationalChartItem $parent = null): AbstractOrganizationalChartItem
-    {
+    private function createItem(
+        ObjectManager $manager,
+        array $item,
+        AbstractOrganizationalChartItem $parent = null
+    ): AbstractOrganizationalChartItem {
         /** @var AbstractOrganizationalChartItem $orgaChartItem */
         $orgaChartItem = new $item['class']($item['label'], $parent);
         if (isset($item['referent_person_link'])) {

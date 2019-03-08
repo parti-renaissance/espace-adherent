@@ -170,6 +170,7 @@ class FormControllerTest extends WebTestCase
             if (\is_array($item)) {
                 static::assertArrayValues($item, $actual[$key]);
             }
+
             if (\is_string($item)) {
                 static::assertSame($item, $actual[$key]);
             }

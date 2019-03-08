@@ -180,10 +180,8 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
         return $committee;
     }
 
-    private function createCitizenProject(
-        string $address = null,
-        Committee $committee = null
-    ): CitizenProject {
+    private function createCitizenProject(string $address = null, Committee $committee = null): CitizenProject
+    {
         if (null === $committee) {
             $committee = $this->createCommittee('63 rue Saint Anne');
         }

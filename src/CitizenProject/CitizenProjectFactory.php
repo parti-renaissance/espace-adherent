@@ -13,10 +13,8 @@ class CitizenProjectFactory
     private $addressFactory;
     private $referentTagManager;
 
-    public function __construct(
-        ReferentTagManager $referentTagManager,
-        PostAddressFactory $addressFactory = null
-    ) {
+    public function __construct(ReferentTagManager $referentTagManager, PostAddressFactory $addressFactory = null)
+    {
         $this->referentTagManager = $referentTagManager;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }

@@ -19,8 +19,10 @@ class StatisticsParametersFilter
     private $cityName = null;
     private $countryCode = null;
 
-    public static function createFromRequest(Request $request, CommitteeRepository $committeeRepository): StatisticsParametersFilter
-    {
+    public static function createFromRequest(
+        Request $request,
+        CommitteeRepository $committeeRepository
+    ): StatisticsParametersFilter {
         $filter = new self();
 
         if ($uuid = $request->query->get(self::PARAMETER_COMMITTEE_UUID)) {

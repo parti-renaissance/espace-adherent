@@ -28,8 +28,12 @@ class AdminThreadCommentController extends Controller
      *
      * @Route("/disable", methods={"GET"}, name="app_admin_thread_comment_disable")
      */
-    public function disableAction(Request $request, ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function disableAction(
+        Request $request,
+        ThreadComment $comment,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher
+    ): Response {
         $comment->disable();
 
         $dispatcher->dispatch(Events::THREAD_COMMENT_DISABLE, new GenericEvent($comment));
@@ -46,8 +50,12 @@ class AdminThreadCommentController extends Controller
      *
      * @Route("/enable", methods={"GET"}, name="app_admin_thread_comment_enable")
      */
-    public function enableAction(Request $request, ThreadComment $comment, ObjectManager $manager, EventDispatcherInterface $dispatcher): Response
-    {
+    public function enableAction(
+        Request $request,
+        ThreadComment $comment,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher
+    ): Response {
         $comment->enable();
 
         $dispatcher->dispatch(Events::THREAD_COMMENT_ENABLE, new GenericEvent($comment));

@@ -184,8 +184,10 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
      * @param Committee $committee    The committee
      * @param bool      $includeHosts Whether or not to include committee hosts as followers
      */
-    public function findFollowerMemberships(Committee $committee, bool $includeHosts = true): CommitteeMembershipCollection
-    {
+    public function findFollowerMemberships(
+        Committee $committee,
+        bool $includeHosts = true
+    ): CommitteeMembershipCollection {
         $privileges = [CommitteeMembership::COMMITTEE_FOLLOWER];
         if ($includeHosts) {
             $privileges = array_merge($privileges, CommitteeMembership::getHostPrivileges());

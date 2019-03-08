@@ -40,8 +40,11 @@ class CitizenProjectManager
      */
     private $glide;
 
-    public function __construct(RegistryInterface $registry, Filesystem $storage, CitizenProjectAuthority $projectAuthority)
-    {
+    public function __construct(
+        RegistryInterface $registry,
+        Filesystem $storage,
+        CitizenProjectAuthority $projectAuthority
+    ) {
         $this->registry = $registry;
         $this->storage = $storage;
         $this->projectAuthority = $projectAuthority;
@@ -140,8 +143,10 @@ class CitizenProjectManager
         return $this->getCitizenProjectMembershipRepository()->findMembers($citizenProject);
     }
 
-    public function getCitizenProjectFollowers(CitizenProject $citizenProject, bool $withHosts = false): AdherentCollection
-    {
+    public function getCitizenProjectFollowers(
+        CitizenProject $citizenProject,
+        bool $withHosts = false
+    ): AdherentCollection {
         return $this
             ->getCitizenProjectMembershipRepository()
             ->findFollowers($citizenProject, $withHosts)
@@ -259,13 +264,20 @@ class CitizenProjectManager
         }
     }
 
-    public function findAdherentNearCitizenProjectOrAcceptAllNotification(CitizenProject $citizenProject, int $offset = 0, bool $excludeSupervisor = true, int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN): Paginator
-    {
+    public function findAdherentNearCitizenProjectOrAcceptAllNotification(
+        CitizenProject $citizenProject,
+        int $offset = 0,
+        bool $excludeSupervisor = true,
+        int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN
+    ): Paginator {
         return $this->getAdherentRepository()->findByNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
     }
 
-    public function approveCommitteeSupport(Committee $committee, CitizenProject $citizenProject, bool $flush = true): void
-    {
+    public function approveCommitteeSupport(
+        Committee $committee,
+        CitizenProject $citizenProject,
+        bool $flush = true
+    ): void {
         if (!$citizenProject->isApproved()) {
             throw new CitizenProjectNotApprovedException($citizenProject);
         }
@@ -288,8 +300,11 @@ class CitizenProjectManager
         }
     }
 
-    public function deleteCommitteeSupport(Committee $committee, CitizenProject $citizenProject, bool $flush = true): void
-    {
+    public function deleteCommitteeSupport(
+        Committee $committee,
+        CitizenProject $citizenProject,
+        bool $flush = true
+    ): void {
         if (!$committeeSupport = $this->findCommitteeSupport($committee, $citizenProject)) {
             throw new \RuntimeException('No CommitteeSupport found for committee '.$committee->getName());
         }

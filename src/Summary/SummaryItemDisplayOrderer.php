@@ -7,13 +7,18 @@ class SummaryItemDisplayOrderer
     /**
      * @param SummaryItemPositionableInterface[]|iterable $collection
      */
-    public static function updateItem(iterable $collection, SummaryItemPositionableInterface $updatedItem, int $currentItemPosition, int $newItemPosition): void
-    {
+    public static function updateItem(
+        iterable $collection,
+        SummaryItemPositionableInterface $updatedItem,
+        int $currentItemPosition,
+        int $newItemPosition
+    ): void {
         if (1 < \count($collection) && $currentItemPosition !== $newItemPosition) {
             foreach ($collection as $item) {
                 if (!$item instanceof SummaryItemPositionableInterface) {
                     throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
                 }
+
                 if ($updatedItem === $item) {
                     continue;
                 }
@@ -44,6 +49,7 @@ class SummaryItemDisplayOrderer
             if (!$item instanceof SummaryItemPositionableInterface) {
                 throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
             }
+
             if ($newPosition <= ($order = $item->getDisplayOrder())) {
                 $item->setDisplayOrder(++$order);
             }
@@ -60,9 +66,11 @@ class SummaryItemDisplayOrderer
             if (!$item instanceof SummaryItemPositionableInterface) {
                 throw new \InvalidArgumentException(sprintf('Expected instance of "%s", got "%s".', SummaryItemPositionableInterface::class, \is_object($item) ? \get_class($item) : \gettype($item)));
             }
+
             if ($removedItem === $item) {
                 continue;
             }
+
             if ($position < ($order = $item->getDisplayOrder())) {
                 $item->setDisplayOrder(--$order);
             }

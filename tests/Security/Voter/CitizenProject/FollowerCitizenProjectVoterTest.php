@@ -68,8 +68,11 @@ class FollowerCitizenProjectVoterTest extends AbstractAdherentVoterTest
      *
      * @return Adherent|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getAdherentMock(CitizenProject $project, bool $isFollower = null, bool $isAdministrator = null): Adherent
-    {
+    private function getAdherentMock(
+        CitizenProject $project,
+        bool $isFollower = null,
+        bool $isAdministrator = null
+    ): Adherent {
         $adherent = $this->createAdherentMock();
 
         $adherent->expects($this->once())

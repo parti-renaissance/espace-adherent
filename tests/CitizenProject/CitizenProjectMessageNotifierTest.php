@@ -186,6 +186,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
         if ($administrator) {
             $manager->expects($this->any())->method('getCitizenProjectCreator')->willReturn($administrator);
         }
+
         if ($member) {
             $membres = new AdherentCollection();
             $membres->add($member);

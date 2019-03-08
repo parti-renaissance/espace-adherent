@@ -17,8 +17,12 @@ class CommitteeFeedManager
     private $mailer;
     private $urlGenerator;
 
-    public function __construct(ObjectManager $manager, CommitteeManager $committeeManager, MailerService $mailer, UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        ObjectManager $manager,
+        CommitteeManager $committeeManager,
+        MailerService $mailer,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->manager = $manager;
         $this->committeeManager = $committeeManager;
         $this->mailer = $mailer;

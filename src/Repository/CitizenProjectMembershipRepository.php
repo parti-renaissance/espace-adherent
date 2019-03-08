@@ -47,8 +47,10 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         return new CitizenProjectMembershipCollection($query->getResult());
     }
 
-    public function findCitizenProjectMembership(Adherent $adherent, CitizenProject $citizenProject): ?CitizenProjectMembership
-    {
+    public function findCitizenProjectMembership(
+        Adherent $adherent,
+        CitizenProject $citizenProject
+    ): ?CitizenProjectMembership {
         return $this
             ->createMembershipQueryBuilder($adherent, $citizenProject)
             ->getQuery()
@@ -130,8 +132,10 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         return $this->createAdherentCollection($query);
     }
 
-    public function findFollowers(CitizenProject $citizenProject, bool $includeAdministrators = true): AdherentCollection
-    {
+    public function findFollowers(
+        CitizenProject $citizenProject,
+        bool $includeAdministrators = true
+    ): AdherentCollection {
         $privileges = [CitizenProjectMembership::CITIZEN_PROJECT_FOLLOWER];
 
         if ($includeAdministrators) {
@@ -147,8 +151,10 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
      * @param CitizenProject $citizenProject The citizen project
      * @param array          $privileges     An array of privilege constants (see {@link : CitizenProjectMembership}
      */
-    public function findPrivilegedMemberships(CitizenProject $citizenProject, array $privileges): CitizenProjectMembershipCollection
-    {
+    public function findPrivilegedMemberships(
+        CitizenProject $citizenProject,
+        array $privileges
+    ): CitizenProjectMembershipCollection {
         $qb = $this->createQueryBuilder('cpm');
 
         $query = $qb
@@ -251,8 +257,10 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
      * @param CitizenProject $citizenProject The citizen project for which the memberships to fetch belong
      * @param string         $alias          The custom root alias for the query
      */
-    private function createCitizenProjectMembershipsQueryBuilder(CitizenProject $citizenProject, string $alias = 'cpm'): QueryBuilder
-    {
+    private function createCitizenProjectMembershipsQueryBuilder(
+        CitizenProject $citizenProject,
+        string $alias = 'cpm'
+    ): QueryBuilder {
         return $this->createQueryBuilder($alias)
             ->leftJoin($alias.'.adherent', 'a')
             ->where($alias.'.citizenProject = :citizenProject')

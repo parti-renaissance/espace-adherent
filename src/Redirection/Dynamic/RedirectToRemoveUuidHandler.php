@@ -15,8 +15,12 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
     private $router;
     private $patternUuid;
 
-    public function __construct(RedirectionsProvider $provider, RouterInterface $router, EventRepository $eventRepository, string $patternUuid)
-    {
+    public function __construct(
+        RedirectionsProvider $provider,
+        RouterInterface $router,
+        EventRepository $eventRepository,
+        string $patternUuid
+    ) {
         $this->provider = $provider;
         $this->router = $router;
         $this->eventRepository = $eventRepository;

@@ -15,8 +15,10 @@ class CitizenProjectAuthority
     private $membershipRepository;
     private $dispatcher;
 
-    public function __construct(CitizenProjectMembershipRepository $membershipRepository, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        CitizenProjectMembershipRepository $membershipRepository,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->membershipRepository = $membershipRepository;
         $this->dispatcher = $dispatcher;
     }
@@ -46,6 +48,7 @@ class CitizenProjectAuthority
         if (!$membership = $this->getCitizenProjectMembership($adherent, $citizenProject)) {
             return;
         }
+
         if (CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR === $privilege) {
             $membershipAdmins = $this->membershipRepository->findPrivilegedMemberships(
                 $citizenProject,
@@ -61,8 +64,10 @@ class CitizenProjectAuthority
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE, new UserEvent($adherent));
     }
 
-    private function getCitizenProjectMembership(Adherent $adherent, CitizenProject $citizenProject): ?CitizenProjectMembership
-    {
+    private function getCitizenProjectMembership(
+        Adherent $adherent,
+        CitizenProject $citizenProject
+    ): ?CitizenProjectMembership {
         // Optimization to prevent a SQL query if the current adherent already
         // has a loaded list of related citizen project memberships entities.
         if ($adherent->hasLoadedCitizenProjectMemberships()) {

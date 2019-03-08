@@ -92,13 +92,23 @@ class EventHydrator extends AbstractHydrator
         $result[] = $event;
     }
 
-    private function createFrenchAddress(?string $street, ?string $cityCode, ?float $latitude, ?float $longitude): PostAddress
-    {
+    private function createFrenchAddress(
+        ?string $street,
+        ?string $cityCode,
+        ?float $latitude,
+        ?float $longitude
+    ): PostAddress {
         return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $latitude, $longitude);
     }
 
-    private function createForeignAddress(?string $country, ?string $zipCode, ?string $cityName, ?string $street, ?float $latitude, ?float $longitude): PostAddress
-    {
+    private function createForeignAddress(
+        ?string $country,
+        ?string $zipCode,
+        ?string $cityName,
+        ?string $street,
+        ?float $latitude,
+        ?float $longitude
+    ): PostAddress {
         return PostAddress::createForeignAddress($country ?? '', $zipCode ?? '', $cityName, $street ?? '', $latitude, $longitude);
     }
 }

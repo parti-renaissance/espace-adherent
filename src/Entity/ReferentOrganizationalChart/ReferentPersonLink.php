@@ -148,8 +148,9 @@ class ReferentPersonLink
         return $this->personOrganizationalChartItem;
     }
 
-    public function setPersonOrganizationalChartItem(?PersonOrganizationalChartItem $personOrganizationalChartItem): void
-    {
+    public function setPersonOrganizationalChartItem(
+        ?PersonOrganizationalChartItem $personOrganizationalChartItem
+    ): void {
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
     }
 

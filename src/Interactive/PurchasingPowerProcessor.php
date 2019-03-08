@@ -167,9 +167,11 @@ final class PurchasingPowerProcessor
         if ($this->friendPosition) {
             $collection->add($this->friendPosition);
         }
+
         foreach ($this->friendCases as $interest) {
             $collection->add($interest);
         }
+
         foreach ($this->friendAppreciations as $reason) {
             $collection->add($reason);
         }

@@ -54,8 +54,12 @@ class AdherentController extends Controller
      * @Route("/accueil", name="app_adherent_home")
      * @Method("GET")
      */
-    public function homeAction(Request $request, AdherentRepository $adherentRepository, SearchResultsProvidersManager $searchResultsProvidersManager, SearchParametersFilter $searchParametersFilter): Response
-    {
+    public function homeAction(
+        Request $request,
+        AdherentRepository $adherentRepository,
+        SearchResultsProvidersManager $searchResultsProvidersManager,
+        SearchParametersFilter $searchParametersFilter
+    ): Response {
         $user = $this->getUser();
         $searchParametersFilter->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         $searchParametersFilter->setMaxResults(3);
@@ -70,6 +74,7 @@ class AdherentController extends Controller
             } catch (GeocodingException $exception) {
             }
         }
+
         if ($request->query->getBoolean('from_activation')) {
             $this->addFlash('info', 'adherent.activation.success');
         }
@@ -182,6 +187,7 @@ class AdherentController extends Controller
         } else {
             $command = CitizenProjectCreationCommand::createFromAdherent($user = $this->getUser());
         }
+
         if ($name = $request->query->get('name', false)) {
             $command->name = $name;
         }
@@ -306,16 +312,19 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listMyCitizenProjectsAction(CitizenProjectRepository $citizenProjectRepository, string $noResultMessage = null): Response
-    {
+    public function listMyCitizenProjectsAction(
+        CitizenProjectRepository $citizenProjectRepository,
+        string $noResultMessage = null
+    ): Response {
         return $this->render('adherent/list_my_citizen_projects.html.twig', [
             'citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser()),
             'no_result_message' => $noResultMessage,
         ]);
     }
 
-    public function listMyAdministratedCitizenProjectsAction(CitizenProjectRepository $citizenProjectRepository): Response
-    {
+    public function listMyAdministratedCitizenProjectsAction(
+        CitizenProjectRepository $citizenProjectRepository
+    ): Response {
         return $this->render('adherent/list_my_administrated_citizen_projects.html.twig', [
             'administrated_citizen_projects' => $citizenProjectRepository->findAllRegisteredCitizenProjectsForAdherent($this->getUser(), true),
         ]);

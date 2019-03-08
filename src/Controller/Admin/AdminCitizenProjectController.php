@@ -74,8 +74,13 @@ class AdminCitizenProjectController extends Controller
      * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
      * @Method("GET")
      */
-    public function changePrivilegeAction(Request $request, CitizenProject $citizenProject, Adherent $adherent, string $privilege, CitizenProjectAuthority $authority): Response
-    {
+    public function changePrivilegeAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        Adherent $adherent,
+        string $privilege,
+        CitizenProjectAuthority $authority
+    ): Response {
         if (!$this->isCsrfTokenValid(sprintf('citizen_project.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }

@@ -14,8 +14,13 @@ class ReadMoreExtension extends AbstractExtension
         ];
     }
 
-    public static function addReadMoreLink($text, $length = 256, $salt = null, $readMoreLabelText = 'Show more', $readLessLabelText = 'Show less')
-    {
+    public static function addReadMoreLink(
+        $text,
+        $length = 256,
+        $salt = null,
+        $readMoreLabelText = 'Show more',
+        $readLessLabelText = 'Show less'
+    ) {
         if (mb_strlen($text) <= $length) {
             return $text;
         }

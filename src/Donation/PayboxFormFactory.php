@@ -14,8 +14,12 @@ class PayboxFormFactory
     private $router;
     private $donationRequestUtils;
 
-    public function __construct(string $environment, LexikRequestHandler $requestHandler, Router $router, DonationRequestUtils $donationRequestUtils)
-    {
+    public function __construct(
+        string $environment,
+        LexikRequestHandler $requestHandler,
+        Router $router,
+        DonationRequestUtils $donationRequestUtils
+    ) {
         $this->environment = $environment;
         $this->requestHandler = $requestHandler;
         $this->router = $router;

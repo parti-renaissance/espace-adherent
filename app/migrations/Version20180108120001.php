@@ -151,6 +151,7 @@ INTRODUCTION
         foreach ($this->requestsToRounds as $r) {
             $this->updateLegacyRoundField(self::REQUESTS_TABLE, $this->roundIds[$r['election_round_id']], $r[self::REQUEST_JOIN_FIELD]);
         }
+
         foreach ($this->proposalsToRounds as $r) {
             $this->updateLegacyRoundField(self::PROXIES_TABLE, $this->roundIds[$r['election_round_id']], $r[self::PROXY_JOIN_FIELD]);
         }

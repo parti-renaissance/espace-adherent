@@ -11,11 +11,8 @@ class ManagedAreaUtilsTest extends TestCase
     /**
      * @dataProvider provideLocationsAndTags
      */
-    public function testGetLocalCodes(
-        string $country,
-        ?string $postalCode,
-        array $expectedCodes
-    ): void {
+    public function testGetLocalCodes(string $country, ?string $postalCode, array $expectedCodes): void
+    {
         $adherent = $this->createMock(Adherent::class);
         $adherent->expects(self::any())->method('getCountry')->willReturn($country);
         $adherent->expects(self::any())->method('getPostalCode')->willReturn($postalCode);

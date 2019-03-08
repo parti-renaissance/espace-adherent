@@ -37,8 +37,12 @@ class ContactMessage
         $this->content = $content;
     }
 
-    public static function createWithCaptcha(string $recaptcha, Adherent $from, Adherent $to, string $content = null): self
-    {
+    public static function createWithCaptcha(
+        string $recaptcha,
+        Adherent $from,
+        Adherent $to,
+        string $content = null
+    ): self {
         $message = new self($from, $to, $content);
         $message->recaptcha = $recaptcha;
 

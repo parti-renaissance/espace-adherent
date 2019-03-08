@@ -13,10 +13,8 @@ class AdherentFactory
     private $encoders;
     private $addressFactory;
 
-    public function __construct(
-        EncoderFactoryInterface $encoders,
-        PostAddressFactory $addressFactory = null
-    ) {
+    public function __construct(EncoderFactoryInterface $encoders, PostAddressFactory $addressFactory = null)
+    {
         $this->encoders = $encoders;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }

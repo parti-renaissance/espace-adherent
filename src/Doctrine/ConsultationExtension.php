@@ -9,8 +9,13 @@ use Doctrine\ORM\QueryBuilder;
 
 class ConsultationExtension implements ContextAwareQueryCollectionExtensionInterface
 {
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
-    {
+    public function applyToCollection(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        string $operationName = null,
+        array $context = []
+    ) {
         if (Consultation::class === $resourceClass) {
             $queryBuilder
                 ->andWhere(sprintf('%s.endedAt >= :now', $queryBuilder->getRootAliases()[0]))

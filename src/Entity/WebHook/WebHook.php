@@ -63,8 +63,12 @@ class WebHook
      */
     private $callbacks = [];
 
-    public function __construct(Client $client = null, Event $event = null, array $callbacks = [], Service $service = null)
-    {
+    public function __construct(
+        Client $client = null,
+        Event $event = null,
+        array $callbacks = [],
+        Service $service = null
+    ) {
         $this->uuid = Uuid::uuid4();
         $this->client = $client;
         $this->event = $event ? $event->getValue() : null;

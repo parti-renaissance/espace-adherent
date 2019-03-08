@@ -9,10 +9,8 @@ class PurchasingPowerMessageBodyBuilder
     private $twig;
     private $repository;
 
-    public function __construct(
-        \Twig_Environment $twig,
-        PurchasingPowerChoiceRepository $repository
-    ) {
+    public function __construct(\Twig_Environment $twig, PurchasingPowerChoiceRepository $repository)
+    {
         $this->twig = $twig;
         $this->repository = $repository;
     }

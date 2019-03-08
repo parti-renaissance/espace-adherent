@@ -628,8 +628,10 @@ SQL;
         return $results->fetchColumn();
     }
 
-    public function countCommitteeEventsInReferentManagedArea(Adherent $referent, StatisticsParametersFilter $filter = null): array
-    {
+    public function countCommitteeEventsInReferentManagedArea(
+        Adherent $referent,
+        StatisticsParametersFilter $filter = null
+    ): array {
         $this->checkReferent($referent);
 
         $query = $this->queryCountByMonth($referent);

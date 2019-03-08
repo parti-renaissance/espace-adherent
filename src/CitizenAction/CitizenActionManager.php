@@ -37,8 +37,10 @@ class CitizenActionManager
         return $this->eventRegistrationRepository->findByEvent($citizenAction);
     }
 
-    public function populateRegistrationWithAdherentsInformations(EventRegistrationCollection $registrations, ArrayCollection $citizenProjectAdministrators): array
-    {
+    public function populateRegistrationWithAdherentsInformations(
+        EventRegistrationCollection $registrations,
+        ArrayCollection $citizenProjectAdministrators
+    ): array {
         $adherentsEmails = [];
         $eventsRegistrationHydrated = [];
         $administrators = [];

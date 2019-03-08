@@ -27,11 +27,8 @@ final class EventRegistrationConfirmationMessage extends Message
         );
     }
 
-    private static function getTemplateVars(
-        string $eventName,
-        string $organizerName,
-        string $eventLink
-    ): array {
+    private static function getTemplateVars(string $eventName, string $organizerName, string $eventLink): array
+    {
         return [
             'event_name' => self::escape($eventName),
             'event_organiser' => self::escape($organizerName),

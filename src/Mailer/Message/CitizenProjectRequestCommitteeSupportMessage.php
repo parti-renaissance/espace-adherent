@@ -8,8 +8,11 @@ use Ramsey\Uuid\Uuid;
 
 class CitizenProjectRequestCommitteeSupportMessage extends Message
 {
-    public static function create(CitizenProject $citizenProject, Adherent $committeeSupervisor, string $validationUrl): self
-    {
+    public static function create(
+        CitizenProject $citizenProject,
+        Adherent $committeeSupervisor,
+        string $validationUrl
+    ): self {
         $message = new self(
             Uuid::uuid4(),
             '263222',

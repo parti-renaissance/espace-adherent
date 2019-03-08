@@ -186,6 +186,7 @@ class ImportBoardMemberCommand extends ContainerAwareCommand
 
                 continue;
             }
+
             if ($adherent->isBoardMember()) {
                 continue;
             }

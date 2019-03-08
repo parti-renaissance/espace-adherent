@@ -33,8 +33,12 @@ abstract class AbstractAdherentVoterTest extends TestCase
     /**
      * @dataProvider provideAnonymousCases
      */
-    public function testAnonymousIsGranted(bool $granted, bool $adherentInstanceChecked, string $attribute, $subject = null): void
-    {
+    public function testAnonymousIsGranted(
+        bool $granted,
+        bool $adherentInstanceChecked,
+        string $attribute,
+        $subject = null
+    ): void {
         if ($granted) {
             $this->assertSame(
                 VoterInterface::ACCESS_GRANTED,

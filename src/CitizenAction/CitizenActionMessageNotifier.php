@@ -77,8 +77,11 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
         ];
     }
 
-    private function createMessage(array $followers, CitizenAction $citizenAction, Adherent $host): CitizenActionNotificationMessage
-    {
+    private function createMessage(
+        array $followers,
+        CitizenAction $citizenAction,
+        Adherent $host
+    ): CitizenActionNotificationMessage {
         return CitizenActionNotificationMessage::create(
             $followers,
             $host,
@@ -89,8 +92,11 @@ class CitizenActionMessageNotifier implements EventSubscriberInterface
         );
     }
 
-    private function createCancelMessage(array $registered, CitizenAction $citizenAction, Adherent $host): CitizenActionCancellationMessage
-    {
+    private function createCancelMessage(
+        array $registered,
+        CitizenAction $citizenAction,
+        Adherent $host
+    ): CitizenActionCancellationMessage {
         return CitizenActionCancellationMessage::create(
             $registered,
             $host,

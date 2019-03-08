@@ -19,8 +19,11 @@ class AdminReferentExportsController extends Controller
      * @Route("/{id}/equipe-departementale", name="app_admin_referent_exports_departemental_team")
      * @Method("GET")
      */
-    public function exportDepartementaleTeam(ReferentPersonLinkExport $referentPersonLinkExport, ReferentPersonLinkRepository $referentPersonLinkRepository, Referent $referent): Response
-    {
+    public function exportDepartementaleTeam(
+        ReferentPersonLinkExport $referentPersonLinkExport,
+        ReferentPersonLinkRepository $referentPersonLinkRepository,
+        Referent $referent
+    ): Response {
         return $referentPersonLinkExport->createResponse(
             $referentPersonLinkExport->exportToXlsx(
                 $referentPersonLinkRepository->findByReferentOrdered($referent)

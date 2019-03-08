@@ -14,8 +14,12 @@ class OrganizationalChartItemAdmin extends AbstractAdmin
     public $OCItems = [];
     private $organizationalChartItemRepository;
 
-    public function __construct(string $code, string $class, string $baseControllerName, OrganizationalChartItemRepository $organizationalChartItemRepository)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        OrganizationalChartItemRepository $organizationalChartItemRepository
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->organizationalChartItemRepository = $organizationalChartItemRepository;

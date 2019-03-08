@@ -7,8 +7,11 @@ use Ramsey\Uuid\Uuid;
 
 final class AdherentAccountConfirmationMessage extends Message
 {
-    public static function createFromAdherent(Adherent $adherent, int $adherentsCount = 0, int $committeesCount = 0): self
-    {
+    public static function createFromAdherent(
+        Adherent $adherent,
+        int $adherentsCount = 0,
+        int $committeesCount = 0
+    ): self {
         return new self(
             Uuid::uuid4(),
             '54673',

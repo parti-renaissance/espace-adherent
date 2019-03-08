@@ -23,8 +23,10 @@ class JsonWebTokenValidator implements AuthorizationValidatorInterface
     private $accessTokenRepository;
     private $enableQueryStringTransport;
 
-    public function __construct(AccessTokenRepositoryInterface $accessTokenRepository, bool $enableQueryStringTransport = false)
-    {
+    public function __construct(
+        AccessTokenRepositoryInterface $accessTokenRepository,
+        bool $enableQueryStringTransport = false
+    ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->enableQueryStringTransport = $enableQueryStringTransport;
     }

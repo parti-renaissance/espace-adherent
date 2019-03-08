@@ -37,8 +37,12 @@ class ReferentController extends Controller
      *
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      */
-    public function searchAutocompleteAction(Adherent $referent, Request $request, CommitteeRepository $committeeRepository, EventRepository $eventRepository): Response
-    {
+    public function searchAutocompleteAction(
+        Adherent $referent,
+        Request $request,
+        CommitteeRepository $committeeRepository,
+        EventRepository $eventRepository
+    ): Response {
         // parameter `type` should have a value different from an empty string, but parameter `value` can be an empty string
         if (!($type = $request->query->get('type')) || !$request->query->has('value')) {
             throw new BadRequestHttpException('The parameters "type" and "value" are required.');

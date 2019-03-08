@@ -452,6 +452,7 @@ class AdherentAdmin extends AbstractAdmin
                         if (\in_array(AdherentRoleEnum::COMMITTEE_SUPERVISOR, $committeeRoles, true)) {
                             $privileges[] = CommitteeMembership::COMMITTEE_SUPERVISOR;
                         }
+
                         if (\in_array(AdherentRoleEnum::COMMITTEE_HOST, $committeeRoles, true)) {
                             $privileges[] = CommitteeMembership::COMMITTEE_HOST;
                         }

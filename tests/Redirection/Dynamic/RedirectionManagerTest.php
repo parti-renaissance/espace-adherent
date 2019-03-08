@@ -58,8 +58,12 @@ class RedirectionManagerTest extends WebTestCase
         self::assertRedirectionValues($redirection, '/test4', '/test1');
     }
 
-    private static function assertRedirectionValues(Redirection $redirection, string $source, string $target, int $type = 301): void
-    {
+    private static function assertRedirectionValues(
+        Redirection $redirection,
+        string $source,
+        string $target,
+        int $type = 301
+    ): void {
         self::assertSame($source, $redirection->getFrom());
         self::assertSame($target, $redirection->getTo());
         self::assertSame($type, $redirection->getType());

@@ -132,8 +132,12 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         );
     }
 
-    private function createProcurationRequestMock(string $firstNames, string $lastName, string $email, string $phone = '')
-    {
+    private function createProcurationRequestMock(
+        string $firstNames,
+        string $lastName,
+        string $email,
+        string $phone = ''
+    ) {
         $request = $this->createMock(ProcurationRequest::class);
         $request->expects($this->any())->method('getFirstNames')->willReturn($firstNames);
         $request->expects($this->any())->method('getLastName')->willReturn($lastName);

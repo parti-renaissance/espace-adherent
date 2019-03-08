@@ -13,8 +13,11 @@ class LegislativeCandidateProvider
     private $asset;
     private $urlGenerator;
 
-    public function __construct(LegislativeCandidateRepository $repository, AssetRuntime $asset, UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        LegislativeCandidateRepository $repository,
+        AssetRuntime $asset,
+        UrlGeneratorInterface $urlGenerator
+    ) {
         $this->repository = $repository;
         $this->asset = $asset;
         $this->urlGenerator = $urlGenerator;

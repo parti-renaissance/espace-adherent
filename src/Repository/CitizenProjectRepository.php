@@ -67,8 +67,10 @@ class CitizenProjectRepository extends AbstractGroupRepository
     /**
      * @return CitizenProject[]
      */
-    public function findAllRegisteredCitizenProjectsForAdherent(Adherent $adherent, bool $onlyAdministrated = false): array
-    {
+    public function findAllRegisteredCitizenProjectsForAdherent(
+        Adherent $adherent,
+        bool $onlyAdministrated = false
+    ): array {
         $memberships = $adherent->getCitizenProjectMemberships(true);
 
         if ($onlyAdministrated) {

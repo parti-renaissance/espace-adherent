@@ -34,8 +34,13 @@ class ReferentAdmin extends AbstractAdmin
     private $dataTransformer;
     private $organizationalChartItemRepository;
 
-    public function __construct(string $code, string $class, string $baseControllerName, DataTransformerInterface $dataTransformer, OrganizationalChartItemRepository $organizationalChartItemRepository)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        DataTransformerInterface $dataTransformer,
+        OrganizationalChartItemRepository $organizationalChartItemRepository
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dataTransformer = $dataTransformer;

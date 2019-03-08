@@ -249,8 +249,15 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->photoUploaded = $photoUploaded;
     }
 
-    public static function createSimple(UuidInterface $uuid, string $creatorUuid, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
-    {
+    public static function createSimple(
+        UuidInterface $uuid,
+        string $creatorUuid,
+        string $name,
+        string $description,
+        PostAddress $address,
+        PhoneNumber $phone,
+        string $createdAt = 'now'
+    ): self {
         $committee = new self(
             $uuid,
             Uuid::fromString($creatorUuid),
@@ -264,8 +271,14 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $committee;
     }
 
-    public static function createForAdherent(Adherent $adherent, string $name, string $description, PostAddress $address, PhoneNumber $phone, string $createdAt = 'now'): self
-    {
+    public static function createForAdherent(
+        Adherent $adherent,
+        string $name,
+        string $description,
+        PostAddress $address,
+        PhoneNumber $phone,
+        string $createdAt = 'now'
+    ): self {
         $committee = new self(
             self::createUuid($name),
             clone $adherent->getUuid(),

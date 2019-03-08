@@ -18,8 +18,11 @@ final class InvitationMessage extends Message
         );
     }
 
-    private static function getTemplateVars(string $senderFirstName, string $senderLastName, string $targetMessage): array
-    {
+    private static function getTemplateVars(
+        string $senderFirstName,
+        string $senderLastName,
+        string $targetMessage
+    ): array {
         return [
             'sender_firstname' => self::escape($senderFirstName),
             'sender_lastname' => self::escape($senderLastName),

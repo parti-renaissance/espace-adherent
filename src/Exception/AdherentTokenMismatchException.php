@@ -9,8 +9,11 @@ final class AdherentTokenMismatchException extends AdherentTokenException
 {
     private $unexpectedAdherentUuid;
 
-    public function __construct(AdherentExpirableTokenInterface $token, UuidInterface $unexpectedAdherentUuid, \Exception $previous = null)
-    {
+    public function __construct(
+        AdherentExpirableTokenInterface $token,
+        UuidInterface $unexpectedAdherentUuid,
+        \Exception $previous = null
+    ) {
         $message = sprintf(
             'The %s token %s cannot be used by the adherent %s but only by adherent %s.',
             $token->getType(),

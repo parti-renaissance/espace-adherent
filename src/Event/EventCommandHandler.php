@@ -14,11 +14,8 @@ class EventCommandHandler
     private $factory;
     private $manager;
 
-    public function __construct(
-        EventDispatcherInterface $dispatcher,
-        EventFactory $factory,
-        ObjectManager $manager
-    ) {
+    public function __construct(EventDispatcherInterface $dispatcher, EventFactory $factory, ObjectManager $manager)
+    {
         $this->dispatcher = $dispatcher;
         $this->factory = $factory;
         $this->manager = $manager;

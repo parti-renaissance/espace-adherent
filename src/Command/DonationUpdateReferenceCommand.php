@@ -19,10 +19,8 @@ class DonationUpdateReferenceCommand extends Command
     private $em;
     private $donationRequestUtils;
 
-    public function __construct(
-        EntityManagerInterface $em,
-        DonationRequestUtils $donationRequestUtils
-    ) {
+    public function __construct(EntityManagerInterface $em, DonationRequestUtils $donationRequestUtils)
+    {
         $this->em = $em;
         $this->donationRequestUtils = $donationRequestUtils;
 

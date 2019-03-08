@@ -239,9 +239,6 @@ class CitizenProjectCommand
         return $this->citizenProject && $this->citizenProject->isApproved();
     }
 
-    /**
-     * @return null|UploadedFile
-     */
     public function getImage(): ?UploadedFile
     {
         return $this->image;

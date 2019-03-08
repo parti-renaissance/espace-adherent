@@ -56,8 +56,13 @@ class Email
      */
     private $deliveredAt;
 
-    public function __construct(UuidInterface $uuid, string $messageClass, string $sender, array $recipients, string $requestPayload)
-    {
+    public function __construct(
+        UuidInterface $uuid,
+        string $messageClass,
+        string $sender,
+        array $recipients,
+        string $requestPayload
+    ) {
         $this->uuid = $uuid;
         $this->messageClass = $messageClass;
         $this->sender = $sender;

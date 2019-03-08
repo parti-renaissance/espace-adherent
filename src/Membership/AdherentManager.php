@@ -13,10 +13,8 @@ class AdherentManager
     private $manager;
     private $repository;
 
-    public function __construct(
-        AdherentRepository $repository,
-        ObjectManager $manager
-    ) {
+    public function __construct(AdherentRepository $repository, ObjectManager $manager)
+    {
         $this->repository = $repository;
         $this->manager = $manager;
     }

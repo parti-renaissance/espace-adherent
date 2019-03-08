@@ -101,8 +101,11 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         return $adherent;
     }
 
-    private function assertRepositoryBehavior(bool $isCalled, Adherent $adherent = null, bool $allowedToCreate = false): void
-    {
+    private function assertRepositoryBehavior(
+        bool $isCalled,
+        Adherent $adherent = null,
+        bool $allowedToCreate = false
+    ): void {
         if ($isCalled) {
             $this->committeeRepository->expects($this->once())
                 ->method('hasCommitteeInStatus')

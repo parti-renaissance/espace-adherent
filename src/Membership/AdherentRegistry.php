@@ -28,8 +28,10 @@ class AdherentRegistry
     private $em;
     private $emailSubscriptionHistoryHandler;
 
-    public function __construct(EntityManagerInterface $em, EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
+    ) {
         $this->em = $em;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
     }

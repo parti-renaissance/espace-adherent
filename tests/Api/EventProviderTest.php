@@ -83,8 +83,14 @@ class EventProviderTest extends TestCase
         );
     }
 
-    private function createCommitteeEventMock(string $uuid, string $slug, string $name, float $latitude = null, float $longitude = null, $withOrganizer = false)
-    {
+    private function createCommitteeEventMock(
+        string $uuid,
+        string $slug,
+        string $name,
+        float $latitude = null,
+        float $longitude = null,
+        $withOrganizer = false
+    ) {
         $event = $this->createMock(Event::class);
         $event->expects($this->any())->method('isGeocoded')->willReturn($latitude && $longitude);
         $event->expects($this->any())->method('getUuid')->willReturn(Uuid::fromString($uuid));

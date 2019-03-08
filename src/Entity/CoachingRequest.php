@@ -37,8 +37,11 @@ class CoachingRequest
      */
     private $requiredMeans;
 
-    public function __construct(string $problemDescription = '', string $proposedSolution = '', string $requiredMeans = '')
-    {
+    public function __construct(
+        string $problemDescription = '',
+        string $proposedSolution = '',
+        string $requiredMeans = ''
+    ) {
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;
         $this->requiredMeans = $requiredMeans;
