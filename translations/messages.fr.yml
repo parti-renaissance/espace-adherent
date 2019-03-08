@@ -268,6 +268,7 @@ referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents
 survey.create.success: Le questionnaire a bien été enregistré.
 survey.edit.success: Le questionnaire a bien été mis à jour.
 survey.duplicate.success: Le questionnaire a bien été dupliqué.
+survey.city.required: Vous devez spécifier une ville ou choisir "Département" comme zone concernée.
 
 #
 # Procuration
