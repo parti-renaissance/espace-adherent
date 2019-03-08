@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthoredInterface;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,10 +18,16 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\SurveyRepository")
  * @ORM\Table(name="jecoute_survey")
-
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     SurveyTypeEnum::LOCAL: "LocalSurvey",
+ *     SurveyTypeEnum::NATIONAL: "NationalSurvey"
+ * })
+ *
  * @Algolia\Index(autoIndex=false)
  */
-class Survey implements AuthoredInterface
+abstract class Survey implements AuthoredInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -186,6 +193,13 @@ class Survey implements AuthoredInterface
             ];
         }, $this->questions->toArray());
     }
+
+    public function getQuestionsCount(): int
+    {
+        return $this->questions->count();
+    }
+
+    abstract public function getType(): string;
 
     public function __clone()
     {

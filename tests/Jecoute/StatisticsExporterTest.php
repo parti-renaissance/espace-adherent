@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Jecoute;
 
+use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
@@ -36,7 +36,7 @@ class StatisticsExporterTest extends TestCase
 
     public function testExport(): void
     {
-        $survey = new Survey();
+        $survey = new LocalSurvey();
         $survey->setName('Questionnaire TestU');
 
         $question = new Question();
