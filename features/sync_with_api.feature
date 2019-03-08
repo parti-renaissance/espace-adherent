@@ -70,7 +70,7 @@ Feature:
     When I dispatch the "<event>" event event with "Réunion de réflexion parisienne"
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
       | <routing_key> | {"uuid":"1fc69fd0-2b34-4bd4-a0cc-834480480934","country":"FR","address":"60 avenue des Champs-Élysées","zipCode":"75008","city":"Paris 8e","latitude":48.870506,"longitude":2.313243,"name":"Réunion de réflexion parisienne","slug":"@string@.endsWith('-reunion-de-reflexion-parisienne')","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","capacity":50,"committeeUuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","categoryName":"Atelier du programme","tags":["75008","75"],"organizerUuid":"a046adbe-9c7b-56a9-a676-6151a6785dda", "timeZone": "Europe/Paris"} |
     Examples:
       | event         | routing_key   |
@@ -123,12 +123,14 @@ Feature:
       | LoadCitizenActionData         |
     And I clean the "api_sync" queue
     When I dispatch the "<event>" citizen action event with "Projet citoyen de Zürich"
-    Then "api_sync" should have 0 message
-
+    Then "api_sync" should have 1 message
+    And "api_sync" should have message below:
+      | routing_key   | body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+      | <routing_key> | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f","country":"CH","address":"30 Zeppelinstrasse","zipCode":"8057","city":"Z\u00fcrich","latitude":47.395004,"longitude":8.53838,"name":"Projet citoyen de Z\u00fcrich","slug":"@string@.endsWith('-projet-citoyen-de-zurich')","timeZone":"Europe\/Zurich","beginAt":"@string@.isDateTime()","finishAt":"@string@.isDateTime()","participantsCount":1,"status":"SCHEDULED","categoryName":"Action citoyenne","citizenProjectUuid":"942201fe-bffa-4fed-a551-71c3e49cea43","organizerUuid":"313bd28f-efc8-57c9-8ab7-2106c8be9697"}  |
     Examples:
-      | event                  |
-      | citizen_action.created |
-      | citizen_action.updated |
+      | event                  | routing_key            |
+      | citizen_action.created | citizen_action.created |
+      | citizen_action.updated | citizen_action.updated |
 
   Scenario: Publish message on citizen action deleted
     Given the following fixtures are loaded:
@@ -138,4 +140,7 @@ Feature:
       | LoadCitizenActionData         |
     And I clean the "api_sync" queue
     When I dispatch the "citizen_action.deleted" citizen action event with "Projet citoyen de Zürich"
-    Then "api_sync" should have 0 message
+    Then "api_sync" should have 1 message
+    And "api_sync" should have message below:
+      | routing_key            | body                                            |
+      | citizen_action.deleted | {"uuid":"3f46976e-e76a-476e-86d7-575c6d3bc15f"} |

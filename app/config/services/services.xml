@@ -355,6 +355,11 @@
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
 
+        <!-- CitizenAction subscriber -->
+        <service id="AppBundle\CitizenAction\EventListener\CitizenActionSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
+        </service>
+
         <service id="AppBundle\Statistics\Acquisition\Aggregator" />
 
         <!-- Statistics Calculators -->
