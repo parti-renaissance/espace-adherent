@@ -68,7 +68,7 @@ class LoadIdeaData extends AbstractFixture implements DependentFixtureInterface
         $this->addReference('idea-help-ecology', $ideaHelpEcology);
 
         $ideaHelpPeople = new Idea(
-            'Aider les gens',
+            'Aider les gens ?!“”‘’‛‟.,‚„"^°…:;&#_¯–‑—@%‰/\¨`+-$*<>×÷()€«»~',
             'Nam laoreet eros diam, vitae hendrerit libero interdum nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.',
             AuthorCategoryEnum::QG,
             null,
