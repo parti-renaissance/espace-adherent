@@ -1,62 +1,75 @@
 .autocomplete {
-	&__wrapper {
-		border: 1px solid $platinum;
-		max-height: 350px;
-		overflow: scroll;
-		margin-top: -8px;
+  &__wrapper {
+    border: 1px solid $platinum;
+    max-height: 350px;
+    overflow: scroll;
+    margin-top: -8px;
 
-		a:focus,
-		a:hover {
-			li {
-				background-color: $back-grey;
-			}
-		}
-		li {
-			border-bottom: 1px solid $platinum;
+    a:focus,
+    a:hover {
+      li {
+        background-color: $back-grey;
+      }
+    }
+    li {
+      border-bottom: 1px solid $platinum;
 
-			&:hover {
-				background-color: $back-grey;
-			}
-			&:focus {
-				background-color: $back-grey;
-			}
-		}
-		p {
-			margin: 0;
-			color: black;
-			display: block;
-			width: 90%;
-		}
-		span {
-			font-size: 14px;
-		}
-	}
-	&__help {
-		p {
-			background-color: $glitter;
-			padding: 10px 15px;
-			width: 100%;
-			font-size: 14px;
-			color: $slate-grey;
-		}
-	}
+      &:hover {
+        background-color: $back-grey;
+      }
+      &:focus {
+        background-color: $back-grey;
+      }
+    }
+    p {
+      margin: 0;
+      color: black;
+      display: block;
+      width: 90%;
+    }
+    span {
+      font-size: 14px;
+    }
+  }
+  &__help {
+    background-color: $glitter;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: $slate-grey;
 
-	&__name {
-		display: flex;
-		justify-content: space-between;
-		padding: 15px 15px 0 15px;
-	}
-	&__numbers {
-		display: flex;
-		padding: 0 15px 10px 15px;
+    img {
+      transition: opacity 0.3s;
 
-		span {
-			margin-right: 5px;
-			display: flex;
+      &:hover {
+        transition: opacity 0.3s;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+    }
 
-			img {
-				margin-right: 5px;
-			}
-		}
-	}
+    p {
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+  &__name {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 15px 0 15px;
+  }
+  &__numbers {
+    display: flex;
+    padding: 0 15px 10px 15px;
+
+    span {
+      margin-right: 5px;
+      display: flex;
+
+      img {
+        margin-right: 5px;
+      }
+    }
+  }
 }

@@ -7,7 +7,8 @@ import classNames from 'classnames';
 class TextAreaWithAutoComplete extends Component {
   state = {
     value: '',
-    autoCompleteIsOpen: false
+    autoCompleteIsOpen: false,
+    autoCompleteIsDisabled: false
   };
 
   handleChange(e) {
@@ -18,7 +19,7 @@ class TextAreaWithAutoComplete extends Component {
     }
   }
   showAutoComplete(e) {
-    if (!this.state.autoCompleteIsOpen) {
+    if (!this.state.autoCompleteIsOpen && !this.state.autoCompleteIsDisabled) {
       this.setState({ autoCompleteIsOpen: true });
     } else return;
   }
@@ -27,6 +28,11 @@ class TextAreaWithAutoComplete extends Component {
       this.setState({ autoCompleteIsOpen: false });
     } else return;
   }
+  disableAutoComplete(e) {
+    this.hideComplete(e);
+    this.setState({ autoCompleteIsDisabled: true });
+  }
+
   render() {
     return (
       <ClickOutside onClick={e => this.hideComplete(e)}>
@@ -54,7 +60,11 @@ class TextAreaWithAutoComplete extends Component {
             )}
           </div>
           {this.props.haveAutoComplete && 1 <= this.props.value.length && this.state.autoCompleteIsOpen && (
-            <AutoComplete options={this.props.autoCompleteValues} value={this.state.value} />
+            <AutoComplete
+              options={this.props.autoCompleteValues}
+              value={this.state.value}
+              onClick={e => this.disableAutoComplete(e)}
+            />
           )}
           {this.props.error && <p className="text-area__error">{this.props.error}</p>}
         </div>
