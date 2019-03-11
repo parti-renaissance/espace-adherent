@@ -40,8 +40,8 @@ class EventTest extends TestCase
             ['Europe/Paris', '+3 hours'],
             ['Europe/Paris', '+24 hours'],
             ['America/New_York', '-1 hours'],
-            ['America/Indiana/Indianapolis', '-5 hours'],
-            ['America/Los_Angeles', '-8 hours'],
+            ['America/Indiana/Indianapolis', '-3 hours'],
+            ['America/Los_Angeles', '-6 hours'],
         ];
     }
 
