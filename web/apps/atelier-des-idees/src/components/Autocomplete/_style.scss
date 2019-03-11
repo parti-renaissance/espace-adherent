@@ -36,7 +36,6 @@
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    color: $slate-grey;
 
     img {
       transition: opacity 0.3s;
@@ -51,6 +50,7 @@
     p {
       width: 100%;
       font-size: 14px;
+      color: $slate-grey;
     }
   }
 
@@ -58,6 +58,10 @@
     display: flex;
     justify-content: space-between;
     padding: 15px 15px 0 15px;
+
+    p {
+      font-weight: 600;
+    }
   }
   &__numbers {
     display: flex;
