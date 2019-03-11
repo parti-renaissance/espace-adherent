@@ -79,6 +79,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityPersonNameTrait;
     use EntityPostAddressTrait;
     use LazyCollectionTrait;
+    use EntityReferentTagTrait;
 
     /**
      * @ORM\Column(length=25, unique=true, nullable=true)
@@ -258,13 +259,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\AdherentTag")
      */
     private $tags;
-
-    /**
-     * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
-     */
-    private $referentTags;
 
     /**
      * @var District|null
@@ -1247,14 +1241,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @return Collection|ReferentTag[]
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
-    }
-
-    /**
      * @JMS\VirtualProperty
      * @JMS\Groups({"adherent_change_diff"})
      * @JMS\SerializedName("referentTagCodes")
@@ -1262,23 +1248,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getReferentTagCodes(): array
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->referentTags->toArray());
-    }
-
-    public function addReferentTag(ReferentTag $referentTag): void
-    {
-        if (!$this->referentTags->contains($referentTag)) {
-            $this->referentTags->add($referentTag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTags->remove($referentTag);
-    }
-
-    public function clearReferentTags(): void
-    {
-        $this->referentTags->clear();
     }
 
     public function getCitizenProjectCreationEmailSubscriptionRadius(): int

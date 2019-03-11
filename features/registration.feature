@@ -49,8 +49,8 @@ Feature:
     Then the adherent "jp@test.com" should have the "94" referent tag
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                            |
-      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"94320","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | routing_key  | body                                                                                                                                                                       |
+      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"94320","tags":["94"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
@@ -114,8 +114,8 @@ Feature:
     And the response status code should be 200
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                            |
-      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"CH","zipCode":"38000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | routing_key  | body                                                                                                                                                                       |
+      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"CH","zipCode":"38000","tags":["CH"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I clean the "api_sync" queue
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
@@ -191,8 +191,8 @@ Feature:
     And I should see "Votre compte adhérent est maintenant actif."
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
-      | routing_key  | body                                                                                                                                                         |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"06000","emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | routing_key  | body                                                                                                                                                                       |
+      | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"06000","tags":["06"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 2 emails
     And the adherent "jp@test.com" should have the "06" referent tag
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
@@ -286,7 +286,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                                             |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
+      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
     And I clean the "api_sync" queue
 
   @javascript
