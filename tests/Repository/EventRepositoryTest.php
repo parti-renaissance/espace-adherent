@@ -47,7 +47,7 @@ class EventRepositoryTest extends WebTestCase
         $request = new Request($query);
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
-        $this->assertSame(7, \count($this->repository->searchAllEvents($search)));
+        $this->assertSame(8, \count($this->repository->searchAllEvents($search)));
 
         $query = [
             'q' => '',
