@@ -10,7 +10,9 @@
         {{ form_start(interactive_form) }}
 
         <h4 class="interactive__title text--medium b__nudge--bottom text--center">
-            Quelle(s) valeur(s) importe(nt) à {{ interactive.friendFirstName }} ? (max 2)
+            La(es)quelle(s) de ces valeurs importe(nt) le plus à votre ami(e) ?
+            <br />
+            <span class="text--italic text--normal text--light-gray text--small">(2 choix maxi)</span>
         </h4>
 
         {{ form_errors(interactive_form) }}
@@ -27,7 +29,7 @@
         </div>
 
         <div class="text--center b__nudge--top-large">
-            <a href="{{ path('app_purchasing_power_restart') }}" class="btn">Recommencer</a>
+            <a href="{{ path('app_my_europe_restart') }}" class="btn">Recommencer</a>
             {{ form_widget(interactive_form.fill_appreciations, {'attr': {'class': 'btn btn--blue'}}) }}
         </div>
 

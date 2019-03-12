@@ -2,13 +2,13 @@
 
 namespace AppBundle\Interactive;
 
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Entity\PurchasingPowerInvitation;
+use AppBundle\Entity\MyEuropeChoice;
+use AppBundle\Entity\MyEuropeInvitation;
 
-class PurchasingPowerSerializer
+class MyEuropeSerializer
 {
     /**
-     * @param PurchasingPowerChoice[] $choices
+     * @param MyEuropeChoice[] $choices
      */
     public function serializeChoices(array $choices): string
     {
@@ -37,7 +37,7 @@ class PurchasingPowerSerializer
     }
 
     /**
-     * @param PurchasingPowerInvitation[] $invitations
+     * @param MyEuropeInvitation[] $invitations
      */
     public function serializeInvitations(array $invitations): string
     {

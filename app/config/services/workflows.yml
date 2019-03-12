@@ -31,29 +31,29 @@ framework:
                     from:
                         - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SUMMARY
                     to: !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SENT
-        purchasing_power:
+        my_europe:
             type: state_machine
-            supports: [AppBundle\Interactive\PurchasingPowerProcessor]
+            supports: [AppBundle\Interactive\MyEuropeProcessor]
             places:
-                - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_INFO
-                - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_CASES
-                - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
-                - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_SUMMARY
-                - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_SENT
+                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
+                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
+                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
+                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
+                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SENT
             transitions:
-                !php/const AppBundle\Interactive\PurchasingPowerProcessor::TRANSITION_FILL_INFO:
+                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_FILL_INFO:
                     from:
-                        - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_INFO
-                    to: !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_CASES
-                !php/const AppBundle\Interactive\PurchasingPowerProcessor::TRANSITION_FILL_CASES:
+                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
+                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
+                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_FILL_CASES:
                     from:
-                        - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_CASES
-                    to: !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
-                !php/const AppBundle\Interactive\PurchasingPowerProcessor::TRANSITION_FILL_APPRECIATIONS:
+                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
+                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
+                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_FILL_APPRECIATIONS:
                     from:
-                        - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
-                    to: !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_SUMMARY
-                !php/const AppBundle\Interactive\PurchasingPowerProcessor::TRANSITION_SEND:
+                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
+                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
+                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_SEND:
                     from:
-                        - !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_SUMMARY
-                    to: !php/const AppBundle\Interactive\PurchasingPowerProcessor::STATE_SENT
+                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
+                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SENT

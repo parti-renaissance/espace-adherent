@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">
-                        Export des pouvoirs d'achat
+                        Export des Mon Europe
                     </a>
                 </div>
             </div>
@@ -14,9 +14,9 @@
     </div>
 {% endblock %}
 
-{% set urlAdminList = path('admin_app_purchasingpowerinvitation_list') %}
-{% set filenameCsv = 'purchasing-power-invitations.csv' %}
-{% set urlAdminExportPartial = path('app_admin_purchasingpower_export_invitations_partial') %}
+{% set urlAdminList = path('admin_app_myeuropeinvitation_list') %}
+{% set filenameCsv = 'my-europe-invitations.csv' %}
+{% set urlAdminExportPartial = path('app_admin_myeurope_export_invitations_partial') %}
 
 {% block sonata_admin_content %}
     {% block notice %}

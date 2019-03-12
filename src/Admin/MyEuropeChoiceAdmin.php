@@ -2,13 +2,13 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\MyEuropeChoice;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class PurchasingPowerChoiceAdmin extends AbstractAdmin
+class MyEuropeChoiceAdmin extends AbstractAdmin
 {
     protected $maxPerPage = 200;
     protected $datagridValues = [
@@ -50,7 +50,7 @@ class PurchasingPowerChoiceAdmin extends AbstractAdmin
             ])
             ->add('step', ChoiceType::class, [
                 'label' => 'Étape',
-                'choices' => PurchasingPowerChoice::STEPS,
+                'choices' => MyEuropeChoice::STEPS,
                 'choice_translation_domain' => 'forms',
             ])
         ;

@@ -62,7 +62,6 @@ final class InvitationProcessor
     /**
      * @var TonMacronChoice|null
      *
-     * @Assert\NotBlank(groups={"fill_info"})
      * @Assert\Type("AppBundle\Entity\TonMacronChoice", groups={"fill_info"})
      */
     public $friendPosition;

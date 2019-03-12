@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\PurchasingPowerInvitation;
-use AppBundle\Form\PurchasingPowerType;
+use AppBundle\Entity\MyEuropeInvitation;
+use AppBundle\Form\MyEuropeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,55 +13,55 @@ use Symfony\Component\HttpFoundation\Response;
 class InteractiveController extends Controller
 {
     /**
-     * @Route("/ton-pouvoir-achat", name="app_purchasing_power")
+     * @Route("/mon-europe", name="app_my_europe")
      * @Method("GET|POST")
      */
-    public function purchasingPowerAction(Request $request): Response
+    public function myEuropeAction(Request $request): Response
     {
         $session = $request->getSession();
-        $handler = $this->get('app.interactive.purchasing_power_processor_handler');
-        $purchasingPower = $handler->start($session);
-        $transition = $handler->getCurrentTransition($purchasingPower);
+        $handler = $this->get('app.interactive.my_europe_processor_handler');
+        $myEurope = $handler->start($session);
+        $transition = $handler->getCurrentTransition($myEurope);
 
-        $form = $this->createForm(PurchasingPowerType::class, $purchasingPower, ['transition' => $transition]);
+        $form = $this->createForm(MyEuropeType::class, $myEurope, ['transition' => $transition]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($purchasingPowerLog = $this->get('app.interactive.purchasing_power_processor_handler')->process($session, $purchasingPower)) {
-                return $this->redirectToRoute('app_purchasing_power_mail_sent', [
-                    'uuid' => $purchasingPowerLog->getUuid()->toString(),
+            if ($myEuropeLog = $this->get('app.interactive.my_europe_processor_handler')->process($session, $myEurope)) {
+                return $this->redirectToRoute('app_my_europe_mail_sent', [
+                    'uuid' => $myEuropeLog->getUuid()->toString(),
                 ]);
             }
 
-            return $this->redirectToRoute('app_purchasing_power');
+            return $this->redirectToRoute('app_my_europe');
         }
 
-        return $this->render('interactive/purchasing_power.html.twig', [
-            'interactive' => $purchasingPower,
+        return $this->render('interactive/my_europe.html.twig', [
+            'interactive' => $myEurope,
             'interactive_form' => $form->createView(),
             'transition' => $transition,
         ]);
     }
 
     /**
-     * @Route("/ton-pouvoir-achat/recommencer", name="app_purchasing_power_restart")
+     * @Route("/mon-europe/recommencer", name="app_my_europe_restart")
      * @Method("GET")
      */
-    public function restartPurchasingPowerAction(Request $request): Response
+    public function restartMyEuropeAction(Request $request): Response
     {
-        $this->get('app.interactive.purchasing_power_processor_handler')->terminate($request->getSession());
+        $this->get('app.interactive.my_europe_processor_handler')->terminate($request->getSession());
 
-        return $this->redirectToRoute('app_purchasing_power');
+        return $this->redirectToRoute('app_my_europe');
     }
 
     /**
-     * @Route("/ton-pouvoir-achat/{uuid}/merci", name="app_purchasing_power_mail_sent")
+     * @Route("/mon-europe/{uuid}/merci", name="app_my_europe_mail_sent")
      * @Method("GET")
      */
-    public function mailSentAction(PurchasingPowerInvitation $purchasingPower): Response
+    public function mailSentAction(MyEuropeInvitation $myEurope): Response
     {
         return $this->render('interactive/mail_sent.html.twig', [
-            'interactive' => $purchasingPower,
+            'interactive' => $myEurope,
         ]);
     }
 }

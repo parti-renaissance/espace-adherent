@@ -29,8 +29,8 @@ use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Entity\PurchasingPowerInvitation;
+use AppBundle\Entity\MyEuropeChoice;
+use AppBundle\Entity\MyEuropeInvitation;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Entity\RepublicanSilence;
 use AppBundle\Entity\SubscriptionType;
@@ -62,8 +62,8 @@ use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
-use AppBundle\Repository\PurchasingPowerInvitationRepository;
+use AppBundle\Repository\MyEuropeChoiceRepository;
+use AppBundle\Repository\MyEuropeInvitationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\ThreadCommentRepository;
@@ -270,14 +270,14 @@ trait TestHelperTrait
         return $this->getRepository(TonMacronFriendInvitation::class);
     }
 
-    public function getPurchasingPowerChoiceRepository(): PurchasingPowerChoiceRepository
+    public function getMyEuropeChoiceRepository(): MyEuropeChoiceRepository
     {
-        return $this->getRepository(PurchasingPowerChoice::class);
+        return $this->getRepository(MyEuropeChoice::class);
     }
 
-    public function getPurchasingPowerInvitationRepository(): PurchasingPowerInvitationRepository
+    public function getMyEuropeInvitationRepository(): MyEuropeInvitationRepository
     {
-        return $this->getRepository(PurchasingPowerInvitation::class);
+        return $this->getRepository(MyEuropeInvitation::class);
     }
 
     public function getEmailSubscriptionHistoryRepository(): EmailSubscriptionHistoryRepository

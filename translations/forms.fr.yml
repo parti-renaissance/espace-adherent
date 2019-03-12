@@ -14,12 +14,11 @@ ton_macron.friend_interests: Étape 3 - Sélectionnez 2 sujets qui intéressent 
 ton_macron.self_reasons: Étape 4 - Éxpliquez à votre ce qui plaît chez Emmanuel Macron
 
 #
-# Interactives => Purchasing Power => Choix
+# Interactives => My Europe => Choix
 #
-purchasing_power.not_visible: Étape 0 - Morceaux qui apparaitront pour tout le monde
-purchasing_power.friend_professional_position: Étape 1 - Quelle est la situation professionnelle de votre ami(e) ? [ 1 choix ]
-purchasing_power.friend_cases: Étape 2 - Votre ami(e) est-il(elle) dans une des situations suivantes ? [ 2 choix possibles aujourd'hui]
-purchasing_power.friend_appreciations: Étape 3 - Laquelle de ces valeurs importe le plus pour votre ami(e) ? [ 2 choix possibles aujourd'hui]
+my_europe.not_visible: Étape 0 - Morceaux qui apparaitront pour tout le monde
+my_europe.friend_cases: Étape 1 - Votre ami(e) est-il(elle) dans une des situations suivantes ? [ 2 choix possibles aujourd'hui]
+my_europe.friend_appreciations: Étape 2 - Laquelle de ces valeurs importe le plus pour votre ami(e) ? [ 2 choix possibles aujourd'hui]
 
 #
 # Unregistrations choices

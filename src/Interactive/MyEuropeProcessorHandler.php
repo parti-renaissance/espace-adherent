@@ -2,16 +2,16 @@
 
 namespace AppBundle\Interactive;
 
-use AppBundle\Entity\PurchasingPowerInvitation;
-use AppBundle\Mailer\Message\PurchasingPowerMessage;
+use AppBundle\Entity\MyEuropeInvitation;
+use AppBundle\Mailer\Message\MyEuropeMessage;
 use AppBundle\Mailer\MailerService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
 
-final class PurchasingPowerProcessorHandler
+final class MyEuropeProcessorHandler
 {
-    const SESSION_KEY = 'purchasing_power';
+    const SESSION_KEY = 'my_europe';
 
     private $builder;
     private $manager;
@@ -19,7 +19,7 @@ final class PurchasingPowerProcessorHandler
     private $stateMachine;
 
     public function __construct(
-        PurchasingPowerMessageBodyBuilder $builder,
+        MyEuropeMessageBodyBuilder $builder,
         ObjectManager $manager,
         MailerService $mailer,
         StateMachine $stateMachine
@@ -30,12 +30,12 @@ final class PurchasingPowerProcessorHandler
         $this->stateMachine = $stateMachine;
     }
 
-    public function start(SessionInterface $session): PurchasingPowerProcessor
+    public function start(SessionInterface $session): MyEuropeProcessor
     {
-        return $session->get(self::SESSION_KEY, new PurchasingPowerProcessor());
+        return $session->get(self::SESSION_KEY, new MyEuropeProcessor());
     }
 
-    public function save(SessionInterface $session, PurchasingPowerProcessor $processor): void
+    public function save(SessionInterface $session, MyEuropeProcessor $processor): void
     {
         $session->set(self::SESSION_KEY, $processor);
     }
@@ -45,7 +45,7 @@ final class PurchasingPowerProcessorHandler
         $session->remove(self::SESSION_KEY);
     }
 
-    public function getCurrentTransition(PurchasingPowerProcessor $processor): string
+    public function getCurrentTransition(MyEuropeProcessor $processor): string
     {
         return current($this->stateMachine->getEnabledTransitions($processor))->getName();
     }
@@ -53,27 +53,27 @@ final class PurchasingPowerProcessorHandler
     /**
      * Returns whether the process is finished or not.
      */
-    public function process(SessionInterface $session, PurchasingPowerProcessor $processor): ?PurchasingPowerInvitation
+    public function process(SessionInterface $session, MyEuropeProcessor $processor): ?MyEuropeInvitation
     {
-        if ($this->stateMachine->can($processor, PurchasingPowerProcessor::TRANSITION_SEND)) {
+        if ($this->stateMachine->can($processor, MyEuropeProcessor::TRANSITION_SEND)) {
             // End process
             $processor->refreshChoices($this->manager); // merge objects from session before mapping them in the entity
-            $purchasingPower = PurchasingPowerInvitation::createFromProcessor($processor);
+            $myEurope = MyEuropeInvitation::createFromProcessor($processor);
 
-            $this->manager->persist($purchasingPower);
+            $this->manager->persist($myEurope);
             $this->manager->flush();
 
-            $this->mailer->sendMessage(PurchasingPowerMessage::createFromInvitation($purchasingPower));
+            $this->mailer->sendMessage(MyEuropeMessage::createFromInvitation($myEurope));
             $this->terminate($session);
-            $this->stateMachine->apply($processor, PurchasingPowerProcessor::TRANSITION_SEND);
+            $this->stateMachine->apply($processor, MyEuropeProcessor::TRANSITION_SEND);
 
-            return $purchasingPower;
+            return $myEurope;
         }
 
         // Continue processing
         $this->stateMachine->apply($processor, $this->getCurrentTransition($processor));
 
-        if ($this->stateMachine->can($processor, PurchasingPowerProcessor::TRANSITION_SEND)) {
+        if ($this->stateMachine->can($processor, MyEuropeProcessor::TRANSITION_SEND)) {
             $this->builder->buildMessageBody($processor);
         }
 
