@@ -63,19 +63,19 @@
         <service id="app.ton_macron.serializer" class="AppBundle\TonMacron\TonMacronSerializer" />
 
         <!-- Interactives -->
-        <service id="app.interactive.purchasing_power_processor_handler" class="AppBundle\Interactive\PurchasingPowerProcessorHandler">
-            <argument type="service" id="app.purchasing_power.message_body_builder"/>
+        <service id="app.interactive.my_europe_processor_handler" class="AppBundle\Interactive\MyEuropeProcessorHandler">
+            <argument type="service" id="app.my_europe.message_body_builder"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
-            <argument type="service" id="state_machine.purchasing_power"/>
+            <argument type="service" id="state_machine.my_europe"/>
         </service>
 
-        <service id="app.purchasing_power.message_body_builder" class="AppBundle\Interactive\PurchasingPowerMessageBodyBuilder">
+        <service id="app.my_europe.message_body_builder" class="AppBundle\Interactive\MyEuropeMessageBodyBuilder">
             <argument type="service" id="twig"/>
-            <argument type="service" id="AppBundle\Repository\PurchasingPowerChoiceRepository"/>
+            <argument type="service" id="AppBundle\Repository\MyEuropeChoiceRepository"/>
         </service>
 
-        <service id="app.purchasing_power.serializer" class="AppBundle\Interactive\PurchasingPowerSerializer" />
+        <service id="app.my_europe.serializer" class="AppBundle\Interactive\MyEuropeSerializer" />
 
         <!-- Facebook filters -->
         <service id="app.facebook.profile_importer" class="AppBundle\Facebook\ProfileImporter">

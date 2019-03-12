@@ -17,7 +17,7 @@
 
                     {% if admin.datagrid.results|length > 0 %}
 
-                        {% for stepName, stepNumber in constant('AppBundle\\Entity\\PurchasingPowerChoice::STEPS') %}
+                        {% for stepName, stepNumber in constant('AppBundle\\Entity\\MyEuropeChoice::STEPS') %}
                             {% set objects = [] %}
                             {% for object in admin.datagrid.results if object.step == stepNumber %}
                                 {% set objects = objects|merge({ (loop.index0): object}) %}

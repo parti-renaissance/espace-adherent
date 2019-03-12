@@ -1,4 +1,10 @@
 <section class="interactive__content space--60-0">
+    <ul class="tonmacron__steps">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
     <div class="interactive__banner__form-container l__wrapper--500">
         <div class="interactive__banner__form">
             {{ form_start(interactive_form) }}
@@ -23,12 +29,6 @@
                 {{ form_widget(interactive_form.friendAge, { 'attr': { 'class': 'form--full' } }) }}
             </div>
 
-            <div class="form__row">
-                {{ form_label(interactive_form.friendPosition) }}
-                {{ form_errors(interactive_form.friendPosition) }}
-                {{ form_widget(interactive_form.friendPosition, { 'attr': { 'class': 'form--full' } }) }}
-            </div>
-
             <div class="text--center b__nudge--top-large">
                 {{ form_widget(interactive_form.fill_info, {'attr': {'class': 'btn btn--blue'}}) }}
             </div>
@@ -43,7 +43,7 @@
             </p>
             <p>
                 Vos informations ne pourront être communiquées qu'aux personnes habilitées
-                de laREM et aux co-contractants qui, en leur qualité de sous-traitants de laREM,
+                de LaREM et aux co-contractants qui, en leur qualité de sous-traitants de LaREM,
                 n'agiront que sur les instructions de cette dernière et seront soumis à une stricte
                 obligation de confidentialité. Certains de ces partenaires peuvent avoir des activités
                 dans des pays situés en dehors de l’Union Européenne, notamment aux fins d’hébergement

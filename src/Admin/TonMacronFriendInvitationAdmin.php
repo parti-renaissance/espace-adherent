@@ -36,9 +36,6 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
             ])
-            ->add('friendEmailAddress', null, [
-                'label' => 'Email de l’ami',
-            ])
             ->add('authorEmailAddress', null, [
                 'label' => 'Email de l’auteur',
             ])
@@ -71,9 +68,6 @@ class TonMacronFriendInvitationAdmin extends AbstractAdmin
             ])
             ->add('friendPosition', null, [
                 'label' => 'Statut professionnel de l’ami',
-            ])
-            ->add('friendEmailAddress', null, [
-                'label' => 'Email de l’ami',
             ])
             ->add('authorFirstName', null, [
                 'label' => 'Prénom de l’auteur',

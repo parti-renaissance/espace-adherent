@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "purchasing_power": "AppBundle\Entity\PurchasingPowerInvitation",
+ *     "my_europe": "AppBundle\Entity\MyEuropeInvitation",
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -42,12 +42,12 @@ abstract class InteractiveInvitation
     protected $friendGender;
 
     /**
-     * @ORM\Column(length=50)
+     * @ORM\Column(length=50, nullable=true)
      */
     protected $friendPosition;
 
     /**
-     * @ORM\Column(nullable=true)
+     * Property value is still used to send a mail, but it should not be stored in the base.
      */
     protected $friendEmailAddress;
 

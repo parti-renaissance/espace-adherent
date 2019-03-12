@@ -829,19 +829,19 @@
             <argument />
         </service>
 
-        <service id="app.admin.purchasing_power_choice" class="AppBundle\Admin\PurchasingPowerChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Choix" group="Archives" />
+        <service id="app.admin.my_europe_choice" class="AppBundle\Admin\MyEuropeChoiceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Mon Europe » Choix" group="Archives" />
 
             <argument />
-            <argument>AppBundle\Entity\PurchasingPowerChoice</argument>
+            <argument>AppBundle\Entity\MyEuropeChoice</argument>
             <argument />
         </service>
 
-        <service id="app.admin.purchasing_power_invitation" class="AppBundle\Admin\PurchasingPowerInvitationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton pouvoir d'achat » Invitations" group="Archives" />
+        <service id="app.admin.my_europe_invitation" class="AppBundle\Admin\MyEuropeInvitationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Mon Europe » Invitations" group="Archives" />
 
             <argument />
-            <argument>AppBundle\Entity\PurchasingPowerInvitation</argument>
+            <argument>AppBundle\Entity\MyEuropeInvitation</argument>
             <argument />
         </service>
 

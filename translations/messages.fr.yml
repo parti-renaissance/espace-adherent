@@ -366,6 +366,7 @@ interactive.form.male: Homme
 interactive.form.female: Femme
 interactive.form.friend_first_name: Son prénom
 interactive.form.friend_age: Son âge
+interactive.form.friend_gender: Son genre
 interactive.form.friend_position: Sa situation professionnelle
 interactive.form.submit_fill_info: Continuer
 interactive.form.submit_fill_project: Continuer

@@ -2,26 +2,26 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
+use AppBundle\Entity\MyEuropeChoice;
+use AppBundle\Repository\MyEuropeChoiceRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchasingPowerChoiceEntityType extends AbstractType
+class MyEuropeChoiceEntityType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setRequired('step')
-            ->setAllowedValues('step', array_keys(PurchasingPowerChoice::STEPS))
+            ->setAllowedValues('step', array_keys(MyEuropeChoice::STEPS))
             ->setDefaults([
-                'class' => PurchasingPowerChoice::class,
+                'class' => MyEuropeChoice::class,
                 'query_builder' => function (Options $options) {
                     $step = $options['step'];
 
-                    return function (PurchasingPowerChoiceRepository $repository) use ($step) {
+                    return function (MyEuropeChoiceRepository $repository) use ($step) {
                         return $repository->createQueryBuilderForStep($step);
                     };
                 },

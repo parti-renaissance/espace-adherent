@@ -2,12 +2,12 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\MyEuropeChoice;
 use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\PurchasingPowerChoiceRepository;
-use AppBundle\Repository\PurchasingPowerInvitationRepository;
-use AppBundle\Interactive\PurchasingPowerProcessor;
-use AppBundle\Interactive\PurchasingPowerProcessorHandler;
+use AppBundle\Repository\MyEuropeChoiceRepository;
+use AppBundle\Repository\MyEuropeInvitationRepository;
+use AppBundle\Interactive\MyEuropeProcessor;
+use AppBundle\Interactive\MyEuropeProcessorHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -20,67 +20,64 @@ class InteractiveControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    const PURCHASING_POWER_PATH = '/ton-pouvoir-achat';
-    const PURCHASING_POWER_RESTART_PATH = '/ton-pouvoir-achat/recommencer';
-    const PURCHASING_POWER_SENT_PATH = '/ton-pouvoir-achat/%s/merci';
+    const MY_EUROPE_PATH = '/mon-europe';
+    const MY_EUROPE_RESTART_PATH = '/mon-europe/recommencer';
+    const MY_EUROPE_SENT_PATH = '/mon-europe/%s/merci';
 
-    /* @var PurchasingPowerChoiceRepository */
-    private $PurchasingPowerChoiceRepository;
+    /* @var MyEuropeChoiceRepository */
+    private $MyEuropeChoiceRepository;
 
-    /* @var PurchasingPowerInvitationRepository */
-    private $PurchasingPowerInvitationRepository;
+    /* @var MyEuropeInvitationRepository */
+    private $MyEuropeInvitationRepository;
 
     /* @var EmailRepository */
     private $emailRepository;
 
-    public function testPurchasingPowerAction()
+    public function testMyEuropeAction()
     {
         $this->assertCount(0, $this->emailRepository->findAll());
 
-        $purchasingPower = new PurchasingPowerProcessor();
+        $myEurope = new MyEuropeProcessor();
 
-        $crawler = $this->client->request(Request::METHOD_GET, self::PURCHASING_POWER_PATH);
+        $crawler = $this->client->request(Request::METHOD_GET, self::MY_EUROPE_PATH);
 
-        $this->assertEquals($purchasingPower, $this->getCurrentPurchasingPower());
+        $this->assertEquals($myEurope, $this->getCurrentMyEurope());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, $crawler->filter('button[name="purchasing_power[fill_info]"]'));
+        $this->assertCount(1, $crawler->filter('button[name="my_europe[fill_info]"]'));
 
-        $this->client->submit($crawler->filter('form[name="purchasing_power"]')->form([
-            'purchasing_power[friendFirstName]' => $purchasingPower->friendFirstName = 'Mylène',
-            'purchasing_power[friendAge]' => '26',
-            'purchasing_power[friendGender]' => $purchasingPower->friendGender = 'female',
-            'purchasing_power[friendPosition]' => '31',
+        $this->client->submit($crawler->filter('form[name="my_europe"]')->form([
+            'my_europe[friendFirstName]' => $myEurope->friendFirstName = 'Mylène',
+            'my_europe[friendAge]' => '26',
+            'my_europe[friendGender]' => $myEurope->friendGender = 'female',
         ]));
 
-        $purchasingPower->friendAge = 26;
-        $purchasingPower->friendPosition = $this->getChoice(31);
-        $purchasingPower->marking = PurchasingPowerProcessor::STATE_NEEDS_FRIEND_CASES;
+        $myEurope->friendAge = 26;
+        $myEurope->marking = MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES;
 
-        $this->assertEquals($purchasingPower, $this->getCurrentPurchasingPower());
+        $this->assertEquals($myEurope, $this->getCurrentMyEurope());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(self::PURCHASING_POWER_PATH, $this->client);
+        $this->assertClientIsRedirectedTo(self::MY_EUROPE_PATH, $this->client);
     }
 
-    public function testRestartPurchasingPowerAction()
+    public function testRestartMyEuropeAction()
     {
-        $crawler = $this->client->request(Request::METHOD_GET, self::PURCHASING_POWER_PATH);
+        $crawler = $this->client->request(Request::METHOD_GET, self::MY_EUROPE_PATH);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->submit($crawler->filter('form[name="purchasing_power"]')->form([
-            'purchasing_power[friendFirstName]' => 'Mylène',
-            'purchasing_power[friendAge]' => '26',
-            'purchasing_power[friendGender]' => 'female',
-            'purchasing_power[friendPosition]' => '31',
+        $this->client->submit($crawler->filter('form[name="my_europe"]')->form([
+            'my_europe[friendFirstName]' => 'Mylène',
+            'my_europe[friendAge]' => '26',
+            'my_europe[friendGender]' => 'female',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(self::PURCHASING_POWER_PATH, $this->client);
+        $this->assertClientIsRedirectedTo(self::MY_EUROPE_PATH, $this->client);
 
         $this->client->followRedirect();
-        $this->client->request(Request::METHOD_GET, self::PURCHASING_POWER_RESTART_PATH);
+        $this->client->request(Request::METHOD_GET, self::MY_EUROPE_RESTART_PATH);
 
-        $this->assertNull($this->client->getRequest()->getSession()->get(PurchasingPowerProcessorHandler::SESSION_KEY));
+        $this->assertNull($this->client->getRequest()->getSession()->get(MyEuropeProcessorHandler::SESSION_KEY));
     }
 
     protected function setUp()
@@ -89,8 +86,8 @@ class InteractiveControllerTest extends WebTestCase
 
         $this->init();
 
-        $this->PurchasingPowerChoiceRepository = $this->getPurchasingPowerChoiceRepository();
-        $this->PurchasingPowerInvitationRepository = $this->getPurchasingPowerInvitationRepository();
+        $this->MyEuropeChoiceRepository = $this->getMyEuropeChoiceRepository();
+        $this->MyEuropeInvitationRepository = $this->getMyEuropeInvitationRepository();
         $this->emailRepository = $this->getEmailRepository();
     }
 
@@ -99,24 +96,24 @@ class InteractiveControllerTest extends WebTestCase
         $this->kill();
 
         $this->emailRepository = null;
-        $this->PurchasingPowerInvitationRepository = null;
-        $this->PurchasingPowerChoiceRepository = null;
+        $this->MyEuropeInvitationRepository = null;
+        $this->MyEuropeChoiceRepository = null;
 
         parent::tearDown();
     }
 
-    private function getPurchasingPowerInvitationHandler(): PurchasingPowerProcessorHandler
+    private function getMyEuropeInvitationHandler(): MyEuropeProcessorHandler
     {
-        return $this->container->get('app.interactive.purchasing_power_processor_handler');
+        return $this->container->get('app.interactive.my_europe_processor_handler');
     }
 
-    private function getCurrentPurchasingPower(): PurchasingPowerProcessor
+    private function getCurrentMyEurope(): MyEuropeProcessor
     {
-        return $this->getPurchasingPowerInvitationHandler()->start($this->client->getRequest()->getSession());
+        return $this->getMyEuropeInvitationHandler()->start($this->client->getRequest()->getSession());
     }
 
-    private function getChoice(int $id): ?PurchasingPowerChoice
+    private function getChoice(int $id): ?MyEuropeChoice
     {
-        return $this->PurchasingPowerChoiceRepository->find($id);
+        return $this->MyEuropeChoiceRepository->find($id);
     }
 }

@@ -11,7 +11,8 @@
         {{ form_errors(interactive_form) }}
 
             <h5 class="interactive__title text--medium text--center">
-                Quelle(s) situation(s) s'applique(nt) le plus à {{ interactive.friendFirstName }} ? (max 2)
+                Votre ami(e) vous dit que ...
+                <span class="text--italic text--normal text--light-gray text--small">(2 choix maxi)</span>
             </h5>
 
             <div class="form">
@@ -24,7 +25,7 @@
             </div>
 
             <div class="text--center b__nudge--top-large">
-                <a href="{{ path('app_purchasing_power_restart') }}" class="btn">Recommencer</a>
+                <a href="{{ path('app_my_europe_restart') }}" class="btn">Recommencer</a>
                 {{ form_widget(interactive_form.fill_cases, {'attr': {'class': 'btn btn--blue'}}) }}
             </div>
 

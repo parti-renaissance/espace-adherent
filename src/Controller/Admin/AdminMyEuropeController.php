@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Entity\PurchasingPowerChoice;
-use AppBundle\Entity\PurchasingPowerInvitation;
+use AppBundle\Entity\MyEuropeChoice;
+use AppBundle\Entity\MyEuropeInvitation;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,33 +14,33 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/purchasingpower")
- * @Security("has_role('ROLE_ADMIN_PURCHASING_POWER')")
+ * @Route("/myeurope")
+ * @Security("has_role('ROLE_ADMIN_MY_EUROPE')")
  */
-class AdminPurchasingPowerController extends Controller
+class AdminMyEuropeController extends Controller
 {
     const PER_PAGE = 1000;
 
     /**
-     * @Route("/export/choices", name="app_admin_purchasingpower_export_choices")
+     * @Route("/export/choices", name="app_admin_myeurope_export_choices")
      * @Method("GET")
      */
     public function exportChoicesAction(): Response
     {
-        $choices = $this->getDoctrine()->getRepository(PurchasingPowerChoice::class)->findAll();
-        $exported = $this->get('app.purchasing_power.serializer.serializer')->serializeChoices($choices);
+        $choices = $this->getDoctrine()->getRepository(MyEuropeChoice::class)->findAll();
+        $exported = $this->get('app.my_europe.serializer.serializer')->serializeChoices($choices);
 
-        return new SnappyResponse($exported, 'purchasing-power-choices.csv', 'text/csv');
+        return new SnappyResponse($exported, 'my-europe-choices.csv', 'text/csv');
     }
 
     /**
-     * @Route("/export/invitations", name="app_admin_purchasingpower_export_invitations")
+     * @Route("/export/invitations", name="app_admin_myeurope_export_invitations")
      * @Method("GET")
      */
     public function exportInvitationsAction(): Response
     {
         return $this->render('admin/interactive/invitation_export.html.twig', [
-            'total_count' => $this->getDoctrine()->getRepository(PurchasingPowerInvitation::class)->countForExport(),
+            'total_count' => $this->getDoctrine()->getRepository(MyEuropeInvitation::class)->countForExport(),
             'csv_header' => implode(',', [
                 'id',
                 'friend_firstName',
@@ -58,7 +58,7 @@ class AdminPurchasingPowerController extends Controller
     }
 
     /**
-     * @Route("/export/invitations/partial", name="app_admin_purchasingpower_export_invitations_partial")
+     * @Route("/export/invitations/partial", name="app_admin_myeurope_export_invitations_partial")
      * @Method("GET")
      */
     public function exportInvitationsPartialAction(Request $request): Response
@@ -66,11 +66,11 @@ class AdminPurchasingPowerController extends Controller
         $page = $request->query->get('page', 1);
 
         $manager = $this->getDoctrine()->getManager();
-        $invitations = $manager->getRepository(PurchasingPowerInvitation::class)->findPaginatedForExport($page, self::PER_PAGE);
+        $invitations = $manager->getRepository(MyEuropeInvitation::class)->findPaginatedForExport($page, self::PER_PAGE);
 
         return new JsonResponse([
             'count' => \count($invitations),
-            'lines' => $this->get('app.purchasing_power.serializer')->serializeInvitations($invitations),
+            'lines' => $this->get('app.my_europe.serializer')->serializeInvitations($invitations),
         ]);
     }
 }

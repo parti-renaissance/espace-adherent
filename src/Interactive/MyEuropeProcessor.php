@@ -2,12 +2,12 @@
 
 namespace AppBundle\Interactive;
 
-use AppBundle\Entity\PurchasingPowerChoice;
+use AppBundle\Entity\MyEuropeChoice;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class PurchasingPowerProcessor
+final class MyEuropeProcessor
 {
     const STATE_NEEDS_FRIEND_INFO = 'needs_friend_info';
     const STATE_NEEDS_FRIEND_CASES = 'needs_friend_cases';
@@ -56,17 +56,16 @@ final class PurchasingPowerProcessor
     public $friendGender;
 
     /**
-     * @var PurchasingPowerChoice|null
+     * @var MyEuropeChoice|null
      *
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Type("AppBundle\Entity\PurchasingPowerChoice", groups={"fill_info"})
+     * @Assert\Type("AppBundle\Entity\MyEuropeChoice", groups={"fill_info"})
      */
     public $friendPosition;
 
     /**
      * @Assert\Count(min=1, max=2, minMessage="interactive.friend_cases.min", maxMessage="interactive.friend_cases.max", groups={"fill_cases"})
      * @Assert\All({
-     *     @Assert\Type("AppBundle\Entity\PurchasingPowerChoice")
+     *     @Assert\Type("AppBundle\Entity\MyEuropeChoice")
      * }, groups={"fill_cases"})
      */
     public $friendCases = [];
@@ -74,7 +73,7 @@ final class PurchasingPowerProcessor
     /**
      * @Assert\Count(min=1, max=2, minMessage="interactive.friend_appreciations.min", maxMessage="interactive.friend_appreciations.max", groups={"fill_appreciations"})
      * @Assert\All({
-     *     @Assert\Type("AppBundle\Entity\PurchasingPowerChoice")
+     *     @Assert\Type("AppBundle\Entity\MyEuropeChoice")
      * }, groups={"fill_appreciations"})
      */
     public $friendAppreciations;
@@ -132,17 +131,13 @@ final class PurchasingPowerProcessor
      */
     public function getArguments(): array
     {
-        foreach (PurchasingPowerChoice::getStepsOrderForEmail() as $step) {
+        foreach (MyEuropeChoice::getStepsOrderForEmail() as $step) {
             switch ($step) {
-                case PurchasingPowerChoice::STEP_FRIEND_PROFESSIONAL_POSITION:
-                    $choices = [$this->friendPosition];
-
-                    break;
-                case PurchasingPowerChoice::STEP_FRIEND_CASES:
+                case MyEuropeChoice::STEP_FRIEND_CASES:
                     $choices = $this->friendCases;
 
                     break;
-                case PurchasingPowerChoice::STEP_FRIEND_APPRECIATIONS:
+                case MyEuropeChoice::STEP_FRIEND_APPRECIATIONS:
                     $choices = $this->friendAppreciations;
 
                     break;

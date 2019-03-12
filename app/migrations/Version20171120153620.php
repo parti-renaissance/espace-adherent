@@ -15,7 +15,7 @@ class Version20171120153620 extends AbstractMigration
             'label' => 'Aucune',
             'content' => '',
             'uuid' => 'b61dbe63-7c26-4ad7-bd86-5d2f767e6d8b',
-            'type' => 'purchasing_power',
+            'type' => 'my_europe',
         ]);
     }
 

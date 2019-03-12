@@ -16,7 +16,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "purchasing_power": "AppBundle\Entity\PurchasingPowerChoice",
+ *     "my_europe": "AppBundle\Entity\MyEuropeChoice",
  * })
  * @Algolia\Index(autoIndex=false)
  */

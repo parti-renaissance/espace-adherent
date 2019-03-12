@@ -3,14 +3,14 @@
 {% block content %}
     <main class="interactive b__nudge--bottom-huge">
         <header class="interactive__header hero hero--minimalist hero--gradient hero--minimalist--center-20 progressive-background"
-                data-sd="{{ static_asset('pouvoir-achat.png', {'w': 300, 'q': 20}) }}"
-                data-hd="{{ static_asset('pouvoir-achat.png', {'w': 2000, 'q': 70}) }}">
+                data-sd="{{ static_asset('mon-europe.jpg', {'w': 300, 'q': 20}) }}"
+                data-hd="{{ static_asset('mon-europe.jpg', {'w': 2000, 'q': 70}) }}">
             <div class="hero--minimalist__nav">
                 <a href="{{ path('homepage') }}">En Marche !</a>
             </div>
             <div class="hero--minimalist__content">
                 <h1>
-                    Qu'est-ce qu'on y gagne ?
+                    Mon Europe !
                 </h1>
                 <p>
                     Dites-nous en un peu plus sur le profil d'un(e) ami(e) : <br/>
@@ -28,28 +28,28 @@
             </div>
 
             <div class="b__nudge--bottom-huge">
-                <a href="{{ path('app_purchasing_power_restart') }}" class="btn btn--blue">
+                <a href="{{ path('app_my_europe_restart') }}" class="btn btn--blue">
                     Recommencer pour un(e) autre ami(e)
                 </a>
             </div>
 
             <div class="b__nudge--top-50 text--body">
-                Je partage <strong>« Qu'est-ce qu'on y gagne ? »</strong>
+                Je partage <strong>« Mon Europe ! »</strong>
             </div>
             <ul class="space--20-0">
                 <li role="button" aria-label="Partagez sur Facebook"
                     class="btn btn--social btn--facebook"
-                    onclick="App.share('facebook', '{{ url('app_purchasing_power') }}', '')">
+                    onclick="App.share('facebook', '{{ url('app_my_europe') }}', '')">
                     <i class="fa fa-facebook-square"></i> <span>Partagez</span>
                 </li>
                 <li role="button" aria-label="Partagez via Twitter"
                     class="btn btn--social btn--twitter"
-                    onclick="App.share('twitter', '{{ url('app_purchasing_power') }}', '')">
+                    onclick="App.share('twitter', '{{ url('app_my_europe') }}', '')">
                     <i class="fa fa-twitter"></i> <span>Tweetez</span>
                 </li>
                 <li role="button" aria-label="Partagez via email"
                     class="btn btn--social btn--email"
-                    onclick="App.share('email', '{{ url('app_purchasing_power') }}', '')">
+                    onclick="App.share('email', '{{ url('app_my_europe') }}', '')">
                     <i class="fa fa-envelope-o"></i> <span>Envoyez</span>
                 </li>
             </ul>
