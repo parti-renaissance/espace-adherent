@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace AppBundle\Repository\Jecoute;
 
 use AppBundle\Entity\Jecoute\SuggestedQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

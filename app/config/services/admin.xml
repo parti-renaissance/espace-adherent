@@ -573,11 +573,24 @@
             </call>
         </service>
 
-        <service id="app.admin.jecoute_survey" class="AppBundle\Admin\JecouteSurveyAdmin">
+        <service id="app.admin.jecoute_local_survey" class="AppBundle\Admin\JecouteLocalSurveyAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Questionnaires locaux" group="J'écoute" />
 
             <argument />
-            <argument>AppBundle\Entity\Jecoute\Survey</argument>
+            <argument>AppBundle\Entity\Jecoute\LocalSurvey</argument>
+            <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/survey_edit.html.twig</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.jecoute_national_survey" class="AppBundle\Admin\JecouteNationalSurveyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Questionnaires nationaux" group="J'écoute" />
+
+            <argument />
+            <argument>AppBundle\Entity\Jecoute\NationalSurvey</argument>
             <argument />
 
             <call method="setTemplate">

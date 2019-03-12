@@ -4,8 +4,8 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,8 +23,8 @@ class LoadJecouteSurveyData extends Fixture
         /** @var Adherent $referent2 */
         $referent2 = $this->getReference('adherent-19');
 
-        $survey1 = new Survey($referent1, 'Questionnaire numéro 1', 'Paris 1er', true);
-        $survey2 = new Survey($referent2, 'Un deuxième questionnaire', 'Paris 8ème', true);
+        $survey1 = new LocalSurvey($referent1, 'Questionnaire numéro 1', 'Paris 1er', true);
+        $survey2 = new LocalSurvey($referent2, 'Un deuxième questionnaire', 'Paris 8ème', true);
 
         /** @var Question $question1 */
         $question1 = $this->getReference('question-1');
