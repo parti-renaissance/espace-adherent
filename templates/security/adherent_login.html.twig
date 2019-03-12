@@ -30,7 +30,7 @@
                 <li>
                      {{ form_label(form._login_email, 'E-mail', { label_attr: { class: 'visually-hidden' } }) }}
                      {{ form_errors(form._login_email) }}
-                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail' } }) }}
+                     {{ form_widget(form._login_email, { attr: { placeholder: 'E-mail', autocapitalize: 'off' } }) }}
                 </li>
 
                 <li>
