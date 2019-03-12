@@ -292,6 +292,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.elected.representatives.register" class="AppBundle\Admin\ElectedRepresentativesRegisterAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentativesRegister</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Legislatives

@@ -271,6 +271,7 @@
         <service id="AppBundle\Command\DonationCancelCommand" />
         <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
         <service id="AppBundle\Command\ImportDistrictsCommand"/>
+        <service id="AppBundle\Command\ImportElectedRepresentativesRegisterCommand"/>
         <service id="AppBundle\Command\NotifyIdeaAuthorCommand">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
         </service>
