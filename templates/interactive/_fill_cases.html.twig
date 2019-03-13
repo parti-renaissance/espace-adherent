@@ -8,13 +8,14 @@
         </ul>
 
         {{ form_start(interactive_form) }}
-        {{ form_errors(interactive_form) }}
 
             <h5 class="interactive__title text--medium text--center">
                 Votre proche vous dit que ...
                 <br />
                 <span class="text--italic text--normal text--light-gray text--medium-small">(2 choix maximum)</span>
             </h5>
+
+            {{ form_errors(interactive_form) }}
 
             <div class="form">
                 {% for checkbox in interactive_form.friendCases %}

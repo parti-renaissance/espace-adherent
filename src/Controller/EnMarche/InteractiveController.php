@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class InteractiveController extends Controller
 {
+    public const MESSAGE_SUBJECT = 'Pour une Renaissance européenne';
+
     /**
      * @Route("/mon-europe", name="app_my_europe")
      * @Method("GET|POST")
@@ -22,6 +24,7 @@ class InteractiveController extends Controller
         $handler = $this->get('app.interactive.my_europe_processor_handler');
         $myEurope = $handler->start($session, (string) $request->request->get('g-recaptcha-response'));
         $transition = $handler->getCurrentTransition($myEurope);
+        $myEurope->messageSubject = self::MESSAGE_SUBJECT;
 
         $form = $this
             ->createForm(MyEuropeType::class, $myEurope, ['transition' => $transition])
