@@ -6,7 +6,7 @@ import deleteIcn from '../../../img/icn_state_delete.svg';
 function DeleteIdeaModal(props) {
     return (
         <div className="delete-idea-modal">
-            <img src={deleteIcn} />
+            <img src={deleteIcn} alt="Supprimer" />
             <h1 className="delete-idea-modal__title">Confirmer la suppression ?</h1>
             <p className="delete-idea-modal__subtitle">Êtes-vous certain(e) de vouloir supprimer cette proposition ?</p>
             <div className="delete-ideal-modal__actions">

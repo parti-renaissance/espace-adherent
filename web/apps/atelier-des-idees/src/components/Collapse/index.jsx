@@ -32,7 +32,7 @@ class Collapse extends React.Component {
                             'collapse__container__btn--close': !this.state.isCollapsed,
                         })}
                     >
-                        {this.state.isCollapsed ? <img src={hideIcn} /> : <img src={revealIcn} />}
+                        {this.state.isCollapsed ? <img src={hideIcn} alt="Cacher" /> : <img src={revealIcn} alt="Afficher" />}
                     </div>
                 </button>
                 {this.props.children && this.state.isCollapsed && <div>{this.props.children}</div>}

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import TextArea from '../../../TextArea';
 import Select from '../../../Select';
 
@@ -57,14 +56,11 @@ class FirstForm extends React.Component {
                 <div className="first-form__section">
                     <h2 className="first-form__section__title">C'est presque fini !</h2>
                     <p className="first-form__section__subtitle">
-						Nous avons besoin de quelques renseignements avant de publier votre
-						proposition !
+            Nous avons besoin de quelques renseignements avant de publier votre proposition !
                     </p>
                 </div>
                 <div className="first-form__section">
-                    <label className="first-form__section__label">
-						Donnez aux marcheurs l'envie de lire votre proposition !
-                    </label>
+                    <label className="first-form__section__label">Donnez aux marcheurs l'envie de lire votre proposition !</label>
                     <TextArea
                         maxLength={130}
                         placeholder="Décrivez en quelques mots le cœur de votre proposition"
@@ -82,50 +78,33 @@ class FirstForm extends React.Component {
                         isMulti={true}
                         error={this.state.errors.theme}
                         onSelected={value => this.handleChange('theme', value)}
-                        defaultValue={
-                            this.state.inputs.theme.length
-                                ? this.state.inputs.theme
-                                : undefined
-                        }
+                        defaultValue={this.state.inputs.theme.length ? this.state.inputs.theme : undefined}
                         maxOptionsSelected={5}
                         maxOptionsLabel="thématique"
                     />
                 </div>
                 <div className="first-form__section">
-                    <label className="first-form__section__label">
-						              À quel échelon se situe votre proposition ?
-                    </label>
+                    <label className="first-form__section__label">À quel échelon se situe votre proposition ?</label>
                     <Select
                         options={this.props.localityOptions}
                         placeholder="National / Européen"
                         subtitle={() => (
                             <p>
-								Pour un projet local non généralisable, rapprochez-vous de votre
-								référent via la rubrique contact du{' '}
-                                <a
-                                    className="link"
-                                    href="https://dpt.en-marche.fr/"
-                                    target="_blank"
-                                >
-									site de votre territoire
+                Pour un projet local non généralisable, rapprochez-vous de votre référent via la rubrique contact du{' '}
+                                <a className="link" href="https://dpt.en-marche.fr/" target="_blank" rel="noopener noreferrer">
+                  site de votre territoire
                                 </a>
                             </p>
                         )}
                         error={this.state.errors.locality}
                         onSelected={value => this.handleChange('locality', value)}
-                        defaultValue={
-                            this.state.inputs.locality.length
-                                ? this.state.inputs.locality
-                                : undefined
-                        }
+                        defaultValue={this.state.inputs.locality.length ? this.state.inputs.locality : undefined}
                     />
                 </div>
                 <button type="submit" className="first-form__button button--secondary">
-					dernière étape →
+          dernière étape →
                 </button>
-                {this.state.errors.form && (
-                    <p className="first-form__error">{this.state.errors.form}</p>
-                )}
+                {this.state.errors.form && <p className="first-form__error">{this.state.errors.form}</p>}
             </form>
         );
     }

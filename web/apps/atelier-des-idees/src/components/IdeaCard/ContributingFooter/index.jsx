@@ -24,7 +24,7 @@ class ContributingFooter extends React.PureComponent {
                 })}
             >
                 <div className="contributing-footer__remaining-days">
-                    <img className="contributing-footer__remaining-days__icon" src={hourglassIcnGreen} />
+                    <img className="contributing-footer__remaining-days__icon" src={hourglassIcnGreen} alt="Jours restants" />
                     <span className="contributing-footer__remaining-days__text">
                         <span className="contributing-footer__remaining-days__text--pending">En cours</span> -{' '}
                         {this.props.remainingDays ? this.getRemainingDays() : this.getRemaininghours()}
@@ -44,8 +44,8 @@ class ContributingFooter extends React.PureComponent {
                         >
                             {this.props.hasUserContributed ? (
                                 <React.Fragment>
-                                    <img src={greenCheckIcn} className="contributing-footer__container__link__icon" />
-                                    J'ai contribué
+                                    <img src={greenCheckIcn} className="contributing-footer__container__link__icon" alt="Contribuer" />
+                  J'ai contribué
                                 </React.Fragment>
                             ) : (
                                 '+ Je contribue'
