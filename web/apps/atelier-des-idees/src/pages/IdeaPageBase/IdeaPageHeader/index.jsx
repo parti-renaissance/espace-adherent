@@ -15,7 +15,7 @@ class IdeaPageHeader extends React.Component {
                     {this.props.showContent && (
                         <React.Fragment>
                             <button className="button idea-page-header__back" onClick={this.props.onBackClicked}>
-								← Retour
+                ← Retour
                             </button>
                             {this.props.status !== ideaStatus.FINALIZED && this.props.canToggleReadingMode && (
                                 <Switch
@@ -27,9 +27,7 @@ class IdeaPageHeader extends React.Component {
                             {this.props.isAuthor && (
                                 <CreateIdeaActions
                                     onDeleteClicked={this.props.onDeleteClicked}
-                                    onPublishClicked={
-                                        this.props.status === ideaStatus.DRAFT && this.props.onPublishClicked
-                                    }
+                                    onPublishClicked={this.props.status === ideaStatus.DRAFT && this.props.onPublishClicked}
                                     onSaveClicked={this.props.status === ideaStatus.DRAFT && this.props.onSaveClicked}
                                     isSaving={this.props.isSaving}
                                     status={this.props.status}
@@ -43,13 +41,13 @@ class IdeaPageHeader extends React.Component {
                                         }" faite sur l’Atelier des idées de La République En Marche !`}
                                     />
                                     {this.props.isAuthenticated &&
-										(!this.props.isAuthor && (
-										    <Dropdown
-										        className="idea-page-header__report"
-										        onSelect={this.props.onReportClicked}
-										        options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
-										    />
-										))}
+                    (!this.props.isAuthor && (
+                        <Dropdown
+                            className="idea-page-header__report"
+                            onSelect={this.props.onReportClicked}
+                            options={[{ value: 'report', label: 'Signaler', isImportant: true }]}
+                        />
+                    ))}
 
                                     {this.props.isAuthenticated && this.props.isAuthor && (
                                         <Dropdown
@@ -79,7 +77,7 @@ class IdeaPageHeader extends React.Component {
                                 clearTimeout(this.saveBannerTimer);
                             }}
                         >
-                            <img src={icn_close} />
+                            <img src={icn_close} alt="close" />
                         </button>
                     </div>
                 )}
