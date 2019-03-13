@@ -6,10 +6,12 @@ function ReportsModal(props) {
     return (
         <div className="reports-modal">
             <h2 className="reports-modal__title">Je lis les {props.reports.length} restitutions</h2>
-            <p className="reports-modal__subtitle">Parcourez les restitutions des consultations citoyennes organisées par <em>La République En Marche</em>.</p>
+            <p className="reports-modal__subtitle">
+        Parcourez les restitutions des consultations citoyennes organisées par <em>La République En Marche</em>.
+            </p>
             {props.reports.map((report, index) => (
                 <a className="reports-modal__report" key={index} target="_blank" href={report.url} download>
-                    <img className="reports-modal__report__pdf-preview" src={pdf_preview} />
+                    <img className="reports-modal__report__pdf-preview" src={pdf_preview} alt="Prévisualisation Pdf" />
                     <div className="reports-modal__report__content">
                         <span className="reports-modal__report__content__file">{report.name}</span>
                         {report.size && <span className="reports-modal__report__content__size">{report.size}</span>}

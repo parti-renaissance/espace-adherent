@@ -26,7 +26,7 @@ class CommentsList extends React.Component {
     }
 
     handleSendComment() {
-        // Check if empty
+    // Check if empty
         const isEmpty = !this.state.comment;
         const mustCheckLegal = this.props.withCGU ? !this.state.isLegalAccepted : false;
         const canSubmit = !isEmpty && !mustCheckLegal;
@@ -49,7 +49,7 @@ class CommentsList extends React.Component {
     }
 
     render() {
-        // check if any comment has replies
+    // check if any comment has replies
         const hasReplies = this.props.comments.reduce((acc, comment) => acc || !!comment.nbReplies, false);
         // render
         return (
@@ -68,7 +68,7 @@ class CommentsList extends React.Component {
                             }))
                         }
                     >
-                        <img className="comments-list__collapse-button__icon-replies" src={icn_20px_replies} />
+                        <img className="comments-list__collapse-button__icon-replies" src={icn_20px_replies} alt="Réponses" />
                         <span className="comments-list__collapse-button__label">
                             {this.props.total} {this.props.collapseLabel}
                             {1 < this.props.comments.length && 's'}
@@ -78,167 +78,151 @@ class CommentsList extends React.Component {
                                 'comments-list__collapse-button__icon-toggle--rotate': !this.state.showComments,
                             })}
                             src={icn_toggle_content}
+                            alt="Toogle"
                         />
                     </button>
                 )}
                 {this.props.comments.length
                     ? this.state.showComments &&
-                      this.props.comments.map(comment => (
-                          <React.Fragment>
-                              <Comment
-                                  {...comment}
-                                  hasActions={this.props.isAuthenticated}
-                                  isAuthor={this.props.currentUserId === comment.author.uuid}
-                                  onReply={() => this.setState({ replyingTo: comment.uuid })}
-                                  onDelete={() => this.props.onDeleteComment(comment.uuid)}
-                                  onApprove={() => this.props.onApproveComment(comment.uuid)}
-                                  onReport={() => this.props.onReportComment(comment.uuid)}
-                                  canAnswer={
-                                      !this.props.parentId &&
-                                      (!comment.replies.length && this.state.replyingTo !== comment.uuid)
-                                  }
-                                  canApprove={this.props.currentUserId === this.props.ownerId}
-                              />
-                              {((comment.replies && !!comment.replies.length) ||
-                                  this.state.replyingTo === comment.uuid) && (
-                                      <div className="comments-list__replies">
-                                          <CommentsList
-                                              comments={comment.replies}
-                                              onSendComment={value =>
-                                              // send parent comment id as (optional) second parameter
-                                                  this.props.onSendComment(value, comment.uuid)
-                                              }
-                                              onDeleteComment={commentId =>
-                                                  this.props.onDeleteComment(commentId, comment.uuid)
-                                              }
-                                              onApproveComment={commentId =>
-                                                  this.props.onApproveComment(commentId, comment.uuid)
-                                              }
-                                              onReportComment={commentId =>
-                                                  this.props.onReportComment(commentId, comment.uuid)
-                                              }
-                                              onLoadMore={() => this.props.onLoadMore(comment.uuid)}
-                                              parentId={comment.uuid}
-                                              collapseLabel="réponse"
-                                              placeholder="Écrivez votre réponse"
-                                              emptyLabel={null}
-                                              total={comment.nbReplies}
-                                              totalComments={comment.nbReplies}
-                                              isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
-                                              isFormActive={this.state.replyingTo === comment.uuid}
-                                              isAuthenticated={this.props.isAuthenticated}
-                                              showForm={true}
-                                              ownerId={this.props.ownerId}
-                                              currentUserId={this.props.currentUserId}
-                                              withCGU={this.props.withCGU}
-                                          />
-                                      </div>
-                                  )}
-                          </React.Fragment>
-                      ))
+            this.props.comments.map(comment => (
+                <React.Fragment>
+                    <Comment
+                        {...comment}
+                        hasActions={this.props.isAuthenticated}
+                        isAuthor={this.props.currentUserId === comment.author.uuid}
+                        onReply={() => this.setState({ replyingTo: comment.uuid })}
+                        onDelete={() => this.props.onDeleteComment(comment.uuid)}
+                        onApprove={() => this.props.onApproveComment(comment.uuid)}
+                        onReport={() => this.props.onReportComment(comment.uuid)}
+                        canAnswer={
+                            !this.props.parentId && (!comment.replies.length && this.state.replyingTo !== comment.uuid)
+                        }
+                        canApprove={this.props.currentUserId === this.props.ownerId}
+                    />
+                    {((comment.replies && !!comment.replies.length) || this.state.replyingTo === comment.uuid) && (
+                        <div className="comments-list__replies">
+                            <CommentsList
+                                comments={comment.replies}
+                                onSendComment={value =>
+                                    // send parent comment id as (optional) second parameter
+                                    this.props.onSendComment(value, comment.uuid)
+                                }
+                                onDeleteComment={commentId => this.props.onDeleteComment(commentId, comment.uuid)}
+                                onApproveComment={commentId => this.props.onApproveComment(commentId, comment.uuid)}
+                                onReportComment={commentId => this.props.onReportComment(commentId, comment.uuid)}
+                                onLoadMore={() => this.props.onLoadMore(comment.uuid)}
+                                parentId={comment.uuid}
+                                collapseLabel="réponse"
+                                placeholder="Écrivez votre réponse"
+                                emptyLabel={null}
+                                total={comment.nbReplies}
+                                totalComments={comment.nbReplies}
+                                isSendingComment={this.props.sendingReplies.includes(comment.uuid)}
+                                isFormActive={this.state.replyingTo === comment.uuid}
+                                isAuthenticated={this.props.isAuthenticated}
+                                showForm={true}
+                                ownerId={this.props.ownerId}
+                                currentUserId={this.props.currentUserId}
+                                withCGU={this.props.withCGU}
+                            />
+                        </div>
+                    )}
+                </React.Fragment>
+            ))
                     : !this.props.parentId && (
                         <button
                             className="comments-list__empty"
                             onClick={() => this.setState(prevState => ({ showForm: !prevState.showForm }))}
                         >
                             <span className="comments-list__empty__label">
-                                  Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer
-                                  sur cette partie
-                                <img className="comments-list__empty__toggle" src={icn_toggle_content_big} />
+                  Soyez <span className="comments-list__empty--highlight">le premier</span> à contribuer sur cette
+                  partie
+                                <img className="comments-list__empty__toggle" src={icn_toggle_content_big} alt="Toogle"/>
                             </span>
                         </button>
                     )}
                 {this.state.showComments && 0 < this.props.totalComments - this.props.comments.length && (
                     <div className="comments-list__more">
-                        <button
-                            className="comments-list__more-btn"
-                            onClick={() => this.props.onLoadMore()}
-                        >{`Afficher plus de ${
-                                hasReplies || !!this.props.parentId ? 'réponses' : 'contributions'
-                            } (${this.props.totalComments - this.props.comments.length})`}</button>
+                        <button className="comments-list__more-btn" onClick={() => this.props.onLoadMore()}>{`Afficher plus de ${
+                            hasReplies || !!this.props.parentId ? 'réponses' : 'contributions'
+                        } (${this.props.totalComments - this.props.comments.length})`}</button>
                     </div>
                 )}
                 {this.state.showForm &&
-                    (this.props.isAuthenticated ? (
-                        <form
-                            className="comments-list__form"
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                this.handleSendComment();
-                            }}
-                        >
-                            <TextArea
-                                value={this.state.comment}
-                                onChange={value => this.handleCommentChange(value)}
-                                placeholder={this.props.placeholder}
-                                error={this.state.errors.comment ? 'Veuillez remplir ce champ' : null}
-                                autofocus={this.props.isFormActive}
-                            />
-                            <div className="comments-list__form__actions">
-                                {this.props.withCGU && (
-                                    <div className="comments-list__form__legal-wrapper">
-                                        <label className="comments-list__form__legal">
-                                            <span className="comments-list__form__legal__checkbox">
-                                                <input
-                                                    className="comments-list__form__legal__input"
-                                                    id="legal"
-                                                    type="checkbox"
-                                                    checked={this.state.isLegalAccepted}
-                                                    onChange={(event) => {
-                                                        this.handleLegalChange(event.target.checked);
-                                                    }}
-                                                />
-                                                <span className="comments-list__form__legal__checkmark">
-                                                    <img src={icn_checklist} />
-                                                </span>
-                                            </span>
-                                            <span className="comments-list__form__legal__label">
-                                                J’accepte les{' '}
-                                                <a
-                                                    className="comments-list__form__legal__label__link"
-                                                    href="/atelier-des-idees/conditions-generales-utilisation"
-                                                    target="_blank"
-                                                >
-                                                    CGU{' '}
-                                                </a>
-                                                de l'Atelier des idées
-                                            </span>
-                                        </label>
-                                        {this.state.errors.legal && (
-                                            <p className="comments-list__form__legal__error">Information manquante</p>
-                                        )}
-                                    </div>
-                                )}
-                                <Button
-                                    type="submit"
-                                    className="comments-list__form__button button--primary"
-                                    label="Envoyer"
-                                    isLoading={this.props.isSendingComment}
-                                />
-                            </div>
-                        </form>
-                    ) : (
-                        !this.props.parentId && (
-                            <div className="comments-list__contribute">
-                                <p className="comments-list__contribute__main">
-                                    Pour ajouter votre contribution,{' '}
-                                    <a
-                                        className="comments-list__contribute__link"
-                                        href="?anonymous_authentication_intention=/connexion"
-                                    >
-                                        connectez-vous
-                                    </a>{' '}
-                                    ou{' '}
-                                    <a
-                                        className="comments-list__contribute__link"
-                                        href="?anonymous_authentication_intention=/adhesion"
-                                    >
-                                        créez un compte
-                                    </a>
-                                </p>
-                            </div>
-                        )
-                    ))}
+          (this.props.isAuthenticated ? (
+              <form
+                  className="comments-list__form"
+                  onSubmit={(e) => {
+                      e.preventDefault();
+                      this.handleSendComment();
+                  }}
+              >
+                  <TextArea
+                      value={this.state.comment}
+                      onChange={value => this.handleCommentChange(value)}
+                      placeholder={this.props.placeholder}
+                      error={this.state.errors.comment ? 'Veuillez remplir ce champ' : null}
+                      autofocus={this.props.isFormActive}
+                  />
+                  <div className="comments-list__form__actions">
+                      {this.props.withCGU && (
+                          <div className="comments-list__form__legal-wrapper">
+                              <label className="comments-list__form__legal">
+                                  <span className="comments-list__form__legal__checkbox">
+                                      <input
+                                          className="comments-list__form__legal__input"
+                                          id="legal"
+                                          type="checkbox"
+                                          checked={this.state.isLegalAccepted}
+                                          onChange={(event) => {
+                                              this.handleLegalChange(event.target.checked);
+                                          }}
+                                      />
+                                      <span className="comments-list__form__legal__checkmark">
+                                          <img src={icn_checklist} alt="Checklist"/>
+                                      </span>
+                                  </span>
+                                  <span className="comments-list__form__legal__label">
+                        J’accepte les{' '}
+                                      <a
+                                          className="comments-list__form__legal__label__link"
+                                          href="/atelier-des-idees/conditions-generales-utilisation"
+                                          target="_blank"
+                                      >
+                          CGU{' '}
+                                      </a>
+                        de l'Atelier des idées
+                                  </span>
+                              </label>
+                              {this.state.errors.legal && (
+                                  <p className="comments-list__form__legal__error">Information manquante</p>
+                              )}
+                          </div>
+                      )}
+                      <Button
+                          type="submit"
+                          className="comments-list__form__button button--primary"
+                          label="Envoyer"
+                          isLoading={this.props.isSendingComment}
+                      />
+                  </div>
+              </form>
+          ) : (
+              !this.props.parentId && (
+                  <div className="comments-list__contribute">
+                      <p className="comments-list__contribute__main">
+                  Pour ajouter votre contribution,{' '}
+                          <a className="comments-list__contribute__link" href="?anonymous_authentication_intention=/connexion">
+                    connectez-vous
+                          </a>{' '}
+                  ou{' '}
+                          <a className="comments-list__contribute__link" href="?anonymous_authentication_intention=/adhesion">
+                    créez un compte
+                          </a>
+                      </p>
+                  </div>
+              )
+          ))}
             </div>
         );
     }

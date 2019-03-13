@@ -3,15 +3,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { ideaStatus } from '../../../../constants/api';
-import Button from '../../../Button';
 import icn_toggle_content from './../../../../img/icn_toggle_content-blue-yonder.svg';
 import Pagination from '../../../Pagination';
 
-const {
-    DRAFT,
-    PENDING,
-    FINALIZED,
-} = ideaStatus;
+const { DRAFT, PENDING, FINALIZED } = ideaStatus;
 
 class MyIdeas extends React.Component {
     constructor(props) {
@@ -65,10 +60,7 @@ class MyIdeas extends React.Component {
             <div className="my-ideas">
                 {this.CAT_IDEAS_FILTER.map((cat, i) => {
                     const {
-                        metadata: {
-                            current_page: page,
-                            total_items: total,
-                        },
+                        metadata: { current_page: page, total_items: total },
                         status,
                     } = cat;
                     const categoryHeader = cat.ideas.length ? (
@@ -86,6 +78,7 @@ class MyIdeas extends React.Component {
                                     'my-ideas__category__button__icon--rotate': !this.state[cat.showCat],
                                 })}
                                 src={icn_toggle_content}
+                                alt="Toggle"
                             />
                         </button>
                     ) : (
@@ -100,12 +93,10 @@ class MyIdeas extends React.Component {
                                         this.state[cat.showCat] && (
                                             <div className="my-ideas__category__idea" key={j}>
                                                 <p className="my-ideas__category__idea__date">
-                                                    Créée le {new Date(idea.created_at).toLocaleDateString()}
+                          Créée le {new Date(idea.created_at).toLocaleDateString()}
                                                 </p>
                                                 <h4 className="my-ideas__category__idea__name">
-                                                    <Link to={`/atelier-des-idees/proposition/${idea.uuid}?mode=lecture`}>
-                                                        {idea.name}
-                                                    </Link>
+                                                    <Link to={`/atelier-des-idees/proposition/${idea.uuid}?mode=lecture`}>{idea.name}</Link>
                                                 </h4>
                                                 <div className="my-ideas__category__idea__actions">
                                                     <Link
@@ -115,8 +106,11 @@ class MyIdeas extends React.Component {
                                                         {'FINALIZED' !== idea.status && 'Editer'}
                                                         {'FINALIZED' === idea.status && 'Voir la proposition'}
                                                     </Link>
-                                                    <button className="button my-ideas__category__idea__actions__delete" onClick={() => this.props.onDeleteIdea(idea.uuid)}>
-                                                        Supprimer
+                                                    <button
+                                                        className="button my-ideas__category__idea__actions__delete"
+                                                        onClick={() => this.props.onDeleteIdea(idea.uuid)}
+                                                    >
+                            Supprimer
                                                     </button>
                                                 </div>
                                             </div>
@@ -125,7 +119,7 @@ class MyIdeas extends React.Component {
                             ) : (
                                 <p className="my-ideas__category__empty-label">{`Vous n'avez pas de ${cat.empty}`}</p>
                             )}
-                            {!!cat.ideas.length && this.state[cat.showCat] &&
+                            {!!cat.ideas.length && this.state[cat.showCat] && (
                                 <Pagination
                                     nextPage={() => this.paginate(page + 1, status, cat.el)}
                                     prevPage={() => this.paginate(page - 1, status, cat.el)}
@@ -135,7 +129,7 @@ class MyIdeas extends React.Component {
                                     pageSize={5}
                                     pagesToShow={5}
                                 />
-                            }
+                            )}
                         </div>
                     );
                 })}
@@ -150,7 +144,6 @@ const IDEA_TYPE = PropTypes.shape({
     created_at: PropTypes.string.isRequired, // ISO UTC
     status: PropTypes.oneOf(Object.keys(ideaStatus)).isRequired,
 });
-
 
 MyIdeas.propTypes = {
     ideas: PropTypes.shape({

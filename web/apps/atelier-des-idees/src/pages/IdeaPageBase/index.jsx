@@ -221,7 +221,7 @@ class IdeaPageBase extends React.Component {
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
                         <div className="idea-page__auto-save">
                             <p className="idea-page__auto-save__label">
-                                <img className="idea-page__auto-save__icon" src={autoSaveIcn} />
+                                <img className="idea-page__auto-save__icon" src={autoSaveIcn} alt="Sauvegarde automatique"/>
                                 <span>Votre contenu sera sauvegardé toutes les minutes</span>
                             </p>
                         </div>
@@ -236,6 +236,7 @@ class IdeaPageBase extends React.Component {
                                         <img
                                             className="idea-page__status-label__icn"
                                             src={idea.status === ideaStatus.PENDING ? greenHourglassIcn : greenCheckIcn}
+                                            alt="Status"
                                         />
                                         <span>
                                             {idea.status === ideaStatus.PENDING
