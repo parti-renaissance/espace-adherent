@@ -3,6 +3,7 @@
 namespace AppBundle\Interactive;
 
 use AppBundle\Entity\MyEuropeChoice;
+use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -125,6 +126,17 @@ final class MyEuropeProcessor
      * @var string
      */
     public $marking;
+
+    /**
+     * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"send"})
+     * @AssertRecaptcha(groups={"send"})
+     */
+    public $recaptcha = '';
+
+    public function setRecaptcha(string $recaptcha): void
+    {
+        $this->recaptcha = $recaptcha;
+    }
 
     /**
      * @return string[]

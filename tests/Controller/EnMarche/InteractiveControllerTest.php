@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\MyEuropeChoice;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\MyEuropeChoiceRepository;
 use AppBundle\Repository\MyEuropeInvitationRepository;
@@ -110,10 +109,5 @@ class InteractiveControllerTest extends WebTestCase
     private function getCurrentMyEurope(): MyEuropeProcessor
     {
         return $this->getMyEuropeInvitationHandler()->start($this->client->getRequest()->getSession());
-    }
-
-    private function getChoice(int $id): ?MyEuropeChoice
-    {
-        return $this->MyEuropeChoiceRepository->find($id);
     }
 }

@@ -20,11 +20,13 @@ class InteractiveController extends Controller
     {
         $session = $request->getSession();
         $handler = $this->get('app.interactive.my_europe_processor_handler');
-        $myEurope = $handler->start($session);
+        $myEurope = $handler->start($session, (string) $request->request->get('g-recaptcha-response'));
         $transition = $handler->getCurrentTransition($myEurope);
 
-        $form = $this->createForm(MyEuropeType::class, $myEurope, ['transition' => $transition]);
-        $form->handleRequest($request);
+        $form = $this
+            ->createForm(MyEuropeType::class, $myEurope, ['transition' => $transition])
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($myEuropeLog = $this->get('app.interactive.my_europe_processor_handler')->process($session, $myEurope)) {

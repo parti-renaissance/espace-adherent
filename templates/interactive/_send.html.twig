@@ -56,6 +56,15 @@
             </div>
         </div>
 
+        <div class="l__wrapper--500 b__nudge--top-50">
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
+            {% elseif app.debug %}
+                <input type="hidden" name="g-recaptcha-response" value="fake" />
+            {% endif %}
+        </div>
+
         <div class="text--center b__nudge--top-large">
             <a href="{{ path('app_my_europe_restart') }}" class="btn">Recommencer</a>
             {{ form_widget(interactive_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
