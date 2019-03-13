@@ -63,8 +63,8 @@ function AutoComplete(props) {
               >
                   <li>
                       <div className="autocomplete__name">
-                          <Interweave content={items.name.replace(pattern, `<strong>${inputValue}</strong>`)} />
-
+                          {/* <Interweave content={items.name.replace(pattern, `<strong>${inputValue}</strong>`)} /> */}
+                          <Interweave content={items.name} />
                           <img src={icn_20px_link_to} alt="Lien vers l'idée" />
                       </div>
                       <div className="autocomplete__numbers">
