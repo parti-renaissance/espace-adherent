@@ -30,9 +30,16 @@ final class MyEuropeProcessorHandler
         $this->stateMachine = $stateMachine;
     }
 
-    public function start(SessionInterface $session): MyEuropeProcessor
+    public function start(SessionInterface $session, string $recaptcha = ''): MyEuropeProcessor
     {
-        return $session->get(self::SESSION_KEY, new MyEuropeProcessor());
+        /** @var MyEuropeProcessor $myEuropeProcessor */
+        $myEuropeProcessor = $session->get(self::SESSION_KEY, new MyEuropeProcessor());
+
+        if ($recaptcha) {
+            $myEuropeProcessor->setRecaptcha($recaptcha);
+        }
+
+        return $myEuropeProcessor;
     }
 
     public function save(SessionInterface $session, MyEuropeProcessor $processor): void
