@@ -17,7 +17,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
     private const ROUTES = [
         // Referent Space
         'app_referent_users' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_referent_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_referent_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_message_send' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
 

@@ -181,14 +181,12 @@
                 </div>
 
                 <div class="referent__filters__buttons">
+                    <button type="submit" class="btn b__nudge--bottom-tiny">Filtrer</button>
                     {% if has_filter %}
-                        <a href="{{ path('app_referent_users') }}" class="btn btn--no-border">
+                        <a href="{{ path('app_referent_users') }}" class="link--blue--dark link--no-decor">
                             Réinitialiser le filtre
                         </a>
                     {% endif %}
-                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
-                        Filtrer pour envoyer un message
-                    </button>
                 </div>
 
                 <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
@@ -200,11 +198,9 @@
     {% if has_filter %}
         <div class="referent__filters__count">
             <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvé(s)</div>
-
-            <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn btn--primary b__nudge--top-10">
-                Leur envoyer un message
-            </a>
         </div>
+    {% else %}
+        <p>Vous consultez une liste de <b>tous vos adhérents !</b></p>
     {% endif %}
 
     <div class="text--center">
