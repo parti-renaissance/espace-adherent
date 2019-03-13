@@ -28,6 +28,7 @@ function Button(props) {
                         <img
                             src={props.icon}
                             className={classNames('button__icon', `button__icon--${props.classIcon}`)}
+                            alt="Icone"
                         />
                     )}
                     <span className="button__label">{props.label}</span>
@@ -55,11 +56,9 @@ Button.propTypes = {
     isLoading: PropTypes.bool,
     type: PropTypes.string,
     onClick: (props, propName, componentName) => {
-        // onReportClicked required if idea is not a draft (can't report a draft)
+    // onReportClicked required if idea is not a draft (can't report a draft)
         if (!props.onClick && 'submit' !== props.type) {
-            return new Error(
-                `The prop \`${propName}\` is marked as required in ${componentName}\`. Validation failed.`
-            );
+            return new Error(`The prop \`${propName}\` is marked as required in ${componentName}\`. Validation failed.`);
         }
     },
     disabled: PropTypes.bool,

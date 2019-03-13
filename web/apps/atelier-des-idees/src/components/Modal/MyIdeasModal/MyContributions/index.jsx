@@ -28,10 +28,7 @@ class MyContributions extends React.Component {
     render() {
         const {
             items: ideas,
-            metadata: {
-                current_page: page,
-                total_items: total,
-            },
+            metadata: { current_page: page, total_items: total },
         } = this.props.ideas;
         return (
             <div className="my-contributions" ref={this.el}>
@@ -50,6 +47,7 @@ class MyContributions extends React.Component {
                                 'my-contributions__category__button__icon--rotate': !this.state.showList,
                             })}
                             src={icn_toggle_content}
+                            alt="Mes contributions"
                         />
                     </button>
                 ) : (
@@ -61,7 +59,7 @@ class MyContributions extends React.Component {
                             this.state.showList && (
                                 <div className="my-contributions__category__idea" key={i}>
                                     <p className="my-contributions__category__idea__date">
-                                        Créée le {new Date(idea.created_at).toLocaleDateString()}
+                    Créée le {new Date(idea.created_at).toLocaleDateString()}
                                     </p>
                                     <h4 className="my-contributions__category__idea__name">{idea.name}</h4>
                                     <div className="my-contributions__category__idea__actions">
@@ -69,7 +67,7 @@ class MyContributions extends React.Component {
                                             to={`/atelier-des-idees/proposition/${idea.uuid}`}
                                             className="my-contributions__category__idea__actions__see-note"
                                         >
-                                            Voir la proposition
+                      Voir la proposition
                                         </Link>
                                     </div>
                                 </div>
@@ -78,7 +76,7 @@ class MyContributions extends React.Component {
                 ) : (
                     <p className="my-contributions__category__empty-label">Vous n’avez pas encore de contribution</p>
                 )}
-                {!!ideas.length && this.state.showList &&
+                {!!ideas.length && this.state.showList && (
                     <Pagination
                         nextPage={() => this.paginate(page + 1)}
                         prevPage={() => this.paginate(page - 1)}
@@ -88,7 +86,7 @@ class MyContributions extends React.Component {
                         pageSize={5}
                         pagesToShow={5}
                     />
-                }
+                )}
             </div>
         );
     }

@@ -114,7 +114,9 @@ class SecondForm extends React.Component {
                 {this.props.canSelectAuthor && (
                     <React.Fragment>
                         <div className="second-form__section">
-                            <label className="second-form__section__label">Avez-vous écrit cette note avec votre comité local ?</label>
+                            <label className="second-form__section__label">
+                Avez-vous écrit cette note avec votre comité local ?
+                            </label>
                             <Select
                                 options={this.props.authorOptions}
                                 placeholder="Oui / Non"
@@ -138,17 +140,15 @@ class SecondForm extends React.Component {
                 )}
                 <div className="second-form__section">
                     <label className="second-form__section__label">
-                        Y a-t-il des parties sur lesquelles vous souhaitez recevoir les suggestions des autres adhérents
-                        ?<span className="second-form__section__label__optional"> (Optionnel)</span>
+            Y a-t-il des parties sur lesquelles vous souhaitez recevoir les suggestions des autres adhérents ?
+                        <span className="second-form__section__label__optional"> (Optionnel)</span>
                     </label>
                     <Select
                         options={this.props.difficultiesOptions}
                         placeholder="Droit / Budget / etc."
                         isMulti={true}
                         onSelected={value => this.handleChange('difficulties', value)}
-                        defaultValue={
-                            this.state.inputs.difficulties.length ? this.state.inputs.difficulties : undefined
-                        }
+                        defaultValue={this.state.inputs.difficulties.length ? this.state.inputs.difficulties : undefined}
                     />
                 </div>
                 <div className="second-form__section">
@@ -165,19 +165,19 @@ class SecondForm extends React.Component {
                                 onChange={event => this.handleChange('legal', event.target.checked)}
                             />
                             <span className="second-form__section__mentions__checkbox__checkmark">
-                                <img src={icn_checklist} />
+                                <img src={icn_checklist} alt="Checklist" />
                             </span>
                         </label>
                         <p className="second-form__section__mentions__text legal">
-                            J’accepte les{' '}
+              J’accepte les{' '}
                             <a
                                 className="second-form__section__mentions__text__link"
                                 href="/atelier-des-idees/conditions-generales-utilisation"
                                 target="_blank"
                             >
-                                CGU{' '}
+                CGU{' '}
                             </a>
-                            de l'Atelier des idées
+              de l'Atelier des idées
                         </p>
                     </div>
                     {this.state.errors.legal && (
@@ -196,35 +196,34 @@ class SecondForm extends React.Component {
                                 onChange={event => this.handleChange('policy', event.target.checked)}
                             />
                             <span className="second-form__section__mentions__checkbox__checkmark">
-                                <img src={icn_checklist} />
+                                <img src={icn_checklist} alt="Checklist" />
                             </span>
                         </label>
                         <p className="second-form__section__mentions__text policy">
-                            J’ai pris connaissance de la{' '}
+              J’ai pris connaissance de la{' '}
                             <a
                                 className="second-form__section__mentions__text__link"
                                 href="/en-marche-prod/documents/adherents/1-charte-et-manifeste/charte_des_valeurs.pdf"
                                 target="_blank"
                             >
-                                Charte des valeurs de LaREM
+                Charte des valeurs de LaREM
                             </a>{' '}
-                            et je suis informé(e) que j’engage ma responsabilité pour tout propos injurieux,
-                            diffamatoire, illicite ou contraire à l’ordre public et aux bonnes mœurs.
+              et je suis informé(e) que j’engage ma responsabilité pour tout propos injurieux, diffamatoire, illicite ou
+              contraire à l’ordre public et aux bonnes mœurs.
                         </p>
                     </div>
                     {this.state.errors.policy && (
                         <p className="second-form__section__mentions--error">{this.state.errors.policy}</p>
                     )}
                     <p className="second-form__section__text">
-                        Les données recueillies sur ce formulaire sont traitées par LaREM dans le cadre de l’utilisation
-                        du service de l’Atelier des idées et permettent à LaREM de vous contacter à ce sujet.
-                        Conformément à la règlementation, vous disposez d'un droit d'opposition et d'un droit à la
-                        limitation du traitement de données vous concernant, ainsi que d'un droit d'accès, de
-                        rectification, de portabilité et d'effacement de vos données. Vous disposez également de la
-                        faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez
-                        exercer vos droits en nous adressant votre demande accompagnée d'une copie de votre pièce
-                        d'identité à l'adresse postale ou électronique suivante : La République En Marche, 63 rue
-                        Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
+            Les données recueillies sur ce formulaire sont traitées par LaREM dans le cadre de l’utilisation du service
+            de l’Atelier des idées et permettent à LaREM de vous contacter à ce sujet. Conformément à la règlementation,
+            vous disposez d'un droit d'opposition et d'un droit à la limitation du traitement de données vous
+            concernant, ainsi que d'un droit d'accès, de rectification, de portabilité et d'effacement de vos données.
+            Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+            Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d'une copie de votre pièce
+            d'identité à l'adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002
+            Paris, France et mes-donnees@en-marche.fr.
                     </p>
                 </div>
                 <Button

@@ -25,7 +25,7 @@ const MODAL_COMPONENTS = {
     [modalTypes.MY_IDEAS_MODAL]: MyIdeasContainer,
     [modalTypes.FLAG_MODAL]: FlagModal,
     [modalTypes.MY_NICKNAME_MODAL]: MyNicknameModal,
-    [modalTypes.DELETE_COMMENT_MODAL]: DeleteCommentModal
+    [modalTypes.DELETE_COMMENT_MODAL]: DeleteCommentModal,
 };
 
 class ModalRoot extends React.Component {
@@ -55,7 +55,7 @@ class ModalRoot extends React.Component {
                 ariaHideApp={false}
             >
                 <button className="modal-closeBtn" onClick={this.closeModal}>
-                    <img src={icn_close} />
+                    <img src={icn_close} alt="Fermer" />
                 </button>
                 <div className="modal-content-wrapper">
                     <SpecificModal closeModal={this.closeModal} {...modalProps} />
