@@ -16,7 +16,6 @@ use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
-use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\Form\Jecoute\SurveyFormType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
@@ -27,8 +26,6 @@ use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
-use AppBundle\Referent\ReferentMessage;
-use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Referent\SurveyExporter;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
@@ -80,42 +77,6 @@ class ReferentController extends Controller
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'results_count' => $results->count(),
             'results' => $results->getQuery()->getResult(),
-        ]);
-    }
-
-    /**
-     * @Route("/utilisateurs/message", name="app_referent_users_message")
-     * @Method("GET|POST")
-     */
-    public function usersSendMessageAction(Request $request): Response
-    {
-        $filter = new ManagedUsersFilter();
-        $filter->handleRequest($request);
-
-        if ($filter->hasToken() && !$this->isCsrfTokenValid(self::TOKEN_ID, $filter->getToken())) {
-            return $this->redirectToRoute('app_referent_users');
-        }
-
-        $message = ReferentMessage::create($this->getUser(), $filter);
-
-        $form = $this->createForm(ReferentMessageType::class, $message);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(ReferentMessageNotifier::class)->sendMessage($message);
-            $this->addFlash('info', 'referent.message.success');
-
-            return $this->redirect($this->generateUrl('app_referent_users').$filter);
-        }
-
-        $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null);
-
-        return $this->render('referent/users_message.html.twig', [
-            'filter' => $filter,
-            'results_count' => $results->count(),
-            'message' => $message,
-            'form' => $form->createView(),
         ]);
     }
 
