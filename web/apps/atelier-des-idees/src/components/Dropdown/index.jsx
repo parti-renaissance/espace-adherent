@@ -32,7 +32,7 @@ function Dropdown(props) {
             }}
         >
             <button className={classNames('dropdown-button', props.className)}>
-                {props.label || <img src={moreIcn} />}
+                {props.label || <img src={moreIcn} alt="Plus" />}
             </button>
         </RCDropdown>
     );

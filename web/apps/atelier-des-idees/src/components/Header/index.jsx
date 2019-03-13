@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import ScrollMenu from 'react-horizontal-scrolling-menu';
 import { Link, NavLink } from 'react-router-dom';
-// import { NotMobile, Mobile } from '../../helpers/responsive';
-import Button from '../Button';
 
 class Header extends React.PureComponent {
     render() {
@@ -12,7 +9,7 @@ class Header extends React.PureComponent {
                 <div className="header__inner l__wrapper">
                     <div className="header__nav">
                         <NavLink exact className="header__item" to="/atelier-des-idees">
-                            Vue d'ensemble
+              Vue d'ensemble
                         </NavLink>
                         {this.props.isAuthenticated && (
                             <React.Fragment>
@@ -20,36 +17,30 @@ class Header extends React.PureComponent {
                                     className="header__item header__button"
                                     onClick={() => this.props.onMyIdeasBtnClicked('my_ideas')}
                                 >
-                                    Mes propositions
+                  Mes propositions
                                 </button>
                                 <button
                                     className="header__item header__button"
                                     onClick={() => this.props.onMyIdeasBtnClicked('my_contributions')}
                                 >
-                                    Mes contributions
+                  Mes contributions
                                 </button>
-                                <button
-                                    className="header__item header__button"
-                                    onClick={() => this.props.onMyNicknameClicked()}
-                                >
-                                    Mon pseudo
+                                <button className="header__item header__button" onClick={() => this.props.onMyNicknameClicked()}>
+                  Mon pseudo
                                 </button>
                             </React.Fragment>
                         )}
                     </div>
                     {this.props.isAuthenticated ? (
-                        <Link
-                            to="/atelier-des-idees/creer-ma-proposition"
-                            className="header__create-btn button button--primary"
-                        >
-                            J'ai une proposition
+                        <Link to="/atelier-des-idees/creer-ma-proposition" className="header__create-btn button button--primary">
+              J'ai une proposition
                         </Link>
                     ) : (
                         <a
                             href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
                             className="header__create-btn button button--primary"
                         >
-                            J'ai une proposition
+              J'ai une proposition
                         </a>
                     )}
                     {/* <Mobile>

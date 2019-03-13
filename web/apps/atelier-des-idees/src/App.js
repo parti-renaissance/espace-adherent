@@ -16,8 +16,6 @@ import IdeaPage from './pages/IdeaPage';
 // modal
 import ModalRoot from './containers/ModalRoot';
 
-import logo from './logo.svg';
-
 class App extends Component {
     render() {
         return (
