@@ -9,28 +9,28 @@
         <div class="interactive__banner__form">
             {{ form_start(interactive_form) }}
             <h4 class="b__nudge--bottom text--medium text--center">
-                Quel est le profil de votre ami(e) ?
+                Quel est le profil de votre proche ?
             </h4>
 
-            <div class="l__row l__row--h-stretch b__nudge--bottom-medium form__radio-button">
-                {{ form_widget(interactive_form.friendGender, { attr: { class: 'register__form__gender' } }) }}
+            <div class="form__row">
+                {{ form_widget(interactive_form.friendGender, { attr: { class: 'form--full' } }) }}
                 {{ form_errors(interactive_form.friendGender) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(interactive_form.friendFirstName) }}
                 {{ form_errors(interactive_form.friendFirstName) }}
-                {{ form_widget(interactive_form.friendFirstName, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(interactive_form.friendFirstName, { attr: { class: 'form--full' } }) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(interactive_form.friendAge) }}
                 {{ form_errors(interactive_form.friendAge) }}
-                {{ form_widget(interactive_form.friendAge, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_widget(interactive_form.friendAge, { attr: { class: 'form--full' } }) }}
             </div>
 
             <div class="text--center b__nudge--top-large">
-                {{ form_widget(interactive_form.fill_info, {'attr': {'class': 'btn btn--blue'}}) }}
+                {{ form_widget(interactive_form.fill_info, {attr: {class: 'btn btn--blue'}}) }}
             </div>
 
             {{ form_end(interactive_form) }}

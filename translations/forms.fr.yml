@@ -17,8 +17,8 @@ ton_macron.self_reasons: Étape 4 - Éxpliquez à votre ce qui plaît chez Emman
 # Interactives => My Europe => Choix
 #
 my_europe.not_visible: Étape 0 - Morceaux qui apparaitront pour tout le monde
-my_europe.friend_cases: Étape 1 - Votre ami(e) est-il(elle) dans une des situations suivantes ? [ 2 choix possibles aujourd'hui]
-my_europe.friend_appreciations: Étape 2 - Laquelle de ces valeurs importe le plus pour votre ami(e) ? [ 2 choix possibles aujourd'hui]
+my_europe.friend_cases: Étape 1 - Votre proche vous dit que ... (2 choix maximum)
+my_europe.friend_appreciations: Étape 2 - La(es)quelle(s) de ces valeurs importe(nt) le plus à votre proche ? (2 choix maximum)
 
 #
 # Unregistrations choices

@@ -373,8 +373,8 @@ interactive.form.submit_fill_project: Continuer
 interactive.form.submit_fill_cases: Continuer
 interactive.form.submit_fill_appreciations: Continuer
 interactive.form.default_subject: Les 10 raisons pour lesquelles je pense que tu devrais voter Macron
-interactive.form.self_first_name: Votre prénom
-interactive.form.self_last_name: Votre nom
+interactive.form.self_first_name: Nous l'ajouterons dans la signature de votre message
+interactive.form.self_last_name: Nous l'ajouterons dans la signature de votre message
 interactive.form.self_email: Votre e-mail
 interactive.form.friend_email: E-mail de votre ami
 interactive.form.submit_send: Envoyer

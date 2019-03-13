@@ -264,8 +264,8 @@ board_member.area.invalid_choice: Cette région n'est pas valide.
 #
 interactive.friend_appreciations.min: Vous devez sélectionner au moins 1 valeur.
 interactive.friend_appreciations.max: Vous devez sélectionner au maximum 2 valeurs.
-interactive.friend_cases.min: Vous devez sélectionner au moins 1 situation.
-interactive.friend_cases.max: Vous devez sélectionner au maximum 2 situations.
+interactive.friend_cases.min: Vous devez sélectionner au moins 1 proposition.
+interactive.friend_cases.max: Vous devez sélectionner au maximum 2 propositions.
 
 #
 # Report
