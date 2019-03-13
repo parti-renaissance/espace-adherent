@@ -15,7 +15,10 @@ final class MyEuropeMessage extends Message
             $invitation->getFriendEmailAddress(),
             null,
             $invitation->getMailSubject(),
-            ['message' => $invitation->getMailBody()]
+            [
+                'message' => $invitation->getMailBody(),
+                'first_name_sender' => self::escape($invitation->getAuthorFirstName()),
+            ]
         );
 
         $message->setReplyTo($invitation->getAuthorEmailAddress());

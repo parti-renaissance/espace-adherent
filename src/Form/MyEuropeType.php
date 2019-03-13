@@ -86,7 +86,6 @@ class MyEuropeType extends AbstractType
                     ->add('selfLastName', TextType::class, [
                         'label' => false,
                         'filter_emojis' => true,
-                        'attr' => ['placeholder' => 'interactive.form.self_last_name'],
                     ])
                     ->add('selfEmail', EmailType::class, [
                         'label' => false,

@@ -108,14 +108,14 @@ final class MyEuropeProcessor
 
     /**
      * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(groups={"send"})
+     * @Assert\Email(strict=true, groups={"send"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"send"})
      */
     public $selfEmail = '';
 
     /**
      * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(groups={"send"})
+     * @Assert\Email(strict=true, groups={"send"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"send"})
      */
     public $friendEmail = '';
