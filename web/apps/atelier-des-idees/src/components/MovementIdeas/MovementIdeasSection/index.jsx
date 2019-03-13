@@ -7,8 +7,7 @@ class MovementIdeasSection extends React.PureComponent {
         return (
             <div className="movement-ideas__section__item">
                 <h4 className="movement-ideas__section__item__title">
-                    Je <span className="movement-ideas__section__item__title__main">{this.props.keyWord}</span>{' '}
-                    {this.props.title}
+          Je <span className="movement-ideas__section__item__title__main">{this.props.keyWord}</span> {this.props.title}
                 </h4>
                 <p className="movement-ideas__section__item__content">{this.props.text}</p>
                 <Link to={this.props.link} className="button button--secondary movement-ideas__section__item__link">
