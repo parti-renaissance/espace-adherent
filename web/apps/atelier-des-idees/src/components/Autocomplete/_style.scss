@@ -59,8 +59,11 @@
     justify-content: space-between;
     padding: 15px 15px 0 15px;
 
-    p {
+    span {
       font-weight: 600;
+    }
+    strong {
+      color: $blue;
     }
   }
   &__numbers {

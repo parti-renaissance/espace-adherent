@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import Interweave from 'interweave';
 import { ideaStatus } from './../../constants/api';
 import icn_20px_contributors from './../../img/icn_20px_contributors.svg';
 import icn_20px_comments from './../../img/icn_20px_comments.svg';
@@ -20,23 +21,31 @@ function conjugation(nb) {
     return 'votes';
 }
 
+function createMarkup() {}
+
 function AutoComplete(props) {
     const inputValue = props.value;
+
+    const parseInput = inputValue.split(' ').join('|');
+
+    console.log('parseInput', parseInput);
+    console.log('inputValue', inputValue);
     document.onkeydown = keyPressed;
     const optionsLength = props.options && props.options.items.length;
+    const pattern = new RegExp(parseInput, 'gi');
 
     return (
         <div className="autocomplete">
             <ul className="autocomplete__wrapper">
                 {props.options && 0 !== props.options.metadata.count && (
                     <div className="autocomplete__help">
-                        <p>
-              Vous n'êtes pas seul ! Il y a{' '}
-                            <strong>
-                                {optionsLength} proposition{1 < optionsLength ? 's' : ''}
-                            </strong>
-                            {1 < optionsLength ? ' qui pourraient vous intéresser !' : ' qui pourrait vous intéresser !'}
-                        </p>
+                        <Interweave
+                            content={
+                                1 < optionsLength
+                                    ? `Vous n'êtes pas seul ! Il y a <strong> ${optionsLength} propositions  </strong> qui pourraient vous intéresser !`
+                                    : 'Une propositon pourrait vous intéresser'
+                            }
+                        />
                         <img src={icn_20px_close_autocomplete} alt="close" onClick={e => props.onClick(e)} />
                     </div>
                 )}
@@ -54,7 +63,8 @@ function AutoComplete(props) {
               >
                   <li>
                       <div className="autocomplete__name">
-                          <p>{items.name}</p>
+                          <Interweave content={items.name.replace(pattern, `<strong>${inputValue}</strong>`)} />
+
                           <img src={icn_20px_link_to} alt="Lien vers l'idée" />
                       </div>
                       <div className="autocomplete__numbers">

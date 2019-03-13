@@ -14,6 +14,8 @@ class TextAreaWithAutoComplete extends Component {
   handleChange(e) {
     this.showAutoComplete(e);
     const { value } = e.target;
+    this.setState({ value });
+
     if (!this.props.maxLength || (this.props.maxLength && value.length <= this.props.maxLength)) {
       this.props.onChange(e.target.value);
     }
@@ -59,6 +61,7 @@ class TextAreaWithAutoComplete extends Component {
               <div className="text-area__counter">{`${this.props.value.length}/${this.props.maxLength}`}</div>
             )}
           </div>
+
           {this.props.haveAutoComplete && 1 <= this.props.value.length && this.state.autoCompleteIsOpen && (
             <AutoComplete
               options={this.props.autoCompleteValues}
