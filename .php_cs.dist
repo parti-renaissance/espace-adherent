@@ -24,11 +24,15 @@ return PhpCsFixer\Config::create()
         'PedroTroller/line_break_between_method_arguments' => [ 'max-args' => 20 ],
         'PedroTroller/line_break_between_statements' => true,
         'PedroTroller/useless_comment' => true,
+        'App/doctrine_migration_clean' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/var/.php_cs.cache')
-    ->registerCustomFixers(
-        new PedroTroller\CS\Fixer\Fixers()
-    )
+    ->registerCustomFixers([
+        new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer,
+        new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenStatementsFixer,
+        new PedroTroller\CS\Fixer\Comment\UselessCommentFixer,
+        new AppBundle\Fixer\DoctrineMigrationCleanFixer
+    ])
 ;
