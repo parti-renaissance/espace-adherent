@@ -7,7 +7,7 @@
             <li class="active"></li>
         </ul>
         <h1 class="text--large b__nudge--top-large text--center">
-            L'e-mail de votre ami(e)
+            L'e-mail pour votre proche est prêt !
         </h1>
 
         {{ form_start(interactive_form) }}
@@ -50,7 +50,7 @@
             </div>
 
             <div class="form__row">
-                {{ form_label(interactive_form.friendEmail, 'L\'e-mail de votre ami(e)') }}
+                {{ form_label(interactive_form.friendEmail, 'L\'e-mail de votre proche') }}
                 {{ form_errors(interactive_form.friendEmail) }}
                 {{ form_widget(interactive_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
             </div>
