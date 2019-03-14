@@ -2,15 +2,16 @@
 
 {% block referent_content %}
     <h2 class="text--center">
-        Consulter ma base adhérente
+        Envoyer un message
     </h2>
-    <hr class="clearfix" />
+
+    <hr class="clearfix"/>
+
     <div class="referent__filters">
         <div class="referent__filters__form">
-            <p class="text--gray text--small">Vous pouvez consulter uniquement les adhérents abonnés à vos e-mails</p>
             <form method="get" action="{{ path('app_referent_users') }}#send-message">
                 <div class="referent__filters__subtitle">
-                    Afficher les ...
+                    Envoyer un message aux ...
                 </div>
                 <div class="l__row l__row--top l__mobile--col">
                     <div class="l__col--grow-1 b__nudge--right">
@@ -174,17 +175,22 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            <legend class="text--gray text--small">
+                                Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts
+                            </legend>
                         </div>
                     </div>
                 </div>
 
                 <div class="referent__filters__buttons">
-                    <button type="submit" class="btn b__nudge--bottom-tiny">Filtrer</button>
                     {% if has_filter %}
-                        <a href="{{ path('app_referent_users') }}" class="link--blue--dark link--no-decor">
+                        <a href="{{ path('app_referent_users') }}" class="btn btn--no-border">
                             Réinitialiser le filtre
                         </a>
                     {% endif %}
+                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
+                        Filtrer pour envoyer un message
+                    </button>
                 </div>
 
                 <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
@@ -196,9 +202,11 @@
     {% if has_filter %}
         <div class="referent__filters__count">
             <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvé(s)</div>
+
+            <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn btn--primary b__nudge--top-10">
+                Leur envoyer un message
+            </a>
         </div>
-    {% else %}
-        <p>Vous consultez une liste de tous vos adhérents abonnés aux e-mails ! ({{ results_count }})</p>
     {% endif %}
 
     <div class="text--center">
@@ -254,13 +262,13 @@
                         <td>{{ user.postalCode }} <br/> {{ user.city }}, {{ user.country }}</td>
                         <td class="datagrid__table__col--left">
                             <ul>
-                            {% for slug, name in user.citizenProjectsOrganizer %}
-                                <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}"><strong>{{ name }}</strong></a></li>
-                            {% endfor %}
+                                {% for slug, name in user.citizenProjectsOrganizer %}
+                                    <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}"><strong>{{ name }}</strong></a></li>
+                                {% endfor %}
 
-                            {% for slug, name in user.citizenProjects %}
-                                <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}">{{ name }}</a></li>
-                            {% endfor %}
+                                {% for slug, name in user.citizenProjects %}
+                                    <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}">{{ name }}</a></li>
+                                {% endfor %}
                             </ul>
                         </td>
                         <td class="datagrid__table__col--left">

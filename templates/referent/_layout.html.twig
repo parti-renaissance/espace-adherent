@@ -43,11 +43,7 @@
                     },
                     {
                         'route': 'app_referent_users',
-                        'label': 'Mes adhérents'
-                    },
-                    {
-                        'route': 'app_message_referent_list',
-                        'label': 'Envoyer un message ✨'
+                        'label': 'Envoyer un message'
                     },
                     {
                         'route': 'app_referent_organizational_chart',
@@ -59,6 +55,13 @@
                         'label': 'J\'écoute'
                     }
                 ] %}
+
+                {% if enable_canary %}
+                    {% set pages = pages|merge([{
+                        'route': 'app_message_referent_list',
+                        'label': 'Envoyer un message ✨'
+                    }]) %}
+                {% endif %}
 
                 <ul class="procuration-manager__tabs">
                     {% for page in pages if page.role is not defined or is_granted(page.role) %}
