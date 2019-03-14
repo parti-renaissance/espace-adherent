@@ -1,15 +1,15 @@
 {% extends 'referent/_layout.html.twig' %}
 
 {% block referent_content %}
+    <h2 class="text--center">
+        Consulter ma base adhérente
+    </h2>
+    <hr class="clearfix" />
     <div class="referent__filters">
-        <h3 class="referent__filters__title" id="send-message">
-            Envoyer un message
-        </h3>
-
         <div class="referent__filters__form">
             <form method="get" action="{{ path('app_referent_users') }}#send-message">
                 <div class="referent__filters__subtitle">
-                    Envoyer un message aux ...
+                    Afficher les ...
                 </div>
                 <div class="l__row l__row--top l__mobile--col">
                     <div class="l__col--grow-1 b__nudge--right">
@@ -173,9 +173,6 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <legend class="text--gray text--small">
-                                Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts
-                            </legend>
                         </div>
                     </div>
                 </div>

@@ -10,7 +10,11 @@
         }
 
         td, th {
-            padding: 10px 0;
+            padding: 10px 5px;
+
+            &.c__width-40 {
+                width: 40%;
+            }
         }
     }
 }
