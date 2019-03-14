@@ -25,18 +25,15 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
     public function search(Adherent $referent, ManagedUsersFilter $filter = null): Paginator
     {
-        $qb = $this->createFilterQueryBuilder($referent, $filter);
-        $qb->andWhere('u.isMailSubscriber = 1');
-
-        $query = $qb->getQuery();
-        $query
+        return new Paginator($this
+            ->createFilterQueryBuilder($referent, $filter)
+            ->andWhere('u.isMailSubscriber = 1')
             ->setFirstResult($filter ? $filter->getOffset() : 0)
             ->setMaxResults(ManagedUsersFilter::PER_PAGE)
+            ->getQuery()
             ->useResultCache(true)
-            ->setResultCacheLifetime(1800) // 30 minutes
-        ;
-
-        return new Paginator($query);
+            ->setResultCacheLifetime(1800)
+        );
     }
 
     public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
