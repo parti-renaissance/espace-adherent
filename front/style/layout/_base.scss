@@ -166,9 +166,11 @@ table {
     .action-dropdown-menu {
         display: none;
         position: absolute;
-        left: -50px;
+        text-align: center;
+        left: -60px;
         border: 1px solid $gray;
         border-radius: 2px;
+        width: 140px;
 
         & a {
             display: block;
