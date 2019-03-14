@@ -7,6 +7,7 @@
     <hr class="clearfix" />
     <div class="referent__filters">
         <div class="referent__filters__form">
+            <p class="text--gray text--small">Vous pouvez consulter uniquement les adhérents abonnés à vos e-mails</p>
             <form method="get" action="{{ path('app_referent_users') }}#send-message">
                 <div class="referent__filters__subtitle">
                     Afficher les ...
@@ -197,7 +198,7 @@
             <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvé(s)</div>
         </div>
     {% else %}
-        <p>Vous consultez une liste de <b>tous vos adhérents !</b></p>
+        <p>Vous consultez une liste de tous vos adhérents abonnés aux e-mails ! ({{ results_count }})</p>
     {% endif %}
 
     <div class="text--center">

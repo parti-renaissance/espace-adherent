@@ -11,6 +11,11 @@
 
         td, th {
             padding: 10px 5px;
+            word-break: break-word;
+
+            &.c__width-20 {
+                width: 20%;
+            }
 
             &.c__width-40 {
                 width: 40%;

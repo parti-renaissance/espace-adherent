@@ -16,7 +16,7 @@
         <thead>
             <tr>
                 <th>Statut</th>
-                <th>Label</th>
+                <th class="c__width-20">Label</th>
                 <th class="c__width-40">Objet</th>
                 <th>Date de création</th>
                 <th>Date d'envoi</th>
@@ -29,8 +29,8 @@
                     <td>{{ message.status|trans }}</td>
                     <td>{{ message.label }}</td>
                     <td>{{ message.subject }}</td>
-                    <td>{{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}</td>
-                    <td>{{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") : '~' }}</td>
+                    <td class="text--small">{{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}</td>
+                    <td class="text--small">{{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") : '~' }}</td>
                     <td>
                         <div class="action-menu-oval">
                             <a href="javascript:void(0);">
