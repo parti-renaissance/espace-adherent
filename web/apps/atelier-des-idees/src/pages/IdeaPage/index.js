@@ -117,7 +117,9 @@ function mapDispatchToProps(dispatch, ownProps) {
                 })
             );
         },
-        onSaveIdea: data => dispatch(saveCurrentIdea(data)),
+        onSaveIdea: (data) => {
+            dispatch(saveCurrentIdea(data));
+        },
     };
 }
 

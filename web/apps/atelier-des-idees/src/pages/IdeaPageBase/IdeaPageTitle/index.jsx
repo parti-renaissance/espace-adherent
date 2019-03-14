@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextArea from '../../../components/TextArea';
+import TextAreaWithAutoComplete from '../../../components/TextAreaWithAutoComplete';
 
 /**
  * This component handles both DRAFT and PENDING status
@@ -17,6 +17,8 @@ class IdeaPageTitle extends React.Component {
     }
 
     onTitleChange(value) {
+        this.props.autoCompleteTitleIdea(value);
+
         if (this.state.isEditing) {
             this.setState({ value });
         } else {
@@ -29,8 +31,9 @@ class IdeaPageTitle extends React.Component {
             <section className="idea-page-title">
                 {!this.props.isReadOnly && (this.props.isEditing || this.state.isEditing) ? (
                     <React.Fragment>
-                        <TextArea
+                        <TextAreaWithAutoComplete
                             maxLength={120}
+                            minLength={this.props.minLength}
                             onChange={this.onTitleChange}
                             placeholder="Titre de votre proposition"
                             value={this.state.isEditing ? this.state.value : this.props.title}
@@ -40,6 +43,12 @@ class IdeaPageTitle extends React.Component {
                                     : undefined
                             }
                             name="title"
+                            haveAutoComplete
+                            autoCompleteValues={this.props.autoCompleteValues}
+                            id={'select0'}
+                            dataSelectlist="true"
+                            dataPrev={'firstItem'}
+                            dataNext={'select1'}
                         />
                         {this.state.isEditing && (
                             <div className="idea-page-title__title__editing-footer">
@@ -88,12 +97,12 @@ class IdeaPageTitle extends React.Component {
                                     {new Date(this.props.publishedAt).toLocaleDateString()}
                                 </span>
                             )}
-                            {this.props.themes &&
-								this.props.themes.map(theme => (
-								    <ul>
-								        <li className="idea-page-title__tags__item">{theme.name}</li>
-								    </ul>
-								))}
+                            <ul>
+                                {this.props.themes &&
+									this.props.themes.map(theme => (
+									    <li className="idea-page-title__tags__item">{theme.name}</li>
+									))}
+                            </ul>
                         </div>
                     </React.Fragment>
                 )}

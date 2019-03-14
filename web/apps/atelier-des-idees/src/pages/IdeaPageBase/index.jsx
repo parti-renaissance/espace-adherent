@@ -64,7 +64,9 @@ class IdeaPageBase extends React.Component {
         this.onToggleReadingMode = this.onToggleReadingMode.bind(this);
         this.formatAnswers = this.formatAnswers.bind(this);
     }
-
+    autoCompleteTitleIdea(value) {
+        this.props.autoCompleteTitleIdea(value);
+    }
     onNameChange(value, withSave = false) {
         this.setState(
             prevState => ({
@@ -147,10 +149,10 @@ class IdeaPageBase extends React.Component {
         const missingValues = Object.entries(answers).reduce((acc, [questionId, answer]) => {
             const isRequired = withRequired && this.requiredQuestions.includes(parseInt(questionId, 10));
             if (
-                // if an answer is required, it must have at least ANSWER_MIN_LENGTH characters
+            // if an answer is required, it must have at least ANSWER_MIN_LENGTH characters
                 (isRequired && answer.length < ANSWER_MIN_LENGTH) ||
-                // otherwise it can be empty or have at least ANSWER_MIN_LENGTH characters
-                (!isRequired && 0 < answer.length && answer.length < ANSWER_MIN_LENGTH)
+				// otherwise it can be empty or have at least ANSWER_MIN_LENGTH characters
+				(!isRequired && 0 < answer.length && answer.length < ANSWER_MIN_LENGTH)
             ) {
                 acc[questionId] = true;
             }
@@ -170,8 +172,8 @@ class IdeaPageBase extends React.Component {
     componentDidUpdate(prevProps) {
         if (
             this.props.idea.status === ideaStatus.DRAFT &&
-            prevProps.isSaveSuccess !== this.props.isSaveSuccess &&
-            this.props.isSaveSuccess
+			prevProps.isSaveSuccess !== this.props.isSaveSuccess &&
+			this.props.isSaveSuccess
         ) {
             // idea save is successful, notify user (only in draft mode)
             clearTimeout(this.saveBannerTimer);
@@ -254,6 +256,8 @@ class IdeaPageBase extends React.Component {
                                     isReadOnly={this.state.readingMode || !this.props.isAuthor}
                                     hasError={this.state.errors.name}
                                     showPublicationDate={idea.status !== ideaStatus.DRAFT}
+                                    autoCompleteTitleIdea={value => this.autoCompleteTitleIdea(value)}
+                                    autoCompleteValues={idea.autoComplete}
                                 />
                                 <IdeaContent
                                     onQuestionTextChange={this.onQuestionTextChange}

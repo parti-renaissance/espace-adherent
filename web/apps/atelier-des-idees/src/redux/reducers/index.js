@@ -27,6 +27,7 @@ const rootReducer = combineReducers({
     currentIdea,
     pinned,
     reports,
+
     static: staticData,
 });
 

@@ -437,6 +437,7 @@
         <service id="AppBundle\IdeasWorkshop\ThemeManager" />
         <service id="AppBundle\Validator\CommitteeMemberValidator" />
         <service id="AppBundle\IdeasWorkshop\Listener\IdeaPublishListener" />
+        <service id="AppBundle\IdeasWorkshop\Listener\IdeaExtendListener" />
         <service id="AppBundle\IdeasWorkshop\Listener\ApproveThreadCommentListener" />
         <service id="AppBundle\IdeasWorkshop\Listener\EnableThreadListener" />
         <service id="AppBundle\IdeasWorkshop\Handler\SendMailForApprovedThreadCommentHandler">
@@ -444,6 +445,10 @@
             <tag name="messenger.message_handler"/>
         </service>
         <service id="AppBundle\IdeasWorkshop\Handler\SendMailForPublishedIdeaHandler">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+            <tag name="messenger.message_handler"/>
+        </service>
+        <service id="AppBundle\IdeasWorkshop\Handler\SendMailForExtendedIdeaHandler">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
             <tag name="messenger.message_handler"/>
         </service>

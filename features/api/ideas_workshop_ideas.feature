@@ -113,7 +113,7 @@ Feature:
 
   Scenario: As a non logged-in user I can get ideas by name for dropdown list (some words and special characters will not be searched)
     Given I add "Accept" header equal to "application/json"
-    And I send a "GET" request to "/api/ideas-workshop/ideas?name_contains=réduire%20dans%20les%20%3F!%E2%80%9C%E2%80%9D%E2%80%98%E2%80%99%E2%80%9B%E2%80%9F.%2C%E2%80%9A%E2%80%9E%22%5E%C2%B0%E2%80%A6%3A%3B%26%23_%C2%AF%E2%80%93%E2%80%91%E2%80%94%40%25%E2%80%B0%7C%2F%5C%C2%A8%60%2B-%24*%3C%3E%C3%97%C3%B7()%E2%82%AC%C2%AB%C2%BB%E2%86%92~"
+    And I send a "GET" request to "/api/ideas-workshop/ideas?name_contains=réduire%20dans%20les%20%3F!%E2%80%9C%E2%80%9D%E2%80%98%E2%80%99%E2%80%9B%E2%80%9F.%2C%E2%80%9A%E2%80%9E%22%5E%C2%B0%E2%80%A6%3A%3B%26%23_%C2%AF%E2%80%93%E2%80%91%E2%80%94%40%25%E2%80%B0%7C%2F%5C%C2%A8%60%2B-%24*%3C%3E%C3%97%C3%B7()%E2%82%AC%C2%AB%C2%BB%E2%86%92~es"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
@@ -125,7 +125,7 @@ Feature:
       | items[0].comments_count     | 2                                     |
       | items[0].contributors_count | 2                                     |
       | items[1].name               | Réduire le gaspillage alimentaire     |
-    When I send a "GET" request to "/api/ideas-workshop/ideas?name_contains=reduire%20dans%20les%20%3F%20!%20%E2%80%9C%20%E2%80%9D%20%E2%80%98%20%E2%80%99%20%E2%80%9B%20%E2%80%9F%20.%20%2C%20%E2%80%9A%20%E2%80%9E%20%22%20%5E%20%C2%B0%20%E2%80%A6%20%3A%20%3B%20%26%20%23%20_%20%C2%AF%20%E2%80%93%20%E2%80%91%20%E2%80%94%20%40%20%25%20%E2%80%B0%20%7C%20%2F%20%5C%20%C2%A8%20%60%20%2B%20-%20%24%20*%20%3C%20%3E%20%C3%97%20%C3%B7%20(%20)%20%E2%82%AC%20%C2%AB%20%C2%BB%20%E2%86%92%20~&page=2"
+    When I send a "GET" request to "/api/ideas-workshop/ideas?name_contains=reduire%20dans%20les%20%3F%20!%20%E2%80%9C%20%E2%80%9D%20%E2%80%98%20%E2%80%99%20%E2%80%9B%20%E2%80%9F%20.%20%2C%20%E2%80%9A%20%E2%80%9E%20%22%20%5E%20%C2%B0%20%E2%80%A6%20%3A%20%3B%20%26%20%23%20_%20%C2%AF%20%E2%80%93%20%E2%80%91%20%E2%80%94%20%40%20%25%20%E2%80%B0%20%7C%20%2F%20%5C%20%C2%A8%20%60%20%2B%20-%20%24%20*%20%3C%20%3E%20%C3%97%20%C3%B7%20(%20)%20%E2%82%AC%20%C2%AB%20%C2%BB%20%E2%86%92%20~es&page=2"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON nodes should match:
@@ -473,6 +473,54 @@ Feature:
     }
     """
 
+  Scenario: As a logged-in user I can extend my idea which is in FINALIZE state only 2 times
+    Given I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/extend"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name   | Réduire le gaspillage |
+      | status | PENDING               |
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/extend"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name   | Réduire le gaspillage |
+      | status | PENDING               |
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/extend"
+    Then the response status code should be 400
+
+  Scenario: As a logged-in user I can extend my idea which is in PENDING state
+    Given I am logged as "jacques.picard@en-marche.fr"
+    And I add "Content-Type" header equal to "application/json"
+    When I send a "PUT" request to "/api/ideas-workshop/ideas/e4ac3efc-b539-40ac-9417-b60df432bdc5/extend"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON nodes should match:
+      | name   | Faire la paix |
+      | status | PENDING       |
+    And I should have 1 email "IdeaExtendMessage" for "jacques.picard@en-marche.fr" with payload:
+    """
+    {
+      "FromEmail": "atelier-des-idees@en-marche.fr",
+      "FromName": "La République En Marche !",
+      "Subject": "Votre proposition a 10 jours supplémentaires pour des contributions !",
+      "MJ-TemplateID": "716215",
+      "MJ-TemplateLanguage": true,
+      "Recipients": [
+          {
+              "Email": "jacques.picard@en-marche.fr",
+              "Name": "Jacques Picard",
+              "Vars": {
+                  "first_name": "Jacques",
+                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
+              }
+          }
+      ]
+    }
+    """
+
   Scenario: As a logged-in user I can get full information about one idea
     Given I am logged as "benjyd@aol.com"
     And I add "Accept" header equal to "application/json"
@@ -765,7 +813,8 @@ Feature:
         },
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus convallis dolor, id ultricies lorem lobortis et. Vivamus bibendum leo et ullamcorper dapibus.",
         "created_at": "@string@.isDateTime()",
-        "status": "PENDING"
+        "status": "PENDING",
+        "extendable": true
     }
     """
 

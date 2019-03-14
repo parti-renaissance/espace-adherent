@@ -6,9 +6,9 @@ use AppBundle\Entity\IdeasWorkshop\Idea;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class IdeaPublishController
+class IdeaController
 {
-    public function __invoke(Request $request): Idea
+    public function publish(Request $request): Idea
     {
         /** @var Idea $idea */
         $idea = $request->attributes->get('data');
@@ -18,6 +18,20 @@ class IdeaPublishController
         }
 
         $idea->publish();
+
+        return $idea;
+    }
+
+    public function extend(Request $request): Idea
+    {
+        /** @var Idea $idea */
+        $idea = $request->attributes->get('data');
+
+        if (!$idea->isExtendable()) {
+            throw new BadRequestHttpException(sprintf('You can extend only PENDING or FINALIZED idea and do it %d times', Idea::EXTEND_COUNT_LIMIT));
+        }
+
+        $idea->extend();
 
         return $idea;
     }
