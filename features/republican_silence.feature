@@ -16,6 +16,7 @@ Feature:
     Examples:
       | uri                                   |
       | /espace-referent/utilisateurs         |
+      | /espace-referent/utilisateurs/message |
       | /espace-referent/evenements/creer     |
 
   Scenario Outline: As committee host I cannot access to the committee pages

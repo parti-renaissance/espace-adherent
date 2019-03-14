@@ -209,7 +209,7 @@ class ReferentControllerTest extends WebTestCase
         );
     }
 
-    public function testSearchAdherent()
+    public function testSearchUserToSendMail()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
@@ -310,6 +310,105 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($form, $data);
         $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+    }
+
+    public function testCancelSendMail()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            's' => 1,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('http://'.$this->hosts['app'].'/espace-referent/utilisateurs/message', $this->client->getRequest()->getUri());
+
+        $this->client->click($this->client->getCrawler()->selectLink('Annuler')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertEquals('http://'.$this->hosts['app'].'/espace-referent/utilisateurs', $this->client->getRequest()->getUri());
+    }
+
+    public function testSendMailFailed()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            's' => 1,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+
+        $data = [];
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
+
+        $this->assertSame(2, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('label[for=referent_message_subject] + .form__errors > li')->text());
+        $this->assertSame('Cette valeur ne doit pas être vide.',
+            $this->client->getCrawler()->filter('label[for=referent_message_content] + .form__errors > li')->text());
+    }
+
+    public function testSendMailSuccessful()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'anc' => 1,
+            'aic' => 1,
+            'h' => 1,
+            's' => 1,
+        ];
+        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
+        $this->assertContains('4 marcheur(s)', $this->client->getCrawler()->filter('form')->html());
+
+        $data = [];
+        $data['referent_message']['subject'] = 'Event reminder';
+        $data['referent_message']['content'] = 'One event is planned.';
+        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->client->followRedirect();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertContains('http://'.$this->hosts['app'].'/espace-referent/utilisateurs?', $this->client->getRequest()->getUri());
+
+        $referentMessages = $this
+            ->referentMessageRepository
+            ->createQueryBuilder('m')
+            ->innerJoin('m.from', 'a')
+            ->addSelect('a')
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $this->assertCount(1, $referentMessages);
+
+        /* @var ReferentManagedUsersMessage */
+        $message = reset($referentMessages);
+
+        $this->assertSame('referent@en-marche-dev.fr', $message->getFrom()->getEmailAddress());
+        $this->assertSame('Event reminder', $message->getSubject());
+        $this->assertSame('One event is planned.', $message->getContent());
+        $this->assertTrue($message->includeAdherentsNoCommittee());
+        $this->assertTrue($message->includeAdherentsInCommittee());
+        $this->assertTrue($message->includeHosts());
+        $this->assertTrue($message->includeSupervisors());
+        $this->assertEmpty($message->getQueryAreaCode());
+        $this->assertEmpty($message->getQueryCity());
+        $this->assertEmpty($message->getQueryId());
+        $this->assertSame(0, $message->getOffset());
     }
 
     public function testFilterAdherents()
