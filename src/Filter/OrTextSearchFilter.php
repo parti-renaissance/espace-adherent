@@ -35,7 +35,12 @@ final class OrTextSearchFilter extends AbstractContextAwareFilter
         $value = str_replace(array_map(function (string $word) {
             return ' '.$word.' ';
         }, self::IGNORED_WORDS), ' ', ' '.$value.' ');
-        $values = array_filter(explode(' ', preg_replace('/[^0-9a-zÀ-ÖÙ-öù-ÿœ\s]/iu', ' ', $value)));
+        $values = array_filter(
+            explode(' ', preg_replace('/[^0-9a-zÀ-ÖÙ-öù-ÿœ\s]/iu', ' ', $value)),
+            function ($word) {
+                return $word && \strlen($word) > 2;
+            }
+        );
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $searchTextExpression = $queryBuilder->expr()->orX();
 
