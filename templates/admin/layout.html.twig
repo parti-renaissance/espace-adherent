@@ -1,5 +1,12 @@
 {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
 
+{% block meta_tags %}
+    {{ parent() }}
+
+    <link rel="icon" type="image/png" href="{{ asset('favicon-black-32x32.png') }}?v2" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon-black-16x16.png') }}?v2" sizes="16x16" />
+{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
 
