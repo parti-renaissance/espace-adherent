@@ -4,31 +4,14 @@
     {{ parent() }}
 
     <script type="text/javascript">
-       $(document).ready(function() {
-           const displayChoices = function(questionType) {
-               const questionBlock = $(questionType).parents(".sonata-ba-field div[id$='_question']").first();
-               const choicesBlock = questionBlock.find("div[id$='_question_choices']").first();
+        $(document).ready(function() {
+            displayChoicesHandle();
 
-               if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
-                  choicesBlock.hide();
-               } else {
-                  choicesBlock.show();
-               }
-           };
-
-           $("ul[id$='_question_type'] .radio label input:checked").each(function() {
-               displayChoices($(this));
-           });
-
-           $("ul[id$='_question_type'] .radio label").click(function() {
-               displayChoices($(this).find('input'));
-           });
-
-           $('.question-disabled').each(function() {
+            $('.question-disabled').each(function() {
                $(this).find($("ul[id$='_question_type'] .radio label")).unbind('click');
-           });
+            });
 
-           const selectConcernedZoneChoices = function (selectedInput) {
+            const selectConcernedZoneChoices = function (selectedInput) {
                const cityBloc = $("div.form-group[id$='_city']");
 
                if ('{{ constant('AppBundle\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}'
@@ -39,16 +22,43 @@
                    cityBloc.hide();
                    $("input[name$='[city]']").val('');
                }
-           };
+            };
 
-           $("ul[id$='_concernedAreaChoice'] .radio label").click(function() {
+            $("ul[id$='_concernedAreaChoice'] .radio label").click(function() {
                selectConcernedZoneChoices($(this).find('input'));
-           });
+            });
 
-           $("input[name$='[concernedAreaChoice]']:checked").each(function() {
+            $("input[name$='[concernedAreaChoice]']:checked").each(function() {
                selectConcernedZoneChoices($(this));
-           });
-
+            });
        });
+
+        $(document).on('sonata-collection-item-added', function() {
+            displayChoicesHandle();
+        });
+
+        var displayChoicesHandle = function() {
+            $("ul[id$='_question_type'] .radio label input:checked").each(function() {
+                displayChoices($(this));
+            });
+
+            $("ul[id$='_question_type'] .radio label").click(function() {
+                displayChoices($(this).find('input'));
+            });
+        };
+
+        var displayChoices = function(questionType) {
+            const questionBlock = $(questionType).parents(".sonata-ba-field div[id$='_question']").first();
+            const choicesBlock = questionBlock.find("div[id$='_question_choices']").first();
+
+            if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}'
+                === $(questionType).val()
+            ) {
+                choicesBlock.hide();
+            } else {
+                choicesBlock.show();
+            }
+        };
+
     </script>
 {% endblock %}
