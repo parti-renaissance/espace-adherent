@@ -10,66 +10,87 @@
             L'e-mail pour votre proche est prêt !
         </h1>
 
-        {{ form_start(interactive_form) }}
+            {{ form_start(interactive_form) }}
 
-        <h5 class="interactive__title text--medium text--center">
-            Récapitulatif de votre message
-        </h5>
+            <h5 class="interactive__title text--medium text--center">
+                Récapitulatif de votre message
+            </h5>
 
-        {{ form_errors(interactive_form) }}
+            {{ form_errors(interactive_form) }}
 
-        <div class="form__row">
-            {{ form_label(interactive_form.messageSubject, 'Objet') }}
-            {{ form_errors(interactive_form.messageSubject) }}
-            {{ form_widget(interactive_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
-        </div>
-
-        <div class="form__row">
-            {{ form_label(interactive_form.messageContent, 'Message') }}
-            {{ form_errors(interactive_form.messageContent) }}
-            {{ form_widget(interactive_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
-        </div>
-
-        <div class="l__wrapper--500 b__nudge--top-50">
             <div class="form__row">
-                {{ form_label(interactive_form.selfFirstName, 'Votre prénom') }}
-                {{ form_errors(interactive_form.selfFirstName) }}
-                {{ form_widget(interactive_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_label(interactive_form.messageSubject, 'Objet') }}
+                {{ form_errors(interactive_form.messageSubject) }}
+                {{ form_widget(interactive_form.messageSubject, { 'attr': { 'class': 'form--full' } }) }}
             </div>
 
             <div class="form__row">
-                {{ form_label(interactive_form.selfLastName, 'Votre nom') }}
-                {{ form_errors(interactive_form.selfLastName) }}
-                {{ form_widget(interactive_form.selfLastName, { 'attr': { 'class': 'form--full' } }) }}
+                {{ form_label(interactive_form.messageContent, 'Message') }}
+                {{ form_errors(interactive_form.messageContent) }}
+                {{ form_widget(interactive_form.messageContent, { 'attr': { 'class': 'form--full form__field--textarea-500' } }) }}
             </div>
 
-            <div class="form__row">
-                {{ form_label(interactive_form.selfEmail, 'Votre adresse e-mail') }}
-                {{ form_errors(interactive_form.selfEmail) }}
-                {{ form_widget(interactive_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+            <div class="l__wrapper--500 b__nudge--top-50">
+                <div class="form__row">
+                    {{ form_label(interactive_form.selfFirstName, 'Votre prénom') }}
+                    {{ form_errors(interactive_form.selfFirstName) }}
+                    {{ form_widget(interactive_form.selfFirstName, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(interactive_form.selfEmail, 'Votre adresse e-mail') }}
+                    {{ form_errors(interactive_form.selfEmail) }}
+                    {{ form_widget(interactive_form.selfEmail, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_label(interactive_form.friendEmail, 'L\'e-mail de votre proche') }}
+                    {{ form_errors(interactive_form.friendEmail) }}
+                    {{ form_widget(interactive_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+                </div>
             </div>
 
-            <div class="form__row">
-                {{ form_label(interactive_form.friendEmail, 'L\'e-mail de votre proche') }}
-                {{ form_errors(interactive_form.friendEmail) }}
-                {{ form_widget(interactive_form.friendEmail, { 'attr': { 'class': 'form--full' } }) }}
+            <div class="l__wrapper--500 b__nudge--top-50">
+                <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+                {% if recaptcha_public_key is not empty %}
+                    <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
+                {% elseif app.debug %}
+                    <input type="hidden" name="g-recaptcha-response" value="fake" />
+                {% endif %}
             </div>
-        </div>
 
-        <div class="l__wrapper--500 b__nudge--top-50">
-            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-            {% if recaptcha_public_key is not empty %}
-                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
-            {% elseif app.debug %}
-                <input type="hidden" name="g-recaptcha-response" value="fake" />
-            {% endif %}
-        </div>
+            <div class="text--center b__nudge--top-large">
+                <a href="{{ path('app_my_europe_restart') }}" class="btn">Recommencer</a>
+                {{ form_widget(interactive_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
+            </div>
 
-        <div class="text--center b__nudge--top-large">
-            <a href="{{ path('app_my_europe_restart') }}" class="btn">Recommencer</a>
-            {{ form_widget(interactive_form.send, {'attr': {'class': 'btn btn--blue'}}) }}
-        </div>
+            {{ form_end(interactive_form) }}
 
-        {{ form_end(interactive_form) }}
+        </div>
+    <div class="interactive__banner__form-container l__wrapper--500">
+        <div class="text--gray b__nudge--top-50 text--summary text--smallest">
+            <p>
+                Les données recueillies sur ce formulaire sont traitées par LaREM dans le but de permettre aux
+                utilisateurs et aux adhérents de générer des e-mails personnalisés pour un proche et sont susceptibles
+                de faire l'objet d'un traitement statistique anonymisé.
+            </p>
+            <p>
+                Toutes les informations sont obligatoires.
+                L'absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+            <p>
+                Conformément aux dispositions légales et règlementaires relatives à la protection des données
+                personnelles, vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité
+                de vos données, ainsi que d'un droit d'opposition et d'un droit à la limitation du traitement des
+                données vous concernant. Vous disposez également du droit de donner des directives sur le sort de
+                vos données après votre décès.
+            </p>
+            <p>
+                Vous pouvez consulter la Politique de protection des données à l'adresse <br />
+                <a href="https://en-marche.fr/politique-protection-donnees" target="_blank" rel="noopener noreferrer" class="link--no-decor">
+                    https://en-marche.fr/politique-protection-donnees</a> et exercer vos droits en nous adressant
+                votre demande accompagnée d'une copie de votre pièce d'identité à l'adresse électronique suivante :
+                <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+            </p>
+        </div>
     </div>
 </section>

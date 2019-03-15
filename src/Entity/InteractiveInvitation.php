@@ -26,9 +26,6 @@ abstract class InteractiveInvitation
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
-    /**
-     * @ORM\Column(length=50)
-     */
     protected $friendFirstName;
 
     /**
@@ -115,7 +112,7 @@ abstract class InteractiveInvitation
         return 'Invitation de '.$this->authorEmailAddress.' à '.$this->friendEmailAddress;
     }
 
-    public function getFriendFirstName(): string
+    public function getFriendFirstName(): ?string
     {
         return $this->friendFirstName;
     }

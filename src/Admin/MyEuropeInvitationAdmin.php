@@ -57,9 +57,6 @@ class MyEuropeInvitationAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
             ])
-            ->add('friendFirstName', null, [
-                'label' => 'Prénom de l’ami',
-            ])
             ->add('friendAge', null, [
                 'label' => 'Age de l’ami',
             ])
@@ -68,9 +65,6 @@ class MyEuropeInvitationAdmin extends AbstractAdmin
             ])
             ->add('authorFirstName', null, [
                 'label' => 'Prénom de l’auteur',
-            ])
-            ->add('authorLastName', null, [
-                'label' => 'Nom de l’auteur',
             ])
             ->add('authorEmailAddress', null, [
                 'label' => 'Email de l’auteur',
