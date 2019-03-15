@@ -83,10 +83,6 @@ class MyEuropeType extends AbstractType
                         'filter_emojis' => true,
                         'attr' => ['placeholder' => 'interactive.form.self_first_name'],
                     ])
-                    ->add('selfLastName', TextType::class, [
-                        'label' => false,
-                        'filter_emojis' => true,
-                    ])
                     ->add('selfEmail', EmailType::class, [
                         'label' => false,
                     ])

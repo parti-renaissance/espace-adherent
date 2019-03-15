@@ -100,7 +100,6 @@ final class MyEuropeProcessor
     public $selfFirstName = '';
 
     /**
-     * @Assert\NotBlank(groups={"send"})
      * @Assert\Type("string", groups={"send"})
      * @Assert\Length(max=50, groups={"send"})
      */
