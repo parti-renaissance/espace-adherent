@@ -11,7 +11,7 @@ trait CanaryControllerTrait
      */
     public function disableInProduction(): void
     {
-        if (!((bool) $this->getParameter('enable_canary'))) {
+        if (!((bool) $this->getParameter('enable_canary')) && !$this->isGranted('ROLE_CANARY_TESTER')) {
             throw $this->createNotFoundException();
         }
     }

@@ -317,6 +317,12 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Zone expérimentale 🚧', [
+                'class' => 'col-md-6',
+                'box_class' => 'box box-warning',
+            ])
+                ->add('canaryTester')
+            ->end()
         ;
 
         $formMapper->getFormBuilder()

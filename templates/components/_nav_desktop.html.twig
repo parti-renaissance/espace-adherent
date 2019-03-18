@@ -180,7 +180,7 @@
                 <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
             </li>
 
-            {% if enable_canary %}
+            {% if is_canary_enabled() %}
                 <li>
                     <a href="{{ path('app_message_deputy_list', {prefix: 'espace-depute/'}) }}">Espace député ✨</a>
                 </li>
