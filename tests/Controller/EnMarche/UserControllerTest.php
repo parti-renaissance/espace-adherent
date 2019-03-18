@@ -60,7 +60,7 @@ class UserControllerTest extends WebTestCase
         self::assertCount(1, $flash);
         self::assertSame('adherent.change_email.success', current($flash));
 
-        $this->assertHavePublishedMessage('api_sync', '{"uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458","subscriptionExternalIds":["123abc","456def"],"country":"FR","zipCode":"73100","emailAddress":"new.mail@test.com","firstName":"Carl","lastName":"Mirabeau"}');
+        $this->assertHavePublishedMessage('api_sync', '{"uuid":"e6977a4d-2646-5f6c-9c82-88e58dca8458","subscriptionExternalIds":["123abc","456def"],"country":"FR","zipCode":"73100","tags":["73","CIRCO_73004"],"emailAddress":"new.mail@test.com","firstName":"Carl","lastName":"Mirabeau"}');
 
         $this->manager->clear(Adherent::class);
         $adherent = $this->getAdherentRepository()->findOneByUuid($token->getAdherentUuid()->toString());

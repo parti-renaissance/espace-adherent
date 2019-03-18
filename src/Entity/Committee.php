@@ -10,7 +10,6 @@ use AppBundle\ValueObject\Link;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -456,42 +455,5 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function getReportType(): string
     {
         return ReportType::COMMITTEE;
-    }
-
-    /**
-     * @return Collection|ReferentTag[]
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
-    }
-
-    public function addReferentTag(ReferentTag $referentTag): void
-    {
-        if (!$this->referentTags->contains($referentTag)) {
-            $this->referentTags->add($referentTag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTags->remove($referentTag);
-    }
-
-    public function clearReferentTags(): void
-    {
-        $this->referentTags->clear();
-    }
-
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("tags")
-     * @JMS\Groups({"public", "committee_read"})
-     */
-    public function getReferentTagsCodes(): array
-    {
-        return array_map(function (ReferentTag $referentTag) {
-            return $referentTag->getCode();
-        }, $this->referentTags->toArray());
     }
 }
