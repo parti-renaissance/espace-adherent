@@ -70,5 +70,9 @@
         <service id="AppBundle\Twig\IdeasWorkshopRuntime">
             <tag name="twig.runtime" />
         </service>
+
+        <service id="AppBundle\Twig\CanaryExtension">
+            <argument key="$canaryMode">%env(ENABLE_CANARY)%</argument>
+        </service>
     </services>
 </container>

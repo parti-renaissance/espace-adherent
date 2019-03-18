@@ -371,6 +371,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $nationality;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $canaryTester = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -531,6 +538,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isCitizenProjectAdministrator()) {
             $roles[] = 'ROLE_CITIZEN_PROJECT_ADMINISTRATOR';
+        }
+
+        if ($this->canaryTester) {
+            $roles[] = 'ROLE_CANARY_TESTER';
         }
 
         return array_merge($roles, $this->roles);

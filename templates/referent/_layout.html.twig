@@ -56,7 +56,7 @@
                     }
                 ] %}
 
-                {% if enable_canary %}
+                {% if is_canary_enabled() %}
                     {% set pages = pages|merge([{
                         'route': 'app_message_referent_list',
                         'label': 'Envoyer un message ✨'
