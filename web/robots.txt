@@ -1,5 +1,8 @@
 Sitemap: https://en-marche.fr/sitemap.xml
 Sitemap: https://m.en-marche.fr/sitemap.xml
+Sitemap: https://dpt-api.en-marche.fr/api/simple_sites/sitemap.xml
+Sitemap: https://dpt-api.en-marche.fr/api/departmental_sites/sitemap.xml
+Sitemap: https://en-marche.fr/api/mooc/sitemap.xml
 
 User-agent: *
 Disallow: */ical
