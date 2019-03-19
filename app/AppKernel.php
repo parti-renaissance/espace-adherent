@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
+            new Endroid\QrCodeBundle\EndroidQrCodeBundle(),
 
             // A2lix
             new A2lix\I18nDoctrineBundle\A2lixI18nDoctrineBundle(),

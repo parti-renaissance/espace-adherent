@@ -221,6 +221,7 @@
         <service id="app.security.admin_provider" class="AppBundle\Security\UserProvider">
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
         </service>
+        <service id="AppBundle\Security\QrCodeResponseFactory"/>
 
         <!-- Serializer -->
         <service id="AppBundle\Serializer\CitizenProjectSerializerSubscriber">

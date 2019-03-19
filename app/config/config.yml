@@ -197,11 +197,6 @@ csa_guzzle:
                 headers:
                     Content-Type: 'application/json'
 
-        google_charts_api:
-            config:
-                base_uri: 'https://chart.googleapis.com'
-                timeout: 2.0
-
         google_maps_static_api:
             config:
                 base_uri: 'https://maps.googleapis.com'
@@ -412,3 +407,10 @@ lexik_jwt_authentication:
     public_key:       '%env(SSL_PUBLIC_KEY)%'
     pass_phrase:      '%env(SSL_ENCRYPTION_KEY)%'
     token_ttl:        3600
+
+endroid_qr_code:
+    writer: 'png'
+    size: 300
+    margin: 10
+    error_correction_level: 'low'
+    validate_result: false

@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\Entity\Administrator;
 use AppBundle\Form\LoginType;
+use AppBundle\Security\QrCodeResponseFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,8 +57,8 @@ class AdminSecurityController extends Controller
      * @Route("/qr-code/{id}", name="app_admin_qr_code")
      * @Method("GET")
      */
-    public function qrCodeAction(Administrator $administrator): Response
+    public function qrCodeAction(QrCodeResponseFactory $qrCodeResponseFactory, Administrator $administrator): Response
     {
-        return $this->get('app.security.2fa_qr_code_factory')->createQrCodeResponse($administrator);
+        return $qrCodeResponseFactory->createResponseFor($administrator);
     }
 }
