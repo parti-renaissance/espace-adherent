@@ -1,0 +1,76 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runManagedList(
+                [
+                    {
+                        key: 'id',
+                        name: 'ID',
+                        style: {
+                            width: 25,
+                        }
+                    },
+                    {
+                        key: 'name',
+                        name: 'Nom du questionnaire',
+                    },
+                    {
+                        key: 'createdAt',
+                        name: 'Date de création',
+                    },
+                    {
+                        key: 'questionsCount',
+                        name: 'Nombre de questions',
+                    },
+                    {
+                        key: 'city',
+                        name: 'Ville',
+                    },
+                    {
+                        key: 'author',
+                        name: 'Créateur',
+                    },
+                    {
+                        key: 'edit',
+                        name: "Edition",
+                        link: true,
+                    },
+                    {
+                        key: 'duplicate',
+                        name: "Duplication",
+                        link: true,
+                    },
+                    {
+                        key: 'stats',
+                        name: "Statistiques",
+                        link: true,
+                    },
+                    {
+                        key: 'publish',
+                        name: "Publication",
+                    },
+                ],
+                {{ surveysListJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}
+
+{% block referent_content %}
+    <div class="referent__menu-list-event">
+        <a href="{{ path('app_referent_survey_create') }}" class="btn btn--blue--soft referent__btn-create-event">
+            Créer un questionnaire local
+        </a>
+        <div class="menu-items">
+            <h3>Questionnaires locaux</h3>
+            <span class="separator">|</span>
+            <h3><a href="{{ path('app_referent_national_surveys') }}">Questionnaires nationaux</a></h3>
+        </div>
+    </div>
+
+    <hr />
+
+    <div id="datagrid"></div>
+{% endblock %}

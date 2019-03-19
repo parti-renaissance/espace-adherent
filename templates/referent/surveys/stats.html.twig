@@ -57,11 +57,15 @@
 {% endblock %}
 
 {% block referent_content %}
-
-    <a href="{{ path('app_referent_surveys') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
-        {{ include('components/caret--left.html.twig') }}
-        Retour à la liste
-    </a>
+    {% if data.survey.isNational %}
+        <a href="{{ path('app_referent_national_surveys') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+            {{ include('components/caret--left.html.twig') }} Retour à la liste des questionnaires nationaux
+        </a>
+    {% else %}
+        <a href="{{ path('app_referent_surveys') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+            {{ include('components/caret--left.html.twig') }} Retour à la liste des questionnaires locaux
+        </a>
+    {% endif %}
     <div class="b__nudge--top-10 b__nudge--bottom-small">
         <a href="{{ path('app_referent_survey_stats_download', {'uuid': data.survey.uuid}) }}" class="btn btn--blue--soft" style="float: right;">télécharger au format csv</a>
         <h3>Statistiques : {{ data.survey.name }}</h3>

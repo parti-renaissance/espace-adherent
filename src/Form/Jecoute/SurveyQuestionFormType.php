@@ -13,7 +13,9 @@ class SurveyQuestionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('question', QuestionType::class)
+            ->add('question', QuestionType::class, [
+                'disabled' => $options['disabled'],
+            ])
             ->add('fromSuggestedQuestion', HiddenType::class)
             ->add('position', HiddenType::class, [
                 'attr' => [

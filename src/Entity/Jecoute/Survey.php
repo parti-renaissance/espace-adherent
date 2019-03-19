@@ -3,8 +3,6 @@
 namespace AppBundle\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthoredInterface;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Jecoute\SurveyTypeEnum;
@@ -27,7 +25,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index(autoIndex=false)
  */
-abstract class Survey implements AuthoredInterface
+abstract class Survey
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -41,21 +39,6 @@ abstract class Survey implements AuthoredInterface
      * @JMS\Groups({"survey_list"})
      */
     private $name;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     *
-     * @JMS\Groups({"survey_list"})
-     */
-    private $city;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $author;
 
     /**
      * @var SurveyQuestion[]|Collection
@@ -72,16 +55,10 @@ abstract class Survey implements AuthoredInterface
      */
     private $published = false;
 
-    public function __construct(
-        Adherent $author = null,
-        string $name = null,
-        string $city = null,
-        bool $published = false
-    ) {
+    public function __construct(string $name = null, bool $published = false)
+    {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;
-        $this->city = $city;
-        $this->author = $author;
         $this->published = $published;
         $this->questions = new ArrayCollection();
     }
@@ -96,16 +73,6 @@ abstract class Survey implements AuthoredInterface
         $this->uuid = Uuid::uuid4();
     }
 
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(Adherent $author = null): void
-    {
-        $this->author = $author;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -114,16 +81,6 @@ abstract class Survey implements AuthoredInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): void
-    {
-        $this->city = $city;
     }
 
     public function addQuestion(SurveyQuestion $surveyQuestion): void
@@ -197,6 +154,16 @@ abstract class Survey implements AuthoredInterface
     public function getQuestionsCount(): int
     {
         return $this->questions->count();
+    }
+
+    public function isLocal(): bool
+    {
+        return SurveyTypeEnum::LOCAL === $this->getType();
+    }
+
+    public function isNational(): bool
+    {
+        return SurveyTypeEnum::NATIONAL === $this->getType();
     }
 
     abstract public function getType(): string;

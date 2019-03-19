@@ -7,7 +7,7 @@ use AppBundle\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\NationalSurveyRepository")
  */
 class NationalSurvey extends Survey
 {
@@ -17,9 +17,11 @@ class NationalSurvey extends Survey
      */
     private $administrator;
 
-    public function getType(): string
+    public function __construct(Administrator $administrator, string $name = null, bool $published = false)
     {
-        return SurveyTypeEnum::NATIONAL;
+        $this->administrator = $administrator;
+
+        parent::__construct($name, $published);
     }
 
     public function setAdministrator(Administrator $administrator): void
@@ -30,5 +32,10 @@ class NationalSurvey extends Survey
     public function getAdministrator(): ?Administrator
     {
         return $this->administrator;
+    }
+
+    public function getType(): string
+    {
+        return SurveyTypeEnum::NATIONAL;
     }
 }

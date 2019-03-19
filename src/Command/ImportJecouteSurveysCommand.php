@@ -4,9 +4,9 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\Choice;
+use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\Question;
 use AppBundle\Entity\Jecoute\SuggestedQuestion;
-use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Jecoute\SurveyQuestionTypeEnum;
 use AppBundle\Repository\AdherentRepository;
@@ -159,7 +159,7 @@ class ImportJecouteSurveysCommand extends Command
 
     private function importSurveyFor(Adherent $referent): void
     {
-        $survey = new Survey($referent, 'Formulaire prêt à l\'emploi', false);
+        $survey = new LocalSurvey($referent, "Formulaire prêt à l'emploi", null, false);
 
         foreach (self::QUESTIONS as $questionDatas) {
             $question = new Question($questionDatas['content'], $questionDatas['type']);

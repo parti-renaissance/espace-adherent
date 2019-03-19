@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Jecoute;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\Question;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
@@ -36,13 +37,11 @@ class StatisticsExporterTest extends TestCase
 
     public function testExport(): void
     {
-        $survey = new LocalSurvey();
-        $survey->setName('Questionnaire TestU');
+        /** @var Adherent $author */
+        $author = $this->createMock(Adherent::class);
+        $survey = new LocalSurvey($author, 'Questionnaire TestU');
 
-        $question = new Question();
-        $question->setContent('question test u');
-        $question->setType(SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE);
-
+        $question = new Question('question test u', SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE);
         $surveyQuestion = new SurveyQuestion($survey, $question);
         $survey->addQuestion($surveyQuestion);
 

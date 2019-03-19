@@ -5,11 +5,13 @@
                 {{ form_label(form.question, 'Question', { label_attr: { class: 'label__header--large' } }) }}
             </div>
 
-            <div class="question-header__management">
-                <a href="#" class="question-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
-                <a href="#" class="question-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
-                <a href="#" class="question-remove btn btn-default"><i class="fa fa-trash"></i></a>
-            </div>
+            {% if not form.vars.disabled %}
+                <div class="question-header__management">
+                    <a href="#" class="question-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
+                    <a href="#" class="question-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
+                    <a href="#" class="question-remove btn btn-default"><i class="fa fa-trash"></i></a>
+                </div>
+            {% endif %}
         </div>
 
         <div class="form__row">
@@ -42,10 +44,12 @@
             {{ form_row(form.position) }}
         </div>
 
-        <div class="choice-management">
-            <a href="#" class="choice-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
-            <a href="#" class="choice-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
-            <a href="#" class="choice-remove btn btn-default"><i class="fa fa-trash"></i></a>
-        </div>
+       {% if not form.vars.disabled %}
+            <div class="choice-management">
+                <a href="#" class="choice-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
+                <a href="#" class="choice-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
+                <a href="#" class="choice-remove btn btn-default"><i class="fa fa-trash"></i></a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

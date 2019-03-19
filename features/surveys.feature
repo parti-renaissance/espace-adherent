@@ -10,9 +10,9 @@ Feature:
       | LoadJecouteDataAnswerData  |
 
   @javascript
-  Scenario: I can see the surveys list, edit a survey and show the statistics
+  Scenario: I can see the local surveys list, edit a survey and show the statistics
     Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-referent/jecoute/questionnaires"
+    When I am on "/espace-referent/jecoute/questionnaires-locaux"
     And I should see "Questionnaires locaux"
     And I should see "Questionnaire numéro 1"
     And I should not see "Un deuxième questionnaire"
@@ -30,3 +30,14 @@ Feature:
     And I should see "Est-ce une question à choix multiple ?"
     And I should see "66,67 %"
     And I should see "Réponse A"
+
+  @javascript
+  Scenario: I can see the national surveys list and show the statistics
+    Given I am logged as "referent@en-marche-dev.fr"
+    When I am on "/espace-referent/jecoute/questionnaires-nationaux"
+    And I should see "Questionnaires nationaux"
+    And I should see "Questionnaire national numéro 1"
+    Given I click the "survey-stats-0" element
+    Then I should see "Statistiques : Questionnaire national numéro 1"
+    And I should see "Une première question du 1er questionnaire national ?"
+    And I should see "Aucune donnée n'est disponible pour le moment."

@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Jecoute;
 
 use AppBundle\Entity\Jecoute\LocalSurvey;
+use AppBundle\Entity\Jecoute\Survey;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -34,42 +35,50 @@ class SurveyFormType extends AbstractType
             ->add('name', TextType::class, [
                 'filter_emojis' => true,
             ])
-            ->add('concernedAreaChoice', ChoiceType::class, [
-                'choices' => self::concernedAreaChoices,
-                'expanded' => true,
-                'mapped' => false,
-            ])
-            ->add('city', TextType::class, [
-                'filter_emojis' => true,
-                'required' => false,
-            ])
             ->add('questions', CollectionType::class, [
                 'entry_type' => SurveyQuestionFormType::class,
                 'entry_options' => [
                     'label' => false,
+                    'disabled' => $options['disabled'],
                 ],
-                'allow_add' => true,
-                'allow_delete' => true,
+                'allow_add' => !$options['disabled'],
+                'allow_delete' => !$options['disabled'],
                 'by_reference' => false,
                 'attr' => [
                     'class' => 'survey-questions-collection',
                 ],
                 'prototype_name' => '__parent_name__',
             ])
-            ->add('published', CheckboxType::class, [
-                'required' => false,
-            ])
         ;
 
-        $builder
-            ->addEventListener(FormEvents::POST_SET_DATA, [$this, 'postSetData'])
-            ->addEventListener(FormEvents::SUBMIT, [$this, 'validateCityByConcernedAreaChoice'])
-        ;
+        if ($builder->getData() instanceof LocalSurvey) {
+            $builder
+                ->add('concernedAreaChoice', ChoiceType::class, [
+                    'choices' => self::concernedAreaChoices,
+                    'expanded' => true,
+                    'mapped' => false,
+                ])
+                ->add('city', TextType::class, [
+                    'filter_emojis' => true,
+                    'required' => false,
+                ])
+                ->addEventListener(FormEvents::POST_SET_DATA, [$this, 'postSetData'])
+                ->addEventListener(FormEvents::SUBMIT, [$this, 'validateCityByConcernedAreaChoice'])
+            ;
+        }
+
+        if (!$options['disabled']) {
+            $builder
+                ->add('published', CheckboxType::class, [
+                    'required' => false,
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('data_class', LocalSurvey::class);
+        $resolver->setDefault('data_class', Survey::class);
     }
 
     public function postSetData(FormEvent $event): void

@@ -27,8 +27,8 @@ class QuestionType extends AbstractType
                 'entry_options' => [
                     'label' => false,
                 ],
-                'allow_add' => true,
-                'allow_delete' => true,
+                'allow_add' => !$options['disabled'],
+                'allow_delete' => !$options['disabled'],
                 'by_reference' => false,
                 'attr' => [
                     'class' => 'survey-questions-choices-collection',

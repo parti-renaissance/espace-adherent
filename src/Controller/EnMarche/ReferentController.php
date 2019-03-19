@@ -7,6 +7,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Jecoute\LocalSurvey;
+use AppBundle\Entity\Jecoute\NationalSurvey;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Entity\Projection\ReferentManagedUser;
@@ -34,11 +35,12 @@ use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
 use AppBundle\Repository\Jecoute\DataAnswerRepository;
+use AppBundle\Repository\Jecoute\LocalSurveyRepository;
+use AppBundle\Repository\Jecoute\NationalSurveyRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
 use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
-use AppBundle\Repository\Jecoute\SurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -281,25 +283,49 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/jecoute/questionnaires", name="app_referent_surveys")
-     * @Method("GET")
+     * @Route(
+     *     path="/jecoute/questionnaires-locaux",
+     *     name="app_referent_surveys",
+     *     methods={"GET"},
+     * )
      */
-    public function jecouteSurveysListAction(
-        SurveyRepository $surveyRepository,
+    public function jecouteLocalSurveysListAction(
+        LocalSurveyRepository $localSurveyRepository,
         SurveyExporter $surveyExporter,
         UserInterface $user
     ): Response {
         /** @var Adherent $user */
-        return $this->render('referent/surveys/list.html.twig', [
-            'surveysListJson' => $surveyExporter->exportAsJson(
-                $surveyRepository->findAllByAuthor($user)
+        return $this->render('referent/surveys/local_surveys_list.html.twig', [
+            'surveysListJson' => $surveyExporter->exportLocalSurveysAsJson(
+                $localSurveyRepository->findAllByAuthor($user)
             ),
         ]);
     }
 
     /**
-     * @Route("/jecoute/questionnaire/creer", name="app_referent_survey_create")
-     * @Method("GET|POST")
+     * @Route(
+     *     path="/jecoute/questionnaires-nationaux",
+     *     name="app_referent_national_surveys",
+     *     methods={"GET"},
+     * )
+     */
+    public function jecouteNationalSurveysListAction(
+        NationalSurveyRepository $nationalSurveyRepository,
+        SurveyExporter $surveyExporter
+    ): Response {
+        return $this->render('referent/surveys/national_surveys_list.html.twig', [
+            'surveysListJson' => $surveyExporter->exportNationalSurveysAsJson(
+                $nationalSurveyRepository->findAllPublished()
+            ),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/jecoute/questionnaire/creer",
+     * name="app_referent_survey_create"),
+     *     methods={"GET|POST"},
+     * )
      */
     public function jecouteSurveyCreateAction(
         Request $request,
@@ -334,9 +360,11 @@ class ReferentController extends Controller
      *     name="app_referent_survey_edit",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
-     *     }
+     *     },
+     *     methods={"GET|POST"},
      * )
-     * @Method("GET|POST")
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', survey)")
      */
     public function jecouteSurveyEditAction(
         Request $request,
@@ -365,6 +393,29 @@ class ReferentController extends Controller
 
     /**
      * @Route(
+     *     path="/jecoute/questionnaire/{uuid}",
+     *     name="app_referent_national_survey_show",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Entity("nationalSurvey", expr="repository.findOnePublishedByUuid(uuid)")
+     */
+    public function jecouteNationalSurveyShowAction(NationalSurvey $nationalSurvey): Response
+    {
+        $form = $this->createForm(
+            SurveyFormType::class, $nationalSurvey, ['disabled' => true]
+        );
+
+        return $this->render('referent/surveys/show.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(
      *     path="/jecoute/questionnaire/{uuid}/stats",
      *     name="app_referent_survey_stats",
      *     requirements={
@@ -374,10 +425,8 @@ class ReferentController extends Controller
      * )
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     *
-     * @Security("is_granted('IS_AUTHOR_OF', survey)")
      */
-    public function jecouteSurveyStatsAction(LocalSurvey $survey, StatisticsProvider $provider): Response
+    public function jecouteSurveyStatsAction(Survey $survey, StatisticsProvider $provider): Response
     {
         return $this->render('referent/surveys/stats.html.twig', [
             'data' => $provider->getStatsBySurvey($survey),
@@ -441,12 +490,10 @@ class ReferentController extends Controller
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     * @Security("is_granted('IS_AUTHOR_OF', survey) or survey.isNational()")
      */
-    public function jecouteSurveyStatsDownloadAction(
-        LocalSurvey $survey,
-        StatisticsExporter $statisticsExporter
-    ): Response {
+    public function jecouteSurveyStatsDownloadAction(Survey $survey, StatisticsExporter $statisticsExporter): Response
+    {
         $dataFile = $statisticsExporter->export($survey);
 
         return new Response($dataFile['content'], Response::HTTP_OK, [
