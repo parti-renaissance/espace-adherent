@@ -1,8 +1,0 @@
-{% for round in proxy_rounds %}
-    {% if request is not null and request.hasElectionRound(round) %}
-        <strong>{{ round.label }}</strong>
-    {% else %}
-        {{ round.label }}
-    {% endif %}
-    <br />
-{% endfor %}

@@ -41,6 +41,12 @@
             <form method="post" name="app_procuration_elections">
                 {{ form_errors(procuration_form) }}
 
+                {{ form_label(procuration_form.requestFromFrance, 'Où ai-je fait ma procuration ?') }}
+                <div class="form__row form__radio-button">
+                    {{ form_errors(procuration_form.requestFromFrance) }}
+                    {{ form_widget(procuration_form.requestFromFrance, { attr: { class: 'form--full b__nudge--top-5' } }) }}
+                </div>
+
                 <h5 class="procuration__title-elections">
                     Je donne procuration pour...
                     <span class="text--small text--gray">(cocher les cases correspondantes)</span>

@@ -72,7 +72,7 @@ class ProcurationRequest
      *
      * @var ProcurationProxy
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationProxy", mappedBy="foundRequest")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProcurationProxy", inversedBy="foundRequests")
      */
     private $foundProxy;
 
@@ -310,6 +310,13 @@ class ProcurationRequest
      */
     public $recaptcha = '';
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $requestFromFrance = true;
+
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
@@ -338,23 +345,21 @@ class ProcurationRequest
 
     public function process(ProcurationProxy $procurationProxy = null, Adherent $procurationFoundBy = null): void
     {
-        $this->foundProxy = $procurationProxy;
         $this->foundBy = $procurationFoundBy;
         $this->processed = true;
         $this->processedAt = new \DateTimeImmutable();
 
         if ($procurationProxy) {
-            $procurationProxy->setFoundRequest($this);
+            $procurationProxy->process($this);
         }
     }
 
     public function unprocess(): void
     {
         if ($this->foundProxy instanceof ProcurationProxy) {
-            $this->foundProxy->setFoundRequest(null);
+            $this->foundProxy->unprocess($this);
         }
 
-        $this->foundProxy = null;
         $this->processed = false;
         $this->processedAt = null;
     }
@@ -674,5 +679,15 @@ class ProcurationRequest
         }
 
         return $phone;
+    }
+
+    public function isRequestFromFrance(): bool
+    {
+        return $this->requestFromFrance;
+    }
+
+    public function setRequestFromFrance(bool $requestFromFrance): void
+    {
+        $this->requestFromFrance = $requestFromFrance;
     }
 }

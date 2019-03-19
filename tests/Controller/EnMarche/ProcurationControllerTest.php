@@ -69,7 +69,9 @@ class ProcurationControllerTest extends WebTestCase
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
             trim($crawler->filter('.procuration > div > p#procuration_faq')->text())
         );
+
         $this->assertCount(1, $crawler->filter('.procuration__content a:contains("Je me porte mandataire")'));
+        $this->assertCount(1, $crawler->filter('.procuration__content div:last-child a:contains("Je donne procuration")'));
     }
 
     public function testChooseElectionOnRequest()
@@ -94,7 +96,8 @@ class ProcurationControllerTest extends WebTestCase
             'Un de nos volontaires peut porter votre voix',
             trim($crawler->filter('.procuration__content h2')->text())
         );
-        $this->assertCount(1, $crawler->filter('#election_context_elections input[type="checkbox"]'));
+
+        $this->assertCount(1, $crawler->filter('#election_context_elections > div.form__checkbox > input[type="checkbox"]'));
         $this->assertSame(
             'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise',
             $crawler->filter('#election_context_elections label')->text()
@@ -186,7 +189,7 @@ class ProcurationControllerTest extends WebTestCase
     {
         $this->setElectionContext();
 
-        $initialProcurationRequestCount = 8;
+        $initialProcurationRequestCount = 13;
         $procurationRequest = new ProcurationRequest();
 
         $this->assertCurrentProcurationRequestSameAs($procurationRequest);
@@ -406,7 +409,7 @@ class ProcurationControllerTest extends WebTestCase
     {
         $this->setElectionContext(ElectionContext::ACTION_PROPOSAL);
 
-        $initialProcurationProxyCount = 6;
+        $initialProcurationProxyCount = 8;
 
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
@@ -444,9 +447,9 @@ class ProcurationControllerTest extends WebTestCase
                 'electionRounds' => [],
                 'conditions' => true,
                 'authorization' => true,
+                'proxiesCount' => 2,
             ],
         ]));
-
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form--warning'));
         $this->assertCount(2, $errors = $crawler->filter('.form__error'));
@@ -481,6 +484,8 @@ class ProcurationControllerTest extends WebTestCase
                 'voteOffice' => 'TestOfficeName',
                 'electionRounds' => ['9'],
                 'conditions' => true,
+                'authorization' => true,
+                'proxiesCount' => 2,
             ],
         ]));
 
@@ -490,10 +495,10 @@ class ProcurationControllerTest extends WebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
+
         /* @var ProcurationProxy $proposal */
         $this->assertCount($initialProcurationProxyCount + 1, $proposals = $this->procurationProxyRepostitory->findAll(), 'Procuration request should have been saved');
         $this->assertInstanceOf(ProcurationProxy::class, $proposal = end($proposals));
-
         $this->assertSame('FR', $proposal->getVoteCountry());
         $this->assertSame('92110', $proposal->getVotePostalCode());
         $this->assertSame('Clichy', $proposal->getVoteCityName());
@@ -511,7 +516,7 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testProcurationRequestNotUniqueEmailBirthDate()
     {
-        $initialProcurationRequestCount = 8;
+        $initialProcurationRequestCount = 13;
 
         $this->assertCount($initialProcurationRequestCount, $this->procurationRequestRepostitory->findAll());
 
@@ -589,7 +594,7 @@ class ProcurationControllerTest extends WebTestCase
 
     public function testProcurationProposalNotUniqueEmailBirthdate()
     {
-        $initialProcurationProxyCount = 6;
+        $initialProcurationProxyCount = 8;
 
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
@@ -629,6 +634,7 @@ class ProcurationControllerTest extends WebTestCase
                 'electionRounds' => ['9'],
                 'conditions' => true,
                 'authorization' => true,
+                'proxiesCount' => 2,
             ],
         ]));
 

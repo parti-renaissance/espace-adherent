@@ -151,10 +151,7 @@
                 Disponibilités
             </div>
             <div class="profile-value">
-                {{ include('procuration_manager/_matching_election_rounds.html.twig', {
-                    proxy_rounds: proxy.availableRounds,
-                    request: proxy.foundRequest,
-                }, with_context=false) }}
+                {{ proxy.getAvailableRoundsAsString|nl2br }}
             </div>
         </div>
     </div>

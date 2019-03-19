@@ -47,14 +47,13 @@ class ProcurationProxy
     private $referent;
 
     /**
-     * The associated found request.
+     * The associated found request(s).
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationRequest", inversedBy="foundProxy")
-     * @ORM\JoinColumn(name="procuration_request_id", referencedColumnName="id")
+     * @var ArrayCollection
      *
-     * @var ProcurationRequest
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProcurationRequest", mappedBy="foundProxy")
      */
-    private $foundRequest;
+    private $foundRequests;
 
     /**
      * @var int|null
@@ -293,8 +292,6 @@ class ProcurationProxy
      * @Assert\Range(
      *     min=1,
      *     max=3,
-     *     minMessage="procuration.vote_country.conditions",
-     *     maxMessage="procuration.vote_country.conditions",
      *     groups={"front"}
      * )
      * @Assert\Expression(
@@ -303,15 +300,30 @@ class ProcurationProxy
      *     groups={"front"}
      * )
      *
-     * @ORM\Column(type="smallint",  options={"unsigned": true, "default": 1})
+     * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
      */
     public $proxiesCount = 1;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    public $frenchRequestAvailable = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    public $foreignRequestAvailable = true;
 
     public function __construct(?Adherent $referent)
     {
         $this->referent = $referent;
         $this->phone = static::createPhoneNumber();
         $this->electionRounds = new ArrayCollection();
+        $this->foundRequests = new ArrayCollection();
 
         if (!$this->referent) {
             $this->reliability = -1;
@@ -564,13 +576,27 @@ class ProcurationProxy
      */
     public function getAvailableRounds(): Collection
     {
-        if (!$this->foundRequest) {
+        if ($this->foundRequests->isEmpty()) {
             return $this->electionRounds;
         }
 
-        return $this->electionRounds->filter(function (ElectionRound $round) {
-            return !$this->foundRequest->hasElectionRound($round);
-        });
+        $availableRounds = new ArrayCollection();
+
+        for ($i = 0; $i < $this->proxiesCount; ++$i) {
+            foreach ($this->electionRounds as $round) {
+                $availableRounds->add($round);
+            }
+        }
+
+        foreach ($this->foundRequests as $procurationRequest) {
+            foreach ($procurationRequest->getElectionRounds() as $round) {
+                if ($availableRounds->contains($round)) {
+                    $availableRounds->removeElement($round);
+                }
+            }
+        }
+
+        return $availableRounds;
     }
 
     public function getAvailableRoundsAsString(): string
@@ -588,14 +614,22 @@ class ProcurationProxy
         return implode("\n", $availableRounds->toArray());
     }
 
-    public function getFoundRequest(): ?ProcurationRequest
+    public function getFoundRequests(): Collection
     {
-        return $this->foundRequest;
+        return $this->foundRequests;
     }
 
-    public function setFoundRequest(ProcurationRequest $foundRequest = null): void
+    private function addFoundRequest(ProcurationRequest $procurationRequest): void
     {
-        $this->foundRequest = $foundRequest;
+        if (!$this->foundRequests->contains($procurationRequest)) {
+            $this->foundRequests->add($procurationRequest);
+            $procurationRequest->setFoundProxy($this);
+        }
+    }
+
+    private function removeFoundRequest(ProcurationRequest $procurationRequest): void
+    {
+        $this->foundRequests->removeElement($procurationRequest);
     }
 
     public function isDisabled(): bool
@@ -665,5 +699,69 @@ class ProcurationProxy
     public function setProxiesCount(int $proxiesCount): void
     {
         $this->proxiesCount = $proxiesCount;
+    }
+
+    public function isFrenchRequestAvailable(): bool
+    {
+        return $this->frenchRequestAvailable;
+    }
+
+    private function setFrenchRequestAvailable(bool $frenchRequestAvailable): void
+    {
+        $this->frenchRequestAvailable = $frenchRequestAvailable;
+    }
+
+    public function isForeignRequestAvailable(): bool
+    {
+        return $this->foreignRequestAvailable;
+    }
+
+    private function setForeignRequestAvailable(bool $foreignRequestAvailable): void
+    {
+        $this->foreignRequestAvailable = $foreignRequestAvailable;
+    }
+
+    public function process(ProcurationRequest $request): void
+    {
+        $proxiesUsedCount = $this->getFoundRequests()->count();
+        $remainingProxiesCount = $this->proxiesCount - $proxiesUsedCount;
+
+        if (1 === $remainingProxiesCount) {
+            $this->setFrenchRequestAvailable(false);
+            $this->setForeignRequestAvailable(false);
+        } else {
+            if ('FR' === $this->getVoteCountry()) {
+                $this->setFrenchRequestAvailable(false);
+            } else {
+                if (2 === $remainingProxiesCount && !$this->isFrenchRequestAvailable()) {
+                    $this->setForeignRequestAvailable(false);
+                }
+            }
+        }
+
+        $this->addFoundRequest($request);
+    }
+
+    public function unprocess(ProcurationRequest $request): void
+    {
+        $proxiesUsedCount = $this->getFoundRequests()->count();
+        $remainingProxiesCount = $this->proxiesCount - $proxiesUsedCount;
+
+        if (1 === $this->getFoundRequests()->count()) {
+            $this->setFrenchRequestAvailable(true);
+            $this->setForeignRequestAvailable(true);
+        } else {
+            if ('FR' === $this->getVoteCountry()) {
+                $this->setFrenchRequestAvailable(true);
+            } else {
+                $this->setForeignRequestAvailable(true);
+
+                if (0 === $remainingProxiesCount) {
+                    $this->setFrenchRequestAvailable(true);
+                }
+            }
+        }
+
+        $this->removeFoundRequest($request);
     }
 }

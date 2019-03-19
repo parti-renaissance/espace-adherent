@@ -27,18 +27,22 @@
             </span>
         </td>
         <td class="datagrid__table__col--left">
-            {{ include('procuration_manager/_matching_election_rounds.html.twig', {
-                proxy_rounds: proxy.availableRounds,
-                request: proxy.foundRequest,
-            }, with_context=false) }}
+            {{ proxy.getAvailableRoundsAsString|nl2br }}
         </td>
         <td class="datagrid__table__col--hide-mobile">
             {{ proxy.createdAt|date('d/m/Y H:i') }}
         </td>
         <td>
-            {% if proxy.foundRequest %}
-                Associé à la<br />
-                demande n°<a href="{{ path('app_procuration_manager_request', { id: proxy.foundRequest.id }) }}">{{ proxy.foundRequest.id }}</a>
+            Pour une demande faite :<br>
+            en France : {{ proxy.frenchRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }} <br>
+            à l'étranger : {{ proxy.foreignRequestAvailable ? 'global.yes'|trans : 'global.no'|trans }}
+        </td>
+        <td>
+            {% if not proxy.foundRequests.isEmpty %}
+                {% for foundRequest in proxy.foundRequests %}
+                    Associé à la<br />
+                    demande n°<a href="{{ path('app_procuration_manager_request', { id: foundRequest.id }) }}">{{ foundRequest.id }}</a>
+                {% endfor %}
             {% elseif proxy.disabled %}
                 Désactivé<br />
                 (n'est plus associable)

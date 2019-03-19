@@ -83,4 +83,16 @@ class FeatureContext extends RawMinkContext
             $this->assertPageAddressAfterAllRedirection($url, $ttl, ++$try);
         }
     }
+
+    /**
+     * @When I click the :cssElementSelector selector
+     */
+    public function clickElementSelector($cssElementSelector)
+    {
+        $field = $this->getSession()->getPage()->find('css', $cssElementSelector);
+
+        Assert::notNull($field, "Cannot find '$cssElementSelector'");
+
+        $field->click();
+    }
 }
