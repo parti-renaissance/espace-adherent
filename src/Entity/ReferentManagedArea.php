@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="referent_managed_areas")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationManagerRepository")
+ * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
