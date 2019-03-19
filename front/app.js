@@ -222,6 +222,18 @@ class App {
             module.default(this.get('api'), messageId, synchronized, recipientCount);
         });
     }
+
+    runProcurationProxy() {
+        System.import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
+    runProcurationRequest() {
+        System.import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
 }
 
 window.App = new App();
