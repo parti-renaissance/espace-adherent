@@ -43,7 +43,8 @@ class EventNotificationMessage extends Message
             ),
             $event->getInlineFormattedAddress(),
             $eventLink,
-            $eventOkLink
+            $eventOkLink,
+            $event->getDescription()
         );
 
         $message = new static(
@@ -82,7 +83,8 @@ class EventNotificationMessage extends Message
         string $eventHour,
         string $eventAddress,
         string $eventLink,
-        string $eventOkLink
+        string $eventOkLink,
+        string $eventDescription
     ): array {
         return [
             // Global common variables
@@ -95,6 +97,7 @@ class EventNotificationMessage extends Message
             'event-slug' => $eventLink,
             'event_ok_link' => $eventOkLink,
             'event_ko_link' => $eventLink,
+            'event_description' => $eventDescription,
 
             // Recipient specific template variables
             'target_firstname' => '',

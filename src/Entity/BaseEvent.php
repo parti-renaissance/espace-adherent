@@ -96,7 +96,7 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
     protected $slug;
 
     /**
-     * @var string|null
+     * @var string
      *
      * @ORM\Column(type="text")
      *
