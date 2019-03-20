@@ -1425,4 +1425,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->nationality;
     }
+
+    /**
+     * @Algolia\Attribute(algoliaName="address_city")
+     * @JMS\Groups({"adherent_change_diff", "public"})
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("city")
+     */
+    public function getCityName(): ?string
+    {
+        return $this->postAddress->getCityName();
+    }
 }

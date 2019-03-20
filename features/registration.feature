@@ -50,7 +50,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                                       |
-      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"94320","tags":["94"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | user.created | {"uuid":"@string@","subscriptionExternalIds":[],"city":"Thiais","country":"FR","zipCode":"94320","tags":["94"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 1 email
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
@@ -192,7 +192,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                                       |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"country":"FR","zipCode":"06000","tags":["06"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
+      | user.updated | {"uuid":"@string@","subscriptionExternalIds":[],"city":"Nice","country":"FR","zipCode":"06000","tags":["06"],"emailAddress":"jp@test.com","firstName":"Jean-Pierre","lastName":"Durand"} |
     And I should have 2 emails
     And the adherent "jp@test.com" should have the "06" referent tag
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
@@ -286,7 +286,7 @@ Feature:
     And "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                                             |
-      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
+      | user.updated | {"uuid":"@string@","subscriptionExternalIds":["123abc","456def"],"city":"Zürich","country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"simple-user@example.ch","firstName":"Simple","lastName":"User"} |
     And I clean the "api_sync" queue
 
   @javascript
