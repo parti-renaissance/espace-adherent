@@ -21,7 +21,15 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         $message = EventNotificationMessage::create(
             $recipients,
             $recipients[0],
-            $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386', 'EM Lyon'),
+            $this->createEventMock(
+                'En Marche Lyon',
+                '2017-02-01 15:30:00',
+                '15 allées Paul Bocuse',
+                '69006-69386',
+                'EM Lyon',
+                'Europe/Paris',
+                'Donec non dolor a sapien luctus lacinia id auctor orci'
+            ),
             self::SHOW_EVENT_URL,
             self::ATTEND_EVENT_URL,
             function (Adherent $adherent) {
@@ -33,7 +41,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         $this->assertSame('54917', $message->getTemplate());
         $this->assertCount(4, $message->getRecipients());
         $this->assertSame('1 février - 15h30 : Nouvel événement de EM Lyon : En Marche Lyon', $message->getSubject());
-        $this->assertCount(10, $message->getVars());
+        $this->assertCount(11, $message->getVars());
         $this->assertSame(
             [
                 'animator_firstname' => 'Émmanuel',
@@ -45,6 +53,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event-slug' => self::SHOW_EVENT_URL,
                 'event_ok_link' => self::ATTEND_EVENT_URL,
                 'event_ko_link' => self::SHOW_EVENT_URL,
+                'event_description' => 'Donec non dolor a sapien luctus lacinia id auctor orci',
                 'target_firstname' => '',
             ],
             $message->getVars()
@@ -65,6 +74,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event-slug' => self::SHOW_EVENT_URL,
                 'event_ok_link' => self::ATTEND_EVENT_URL,
                 'event_ko_link' => self::SHOW_EVENT_URL,
+                'event_description' => 'Donec non dolor a sapien luctus lacinia id auctor orci',
                 'target_firstname' => 'Émmanuel',
             ],
             $recipient->getVars()
@@ -85,6 +95,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event-slug' => self::SHOW_EVENT_URL,
                 'event_ok_link' => self::ATTEND_EVENT_URL,
                 'event_ko_link' => self::SHOW_EVENT_URL,
+                'event_description' => 'Donec non dolor a sapien luctus lacinia id auctor orci',
                 'target_firstname' => 'Éric',
             ],
             $recipient->getVars()
@@ -109,7 +120,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
         $this->assertSame('54917', $message->getTemplate());
         $this->assertCount(1, $message->getRecipients());
         $this->assertSame('14 février - 08h00 : Nouvel événement de EM Lyon : petit-dejeuner', $message->getSubject());
-        $this->assertCount(10, $message->getVars());
+        $this->assertCount(11, $message->getVars());
         $this->assertSame(
             [
                 'animator_firstname' => 'Émmanuel',
@@ -121,6 +132,7 @@ class EventNotificationMessageTest extends AbstractEventMessageTest
                 'event-slug' => self::SHOW_EVENT_URL,
                 'event_ok_link' => self::ATTEND_EVENT_URL,
                 'event_ko_link' => self::SHOW_EVENT_URL,
+                'event_description' => '',
                 'target_firstname' => '',
             ],
             $message->getVars()

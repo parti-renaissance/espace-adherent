@@ -20,7 +20,8 @@ abstract class AbstractEventMessageTest extends TestCase
         string $street,
         string $cityCode,
         ?string $committeeName = null,
-        string $timeZone = 'Europe/Paris'
+        string $timeZone = 'Europe/Paris',
+        string $description = ''
     ): Event {
         $address = PostAddress::createFrenchAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
@@ -31,6 +32,7 @@ abstract class AbstractEventMessageTest extends TestCase
         $localeBeginAt = new \DateTime($beginAt);
         $event->expects(static::any())->method('getLocalBeginAt')->willReturn($localeBeginAt->setTimezone(new \DateTimeZone($timeZone)));
         $event->expects(static::any())->method('getInlineFormattedAddress')->with('fr_FR')->willReturn($address);
+        $event->expects(static::any())->method('getDescription')->willReturn($description);
 
         if ($committeeName) {
             $committee = $this->createMock(Committee::class);
