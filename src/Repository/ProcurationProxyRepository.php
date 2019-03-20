@@ -94,7 +94,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->select('pp AS data', $this->createMatchingScore($qb, $procurationRequest).' + pp.reliability AS score')
             ->andWhere('pp.disabled = 0')
             ->andWhere('pp.reliability >= 0')
-            ->setParameter('votePostalCodePrefix', $procurationRequest->getVotePostalCode())
+            ->setParameter('votePostalCodePrefix', substr($procurationRequest->getVotePostalCode(), 0, 2))
             ->setParameter('voteCityName', $procurationRequest->getVoteCityName())
             ->setParameter('voteCountry', $procurationRequest->getVoteCountry())
             ->orderBy('score', 'DESC')
