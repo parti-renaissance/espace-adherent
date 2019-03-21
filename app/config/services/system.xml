@@ -166,11 +166,6 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="app.security.2fa_qr_code_factory" class="AppBundle\Security\TwoFactorAuthenticationQrCodeFactory">
-            <argument type="service" id="csa_guzzle.client.google_charts_api" />
-            <argument type="service" id="scheb_two_factor.security.google_authenticator" />
-        </service>
-
         <service id="app.security.authentication_utils" class="AppBundle\Security\AuthenticationUtils">
             <argument type="service" id="security.token_storage" />
         </service>
