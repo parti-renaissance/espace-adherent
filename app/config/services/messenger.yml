@@ -76,3 +76,7 @@ services:
     messenger.receiver_locator:
         tags: [container.service_locator]
         arguments: [[]]
+
+    AppBundle\Messenger\:
+        resource: '../../../src/Messenger/*'
+        exclude: '../../../src/Messenger/{Message}'

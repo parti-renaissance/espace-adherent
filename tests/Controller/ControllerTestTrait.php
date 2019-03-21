@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\InstitutionalEventCategory;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Messenger\MessageRecorder\MessageRecorderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -239,5 +240,10 @@ trait ControllerTestTrait
         foreach ($this->containers as $container) {
             $this->cleanupContainer($container);
         }
+    }
+
+    protected function getMessageRecorder(): MessageRecorderInterface
+    {
+        return $this->client->getContainer()->get(MessageRecorderInterface::class);
     }
 }

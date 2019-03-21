@@ -28,6 +28,10 @@ services:
     algolia.indexer:
         class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
 
+    data_collector.messenger:
+        class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector
+        tags: [{ name: 'data_collector', id: messenger, template: profiler/messenger.html.twig }]
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"

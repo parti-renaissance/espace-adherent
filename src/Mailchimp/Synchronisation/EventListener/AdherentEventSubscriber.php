@@ -2,11 +2,13 @@
 
 namespace AppBundle\Mailchimp\Synchronisation\EventListener;
 
+use AppBundle\Committee\Event\CommitteeEventInterface;
+use AppBundle\Committee\Event\FollowCommitteeEvent;
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeChangeCommand;
-use AppBundle\Membership\UserCollectionEvent;
+use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToCommitteeStaticSegmentCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromCommitteeStaticSegmentCommand;
 use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEventInterface;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Utils\ArrayUtils;
 use JMS\Serializer\ArrayTransformerInterface;
@@ -38,8 +40,8 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_UPDATE_INTERESTS => 'onAfterUpdate',
             UserEvents::USER_UPDATE_SUBSCRIPTIONS => 'onAfterUpdate',
 
-            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onPrivilegeChange',
-            UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onPrivilegeChange',
+            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
+            UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onCitizenProjectPrivilegeChange',
         ];
     }
 
@@ -64,15 +66,34 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onPrivilegeChange(UserEventInterface $event): void
+    public function onCitizenProjectPrivilegeChange(UserEvent $event): void
     {
-        if ($event instanceof UserCollectionEvent) {
-            foreach ($event->getUsers() as $user) {
-                $this->dispatchMessage($user->getUuid(), $user->getEmailAddress());
-            }
-        } elseif ($event instanceof UserEvent) {
-            $this->dispatchMessage($event->getUser()->getUuid(), $event->getUser()->getEmailAddress());
+        $this->dispatchMessage($event->getUser()->getUuid(), $event->getUser()->getEmailAddress());
+    }
+
+    public function onCommitteePrivilegeChange(CommitteeEventInterface $event): void
+    {
+        $adherent = $event->getAdherent();
+
+        $this->dispatchMessage($adherent->getUuid(), $adherent->getEmailAddress());
+
+        if (!$committee = $event->getCommittee()) {
+            return;
         }
+
+        if ($event instanceof FollowCommitteeEvent) {
+            $message = new AddAdherentToCommitteeStaticSegmentCommand(
+                $adherent->getUuid(),
+                $committee->getUuid()
+            );
+        } else {
+            $message = new RemoveAdherentFromCommitteeStaticSegmentCommand(
+                $adherent->getUuid(),
+                $committee->getUuid()
+            );
+        }
+
+        $this->bus->dispatch($message);
     }
 
     public function onUserValidated(UserEvent $event): void
@@ -84,7 +105,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     private function dispatchMessage(UuidInterface $uuid, string $identifier, array $removedTags = []): void
     {
-        $this->bus->dispatch(new AdherentChangeChangeCommand($uuid, $identifier, $removedTags));
+        $this->bus->dispatch(new AdherentChangeCommand($uuid, $identifier, $removedTags));
     }
 
     private function transformToArray(Adherent $adherent): array

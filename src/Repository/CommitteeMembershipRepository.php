@@ -437,26 +437,6 @@ SQL
         }, array_column($qb->getQuery()->getArrayResult(), 'uuid'));
     }
 
-    public function findCommitteesByPrivilege(Adherent $adherent, array $privilege): array
-    {
-        // Prevent SQL query if the adherent doesn't follow any committees yet.
-        if (0 === \count($adherent->getMemberships())) {
-            return [];
-        }
-
-        $qb = $this->createQueryBuilder('cm');
-
-        return $qb
-            ->addSelect('c.id, c.name, c.slug')
-            ->innerJoin('cm.committee', 'c')
-            ->where($qb->expr()->in('cm.privilege', $privilege))
-            ->andWhere('cm.adherent = :adherent')
-            ->setParameter('adherent', $adherent)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function isAdherentInCommittee(Adherent $adherent, Committee $committee): bool
     {
         return 0 !== $this->count(['adherent' => $adherent, 'committee' => $committee]);

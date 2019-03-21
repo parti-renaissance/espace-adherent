@@ -3,12 +3,13 @@
 namespace AppBundle\Committee;
 
 use AppBundle\Collection\CommitteeMembershipCollection;
+use AppBundle\Committee\Event\FollowCommitteeEvent;
+use AppBundle\Committee\Event\UnfollowCommitteeEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Events;
@@ -16,13 +17,11 @@ use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -377,9 +376,11 @@ class CommitteeManager
 
         $manager->flush();
 
+        $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
+
         $this->dispatcher->dispatch(
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-            new UserEvent($membership->getAdherent())
+            new UnfollowCommitteeEvent($membership->getAdherent(), $committee)
         );
     }
 
@@ -406,11 +407,6 @@ class CommitteeManager
     private function getAdherentRepository(): AdherentRepository
     {
         return $this->registry->getRepository(Adherent::class);
-    }
-
-    private function getReferentTagRepository(): ReferentTagRepository
-    {
-        return $this->registry->getRepository(ReferentTag::class);
     }
 
     public function countApprovedCommittees(): int
@@ -524,6 +520,6 @@ class CommitteeManager
             $this->getManager()->flush();
         }
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new UserEvent($adherent));
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent));
     }
 }

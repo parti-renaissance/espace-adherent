@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Collection\CommitteeCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
 use AppBundle\Entity\Event;
 use AppBundle\Geocoder\Coordinates;
@@ -436,6 +437,24 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setParameter('status', Committee::APPROVED)
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findCommitteesByPrivilege(Adherent $adherent, array $privilege): array
+    {
+        // Prevent SQL query if the adherent doesn't follow any committees yet.
+        if (0 === \count($adherent->getMemberships())) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('c')
+            ->innerJoin(CommitteeMembership::class, 'cm', Join::WITH, 'c = cm.committee')
+            ->where('cm.privilege IN (:privilege)')
+            ->andWhere('cm.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('privilege', $privilege)
             ->getQuery()
             ->getResult()
         ;

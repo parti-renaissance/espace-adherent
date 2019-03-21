@@ -510,6 +510,14 @@
             </call>
         </service>
 
+        <service id="AppBundle\AdherentMessage\Handler\CreateCommitteeStaticSegmentCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
+        <service id="AppBundle\Mailchimp\Synchronisation\Handler\UpdateCommitteeStaticSegmentHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
         <service id="AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler">
             <tag name="messenger.message_handler" />
         </service>
@@ -539,6 +547,8 @@
             <argument key="$replyEmailAddress" type="string">%campaign_sender_email%</argument>
             <argument key="$fromName" type="string">%campaign_sender_name%</argument>
         </service>
+
+        <service id="AppBundle\AdherentMessage\Listener\CreateCommitteeStaticSegmentListener" />
 
         <service id="AppBundle\AdherentMessage\Listener\AdherentMessageChangeSubscriber">
             <tag name="doctrine.event_subscriber"/>
