@@ -6,6 +6,7 @@ use AppBundle\Entity\BaseEventCategory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -34,6 +35,9 @@ class EventCategoryAdmin extends AbstractAdmin
                     'Visible' => BaseEventCategory::ENABLED,
                     'Masqué' => BaseEventCategory::DISABLED,
                 ],
+            ])
+            ->add('eventGroupCategory', ModelType::class, [
+                'label' => 'Groupe',
             ])
         ;
     }

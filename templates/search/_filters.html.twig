@@ -7,8 +7,12 @@
                 <select id="select-event-category" name="{{ constant('PARAMETER_EVENT_CATEGORY', search) }}" class="form">
                     <option value=""{% if not search.eventCategory %} selected="selected"{% endif %}>Tous les événements</option>
                     <option value="{{ constant('TYPE_CITIZEN_ACTIONS', search) }}">Actions citoyennes</option>
-                    {% for category in event_categories %}
-                        <option value="{{ category.id }}"{% if search.eventCategory == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                    {% for category_group in event_categories %}
+                        <optgroup label="{{ category_group.name }}">
+                            {% for category in category_group.eventCategories %}
+                                <option value="{{ category.id }}"{% if search.eventCategory == category.id %} selected="selected"{% endif %}>{{ category.name }}</option>
+                            {% endfor %}
+                        </optgroup>
                     {% endfor %}
                 </select>
             </div>
@@ -24,7 +28,7 @@
             <form>
                 autour de
                 {# this widget will be embedded in the ribbon text #}
-                <input class="search-city" id="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal" />
+                <input class="search-city" id="search-city" name="{{ constant('PARAMETER_CITY', search) }}" value="{{ search.city }}" placeholder="Ville ou code postal"/>
                 <input id="search-type" type="hidden" name="{{ constant('PARAMETER_TYPE', search) }}" value="{{ search.type }}"/>
             </form>
         </div>

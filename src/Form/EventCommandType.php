@@ -5,12 +5,22 @@ namespace AppBundle\Form;
 use AppBundle\Event\EventCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class EventCommandType extends AbstractType
 {
     public function getParent()
     {
         return BaseEventCommandType::class;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('category', EventGroupCategoryType::class, [
+                'class' => $options['event_category_class'],
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
