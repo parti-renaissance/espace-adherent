@@ -352,7 +352,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="adherent.facebook_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
     private $facebookPageUrl;
@@ -361,10 +361,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="adherent.twitter_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
     private $twitterPageUrl;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url(groups="Admin")
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="adherent.linked_in_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255, groups="Admin")
+     */
+    private $linkedInPageUrl;
 
     /**
      * @ORM\Column(length=2, nullable=true)

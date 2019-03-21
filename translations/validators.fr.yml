@@ -73,6 +73,10 @@ adherent.unregistration.reasons: Afin de confirmer la suppression de votre compt
 
 adherent.nickname.invalid_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres, et les caractères _ et -
 adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres (contenant des accents aussi), et les caractères _, -, ! et .
+adherent.facebook_page_url.invalid: Cette URL ne semble pas être une URL Facebook valide.
+adherent.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
+adherent.linked_in_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
+
 
 #
 # Committee
