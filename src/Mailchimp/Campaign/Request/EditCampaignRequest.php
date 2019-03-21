@@ -63,6 +63,11 @@ class EditCampaignRequest implements RequestInterface
         return $this;
     }
 
+    public function isEmptySegmentConditions(): bool
+    {
+        return empty($this->segmentOptions['conditions']);
+    }
+
     public function setSegmentOptions(array $segmentOptions): self
     {
         if (!empty($segmentOptions) && empty($this->listId)) {

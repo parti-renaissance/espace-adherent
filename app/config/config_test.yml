@@ -29,6 +29,9 @@ services:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'
 
+    AppBundle\Messenger\MessageRecorder\MessageRecorderInterface:
+        alias: AppBundle\Messenger\MessageRecorder\MessageRecorder
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'
@@ -63,6 +66,11 @@ parameters:
         mouvement: Je ne me reconnais plus dans les actions du mouvement En Marche !
         comite: Je suis en désaccord avec l’activité de mon comité local
         autre: Autre
+
+    messenger.middleware:
+        - { id: AppBundle\Messenger\RecorderMiddleware }
+        - { id: send_message }
+        - { id: handle_message }
 
 framework:
     test: ~

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Committee\Event\FollowCommitteeEvent;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Administrator;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
@@ -9,7 +11,6 @@ use AppBundle\Entity\Reporting\CommitteeMembershipAction;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Entity\Reporting\CommitteeMergeHistory;
 use AppBundle\Events;
-use AppBundle\Membership\UserCollectionEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -77,9 +78,13 @@ class CommitteeMergeCommandHandler
 
         $this->em->flush();
 
-        if (!$newFollowers->isEmpty()) {
-            $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new UserCollectionEvent($newFollowers->toArray()));
-        }
+        $newFollowers->map(function (Adherent $adherent) use ($destinationCommittee) {
+            $this->dispatcher->dispatch(
+                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
+                new FollowCommitteeEvent($adherent, $destinationCommittee)
+            );
+        });
+
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
     }

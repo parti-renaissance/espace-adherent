@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
+use AppBundle\Mailchimp\Exception\InvalidCampaignSegmentConditionException;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
 use Psr\Container\ContainerInterface;
@@ -76,6 +77,12 @@ class Manager implements LoggerAwareInterface
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($message);
 
+        if ($editCampaignRequest->isEmptySegmentConditions()) {
+            throw new InvalidCampaignSegmentConditionException(
+                sprintf('Message %s has empty segment condition array', $message->getUuid())
+            );
+        }
+
         // When ExternalId does not exist, then it is Campaign creation
         if (!$campaignId = $message->getExternalId()) {
             $campaignData = $this->driver->createCampaign($editCampaignRequest);
@@ -138,5 +145,20 @@ class Manager implements LoggerAwareInterface
         }
 
         return $this->driver->sendCampaign($message->getExternalId());
+    }
+
+    public function createStaticSegment(string $name): ?int
+    {
+        return $this->driver->createStaticSegment($name)['id'] ?? null;
+    }
+
+    public function addMemberToStaticSegment(int $segmentId, string $mail): void
+    {
+        $this->driver->pushSegmentMember($segmentId, $mail);
+    }
+
+    public function removeMemberFromStaticSegment(int $segmentId, string $mail): void
+    {
+        $this->driver->deleteSegmentMember($segmentId, $mail);
     }
 }

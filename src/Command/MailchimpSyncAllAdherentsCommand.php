@@ -3,7 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeChangeCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -73,7 +73,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $adherent) {
-                $this->bus->dispatch(new AdherentChangeChangeCommand(
+                $this->bus->dispatch(new AdherentChangeCommand(
                     $adherent->getUuid(),
                     $adherent->getEmailAddress()
                 ));

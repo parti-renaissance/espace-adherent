@@ -25,7 +25,7 @@ use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CitizenProjectRepository;
-use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\SummaryRepository;
@@ -302,7 +302,7 @@ class AdherentController extends Controller
         ]);
     }
 
-    public function listCommitteesAlAction(CommitteeMembershipRepository $repository): Response
+    public function listCommitteesAlAction(CommitteeRepository $repository): Response
     {
         return $this->render('adherent/list_my_committees_al.html.twig', [
             'committees' => $repository->findCommitteesByPrivilege(

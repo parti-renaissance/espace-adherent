@@ -88,6 +88,31 @@ class Driver implements LoggerAwareInterface
         return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/send', $externalId));
     }
 
+    public function createStaticSegment(string $name): array
+    {
+        $response = $this->send('POST', sprintf('/lists/%s/segments', $this->listId), [
+            'name' => $name,
+            'static_segment' => [],
+        ]);
+
+        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
+    }
+
+    public function pushSegmentMember(int $segmentId, string $mail): bool
+    {
+        return $this->sendRequest('POST', sprintf('/lists/%s/segments/%d/members', $this->listId, $segmentId), [
+            'email_address' => $mail,
+        ]);
+    }
+
+    public function deleteSegmentMember(int $segmentId, string $mail): bool
+    {
+        return $this->sendRequest(
+            'DELETE',
+            sprintf('/lists/%s/segments/%d/members/%s', $this->listId, $segmentId, md5(strtolower($mail)))
+        );
+    }
+
     private function sendRequest(string $method, string $uri, array $body = []): bool
     {
         $response = $this->send($method, $uri, $body);
@@ -109,7 +134,7 @@ class Driver implements LoggerAwareInterface
                 ($response = $e->getResponse()) ? $response->getBody() : 'Unknown'
             ), ['exception' => $e]);
 
-            return $e->getResponse();
+            return $response;
         }
     }
 

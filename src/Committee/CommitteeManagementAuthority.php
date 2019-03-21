@@ -2,13 +2,13 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Committee\Event\FollowCommitteeEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
-use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -87,7 +87,7 @@ class CommitteeManagementAuthority
     {
         $this->manager->followCommittee($adherent, $committee);
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new UserEvent($adherent));
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent, $committee));
 
         if (!$hosts = $this->manager->getCommitteeHosts($committee)->toArray()) {
             return;
