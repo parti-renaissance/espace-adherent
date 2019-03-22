@@ -316,6 +316,14 @@
             <argument />
         </service>
 
+	<service id="app.admin.assessor_request_admin" class="AppBundle\Admin\AssessorRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Assésseurs » Demandes" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\AssessorRequest</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Legislatives
