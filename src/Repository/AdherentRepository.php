@@ -12,7 +12,7 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
-use AppBundle\Entity\ReferentManagedArea;
+use AppBundle\Entity\AdherentReferentData;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Membership\CitizenProjectNotificationDistance;
 use AppBundle\Statistics\StatisticsParametersFilter;
@@ -727,7 +727,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->iterate();
     }
 
-    public function countInManagedArea(ReferentManagedArea $managedArea): int
+    public function countInManagedArea(AdherentReferentData $managedArea): int
     {
         return $this->createQueryBuilder('adherent')
             ->select('COUNT(adherent)')
@@ -741,7 +741,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function countSubscriberInManagedArea(ReferentManagedArea $managedArea): int
+    public function countSubscriberInManagedArea(AdherentReferentData $managedArea): int
     {
         return $this->createQueryBuilder('adherent')
             ->select('COUNT(DISTINCT(adherent))')

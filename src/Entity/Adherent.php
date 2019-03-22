@@ -200,9 +200,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $legislativeCandidate;
 
     /**
-     * @var ReferentManagedArea|null
+     * @var AdherentReferentData|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AdherentReferentData", cascade={"all"}, orphanRemoval=true)
      */
     private $managedArea;
 
@@ -327,53 +327,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\IdeasWorkshop\Idea", mappedBy="author", fetch="EXTRA_LAZY")
      */
     private $ideas;
-
-    /**
-     * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true)
-     */
-    private $media;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $displayMedia = true;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="adherent.facebook_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
-    private $facebookPageUrl;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="adherent.twitter_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
-    private $twitterPageUrl;
-
-    /**
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="adherent.linked_in_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
-    private $linkedInPageUrl;
 
     /**
      * @ORM\Column(length=2, nullable=true)
@@ -931,12 +884,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->updatedAt;
     }
 
-    public function getManagedArea(): ?ReferentManagedArea
+    public function getManagedArea(): ?AdherentReferentData
     {
         return $this->managedArea;
     }
 
-    public function setManagedArea(ReferentManagedArea $managedArea): void
+    public function setManagedArea(AdherentReferentData $managedArea): void
     {
         $this->managedArea = $managedArea;
     }
@@ -1000,12 +953,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
     {
-        $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
+        $this->managedArea = new AdherentReferentData($tags, $markerLatitude, $markerLongitude);
     }
 
     public function isReferent(): bool
     {
-        return $this->managedArea instanceof ReferentManagedArea
+        return $this->managedArea instanceof AdherentReferentData
             && !$this->managedArea->getTags()->isEmpty();
     }
 

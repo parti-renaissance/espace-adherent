@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\RepublicanSilence\TagExtractor;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentManagedArea;
+use AppBundle\Entity\AdherentReferentData;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractor;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ class ReferentTagExtractorTest extends TestCase
         $tagExtractor = new ReferentTagExtractor();
 
         $adherentMock = $this->createConfiguredMock(Adherent::class, [
-            'getManagedArea' => new ReferentManagedArea([
+            'getManagedArea' => new AdherentReferentData([
                 new ReferentTag(null, 'tag1'),
                 new ReferentTag(null, 'tag2'),
             ]),

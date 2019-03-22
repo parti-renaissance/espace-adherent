@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\Admin;
 
-use AppBundle\Entity\ReferentManagedArea;
+use AppBundle\Entity\AdherentReferentData;
 use AppBundle\Entity\ReferentTag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -26,7 +26,7 @@ class ReferentManagedAreaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ReferentManagedArea::class,
+            'data_class' => AdherentReferentData::class,
         ]);
     }
 }

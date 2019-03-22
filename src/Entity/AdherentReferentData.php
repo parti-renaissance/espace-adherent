@@ -6,14 +6,15 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="referent_managed_areas")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationManagerRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ReferentManagedArea
+class AdherentReferentData
 {
     /**
      * @ORM\Column(type="integer")
@@ -47,6 +48,53 @@ class ReferentManagedArea
      * @ORM\Column(type="geo_point", nullable=true)
      */
     private $markerLongitude;
+
+    /**
+     * @var Media|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true)
+     */
+    private $media;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $displayMedia = true;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="adherent.facebook_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255)
+     */
+    private $facebookPageUrl;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="adherent.twitter_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255)
+     */
+    private $twitterPageUrl;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="adherent.linked_in_page_url.invalid", groups="Admin")
+     * @Assert\Length(max=255)
+     */
+    private $linkedInPageUrl;
+
+    /**
+     * @ORM\Column
+     */
+    private $slug;
 
     public function __construct(array $tags = [], string $latitude = null, string $longitude = null)
     {
