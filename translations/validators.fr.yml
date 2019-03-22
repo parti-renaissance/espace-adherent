@@ -308,3 +308,27 @@ idea.theme.min_count: |
 idea.category.not_blank: Pour publier votre idée, sa catégorie devrait être remplie.
 idea.author.not_null: L'idée doit avoir un autheur.
 idea.question.mandatory: Pour publier votre idée, vous devez apporter des réponses aux questions obligatoires.
+
+#
+# Assessor
+#
+assessor.birth_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
+assessor.birth_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
+
+assessor.first_name.not_blank: Votre prénom est requis.
+assessor.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
+assessor.first_name.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
+
+assessor.last_name.not_blank: Votre nom est requis.
+assessor.last_name.min_length: Votre nom doit comporter au moins 2 caractères.
+assessor.last_name.max_length: Vos nom ne peuvent pas dépasser 100 caractères.
+
+assessor.birthdate.not_blank: Vous devez spécifier votre date de naissance.
+assessor.birthdate.minimum_required_age: Vous devez être âgé d'au moins 18 ans pour être assesseur.
+
+assessor.office.invalid_choice: Vous devez choisir l'une des fonctions proposées.
+
+assessor.vote_city.not_blank: Vous devez spécifier votre lieu de vote.
+assessor.office_number.not_blank: Vous devez spécifier votre numéro de bureau de vote.
+
+assessor.assessor_city.not_blank: Vous devez spécifier la ville du bureau de vote pour laquelle vous voulez devenir assesseur.
