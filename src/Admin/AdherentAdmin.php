@@ -8,6 +8,7 @@ use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Entity\SubscriptionType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
@@ -392,6 +393,15 @@ class AdherentAdmin extends AbstractAdmin
                 'field_options' => [
                     'class' => AdherentTag::class,
                     'multiple' => true,
+                ],
+                'mapping_type' => ClassMetadata::MANY_TO_MANY,
+            ])
+            ->add('subscriptionTypes', ModelFilter::class, [
+                'label' => 'Types de souscriptions',
+                'field_options' => [
+                    'class' => SubscriptionType::class,
+                    'multiple' => true,
+                    'choice_label' => 'label',
                 ],
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
