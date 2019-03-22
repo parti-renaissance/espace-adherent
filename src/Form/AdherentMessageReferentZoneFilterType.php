@@ -11,7 +11,9 @@ class AdherentMessageReferentZoneFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('referentTags', ReferentTagChoiceType::class);
+        $builder->add('referentTag', ReferentTagChoiceType::class, [
+            'expanded' => true,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -27,19 +27,9 @@ abstract class FilterFactory
             throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
         }
 
-        $validTags = [];
+        $tags = $managedArea->getTags();
 
-        foreach ($referentTags = $managedArea->getTags() as $tag) {
-            if ($tag->getExternalId()) {
-                $validTags[] = $tag;
-            }
-        }
-
-        if ($count = \count($validTags)) {
-            return $count > 1 ? new AdherentZoneFilter($validTags) : new ReferentUserFilter(current($validTags));
-        }
-
-        throw new \RuntimeException(sprintf('[AdherentMessage] The current referent "%s" does not have a valid referent tag for creating a filter', $user->getEmailAddress()));
+        return $tags->count() > 1 ? new AdherentZoneFilter() : new ReferentUserFilter($tags->first());
     }
 
     private static function createDeputyFilter(Adherent $user): AdherentMessageFilterInterface
@@ -48,6 +38,6 @@ abstract class FilterFactory
             throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a deputy');
         }
 
-        return new AdherentZoneFilter([$user->getManagedDistrict()->getReferentTag()]);
+        return new AdherentZoneFilter($user->getManagedDistrict()->getReferentTag());
     }
 }

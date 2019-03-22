@@ -1,7 +1,7 @@
 <div class="referent__filters__form">
     {{ form_start(form) }}
 
-        {% if form.referentTags is defined %}
+        {% if form.referentTag is defined %}
             {{ include('message/filter/_referent_zone_filter_form.html.twig') }}
         {% else %}
             {{ include('message/filter/_referent_full_filter_form.html.twig') }}
