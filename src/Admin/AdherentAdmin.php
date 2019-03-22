@@ -641,4 +641,22 @@ class AdherentAdmin extends AbstractAdmin
             ])
         ;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'UUID' => 'uuid',
+            'Email' => 'emailAddress',
+            'Prénom' => 'firstName',
+            'Nom' => 'lastName',
+            'Date de naissance' => 'birthdate',
+            'Téléphone' => 'phone',
+            'Inscrit(e) le' => 'registeredAt',
+            'Sexe' => 'gender',
+            'Addresse' => 'postAddress.address',
+            'Code postal' => 'postAddress.postalCode',
+            'Ville' => 'postAddress.cityName',
+            'Pays' => 'postAddress.country',
+        ];
+    }
 }
