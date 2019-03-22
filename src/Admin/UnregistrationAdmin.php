@@ -70,6 +70,9 @@ class UnregistrationAdmin extends AbstractAdmin
             ->add('unregisteredAt', null, [
                 'label' => 'Date de désinscription',
             ])
+            ->add('excludedBy', null, [
+                'label' => 'Exclu(e) par',
+            ])
             ->add('_action', null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -123,6 +126,10 @@ class UnregistrationAdmin extends AbstractAdmin
                 'label' => 'Date de désinscription',
                 'field_type' => DateRangePickerType::class,
             ])
+            ->add('excludedBy', null, [
+                'label' => 'Exclu(e) par',
+                'show_filter' => true,
+            ])
         ;
     }
 
@@ -147,6 +154,9 @@ class UnregistrationAdmin extends AbstractAdmin
             ])
             ->add('unregisteredAt', null, [
                 'label' => 'Date de désinscription',
+            ])
+            ->add('excludedBy', null, [
+                'label' => 'Exclu(e) par',
             ])
         ;
     }

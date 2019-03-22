@@ -18,7 +18,8 @@ class UnregistrationFactory
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
             $adherent->isAdherent(),
-            $adherent->getReferentTags()->toArray()
+            $adherent->getReferentTags()->toArray(),
+            $command->getExcludedBy()
         );
 
         return $unregistration;

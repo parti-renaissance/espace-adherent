@@ -10,5 +10,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class BannedAdherent extends Constraint
 {
-    public $message = 'Cette adresse e-mail est bloquée';
+    public $message = 'Oups, quelque chose s\'est mal passé';
 }

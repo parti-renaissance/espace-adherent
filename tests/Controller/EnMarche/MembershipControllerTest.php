@@ -274,7 +274,7 @@ class MembershipControllerTest extends WebTestCase
             ]
         );
 
-        $this->assertContains('Cette adresse e-mail est bloquée', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
+        $this->assertContains('Oups, quelque chose s\'est mal passé', $this->client->getCrawler()->filter('#adherent_registration_emailAddress_first_errors')->text());
     }
 
     public function testCreateAdherentWithCustomGender(): void

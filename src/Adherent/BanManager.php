@@ -3,6 +3,7 @@
 namespace AppBundle\Adherent;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Administrator;
 use AppBundle\Entity\BannedAdherent;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Membership\UnregistrationCommand;
@@ -19,15 +20,16 @@ class BanManager
         $this->entityManager = $entityManager;
     }
 
-    public function ban(Adherent $adherent): void
+    public function ban(Adherent $adherent, Administrator $administrator): void
     {
-        $reason = sprintf('Exclu par la Commission des conflits le %s', date('d-m-Y'));
+        $reason = sprintf('Exclu(e) par la Commission des conflits le %s', date('d-m-Y'));
 
-        $unregistrationHandler = new UnregistrationCommand();
-        $unregistrationHandler->setReasons([$reason]);
-        $unregistrationHandler->setComment($reason);
+        $unregistrationCommand = new UnregistrationCommand();
+        $unregistrationCommand->setReasons([$reason]);
+        $unregistrationCommand->setComment($reason);
+        $unregistrationCommand->setExcludedBy($administrator);
 
-        $this->membershipRequestHandler->terminateMembership($unregistrationHandler, $adherent, false);
+        $this->membershipRequestHandler->terminateMembership($unregistrationCommand, $adherent, false);
 
         $adherentBanned = BannedAdherent::createFromAdherent($adherent);
         $this->entityManager->persist($adherentBanned);

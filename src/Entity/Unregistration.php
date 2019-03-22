@@ -105,6 +105,13 @@ class Unregistration
      */
     private $referentTags;
 
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     */
+    private $excludedBy;
+
     public function __construct(
         UuidInterface $uuid,
         array $reasons,
@@ -112,7 +119,8 @@ class Unregistration
         \DateTime $registeredAt,
         ?string $postalCode,
         bool $isAdherent,
-        array $referentTags
+        array $referentTags,
+        Administrator $admin = null
     ) {
         $this->uuid = $uuid;
         $this->postalCode = $postalCode;
@@ -122,6 +130,7 @@ class Unregistration
         $this->unregisteredAt = new \DateTime('now');
         $this->isAdherent = $isAdherent;
         $this->referentTags = new ArrayCollection($referentTags);
+        $this->excludedBy = $admin;
     }
 
     public static function createFromAdherent(Adherent $adherent): self
@@ -198,5 +207,10 @@ class Unregistration
     public function getReferentTags(): Collection
     {
         return $this->referentTags;
+    }
+
+    public function getExcludedBy(): ?Administrator
+    {
+        return $this->excludedBy;
     }
 }
