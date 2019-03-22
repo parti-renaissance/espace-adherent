@@ -26,9 +26,9 @@ class ImportVotePlacesCommand extends Command
     protected function configure()
     {
         $this
-          ->setName('app:import:vote-places')
-          ->addArgument('fileUrl', InputArgument::REQUIRED)
-          ->setDescription('Import vote places from file store in Google Storage')
+            ->setName('app:import:vote-places')
+            ->addArgument('fileUrl', InputArgument::REQUIRED)
+            ->setDescription('Import vote places from file store in Google Storage')
         ;
     }
 
@@ -38,7 +38,7 @@ class ImportVotePlacesCommand extends Command
             $rows = $this->parseCSV($input->getArgument('fileUrl'));
         } catch (FileNotFoundException $exception) {
             $output->writeln(
-              sprintf('%s file not found', $input->getArgument('fileUrl'))
+                sprintf('%s file not found', $input->getArgument('fileUrl'))
             );
 
             return 1;
