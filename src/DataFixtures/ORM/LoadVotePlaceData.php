@@ -10,7 +10,7 @@ class LoadVotePlaceData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $manager->persist($this->createVotePlace(
+        $manager->persist($votePlaceLilleWazemmes = $this->createVotePlace(
             'Salle Polyvalente De Wazemmes',
             '59350_0113',
             '59350',
@@ -18,7 +18,7 @@ class LoadVotePlaceData extends Fixture
             "Rue De L'Abbé Aerts"
         ));
 
-        $manager->persist($this->createVotePlace(
+        $manager->persist($votePlaceLilleJeanZay = $this->createVotePlace(
             'Restaurant Scolaire - Rue H. Lefebvre',
             '59350_0407',
             '59350',
@@ -33,6 +33,9 @@ class LoadVotePlaceData extends Fixture
             'Saint-Denis',
             '15, Rue Auguste Blanqui'
         ));
+
+        $this->addReference('vote-place-lille-wazemmes', $votePlaceLilleWazemmes);
+        $this->addReference('vote-place-lille-jean-zay', $votePlaceLilleJeanZay);
 
         $manager->flush();
     }
