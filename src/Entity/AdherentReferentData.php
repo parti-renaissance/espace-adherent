@@ -170,4 +170,70 @@ class AdherentReferentData
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->getTags()->toArray());
     }
+
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function getDisplayMedia(): bool
+    {
+        return $this->displayMedia;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getFacebookPageUrl(): ?string
+    {
+        return $this->facebookPageUrl;
+    }
+
+    public function getTwitterPageUrl(): ?string
+    {
+        return $this->twitterPageUrl;
+    }
+
+    public function getLinkedInPageUrl(): ?string
+    {
+        return $this->linkedInPageUrl;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setMedia(?Media $media): void
+    {
+        $this->media = $media;
+    }
+
+    public function setDisplayMedia(bool $displayMedia): void
+    {
+        $this->displayMedia = $displayMedia;
+    }
+
+    public function setFacebookPageUrl(?string $facebookPageUrl): void
+    {
+        $this->facebookPageUrl = $facebookPageUrl;
+    }
+
+    public function setTwitterPageUrl(?string $twitterPageUrl): void
+    {
+        $this->twitterPageUrl = $twitterPageUrl;
+    }
+
+    public function setLinkedInPageUrl(?string $linkedInPageUrl): void
+    {
+        $this->linkedInPageUrl = $linkedInPageUrl;
+    }
+
 }

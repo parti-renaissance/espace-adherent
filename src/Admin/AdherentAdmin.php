@@ -198,6 +198,9 @@ class AdherentAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        /** @var Adherent $subject */
+        $subject = $this->getSubject();
+
         $formMapper
             ->with('Informations personnelles', ['class' => 'col-md-6'])
                 ->add('status', ChoiceType::class, [
@@ -268,61 +271,74 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                     'multiple' => true,
                 ])
-                ->add('media', null, [
+            ;
+        if ($subject->isReferent()) {
+            $formMapper
+                ->add('managedArea.media', null, [
                     'label' => 'Photo',
                 ])
-                ->add('description', TextareaType::class, [
+                ->add('managedArea.description', TextareaType::class, [
                     'label' => 'Biographie',
                     'required' => false,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
-                ->add('twitterPageUrl', UrlType::class, [
+                ->add('managedArea.twitterPageUrl', UrlType::class, [
                     'label' => 'Page Twitter',
                     'required' => false,
                     'attr' => [
                         'placeholder' => 'https://twitter.com/alexandredumoulin',
                     ],
                 ])
-                ->add('facebookPageUrl', UrlType::class, [
+                ->add('managedArea.facebookPageUrl', UrlType::class, [
                     'label' => 'Page Facebook',
                     'required' => false,
                     'attr' => [
                         'placeholder' => 'https://facebook.com/alexandre-dumoulin',
                     ],
                 ])
-            ->end()
+                ->add('managedArea.linkedInPageUrl', UrlType::class, [
+                    'label' => 'Page LinkedIn',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'https://www.linkedin.com/alexandre-dumoulin',
+                    ],
+                ])
+            ;
+        }
+
+        $formMapper->end()
             ->with('Responsabilités locales', ['class' => 'col-md-6'])
-                ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
-                    'label' => 'coordinator.label.codes.committee',
-                    'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
-                ])
-                ->add('managedArea', ReferentManagedAreaType::class, [
-                    'label' => false,
-                    'required' => false,
-                ])
-                ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'coordinator.label.codes',
-                    'required' => false,
-                    'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
-                ])
-                ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
-                    'label' => 'coordinator.label.codes.cp',
-                    'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
-                ])
+            ->add('coordinatorCommitteeArea', CoordinatorManagedAreaType::class, [
+                'label' => 'coordinator.label.codes.committee',
+                'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
+            ])
+            ->add('managedArea', ReferentManagedAreaType::class, [
+                'label' => false,
+                'required' => false,
+            ])
+            ->add('procurationManagedAreaCodesAsString', TextType::class, [
+                'label' => 'coordinator.label.codes',
+                'required' => false,
+                'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+            ])
+            ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
+                'label' => 'coordinator.label.codes.cp',
+                'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
+            ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
-                ->add('managedDistrict', 'sonata_type_model', [
-                    'label' => 'Circonscription député',
-                    'by_reference' => false,
-                    'btn_add' => false,
-                    'required' => false,
-                ])
+            ->add('managedDistrict', 'sonata_type_model', [
+                'label' => 'Circonscription député',
+                'by_reference' => false,
+                'btn_add' => false,
+                'required' => false,
+            ])
             ->end()
             ->with('Zone expérimentale 🚧', [
                 'class' => 'col-md-6',
                 'box_class' => 'box box-warning',
             ])
-                ->add('canaryTester')
+            ->add('canaryTester')
             ->end()
         ;
 
@@ -462,7 +478,10 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     // Committee supervisor & host
-                    if ($committeeRoles = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_HOST], $value['value'])) {
+                    if ($committeeRoles = array_intersect([
+                        AdherentRoleEnum::COMMITTEE_SUPERVISOR,
+                        AdherentRoleEnum::COMMITTEE_HOST,
+                    ], $value['value'])) {
                         $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
                         $where->add('ms.privilege IN (:committee_privileges)');
                         if (\in_array(AdherentRoleEnum::COMMITTEE_SUPERVISOR, $committeeRoles, true)) {
@@ -495,7 +514,8 @@ class AdherentAdmin extends AbstractAdmin
 
                     // REC
                     if (\in_array(AdherentRoleEnum::REC, $value['value'], true)) {
-                        $qb->leftJoin(sprintf('%s.coordinatorCitizenProjectArea', $alias), 'coordinatorCitizenProjectArea');
+                        $qb->leftJoin(sprintf('%s.coordinatorCitizenProjectArea', $alias),
+                            'coordinatorCitizenProjectArea');
                         $where->add('coordinatorCitizenProjectArea IS NOT NULL');
                     }
 
@@ -573,9 +593,11 @@ class AdherentAdmin extends AbstractAdmin
     public function postUpdate($object)
     {
         // No need to handle referent tags update as they are not update-able from admin
-        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
+        $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object,
+            $subscriptionTypes = $this->beforeUpdate->getSubscriptionTypes());
 
-        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($object, null, null, $subscriptionTypes));
+        $this->dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS,
+            new UserEvent($object, null, null, $subscriptionTypes));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($object));
     }
 
