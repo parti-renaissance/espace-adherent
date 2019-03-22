@@ -595,5 +595,8 @@
             </call>
         </service>
         <service id="AppBundle\Filter\OrTextSearchFilter" />
+
+        <!-- Command -->
+        <service id="AppBundle\Command\ImportVotePlacesCommand" />
     </services>
 </container>
