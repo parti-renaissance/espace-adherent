@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class AdherentReferentData
+class AdherentReferentData implements EntityMediaInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -92,7 +92,7 @@ class AdherentReferentData
     private $linkedInPageUrl;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $slug;
 
@@ -236,4 +236,8 @@ class AdherentReferentData
         $this->linkedInPageUrl = $linkedInPageUrl;
     }
 
+    public function displayMedia(): bool
+    {
+        return $this->displayMedia;
+    }
 }

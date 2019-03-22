@@ -20,27 +20,27 @@ class LoadReferentData extends Fixture
             [$areas['USA'], $areas['21']],
             "Côte d'Or",
             Genders::MALE,
-            'Referent',
-            'Referent',
+            'Nicolas',
+            'Bordes',
             null,
             'nicolas-bordes',
             Referent::ENABLED
         );
-        $candidate001->setEmailAddress('referent@en-marche-dev.fr');
+        $candidate001->setEmailAddress('nicolas.bordes@en-marche-dev.fr');
         $candidate001->setFacebookPageUrl('https://www.facebook.com/nyko24');
         $candidate001->setTwitterPageUrl('https://twitter.com/nyko24');
 
         $candidate002 = $this->createReferent(
             [$areas['75002'], $areas['75001']],
             'Paris 2e et Paris 1er',
-            Genders::FEMALE,
-            'Referent75and77',
-            'Referent75and77',
+            Genders::MALE,
+            'Alban',
+            'Martin',
             null,
             'alban-martin',
             Referent::DISABLED
         );
-        $candidate002->setEmailAddress('referent-75-77@en-marche-dev.fr');
+        $candidate002->setEmailAddress('alban.martin@en-marche-dev.fr');
         $candidate002->setFacebookPageUrl('https://www.facebook.com/fakeaccount');
         $candidate002->setTwitterPageUrl('https://twitter.com/fakeaccount');
 
@@ -48,13 +48,13 @@ class LoadReferentData extends Fixture
             [$areas['92']],
             'Haut-de-seine',
             Genders::MALE,
-            'Referent child',
-            'Referent child',
+            'Jean',
+            'Dupont',
             null,
             'jean',
             Referent::ENABLED
         );
-        $candidate003->setEmailAddress('referent-child@en-marche-dev.fr');
+        $candidate003->setEmailAddress('referent@en-marche-dev.fr');
         $candidate003->setFacebookPageUrl('https://www.facebook.com/fakeaccount');
         $candidate003->setTwitterPageUrl('https://twitter.com/fakeaccount');
 

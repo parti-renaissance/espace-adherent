@@ -67,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
@@ -1361,26 +1361,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setCommentsCguAccepted(bool $commentsCguAccepted): void
     {
         $this->commentsCguAccepted = $commentsCguAccepted;
-    }
-
-    public function getMedia(): ?Media
-    {
-        return $this->media;
-    }
-
-    public function setMedia(Media $media = null): void
-    {
-        $this->media = $media;
-    }
-
-    public function displayMedia(): bool
-    {
-        return $this->displayMedia;
-    }
-
-    public function setDisplayMedia(bool $displayMedia): void
-    {
-        $this->displayMedia = $displayMedia;
     }
 
     public function getNationality(): ?string
