@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -84,6 +86,18 @@ class VotePlace
      */
     private $country = 'FR';
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssessorRequest", mappedBy="votePlace")
+     */
+    private $assessorRequests;
+
+    public function __construct()
+    {
+        $this->assessorRequests = new ArrayCollection();
+    }
+
     public function __toString(): string
     {
         return (string) $this->name;
@@ -152,5 +166,22 @@ class VotePlace
     public function setCode(string $code): void
     {
         $this->code = $code;
+    }
+
+    public function getAssessorRequests(): Collection
+    {
+        return $this->assessorRequests;
+    }
+
+    public function addAssessorRequest(AssessorRequest $assessorRequests): void
+    {
+        if (!$this->assessorRequests->contains($assessorRequests)) {
+            $this->assessorRequests->add($assessorRequests);
+        }
+    }
+
+    public function removeAssessorRequest(AssessorRequest $assessorRequests): void
+    {
+        $this->assessorRequests->removeElement($assessorRequests);
     }
 }
