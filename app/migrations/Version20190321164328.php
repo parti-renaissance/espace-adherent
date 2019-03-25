@@ -13,6 +13,15 @@ final class Version20190321164328 extends AbstractMigration
 
         $this->addSql('ALTER TABLE adherents DROP FOREIGN KEY FK_562C7DA3EA9FDD75');
         $this->addSql('DROP INDEX IDX_562C7DA3EA9FDD75 ON adherents');
+        $this->addSql('ALTER TABLE adherents DROP FOREIGN KEY FK_562C7DA3DC184E71');
+        $this->addSql('DROP INDEX UNIQ_562C7DA3DC184E71 ON adherents');
+        $this->addSql('ALTER TABLE adherents CHANGE managed_area_id adherent_referent_data_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          adherents 
+        ADD 
+          CONSTRAINT FK_562C7DA36216469F FOREIGN KEY (adherent_referent_data_id) REFERENCES adherent_referent_data (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_562C7DA36216469F ON adherents (adherent_referent_data_id)');
+
         $this->addSql('ALTER TABLE 
           adherents 
         DROP 
@@ -94,6 +103,16 @@ final class Version20190321164328 extends AbstractMigration
           adherents 
         ADD 
           CONSTRAINT FK_562C7DA3EA9FDD75 FOREIGN KEY (media_id) REFERENCES medias (id)');
+
+        $this->addSql('ALTER TABLE adherents DROP FOREIGN KEY FK_562C7DA36216469F');
+        $this->addSql('DROP INDEX UNIQ_562C7DA36216469F ON adherents');
+        $this->addSql('ALTER TABLE adherents CHANGE adherent_referent_data_id managed_area_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE 
+          adherents 
+        ADD 
+          CONSTRAINT FK_562C7DA3DC184E71 FOREIGN KEY (managed_area_id) REFERENCES adherent_referent_data (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_562C7DA3DC184E71 ON adherents (managed_area_id)');
+
         $this->addSql('CREATE INDEX IDX_562C7DA3EA9FDD75 ON adherents (media_id)');
 
         $this->addSql('ALTER TABLE adherent_referent_data RENAME TO referent_managed_areas');
