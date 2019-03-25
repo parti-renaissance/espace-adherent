@@ -2,6 +2,7 @@
 
 namespace AppBundle\Membership;
 
+use AppBundle\Entity\Administrator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UnregistrationCommand
@@ -16,6 +17,8 @@ class UnregistrationCommand
      * @Assert\NotBlank(groups="Reason")
      */
     private $comment;
+
+    private $excludedBy;
 
     public function getReasons(): array
     {
@@ -40,5 +43,15 @@ class UnregistrationCommand
     public function setComment(string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getExcludedBy(): ?Administrator
+    {
+        return $this->excludedBy;
+    }
+
+    public function setExcludedBy(?Administrator $admin): void
+    {
+        $this->excludedBy = $admin;
     }
 }
