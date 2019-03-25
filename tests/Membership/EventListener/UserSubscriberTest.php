@@ -33,7 +33,7 @@ class UserSubscriberTest extends KernelTestCase
         );
 
         $this->assertSame(
-            '{"uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda","subscriptionExternalIds":[],"country":"FR","zipCode":"75008","tags":[],"emailAddress":"jacques.picard@en-marche.fr","firstName":"Jacques","lastName":"Picard"}',
+            '{"uuid":"a046adbe-9c7b-56a9-a676-6151a6785dda","subscriptionExternalIds":[],"city":"Paris 8e","country":"FR","zipCode":"75008","tags":[],"emailAddress":"jacques.picard@en-marche.fr","firstName":"Jacques","lastName":"Picard"}',
             $userSubscriber->serialize(new UserEvent($user))
         );
     }

@@ -11,7 +11,7 @@ Feature:
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key   | body                                                                                                                                                                                                                                |
-      | <routing_key> | {"uuid":"313bd28f-efc8-57c9-8ab7-2106c8be9697","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"michelle.dufour@example.ch","firstName":"Michelle","lastName":"Dufour"}  |
+      | <routing_key> | {"uuid":"313bd28f-efc8-57c9-8ab7-2106c8be9697","subscriptionExternalIds":["123abc","456def"],"city":"Zürich","country":"CH","zipCode":"8057","tags":["CH"],"emailAddress":"michelle.dufour@example.ch","firstName":"Michelle","lastName":"Dufour"}  |
     Examples:
       | event        | routing_key  |
       | user.created | user.created |
@@ -25,7 +25,7 @@ Feature:
     Then "api_sync" should have 1 message
     And "api_sync" should have message below:
       | routing_key  | body                                                                                                                                                                                                                             |
-      | user.deleted | {"uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0","subscriptionExternalIds":["123abc","456def"],"country":"CH","zipCode":"8802","tags":["CH"],"emailAddress":"michel.vasseur@example.ch","firstName":"Michel","lastName":"VASSEUR"} |
+      | user.deleted | {"uuid":"46ab0600-b5a0-59fc-83a7-cc23ca459ca0","subscriptionExternalIds":["123abc","456def"],"city":"Kilchberg","country":"CH","zipCode":"8802","tags":["CH"],"emailAddress":"michel.vasseur@example.ch","firstName":"Michel","lastName":"VASSEUR"} |
 
   Scenario: Publish message on user update subscriptions
     Given the following fixtures are loaded:
