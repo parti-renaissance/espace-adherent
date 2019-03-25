@@ -36,7 +36,7 @@ class EmailSubscriptionHistoryRepository extends ServiceEntityRepository
             ->andWhere('subscriptionType.code IN (:subscriptions)')
             ->andWhere('history.date <= :until')
             ->groupBy('history.adherentUuid, history.subscriptionType, history.action')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->setParameter('subscriptions', $subscriptionTypeCodes)
             ->setParameter('until', $until)
             ->getQuery()

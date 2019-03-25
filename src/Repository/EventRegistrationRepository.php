@@ -209,7 +209,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->andWhere('event.beginAt <= :until')
             ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
             ->andWhere('event.committee IS NOT NULL')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
             ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
             ->groupBy('yearmonth')

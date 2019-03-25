@@ -353,7 +353,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->join('committee.referentTags', 'tag')
             ->where('committee.status = :status')
             ->andWhere('tag.id IN (:tags)')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->setParameter('status', Committee::APPROVED)
             ->getQuery()
             ->getSingleScalarResult()
@@ -370,7 +370,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->where('committee.status = :status')
             ->andWhere('tag.id IN (:tags)')
             ->setParameter('status', Committee::APPROVED)
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->orderBy('committee.name')
         ;
 
@@ -397,7 +397,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->where('committee.status = :status')
             ->andWhere('tag.id IN (:tags)')
             ->setParameter('status', Committee::APPROVED)
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->orderBy('city')
         ;
 
@@ -475,7 +475,7 @@ class CommitteeRepository extends ServiceEntityRepository
             ->andWhere('committee.status = :status')
             ->andWhere('event.beginAt >= :from')
             ->andWhere('event.beginAt < :until')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->setParameter('status', Committee::APPROVED)
             ->setParameter('from', (new Chronos('first day of this month'))->setTime(0, 0, 0))
             ->setParameter('until', (new Chronos('first day of next month'))->setTime(0, 0, 0))

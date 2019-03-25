@@ -26,7 +26,7 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         }
 
         $hasFranceManagedArea = false;
-        foreach ($referent->getManagedArea()->getTags() as $tag) {
+        foreach ($referent->getAdherentReferentData()->getTags() as $tag) {
             if (is_numeric($tag->getCode())) {
                 $hasFranceManagedArea = true;
                 break;
@@ -47,7 +47,7 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
 
         $codesFilter = $qb->expr()->orX();
 
-        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+        foreach ($referent->getAdherentReferentData()->getTags() as $key => $tag) {
             if (is_numeric($code = $tag->getCode())) {
                 // Postal code prefix
                 $codesFilter->add($qb->expr()->like('n.postalCode', ":code_$key"));

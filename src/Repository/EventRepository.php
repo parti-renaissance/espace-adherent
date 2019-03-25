@@ -535,7 +535,7 @@ SQL;
             ->andWhere('event.committee IS NOT NULL')
             ->andWhere('tag.id IN (:tags)')
             ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->orderBy('city')
         ;
 
@@ -555,7 +555,7 @@ SQL;
             ->select('COUNT(DISTINCT event.id) AS count, YEAR_MONTH(event.beginAt) AS yearmonth')
             ->innerJoin('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->andWhere('event.beginAt >= :from')
             ->andWhere('event.beginAt <= :until')
             ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
@@ -579,7 +579,7 @@ SQL;
             ->andWhere('event.beginAt <= :until')
             ->setParameter('from', (new Chronos('first day of -5 months'))->setTime(0, 0, 0, 000))
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->groupBy('event.id')
             ->getQuery()
             ->useResultCache(true, 3600)
@@ -597,7 +597,7 @@ SQL;
             function (ReferentTag $tag) {
                 return $tag->getId();
             },
-            $referent->getManagedArea()->getTags()->toArray()
+            $referent->getAdherentReferentData()->getTags()->toArray()
         );
 
         $query = <<<'SQL'

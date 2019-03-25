@@ -204,7 +204,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\AdherentReferentData", cascade={"all"}, orphanRemoval=true)
      */
-    private $managedArea;
+    private $adherentReferentData;
 
     /**
      * @var CoordinatorManagedArea|null
@@ -884,14 +884,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->updatedAt;
     }
 
-    public function getManagedArea(): ?AdherentReferentData
+    public function getAdherentReferentData(): ?AdherentReferentData
     {
-        return $this->managedArea;
+        return $this->adherentReferentData;
     }
 
-    public function setManagedArea(AdherentReferentData $managedArea): void
+    public function setAdherentReferentData(AdherentReferentData $adherentReferentData): void
     {
-        $this->managedArea = $managedArea;
+        $this->adherentReferentData = $adherentReferentData;
     }
 
     /**
@@ -903,8 +903,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function getManagedAreaTagCodes(): array
     {
-        return $this->getManagedArea()
-            ? $this->getManagedArea()->getReferentTagCodes()
+        return $this->getAdherentReferentData()
+            ? $this->getAdherentReferentData()->getReferentTagCodes()
             : []
         ;
     }
@@ -953,36 +953,36 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
     {
-        $this->managedArea = new AdherentReferentData($tags, $markerLatitude, $markerLongitude);
+        $this->adherentReferentData = new AdherentReferentData($tags, $markerLatitude, $markerLongitude);
     }
 
     public function isReferent(): bool
     {
-        return $this->managedArea instanceof AdherentReferentData
-            && !$this->managedArea->getTags()->isEmpty();
+        return $this->adherentReferentData instanceof AdherentReferentData
+            && !$this->adherentReferentData->getTags()->isEmpty();
     }
 
     public function revokeReferent(): void
     {
-        $this->managedArea = null;
+        $this->adherentReferentData = null;
     }
 
     public function getManagedAreaMarkerLatitude(): ?string
     {
-        if (!$this->managedArea) {
+        if (!$this->adherentReferentData) {
             return '';
         }
 
-        return $this->managedArea->getMarkerLatitude();
+        return $this->adherentReferentData->getMarkerLatitude();
     }
 
     public function getManagedAreaMarkerLongitude(): ?string
     {
-        if (!$this->managedArea) {
+        if (!$this->adherentReferentData) {
             return '';
         }
 
-        return $this->managedArea->getMarkerLongitude();
+        return $this->adherentReferentData->getMarkerLongitude();
     }
 
     public function isProcurationManager(): bool

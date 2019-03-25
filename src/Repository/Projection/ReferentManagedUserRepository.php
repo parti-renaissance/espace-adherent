@@ -61,7 +61,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
         $tagsFilter = $qb->expr()->orX();
 
-        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+        foreach ($referent->getAdherentReferentData()->getTags() as $key => $tag) {
             $tagsFilter->add("FIND_IN_SET(:tag_$key, u.subscribedTags) > 0");
             $tagsFilter->add(
                 $qb->expr()->andX(

@@ -16,7 +16,7 @@ trait GeoFilterTrait
 
         $codes = array_map(function (ReferentTag $tag) {
             return $tag->getCode();
-        }, $referent->getManagedArea()->getTags()->toArray());
+        }, $referent->getAdherentReferentData()->getTags()->toArray());
 
         $this->applyGeoFilter($qb, $codes, $alias);
     }

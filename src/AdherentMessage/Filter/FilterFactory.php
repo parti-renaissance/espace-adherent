@@ -21,7 +21,7 @@ abstract class FilterFactory
 
     private static function createReferentFilter(Adherent $user): AdherentMessageFilterInterface
     {
-        $managedArea = $user->getManagedArea();
+        $managedArea = $user->getAdherentReferentData();
 
         if (!$managedArea) {
             throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));

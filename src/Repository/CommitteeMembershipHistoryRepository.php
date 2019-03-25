@@ -34,7 +34,7 @@ class CommitteeMembershipHistoryRepository extends ServiceEntityRepository
             ->where('tags IN (:tags)')
             ->andWhere('history.date <= :until')
             ->groupBy('history.action, history.adherentUuid')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referent->getAdherentReferentData()->getTags())
             ->setParameter('until', $until)
         ;
 

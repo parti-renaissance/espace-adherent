@@ -63,7 +63,7 @@ class ReferentController extends Controller
             case self::AUTOCOMPLETE_TYPE_COMMITTEE:
                 return new JsonResponse(['committees' => $committeeRepository->findApprovedForReferentAutocomplete($referent, $value)]);
             case self::AUTOCOMPLETE_TYPE_COUNTRY:
-                return new JsonResponse(['countries' => $referent->getManagedArea()->getOnlyManagedCountryCodes($value)]);
+                return new JsonResponse(['countries' => $referent->getAdherentReferentData()->getOnlyManagedCountryCodes($value)]);
         }
     }
 }
