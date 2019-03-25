@@ -55,14 +55,12 @@ class ImportElectedRepresentativesRegisterCommand extends Command
     ];
 
     private $csvSeparator;
-    private $insertQuery;
-    private $sqlValues;
-    private $typesColumns;
 
     /** @var SymfonyStyle */
     private $io;
 
     private $manager;
+    private $skippedColumns = [];
 
     public function __construct(EntityManagerInterface $manager)
     {
@@ -85,12 +83,8 @@ class ImportElectedRepresentativesRegisterCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $filename = $input->getArgument('file');
+        $filePath = $input->getArgument('file');
         $this->csvSeparator = $input->getOption('separator');
-
-        if (!is_readable($filename)) {
-            throw new \InvalidArgumentException("file $filename not readable");
-        }
 
         if (!$this->io->confirm('Clear all data on table ?', false)) {
             $this->io->success('import canceled');
@@ -102,7 +96,7 @@ class ImportElectedRepresentativesRegisterCommand extends Command
 
         $this->io->success('Start importing Elected');
 
-        $linesLoaded = $this->loadFile($filename);
+        $linesLoaded = $this->import($filePath);
 
         $this->io->text("$linesLoaded lines are loaded");
         $this->io->success('Done');
@@ -110,67 +104,55 @@ class ImportElectedRepresentativesRegisterCommand extends Command
         return 0;
     }
 
-    private function loadFile(string $filename): int
+    private function import(string $filePath): int
     {
         $this->io->progressStart();
 
-        $file = fopen($filename, 'r');
+        $file = fopen($filePath, 'rb');
 
-        $columns = fgetcsv($file, 0, $this->csvSeparator);
-        $this->buildQueryArguments($columns);
+        $headersRow = fgetcsv($file, 0, $this->csvSeparator);
+        $this->buildQueryArguments($headersRow);
 
         $line = 0;
-        $types = [];
         $parameters = [];
-        $sqlValues = [];
 
         while (false !== ($data = fgetcsv($file, 0, $this->csvSeparator))) {
             ++$line;
-            $types = array_merge($types, $this->typesColumns);
-
-            foreach ($data as $value) {
-                $parameters[] = '' === $value ? null : $value;
+            $tmp = [];
+            foreach ($data as $index => $value) {
+                if (\in_array($index, $this->skippedColumns)) {
+                    continue;
+                }
+                $tmp[] = '' === $value ? null : $value;
             }
-
-            $sqlValues[] = $this->sqlValues;
+            $parameters[] = $tmp;
 
             if (0 === ($line % self::BATCH_SIZE)) {
-                $this->load($line, $sqlValues, $parameters, $types);
-                $types = [];
+                $this->load($line, $parameters);
                 $parameters = [];
-                $sqlValues = [];
                 $this->io->progressAdvance(self::BATCH_SIZE);
             }
         }
 
         if (!empty($parameters)) {
-            $this->load($line, $sqlValues, $parameters, $types);
+            $this->load($line, $parameters);
         }
         $this->io->progressFinish();
 
         return $line;
     }
 
-    private function buildQueryArguments(array $columns): void
+    private function buildQueryArguments(array $headersRow): void
     {
-        $this->insertQuery = $this->getQuery($columns);
+        foreach ($headersRow as $index => $column) {
+            $column = str_replace('"', '', $column);
 
-        $prepareValues = [];
-        foreach ($columns as $column) {
             if (!\array_key_exists($column, self::COLUMNS)) {
-                throw new \RuntimeException("Column $column could not be use");
+                $this->skippedColumns[] = $index;
+                $this->io->warning('column '.$column.' will be skipped');
+                continue;
             }
-
-            $this->typesColumns[] = self::COLUMNS[$column];
-            $prepareValues[] = '?';
         }
-
-        $this->sqlValues = '('.implode(',', $prepareValues).')';
-    }
-
-    private function getQuery(array $columns): string
-    {
-        return 'INSERT INTO `elected_representatives_register` ('.implode(',', $columns).')';
     }
 
     private function getUpdateQuery(int $start, int $end): string
@@ -181,18 +163,20 @@ SET e.adherent_id = a.id, e.adherent_uuid = a.uuid
 WHERE e.id BETWEEN '.$start.' AND '.$end;
     }
 
-    private function load(int $line, array $sqlValues, array $parameters, array $types)
+    private function load(int $line, array $parameters): void
     {
         $this->manager->getConnection()->executeUpdate(
-            $this->insertQuery.' VALUES '.implode(',', $sqlValues),
-            $parameters,
-            $types
+            'INSERT INTO `elected_representatives_register` ('.implode(',', array_keys(self::COLUMNS)).') VALUES '
+            .implode(',', array_map(function (array $row): string {
+                return sprintf('(%s)', implode(',', fill_array(0, \count($row), '?')));
+            }, $parameters)),
+            array_merge(...$parameters)
         );
         $this->manager->getConnection()->exec($this->getUpdateQuery(max(1, $line - self::BATCH_SIZE), $line));
     }
 
     private function truncateTable(): void
     {
-        $this->manager->getConnection()->prepare('TRUNCATE TABLE `elected_representatives_register`')->execute();
+        $this->manager->getConnection()->executeQuery('TRUNCATE TABLE `elected_representatives_register`');
     }
 }
