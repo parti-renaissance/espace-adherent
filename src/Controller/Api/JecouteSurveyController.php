@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Form\Jecoute\DataSurveyFormType;
-use AppBundle\Repository\Jecoute\SurveyRepository;
+use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
@@ -28,13 +28,13 @@ class JecouteSurveyController extends Controller
      * @Method("GET")
      */
     public function surveyListAction(
-        SurveyRepository $surveyRepository,
+        LocalSurveyRepository $localSurveyRepository,
         Serializer $serializer,
         UserInterface $user
     ): Response {
         return new JsonResponse(
             $serializer->serialize(
-                $surveyRepository->findAllByAdherent($user),
+                $localSurveyRepository->findAllByAdherent($user),
                 'json',
                 SerializationContext::create()->setGroups('survey_list')
             ),

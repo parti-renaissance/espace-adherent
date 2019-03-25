@@ -36,6 +36,20 @@ class LoadJecouteQuestionData extends Fixture
             'content' => 'Question du 2ème questionnaire, avec champ libre.',
             'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
         ],
+        'national-question-1' => [
+            'content' => 'Une première question du 1er questionnaire national ?',
+            'type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+        ],
+        'national-question-2' => [
+            'content' => 'Une deuxième question du 1er questionnaire national ?',
+            'type' => SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE,
+            'choices' => [
+                'Réponse nationale A',
+                'Réponse nationale B',
+                'Réponse nationale C',
+                'Réponse nationale D',
+            ],
+        ],
     ];
 
     public function load(ObjectManager $manager)

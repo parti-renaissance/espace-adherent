@@ -1,0 +1,40 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    {{ parent() }}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript">
+        const displayChoices = function(questionType) {
+            if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}' === $(questionType).val()) {
+                $(questionType).parents('.survey-question-type').nextAll('.question-choices').hide();
+            } else {
+                $(questionType).parents('.survey-question-type').nextAll('.question-choices').show();
+            }
+        };
+
+        $('.survey-question-type input:checked').each(function() {
+            displayChoices($(this));
+        });
+    </script>
+{% endblock %}
+
+{% block referent_content %}
+
+    {% form_theme form with ['referent/_form_theme.html.twig'] %}
+
+    <a href="{{ path('app_referent_national_surveys') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste des questionnaires nationaux
+    </a>
+
+    <hr />
+
+    <div class="jecoute-survey l__wrapper--slim">
+        {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+        {{ include('referent/surveys/_form.html.twig') }}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

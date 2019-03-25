@@ -3,15 +3,11 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Admin\AdministratorFactory;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadAdminData implements FixtureInterface, ContainerAwareInterface
+class LoadAdminData extends Fixture
 {
-    use ContainerAwareTrait;
-
     public function load(ObjectManager $manager)
     {
         $factory = $this->getAdministratorFactory();
@@ -83,6 +79,7 @@ class LoadAdminData implements FixtureInterface, ContainerAwareInterface
             'password' => 'secret!12345',
             'roles' => $adminRoles,
         ]);
+        $this->setReference('administrator-1', $admin);
 
         $writer = $factory->createFromArray([
             'email' => 'martin.pierre@en-marche.fr',

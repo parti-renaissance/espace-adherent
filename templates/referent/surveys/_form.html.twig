@@ -4,42 +4,46 @@
     {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom du questionnaire" } }) }}
 </div>
 
-<div class="form__row form__new">
-    <label class="label__header--large form form__label required">Zone concernée</label>
-    {{ form_widget(form.concernedAreaChoice, { attr: { class: 'l__row--h-stretch form__radio-button' } }) }}
-    {{ form_widget(form.city, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
-    {{ form_errors(form.city) }}
-</div>
+{% if form.concernedAreaChoice is defined %}
+    <div class="form__row form__new">
+        <label class="label__header--large form form__label required">Zone concernée</label>
+        {{ form_widget(form.concernedAreaChoice, { attr: { class: 'l__row--h-stretch form__radio-button' } }) }}
+        {{ form_widget(form.city, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
+        {{ form_errors(form.city) }}
+    </div>
+{% endif %}
 
 <div class="form__row form__new">
     {{ form_errors(form.questions) }}
     {{ form_widget(form.questions) }}
 </div>
 
-<div class="b__nudge--top">
-    <p class="text--gray text--small">
-        Vous pouvez choisir de créer librement une question et en collecter les réponses, mais son analyse ne pourra
-        pas être traitée par les équipes de LaREM. En choisissant une question suggérée, ses réponses pourront être
-        analysées à un niveau local comme national et être comparées aux données remontées par les autres référents.
-    </p>
-</div>
+{% if not form.vars.disabled %}
+    <div class="b__nudge--top">
+        <p class="text--gray text--small">
+            Vous pouvez choisir de créer librement une question et en collecter les réponses, mais son analyse ne pourra
+            pas être traitée par les équipes de LaREM. En choisissant une question suggérée, ses réponses pourront être
+            analysées à un niveau local comme national et être comparées aux données remontées par les autres référents.
+        </p>
+    </div>
 
-<div class="form__row b__nudge--top">
-    <span data-collection="{{ form.questions.vars.id }}" class="{{ form.questions.vars.id }}-question-add {{ form.questions.vars.id }}-question-action btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Créer une nouvelle question</span>
-</div>
+    <div class="form__row b__nudge--top">
+        <span data-collection="{{ form.questions.vars.id }}" class="{{ form.questions.vars.id }}-question-add {{ form.questions.vars.id }}-question-action btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Créer une nouvelle question</span>
+    </div>
 
-<div class="form__row b__nudge--top">
-    <span id="suggested-questions-open-popin" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Sélectionner une question suggérée</span>
-</div>
+    <div class="form__row b__nudge--top">
+        <span id="suggested-questions-open-popin" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Sélectionner une question suggérée</span>
+    </div>
 
-<br/>
+    <br/>
 
-<div class="form__row form__new form__checkbox">
-    {{ form_errors(form.published) }}
-    {{ form_widget(form.published, { attr: { class: 'form--full committee_event__form__name' } }) }}
-    {{ form_label(form.published, 'Publier le questionnaire') }}
-</div>
+    <div class="form__row form__new form__checkbox">
+        {{ form_errors(form.published) }}
+        {{ form_widget(form.published, { attr: { class: 'form--full committee_event__form__name' } }) }}
+        {{ form_label(form.published, 'Publier le questionnaire') }}
+    </div>
 
-<div class="form__row text--center b__nudge--top">
-    <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Enregistrer le questionnaire local</button>
-</div>
+    <div class="form__row text--center b__nudge--top">
+        <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Enregistrer le questionnaire local</button>
+    </div>
+{% endif %}

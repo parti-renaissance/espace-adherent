@@ -23,7 +23,7 @@ Feature:
     """
     [
       {
-        "id":1,
+        "id":2,
         "questions":[
           {
             "id":1,
@@ -81,7 +81,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":1,
+      "survey":2,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
@@ -129,7 +129,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":2,
+      "survey":3,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
@@ -239,7 +239,7 @@ Feature:
     When I send a "POST" request to "/api/jecoute/survey/reply" with body:
     """
     {
-      "survey":1,
+      "survey":2,
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",

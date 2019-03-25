@@ -22,6 +22,7 @@ class StatisticsProvider
             'survey' => [
                 'uuid' => $survey->getUuid(),
                 'name' => $survey->getName(),
+                'isNational' => $survey->isNational(),
             ],
             'questions' => $this->createQuestions($survey->getQuestions()),
         ];

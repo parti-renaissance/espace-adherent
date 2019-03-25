@@ -2,18 +2,33 @@
 
 namespace AppBundle\Repository\Jecoute;
 
-use AppBundle\Entity\Jecoute\Survey;
+use AppBundle\Entity\Jecoute\NationalSurvey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class SurveyRepository extends ServiceEntityRepository
+class NationalSurveyRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Survey::class);
+        parent::__construct($registry, NationalSurvey::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Survey
+    /**
+     * @return NationalSurvey[]
+     */
+    public function findAllPublished(): array
+    {
+        return $this
+            ->createQueryBuilder('survey')
+            ->addSelect('questions')
+            ->innerJoin('survey.questions', 'questions')
+            ->andWhere('survey.published = true')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOnePublishedByUuid(string $uuid): ?NationalSurvey
     {
         return $this
             ->createQueryBuilder('survey')
@@ -21,7 +36,9 @@ class SurveyRepository extends ServiceEntityRepository
             ->innerJoin('survey.questions', 'surveyQuestion')
             ->innerJoin('surveyQuestion.question', 'question')
             ->leftJoin('question.choices', 'choices')
+            ->innerJoin('survey.administrator', 'administrator')
             ->andWhere('survey.uuid = :uuid')
+            ->andWhere('survey.published = true')
             ->setParameter('uuid', $uuid)
             ->addOrderBy('surveyQuestion.position', 'ASC')
             ->getQuery()
