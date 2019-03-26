@@ -340,6 +340,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $canaryTester = false;
 
+    /**
+     * @ORM\Column(unique=true, nullable=true)
+     * @Gedmo\Slug(fields={"firstName", "lastName"}, updatable=true, unique=true)
+     *
+     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1377,5 +1385,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
     }
 }
