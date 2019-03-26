@@ -57,3 +57,38 @@ framework:
                     from:
                         - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
                     to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SENT
+
+        assessor_request:
+            type: state_machine
+            initial_place: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+            supports: [AppBundle\Assessor\AssessorRequestCommand]
+            places:
+                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SENT
+            transitions:
+                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_FILL_PERSONAL_INFO:
+                    from:
+                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+
+                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_FILL_ASSESSOR_INFO:
+                    from:
+                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
+
+                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_VALID_SUMMARY:
+                    from:
+                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SENT
+
+                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_BACK_ASSESSOR_INFO:
+                    from:
+                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                    to : !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+
+                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_BACK_PERSONAL_INFO:
+                    from:
+                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                    to : !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO

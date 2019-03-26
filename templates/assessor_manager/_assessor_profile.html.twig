@@ -39,14 +39,14 @@
     Bureau(x) de vote souhaité
 </div>
 <div class="profile-value" id="request-vote-place-wishes">
-    {{ macro.displayVotePlaceWishes(request.votePlacesWishes) }}
+    {{ macro.displayVotePlaceWishes(request.votePlaceWishes) }}
 </div>
 
 <div class="profile-label">
     Poste souhaité
 </div>
 <div class="profile-value" id="request-office">
-    {{ request.office }}
+    {{ request.getOfficeName|trans }}
 </div>
 
 <div class="profile-label">

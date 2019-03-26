@@ -53,7 +53,11 @@
                     Disponibilités
                 </div>
                 <div class="profile-value">
-                    {{ request.votePlace.getAvailableOfficesAsString|nl2br }}
+                    {% if request.votePlace is not empty %}
+                        {% for availableOffice in request.votePlace.getAvailableOffices %}
+                            <li>{{ availableOffice|trans }}</li>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             {% else %}
                 <h4 class="b__nudge--bottom">
@@ -91,7 +95,11 @@
                             <tr>
                                 <td class="datagrid__table__col--left datagrid__table__col--top">
                                     <em>Disponibilités :</em><br />
-                                    {{ votePlace.getAvailableOfficesAsString|nl2br }}
+                                    <ul>
+                                        {% for availableOffice in votePlace.getAvailableOffices %}
+                                            <li>{{ availableOffice|trans }}</li>
+                                        {% endfor %}
+                                    </ul>
                                 </td>
                                 <td class="datagrid__table__col--left">
                                     <em>Adresse du bureau de vote :</em><br />

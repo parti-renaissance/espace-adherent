@@ -21,6 +21,9 @@
     Disponibilités
 </div>
 <div class="profile-value">
-    <span id="vote-place-available-offices">{{ votePlace.availableOfficesAsString|nl2br }}</span>
+    <ul id="vote-place-available-offices">
+        {% for availableOffice in votePlace.getAvailableOffices %}
+            <li>{{ availableOffice|trans }}</li>
+        {% endfor %}
+    </ul>
 </div>
-

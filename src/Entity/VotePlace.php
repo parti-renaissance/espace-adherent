@@ -91,7 +91,7 @@ class VotePlace
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssessorRequest", mappedBy="votePlace")
+     * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace")
      *
      * @Assert\Choice(
      *     max=VotePlace::MAX_ASSESSOR_REQUESTS,
@@ -112,7 +112,7 @@ class VotePlace
      *
      * @ORM\Column(type="boolean")
      */
-    private $substitudeOfficeAvailable = true;
+    private $substituteOfficeAvailable = true;
 
     public function __construct()
     {
@@ -206,9 +206,9 @@ class VotePlace
         $this->assessorRequests->removeElement($assessorRequests);
     }
 
-    public function getAvailableOfficesAsString(): string
+    public function getAvailableOffices(): array
     {
-        $availableOffices = AssessorOfficeEnum::toArray();
+        $availableOffices = AssessorOfficeEnum::CHOICES;
 
         foreach ($this->assessorRequests as $assessorRequest) {
             if (\in_array($assessorRequest->getOffice(), $availableOffices)) {
@@ -216,7 +216,7 @@ class VotePlace
             }
         }
 
-        return implode("\n", $availableOffices);
+        return array_keys($availableOffices);
     }
 
     public function isHolderOfficeAvailable(): bool
@@ -229,13 +229,13 @@ class VotePlace
         $this->holderOfficeAvailable = $holderOfficeAvailable;
     }
 
-    public function isSubstitudeOfficeAvailable(): bool
+    public function isSubstituteOfficeAvailable(): bool
     {
-        return $this->substitudeOfficeAvailable;
+        return $this->substituteOfficeAvailable;
     }
 
-    public function setSubstitudeOfficeAvailable(bool $substitudeOfficeAvailable): void
+    public function setSubstituteOfficeAvailable(bool $substituteOfficeAvailable): void
     {
-        $this->substitudeOfficeAvailable = $substitudeOfficeAvailable;
+        $this->substituteOfficeAvailable = $substituteOfficeAvailable;
     }
 }

@@ -73,7 +73,7 @@ final class Version20190402144714 extends AbstractMigration
         ADD 
           holder_office_available TINYINT(1) NOT NULL, 
         ADD 
-          substitude_office_available TINYINT(1) NOT NULL');
+          substitute_office_available TINYINT(1) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -82,6 +82,6 @@ final class Version20190402144714 extends AbstractMigration
         $this->addSql('DROP TABLE assessor_managed_areas');
         $this->addSql('DROP TABLE assessor_requests');
         $this->addSql('DROP TABLE assessor_request_vote_place_wishes');
-        $this->addSql('ALTER TABLE vote_place DROP holder_office_available, DROP substitude_office_available');
+        $this->addSql('ALTER TABLE vote_place DROP holder_office_available, DROP substitute_office_available');
     }
 }

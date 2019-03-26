@@ -1,0 +1,89 @@
+{% extends 'assessor/_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.multi_vote_place_wishes').select2({
+                placeholder: "Sélectionnez vos bureaux de votes"
+            });
+
+            const assessorCountrySelect = $('#assessor_request_assessorCountry');
+            const assessorPostalCodeInput = $('#assessor_request_assessorPostalCode');
+            const assessorCityInput = $('#assessor_request_assessorCity');
+
+            var initForeignAssessorRequest = function () {
+                assessorPostalCodeInput.val('');
+                assessorCityInput.val('');
+                $('.french-block').hide();
+            };
+
+            if (assessorCountrySelect.val() !== 'FR') {
+                initForeignAssessorRequest();
+            } else {
+                $('.french-block').show();
+            }
+
+            var refreshVotePlaceWishes = function (url) {
+                $.ajax({
+                    url: url
+                })
+                .then(function (data) {
+                    const votePlaceWishesSelect = $('.multi_vote_place_wishes');
+                    const votePlaces = [];
+
+                    $.each(data, function (value, key) {
+                        votePlaces.push({
+                            id: key,
+                            text: value,
+                        });
+                    });
+
+                    votePlaceWishesSelect.empty();
+                    votePlaceWishesSelect.select2({
+                        data: votePlaces
+                    });
+                });
+            };
+
+            assessorCountrySelect.on('change', function() {
+                if ($(this).val() !== 'FR') {
+                    initForeignAssessorRequest();
+
+                    let url = "{{ path('app_assessor_request_find_vote_places', { country: 'countryVal' }) }}";
+                    refreshVotePlaceWishes(url.replace('countryVal', $(this).val()));
+                } else {
+                    $('.french-block').show();
+                }
+            });
+
+            assessorPostalCodeInput.on('input', function() {
+                if ($(this).val().length > 4) {
+
+                    let url = "{{ path('app_assessor_request_find_vote_places', { postalCode: 'postalCodeVal' }) }}";
+                    refreshVotePlaceWishes(url.replace('postalCodeVal', $(this).val()));
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block assessor_content %}
+    <main class="assessor__content">
+        <section class="assessor__content__form l__wrapper l__row l__row--top l__row--h-stretch-around l__tablet--col space--40-0">
+            <div class="l__wrapper">
+                {% include('assessor/_'~transition~'.html.twig') %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,187 +1,181 @@
 .assessor {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background-position: center;
-
-    @media (max-height: 1000px) {
-        justify-content: flex-start;
-        height: auto;
-    }
-
-    @media (max-width: $mobile) {
-        background-color: white;
-        background-position: 0 0;
-        background-size: 100%;
-    }
 
     &__header {
         &--outer {
-            background-position: center 62%;
-            background-repeat: no-repeat;
-            background-size: cover;
             @include gradient-container;
-            background-color: $filter--gray;
-            background-blend-mode: multiply;
-
-            a.text--logo:hover {
-                color: $blue;
-            }
+            background-color: $blue--extra-light;
         }
 
         &--inner {
             padding: 20px 0 80px;
         }
-
-        > * {
-            position: relative;
-        }
-    }
-
-    &__steps {
-        @include steps;
-        width: 360px;
     }
 
     &__content {
-        > div {
-            @media (max-width: $tablet) {
-                width: 100%;
-                margin-bottom: 40px;
-            }
-        }
+        display: flex;
+        justify-content: space-between;
+        overflow: hidden;
 
-        @media (max-width: $mobile) {
-            width: 100%;
-            padding: 15px 0 0 0;
-
-            > div:first-child {
-                width: 90%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-    }
-
-    &__banner {
-        background-color: $dark;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-
-        &--form-right {
-            text-align: right;
-        }
-
-        &--form-left {
-            text-align: left;
+        @media (max-width: $tablet) {
+            flex-direction: column;
+            height: auto;
         }
 
         &__form {
-            background-color: $gray--lighter;
-            border: 1px solid $gray--light;
-            padding: 30px;
-            margin: 0 0 0 75px;
-            text-align: left;
-            box-sizing: border-box;
-            min-width: 480px;
-            max-width: 650px;
+            width: 65%;
+
+            @media (min-width: $large--screen) {
+                height: auto;
+                width: 50%;
+            }
 
             @media (max-width: $tablet) {
-                margin: 0 auto;
-                width: 100% !important;
+                width: 100%;
+                overflow: hidden;
+                padding: 5% 0;
             }
 
-            @media (max-width: $mobile) {
-                margin: 0;
-                border-left: 0;
-                border-right: 0;
-                padding: 30px 10px;
-                min-width: 0;
+            .form__checkbox {
+                display: block;
+
+                label {
+                    align-items: flex-start;
+                }
             }
 
-            h4 {
-                font-family: $font-gillsans;
-                font-weight: normal;
-                font-size: 24px;
-                line-height: 1.2;
-                letter-spacing: 0.3px;
-                text-align: center;
-                margin: 0 0 20px 0;
+            .form__error {
+                margin-top: 10px;
             }
 
-            label {
-                font-weight: bold;
+            .form__errors {
+                padding-left: 5px;
             }
 
-            &--large {
-                min-width: 650px;
-                max-width: 650px;
+            input,
+            select {
+                padding-left: 12px;
+                padding-right: 12px;
+                border-radius: 3px;
+                border: 1px solid  $gray--light;
+                height: 60px;
+                box-sizing: border-box;
+                font-size: 16px;
+            }
 
-                @media (max-width: $tablet) {
-                    min-width: 0;
+            .register__form--full,
+            .register__form--mid {
+                margin: 10px 0;
+            }
+
+            .register__form--mid {
+                width: 48%;
+
+                @media (max-width: $mobile) {
+                    width: 100%;
+                }
+            }
+
+            .vote-place-wishes {
+                width: 100%;
+
+                .select2-container {
+
+                    .select2-search__field {
+                        height: 30px;
+                        padding-left: 12px;
+                        padding-right: 12px;
+                        @include text--default;
+                    }
+
+                    .select2-selection--multiple {
+                        background-image: none;
+                        border: 1px solid $gray--light;
+                        border-radius: 3px;
+                        -webkit-appearance: none;
+                    }
+                }
+            }
+
+            select#assessor_request_birthdate_day,
+            select#assessor_request_birthdate_month {
+                width: 90%;
+                margin-right: 10px;
+            }
+
+            select#assessor_request_birthdate_yeah {
+                width: 90%;
+            }
+
+            .register__form--full {
+                width: 100%;
+            }
+
+            .btn {
+                border-radius: 3px;
+                max-width: 100%;
+                width: 100%;
+                font-size: 18px;
+            }
+
+            .text__checkbox {
+                color: $gray--dark;
+
+                a {
+                    color: $green--apple;
+                    border-bottom: 1px solid $green--apple;
                 }
             }
         }
-    }
 
-    &__title-elections {
-        font-family: $font-gillsans;
-        font-weight: normal;
-        font-size: 20px;
-        line-height: 1.2;
-        letter-spacing: 0.3px;
-        margin: 0 0 20px 0;
-    }
+        .header-bloc {
+            width: 100%;
 
-    &__choose-election {
-        margin-bottom: 15px;
+            a.back {
+                color: $blue--night;
+                text-decoration: none;
+                border-bottom: none;
+                transition: none;
+            }
 
-        .form__checkbox label:before {
-            margin-top: -3px;
-        }
+            a.back:hover {
+                border-bottom: 1px solid $blue--night;
+            }
 
-        &__day {
-            color: $gray--dark;
-            margin: -5px 0 0 31px;
-        }
-    }
-
-    &__copy-link {
-        display: flex;
-        justify-content: center;
-
-        @media (max-width: $mobile) {
-            flex-direction: column;
-        }
-
-        input {
-            font-size: 18px;
-            width: 290px;
-            border: 1px solid $gray--light;
-            border-right: 0;
-            padding: 0 20px;
-            box-sizing: border-box;
-            height: 40px;
-            background: $gray--lighter;
-            text-align: center;
-
-            @media (max-width: $mobile) {
+            .title {
                 width: 100%;
+                position: relative;
+                overflow: hidden;
+                margin: 20px 0 10px 0;
+
+                h1 {
+                    float: left;
+                }
+
+                .step {
+                    float: right;
+                }
             }
         }
-    }
 
-    .form {
-        &__radio-button {
-            input[type='radio'] {
-                &:checked + label:before {
-                    border-color: $gray--dark;
-                    background: $gray--dark;
+        .summary-bloc {
+            table {
+                margin-top: 10px;
+                width: 100%;
+
+                tr {
+                    text-align: left;
+
+                    td:first-child {
+                        width: 40%;
+                        color: $gray--dark;
+                    }
+
+                    td:last-child {
+                        font-weight: bold;
+                    }
                 }
             }
         }

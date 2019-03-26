@@ -40,14 +40,14 @@ class VotePlaceFilters extends AssessorFilters
             $qb
                 ->andWhere(
                     $qb->expr()->orX(
-                        $alias.'.substitudeOfficeAvailable = true',
+                        $alias.'.substituteOfficeAvailable = true',
                         $alias.'.holderOfficeAvailable = true'
                     )
                 )
             ;
         } elseif (self::ASSOCIATED === $status) {
             $qb
-                ->andWhere($alias.'.substitudeOfficeAvailable = false')
+                ->andWhere($alias.'.substituteOfficeAvailable = false')
                 ->andWhere($alias.'.holderOfficeAvailable = false')
             ;
         }

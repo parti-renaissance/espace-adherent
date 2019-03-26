@@ -18,10 +18,10 @@
             </span>
         </td>
         <td>
-            {{ macro.displayVotePlaceWishes(request.data.votePlacesWishes) }}
+            {{ macro.displayVotePlaceWishes(request.data.votePlaceWishes) }}
         </td>
         <td>
-            {{ request.data.office }}
+            {{ request.data.getOfficeName|trans }}
         </td>
         <td>
             {% if not request.data.processed %}

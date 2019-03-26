@@ -15,9 +15,12 @@
             {{ constant('AppBundle\\Entity\\VotePlace::MAX_ASSESSOR_REQUESTS') - votePlace.assessorRequests|length }}
         </td>
         <td>
-            {% set availableOffices = votePlace.getAvailableOfficesAsString|nl2br %}
-            {% if not availableOffices is empty %}
-                {{ votePlace.getAvailableOfficesAsString|nl2br }}
+            {% if not votePlace.getAvailableOffices is empty %}
+                <ul>
+                    {% for availableOffice in votePlace.getAvailableOffices %}
+                        <li>{{ availableOffice|trans }}</li>
+                    {% endfor %}
+                </ul>
             {% else %}
                 {{ 'vote_place.availability:none'|trans }}
             {% endif %}
