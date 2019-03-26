@@ -59,9 +59,7 @@ class IdeaCardListContainer extends React.Component {
                         <div className="idea-card-list__actions__count">
                             <span className="idea-card-list__actions__count__total">{this.props.total}</span>
                             {` proposition${1 < this.props.total ? 's' : ''} ${
-                                this.props.status === ideaStatus.PENDING
-                                    ? 'en cours'
-                                    : `finalisée${1 < this.props.total ? 's' : ''}`
+                                this.props.status === ideaStatus.PENDING ? 'en cours' : `finalisée${1 < this.props.total ? 's' : ''}`
                             }`}
                         </div>
                         <div className="idea-card-list__actions__display">
@@ -71,8 +69,7 @@ class IdeaCardListContainer extends React.Component {
                             ].map(item => (
                                 <button
                                     className={classNames('idea-card-list__actions__display__btn', {
-                                        'idea-card-list__actions__display__btn--selected':
-                                            this.state.condensed === item.condensed,
+                                        'idea-card-list__actions__display__btn--selected': this.state.condensed === item.condensed,
                                     })}
                                     data-tip={item.title}
                                     data-effect="solid"
@@ -80,7 +77,7 @@ class IdeaCardListContainer extends React.Component {
                                     data-class="idea-card-list__actions__display__btn-tip"
                                     onClick={() => this.onDisplayModeChange(item.condensed)}
                                 >
-                                    <img src={item.condensed ? condensedIcn : defaultIcn} />
+                                    <img src={item.condensed ? condensedIcn : defaultIcn} alt="Condensé" />
                                 </button>
                             ))}
                         </div>
@@ -108,7 +105,7 @@ class IdeaCardListContainer extends React.Component {
                     </React.Fragment>
                 ) : (
                     <div className="idea-card-list__empty">
-                        <img className="idea-card-list__empty__img" src={noIdeaImg} />
+                        <img className="idea-card-list__empty__img" src={noIdeaImg} alt="Pas d'idée" />
                         <p>Il n'y a pas de proposition correspondant à votre recherche</p>
                     </div>
                 )}

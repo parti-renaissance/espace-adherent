@@ -1,7 +1,6 @@
 import { action } from '../helpers/actions';
 import {
     SET_CURRENT_IDEA,
-    AUTOCOMPLETE_TITLE_IDEA,
     UPDATE_CURRENT_IDEA,
     UPDATE_CURRENT_IDEA_ANSWER,
     SET_GUIDELINES,

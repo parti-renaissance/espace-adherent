@@ -2,7 +2,7 @@
 @import '~slick-carousel/slick/slick-theme.css';
 
 .movement-ideas {
-    overflow: hidden;
+  overflow: hidden;
 
   &__first__section {
     background-image: url('./img/hp-main-illustration-bkg.svg');
@@ -11,97 +11,97 @@
     background-repeat: no-repeat;
 
     @media screen and (min-width: 1440px) {
-        background-position: center bottom 30%;
+      background-position: center bottom 30%;
     }
 
     @media screen and (max-width: $width-lg) {
-        background-position: center bottom 0;
+      background-position: center bottom 0;
     }
-
-
 
     &__in {
+      position: relative;
+      min-height: 468px;
+      padding-top: 105px;
+
+      @media screen and (max-width: $width-lg) {
+        padding-top: 35px;
+        padding-bottom: 43%;
+      }
+
+      &__title {
+        display: inline-block;
+        font-size: 48px;
+        line-height: 55px;
+        letter-spacing: -1.5px;
         position: relative;
-        min-height: 468px;
-        padding-top: 105px;
+        z-index: 5;
 
         @media screen and (max-width: $width-lg) {
-            padding-top: 35px;
-            padding-bottom: 43%;
+          font-size: 32px;
+          line-height: 34px;
+        }
+      }
+
+      &__content {
+        margin-top: 20px;
+        color: $medium-grey;
+        font-size: 22px;
+        line-height: 27px;
+        position: relative;
+        z-index: 5;
+        max-width: 540px;
+
+        @media screen and (max-width: $width-lg) {
+          font-size: 18px;
+          line-height: 24px;
+        }
+      }
+
+      &__main-illustration {
+        position: absolute;
+        bottom: 0;
+        z-index: 1;
+        right: -90px;
+        max-width: 120%;
+        bottom: -40px;
+
+        @media screen and (max-width: $width-lg) {
+          width: 160%;
+          min-width: 750px;
+          max-width: none;
+          right: 0;
+          left: auto;
         }
 
-        &__title {
-          display: inline-block;
-          font-size: 48px;
-          line-height: 55px;
-          letter-spacing: -1.5px;
-          position: relative;
-          z-index: 5;
-
-          @media screen and (max-width: $width-lg) {
-              font-size: 32px;
-              line-height: 34px;
-          }
-
+        @media screen and (min-width: 1440px) {
+          max-width: none;
         }
-
-        &__content {
-          margin-top: 20px;
-          color: $medium-grey;
-          font-size: 22px;
-          line-height: 27px;
-          position: relative;
-          z-index: 5;
-          max-width: 540px;
-
-          @media screen and (max-width: $width-lg) {
-              font-size: 18px;
-              line-height: 24px;
-          }
-        }
-
-        &__main-illustration {
-          position: absolute;
-          bottom: 0;
-          z-index: 1;
-          right: -90px;
-          max-width: 120%;
-
-          @media screen and (max-width: $width-lg) {
-              width: 160%;
-              min-width: 750px;
-              max-width: none;
-              right: 0;
-              left: auto;
-          }
-
-          @media screen and (min-width: 1440px) {
-              max-width: none;
-          }
-        }
+      }
     }
-
   }
 
-    &__second__section {
+  &__second__section {
     display: flex;
     justify-content: space-between;
     padding-bottom: 75px;
-    padding-top: 50px;
+    padding-top: 100px;
+    width: 100%;
 
+    &--background {
+      background-image: linear-gradient(to top, #ffffff, #ebf8ff);
+      bottom: 40px;
+      position: relative;
+    }
+  }
+
+  &__slider {
+    @media screen and (max-width: $width-md) {
+      margin-bottom: 10px;
+      padding-top: 100px;
     }
 
-    &__slider {
-
-        @media screen and (max-width: $width-md) {
-            margin-bottom: 60px;
-            padding-top: 50px;
-        }
-
-        .slick-dots {
-            bottom: -35px;
-        }
+    .slick-dots {
+      bottom: -35px;
     }
-
-
+  }
 }
