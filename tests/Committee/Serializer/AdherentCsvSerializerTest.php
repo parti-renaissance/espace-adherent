@@ -26,6 +26,7 @@ class AdherentCsvSerializerTest extends TestCase
                 'gender' => 'male',
                 'birthdate' => new \DateTime('now - 44 years'),
                 'address' => PostAddress::createFrenchAddress('36 avenue Général Leclerc', '77000-77288'),
+                'registered_at' => '2019-02-14 11:12:13',
             ]),
             $this->createAdherentFromArray([
                 'email' => 'carl999@example.fr',
@@ -35,6 +36,7 @@ class AdherentCsvSerializerTest extends TestCase
                 'gender' => 'male',
                 'birthdate' => new \DateTime('now - 66 years'),
                 'address' => PostAddress::createFrenchAddress('36 rue Grande', '77300-77186'),
+                'registered_at' => '2018-11-13 13:13:13',
             ]),
             $this->createAdherentFromArray([
                 'email' => 'naugthy.user+en-marche@gmail.com', //@see https://support.google.com/mail/answer/22370?hl=en
@@ -44,14 +46,15 @@ class AdherentCsvSerializerTest extends TestCase
                 'gender' => 'male',
                 'birthdate' => new \DateTime('now - 22 years'),
                 'address' => PostAddress::createFrenchAddress('36 rue de la Paix', '75008-75108'),
+                'registered_at' => '2018-03-08 08:08:08',
             ]),
         ];
 
         $csv = [
-            'Prénom,Nom,Age,"Code postal",Ville',
-            'Michel,D.,44,77000,Melun',
-            'Carl,M.,66,77300,Fontainebleau',
-            '"Jean_Pierre-André dît \'JPA\'",D.,22,75008,"Paris 8e"',
+            'Prénom,Nom,Age,"Code postal",Ville,"Date d\'adhesion"',
+            'Michel,D.,44,77000,Melun,"2019-02-14 11:12:13"',
+            'Carl,M.,66,77300,Fontainebleau,"2018-11-13 13:13:13"',
+            '"Jean_Pierre-André dît \'JPA\'",D.,22,75008,"Paris 8e","2018-03-08 08:08:08"',
             '',
         ];
 
