@@ -37,7 +37,7 @@ class SegmentConditionsBuilder
         $filter = $message->getFilter();
 
         if ($filter instanceof ReferentUserFilter) {
-            $conditions += $this->buildReferentConditions($filter);
+            $conditions = array_merge($conditions, $this->buildReferentConditions($filter));
         } elseif ($filter instanceof AdherentZoneFilter) {
             $conditions[] = $this->buildReferentZoneCondition($filter->getReferentTag());
         }

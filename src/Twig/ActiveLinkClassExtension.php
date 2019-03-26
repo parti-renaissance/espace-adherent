@@ -22,14 +22,21 @@ class ActiveLinkClassExtension extends AbstractExtension
     {
         $currentRouteName = $request->attributes->get('_route');
 
-        if (\is_array($routeName)) {
-            return \in_array($currentRouteName, $routeName, true);
+        foreach ((array) $routeName as $route) {
+            if ($this->match($currentRouteName, $route)) {
+                return true;
+            }
         }
 
-        if ('*' === substr($routeName, -1)) {
-            return false !== strpos($currentRouteName, rtrim($routeName, '*'));
+        return false;
+    }
+
+    private function match(string $currentRoute, string $expectedRoute): bool
+    {
+        if ('*' === substr($expectedRoute, -1)) {
+            return false !== strpos($currentRoute, rtrim($expectedRoute, '*'));
         }
 
-        return $currentRouteName === $routeName;
+        return $currentRoute === $expectedRoute;
     }
 }

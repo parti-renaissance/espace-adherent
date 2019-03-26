@@ -285,7 +285,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaires-locaux",
-     *     name="app_referent_surveys",
+     *     name="app_referent_survey_list",
      *     methods={"GET"},
      * )
      */
@@ -345,7 +345,7 @@ class ReferentController extends Controller
 
             $this->addFlash('info', 'survey.create.success');
 
-            return $this->redirectToRoute('app_referent_surveys');
+            return $this->redirectToRoute('app_referent_survey_list');
         }
 
         return $this->render('referent/surveys/create.html.twig', [
@@ -382,7 +382,7 @@ class ReferentController extends Controller
 
             $this->addFlash('info', 'survey.edit.success');
 
-            return $this->redirectToRoute('app_referent_surveys');
+            return $this->redirectToRoute('app_referent_survey_list');
         }
 
         return $this->render('referent/surveys/create.html.twig', [
@@ -456,7 +456,7 @@ class ReferentController extends Controller
 
         $this->addFlash('info', 'survey.duplicate.success');
 
-        return $this->redirectToRoute('app_referent_surveys');
+        return $this->redirectToRoute('app_referent_survey_list');
     }
 
     /**

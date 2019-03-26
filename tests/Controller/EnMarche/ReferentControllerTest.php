@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
+use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\ReferentManagedUsersMessage;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\MessengerTestTrait;
 
 /**
  * @group functional
@@ -21,6 +23,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class ReferentControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MessengerTestTrait;
 
     /**
      * @var ReferentManagedUsersMessageRepository
@@ -514,6 +517,45 @@ class ReferentControllerTest extends WebTestCase
         $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
 
         $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+    }
+
+    public function testReferentCanCreateAdherentMessageSuccessfully(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request('GET', '/espace-referent/messagerie/creer');
+        $this->client->submit($crawler->selectButton('Suivant')->form(['adherent_message' => [
+            'label' => 'test',
+            'subject' => 'subject',
+            'content' => 'message content',
+        ]]));
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
+
+        $crawler = $this->client->followRedirect();
+
+        $crawlerCheckbox = $crawler->filter('.l__wrapper .l__col .form__label');
+
+        self::assertCount(6, $crawlerCheckbox);
+        self::assertSame('Département 13', $crawlerCheckbox->getNode(0)->nodeValue);
+        self::assertSame('Département 76', $crawlerCheckbox->getNode(1)->nodeValue);
+        self::assertSame('Département 77', $crawlerCheckbox->getNode(2)->nodeValue);
+        self::assertSame('Département 92', $crawlerCheckbox->getNode(3)->nodeValue);
+        self::assertSame('Espagne', $crawlerCheckbox->getNode(4)->nodeValue);
+        self::assertSame('Suisse', $crawlerCheckbox->getNode(5)->nodeValue);
+
+        $crawler = $this->client->submit(
+            $crawler->selectButton('Filtrer')->form([
+                'adherent_message_referent_zone_filter' => [
+                    'referentTag' => 13,
+                ],
+            ])
+        );
+        $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
+
+        self::assertCount(0, $crawler->filter('.form .form__errors'));
     }
 
     public function providePages()

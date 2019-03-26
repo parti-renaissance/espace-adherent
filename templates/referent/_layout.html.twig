@@ -30,16 +30,14 @@
             <div class="l__wrapper procuration-manager__content text--body">
                 <nav class="referent-menu">
                     <ul>
-                        {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events', 'app_referent_institutional_events', 'app_referent_committees', 'app_referent_users', 'app_referent_surveys']) %}
+                        {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_survey_*']) %}
 
                         <li class="{{ is_mobilisation_links ? 'active' : '' }}">
-                            <a href="javascript:{{ is_mobilisation_links ? 'void(0);' : 'show(dom(\'.referent-sub-menu\'));' }}">
-                                Mobilisation
-                            </a>
+                            <a href="{{ path('app_referent_events') }}">Mobilisation</a>
                         </li>
 
                         {% if is_canary_enabled() %}
-                            <li class="{{ is_active_route(app.request, 'app_message_referent_list') ? 'active' : '' }}">
+                            <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' : '' }}">
                                 <a href="{{ path('app_message_referent_list') }}">Envoyer un message</a>
                             </li>
                         {% endif %}
@@ -51,36 +49,24 @@
                         {% endif %}
                     </ul>
                 </nav>
-                {% set pages = [
-                    {
-                        'route': 'app_referent_events',
-                        'label': 'Événements'
-                    },
-                    {
-                        'route': 'app_referent_institutional_events',
-                        'label': 'Mes événements institutionnels'
-                    },
-                    {
-                        'route': 'app_referent_committees',
-                        'label': 'Comités'
-                    },
-                    {
-                        'route': 'app_referent_users',
-                        'label': 'Envoyer un message'
-                    },
-                    {
-                        'route': 'app_referent_surveys',
-                        'label': 'J\'écoute'
-                    }
-                ] %}
 
                 <div class="referent-sub-menu" {{ not is_mobilisation_links ? 'style="display: none;"' : '' }}>
                     <ul>
-                        {% for page in pages %}
-                            <li class="{{ is_active_route(app.request, page.route) ? 'active' : '' }}">
-                                <a href="{{ path(page.route) }}">{{ page.label }}</a>
-                            </li>
-                        {% endfor %}
+                        <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' : '' }}">
+                            <a href="{{ path('app_referent_events') }}">Événements</a>
+                        </li>
+                        <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' : '' }}">
+                            <a href="{{ path('app_referent_institutional_events') }}">Mes événements institutionnels</a>
+                        </li>
+                        <li class="{{ is_active_route(app.request, 'app_referent_committees') ? 'active' : '' }}">
+                            <a href="{{ path('app_referent_committees') }}">Comités</a>
+                        </li>
+                        <li class="{{ is_active_route(app.request, 'app_referent_users*') ? 'active' : '' }}">
+                            <a href="{{ path('app_referent_users') }}">Envoyer un message</a>
+                        </li>
+                        <li class="{{ is_active_route(app.request, 'app_referent_survey_*') ? 'active' : '' }}">
+                            <a href="{{ path('app_referent_survey_list') }}">J'écoute</a>
+                        </li>
                     </ul>
                 </div>
 

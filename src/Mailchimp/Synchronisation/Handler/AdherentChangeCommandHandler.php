@@ -3,7 +3,6 @@
 namespace AppBundle\Mailchimp\Synchronisation\Handler;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Exception\AdherentNotFoundException;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use AppBundle\Repository\AdherentRepository;
@@ -33,7 +32,8 @@ class AdherentChangeCommandHandler implements MessageHandlerInterface
         /** @var Adherent $adherent */
         if (!$adherent = $this->repository->findOneByUuid($uuid = $message->getUuid()->toString())) {
             $this->logger->warning($error = sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
-            throw new AdherentNotFoundException($error);
+
+            return;
         }
 
         $this->entityManager->refresh($adherent);
