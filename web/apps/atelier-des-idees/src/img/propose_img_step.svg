@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="484px" height="533px" viewBox="0 0 484 533" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Group 26</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="31" y="34" width="255" height="351"></rect>
+        <filter x="-53.3%" y="-25.4%" width="206.7%" height="177.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="47" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="37.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.09 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-3" x="0" y="0" width="255" height="351"></rect>
+        <filter x="-53.3%" y="-25.4%" width="206.7%" height="177.5%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="47" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="37.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.09 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-5" x="158" y="8" width="146" height="224"></rect>
+        <filter x="-93.2%" y="-39.7%" width="286.3%" height="221.4%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="47" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="37.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.09 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="🎀-Site-pages" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ADI---Comment-participer-2" transform="translate(-701.000000, -1787.000000)">
+            <g id="Group-26" transform="translate(775.000000, 1814.000000)">
+                <g id="Rectangle">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FAFBFC" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <g id="Rectangle">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                </g>
+                <rect id="Rectangle" fill="#EBEFF3" x="32" y="34" width="192" height="12"></rect>
+                <rect id="Rectangle" fill="#EBEFF3" x="32" y="52" width="148" height="12"></rect>
+                <g id="Group-6" transform="translate(32.000000, 101.000000)">
+                    <rect id="Rectangle" fill="#EBEFF3" x="54.7199953" y="1.92170954" width="112.31999" height="7.68683816"></rect>
+                    <g id="Group" transform="translate(0.000000, 18.256241)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="0" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="7.68683816" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="15.3736763" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="23.0605145" width="157.439986" height="3.84341908"></rect>
+                    </g>
+                    <text id="1.-Constat-:" font-family="GillSans-Bold, Gill Sans" font-size="9.59999917" font-weight="bold" letter-spacing="-0.47999999" fill="#0096FF">
+                        <tspan x="0" y="9.00480855">1. Constat :</tspan>
+                        <tspan x="49.5571829" y="9.00480855"> </tspan>
+                    </text>
+                </g>
+                <g id="Group-6" transform="translate(32.000000, 171.000000)">
+                    <rect id="Rectangle" fill="#EBEFF3" x="59.7199953" y="1.92170954" width="112.31999" height="7.68683816"></rect>
+                    <g id="Group" transform="translate(0.000000, 18.256241)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="0" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="7.68683816" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="15.3736763" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="23.0605145" width="157.439986" height="3.84341908"></rect>
+                    </g>
+                    <text id="2.-Solution-:" font-family="GillSans-Bold, Gill Sans" font-size="9.59999917" font-weight="bold" letter-spacing="-0.47999999" fill="#0096FF">
+                        <tspan x="0" y="9">2. Solution :</tspan>
+                        <tspan x="51.3178077" y="9"> </tspan>
+                    </text>
+                </g>
+                <g id="Group-6" transform="translate(32.000000, 240.000000)">
+                    <rect id="Rectangle" fill="#EBEFF3" x="54.7199953" y="1.92170954" width="112.31999" height="7.68683816"></rect>
+                    <g id="Group" transform="translate(0.000000, 18.256241)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="0" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="7.68683816" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="15.3736763" width="191.999983" height="3.84341908"></rect>
+                        <rect id="Rectangle" x="0" y="23.0605145" width="157.439986" height="3.84341908"></rect>
+                    </g>
+                    <text id="3.-Risques-:" font-family="GillSans-Bold, Gill Sans" font-size="9.59999917" font-weight="bold" letter-spacing="-0.47999999" fill="#0096FF">
+                        <tspan x="0" y="9">3. Risques :</tspan>
+                        <tspan x="48.394683" y="9"> </tspan>
+                    </text>
+                </g>
+                <g id="Group-25" transform="translate(32.000000, 78.000000)">
+                    <g id="Rectangle">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-5"></use>
+                    </g>
+                    <g id="Group-23" transform="translate(178.000000, 34.000000)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="9" width="105" height="16"></rect>
+                        <rect id="Rectangle" x="4.40536496e-13" y="-8.52651283e-14" width="86.9999835" height="3.84341908"></rect>
+                    </g>
+                    <g id="Group-23" transform="translate(178.000000, 72.000000)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="9" width="105" height="16"></rect>
+                        <rect id="Rectangle" x="4.40536496e-13" y="-8.52651283e-14" width="76.999983" height="3.84341908"></rect>
+                    </g>
+                    <g id="Group-23" transform="translate(178.000000, 110.000000)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="9" width="105" height="16"></rect>
+                        <rect id="Rectangle" x="4.40536496e-13" y="-8.52651283e-14" width="46.999983" height="3.84341908"></rect>
+                    </g>
+                    <g id="Group-23" transform="translate(178.000000, 148.000000)" fill="#EBEFF3">
+                        <rect id="Rectangle" x="0" y="9" width="105" height="16"></rect>
+                        <rect id="Rectangle" x="4.40536496e-13" y="-8.52651283e-14" width="86.9999835" height="3.84341908"></rect>
+                    </g>
+                    <rect id="Rectangle" fill="#EBEFF3" x="0" y="0" width="49" height="4"></rect>
+                    <g id="Group-24" transform="translate(179.000000, 191.000000)">
+                        <rect id="Rectangle" fill="#0056FF" x="0" y="0" width="105" height="24"></rect>
+                        <text id="Publier" font-family="Roboto-Regular, Roboto" font-size="12.1631986" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="33.8435562" y="17">Publier</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

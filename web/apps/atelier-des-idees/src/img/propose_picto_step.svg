@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Group 33</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="31" cy="31" r="31"></circle>
+        <filter x="-11.3%" y="-8.1%" width="122.6%" height="122.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.09 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="🎀-Site-pages" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ADI---Comment-participer" transform="translate(-685.000000, -1751.000000)">
+            <g id="Group-33" transform="translate(689.000000, 1753.000000)">
+                <g id="Oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M37.8173636,41.125 L29.6355455,44 L29.6355455,41.125 L18.4763636,41.125 C17.1072727,41.125 16,39.954875 16,38.511625 L16,23.613375 C16,22.170125 17.1072727,21 18.4763636,21 L43.5209091,21 C44.89,21 46,22.170125 46,23.613375 L46,38.511625 C46,39.954875 44.89,41.125 43.5209091,41.125 L37.8173636,41.125 Z M21.3374233,29.648 L40.4785276,29.648 L40.4785276,26.704 L21.3374233,26.704 L21.3374233,29.648 Z M21.3374233,35.352 L40.4785276,35.352 L40.4785276,32.408 L21.3374233,32.408 L21.3374233,35.352 Z" id="Combined-Shape" stroke="#A6C0ED"></path>
+            </g>
+        </g>
+    </g>
+</svg>
