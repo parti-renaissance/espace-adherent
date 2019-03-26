@@ -9,7 +9,7 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadOrganizationalChartItemData |
     And I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/utilisateurs"
-    When I follow "Votre équipe départementale"
+    When I follow "Mon organigramme"
     Then I should see "Référent départemental"
     And I should see "Responsable logistique Entrez le nom du responsable"
     And I should see "Co-Référent Jean Dupont"
@@ -20,7 +20,7 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadOrganizationalChartItemData |
     And I am logged as "referent-child@en-marche-dev.fr"
     And I am on "/espace-referent/utilisateurs"
-    Then I should not see "Votre équipe départementale"
+    Then I should not see "Mon organigramme"
     When I am on "/espace-referent/organigramme"
     Then the response status code should be 403
 
