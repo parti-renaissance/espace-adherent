@@ -93,6 +93,18 @@ class SearchControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/evenements', $this->client);
     }
 
+    public function testListReferentEvents()
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
+
+        $this->assertSame(7, $crawler->filter('div.search__results__row')->count());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/evenements?re=true');
+
+        $this->assertSame(1, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(1, $crawler->filter('.search__results__row .search__results__meta span:contains("Referent75and77 Referent75and77")')->count());
+    }
+
     public function testListAllCommittee()
     {
         /** @var Paginator $evenets */

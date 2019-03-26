@@ -21,6 +21,7 @@ class SearchParametersFilter
     const PARAMETER_TYPE = 't';
     const PARAMETER_OFFSET = 'offset';
     const PARAMETER_EVENT_CATEGORY = 'ec';
+    const PARAMETER_REFERENT_EVENTS = 're';
 
     public const DEFAULT_QUERY = '';
     public const DEFAULT_TYPE = self::TYPE_COMMITTEES;
@@ -68,6 +69,7 @@ class SearchParametersFilter
     private $offset;
     private $maxResults;
     private $eventCategory;
+    private $referentEvents = false;
     private $cache;
 
     public function __construct(GeocoderInterface $geocoder, AdapterInterface $cache)
@@ -92,6 +94,7 @@ class SearchParametersFilter
         $this->setRadius($request->query->getInt(self::PARAMETER_RADIUS, self::DEFAULT_RADIUS));
         $this->setOffset($request->query->getInt(self::PARAMETER_OFFSET));
         $this->setEventCategory($request->query->get(self::PARAMETER_EVENT_CATEGORY, null));
+        $this->setReferentEvents($request->query->getBoolean(self::PARAMETER_REFERENT_EVENTS, false));
 
         if (null !== $city = $request->query->get(self::PARAMETER_CITY)) {
             $this->setCity((string) $city);
@@ -200,6 +203,16 @@ class SearchParametersFilter
     public function setEventCategory(?string $eventCategory): void
     {
         $this->eventCategory = $eventCategory;
+    }
+
+    public function getReferentEvents(): bool
+    {
+        return $this->referentEvents;
+    }
+
+    public function setReferentEvents(bool $referentEvents): void
+    {
+        $this->referentEvents = $referentEvents;
     }
 
     public function isTypeCommittees(): bool

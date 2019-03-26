@@ -364,6 +364,10 @@ class EventRepository extends ServiceEntityRepository
             $qb->setParameter('category', $category);
         }
 
+        if ($search->getReferentEvents()) {
+            $qb->andWhere('n.committee IS NULL AND n.citizenProject IS NULL');
+        }
+
         return $qb
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
@@ -418,6 +422,7 @@ WHERE (events.address_latitude IS NOT NULL
     )
     __filter_query__ 
     __filter_category__
+    __filter_referent_events__
     __filter_type__ 
 ORDER BY events.begin_at ASC, distance ASC 
 LIMIT :max_results 
@@ -437,6 +442,12 @@ SQL;
             $filterCategory = '';
         }
 
+        if ($search->getReferentEvents()) {
+            $filterReferentEvents = 'AND events.committee_id IS NULL AND events.citizen_project_id IS NULL';
+        } else {
+            $filterReferentEvents = '';
+        }
+
         if (SearchParametersFilter::TYPE_CITIZEN_ACTIONS === $search->getType()) {
             $type = 'AND events.type = :type';
         } else {
@@ -444,8 +455,8 @@ SQL;
         }
 
         $sql = preg_replace(
-            ['/__filter_query__/', '/__filter_category__/', '/__filter_type__/'],
-            [$filterQuery, $filterCategory, $type],
+            ['/__filter_query__/', '/__filter_category__/', '/__filter_referent_events__/', '/__filter_type__/'],
+            [$filterQuery, $filterCategory, $filterReferentEvents, $type],
             $sql
         );
 
