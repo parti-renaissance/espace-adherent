@@ -543,11 +543,14 @@
         </service>
         <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder">
             <argument key="$listId" type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
-            <argument key="$interestIds" type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
-            <argument key="$memberGroupInterestGroupId" type="string">%env(MAILCHIMP_MEMBER_GROUP_INTEREST_GROUP_ID)%</argument>
-            <argument key="$memberInterestInterestGroupId" type="string">%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%</argument>
             <argument key="$replyEmailAddress" type="string">%campaign_sender_email%</argument>
             <argument key="$fromName" type="string">%campaign_sender_name%</argument>
+        </service>
+        <service id="AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder">
+            <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
+            <argument type="string">%env(MAILCHIMP_MEMBER_GROUP_INTEREST_GROUP_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%</argument>
         </service>
 
         <service id="AppBundle\AdherentMessage\Listener\CreateCommitteeStaticSegmentListener" />

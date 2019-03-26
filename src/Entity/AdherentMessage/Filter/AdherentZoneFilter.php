@@ -3,8 +3,6 @@
 namespace AppBundle\Entity\AdherentMessage\Filter;
 
 use AppBundle\Entity\ReferentTag;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,49 +12,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AdherentZoneFilter extends AbstractAdherentMessageFilter
 {
     /**
-     * @var ReferentTag[]|Collection
+     * @var ReferentTag
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ReferentTag")
      *
      * @Assert\NotBlank
-     * @Assert\Count(min=1)
      */
-    private $referentTags;
+    private $referentTag;
 
-    /**
-     * @param ReferentTag[]
-     */
-    public function __construct(array $referentTags)
+    public function __construct(ReferentTag $referentTag = null)
     {
-        $this->referentTags = new ArrayCollection();
-
-        $this->setReferentTags($referentTags);
+        $this->referentTag = $referentTag;
     }
 
-    /**
-     * @return ReferentTag[]
-     */
-    public function getReferentTags(): array
+    public function getReferentTag(): ?ReferentTag
     {
-        return $this->referentTags->toArray();
+        return $this->referentTag;
     }
 
-    public function addReferentTag(ReferentTag $tag): void
+    public function setReferentTag(ReferentTag $referentTag): void
     {
-        if (!$this->referentTags->contains($tag)) {
-            $this->referentTags->add($tag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $tag): void
-    {
-        $this->referentTags->removeElement($tag);
-    }
-
-    public function setReferentTags(array $referentTags): void
-    {
-        foreach ($referentTags as $tag) {
-            $this->addReferentTag($tag);
-        }
+        $this->referentTag = $referentTag;
     }
 }

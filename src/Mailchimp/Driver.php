@@ -138,9 +138,9 @@ class Driver implements LoggerAwareInterface
         }
     }
 
-    private function isSuccessfulResponse(ResponseInterface $response): bool
+    private function isSuccessfulResponse(?ResponseInterface $response): bool
     {
-        return 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+        return $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
     }
 
     private function toArray(ResponseInterface $response): array

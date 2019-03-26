@@ -24,8 +24,6 @@ class ReferentTagChoiceType extends AbstractType
             'choices' => $this->getChoices(),
             'class' => ReferentTag::class,
             'choice_label' => 'name',
-            'expanded' => true,
-            'multiple' => true,
         ]);
     }
 

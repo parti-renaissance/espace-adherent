@@ -78,6 +78,7 @@ parameters:
     env(MAILCHIMP_MEMBER_LIST_ID): ''
     env(MAILCHIMP_MEMBER_GROUP_INTEREST_GROUP_ID): ''
     env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID): ''
+    env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID): ''
     env(MAILCHIMP_INTEREST_IDS): |
         {
             "agriculture": "1",
