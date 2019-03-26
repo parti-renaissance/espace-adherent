@@ -1,11 +1,17 @@
 .proposal-steps {
 	padding: 84px 80px 60px;
-	background: $snow;
+
+
 
 	&__title {
 		text-align: center;
-		font-size: 32px;
+		font-size: 48px;
 		line-height: normal;
+		padding: 120px;
+
+		@media #{$mobile} {
+			padding: 50px;
+		}
 	}
 
 	&__container {
