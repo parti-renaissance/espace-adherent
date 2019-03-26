@@ -1,0 +1,37 @@
+{% extends 'assessor_manager/_layout.html.twig' %}
+
+{% import 'assessor_manager/_layout.html.twig' as macro %}
+
+{% block assessor_manager_content %}
+    <div class="text--summary b__nudge--bottom-large">
+        <a href="{{ path('app_assessor_manager_request', { uuid: request.uuid }) }}" class="back-to-list icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la demande
+        </a>
+    </div>
+
+    <h3 class="b__nudge--bottom-medium">
+        Désassocier la demande du bureau de vote {{ votePlace.name }}
+    </h3>
+
+    <hr />
+
+    <div class="l__row l__tablet--col l__row--center l__row--top">
+        <div class="assessor-manager__associate__col">
+            {{ include('assessor_manager/_assessor_profile.html.twig') }}
+        </div>
+
+        <div class="assessor-manager__associate__col">
+            {{ include('assessor_manager/_vote_place_profile.html.twig') }}
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="text--center b__nudge--bottom-60">
+        {{ form_start(form) }}
+            {{ form_widget(form.allow, { label: 'Désassocier', attr: { class: 'btn btn--primary' } }) }}
+            {{ form_widget(form.deny, { label: 'Retour', attr: { class: 'btn btn-warning' } }) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

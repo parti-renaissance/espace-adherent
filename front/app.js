@@ -234,6 +234,18 @@ class App {
             module.default();
         });
     }
+
+    runAssessorManagerRequests(queryString, totalCount, perPage) {
+        System.import('pages/assessor_manager_requests').catch((error) => { throw error; }).then((module) => {
+            module.default(queryString, totalCount, perPage, this.get('api'));
+        });
+    }
+
+    runAssessorManagerVotePlaces(queryString, totalCount, perPage) {
+        System.import('pages/assessor_manager_vote_places').catch((error) => { throw error; }).then((module) => {
+            module.default(queryString, totalCount, perPage, this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

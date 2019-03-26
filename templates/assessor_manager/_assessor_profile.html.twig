@@ -1,0 +1,65 @@
+{% import 'assessor_manager/_layout.html.twig' as macro %}
+
+<h4 class="b__nudge--bottom">
+    Assesseur
+</h4>
+
+<div class="profile-label">
+    Auteur
+</div>
+<div class="profile-value" id="request-author">
+    {{ request.gender == 'male' ? 'Monsieur' : 'Madame' }} {{ request.firstName }} {{ request.lastName }}
+</div>
+
+<div class="profile-label">
+    Coordonnées
+</div>
+<div class="profile-value">
+    Email :
+    <a href="mailto:{{ request.emailAddress }}" id="request-email">
+        {{ request.emailAddress }}
+    </a>
+    {% if request.phone %}
+        <br />
+        Téléphone :
+        <a href="tel:{{ request.phone|phone_number_format(constant('\\libphonenumber\\PhoneNumberFormat::RFC3966')) }}" id="request-phone">
+            {{ request.phone|phone_number_format }}
+        </a>
+    {% endif %}
+</div>
+
+<div class="profile-label">
+    Date de naissance
+</div>
+<div class="profile-value" id="request-birthdate">
+    {{ request.birthdate|date('d/m/Y') }}
+</div>
+
+<div class="profile-label">
+    Bureau(x) de vote souhaité
+</div>
+<div class="profile-value" id="request-vote-place-wishes">
+    {{ macro.displayVotePlaceWishes(request.votePlacesWishes) }}
+</div>
+
+<div class="profile-label">
+    Poste souhaité
+</div>
+<div class="profile-value" id="request-office">
+    {{ request.office }}
+</div>
+
+<div class="profile-label">
+    Lieu de vote
+</div>
+<div class="profile-value" id="request-vote-city">
+    {{ request.voteCity }}
+</div>
+
+<div class="profile-label">
+    Lieu de résidence
+</div>
+<div class="profile-value">
+    <span id="request-address">{{ request.address }}</span><br />
+    <span id="request-city">{{ request.postalCode }} {{ request.city }}</span>
+</div>

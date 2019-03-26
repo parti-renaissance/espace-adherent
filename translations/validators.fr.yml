@@ -330,3 +330,8 @@ assessor.vote_city.not_blank: Vous devez spécifier votre lieu de vote.
 assessor.office_number.not_blank: Vous devez spécifier votre numéro de bureau de vote.
 
 assessor.assessor_city.not_blank: Vous devez spécifier la ville du bureau de vote pour laquelle vous voulez devenir assesseur.
+
+#
+# Vote Place
+#
+vote_place.assessor_request.max: Il y a déjà deux assesseurs pour ce bureau de vote.

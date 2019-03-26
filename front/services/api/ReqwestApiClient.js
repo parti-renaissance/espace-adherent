@@ -218,4 +218,18 @@ export default class ReqwestApiClient {
             type: 'json',
         }).then(response => callback(response)).fail((response) => errorCallback(response));
     }
+
+    getAssessorRequests(queryString, page, callback) {
+        this._createRequest(callback, {
+            url: '/espace-responsable-assesseur/plus?page='+page+'&'+queryString,
+            type: 'html'
+        });
+    }
+
+    getVotePlaces(queryString, page, callback) {
+        this._createRequest(callback, {
+            url: '/espace-responsable-assesseur/vote-places/plus?page='+page+'&'+queryString,
+            type: 'html'
+        });
+    }
 }

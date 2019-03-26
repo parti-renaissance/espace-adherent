@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 
@@ -21,13 +22,7 @@ use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 class AssessorRequest
 {
     use EntityTimestampableTrait;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
-    private $id;
+    use EntityIdentityTrait;
 
     /**
      * @var string
@@ -117,9 +112,9 @@ class AssessorRequest
     private $address;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15)
      */
@@ -186,9 +181,9 @@ class AssessorRequest
     private $assessorCity;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15)
      */
@@ -227,7 +222,7 @@ class AssessorRequest
     public $recaptcha = '';
 
     /**
-     * @var VotePlace
+     * @var VotePlace|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="assessorRequests")
      */
@@ -241,10 +236,61 @@ class AssessorRequest
      */
     private $votePlaceWishes;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $processed = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $processedAt;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled = true;
+
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
         $this->votePlaceWishes = new ArrayCollection();
+    }
+
+    public function process(VotePlace $votePlace): void
+    {
+        $votePlace->addAssessorRequest($this);
+
+        if (AssessorOfficeEnum::HOLDER == $this->office) {
+            $votePlace->setHolderOfficeAvailable(false);
+        } else {
+            $votePlace->setSubstitudeOfficeAvailable(false);
+        }
+
+        $this->votePlace = $votePlace;
+        $this->processed = true;
+        $this->processedAt = new \DateTime();
+    }
+
+    public function unprocess(): void
+    {
+        if (AssessorOfficeEnum::HOLDER == $this->office) {
+            $this->votePlace->setHolderOfficeAvailable(true);
+        } else {
+            $this->votePlace->setSubstitudeOfficeAvailable(true);
+        }
+
+        $this->votePlace->removeAssessorRequest($this);
+
+        $this->votePlace = null;
+        $this->processed = false;
+        $this->processedAt = null;
     }
 
     private static function createPhoneNumber(int $countryCode = 33, string $number = null): PhoneNumber
@@ -257,11 +303,6 @@ class AssessorRequest
         }
 
         return $phone;
-    }
-
-    public function getId()
-    {
-        return $this->id;
     }
 
     public function getGender(): string
@@ -334,12 +375,12 @@ class AssessorRequest
         $this->address = $address;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode): void
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
@@ -424,7 +465,7 @@ class AssessorRequest
         $this->recaptcha = $recaptcha;
     }
 
-    public function getVotePlace(): VotePlace
+    public function getVotePlace(): ?VotePlace
     {
         return $this->votePlace;
     }
@@ -451,12 +492,12 @@ class AssessorRequest
         $this->votePlaceWishes->removeElement($votePlace);
     }
 
-    public function getAssessorPostalCode(): string
+    public function getAssessorPostalCode(): ?string
     {
         return $this->assessorPostalCode;
     }
 
-    public function setAssessorPostalCode(string $assessorPostalCode): void
+    public function setAssessorPostalCode(?string $assessorPostalCode): void
     {
         $this->assessorPostalCode = $assessorPostalCode;
     }
@@ -469,5 +510,45 @@ class AssessorRequest
     public function setAssessorCountry(string $assessorCountry): void
     {
         $this->assessorCountry = $assessorCountry;
+    }
+
+    public function isProcessed(): bool
+    {
+        return $this->processed;
+    }
+
+    public function setProcessed(bool $processed): void
+    {
+        $this->processed = $processed;
+    }
+
+    public function getProcessedAt(): ?\DateTime
+    {
+        return $this->processedAt;
+    }
+
+    public function setProcessedAt(\DateTime $processedAt): void
+    {
+        $this->processedAt = $processedAt;
+    }
+
+    public function enable(): void
+    {
+        $this->enabled = true;
+    }
+
+    public function disable(): void
+    {
+        $this->enabled = false;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 }
