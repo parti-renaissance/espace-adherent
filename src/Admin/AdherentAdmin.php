@@ -263,7 +263,7 @@ class AdherentAdmin extends AbstractAdmin
                     'multiple' => true,
                 ])
                 ->add('subscriptionTypes', null, [
-                    'label' => 'Abonné aux mails :',
+                    'label' => 'Notifications via e-mail et mobile :',
                     'choice_label' => 'label',
                     'required' => false,
                     'multiple' => true,

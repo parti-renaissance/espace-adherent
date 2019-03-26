@@ -24,7 +24,10 @@ class AdherentRegistrationType extends AbstractType
             ->add('conditions', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('allowNotifications', CheckboxType::class, [
+            ->add('allowEmailNotifications', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('allowMobileNotifications', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('emailAddress', RepeatedType::class, [

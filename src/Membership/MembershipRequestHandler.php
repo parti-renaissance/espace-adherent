@@ -73,7 +73,7 @@ class MembershipRequestHandler
             UserEvents::USER_CREATED,
             new UserEvent(
                 $adherent,
-                $membershipRequest->getAllowNotifications(),
+                $membershipRequest->getAllowEmailNotifications(),
                 false
             )
         );
@@ -114,8 +114,8 @@ class MembershipRequestHandler
             UserEvents::USER_CREATED,
             new UserEvent(
                 $adherent,
-                $membershipRequest->getAllowNotifications(),
-                $membershipRequest->getAllowNotifications()
+                $membershipRequest->getAllowEmailNotifications(),
+                $membershipRequest->getAllowMobileNotifications()
             )
         );
 
@@ -131,8 +131,8 @@ class MembershipRequestHandler
 
         $this->dispatcher->dispatch(UserEvents::USER_SWITCH_TO_ADHERENT, new UserEvent(
             $user,
-            $membershipRequest->getAllowNotifications(),
-            $membershipRequest->getAllowNotifications()
+            $membershipRequest->getAllowEmailNotifications(),
+            $membershipRequest->getAllowMobileNotifications()
         ));
         $this->emailSubscriptionHistoryHandler->handleSubscriptions($user);
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($user);

@@ -177,7 +177,8 @@ class MembershipControllerTest extends WebTestCase
                     ],
                     'gender' => 'male',
                     'conditions' => true,
-                    'allowNotifications' => true,
+                    'allowEmailNotifications' => true,
+                    'allowMobileNotifications' => true,
                 ],
             ]
         );
@@ -220,7 +221,8 @@ class MembershipControllerTest extends WebTestCase
                     ],
                     'gender' => 'male',
                     'conditions' => true,
-                    'allowNotifications' => true,
+                    'allowEmailNotifications' => true,
+                    'allowMobileNotifications' => false,
                 ],
             ]
         );
@@ -234,7 +236,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->manager->refresh($adherent);
 
-        self::assertCount(8, $adherent->getSubscriptionTypes());
+        self::assertCount(7, $adherent->getSubscriptionTypes());
     }
 
     public function testBannedAdherentSubscription(): void
@@ -269,7 +271,8 @@ class MembershipControllerTest extends WebTestCase
                     ],
                     'gender' => 'male',
                     'conditions' => true,
-                    'allowNotifications' => true,
+                    'allowEmailNotifications' => true,
+                    'allowMobileNotifications' => true,
                 ],
             ]
         );
@@ -310,7 +313,8 @@ class MembershipControllerTest extends WebTestCase
                     'gender' => 'other',
                     'customGender' => 'my custom gender',
                     'conditions' => true,
-                    'allowNotifications' => true,
+                    'allowEmailNotifications' => true,
+                    'allowMobileNotifications' => true,
                 ],
             ]
         );
@@ -333,7 +337,7 @@ class MembershipControllerTest extends WebTestCase
                     'country' => 'FR',
                     'postalCode' => '92110',
                 ],
-                'allowNotifications' => true,
+                'allowEmailNotifications' => true,
             ],
         ];
     }
