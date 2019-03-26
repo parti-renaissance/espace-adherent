@@ -2,7 +2,7 @@
 
 {% block page_title referent.fullName %}
 {% block canonical_url url('our_referents_referent', { slug: referent.slug}) %}
-{% block meta_description "#{referent.fullName} est le ou la référent(e) du département #{referent.areaLabel}. Il ou elle répresente le mouvement de La République En Marche ! au sein de ce territoire et est en charge de la coordination avec les élus, les comités locaux et les représentants du mouvement au niveau national." %}
+{% block meta_description "#{referent.fullName} est le ou la référent(e) du département #{referent.adherentReferentData.tagsLabel}. Il ou elle répresente le mouvement de La République En Marche ! au sein de ce territoire et est en charge de la coordination avec les élus, les comités locaux et les représentants du mouvement au niveau national." %}
 
 {% block navMap %}{% endblock %}
 
@@ -18,9 +18,9 @@
          id="candidate-profile">
         <div class="legislatives__candidate__photo progressive-background link--no-decor"
              id="candidat-profile-picture"
-                {% if referent.profilePicture  %}
-                    data-sd="{{ media_asset(referent.profilePicture, { w: 50, q: 20 }) }}"
-                    data-hd="{{ media_asset(referent.profilePicture, { w: 640, q: 70 }) }}"
+                {% if referent.adherentReferentData.profilePicture  %}
+                    data-sd="{{ media_asset(referent.adherentReferentData.profilePicture, { w: 50, q: 20 }) }}"
+                    data-hd="{{ media_asset(referent.adherentReferentData.profilePicture, { w: 640, q: 70 }) }}"
                 {% else  %}
                     data-sd="{{ static_asset('legislatives/unknown-referent.jpg', { w: 50, q: 20 }) }}"
                     data-hd="{{ static_asset('legislatives/unknown-referent.jpg', { w: 640, q: 70 }) }}"
@@ -29,8 +29,8 @@
         </div>
         <div class="legislatives__candidate__info">
             <h1 class="text--large">{{ referent.fullName }}</h1>
-            <span class="text--body" id="candidate-district-name">{{ referent.areaLabel }}</span>
-            {% if referent.hasWebPages %}
+            <span class="text--body" id="candidate-district-name">{{ referent.adherentReferentData.tagsLabel }}</span>
+            {% if referent.adherentReferentData.hasWebPages %}
                 {% set website_url_class = 'btn--muted' %}
                 {{ include('referent/nomination/_referent_links.html.twig', {
                     show_name: true,
@@ -41,6 +41,6 @@
     </div>
 
     <div class="l__wrapper--slim text--body b__nudge--bottom-huge" id="candidate-description">
-        {{ referent.description|markdown }}
+        {{ referent.adherentReferentData.description|markdown }}
     </div>
 {% endblock %}

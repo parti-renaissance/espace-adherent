@@ -140,7 +140,7 @@ class SummaryAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere('adherent.managedArea.codes IS NOT NULL');
+                    $qb->andWhere('adherent.adherentReferentData.codes IS NOT NULL');
 
                     return true;
                 },

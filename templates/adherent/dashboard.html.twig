@@ -26,7 +26,7 @@
         <div class="adherent-dashboard__column-left">
             {% if area_stats is not null %}
                 <div class="localization">
-                    <h2>{{ app.user.managedArea.tags|join(', ') }}</h2>
+                    <h2>{{ app.user.adherentReferentData.tags|join(', ') }}</h2>
                     <p>
                         {{ 'dashboard.members_stats'|transchoice(area_stats.total, {'%nb_members%': area_stats.total})|raw }}{{ 'dashboard.subscriber_stats'|transchoice(area_stats.subscriber, {'%nb_subscribers%': area_stats.subscriber}) }}
                     </p>

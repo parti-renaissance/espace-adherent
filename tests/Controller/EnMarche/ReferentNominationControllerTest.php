@@ -24,11 +24,12 @@ class ReferentNominationControllerTest extends WebTestCase
         $referents = $crawler->filter('.legislatives_candidate');
 
         // Check the order of candidates
-        $this->assertSame(2, $referents->count());
-        $this->assertSame('Nicolas Bordes', $referents->first()->filter('h1')->text());
-        $this->assertSame('Jean Dupont', $referents->eq(1)->filter('h1')->text());
+        $this->assertSame(3, $referents->count());
+        $this->assertSame('Referent75and77 Referent75and77', $referents->first()->filter('h1')->text());
+        $this->assertSame('Referent child Referent child', $referents->eq(2)->filter('h1')->text());
+        $this->assertSame('Referent Referent', $referents->eq(1)->filter('h1')->text());
 
-        $crawler = $this->client->click($crawler->selectLink('Nicolas Bordes')->link());
+        $crawler = $this->client->click($crawler->selectLink('eferent75and77 Referent75and77')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         // Check profile information of the first candidate

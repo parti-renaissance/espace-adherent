@@ -104,8 +104,8 @@ class AdherentController extends Controller
             'activities' => $memberActivityTracker->getRecentActivitiesForAdherent($user),
             'area_stats' => $user->isReferent()
                 ? [
-                        'total' => $adherentRepository->countInManagedArea($user->getManagedArea()),
-                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getManagedArea()),
+                        'total' => $adherentRepository->countInManagedArea($user->getAdherentReferentData()),
+                        'subscriber' => $adherentRepository->countSubscriberInManagedArea($user->getAdherentReferentData()),
                 ]
                 : null,
         ]);

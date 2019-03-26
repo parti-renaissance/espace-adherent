@@ -222,7 +222,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     /**
      * @return Adherent[]
      */
-    public function findReferentsByStatusOrderedByAreaLabel(string $status = Adherent::ENABLED): array {
+    public function findReferentsByStatusOrderedByAreaLabel(string $status = Adherent::ENABLED): array
+    {
         return $this
             ->createReferentQueryBuilder()
             ->join('a.adherentReferentData', 'ard')
@@ -231,6 +232,23 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', $status)
             ->getQuery()
             ->getResult()
+            ;
+    }
+
+    public function findReferentBySlug(string $slug, string $status = Adherent::ENABLED): ?Adherent
+    {
+        return $this
+            ->createReferentQueryBuilder()
+            ->join('a.adherentReferentData', 'ard')
+            ->addSelect('ard')
+            ->where('a.status = :status')
+            ->andWhere('a.slug = :slug')
+            ->setParameters([
+                'status' => $status,
+                'slug' => $slug
+            ])
+            ->getQuery()
+            ->getSingleResult()
             ;
     }
 
