@@ -23,14 +23,7 @@ function Dropdown(props) {
         </Menu>
     );
     return (
-        <RCDropdown
-            trigger={['click']}
-            overlay={menu}
-            overlayClassName={'dropdown-menu'}
-            align={{
-                points: ['tr', 'br'],
-            }}
-        >
+        <RCDropdown trigger={['click']} overlay={menu} overlayClassName={'dropdown-menu'}>
             <button className={classNames('dropdown-button', props.className)}>
                 {props.label || <img src={moreIcn} alt="Plus" />}
             </button>

@@ -7,6 +7,7 @@ import Header from '../containers/Header';
 import LatestIdeas from '../containers/LatestIdeas';
 import Reports from '../containers/Reports';
 import { initHomePage } from '../redux/thunk/navigation';
+import { fetchUserIdeas } from '../redux/thunk/ideas';
 import { setIdeas } from '../redux/actions/ideas';
 import { ideaStatus } from '../constants/api';
 import { selectIdeasWithStatus } from '../redux/selectors/ideas';

@@ -63,6 +63,7 @@
         z-index: 1;
         right: -90px;
         max-width: 120%;
+        bottom: -40px;
 
         @media screen and (max-width: $width-lg) {
           width: 160%;
@@ -83,14 +84,20 @@
     display: flex;
     justify-content: space-between;
     padding-bottom: 75px;
-    padding-top: 50px;
+    padding-top: 100px;
     width: 100%;
+
+    &--background {
+      background-image: linear-gradient(to top, #ffffff, #ebf8ff);
+      bottom: 40px;
+      position: relative;
+    }
   }
 
   &__slider {
     @media screen and (max-width: $width-md) {
-      margin-bottom: 60px;
-      padding-top: 50px;
+      margin-bottom: 10px;
+      padding-top: 100px;
     }
 
     .slick-dots {

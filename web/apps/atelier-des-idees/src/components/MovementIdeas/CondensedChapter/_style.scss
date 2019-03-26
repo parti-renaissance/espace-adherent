@@ -10,7 +10,7 @@
   bottom: 0px;
 
   @media screen and (max-width: $width-md) {
-    width: 99%;
+    width: 100%;
     box-shadow: none;
     border: 1px solid rgba(72, 135, 247, 0.09);
   }
@@ -55,7 +55,8 @@
   }
 
   img {
-    margin-left: 8px;
+    position: relative;
+    left: 8px;
   }
   &:hover {
     cursor: pointer;
@@ -73,6 +74,13 @@
     }
     span {
       color: $white;
+    }
+    img {
+      left: 11px;
+      transition: all 0.3s;
+    }
+    @media screen and (max-width: $width-md) {
+      bottom: 0;
     }
   }
 }
