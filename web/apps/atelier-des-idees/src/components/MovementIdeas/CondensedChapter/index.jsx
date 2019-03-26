@@ -25,8 +25,8 @@ CondensedChapter.defaultProps = {
 };
 
 CondensedChapter.propTypes = {
-    title: PropTypes.string,
-    description: PropTypes.string,
+    title: PropTypes.array,
+    description: PropTypes.array,
     linLabel: PropTypes.string,
     link: PropTypes.string,
 };
