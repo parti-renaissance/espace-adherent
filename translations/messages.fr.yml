@@ -193,7 +193,7 @@ my_citizen_projects: Mes projets citoyens
 #
 # CitizenAction
 #
-citizen_action.creation.success: Votre action citoyenne a bien été crée.
+citizen_action.creation.success: Votre action citoyenne a bien été créée.
 citizen_action.update.success: Votre action citoyenne a bien été mise à jour.
 citizen_action.participants_count: '%count% inscrit|%count% inscrits'
 citizen_action.registration.success: Votre inscription est confirmée.
