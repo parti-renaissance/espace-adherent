@@ -79,6 +79,8 @@ class SearchControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
         $this->assertSame(7, $crawler->filter('div.search__results__row')->count());
+        $this->assertSame(2, $crawler->filter('.search__results__row .search__results__meta span:contains("Jacques Picard")')->count());
+        $this->assertSame(1, $crawler->filter('.search__results__row .search__results__meta span:contains("Referent75and77 Referent75and77")')->count());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements/categorie/conference-debat');
 

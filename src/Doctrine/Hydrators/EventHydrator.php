@@ -57,7 +57,7 @@ class EventHydrator extends AbstractHydrator
         $password = $row['adherent_password'] ?? $row['adherent_old_password'];
         $organizer = null;
         if ($uuidOrganizer = $row['adherent_uuid'] ? Uuid::fromString($row['adherent_uuid']) : null) {
-            $organizer = new Adherent(
+            $organizer = Adherent::create(
                 $uuidOrganizer,
                 $row['adherent_email_address'],
                 $password,
@@ -69,6 +69,7 @@ class EventHydrator extends AbstractHydrator
                 $addressAdherent
             );
         }
+
         $event = new Event(
             $uuidEvent,
             $organizer,
