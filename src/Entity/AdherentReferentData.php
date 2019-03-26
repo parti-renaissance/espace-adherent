@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="referent_managed_areas")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationManagerRepository")
  *
  * @Algolia\Index(autoIndex=false)
@@ -94,13 +93,18 @@ class AdherentReferentData implements EntityMediaInterface
     /**
      * @ORM\Column(nullable=true)
      */
-    private $slug;
+    private $tagsLabel;
 
-    public function __construct(array $tags = [], string $latitude = null, string $longitude = null)
-    {
+    public function __construct(
+        array $tags = [],
+        string $latitude = null,
+        string $longitude = null,
+        string $tagsLabel = null
+    ) {
         $this->markerLatitude = $latitude;
         $this->markerLongitude = $longitude;
         $this->tags = new ArrayCollection($tags);
+        $this->tagsLabel = $tagsLabel;
     }
 
     public function getId(): ?int
@@ -201,11 +205,6 @@ class AdherentReferentData implements EntityMediaInterface
         return $this->linkedInPageUrl;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
     public function setDescription(?string $description): void
     {
         $this->description = $description;
@@ -239,5 +238,40 @@ class AdherentReferentData implements EntityMediaInterface
     public function displayMedia(): bool
     {
         return $this->displayMedia;
+    }
+
+    public function getTagsLabel(): ?string
+    {
+        return $this->tagsLabel;
+    }
+
+    public function setTagsLabel(?string $tagsLabel): void
+    {
+        $this->tagsLabel = $tagsLabel;
+    }
+
+    public function getProfilePicture(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function hasWebPages(): bool
+    {
+        return $this->twitterPageUrl || $this->facebookPageUrl || $this->linkedInPageUrl;
+    }
+
+    public function tagsIdAsString(): string
+    {
+        if ($this->tags->isEmpty()) {
+            return '';
+        }
+
+        $tagsIds = [];
+
+        foreach ($this->tags as $tag) {
+            $tagsIds[] = $tag->getId();
+        }
+
+        return implode(',', $tagsIds);
     }
 }

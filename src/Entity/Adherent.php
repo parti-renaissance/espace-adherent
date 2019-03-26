@@ -959,9 +959,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->boardMember = null;
     }
 
-    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
-    {
-        $this->adherentReferentData = new AdherentReferentData($tags, $markerLatitude, $markerLongitude);
+    public function setReferent(
+        array $tags,
+        string $markerLatitude = null,
+        string $markerLongitude = null,
+        string $tagsLabel = null
+    ): void {
+        $this->adherentReferentData = new AdherentReferentData($tags, $markerLatitude, $markerLongitude, $tagsLabel);
     }
 
     public function isReferent(): bool

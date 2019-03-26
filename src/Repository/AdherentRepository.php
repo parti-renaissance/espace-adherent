@@ -219,6 +219,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
+    /**
+     * @return Adherent[]
+     */
+    public function findReferentsByStatusOrderedByAreaLabel(string $status = Adherent::ENABLED): array {
+        return $this
+            ->createReferentQueryBuilder()
+            ->join('a.adherentReferentData', 'ard')
+            ->addSelect('ard')
+            ->where('a.status = :status')
+            ->setParameter('status', $status)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findReferent(string $identifier): ?Adherent
     {
         $qb = $this->createReferentQueryBuilder();
@@ -231,8 +246,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         } else {
             $qb
                 ->andWhere('LOWER(a.emailAddress) = :email')
-                ->join('a.managedArea', 'managedArea')
-                ->join('managedArea.tags', 'tags')
+                ->join('a.adherentReferentData', 'adherentReferentData')
+                ->join('a.adherentReferentData.tags', 'tags')
                 ->setParameter('email', $identifier)
             ;
         }
@@ -244,7 +259,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this
             ->createQueryBuilder('a')
-            ->innerJoin('a.managedArea', 'managed_area')
+            ->innerJoin('a.adherentReferentData', 'managed_area')
             ->innerJoin('managed_area.tags', 'managed_area_tag')
             ->orderBy('LOWER(managed_area_tag.name)', 'ASC')
         ;

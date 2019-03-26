@@ -1,14 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20190321164328 extends AbstractMigration
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20190326143431 extends AbstractMigration
 {
-    public function up(Schema $schema): void
+    public function up(Schema $schema) : void
     {
+
         $this->addSql('ALTER TABLE referent_managed_areas RENAME TO adherent_referent_data');
 
         $this->addSql('ALTER TABLE adherents DROP FOREIGN KEY FK_562C7DA3EA9FDD75');
@@ -48,9 +52,7 @@ final class Version20190321164328 extends AbstractMigration
         ADD 
           twitter_page_url VARCHAR(255) DEFAULT NULL, 
         ADD 
-          linked_in_page_url VARCHAR(255) DEFAULT NULL, 
-        ADD 
-          slug VARCHAR(255) DEFAULT NULL');
+          linked_in_page_url VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE 
           adherent_referent_data 
         ADD 
@@ -59,10 +61,14 @@ final class Version20190321164328 extends AbstractMigration
 
         $this->addSql('ALTER TABLE adherents ADD slug VARCHAR(255) DEFAULT NULL');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_562C7DA3989D9B62 ON adherents (slug)');
+
+        $this->addSql('ALTER TABLE adherent_referent_data ADD tags_label VARCHAR(255) DEFAULT NULL');
     }
 
-    public function down(Schema $schema): void
+    public function down(Schema $schema) : void
     {
+        $this->addSql('ALTER TABLE adherent_referent_data DROP tags_label');
+
         $this->addSql('DROP INDEX UNIQ_562C7DA3989D9B62 ON adherents');
         $this->addSql('ALTER TABLE adherents DROP slug');
 

@@ -4,6 +4,9 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\ReferentArea;
 use AppBundle\Entity\Referent;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\ReferentRepository;
+use AppBundle\Repository\ReferentTagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,14 +22,13 @@ class ReferentNominationController extends Controller
      * @Route("", name="our_referents_homepage")
      * @Method("GET")
      */
-    public function indexAction(Request $request): Response
+    public function indexAction(AdherentRepository $adherentRepository, ReferentTagRepository $referentTagRepository): Response
     {
         $doctrine = $this->getDoctrine();
-        $referentsRepository = $doctrine->getRepository(Referent::class);
         $referentAreasRepository = $doctrine->getRepository(ReferentArea::class);
 
         return $this->render('referent/nomination/homepage.html.twig', [
-            'referents' => $referentsRepository->findByStatusOrderedByAreaLabel(),
+            'referents' => $adherentRepository->findReferentsByStatusOrderedByAreaLabel(),
             'groupedZones' => $referentAreasRepository->findAllGrouped(),
         ]);
     }

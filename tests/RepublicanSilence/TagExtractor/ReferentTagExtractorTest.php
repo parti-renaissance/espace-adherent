@@ -15,7 +15,7 @@ class ReferentTagExtractorTest extends TestCase
         $tagExtractor = new ReferentTagExtractor();
 
         $adherentMock = $this->createConfiguredMock(Adherent::class, [
-            'getManagedArea' => new AdherentReferentData([
+            'getAdherentReferentData' => new AdherentReferentData([
                 new ReferentTag(null, 'tag1'),
                 new ReferentTag(null, 'tag2'),
             ]),

@@ -367,7 +367,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
                 $this->getReference('referent_tag_13'),
             ],
             -1.6743,
-            48.112
+            48.112,
+            'îles de france'
         );
         $roles = new ArrayCollection();
         $roles->add($this->getReference('referent'));
@@ -398,7 +399,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
                 $this->getReference('referent_tag_75009'),
             ],
             -1.6743,
-            48.112
+            48.112,
+            'Paris'
         );
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
@@ -423,7 +425,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
                 $this->getReference('referent_tag_93'),
             ],
             -1.6743,
-            48.112
+            48.112,
+            'îles de france'
         );
         $referentChild->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referentChild->addReferentTag($this->getReference('referent_tag_77'));

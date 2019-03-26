@@ -1,8 +1,8 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.managedArea %}
-        {% for tag in object.managedArea.tags %}
+    {% if object.adherentReferentData %}
+        {% for tag in object.adherentReferentData.tags %}
             <a href="{{ path('admin_app_referenttag_edit', { id: tag.id }) }}">
                 {{- tag.name -}}
             </a>

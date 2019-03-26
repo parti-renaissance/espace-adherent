@@ -274,29 +274,30 @@ class AdherentAdmin extends AbstractAdmin
             ;
         if ($subject->isReferent()) {
             $formMapper
-                ->add('managedArea.media', null, [
+                ->add('adherentReferentData.media', null, [
                     'label' => 'Photo',
                 ])
-                ->add('managedArea.description', TextareaType::class, [
+                ->add('adherentReferentData.description', TextareaType::class, [
                     'label' => 'Biographie',
                     'required' => false,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
-                ->add('managedArea.twitterPageUrl', UrlType::class, [
+                ->add('adherentReferentData.twitterPageUrl', UrlType::class, [
                     'label' => 'Page Twitter',
                     'required' => false,
                     'attr' => [
                         'placeholder' => 'https://twitter.com/alexandredumoulin',
                     ],
                 ])
-                ->add('managedArea.facebookPageUrl', UrlType::class, [
+                ->add('adherentReferentData.facebookPageUrl', UrlType::class, [
                     'label' => 'Page Facebook',
+                    'required' => false,
                     'required' => false,
                     'attr' => [
                         'placeholder' => 'https://facebook.com/alexandre-dumoulin',
                     ],
                 ])
-                ->add('managedArea.linkedInPageUrl', UrlType::class, [
+                ->add('adherentReferentData.linkedInPageUrl', UrlType::class, [
                     'label' => 'Page LinkedIn',
                     'required' => false,
                     'attr' => [
@@ -312,7 +313,7 @@ class AdherentAdmin extends AbstractAdmin
                 'label' => 'coordinator.label.codes.committee',
                 'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
             ])
-            ->add('managedArea', ReferentManagedAreaType::class, [
+            ->add('adherentReferentData', ReferentManagedAreaType::class, [
                 'label' => false,
                 'required' => false,
             ])
