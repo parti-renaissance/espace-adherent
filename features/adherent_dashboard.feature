@@ -144,6 +144,12 @@ Feature:
     When I am on "/espace-adherent/tableau-de-bord"
     Then I should see "responsable procuration"
 
+  # Responsable assesseur
+  Scenario: As an assessor manager, I should have a link to go to my own space
+    Given I am logged as "commissaire.biales@example.fr"
+    When I am on "/espace-adherent/tableau-de-bord"
+    Then I should see "Espace responsable assesseur"
+
   Scenario: As a host of single committee, I should not see a dropdown for a single committee
     Given I am logged as "gisele-berthoux@caramail.com"
     When I am on "/evenements"

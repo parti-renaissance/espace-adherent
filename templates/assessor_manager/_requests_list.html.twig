@@ -1,0 +1,57 @@
+{% import 'assessor_manager/_layout.html.twig' as macro %}
+
+{% for request in requests %}
+    <tr>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ request.data.id }}
+        </td>
+        <td class="datagrid__table__col--left">
+            {{ request.data.firstName }} {{ request.data.lastName }}<br />
+            <span class="datagrid__table__col--hide-mobile">
+                <em>Lieu de vote :</em><br>
+                {{ request.data.assessorPostalCode }} {{ request.data.assessorCity }}
+            </span>
+            <br>
+            <span class="datagrid__table__col--hide-mobile">
+                <em>Lieu de résidence :</em><br>
+                {{ request.data.postalCode }} {{ request.data.city }}
+            </span>
+        </td>
+        <td>
+            {{ macro.displayVotePlaceWishes(request.data.votePlacesWishes) }}
+        </td>
+        <td>
+            {{ request.data.office }}
+        </td>
+        <td>
+            {% if not request.data.processed %}
+                <strong>En attente</strong>
+            {% else %}
+                Traitée
+                (le {{ request.data.processedAt|date('d/m/Y à H:i') }})
+            {% endif %}
+        </td>
+        <td>
+            {{ request.matchingVotePlacesCount }}
+        </td>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ request.data.createdAt|date('d/m/Y H:i') }}
+        </td>
+        <td>
+            <a href="{{ path('app_assessor_manager_request', {'uuid': request.data.uuid}) }}"
+               id="request-link-{{ request.data.uuid }}"
+               target="_blank">
+                Afficher
+            </a><br>
+            {% if not request.data.enabled %}
+                <a href="{{ path('app_assessor_manager_request_transform', { uuid: request.data.uuid, action: constant('AppBundle\\Entity\\ActionEnum::ACTION_ENABLE') }) }}">
+                    Réactiver
+                </a>
+            {% else %}
+                <a href="{{ path('app_assessor_manager_request_transform', { uuid: request.data.uuid, action: constant('AppBundle\\Entity\\ActionEnum::ACTION_DISABLE') }) }}">
+                    Désactiver
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}

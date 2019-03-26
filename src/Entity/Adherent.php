@@ -230,6 +230,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $procurationManagedArea;
 
     /**
+     * @var AssessorManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AssessorManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     */
+    private $assessorManagedArea;
+
+    /**
      * @var BoardMember|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
@@ -530,6 +537,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
+        if ($this->isAssessorManager()) {
+            $roles[] = 'ROLE_ASSESSOR_MANAGER';
+        }
+
         if ($this->legislativeCandidate) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
@@ -574,6 +585,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->isReferent()
             || $this->isCoordinator()
             || $this->isProcurationManager()
+            || $this->isAssessorManager()
             || $this->isHost()
             || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
@@ -965,6 +977,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->procurationManagedArea = $procurationManagedArea;
     }
 
+    public function getAssessorManagedArea(): ?AssessorManagedArea
+    {
+        return $this->assessorManagedArea;
+    }
+
+    public function setAssessorManagedArea(AssessorManagedArea $assessorManagedArea = null): void
+    {
+        $this->assessorManagedArea = $assessorManagedArea;
+    }
+
     public function getBoardMember(): ?BoardMember
     {
         return $this->boardMember;
@@ -1036,6 +1058,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->procurationManagedArea instanceof ProcurationManagedArea && !empty($this->procurationManagedArea->getCodes());
     }
 
+    public function isAssessorManager(): bool
+    {
+        return $this->assessorManagedArea instanceof AssessorManagedArea && !empty($this->assessorManagedArea->getCodes());
+    }
+
     public function canBeProxy(): bool
     {
         return $this->isReferent() || $this->isProcurationManager();
@@ -1058,6 +1085,25 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         $this->procurationManagedArea->setCodesAsString($codes);
+    }
+
+    public function getAssessorManagedAreaCodesAsString(): ?string
+    {
+        if (!$this->assessorManagedArea) {
+            return '';
+        }
+
+        return $this->assessorManagedArea->getCodesAsString();
+    }
+
+    public function setAssessorManagedAreaCodesAsString(string $codes = null): void
+    {
+        if (!$this->assessorManagedArea) {
+            $this->assessorManagedArea = new AssessorManagedArea();
+            $this->assessorManagedArea->setAdherent($this);
+        }
+
+        $this->assessorManagedArea->setCodesAsString($codes);
     }
 
     public function isCoordinator(): bool

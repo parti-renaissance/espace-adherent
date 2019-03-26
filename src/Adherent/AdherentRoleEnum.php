@@ -21,6 +21,7 @@ class AdherentRoleEnum extends Enum
     public const REC = 'rec';
 
     public const PROCURATION_MANAGER = 'procuration_manager';
+    public const ASSESSOR_MANAGER = 'assessor_manager';
 
     public const USER = 'user';
 

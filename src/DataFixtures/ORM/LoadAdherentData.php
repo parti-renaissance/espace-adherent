@@ -37,6 +37,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const ADHERENT_13_UUID = '46ab0600-b5a0-59fc-83a7-cc23ca459ca0';
     public const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
     public const ADHERENT_15_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
+    public const ADHERENT_16_UUID = '25e75e2f-2f73-4f51-8542-bd511ba6a945';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
@@ -344,6 +345,23 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent15->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('adherent-15', $adherent15);
 
+        $adherent16 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_16_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'commissaire.biales@example.fr',
+            'gender' => 'male',
+            'nationality' => 'FR',
+            'first_name' => 'Patrick',
+            'last_name' => 'Bialès',
+            'address' => PostAddress::createFrenchAddress('26 Rue Louis Blanc', '75000-75010', null, 50.649561, 3.0644126),
+            'birthdate' => '1950-07-25',
+            'position' => 'commissioner',
+            'phone' => '33 712345678',
+            'registered_at' => '1994-03-09 00:00:00',
+        ]);
+        $adherent16->setPosition(ActivityPositions::EMPLOYED);
+        $adherent16->setAssessorManagedAreaCodesAsString('93, 59');
+
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::REFERENT_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -523,6 +541,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key19 = AdherentActivationToken::generate($referent75and77);
         $key20 = AdherentActivationToken::generate($deputy_75_1);
         $key21 = AdherentActivationToken::generate($deputy_ch_li);
+        $key22 = AdherentActivationToken::generate($adherent16);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -537,6 +556,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent12->activate($key12, '2017-04-09 06:26:14');
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
+        $adherent16->activate($key22, '2017-05-04 09:34:21');
         // $key15 is not activated, but adherent is enabled
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
@@ -691,6 +711,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent13);
         $manager->persist($adherent14);
         $manager->persist($adherent15);
+        $manager->persist($adherent16);
         $manager->persist($referent);
         $manager->persist($referent75and77);
         $manager->persist($referentChild);
@@ -719,6 +740,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($key18);
         $manager->persist($key19);
         $manager->persist($key20);
+        $manager->persist($key22);
 
         $manager->persist($resetPasswordToken);
 

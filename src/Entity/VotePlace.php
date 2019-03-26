@@ -21,6 +21,8 @@ class VotePlace
 {
     use EntityTimestampableTrait;
 
+    public const MAX_ASSESSOR_REQUESTS = 2;
+
     /**
      * @var int
      *
@@ -90,8 +92,27 @@ class VotePlace
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssessorRequest", mappedBy="votePlace")
+     *
+     * @Assert\Choice(
+     *     max=VotePlace::MAX_ASSESSOR_REQUESTS,
+     *     maxMessage="vote_place.assessor_request.max"
+     * )
      */
     private $assessorRequests;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $holderOfficeAvailable = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $substitudeOfficeAvailable = true;
 
     public function __construct()
     {
@@ -183,5 +204,38 @@ class VotePlace
     public function removeAssessorRequest(AssessorRequest $assessorRequests): void
     {
         $this->assessorRequests->removeElement($assessorRequests);
+    }
+
+    public function getAvailableOfficesAsString(): string
+    {
+        $availableOffices = AssessorOfficeEnum::toArray();
+
+        foreach ($this->assessorRequests as $assessorRequest) {
+            if (\in_array($assessorRequest->getOffice(), $availableOffices)) {
+                unset($availableOffices[array_search($assessorRequest->getOffice(), $availableOffices)]);
+            }
+        }
+
+        return implode("\n", $availableOffices);
+    }
+
+    public function isHolderOfficeAvailable(): bool
+    {
+        return $this->holderOfficeAvailable;
+    }
+
+    public function setHolderOfficeAvailable(bool $holderOfficeAvailable): void
+    {
+        $this->holderOfficeAvailable = $holderOfficeAvailable;
+    }
+
+    public function isSubstitudeOfficeAvailable(): bool
+    {
+        return $this->substitudeOfficeAvailable;
+    }
+
+    public function setSubstitudeOfficeAvailable(bool $substitudeOfficeAvailable): void
+    {
+        $this->substitudeOfficeAvailable = $substitudeOfficeAvailable;
     }
 }

@@ -13,7 +13,7 @@ class LoadVotePlaceData extends Fixture
         $manager->persist($votePlaceLilleWazemmes = $this->createVotePlace(
             'Salle Polyvalente De Wazemmes',
             '59350_0113',
-            '59350',
+            '59000,59100',
             'Lille',
             "Rue De L'Abbé Aerts"
         ));
@@ -26,16 +26,17 @@ class LoadVotePlaceData extends Fixture
             'Groupe Scolaire Jean Zay'
         ));
 
-        $manager->persist($this->createVotePlace(
+        $manager->persist($votePlaceBobignyBlanqui = $this->createVotePlace(
             'Ecole Maternelle La Source',
             '93066_0004',
-            '93200/93066',
+            '93200,93066',
             'Saint-Denis',
             '15, Rue Auguste Blanqui'
         ));
 
         $this->addReference('vote-place-lille-wazemmes', $votePlaceLilleWazemmes);
         $this->addReference('vote-place-lille-jean-zay', $votePlaceLilleJeanZay);
+        $this->addReference('vote-place-bobigny-blanqui', $votePlaceBobignyBlanqui);
 
         $manager->flush();
     }
