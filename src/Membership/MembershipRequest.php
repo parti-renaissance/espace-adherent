@@ -106,7 +106,9 @@ class MembershipRequest implements MembershipInterface
      */
     public $nationality;
 
-    private $allowNotifications = false;
+    private $allowEmailNotifications = false;
+
+    private $allowMobileNotifications = false;
 
     /**
      * @var string|null
@@ -231,14 +233,24 @@ class MembershipRequest implements MembershipInterface
         return $this->birthdate;
     }
 
-    public function getAllowNotifications(): bool
+    public function getAllowEmailNotifications(): bool
     {
-        return $this->allowNotifications;
+        return $this->allowEmailNotifications;
     }
 
-    public function setAllowNotifications(bool $allowNotifications): void
+    public function setAllowEmailNotifications(bool $allowEmailNotifications): void
     {
-        $this->allowNotifications = $allowNotifications;
+        $this->allowEmailNotifications = $allowEmailNotifications;
+    }
+
+    public function getAllowMobileNotifications(): bool
+    {
+        return $this->allowMobileNotifications;
+    }
+
+    public function setAllowMobileNotifications(bool $allowMobileNotifications): void
+    {
+        $this->allowMobileNotifications = $allowMobileNotifications;
     }
 
     public function isElected(): bool

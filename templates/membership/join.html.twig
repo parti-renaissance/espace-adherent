@@ -203,10 +203,20 @@
                     </div>
 
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
-                        {{ form_widget(form.allowNotifications) }}
-                        <label class="form form__label" for="{{ form.allowNotifications.vars.id }}">
+                        {{ form_widget(form.allowEmailNotifications) }}
+                        <label class="form form__label" for="{{ form.allowEmailNotifications.vars.id }}">
                                 <span class="text__checkbox">
-                                    Je souhaite être informé(e) de l'actualité de La République En Marche
+                                    Je souhaite être informé(e) de l'actualité de La République En Marche par e-mail
+                                    <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
+                                </span>
+                        </label>
+                    </div>
+
+                    <div class="b__nudge--top text--small form__checkbox form__checkbox--large" id="field-com-email">
+                        {{ form_widget(form.allowMobileNotifications) }}
+                        <label class="form form__label" for="{{ form.allowMobileNotifications.vars.id }}">
+                                <span class="text__checkbox">
+                                    Je souhaite recevoir des informations sur les actions militantes majeures du mouvement (meeting, élection etc.) par SMS
                                     <span class="text--gray text--italic">({{ 'common.optional'|trans }})</span>
                                 </span>
                         </label>

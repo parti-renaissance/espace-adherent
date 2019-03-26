@@ -30,7 +30,7 @@ class UserRegistrationType extends AbstractType
                 'placeholder' => 'Nationalité',
             ])
             ->add('address', AddressType::class)
-            ->add('allowNotifications', CheckboxType::class, [
+            ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('emailAddress', RepeatedType::class, [

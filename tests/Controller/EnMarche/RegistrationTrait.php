@@ -52,7 +52,8 @@ trait RegistrationTrait
                 ],
                 'password' => '#example!12345#',
                 'conditions' => true,
-                'allowNotifications' => true,
+                'allowEmailNotifications' => true,
+                'allowMobileNotifications' => true,
             ],
         ]));
 

@@ -24,7 +24,10 @@ class BecomeAdherentType extends AbstractType
                 'child_error_bubbling' => false,
                 'set_address_region' => true,
             ])
-            ->add('allowNotifications', CheckboxType::class, [
+            ->add('allowEmailNotifications', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('allowMobileNotifications', CheckboxType::class, [
                 'required' => false,
             ])
         ;
