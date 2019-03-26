@@ -509,6 +509,18 @@ button.btn {
         }
     }
 
+    &--blue-dark {
+        color: $blue--dark;
+        border: 1px solid $blue--dark;
+        background-color: white;
+
+        &:hover {
+            background: white;
+            border-color: $blue--dark;
+            color: $blue--dark;
+        }
+    }
+
     &--green {
         background-color: $green;
         color: white;

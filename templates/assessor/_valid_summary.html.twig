@@ -1,0 +1,121 @@
+<div class="l__wrapper--600">
+    <div class="header-bloc">
+        <a href="{{ path('app_assessor_request_back') }}" class="back text--medium-small">&larr; Précédent</a>
+        <div class="title">
+            <h1 class="text--medium">Récapitulatif</h1>
+            <span class="step text--medium text--normal text--light-gray">3/3</span>
+        </div>
+    </div>
+
+    <div class="summary-bloc">
+        <h2 class="text--medium-small b__nudge--top-large b__nudge--bottom">Informations personnelles</h2>
+
+        <table cellpadding="5">
+            <tr class="gender">
+                <td>Genre</td>
+                <td>{{ assessorRequest.getGenderName|trans }}</td>
+            </tr>
+            <tr class="firstname">
+                <td>Prénom</td>
+                <td>{{ assessorRequest.firstName }}</td>
+            </tr>
+            <tr class="lastname">
+                <td>Nom</td>
+                <td>{{ assessorRequest.lastName }}</td>
+            </tr>
+            {% if assessorRequest.birthName %}
+                <tr class="birthname">
+                    <td>Nom de naissance</td>
+                    <td>{{ assessorRequest.birthName }}</td>
+                </tr>
+            {% endif %}
+            <tr class="address">
+                <td>Adresse</td>
+                <td>{{ assessorRequest.address }}</td>
+            </tr>
+            <tr class="postalcode">
+                <td>Code postal</td>
+                <td>{{ assessorRequest.postalCode }}</td>
+            </tr>
+            <tr class="city">
+                <td>Ville</td>
+                <td>{{ assessorRequest.city }}</td>
+            </tr>
+            <tr class="office-number">
+                <td>N° du bureau de vote</td>
+                <td>{{ assessorRequest.officeNumber }}</td>
+            </tr>
+            <tr class="birthdate">
+                <td>Date de naissance</td>
+                <td>{{ assessorRequest.birthdate|date('d/m/Y') }}</td>
+            </tr>
+            <tr class="birthcity">
+                <td>Lieu de naissance</td>
+                <td>{{ assessorRequest.birthCity }}</td>
+            </tr>
+            <tr class="phone">
+                <td>Téléphone</td>
+                <td>{{ assessorRequest.phone|phone_number_format }}</td>
+            </tr>
+            <tr class="email">
+                <td>Adresse e-mail</td>
+                <td>{{ assessorRequest.emailAddress }}</td>
+            </tr>
+        </table>
+
+        <h2 class="text--medium-small b__nudge--top-large b__nudge--bottom">Informations assesseur(e)</h2>
+
+        <table cellpadding="5">
+            <tr class="assessor-country">
+                <td>Pays</td>
+                <td>{{ assessorRequest.assessorCountry|countryName }}</td>
+            </tr>
+            {% if assessorRequest.assessorCity %}
+                <tr class="assessor-city">
+                    <td>Ville</td>
+                    <td>{{ assessorRequest.assessorCity }}</td>
+                </tr>
+            {% endif %}
+            {% if assessorRequest.assessorPostalCode %}
+                <tr class="assessor-postalcode">
+                    <td>Code postal</td>
+                    <td>{{ assessorRequest.assessorPostalCode }}</td>
+                </tr>
+            {% endif %}
+            <tr class="assessor-office">
+                <td>Fonction</td>
+                <td>{{ assessorRequest.getOfficeName|trans }}</td>
+            </tr>
+            <tr class="assessor-vote-place-wishes">
+                <td>Bureau(x) de votes disponible(s)</td>
+                <td>
+                    {% if votePlaceWishesLabels is not empty %}
+                        <ul>
+                            {% for votePlaceWishesLabel in votePlaceWishesLabels %}
+                                <li>{{ votePlaceWishesLabel.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="l__wrapper--main b__nudge--top-50 b__nudge--bottom-50">
+            <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+            {% if recaptcha_public_key is not empty %}
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}"></div>
+            {% elseif app.debug %}
+                <input type="hidden" name="g-recaptcha-response" value="fake" />
+            {% endif %}
+        </div>
+
+        <div class="text--center b__nudge--top-large">
+            {{ form_widget(form.valid_summary, { attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}
+        </div>
+
+    {{ form_end(form) }}
+</div>

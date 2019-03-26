@@ -148,7 +148,7 @@ class AssessorManagerControllerTest extends WebTestCase
                 'address' => 'Groupe Scolaire Jean Zay',
                 'postalCode' => '59350',
                 'city' => 'Lille',
-                'availableOFfices' => "Titulaire\nSuppléant",
+                'availableOffices' => ['Titulaire', 'Suppléant'],
             ]
         );
 
@@ -197,7 +197,7 @@ class AssessorManagerControllerTest extends WebTestCase
                 'address' => 'Groupe Scolaire Jean Zay',
                 'postalCode' => '59350',
                 'city' => 'Lille',
-                'availableOFfices' => 'Titulaire',
+                'availableOffices' => ['Titulaire'],
             ]
         );
 
@@ -291,7 +291,10 @@ class AssessorManagerControllerTest extends WebTestCase
         $this->assertSame($profile['address'], trim($crawler->filter('#vote-place-address')->text()));
         $this->assertSame($profile['postalCode'], trim($crawler->filter('#vote-place-postalCode')->text()));
         $this->assertSame($profile['city'], trim($crawler->filter('#vote-place-city')->text()));
-        $this->assertSame($profile['availableOFfices'], trim($crawler->filter('#vote-place-available-offices')->text()));
+
+        foreach ($profile['availableOffices'] as $availableOffice) {
+            $this->assertContains($availableOffice, trim($crawler->filter('#vote-place-available-offices')->html()));
+        }
     }
 
     private function assertAssessorRequestTotalCount(

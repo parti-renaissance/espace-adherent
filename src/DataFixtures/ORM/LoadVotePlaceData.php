@@ -34,9 +34,29 @@ class LoadVotePlaceData extends Fixture
             '15, Rue Auguste Blanqui'
         ));
 
+        $manager->persist($this->createVotePlace(
+            'Milan',
+            '99999_0249',
+            null,
+            'Milan',
+            'Ecole suisse de Milan',
+            'IT'
+        ));
+
+        $manager->persist($this->createVotePlace(
+            'Naples',
+            '99999_0251',
+            null,
+            'Naples',
+            'Consulat général de France à Naples',
+            'IT'
+        ));
+
         $this->addReference('vote-place-lille-wazemmes', $votePlaceLilleWazemmes);
         $this->addReference('vote-place-lille-jean-zay', $votePlaceLilleJeanZay);
         $this->addReference('vote-place-bobigny-blanqui', $votePlaceBobignyBlanqui);
+        $this->addReference('vote-place-ecole-suisse-milan', $votePlaceLilleJeanZay);
+        $this->addReference('vote-place-consulat-france-naples', $votePlaceLilleJeanZay);
 
         $manager->flush();
     }
@@ -44,9 +64,10 @@ class LoadVotePlaceData extends Fixture
     private function createVotePlace(
         string $name,
         string $code,
-        string $postalCode,
+        ?string $postalCode,
         string $city,
-        string $address
+        string $address,
+        string $country = 'FR'
     ): VotePlace {
         $votePlace = new VotePlace();
 
@@ -55,6 +76,7 @@ class LoadVotePlaceData extends Fixture
         $votePlace->setPostalCode($postalCode);
         $votePlace->setCity($city);
         $votePlace->setAddress($address);
+        $votePlace->setCountry($country);
 
         return $votePlace;
     }

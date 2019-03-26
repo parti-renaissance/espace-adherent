@@ -544,6 +544,14 @@ assessor.associate.success: L'assesseur a bien été associée au bureau de vote
 assessor.deassociate.success: L'assesseur a bien été désassociée du bureau de vote.
 assessor.disabled.success: L'assesseur a bien été désactivé.
 assessor.enabled.success: L'assesseur a bien été réactivé.
+
+#
+# Assessor request
+#
+assessor_request.create.success: Votre demande a bien été prise en compte.
+assessor_request.office.holder.label: Titulaire
+assessor_request.office.substitute.label: Suppléant
+
 #
 # Vote Place
 #

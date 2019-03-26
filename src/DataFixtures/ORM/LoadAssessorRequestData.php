@@ -2,12 +2,12 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Assessor\AssessorRequestFactory;
 use AppBundle\Entity\AssessorOfficeEnum;
-use AppBundle\Entity\AssessorRequest;
+use AppBundle\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 class LoadAssessorRequestData extends Fixture
 {
@@ -21,210 +21,174 @@ class LoadAssessorRequestData extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        /** @var VotePlace $votePlaceLilleWazemmes */
         $votePlaceLilleWazemmes = $this->getReference('vote-place-lille-wazemmes');
+
+        /** @var VotePlace $votePlaceLilleJeanZay */
         $votePlaceLilleJeanZay = $this->getReference('vote-place-lille-jean-zay');
+
+        /** @var VotePlace $votePlaceBobigny */
         $votePlaceBobigny = $this->getReference('vote-place-bobigny-blanqui');
 
-        $manager->persist($unmatchedRequest1 = $this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_1_UUID),
-           'female',
-           'Kepoura',
-           'Adrienne',
-           '14-05-1973',
-           'Lille',
-           '4 avenue du peuple Belge',
-           '59000',
-           'Lille',
-           'Lille',
-           '59350_0108',
-           'adrienne.kepoura@example.fr',
-           '0612345678',
-           'Lille',
-            '59350',
-            AssessorOfficeEnum::SUBSTITUTE
-        ));
-
-        $manager->persist($matchedRequest1 = $this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_2_UUID),
-            'male',
-            'Hytté',
-            'Prosper',
-            '10-07-1989',
-            'Paris',
-            '72 Rue du Faubourg Saint-Martin',
-            '93008',
-            'Paris',
-            'Bobigny',
-            '93008_0005',
-            'prosper.hytte@example.fr',
-            '0612345678',
-            'Bobigny',
-            '93008',
-            AssessorOfficeEnum::SUBSTITUTE
-        ));
-
-        $manager->persist($matchedRequest2 = $this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_3_UUID),
-            'male',
-            'Luc',
-            'Ratif',
-            '04-02-1992',
-            'Paris',
-            '70 Rue Saint-Martin',
-            '93008',
-            'Paris',
-            'Bobigny',
-            '93008_0005',
-            'luc.ratif@example.fr',
-            '0612345678',
-            'Bobigny',
-            '93008',
-            AssessorOfficeEnum::HOLDER
-        ));
-
-        $manager->persist($matchedRequest3 = $this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_4_UUID),
-            'female',
-            'Coptère',
-            'Elise',
-            '14-01-1986',
-            'Lille',
-            ' Pl. du Théâtre',
-            '59000',
-            'Lille',
-            'Lille',
-            '59350_0108',
-            'elise.coptere@example.fr',
-            '0612345678',
-            'Lille',
-            '59000',
-            AssessorOfficeEnum::HOLDER
-        ));
-
-        $manager->persist($this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_5_UUID),
-            'male',
-            'Sahalor',
-            'Aubin',
-            '12-08-1986',
-            'Lille',
-            ' Pl. du Théâtre',
-            '59100',
-            'Lille',
-            'Lille',
-            '59350_0108',
-            'aubin.sahalor@example.fr',
-            '0612345678',
-            'Lille',
-            '59100',
-            AssessorOfficeEnum::SUBSTITUTE,
-            null
-        ));
-
-        $manager->persist($requestOutOfManagedArea = $this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_6_UUID),
-            'male',
-            'Parbal',
-            'Gilles',
-            '12-08-1986',
-            'Angers',
-            ' 4 rue Saint-Nicolas',
-            '49000',
-            'Angers',
-            'Angers',
-            '49000_0108',
-            'gilles.parbal@example.fr',
-            '0612345678',
-            'Angers',
-            '49000',
-            AssessorOfficeEnum::HOLDER,
-            null
-        ));
-
-        $manager->persist($foreignRequestOutOfManagedArea = $this->createAssessorRequest(
-            Uuid::fromString(self::ASSESSOR_REQUEST_7_UUID),
-            'male',
-            'Cochet',
-            'Henri',
-            '12-10-1980',
-            'London',
-            ' 4 cover garden',
-            null,
-            'London',
-            'London',
-            '99999_0108',
-            'henri.cochet@example.fr',
-            '0612345678',
-            'London',
-            null,
-            AssessorOfficeEnum::HOLDER,
-            null,
-            false,
-            'UK'
-        ));
+        $unmatchedRequest1 = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_1_UUID),
+            'gender' => 'female',
+            'lastName' => 'Kepoura',
+            'firstName' => 'Adrienne',
+            'birthdate' => '14-05-1973',
+            'birthCity' => 'Lille',
+            'address' => '4 avenue du peuple Belge',
+            'postalCode' => '59000',
+            'city' => 'Lille',
+            'voteCity' => 'Lille',
+            'officeNumber' => '59350_0108',
+            'emailAddress' => 'adrienne.kepoura@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Lille',
+            'assessorPostalCode' => '59350',
+            'office' => AssessorOfficeEnum::SUBSTITUTE,
+        ]);
 
         $unmatchedRequest1->addVotePlaceWish($votePlaceLilleWazemmes);
         $unmatchedRequest1->addVotePlaceWish($votePlaceLilleJeanZay);
 
+        $matchedRequest1 = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_2_UUID),
+            'gender' => 'male',
+            'lastName' => 'Hytté',
+            'firstName' => 'Prosper',
+            'birthdate' => '10-07-1989',
+            'birthCity' => 'Paris',
+            'address' => '72 Rue du Faubourg Saint-Martin',
+            'postalCode' => '93008',
+            'city' => 'Paris',
+            'voteCity' => 'Bobigny',
+            'officeNumber' => '93008_0005',
+            'emailAddress' => 'prosper.hytte@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Bobigny',
+            'assessorPostalCode' => '93008',
+            'office' => AssessorOfficeEnum::SUBSTITUTE,
+        ]);
+
         $matchedRequest1->addVotePlaceWish($votePlaceBobigny);
         $matchedRequest1->process($votePlaceBobigny);
+
+        $matchedRequest2 = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_3_UUID),
+            'gender' => 'male',
+            'lastName' => 'Luc',
+            'firstName' => 'Ratif',
+            'birthdate' => '04-02-1992',
+            'birthCity' => 'Paris',
+            'address' => '70 Rue Saint-Martin',
+            'postalCode' => '93008',
+            'city' => 'Paris',
+            'voteCity' => 'Bobigny',
+            'officeNumber' => '93008_0005',
+            'emailAddress' => 'luc.ratif@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Bobigny',
+            'assessorPostalCode' => '93008',
+            'office' => AssessorOfficeEnum::HOLDER,
+        ]);
 
         $matchedRequest2->addVotePlaceWish($votePlaceBobigny);
         $matchedRequest2->process($votePlaceBobigny);
 
+        $matchedRequest3 = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_4_UUID),
+            'gender' => 'female',
+            'lastName' => 'Coptère',
+            'firstName' => 'Elise',
+            'birthdate' => '14-01-1986',
+            'birthCity' => 'Lille',
+            'address' => 'Pl. du Théâtre',
+            'postalCode' => '59000',
+            'city' => 'Lille',
+            'voteCity' => 'Lille',
+            'officeNumber' => '59350_0108',
+            'emailAddress' => 'elise.coptere@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Lille',
+            'assessorPostalCode' => '59000',
+            'office' => AssessorOfficeEnum::HOLDER,
+        ]);
+
         $matchedRequest3->addVotePlaceWish($votePlaceLilleWazemmes);
         $matchedRequest3->process($votePlaceLilleWazemmes);
 
+        $request4 = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_5_UUID),
+            'gender' => 'male',
+            'lastName' => 'Sahalor',
+            'firstName' => 'Aubin',
+            'birthdate' => '12-08-1986',
+            'birthCity' => 'Lille',
+            'address' => ' Pl. du Théâtre',
+            'postalCode' => '59100',
+            'city' => 'Lille',
+            'voteCity' => 'Lille',
+            'officeNumber' => '59350_0108',
+            'emailAddress' => 'aubin.sahalor@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Lille',
+            'assessorPostalCode' => '59100',
+            'office' => AssessorOfficeEnum::SUBSTITUTE,
+            'birthName' => null,
+        ]);
+
+        $requestOutOfManagedArea = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_6_UUID),
+            'gender' => 'male',
+            'lastName' => 'Parbal',
+            'firstName' => 'Gilles',
+            'birthdate' => '12-08-1986',
+            'birthCity' => 'Angers',
+            'address' => '4 rue Saint-Nicolas',
+            'postalCode' => '49000',
+            'city' => 'Angers',
+            'voteCity' => 'Angers',
+            'officeNumber' => '49000_0108',
+            'emailAddress' => 'gilles.parbal@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Angers',
+            'assessorPostalCode' => '49000',
+            'office' => AssessorOfficeEnum::HOLDER,
+            'birthName' => null,
+        ]);
+
+        $foreignRequestOutOfManagedArea = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_7_UUID),
+            'gender' => 'male',
+            'lastName' => 'Cochet',
+            'firstName' => 'Henri',
+            'birthdate' => '12-10-1980',
+            'birthCity' => 'London',
+            'address' => '4 cover garden',
+            'postalCode' => null,
+            'city' => 'London',
+            'voteCity' => 'London',
+            'officeNumber' => '99999_0108',
+            'emailAddress' => 'henri.cochet@example.fr',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'London',
+            'assessorPostalCode' => null,
+            'office' => AssessorOfficeEnum::HOLDER,
+            'birthName' => null,
+            'enabled' => false,
+            'assessorCountry' => 'UK',
+        ]);
+
+        $manager->persist($unmatchedRequest1);
+        $manager->persist($matchedRequest1);
+        $manager->persist($matchedRequest2);
+        $manager->persist($matchedRequest3);
+        $manager->persist($request4);
+        $manager->persist($requestOutOfManagedArea);
+        $manager->persist($foreignRequestOutOfManagedArea);
+
         $manager->flush();
-    }
-
-    private function createAssessorRequest(
-        UuidInterface $uuid,
-        string $gender,
-        string $lastName,
-        string $firstName,
-        string $birthDate,
-        string $birthCity,
-        string $address,
-        ?string $postalCode,
-        string $city,
-        string $voteCity,
-        string $officeNumber,
-        string $emailAddress,
-        string $phoneNumber,
-        string $assessorCity,
-        ?string $assessorPostalCode,
-        string $office = AssessorOfficeEnum::SUBSTITUTE,
-        string $birthName = null,
-        bool $enabled = true,
-        string $assessorCountry = 'FR'
-    ): AssessorRequest {
-        $assessor = new AssessorRequest();
-
-        $assessor->setUuid($uuid);
-        $assessor->setGender($gender);
-        $assessor->setLastName($lastName);
-        $assessor->setFirstName($firstName);
-        $assessor->setBirthName($birthName);
-        $assessor->setBirthdate(new \DateTime($birthDate));
-        $assessor->setBirthCity($birthCity);
-        $assessor->setAddress($address);
-        $assessor->setPostalCode($postalCode);
-        $assessor->setCity($city);
-        $assessor->setVoteCity($voteCity);
-        $assessor->setOfficeNumber($officeNumber);
-        $assessor->setEmailAddress($emailAddress);
-        $assessor->getPhone()->setNationalNumber($phoneNumber);
-        $assessor->setAssessorCity($assessorCity);
-        $assessor->setAssessorPostalCode($assessorPostalCode);
-        $assessor->setAssessorCountry($assessorCountry);
-        $assessor->setOffice($office);
-
-        if (!$enabled) {
-            $assessor->disable();
-        }
-
-        return $assessor;
     }
 
     public function getDependencies()

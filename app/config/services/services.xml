@@ -131,6 +131,13 @@
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
 
+        <!-- Assessor -->
+        <service id="AppBundle\Assessor\AssessorRequestFactory" />
+        <service id="AppBundle\Assessor\AssessorRequestHandler">
+            <argument type="service" id="state_machine.assessor_request" />
+        </service>
+        <service id="AppBundle\Form\AssessorRequestType" />
+
         <!-- EventListener -->
         <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />

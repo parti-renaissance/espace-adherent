@@ -333,6 +333,10 @@ assessor.office_number.not_blank: Vous devez spécifier votre numéro de bureau 
 
 assessor.assessor_city.not_blank: Vous devez spécifier la ville du bureau de vote pour laquelle vous voulez devenir assesseur.
 
+assessor.assessor_postal_code.not_blank: Vous devez spécifier le code postal du bureau de vote pour laquelle vous voulez devenir assesseur.
+
+assessor.vote_place_wishes.not_blank: Vous devez choisir au moins un bureau de vote.
+
 #
 # Vote Place
 #

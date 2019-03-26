@@ -171,10 +171,15 @@ class AssessorRequest
     private $phone;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15, nullable=true)
      *
+     * @Assert\Expression(
+     *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
+     *     message="assessor.assessor_city.not_blank",
+     *     groups={"fill_assessor_info"}
+     * )
      * @Assert\NotBlank(message="assessor.assessor_city.not_blank")
      * @Assert\Length(max=15)
      */
@@ -185,6 +190,11 @@ class AssessorRequest
      *
      * @ORM\Column(length=15, nullable=true)
      *
+     * @Assert\Expression(
+     *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
+     *     message="assessor.assessor_postal_code.not_blank",
+     *     groups={"fill_assessor_info"}
+     * )
      * @Assert\Length(max=15)
      */
     private $assessorPostalCode;
@@ -211,7 +221,7 @@ class AssessorRequest
      *     strict=true
      * )
      */
-    private $office = AssessorOfficeEnum::SUBSTITUTE;
+    private $office = AssessorOfficeEnum::HOLDER;
 
     /**
      * @var string
@@ -224,15 +234,17 @@ class AssessorRequest
     /**
      * @var VotePlace|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="assessorRequests")
+     * @ORM\ManyToOne(targetEntity="VotePlace", inversedBy="assessorRequests")
      */
     private $votePlace;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\VotePlace")
-     * @ORM\JoinTable(name="assessor_request_vote_place_wishes")
+     * @Assert\NotBlank(message="assessor.vote_place_wishes.not_blank", groups={"fill_assessor_info"})
+     *
+     * @ORM\ManyToMany(targetEntity="VotePlace")
+     * @ORM\JoinTable(name="assessor_requests_vote_place_wishes")
      */
     private $votePlaceWishes;
 
@@ -263,6 +275,57 @@ class AssessorRequest
         $this->votePlaceWishes = new ArrayCollection();
     }
 
+    public static function create(
+        UuidInterface $uuid,
+        string $gender,
+        string $lastName,
+        string $firstName,
+        \DateTime $birthDate,
+        string $birthCity,
+        string $address,
+        ?string $postalCode,
+        string $city,
+        string $voteCity,
+        string $officeNumber,
+        string $emailAddress,
+        PhoneNumber $phoneNumber,
+        ?string $assessorCity,
+        ?string $assessorPostalCode,
+        string $office = AssessorOfficeEnum::HOLDER,
+        ?string $birthName = null,
+        bool $enabled = true,
+        string $assessorCountry = 'FR',
+        ?array $votePlaceWishes = []
+    ): AssessorRequest {
+        $assessorRequest = new self();
+
+        $assessorRequest->setUuid($uuid);
+        $assessorRequest->setGender($gender);
+        $assessorRequest->setLastName($lastName);
+        $assessorRequest->setFirstName($firstName);
+        $assessorRequest->setBirthName($birthName);
+        $assessorRequest->setBirthdate($birthDate);
+        $assessorRequest->setBirthCity($birthCity);
+        $assessorRequest->setAddress($address);
+        $assessorRequest->setPostalCode($postalCode);
+        $assessorRequest->setCity($city);
+        $assessorRequest->setVoteCity($voteCity);
+        $assessorRequest->setOfficeNumber($officeNumber);
+        $assessorRequest->setEmailAddress($emailAddress);
+        $assessorRequest->setPhone($phoneNumber);
+        $assessorRequest->setAssessorCity($assessorCity);
+        $assessorRequest->setAssessorPostalCode($assessorPostalCode);
+        $assessorRequest->setOffice($office);
+        $assessorRequest->setAssessorCountry($assessorCountry);
+        $assessorRequest->setVotePlaceWishes(new ArrayCollection($votePlaceWishes));
+
+        if (!$enabled) {
+            $assessorRequest->disable();
+        }
+
+        return $assessorRequest;
+    }
+
     public function process(VotePlace $votePlace): void
     {
         $votePlace->addAssessorRequest($this);
@@ -270,7 +333,7 @@ class AssessorRequest
         if (AssessorOfficeEnum::HOLDER == $this->office) {
             $votePlace->setHolderOfficeAvailable(false);
         } else {
-            $votePlace->setSubstitudeOfficeAvailable(false);
+            $votePlace->setSubstituteOfficeAvailable(false);
         }
 
         $this->votePlace = $votePlace;
@@ -283,7 +346,7 @@ class AssessorRequest
         if (AssessorOfficeEnum::HOLDER == $this->office) {
             $this->votePlace->setHolderOfficeAvailable(true);
         } else {
-            $this->votePlace->setSubstitudeOfficeAvailable(true);
+            $this->votePlace->setSubstituteOfficeAvailable(true);
         }
 
         $this->votePlace->removeAssessorRequest($this);
@@ -305,7 +368,7 @@ class AssessorRequest
         return $phone;
     }
 
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
@@ -315,7 +378,7 @@ class AssessorRequest
         $this->gender = $gender;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -325,7 +388,7 @@ class AssessorRequest
         $this->lastName = $lastName;
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -345,7 +408,7 @@ class AssessorRequest
         $this->birthName = $birthName;
     }
 
-    public function getBirthdate(): \DateTime
+    public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
     }
@@ -365,7 +428,7 @@ class AssessorRequest
         $this->birthCity = $birthCity;
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -385,7 +448,7 @@ class AssessorRequest
         $this->postalCode = $postalCode;
     }
 
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -395,7 +458,7 @@ class AssessorRequest
         $this->city = $city;
     }
 
-    public function getVoteCity(): string
+    public function getVoteCity(): ?string
     {
         return $this->voteCity;
     }
@@ -405,7 +468,7 @@ class AssessorRequest
         $this->voteCity = $voteCity;
     }
 
-    public function getOfficeNumber(): string
+    public function getOfficeNumber(): ?string
     {
         return $this->officeNumber;
     }
@@ -415,7 +478,7 @@ class AssessorRequest
         $this->officeNumber = $officeNumber;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
@@ -425,7 +488,7 @@ class AssessorRequest
         $this->emailAddress = $emailAddress;
     }
 
-    public function getPhone(): PhoneNumber
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
@@ -435,12 +498,12 @@ class AssessorRequest
         $this->phone = $phone;
     }
 
-    public function getAssessorCity(): string
+    public function getAssessorCity(): ?string
     {
         return $this->assessorCity;
     }
 
-    public function setAssessorCity(string $assessorCity): void
+    public function setAssessorCity(?string $assessorCity): void
     {
         $this->assessorCity = $assessorCity;
     }
@@ -475,9 +538,14 @@ class AssessorRequest
         $this->votePlace = $votePlace;
     }
 
-    public function getVotePlacesWishes(): Collection
+    public function getVotePlaceWishes(): Collection
     {
         return $this->votePlaceWishes;
+    }
+
+    public function setVotePlaceWishes(Collection $votePlaceWishes): void
+    {
+        $this->votePlaceWishes = $votePlaceWishes;
     }
 
     public function addVotePlaceWish(VotePlace $votePlace): void
@@ -545,6 +613,16 @@ class AssessorRequest
     public function isEnabled(): bool
     {
         return $this->enabled;
+    }
+
+    public function isFrenchAssessorRequest(): bool
+    {
+        return 'FR' === $this->getAssessorCountry();
+    }
+
+    public function getOfficeName(): ?string
+    {
+        return array_search($this->office, AssessorOfficeEnum::CHOICES);
     }
 
     public function setUuid(UuidInterface $uuid): void

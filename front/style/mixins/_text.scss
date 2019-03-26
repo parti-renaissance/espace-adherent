@@ -235,6 +235,10 @@ $text--size-extra-large--big: 128px;
         font-style: italic;
     }
 
+    &--justify {
+        text-align: justify;
+    }
+
     &--normal {
         font-weight: normal;
     }
@@ -255,6 +259,12 @@ $text--size-extra-large--big: 128px;
     &--on-pink {
         color: white;
         background: $pink;
+        padding: 0 5px;
+    }
+
+    &--on-blue-night {
+        color: $white;
+        background: $blue--night;
         padding: 0 5px;
     }
 

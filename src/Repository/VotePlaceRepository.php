@@ -66,8 +66,8 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
         $qb->addOrderBy('vp.name', 'ASC');
 
-        if ($assessorRequest->getVotePlacesWishes()->count() > 0) {
-            $votePlacesWishedIds = array_map(function ($votePlace) { return $votePlace->getId(); }, $assessorRequest->getVotePlacesWishes()->toArray());
+        if ($assessorRequest->getVotePlaceWishes()->count() > 0) {
+            $votePlacesWishedIds = array_map(function ($votePlace) { return $votePlace->getId(); }, $assessorRequest->getVotePlaceWishes()->toArray());
 
             $votePlacesWished = clone $qb;
             $votePlacesWished->andWhere($votePlacesWished->expr()->in('vp.id', $votePlacesWishedIds));
@@ -91,7 +91,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
         if (AssessorOfficeEnum::HOLDER === $assessorRequest->getOffice()) {
             $qb->andWhere($alias.'.holderOfficeAvailable = true');
         } else {
-            $qb->andWhere($alias.'.substitudeOfficeAvailable = true');
+            $qb->andWhere($alias.'.substituteOfficeAvailable = true');
         }
 
         return $qb;
@@ -124,5 +124,39 @@ class VotePlaceRepository extends AbstractAssessorRepository
         }
 
         return $qb->andWhere($codesFilter);
+    }
+
+    public function findByCountry(string $country): array
+    {
+        return  $this
+            ->createQueryBuilder('votePlace')
+            ->andWhere('votePlace.country = :country')
+            ->setParameter('country', $country)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByPostalCode(string $postalCode): array
+    {
+        return  $this
+            ->createQueryBuilder('votePlace')
+            ->andWhere('FIND_IN_SET(:postalCode, votePlace.postalCode) > 0')
+            ->setParameter('postalCode', $postalCode)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findVotePlaceNameByIds(array $ids): array
+    {
+        return $this
+            ->createQueryBuilder('votePlace')
+            ->select('votePlace.name')
+            ->where('votePlace.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getArrayResult()
+         ;
     }
 }
