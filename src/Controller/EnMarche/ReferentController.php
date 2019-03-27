@@ -285,7 +285,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaires-locaux",
-     *     name="app_referent_survey_list",
+     *     name="app_referent_jecoute_local_surveys_list",
      *     methods={"GET"},
      * )
      */
@@ -305,7 +305,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaires-nationaux",
-     *     name="app_referent_national_surveys",
+     *     name="app_referent_jecoute_national_surveys_list",
      *     methods={"GET"},
      * )
      */
@@ -323,7 +323,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaire/creer",
-     * name="app_referent_survey_create"),
+     *     name="app_referent_jecoute_local_survey_create",
      *     methods={"GET|POST"},
      * )
      */
@@ -345,7 +345,7 @@ class ReferentController extends Controller
 
             $this->addFlash('info', 'survey.create.success');
 
-            return $this->redirectToRoute('app_referent_survey_list');
+            return $this->redirectToRoute('app_referent_jecoute_local_surveys_list');
         }
 
         return $this->render('referent/surveys/create.html.twig', [
@@ -357,7 +357,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaire/{uuid}/editer",
-     *     name="app_referent_survey_edit",
+     *     name="app_referent_jecoute_local_survey_edit",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -382,7 +382,7 @@ class ReferentController extends Controller
 
             $this->addFlash('info', 'survey.edit.success');
 
-            return $this->redirectToRoute('app_referent_survey_list');
+            return $this->redirectToRoute('app_referent_jecoute_local_surveys_list');
         }
 
         return $this->render('referent/surveys/create.html.twig', [
@@ -394,7 +394,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaire/{uuid}",
-     *     name="app_referent_national_survey_show",
+     *     name="app_referent_jecoute_national_survey_show",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -417,7 +417,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaire/{uuid}/stats",
-     *     name="app_referent_survey_stats",
+     *     name="app_referent_jecoute_survey_stats",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -436,7 +436,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaire/{uuid}/dupliquer",
-     *     name="app_referent_survey_duplicate",
+     *     name="app_referent_jecoute_local_survey_duplicate",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -456,13 +456,13 @@ class ReferentController extends Controller
 
         $this->addFlash('info', 'survey.duplicate.success');
 
-        return $this->redirectToRoute('app_referent_survey_list');
+        return $this->redirectToRoute('app_referent_jecoute_local_surveys_list');
     }
 
     /**
      * @Route(
      *     path="/jecoute/question/{uuid}/reponses",
-     *     name="app_referent_survey_stats_answers_list",
+     *     name="app_referent_jecoute_survey_stats_answers_list",
      *     condition="request.isXmlHttpRequest()",
      *     methods={"GET"},
      * )
@@ -481,7 +481,7 @@ class ReferentController extends Controller
     /**
      * @Route(
      *     path="/jecoute/questionnaire/{uuid}/stats/download",
-     *     name="app_referent_survey_stats_download",
+     *     name="app_referent_jecoute_survey_stats_download",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },

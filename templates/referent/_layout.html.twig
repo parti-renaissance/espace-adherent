@@ -30,7 +30,7 @@
             <div class="l__wrapper procuration-manager__content text--body">
                 <nav class="referent-menu">
                     <ul>
-                        {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_survey_*']) %}
+                        {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
 
                         <li class="{{ is_mobilisation_links ? 'active' : '' }}">
                             <a href="{{ path('app_referent_events') }}">Mobilisation</a>
@@ -64,8 +64,8 @@
                         <li class="{{ is_active_route(app.request, 'app_referent_users*') ? 'active' : '' }}">
                             <a href="{{ path('app_referent_users') }}">Envoyer un message</a>
                         </li>
-                        <li class="{{ is_active_route(app.request, 'app_referent_survey_*') ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_survey_list') }}">J'écoute</a>
+                        <li class="{{ is_active_route(app.request, 'app_referent_jecoute_*') ? 'active' : '' }}">
+                            <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
                         </li>
                     </ul>
                 </div>
