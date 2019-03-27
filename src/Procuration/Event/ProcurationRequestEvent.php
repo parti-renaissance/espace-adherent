@@ -12,7 +12,7 @@ class ProcurationRequestEvent extends Event
     private $notify;
     private $referent;
 
-    public function __construct(ProcurationRequest $request, bool $notify, Adherent $referent = null)
+    public function __construct(ProcurationRequest $request, bool $notify = false, Adherent $referent = null)
     {
         $this->request = $request;
         $this->notify = $notify;

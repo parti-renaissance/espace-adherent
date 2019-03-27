@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\Event\ProcurationEvents;
+use AppBundle\Procuration\Event\ProcurationProxyEvent;
 use AppBundle\Procuration\Event\ProcurationRequestEvent;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
@@ -132,8 +133,24 @@ class ProcurationManager
         return $this->procurationProxyRepository->findMatchingProposals($manager, $filters);
     }
 
-    public function countProcurationProxyProposals(Adherent $manager, ProcurationProxyProposalFilters $filters)
+    public function countProcurationProxyProposals(Adherent $manager, ProcurationProxyProposalFilters $filters): int
     {
         return $this->procurationProxyRepository->countMatchingProposals($manager, $filters);
+    }
+
+    public function createProcurationProxy(ProcurationProxy $proxy): void
+    {
+        $this->manager->persist($proxy);
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(ProcurationEvents::PROXY_REGISTRATION, new ProcurationProxyEvent($proxy));
+    }
+
+    public function createProcurationRequest(ProcurationRequest $request): void
+    {
+        $this->manager->persist($request);
+        $this->manager->flush();
+
+        $this->dispatcher->dispatch(ProcurationEvents::REQUEST_REGISTRATION, new ProcurationRequestEvent($request));
     }
 }

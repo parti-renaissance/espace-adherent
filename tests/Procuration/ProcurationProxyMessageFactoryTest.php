@@ -7,6 +7,8 @@ use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailer\Message\ProcurationProxyCancelledMessage;
 use AppBundle\Mailer\Message\ProcurationProxyFoundMessage;
+use AppBundle\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
 use AppBundle\Procuration\ProcurationProxyMessageFactory;
 use AppBundle\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
@@ -61,7 +63,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $this->assertSame('Annulation de la mise en relation', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
         $this->assertNull($message->getRecipient(0)->getFullName());
-        $this->assertSame('Procuration En Marche !', $message->getSenderName());
+        $this->assertSame('La République En Marche !', $message->getSenderName());
         $this->assertSame(
             [
                 'target_firstname' => 'Marie Bénédicte',
@@ -108,7 +110,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $this->assertSame('Votre procuration', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
         $this->assertNull($message->getRecipient(0)->getFullName());
-        $this->assertSame('Procuration En Marche !', $message->getSenderName());
+        $this->assertSame('La République En Marche !', $message->getSenderName());
         $this->assertSame(
             [
                 'target_firstname' => 'Marie Bénédicte',
@@ -130,6 +132,42 @@ class ProcurationProxyMessageFactoryTest extends TestCase
             ],
             $message->getCC()
         );
+    }
+
+    public function testCreateProxyRegistrationMessage()
+    {
+        $message = $this->factory->createProxyRegistrationMessage(
+            $this->createProcurationProxyMock(
+                'Monique',
+                'Clairefontaine',
+                'monique@en-marche-dev.fr',
+                '0607080910'
+            )
+        );
+
+        $this->assertInstanceOf(ProcurationProxyRegistrationConfirmationMessage::class, $message);
+        $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
+        $this->assertSame('Vous souhaitez être mandataire', $message->getSubject());
+        $this->assertSame('monique@en-marche-dev.fr', $message->getRecipient(0)->getEmailAddress());
+        $this->assertSame('La République En Marche !', $message->getSenderName());
+    }
+
+    public function testCreateRequestRegistrationMessage()
+    {
+        $message = $this->factory->createRequestRegistrationMessage(
+            $this->createProcurationRequestMock(
+                'Marie Bénédicte',
+                'Dumont',
+                'marieb.dumont@gmail.tld',
+                '0102030405'
+            )
+        );
+
+        $this->assertInstanceOf(ProcurationRequestRegistrationConfirmationMessage::class, $message);
+        $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
+        $this->assertSame('Vous souhaitez trouver un mandataire pour les élections européennes', $message->getSubject());
+        $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
+        $this->assertSame('La République En Marche !', $message->getSenderName());
     }
 
     private function createProcurationRequestMock(
