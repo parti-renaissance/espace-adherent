@@ -99,12 +99,20 @@ class AdherentReferentData implements EntityMediaInterface
         array $tags = [],
         string $latitude = null,
         string $longitude = null,
-        string $tagsLabel = null
+        string $tagsLabel = null,
+        string $facebookPageUrl = null,
+        string $twitterPageUrl = null,
+        string $linkedInPageUrl = null,
+        string $description = null
     ) {
         $this->markerLatitude = $latitude;
         $this->markerLongitude = $longitude;
         $this->tags = new ArrayCollection($tags);
         $this->tagsLabel = $tagsLabel;
+        $this->facebookPageUrl = $facebookPageUrl;
+        $this->twitterPageUrl = $twitterPageUrl;
+        $this->linkedInPageUrl = $linkedInPageUrl;
+        $this->description = $description;
     }
 
     public function getId(): ?int
@@ -172,7 +180,9 @@ class AdherentReferentData implements EntityMediaInterface
 
     public function getReferentTagCodes(): array
     {
-        return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->getTags()->toArray());
+        return array_map(function (ReferentTag $tag) {
+            return $tag->getCode();
+        }, $this->getTags()->toArray());
     }
 
     public function getMedia(): ?Media

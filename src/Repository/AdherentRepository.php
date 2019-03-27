@@ -265,7 +265,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $qb
                 ->andWhere('LOWER(a.emailAddress) = :email')
                 ->join('a.adherentReferentData', 'adherentReferentData')
-                ->join('a.adherentReferentData.tags', 'tags')
+                ->join('adherentReferentData.tags', 'tags')
                 ->setParameter('email', $identifier)
             ;
         }

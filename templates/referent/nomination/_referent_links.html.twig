@@ -1,16 +1,20 @@
 <div class="{{ links_container_class|default('legislatives__social space--20-0') }}" class="candidate_links">
     <div class="{{ social_networks_container_class|default('list__links--svgs b__nudge--top-10') }} candidate_social_networks_links">
-        {% if referent.twitterPageUrl %}
-            <a href="{{ referent.twitterPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Twitter">
+        {% if referent.adherentReferentData.twitterPageUrl %}
+            <a href="{{ referent.adherentReferentData.twitterPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Twitter">
                 <i class="fa fa-twitter"></i>
             </a>
         {% endif %}
 
-        {% if referent.facebookPageUrl %}
-            <a href="{{ referent.facebookPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Facebook">
+        {% if referent.adherentReferentData.facebookPageUrl %}
+            <a href="{{ referent.adherentReferentData.facebookPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="Facebook">
                 <i class="fa fa-facebook-official"></i>
             </a>
         {% endif %}
+        {% if referent.adherentReferentData.linkedInPageUrl %}
+            <a href="{{ referent.adherentReferentData.linkedInPageUrl }}" target="_blank" rel="noopener" class="link--no-decor" title="LinkedIn">
+                <i class="fa fa-linkedin"></i>
+            </a>
+        {% endif %}
     </div>
-
 </div>

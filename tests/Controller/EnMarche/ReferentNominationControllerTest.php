@@ -29,7 +29,7 @@ class ReferentNominationControllerTest extends WebTestCase
         $this->assertSame('Referent child Referent child', $referents->eq(2)->filter('h1')->text());
         $this->assertSame('Referent Referent', $referents->eq(1)->filter('h1')->text());
 
-        $crawler = $this->client->click($crawler->selectLink('eferent75and77 Referent75and77')->link());
+        $crawler = $this->client->click($crawler->selectLink('Referent75and77 Referent75and77')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         // Check profile information of the first candidate
@@ -38,10 +38,11 @@ class ReferentNominationControllerTest extends WebTestCase
         $links = $profile->filter('a');
 
         $this->assertSame(1, $profile->filter('#candidat-profile-picture')->count());
-        $this->assertSame('Nicolas Bordes', $profile->filter('h1')->text());
-        $this->assertSame("Côte d'Or", $profile->filter('#candidate-district-name')->text());
-        $this->assertSame('https://twitter.com/nyko24', $links->first()->attr('href'));
-        $this->assertSame('https://www.facebook.com/nyko24', $links->eq(1)->attr('href'));
+        $this->assertSame('Referent75and77 Referent75and77', $profile->filter('h1')->text());
+        $this->assertSame('Paris', $profile->filter('#candidate-district-name')->text());
+        $this->assertSame('https://twitter.com/ref75', $links->first()->attr('href'));
+        $this->assertSame('https://www.facebook.com/ref75', $links->eq(1)->attr('href'));
+        $this->assertSame('https://www.linkedin.com/ref75', $links->eq(2)->attr('href'));
         $this->assertSame(4, $description->filter('p')->count());
 
         $this->client->click($crawler->selectLink('Retour à la liste des référents')->link());

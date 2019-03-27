@@ -391,6 +391,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 6765204050',
             'registered_at' => '2018-05-12 12:31:45',
         ]);
+        $directory = __DIR__.'/../../DataFixtures/legislatives';
+        $description = sprintf('%s/description.txt', $directory);
+
         $referent75and77->setReferent(
             [
                 $this->getReference('referent_tag_77'),
@@ -400,7 +403,11 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             ],
             -1.6743,
             48.112,
-            'Paris'
+            'Paris',
+            'https://www.facebook.com/ref75',
+            'https://twitter.com/ref75',
+            'https://www.linkedin.com/ref75',
+            file_get_contents($description)
         );
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
