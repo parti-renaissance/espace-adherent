@@ -226,11 +226,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this
             ->createReferentQueryBuilder()
-            ->join('a.adherentReferentData', 'ard')
-            ->addSelect('ard')
+            ->addSelect('adherentReferentData', 'tags')
             ->where('a.status = :status')
             ->setParameter('status', $status)
             ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
             ;
     }
@@ -248,6 +248,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'slug' => $slug,
             ])
             ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getSingleResult()
             ;
     }
@@ -277,9 +278,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this
             ->createQueryBuilder('a')
-            ->innerJoin('a.adherentReferentData', 'managed_area')
-            ->innerJoin('managed_area.tags', 'managed_area_tag')
-            ->orderBy('LOWER(managed_area_tag.name)', 'ASC')
+            ->innerJoin('a.adherentReferentData', 'adherentReferentData')
+            ->innerJoin('adherentReferentData.tags', 'tags')
+            ->orderBy('LOWER(tags.name)', 'ASC')
         ;
     }
 

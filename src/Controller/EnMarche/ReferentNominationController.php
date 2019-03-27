@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Referent;
 use AppBundle\Repository\AdherentReferentDataRepository;
 use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
