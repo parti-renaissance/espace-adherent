@@ -7,12 +7,12 @@ import 'rc-dropdown/assets/index.css';
 import moreIcn from '../../img/icn_20px_more.svg';
 
 // docs: https://github.com/react-component/dropdown
-function Dropdown(props) {
+function SubMenu(props) {
     const menu = (
         <Menu onClick={({ key }) => props.onSelect(key)} selectable={false}>
-            {props.options.map(option => (
+            {props.options.map((option, i) => (
                 <MenuItem
-                    key={option.value}
+                    key={i}
                     className={classNames('dropdown-menu__item', {
                         'dropdown-menu__item--important': option.isImportant,
                     })}>
@@ -30,12 +30,12 @@ function Dropdown(props) {
     );
 }
 
-Dropdown.defaultProps = {
+SubMenu.defaultProps = {
     className: '',
     label: undefined,
 };
 
-Dropdown.propTypes = {
+SubMenu.propTypes = {
     className: PropTypes.string,
     label: PropTypes.string,
     onSelect: PropTypes.func.isRequired,
@@ -44,4 +44,4 @@ Dropdown.propTypes = {
     ),
 };
 
-export default Dropdown;
+export default SubMenu;
