@@ -21,7 +21,7 @@ class VotingFooter extends React.Component {
     }
 
     componentWillUnmount() {
-    // clear both timeout
+        // clear both timeout
         clearTimeout(this.timerId);
         clearTimeout(this.fadeOutStyle);
     }
@@ -53,8 +53,7 @@ class VotingFooter extends React.Component {
                     'voting-footer--close': !this.state.toggleFadeout,
                     'voting-footer--condensed': this.props.condensed,
                 })}
-                ref={this.footerRef}
-            >
+                ref={this.footerRef}>
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
                     <button
@@ -72,8 +71,7 @@ class VotingFooter extends React.Component {
                                     }
                                 }
                             )
-                        }
-                    >
+                        }>
                         <p className="voting-footer__container__action-vote--mobile__text">Je vote</p>
                         <div
                             className={classnames('voting-footer__container__action-vote--mobile__arrow', {
@@ -83,49 +81,54 @@ class VotingFooter extends React.Component {
                     </button>
 
                     {!this.state.toggleVotes &&
-            (0 < this.props.totalVotes ? (
-                <p className="voting-footer__total-votes">{this.props.totalVotes} votes</p>
-            ) : (
-                <p />
-            ))}
+                        (0 < this.props.totalVotes ? (
+                            <p className="voting-footer__total-votes">
+                                {this.props.totalVotes} vote{1 < this.props.totalVotes ? 's' : ''}
+                            </p>
+                        ) : (
+                            <p />
+                        ))}
                     {!this.props.condensed &&
-            (!this.state.toggleVotes ? (
-                <div className="voting-footer__container__action-vote">
-                    <button
-                        className={classnames('voting-footer__action-vote__btn', 'button button--primary button--lowercase', {
-                            'voting-footer__action-vote__btn--active': this.props.hasUserVoted,
-                        })}
-                        onClick={() =>
-                            this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
-                                this.props.onToggleVotePanel(true);
-                                this.resetTimeout();
-                            })
-                        }
-                    >
-                        <img
-                            className="voting-footer__container__action-vote__icon"
-                            src={this.props.hasUserVoted ? icnThumbGreen : icnThumbWhite}
-                            alt="Vote"
-                        />
-                        {this.props.hasUserVoted ? 'J\'ai voté' : 'Je vote'}
-                    </button>
-                </div>
-            ) : (
-                <p className="voting-footer__container__action-vote__text">Cette proposition est :</p>
-            ))}
+                        (!this.state.toggleVotes ? (
+                            <div className="voting-footer__container__action-vote">
+                                <button
+                                    className={classnames(
+                                        'voting-footer__action-vote__btn',
+                                        'button button--primary button--lowercase',
+                                        {
+                                            'voting-footer__action-vote__btn--active': this.props.hasUserVoted,
+                                        }
+                                    )}
+                                    onClick={() =>
+                                        this.setState({ toggleVotes: true, toggleFadeout: true }, () => {
+                                            this.props.onToggleVotePanel(true);
+                                            this.resetTimeout();
+                                        })
+                                    }>
+                                    <img
+                                        className="voting-footer__container__action-vote__icon"
+                                        src={this.props.hasUserVoted ? icnThumbGreen : icnThumbWhite}
+                                        alt="Vote"
+                                    />
+                                    {this.props.hasUserVoted ? 'J\'ai voté' : 'Je vote'}
+                                </button>
+                            </div>
+                        ) : (
+                            <p className="voting-footer__container__action-vote__text">Cette proposition est :</p>
+                        ))}
                 </div>
 
                 {/* VOTES BUTTONS */}
                 {this.state.toggleVotes &&
-          this.props.votes.map((vote, index) => (
-              <VoteButton
-                  vote={vote}
-                  index={index}
-                  onSelected={this.props.onSelected}
-                  resetTimeout={this.resetTimeout}
-                  className="voting-footer__vote"
-              />
-          ))}
+                    this.props.votes.map((vote, index) => (
+                        <VoteButton
+                            vote={vote}
+                            index={index}
+                            onSelected={this.props.onSelected}
+                            resetTimeout={this.resetTimeout}
+                            className="voting-footer__vote"
+                        />
+                    ))}
             </div>
         );
     }

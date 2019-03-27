@@ -85,13 +85,15 @@ class IdeaCard extends React.Component {
                                         {getUserDisplayName(this.props.author)}
                                     </span>
                                     <span className="idea-card__content__infos__author__separator" />
-                                    <Link to={`/comites/${this.props.committee.slug}`} className="idea-card__link">
+                                    <Link
+                                        to={null !== this.props.committee && `/comites/${this.props.committee.slug}`}
+                                        className="idea-card__link">
                                         <span
                                             className={classnames(
                                                 'idea-card__content__infos__author__type',
                                                 `idea-card__content__infos__author__type--${this.props.author_category}`
                                             )}
-                                            data-tip={this.props.committee.name}
+                                            data-tip={null !== this.props.committee && this.props.committee.name}
                                             data-effect="solid"
                                             data-type="light"
                                             data-class="idea-card__theme-tip"
