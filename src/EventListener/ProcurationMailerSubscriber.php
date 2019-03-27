@@ -4,6 +4,7 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Mailer\MailerService;
 use AppBundle\Procuration\Event\ProcurationEvents;
+use AppBundle\Procuration\Event\ProcurationProxyEvent;
 use AppBundle\Procuration\Event\ProcurationRequestEvent;
 use AppBundle\Procuration\ProcurationProxyMessageFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,8 +23,10 @@ class ProcurationMailerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            ProcurationEvents::REQUEST_REGISTRATION => 'sendProcurationRequestRegistrationEmail',
             ProcurationEvents::REQUEST_PROCESSED => 'sendProcurationProxyFoundEmail',
             ProcurationEvents::REQUEST_UNPROCESSED => 'sendProcurationProxyCancelledEmail',
+            ProcurationEvents::PROXY_REGISTRATION => 'sendProcurationProxyRegistrationEmail',
         ];
     }
 
@@ -41,5 +44,15 @@ class ProcurationMailerSubscriber implements EventSubscriberInterface
         if ($event->notify() && $request->hasFoundProxy()) {
             $this->mailer->sendMessage($this->factory->createProxyCancelledMessage($request, $event->getReferent()));
         }
+    }
+
+    public function sendProcurationProxyRegistrationEmail(ProcurationProxyEvent $event): void
+    {
+        $this->mailer->sendMessage($this->factory->createProxyRegistrationMessage($event->getProxy()));
+    }
+
+    public function sendProcurationRequestRegistrationEmail(ProcurationRequestEvent $event): void
+    {
+        $this->mailer->sendMessage($this->factory->createRequestRegistrationMessage($event->getRequest()));
     }
 }

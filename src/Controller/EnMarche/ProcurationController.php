@@ -11,6 +11,7 @@ use AppBundle\Form\Procuration\ProcurationProxyType;
 use AppBundle\Form\Procuration\ProcurationRequestType;
 use AppBundle\Form\Procuration\ElectionContextType;
 use AppBundle\Procuration\ElectionContext;
+use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Procuration\ProcurationSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -81,6 +82,7 @@ class ProcurationController extends Controller
     public function requestAction(
         Request $request,
         ProcurationSession $procurationSession,
+        ProcurationManager $procurationManager,
         ?string $step,
         string $_route
     ): Response {
@@ -112,10 +114,8 @@ class ProcurationController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($finalStep) {
-                $manager = $this->getDoctrine()->getManager();
+                $procurationManager->createProcurationRequest($procurationRequest);
 
-                $manager->persist($procurationRequest);
-                $manager->flush();
                 $procurationSession->endRequest();
 
                 return $this->redirectToRoute('app_procuration_request_thanks');
@@ -142,8 +142,11 @@ class ProcurationController extends Controller
      * @Route("/je-propose", name="app_procuration_proxy_proposal")
      * @Method("GET|POST")
      */
-    public function proxyProposalAction(Request $request, ProcurationSession $procurationSession): Response
-    {
+    public function proxyProposalAction(
+        Request $request,
+        ProcurationSession $procurationSession,
+        ProcurationManager $procurationManager
+    ): Response {
         if (!$procurationSession->hasElectionContext()) {
             return $this->redirectToRoute('app_procuration_choose_election', ['action' => ElectionContext::ACTION_PROPOSAL]);
         }
@@ -177,9 +180,7 @@ class ProcurationController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($proposal);
-            $manager->flush();
+            $procurationManager->createProcurationProxy($proposal);
 
             return $this->redirectToRoute('app_procuration_proposal_thanks', [
                 'uuid' => $referentUuid,

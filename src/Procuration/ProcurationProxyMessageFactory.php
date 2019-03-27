@@ -3,10 +3,13 @@
 namespace AppBundle\Procuration;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailer\Message\ProcurationProxyCancelledMessage;
 use AppBundle\Mailer\Message\ProcurationProxyFoundMessage;
+use AppBundle\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
 use AppBundle\Mailer\Message\ProcurationProxyReminderMessage;
+use AppBundle\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
 use AppBundle\Routing\RemoteUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -75,6 +78,24 @@ class ProcurationProxyMessageFactory
                 ProcurationProxyReminderMessage::createRecipientVariables($request, $url)
             );
         }
+
+        return $message;
+    }
+
+    public function createProxyRegistrationMessage(
+        ProcurationProxy $procurationProxy
+    ): ProcurationProxyRegistrationConfirmationMessage {
+        $message = ProcurationProxyRegistrationConfirmationMessage::create($procurationProxy);
+        $message->setReplyTo($this->replyToEmailAddress);
+
+        return $message;
+    }
+
+    public function createRequestRegistrationMessage(
+        ProcurationRequest $request
+    ): ProcurationRequestRegistrationConfirmationMessage {
+        $message = ProcurationRequestRegistrationConfirmationMessage::create($request);
+        $message->setReplyTo($this->replyToEmailAddress);
 
         return $message;
     }
