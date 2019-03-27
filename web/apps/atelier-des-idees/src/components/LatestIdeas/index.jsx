@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import IdeaCard from './../IdeaCard';
-import icn_20px_left_arrow from './../../img/icn_20px_left_arrow.svg';
 
 function LatestIdeas(props) {
     // Get all finalized ideas;
@@ -39,14 +38,14 @@ function LatestIdeas(props) {
                 <div>
                     {0 < mergeAllIdeas.length
                         ? mergeAllIdeas.map((idea, i) => <IdeaCard {...idea} key={i} condensed />)
-                        : ''}
+                        : 'Chargement'}
                 </div>
             </div>
             <div className="latest-ideas__slider">
                 <div className="latest-ideas__slider--second">
                     {0 < mergeAllIdeasSecond.length
                         ? mergeAllIdeasSecond.map((idea, i) => <IdeaCard {...idea} key={i} condensed />)
-                        : ''}
+                        : 'Chargement'}
                 </div>
             </div>
             {/* <Link to="atelier-des-idees/soutenir">

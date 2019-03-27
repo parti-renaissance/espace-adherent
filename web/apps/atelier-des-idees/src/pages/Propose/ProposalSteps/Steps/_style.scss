@@ -1,7 +1,7 @@
 .proposal--step {
   display: flex;
   justify-content: center;
-  padding: 100px;
+  padding: 60px 0;
   background-color: $snow;
 
   @media #{$mobile} {
@@ -71,6 +71,10 @@
       line-height: 1.09;
       letter-spacing: -0.5px;
       margin-top: 20px;
+      
+      @media #{$mobile} {
+        font-size:24px;
+      }
     }
 
     p {

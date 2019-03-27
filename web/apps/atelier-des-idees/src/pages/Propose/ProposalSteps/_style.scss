@@ -61,13 +61,17 @@
 	@media #{$tablet} {
 		padding: 84px 0 60px;
 		flex: initial;
+
 		&__container {
 			flex-direction: column;
+
 			&__step {
+			
 				&__img {
 					margin-bottom: 10px;
 				}
 			}
+			
 			&__separator {
 				margin-bottom: 5%;
 			}
@@ -78,7 +82,7 @@
 		flex: initial;
 
 		&__title {
-			font-size: 24px;
+			font-size: 34px;
 			line-height: normal;
 		}
 
