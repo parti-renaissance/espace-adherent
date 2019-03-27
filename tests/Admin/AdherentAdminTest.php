@@ -49,16 +49,16 @@ class AdherentAdminTest extends WebTestCase
         $this->assertEquals('Afficher', trim($navBar->getNode(0)->nodeValue));
         $this->assertEquals('Retourner à la liste', trim($navBar->getNode(1)->nodeValue));
         $this->assertEquals('Impersonnifier', trim($navBar->getNode(2)->nodeValue));
-        $this->assertEquals('Bannir cet adhérent ⚠️', trim($navBar->getNode(3)->nodeValue));
+        $this->assertEquals('Exclure cet adhérent ⚠️', trim($navBar->getNode(3)->nodeValue));
 
-        $link = $crawler->selectLink('Bannir cet adhérent ⚠️')->link();
+        $link = $crawler->selectLink('Exclure cet adhérent ⚠️')->link();
         $crawler = $this->client->click($link);
 
         $this->assertResponseStatusCode(200, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Confirmer')->form());
 
-        $this->assertContains(sprintf('L\'adhérent <b>%s</b> a bien été banni', $adherent->getFullName()), $this->client->getResponse()->getContent());
+        $this->assertContains(sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()), $this->client->getResponse()->getContent());
     }
 
     protected function setUp()

@@ -19,7 +19,7 @@ class AdminBanAdherentController extends CRUDController
         if (!$adherentManagementAuthority->canBan($adherent)) {
             $this->addFlash(
                 'error',
-                'Il est possible de bannir uniquement les adhérents sans aucun rôle (animateur, référent etc.).'
+                'Il est possible d\'exclure uniquement les adhérents sans aucun rôle (animateur, référent etc.).'
             );
 
             return $this->redirectToRoute('admin_app_adherent_edit', [
@@ -36,7 +36,7 @@ class AdminBanAdherentController extends CRUDController
             if ($form->get('allow')->isClicked()) {
                 $adherentManagementAuthority->ban($adherent, $this->getUser());
 
-                $this->addFlash('success', sprintf('L\'adhérent <b>%s</b> a bien été banni', $adherent->getFullName()));
+                $this->addFlash('success', sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()));
             }
 
             return $this->redirectToList();
