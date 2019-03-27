@@ -67,8 +67,7 @@ class IdeaCard extends React.Component {
                 className={classnames('idea-card', {
                     'idea-card--condensed': this.props.condensed,
                 })}
-                ref={this.cardRef}
-            >
+                ref={this.cardRef}>
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
@@ -76,8 +75,7 @@ class IdeaCard extends React.Component {
                                 className={classnames('idea-card__content__title', {
                                     'idea-card__content__title--read': this.props.hasBeenRead,
                                 })}
-                                title={this.props.name}
-                            >
+                                title={this.props.name}>
                                 {this.props.name}
                             </p>
                             <div className="idea-card__content__infos">
@@ -87,14 +85,20 @@ class IdeaCard extends React.Component {
                                         {getUserDisplayName(this.props.author)}
                                     </span>
                                     <span className="idea-card__content__infos__author__separator" />
-                                    <span
-                                        className={classnames(
-                                            'idea-card__content__infos__author__type',
-                                            `idea-card__content__infos__author__type--${this.props.author_category}`
-                                        )}
-                                    >
-                                        {AUTHOR_CATEGORIES[this.props.author_category]}
-                                    </span>
+                                    <Link to={`/comites/${this.props.committee.slug}`} className="idea-card__link">
+                                        <span
+                                            className={classnames(
+                                                'idea-card__content__infos__author__type',
+                                                `idea-card__content__infos__author__type--${this.props.author_category}`
+                                            )}
+                                            data-tip={this.props.committee.name}
+                                            data-effect="solid"
+                                            data-type="light"
+                                            data-class="idea-card__theme-tip"
+                                            alt="Aperçu">
+                                            {AUTHOR_CATEGORIES[this.props.author_category]}
+                                        </span>
+                                    </Link>
                                 </span>
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
@@ -107,8 +111,7 @@ class IdeaCard extends React.Component {
                                                 data-effect="solid"
                                                 data-type="light"
                                                 data-class="idea-card__tip"
-                                                data-place="bottom"
-                                            >
+                                                data-place="bottom">
                                                 <img
                                                     className="idea-card__content__infos__ideas__contributors__icon"
                                                     src={icn_20px_contributors}
@@ -122,12 +125,13 @@ class IdeaCard extends React.Component {
                                         {0 < this.props.comments_count && (
                                             <span
                                                 className="idea-card__content__infos__ideas__comments"
-                                                data-tip={`${this.props.comments_count} commentaire${1 < this.props.comments_count ? 's' : ''}`}
+                                                data-tip={`${this.props.comments_count} commentaire${
+                                                    1 < this.props.comments_count ? 's' : ''
+                                                }`}
                                                 data-effect="solid"
                                                 data-type="light"
                                                 data-class="idea-card__tip"
-                                                data-place="bottom"
-                                            >
+                                                data-place="bottom">
                                                 <img
                                                     className="idea-card__content__infos__ideas__comments__icon"
                                                     src={icn_20px_comments}
@@ -141,7 +145,9 @@ class IdeaCard extends React.Component {
                                     </div>
                                 )}
                             </div>
-                            {!this.props.condensed && <p className="idea-card__content__description">{this.props.description}</p>}
+                            {!this.props.condensed && (
+                                <p className="idea-card__content__description">{this.props.description}</p>
+                            )}
                         </div>
                         {!this.props.condensed && !!this.props.themes.length && (
                             <ul className="idea-card__content__tags">
@@ -176,7 +182,9 @@ class IdeaCard extends React.Component {
                         votes={formatVotes(this.props.votes_count)}
                         onSelected={vote => this.props.onVote(this.props.uuid, vote)}
                         onToggleVotePanel={this.toggleOutsideHover}
-                        hasUserVoted={this.props.votes_count.my_votes && !!Object.keys(this.props.votes_count.my_votes).length}
+                        hasUserVoted={
+                            this.props.votes_count.my_votes && !!Object.keys(this.props.votes_count.my_votes).length
+                        }
                     />
                 ) : (
                     <ContributingFooter
