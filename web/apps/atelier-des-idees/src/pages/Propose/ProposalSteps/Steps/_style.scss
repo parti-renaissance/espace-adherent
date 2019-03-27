@@ -1,0 +1,93 @@
+.proposal--step {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+  background-color: $snow;
+
+  @media #{$mobile} {
+    padding: 10px;
+  }
+  
+  &:nth-child(odd) {
+    background-color: $white;
+    &>div {
+      flex-direction: row-reverse;
+
+      @media #{$mobile} {
+        flex-direction: column;
+      } 
+    }   
+  }
+ 
+  &> div{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+
+    @media #{$mobile} {
+      flex-direction: column;
+    }
+  } 
+  
+  .img {
+    @media #{$mobile} {
+      width: 100%;
+    }
+  }
+
+  .left {
+    display: flex;
+    width: 50%;
+    align-items: flex-start;
+
+    @media #{$mobile} {
+      flex-direction: column;
+      width: 100%;
+    }
+
+   
+
+    a {
+      border:0;
+      color: $blue;
+
+      img {
+        top:4px;
+        position: relative;
+        margin-left: 5px;
+        transition: all 0.3s;  
+      }
+      &:hover {
+
+        img {
+          margin-left: 7px;
+          transition: all 0.3s;
+        }
+      }
+    }
+
+    h3 {
+      font-size: 34px;
+      line-height: 1.09;
+      letter-spacing: -0.5px;
+      margin-top: 20px;
+      
+      @media #{$mobile} {
+        font-size:24px;
+      }
+    }
+
+    p {
+      font-size: 18px;
+      color: $light-black;
+    }
+
+    img {
+      margin-right: 25px;
+
+      @media #{$mobile} {
+        margin: 0 auto;
+      }
+    }
+  }
+}

@@ -1,22 +1,19 @@
 import React from 'react';
-import ThreeTabsPage from '../ThreeTabs';
+import Header from './../../containers/Header';
 import ProposalSteps from './ProposalSteps';
 import ProposalCriteria from './ProposalCriteria';
 import PreProposal from './PreProposal';
 
 function Propose(props) {
     return (
-        <ThreeTabsPage
-            title="Soumettre une nouvelle proposition"
-            subtitle="Vous avez une proposition que vous aimeriez voir émerger dans le débat public ?"
-            subtitleSub="Écrivez dès maintenant sur votre thème de prédilection !"
-        >
+        <React.Fragment>
+            <Header />
             <div className="propose-page">
                 <ProposalSteps />
                 <ProposalCriteria />
                 <PreProposal />
             </div>
-        </ThreeTabsPage>
+        </React.Fragment>
     );
 }
 
