@@ -517,7 +517,9 @@ class AdherentAdmin extends AbstractAdmin
                         $qb->setParameter('cp_privilege', CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
                     }
 
-                    $qb->andWhere($where);
+                    if ($where->count()) {
+                        $qb->andWhere($where);
+                    }
 
                     return true;
                 },

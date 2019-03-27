@@ -2,12 +2,14 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\Entity\DeputyManagedUsersMessage;
 use AppBundle\Repository\DeputyManagedUsersMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\MessengerTestTrait;
 
 /**
  * @group functional
@@ -16,6 +18,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 class DeputyControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MessengerTestTrait;
 
     /**
      * @var DeputyManagedUsersMessageRepository
@@ -61,6 +64,29 @@ class DeputyControllerTest extends WebTestCase
         $this->assertSame($content, $message->getContent());
         $this->assertSame($deputy->getManagedDistrict()->getId(), $message->getDistrict()->getId());
         $this->assertSame(0, $message->getOffset());
+    }
+
+    public function testDeputyCanCreateAdherentMessage(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'deputy-ch-li@en-marche-dev.fr');
+
+        $crawler = $this->client->request('GET', '/espace-depute/messagerie/creer');
+        $this->client->submit($crawler->selectButton('Suivant')->form(['adherent_message' => [
+            'label' => 'test',
+            'subject' => 'subject',
+            'content' => 'message content',
+        ]]));
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
+
+        $crawler = $this->client->followRedirect();
+
+        static::assertSame(
+            'Recherche dans la zone : Français établis hors de France, 6ème circonscription (FDE-06)',
+            trim($crawler->filter('.l__wrapper .l__col .text--center')->text())
+        );
     }
 
     protected function setUp()

@@ -34,15 +34,15 @@ class SurveyExporter
                 'author' => $survey->getAuthor()->getFullName(),
                 'edit' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-edit'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_survey_edit', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate('app_referent_jecoute_local_survey_edit', ['uuid' => $survey->getUuid()]),
                 ],
                 'stats' => [
                     'label' => "<span id='survey-stats-$i' class='btn btn--default'><i class='fa fa-bar-chart'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_survey_stats', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate('app_referent_jecoute_survey_stats', ['uuid' => $survey->getUuid()]),
                 ],
                 'duplicate' => [
                     'label' => "<span class='btn btn--default'><i class='fa fa-copy'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_survey_duplicate', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate('app_referent_jecoute_local_survey_duplicate', ['uuid' => $survey->getUuid()]),
                 ],
                 'publish' => $this->getPublishAction($survey->isPublished()),
             ];
@@ -69,11 +69,11 @@ class SurveyExporter
                 'createdAt' => $survey->getCreatedAt()->format('d/m/Y'),
                 'stats' => [
                     'label' => "<span id='survey-stats-$i' class='btn btn--default'><i class='fa fa-bar-chart'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_survey_stats', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate('app_referent_jecoute_survey_stats', ['uuid' => $survey->getUuid()]),
                 ],
                 'show' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-search-plus'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_national_survey_show', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate('app_referent_jecoute_national_survey_show', ['uuid' => $survey->getUuid()]),
                 ],
                 'publish' => $this->getPublishAction($survey->isPublished()),
             ];

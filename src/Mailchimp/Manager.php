@@ -6,7 +6,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
-use AppBundle\Mailchimp\Exception\InvalidCampaignSegmentConditionException;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
 use Psr\Container\ContainerInterface;
@@ -76,12 +75,6 @@ class Manager implements LoggerAwareInterface
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($message);
-
-        if ($editCampaignRequest->isEmptySegmentConditions()) {
-            throw new InvalidCampaignSegmentConditionException(
-                sprintf('Message %s has empty segment condition array', $message->getUuid())
-            );
-        }
 
         // When ExternalId does not exist, then it is Campaign creation
         if (!$campaignId = $message->getExternalId()) {
