@@ -25,6 +25,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ReferentTag
 {
+    public const CATEGORY_MONDE = 'monde';
+    public const CATEGORY_EUROPE = 'europe';
+    public const CATEGORY_DEPARTMENT = 'department';
+    public const CATEGORY_ARRONDISSEMENT = 'arrondissement';
+    public const CATEGORY_CIRCO = 'circo';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -66,10 +72,16 @@ class ReferentTag
      */
     private $externalId;
 
-    public function __construct(string $name = null, string $code = null)
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $category;
+
+    public function __construct(string $name = null, string $code = null, string $category = null)
     {
         $this->name = $name;
         $this->code = $code;
+        $this->category = $category;
     }
 
     public function __toString(): string
@@ -110,5 +122,15 @@ class ReferentTag
     public function setExternalId(?string $externalId): void
     {
         $this->externalId = $externalId;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory($category): void
+    {
+        $this->category = $category;
     }
 }

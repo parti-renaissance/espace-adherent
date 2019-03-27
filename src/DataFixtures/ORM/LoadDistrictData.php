@@ -40,7 +40,7 @@ class LoadDistrictData extends AbstractFixture implements FixtureInterface, Cont
 
         // Create referent tags for districts
         foreach ($districtRepository->findAll() as $district) {
-            $tag = new ReferentTag($district->getFullName(), 'CIRCO_'.$district->getCode());
+            $tag = new ReferentTag($district->getFullName(), 'CIRCO_'.$district->getCode(), ReferentTag::CATEGORY_CIRCO);
             $district->setReferentTag($tag);
             $manager->persist($tag);
         }

@@ -59,10 +59,19 @@ final class Version20190326143431 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_562C7DA3989D9B62 ON adherents (slug)');
 
         $this->addSql('ALTER TABLE adherent_referent_data ADD tags_label VARCHAR(255) DEFAULT NULL');
+
+        $this->addSql('ALTER TABLE referent_tags ADD category VARCHAR(255) DEFAULT NULL');
+
+        $this->addSql('UPDATE referent_tags SET category = "departement" WHERE code REGEXP "^[0-9]{1,2}[:.,-]?$" OR code IN ("2A", "2B")');
+        $this->addSql('UPDATE referent_tags SET category = "arrondissement" WHERE code REGEXP "^[0-9]{5}[:.,-]?$"');
+        $this->addSql('UPDATE referent_tags SET category = "region" WHERE code REGEXP "^[A-Z]{2}[:.,-]?$"');
+        $this->addSql('UPDATE referent_tags SET category = "circo" WHERE code REGEXP "^CIRCO_?"');
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE referent_tags DROP category');
+
         $this->addSql('ALTER TABLE adherent_referent_data DROP tags_label');
 
         $this->addSql('DROP INDEX UNIQ_562C7DA3989D9B62 ON adherents');

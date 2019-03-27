@@ -245,7 +245,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('a.slug = :slug')
             ->setParameters([
                 'status' => $status,
-                'slug' => $slug
+                'slug' => $slug,
             ])
             ->getQuery()
             ->getSingleResult()
