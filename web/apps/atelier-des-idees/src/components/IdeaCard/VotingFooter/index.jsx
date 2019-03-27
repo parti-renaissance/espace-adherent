@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import Mobile from './../../../helpers/responsive';
 import icnThumbWhite from './../../../img/icn_20px_thumb.svg';
 import icnThumbGreen from './../../../img/icn_20px_thumb_green.svg';
 import VoteButton from '../../VoteButton';
@@ -56,6 +57,17 @@ class VotingFooter extends React.Component {
                 ref={this.footerRef}>
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
+                    <Mobile>
+                        {this.state.toggleVotes &&
+                            (0 < this.props.totalVotes ? (
+                                <p className="voting-footer__total-votes">
+                                    {this.props.totalVotes} vote{1 < this.props.totalVotes ? 's' : ''}
+                                </p>
+                            ) : (
+                                <p />
+                            ))}
+                    </Mobile>
+
                     <button
                         className="voting-footer__container__action-vote--mobile"
                         onClick={() =>
@@ -73,6 +85,7 @@ class VotingFooter extends React.Component {
                             )
                         }>
                         <p className="voting-footer__container__action-vote--mobile__text">Je vote</p>
+
                         <div
                             className={classnames('voting-footer__container__action-vote--mobile__arrow', {
                                 rotate: this.state.toggleVotes,
