@@ -20,6 +20,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_referent_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_referent_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_message_send' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_message_referent_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
 
         // Committee
         'app_committee_show' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
@@ -68,13 +69,13 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
         $route = $event->getRequest()->attributes->get('_route');
 
-        if (!$this->supportRoute($route)) {
+        if (null === $type = $this->getRouteType($route)) {
             return;
         }
 
-        $tagExtractor = ReferentTagExtractorFactory::create(self::ROUTES[$route]);
+        $tagExtractor = ReferentTagExtractorFactory::create($type);
 
-        if (!$tags = $tagExtractor->extractTags($user, $this->getSlug($event->getRequest(), self::ROUTES[$route]))) {
+        if (!$tags = $tagExtractor->extractTags($user, $this->getSlug($event->getRequest(), $type))) {
             return;
         }
 
@@ -83,9 +84,19 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         }
     }
 
-    private function supportRoute(string $route): bool
+    private function getRouteType(string $currentRoute): ?int
     {
-        return array_key_exists($route, self::ROUTES);
+        foreach (self::ROUTES as $routeName => $type) {
+            if ($currentRoute === $routeName) {
+                return $type;
+            }
+
+            if ('*' === substr($routeName, -1) && false !== strpos($currentRoute, rtrim($routeName, '*'))) {
+                return $type;
+            }
+        }
+
+        return null;
     }
 
     private function supportUser($user): bool
