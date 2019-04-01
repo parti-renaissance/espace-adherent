@@ -22,7 +22,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
  *     AdherentMessageTypeEnum::REFERENT: "ReferentAdherentMessage",
- *     AdherentMessageTypeEnum::DEPUTY: "DeputyAdherentMessage"
+ *     AdherentMessageTypeEnum::DEPUTY: "DeputyAdherentMessage",
+ *     AdherentMessageTypeEnum::COMMITTEE: "CommitteeAdherentMessage"
  * })
  *
  * @ApiResource(

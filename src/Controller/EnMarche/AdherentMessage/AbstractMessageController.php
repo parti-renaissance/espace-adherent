@@ -12,7 +12,7 @@ use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
-use AppBundle\Form\AdherentMessageType;
+use AppBundle\Form\AdherentMessage\AdherentMessageType;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -192,6 +192,10 @@ abstract class AbstractMessageController extends Controller
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
+        if ($message->hasReadOnlyFilter()) {
+            return $this->renderTemplate('message/filter.html.twig', ['message' => $message]);
+        }
+
         // Reset Filter object
         if ($request->request->has('reset') && $message->getFilter()) {
             $message->resetFilter();
@@ -203,10 +207,6 @@ abstract class AbstractMessageController extends Controller
         }
 
         $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());
-
-        if ($message->hasReadOnlyFilter()) {
-            return $this->renderTemplate('message/filter.html.twig', ['message' => $message]);
-        }
 
         $form = $formFactory
             ->createForm($message->getType(), $data)

@@ -7,15 +7,15 @@ use AppBundle\Entity\ReferentTag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
-class ReferentTagChoiceType extends AbstractType
+class MyReferentTagChoiceType extends AbstractType
 {
-    private $tokenStorage;
+    private $security;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(Security $security)
     {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -34,9 +34,9 @@ class ReferentTagChoiceType extends AbstractType
 
     private function getChoices(): array
     {
-        $token = $this->tokenStorage->getToken();
+        $user = $this->security->getUser();
 
-        if (!$token || !($user = $token->getUser()) instanceof Adherent || !$user->getManagedArea()) {
+        if (!$user || !$user instanceof Adherent || !$user->getManagedArea()) {
             return [];
         }
 

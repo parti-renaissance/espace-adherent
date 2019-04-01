@@ -3,10 +3,13 @@
 namespace AppBundle\Mailchimp\Campaign;
 
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Subscription\SubscriptionTypeEnum;
@@ -40,6 +43,8 @@ class SegmentConditionsBuilder
             $conditions = array_merge($conditions, $this->buildReferentConditions($filter));
         } elseif ($filter instanceof AdherentZoneFilter) {
             $conditions[] = $this->buildReferentZoneCondition($filter->getReferentTag());
+        } elseif ($filter instanceof CommitteeFilter) {
+            $conditions[] = $this->buildCommitteeFilterCondition($filter->getCommittee());
         }
 
         return [
@@ -58,6 +63,9 @@ class SegmentConditionsBuilder
                 break;
             case DeputyAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
+                break;
+            case CommitteeAdherentMessage::class:
+                $interestKeys[] = SubscriptionTypeEnum::LOCAL_HOST_EMAIL;
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Message type %s don\'t match any subscription type', $messageClass));
@@ -187,11 +195,31 @@ class SegmentConditionsBuilder
             );
         }
 
+        return $this->buildStaticSegmentCondition($tag->getExternalId());
+    }
+
+    private function buildCommitteeFilterCondition(?Committee $committee): array
+    {
+        if (!$committee) {
+            throw new \InvalidArgumentException('[AdherentMessage] Committee should not be empty');
+        }
+
+        if (!$committee->getMailchimpId()) {
+            throw new \InvalidArgumentException(
+                sprintf('[AdherentMessage] Committee "%s" does not have mailchimp ID', $committee->getUuidAsString())
+            );
+        }
+
+        return $this->buildStaticSegmentCondition($committee->getMailchimpId());
+    }
+
+    private function buildStaticSegmentCondition(int $externalId): array
+    {
         return [
             'condition_type' => 'StaticSegment',
             'op' => 'static_is',
             'field' => 'static_segment',
-            'value' => $tag->getExternalId(),
+            'value' => $externalId,
         ];
     }
 }
