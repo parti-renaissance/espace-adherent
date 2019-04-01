@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Report\ReportType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
@@ -39,6 +40,7 @@ class CitizenAction extends BaseEvent
         \DateTimeInterface $beginAt,
         \DateTimeInterface $finishAt,
         int $participantsCount = 0,
+        array $referentTags = [],
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
         $this->uuid = $uuid;
@@ -53,6 +55,7 @@ class CitizenAction extends BaseEvent
         $this->beginAt = $beginAt instanceof \DateTimeImmutable ? new \DateTime($beginAt->format(\DATE_ATOM)) : $beginAt;
         $this->finishAt = $finishAt;
         $this->status = self::STATUS_SCHEDULED;
+        $this->referentTags = new ArrayCollection($referentTags);
         $this->timeZone = $timeZone;
     }
 

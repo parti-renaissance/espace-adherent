@@ -6,7 +6,6 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -15,19 +14,12 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity, AuthoredInterface
+class InstitutionalEvent extends BaseEvent implements AuthoredInterface
 {
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\InstitutionalEventCategory")
      */
     protected $category;
-
-    /**
-     * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
-     */
-    private $referentTags;
 
     /**
      * @var array
@@ -103,41 +95,9 @@ class InstitutionalEvent extends BaseEvent implements ReferentTaggableEntity, Au
         }
     }
 
-    /**
-     * @return Collection|ReferentTag[]
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
-    }
-
-    public function addReferentTag(ReferentTag $referentTag): void
-    {
-        if (!$this->referentTags->contains($referentTag)) {
-            $this->referentTags->add($referentTag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTags->removeElement($referentTag);
-    }
-
-    public function clearReferentTags(): void
-    {
-        $this->referentTags->clear();
-    }
-
     public function getCategory(): InstitutionalEventCategory
     {
         return $this->category;
-    }
-
-    public function getReferentTagsCodes(): array
-    {
-        return array_map(function (ReferentTag $referentTag) {
-            return $referentTag->getCode();
-        }, $this->referentTags->toArray());
     }
 
     public function isReferentEvent(): bool

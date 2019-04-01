@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Geocoder\GeoPointInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
@@ -34,7 +35,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Algolia\Index
  */
-abstract class BaseEvent implements GeoPointInterface, ReportableInterface
+abstract class BaseEvent implements GeoPointInterface, ReportableInterface, ReferentTaggableEntity
 {
     const EVENT_TYPE = 'event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';
@@ -55,7 +56,24 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
+    use EntityReferentTagTrait;
     use EntityTimestampableTrait;
+
+    /**
+     * @var Collection|ReferentTag[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\JoinTable(
+     *     name="event_referent_tag",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="referent_tag_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    protected $referentTags;
 
     /**
      * @var string|null

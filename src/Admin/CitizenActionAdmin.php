@@ -2,9 +2,12 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\CitizenAction\CitizenActionEvent;
 use AppBundle\Entity\CitizenAction;
+use AppBundle\Events;
 use AppBundle\Form\CitizenActionCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,6 +19,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,6 +32,10 @@ class CitizenActionAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+    private $referentTagManager;
 
     public function getTemplate($name)
     {
@@ -268,5 +276,30 @@ class CitizenActionAdmin extends AbstractAdmin
                 'template' => 'admin/citizen_action/list_actions.html.twig',
             ])
         ;
+    }
+
+    public function postUpdate($object)
+    {
+        $this->referentTagManager->assignReferentLocalTags($object);
+
+        $citizenAction = new CitizenActionEvent($object, $object->getOrganizer());
+
+        $this->eventDispatcher->dispatch(Events::CITIZEN_ACTION_UPDATED, $citizenAction);
+    }
+
+    /**
+     * @required
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @required
+     */
+    public function setReferentTagManager(ReferentTagManager $referentTagManager): void
+    {
+        $this->referentTagManager = $referentTagManager;
     }
 }

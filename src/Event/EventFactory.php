@@ -110,6 +110,8 @@ class EventFactory
             $citizenAction->setTimeZone($data['time_zone']);
         }
 
+        $this->referentTagManager->assignReferentLocalTags($citizenAction);
+
         return $citizenAction;
     }
 
@@ -193,7 +195,7 @@ class EventFactory
 
     public function createFromCitizenActionCommand(CitizenActionCommand $command): CitizenAction
     {
-        return new CitizenAction(
+        $citizenAction = new CitizenAction(
             $command->getUuid(),
             $command->getAuthor(),
             $command->getCitizenProject(),
@@ -204,13 +206,18 @@ class EventFactory
             $command->getBeginAt(),
             $command->getFinishAt(),
             0,
+            [],
             $command->getTimeZone()
         );
+
+        $this->referentTagManager->assignReferentLocalTags($citizenAction);
+
+        return $citizenAction;
     }
 
-    public function updateFromCitizenActionCommand(CitizenActionCommand $command, CitizenAction $action): void
+    public function updateFromCitizenActionCommand(CitizenActionCommand $command, CitizenAction $citizenAction): void
     {
-        $action->update(
+        $citizenAction->update(
             $command->getName(),
             $command->getCategory(),
             $command->getDescription(),
@@ -219,6 +226,8 @@ class EventFactory
             $command->getFinishAt(),
             $command->getTimeZone()
         );
+
+        $this->referentTagManager->assignReferentLocalTags($citizenAction);
     }
 
     private function createPostAddress(Address $address): PostAddress
