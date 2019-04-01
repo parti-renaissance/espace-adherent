@@ -13,6 +13,8 @@
 
             &__types {
                 position: relative;
+                max-width: 300px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 
                 &:after {
                     content: "";
@@ -30,6 +32,15 @@
                     cursor: pointer;
                     position: relative;
                     z-index: 100;
+                }
+            }
+
+            &__referent-events {
+                margin: 10px;
+                z-index: 100;
+
+                input[type='checkbox'] {
+                    z-index: 10;
                 }
             }
 
@@ -78,7 +89,6 @@
             border-radius: 0;
             -webkit-appearance: none;
             border: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
             margin: 0 20px 0 10px;
             color: white;
             background: transparent;

@@ -24,11 +24,15 @@ export default class ReqwestApiClient {
         });
     }
 
-    getSearchResults(query, radius, city, type, offset, eventCategory, callback) {
+    getSearchResults(query, radius, city, type, offset, eventCategory, referentEvents, callback) {
         var url = '/recherche?q='+query+'&r='+radius+'&c='+city+'&t='+type+'&offset='+offset;
 
         if (eventCategory) {
             url += '&ec='+eventCategory;
+        }
+
+        if (referentEvents) {
+            url += '&re='+referentEvents;
         }
 
         let request = this._reqwest({

@@ -16,6 +16,10 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="form__checkbox search__bar__options__referent-events">
+                <input type="checkbox" id="search-referent-events" name="{{ constant('PARAMETER_REFERENT_EVENTS', search) }}">
+                <label class="form form__label" for="adherent_elected">Uniquement les événements de référents</label>
+            </div>
         {% endif %}
 
         {% if search.isTypeCitizenProjects %}

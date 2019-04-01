@@ -12,9 +12,10 @@
             var city = dom("[name='c']");
             var type = dom("[name='t']").value;
             var eventCategory = dom("[name='ec']");
+            var referentEvents = dom("[name='re']");
 
             on(moreButton, 'click', function () {
-                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, function (response) {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, referentEvents.checked, function (response) {
                     if (response instanceof XMLHttpRequest) {
                         hide(moreButton);
                         return;
@@ -41,9 +42,10 @@
             on(city, 'keyup', fetchResults);
             on(city, 'onchange', fetchResults);
 
-            // Category filter does not apply for committees
+            // Category and referent event filter does not apply for committees
             if (eventCategory) {
                 on(eventCategory, 'change', fetchResults);
+                on(referentEvents, 'change', fetchResults);
             } else {
                 var eventCategory = {value: null};
             }
@@ -58,7 +60,7 @@
                 // setTimeout avoids sending all HTTP request while the user is typing
                 clearTimeout(waitQueue);
                 waitQueue = setTimeout(function() {
-                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, function (response) {
+                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, referentEvents.checked, function (response) {
                         if (response instanceof XMLHttpRequest) {
                             dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
                             hide(moreButton);
