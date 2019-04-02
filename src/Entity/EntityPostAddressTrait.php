@@ -5,8 +5,9 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Intl\Intl;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Intl\Intl;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 trait EntityPostAddressTrait
 {
@@ -57,6 +58,8 @@ trait EntityPostAddressTrait
      * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("zipCode")
+     *
+     * @SymfonySerializer\Groups({"export"})
      */
     public function getPostalCode(): ?string
     {

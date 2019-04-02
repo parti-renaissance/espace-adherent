@@ -16,6 +16,7 @@ use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -578,7 +579,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(3, explode("\n", $this->client->getResponse()->getContent()));
+        $lines = $this->transformToArray($this->client->getResponse()->getContent());
+        $this->assertCount(2, $lines);
 
         // Try to illegally export an adherent data
         $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
@@ -589,7 +591,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(3, explode("\n", $this->client->getResponse()->getContent()));
+        $lines = $this->transformToArray($this->client->getResponse()->getContent());
+        $this->assertCount(2, $lines);
 
         $this->client->request(Request::METHOD_POST, $exportUrl, [
             'token' => $token,
@@ -597,7 +600,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(2, explode("\n", $this->client->getResponse()->getContent()));
+        $lines = $this->transformToArray($this->client->getResponse()->getContent());
+        $this->assertCount(1, $lines);
     }
 
     public function testCommitteeContactMembers()
@@ -783,6 +787,20 @@ class CommitteeManagerControllerTest extends WebTestCase
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
     {
         $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count(), $message);
+    }
+
+    private function transformToArray(string $encodedData): array
+    {
+        $tmpHandle = \tmpfile();
+        fwrite($tmpHandle, $encodedData);
+        $metaDatas = stream_get_meta_data($tmpHandle);
+        $tmpFilename = $metaDatas['uri'];
+
+        $reader = new Xlsx();
+        $spreadsheet = $reader->load($tmpFilename);
+        $array = $spreadsheet->getActiveSheet()->toArray();
+
+        return $array;
     }
 
     protected function setUp()

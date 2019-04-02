@@ -230,6 +230,7 @@
         <service id="AppBundle\Serializer\MoocSerializerSubscriber">
             <tag name="jms_serializer.event_subscriber" />
         </service>
+        <service id="AppBundle\Serializer\XlsxEncoder" />
 
         <!-- Normalizer -->
         <service id="AppBundle\Normalizer\ItemCollectionNormalizer" />
