@@ -405,6 +405,7 @@ class AdherentAdmin extends AbstractAdmin
                 ],
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
+            ->add('canaryTester')
             ->add('referentTags', ModelAutocompleteFilter::class, [
                 'label' => 'Tags référent souscrits',
                 'field_options' => [
