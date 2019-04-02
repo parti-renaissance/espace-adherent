@@ -8,7 +8,6 @@ use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,6 +41,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED, null)
             ->addOption('ref-tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('disabled-only', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -53,11 +53,8 @@ class MailchimpSyncAllAdherentsCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $limit = (int) $input->getOption('limit');
-        if ($limit < 1) {
-            throw new InvalidOptionException(sprintf('Limit value is invalid (%d)', $limit));
-        }
 
-        $paginator = $this->getQueryBuilder($input->getOption('ref-tags'));
+        $paginator = $this->getQueryBuilder($input->getOption('ref-tags'), $input->getOption('disabled-only'));
 
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
@@ -92,12 +89,13 @@ class MailchimpSyncAllAdherentsCommand extends Command
         $this->io->progressFinish();
     }
 
-    private function getQueryBuilder(array $refTags): Paginator
+    private function getQueryBuilder(array $refTags, bool $disabledOnly): Paginator
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
             ->where('adherent.status = :status')
-            ->setParameter('status', Adherent::ENABLED)
+            ->andWhere('adherent.adherent = true')
+            ->setParameter('status', $disabledOnly ? Adherent::DISABLED : Adherent::ENABLED)
         ;
 
         if ($refTags) {

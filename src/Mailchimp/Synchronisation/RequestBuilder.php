@@ -116,12 +116,16 @@ class RequestBuilder
         return $this;
     }
 
-    public function buildMemberRequest(string $memberIdentifier): MemberRequest
+    public function buildMemberRequest(string $memberIdentifier, Adherent $adherent): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
 
         if ($this->email) {
             $request->setEmailAddress($this->email);
+        }
+
+        if (!$adherent->isEnabled()) {
+            $request->setUnsubscriptionRequest();
         }
 
         $request->setMergeFields($this->buildMergeFields());

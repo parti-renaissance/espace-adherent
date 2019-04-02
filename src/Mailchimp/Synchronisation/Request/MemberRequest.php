@@ -35,9 +35,9 @@ class MemberRequest implements MemberRequestInterface
         $this->emailAddress = $emailAddress;
     }
 
-    public function setStatus($status): void
+    public function setUnsubscriptionRequest(): void
     {
-        $this->status = $status;
+        $this->status = 'unsubscribed';
     }
 
     public function setMergeFields(array $mergeFields): void
