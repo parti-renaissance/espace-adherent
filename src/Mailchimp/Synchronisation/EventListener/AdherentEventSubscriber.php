@@ -7,6 +7,7 @@ use AppBundle\Committee\Event\FollowCommitteeEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToCommitteeStaticSegmentCommand;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromCommitteeStaticSegmentCommand;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
@@ -39,6 +40,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_UPDATED => 'onAfterUpdate',
             UserEvents::USER_UPDATE_INTERESTS => 'onAfterUpdate',
             UserEvents::USER_UPDATE_SUBSCRIPTIONS => 'onAfterUpdate',
+            UserEvents::USER_DELETED => 'onDelete',
 
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
             UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onCitizenProjectPrivilegeChange',
@@ -94,6 +96,11 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         }
 
         $this->bus->dispatch($message);
+    }
+
+    public function onDelete(UserEvent $event): void
+    {
+        $this->bus->dispatch(new AdherentDeleteCommand($event->getUser()->getEmailAddress()));
     }
 
     public function onUserValidated(UserEvent $event): void

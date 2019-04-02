@@ -154,4 +154,9 @@ class Manager implements LoggerAwareInterface
     {
         $this->driver->deleteSegmentMember($segmentId, $mail);
     }
+
+    public function deleteMember(string $mail): void
+    {
+        $this->driver->deleteMember($mail);
+    }
 }
