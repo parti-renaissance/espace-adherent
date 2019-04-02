@@ -61,7 +61,7 @@ class VotePlace
     private $address;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
      */
@@ -133,7 +133,7 @@ class VotePlace
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode): void
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
