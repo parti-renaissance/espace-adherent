@@ -13,7 +13,7 @@ trait EntityReferentTagTrait
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
      */
-    private $referentTags;
+    protected $referentTags;
 
     /**
      * @return Collection|ReferentTag[]
@@ -43,7 +43,7 @@ trait EntityReferentTagTrait
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("tags")
-     * @JMS\Groups({"public", "committee_read", "citizen_project_read"})
+     * @JMS\Groups({"public", "committee_read", "citizen_project_read", "event_read", "citizen_action_read"})
      */
     public function getReferentTagsCodes(): array
     {
