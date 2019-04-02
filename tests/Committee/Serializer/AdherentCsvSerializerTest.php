@@ -52,9 +52,9 @@ class AdherentCsvSerializerTest extends TestCase
 
         $csv = [
             'Prénom,Nom,Age,"Code postal",Ville,"Date d\'adhesion"',
-            'Michel,D.,44,77000,Melun,"2019-02-14 11:12:13"',
-            'Carl,M.,66,77300,Fontainebleau,"2018-11-13 13:13:13"',
-            '"Jean_Pierre-André dît \'JPA\'",D.,22,75008,"Paris 8e","2018-03-08 08:08:08"',
+            'Michel,D.,44,77000,Melun,2019-02-14',
+            'Carl,M.,66,77300,Fontainebleau,2018-11-13',
+            '"Jean_Pierre-André dît \'JPA\'",D.,22,75008,"Paris 8e",2018-03-08',
             '',
         ];
 

@@ -30,7 +30,7 @@ class AdherentCsvSerializer
                 $adherent->getAge(),
                 $adherent->getPostalCode(),
                 $adherent->getCityName(),
-                $adherent->getRegisteredAt()->format('Y-m-d H:i:s'),
+                $adherent->getRegisteredAt()->format('Y-m-d'),
             ]);
         }
 
