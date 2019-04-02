@@ -28,6 +28,7 @@ class LoadAssessorRequestData extends Fixture
            'adrienne.kepoura@example.fr',
            '0612345678',
            'Lille',
+            '59000',
             AssessorOfficeEnum::HOLDER
         ));
 
@@ -45,6 +46,7 @@ class LoadAssessorRequestData extends Fixture
             'adrienne.kepoura@example.fr',
             '0612345678',
             'Lille',
+            '59000',
             AssessorOfficeEnum::HOLDER
         ));
 
@@ -72,8 +74,10 @@ class LoadAssessorRequestData extends Fixture
         string $emailAddress,
         string $phoneNumber,
         string $assessorCity,
+        string $assessorPostalCode,
         string $office = AssessorOfficeEnum::SUBSTITUTE,
-        string $birthName = null
+        string $birthName = null,
+        string $assessorCountry = 'FR'
     ): AssessorRequest {
         $assessor = new AssessorRequest();
 
@@ -91,6 +95,8 @@ class LoadAssessorRequestData extends Fixture
         $assessor->setEmailAddress($emailAddress);
         $assessor->getPhone()->setNationalNumber($phoneNumber);
         $assessor->setAssessorCity($assessorCity);
+        $assessor->setAssessorPostalCode($assessorPostalCode);
+        $assessor->setAssessorCountry($assessorCountry);
         $assessor->setOffice($office);
 
         return $assessor;

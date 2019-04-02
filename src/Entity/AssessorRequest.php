@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 
 /**
  * @ORM\Table(name="assessor_requests")
@@ -183,6 +184,25 @@ class AssessorRequest
      * @Assert\Length(max=15)
      */
     private $assessorCity;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(length=15)
+     *
+     * @Assert\Length(max=15)
+     */
+    private $assessorPostalCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(length=2)
+     *
+     * @Assert\NotBlank
+     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     */
+    private $assessorCountry = 'FR';
 
     /**
      * @var string
@@ -429,5 +449,25 @@ class AssessorRequest
     public function removeVotePlaceWish(VotePlace $votePlace): void
     {
         $this->votePlaceWishes->removeElement($votePlace);
+    }
+
+    public function getAssessorPostalCode(): string
+    {
+        return $this->assessorPostalCode;
+    }
+
+    public function setAssessorPostalCode(string $assessorPostalCode): void
+    {
+        $this->assessorPostalCode = $assessorPostalCode;
+    }
+
+    public function getAssessorCountry(): string
+    {
+        return $this->assessorCountry;
+    }
+
+    public function setAssessorCountry(string $assessorCountry): void
+    {
+        $this->assessorCountry = $assessorCountry;
     }
 }
