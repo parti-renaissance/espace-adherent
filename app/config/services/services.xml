@@ -512,6 +512,10 @@
             </call>
         </service>
 
+        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentDeleteCommandHandler">
+            <tag name="messenger.message_handler" />
+        </service>
+
         <service id="AppBundle\AdherentMessage\Handler\CreateCommitteeStaticSegmentCommandHandler">
             <tag name="messenger.message_handler" />
         </service>
