@@ -58,14 +58,15 @@ class ImportVotePlacesCommand extends Command
             throw new FileNotFoundException(sprintf('% not found', $filename));
         }
 
-        while (false !== ($data = fgetcsv($handle, 0, ','))) {
+        while (false !== ($data = fgetcsv($handle, 0, ';'))) {
             $row = array_map('trim', $data);
 
-            if ('nom_region' === $row[0]) {
+            if ('code_postal' === $row[4]) {
                 continue;
             }
 
             $rows[] = [
+                'code_insee_departement' => $row[2],
                 'code_postal' => $row[4],
                 'nom_commune_bdv' => $row[6],
                 'code_bdv' => $row[8],
@@ -92,12 +93,10 @@ class ImportVotePlacesCommand extends Command
             $votePlace = new VotePlace();
             $votePlace->setName($row['nom_bdv']);
             $votePlace->setAddress($row['adresse_bdv']);
-            $votePlace->setPostalCode(false !== strpos($row['code_postal'], '/')
-                ? str_replace('/', ',', $row['code_postal'])
-                : $row['code_postal']
-            );
+            $votePlace->setPostalCode($this->formatPostalCode($row['code_postal']));
             $votePlace->setCity($row['nom_commune_bdv']);
             $votePlace->setCode($row['code_bdv']);
+            $votePlace->setCountry($this->formatCountry($row['code_insee_departement']));
 
             $this->em->persist($votePlace);
 
@@ -111,5 +110,27 @@ class ImportVotePlacesCommand extends Command
 
         $this->em->flush();
         $this->em->commit();
+    }
+
+    private function formatPostalCode(string $postalCode): ?string
+    {
+        if (false !== strpos($postalCode, '/')) {
+            return str_replace('/', ',', $postalCode);
+        }
+
+        if (is_numeric($postalCode)) {
+            return $postalCode;
+        }
+
+        return null;
+    }
+
+    private function formatCountry(string $country): string
+    {
+        if (is_numeric($country) || '2A' === $country || '2B' === $country) {
+            return 'FR';
+        }
+
+        return $country;
     }
 }
