@@ -156,6 +156,20 @@ class ProcurationProxy
     private $cityName;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255, groups={"front"})
+     * @Assert\Expression(
+     *     "this.getCountry() == 'FR' and value == null",
+     *     message="procuration.state.not_empty",
+     *     groups={"front"}
+     * )
+     */
+    private $state;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=2)
@@ -317,6 +331,13 @@ class ProcurationProxy
      * @ORM\Column(type="boolean", options={"default": true})
      */
     public $foreignRequestAvailable = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public $reachable = false;
 
     public function __construct(?Adherent $referent)
     {
@@ -763,5 +784,25 @@ class ProcurationProxy
         }
 
         $this->removeFoundRequest($request);
+    }
+
+    public function isReachable(): bool
+    {
+        return $this->reachable;
+    }
+
+    public function setReachable(bool $reachable): void
+    {
+        $this->reachable = $reachable;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
     }
 }

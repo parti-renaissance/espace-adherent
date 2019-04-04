@@ -3,12 +3,18 @@
 {% block page_title 'Mes coordonnées - Procuration' %}
 
 {% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
+    <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationRequest();
+            App.runProcurationRequest(
+                '#{{ procuration_form.country.vars.id }}',
+                '#{{ procuration_form.state.vars.id }}'
+            );
         });
     </script>
 {% endblock %}
@@ -73,6 +79,13 @@
                                 {{ form_widget(procuration_form.city, { attr: { class: 'register__form__city' } }) }}
                                 {{ form_widget(procuration_form.cityName, { attr: { class: 'register__form__city_name', placeholder: 'Ville' } }) }}
                                 {{ form_errors(procuration_form.city) }}
+                            </div>
+                        </div>
+
+                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class="register__form__state register__form--mid">
+                                {{ form_widget(procuration_form.state, { attr: { placeholder: 'État/Province'} }) }}
+                                {{ form_errors(procuration_form.state) }}
                             </div>
                         </div>
                     </div>

@@ -232,7 +232,7 @@ class ProcurationControllerTest extends WebTestCase
                 'lastName' => 'Dupont',
                 'emailAddress' => 'timothe.baume@example.gb',
                 'address' => '6 rue Neyret',
-                'country' => 'FR',
+                'country' => 'ES',
                 'postalCode' => '69001',
                 'city' => '69001-69381',
                 'cityName' => '',
@@ -249,8 +249,10 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('.form__error')->text());
-        $this->assertSame(0, $crawler->filter('.form--warning')->count());
+        $this->assertCount(0, $crawler->filter('.form--warning'));
+        $this->assertCount(2, $errors = $crawler->filter('.form__error'));
+        $this->assertSame('Vous devez remplir l\'État/Province si le pays de résidence n\'est pas en France.', $errors->eq(0)->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(1)->text());
 
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'app_procuration_request' => [
@@ -296,6 +298,8 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
+        $this->assertSame('J\'accepte d’être recontacté par LaREM pour les prochaines échéances électorales', $crawler->filter('#procuration_reachable > label')->text());
+
         $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
@@ -314,6 +318,7 @@ class ProcurationControllerTest extends WebTestCase
                 'electionRounds' => ['9'],
                 'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
+                'reachable' => true,
             ],
         ]));
 
@@ -341,6 +346,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('69001', $request->getPostalCode());
         $this->assertSame('Lyon 1er', $request->getCityName());
         $this->assertSame('6 rue Neyret', $request->getAddress());
+        $this->assertSame(true, $request->isReachable());
         $this->assertEquals([$this->getRepository(ElectionRound::class)->find(9)], $request->getElectionRounds()->toArray());
         $this->assertSame(ProcurationRequest::REASON_HEALTH, $request->getReason());
     }
@@ -418,6 +424,8 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
+        $this->assertSame('J\'accepte d’être recontacté par LaREM pour les prochaines échéances électorales', $crawler->filter('#procuration_reachable > label')->text());
+
         $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_proposal' => [
@@ -426,7 +434,7 @@ class ProcurationControllerTest extends WebTestCase
                 'lastName' => 'Dupont',
                 'emailAddress' => 'maxime.michaux@example.fr',
                 'address' => '6 rue Neyret',
-                'country' => 'FR',
+                'country' => 'ES',
                 'postalCode' => '69001',
                 'city' => '69001-69381',
                 'cityName' => '',
@@ -450,11 +458,13 @@ class ProcurationControllerTest extends WebTestCase
                 'proxiesCount' => 2,
             ],
         ]));
+
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.form--warning'));
-        $this->assertCount(2, $errors = $crawler->filter('.form__error'));
-        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(0)->text());
-        $this->assertSame('Vous devez choisir au moins un tour d\'élection.', $errors->eq(1)->text());
+        $this->assertCount(3, $errors = $crawler->filter('.form__error'));
+        $this->assertSame('Vous devez remplir l\'État/Province si le pays de résidence n\'est pas en France.', $errors->eq(0)->text());
+        $this->assertSame('Le numéro de téléphone est obligatoire.', $errors->eq(1)->text());
+        $this->assertSame('Vous devez choisir au moins un tour d\'élection.', $errors->eq(2)->text());
 
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
@@ -486,6 +496,7 @@ class ProcurationControllerTest extends WebTestCase
                 'conditions' => true,
                 'authorization' => true,
                 'proxiesCount' => 2,
+                'reachable' => true,
             ],
         ]));
 
@@ -511,6 +522,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('69001', $proposal->getPostalCode());
         $this->assertSame('Lyon 1er', $proposal->getCityName());
         $this->assertSame('6 rue Neyret', $proposal->getAddress());
+        $this->assertSame(true, $proposal->isReachable());
         $this->assertEquals([$this->getRepository(ElectionRound::class)->find(9)], $proposal->getElectionRounds()->toArray());
     }
 

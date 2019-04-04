@@ -210,6 +210,7 @@ procuration.authorization.required: Vous devez nous autoriser à utiliser ces in
 procuration.vote_country.conditions.fr: Attention, vous ne pouvez être mandataire que pour deux procurations dont une seule maximum établie en France.
 procuration.vote_country.conditions.other: Attention, vous ne pouvez être mandataire que pour trois procurations dont une seule maximum établie en France.
 procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
+procuration.state.not_empty: Vous devez remplir l'État/Province si le pays de résidence n'est pas en France.
 
 #
 # Event
