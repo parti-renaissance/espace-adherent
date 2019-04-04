@@ -38,21 +38,16 @@ function LatestIdeas(props) {
                 <div>
                     {0 < mergeAllIdeas.length
                         ? mergeAllIdeas.map((idea, i) => <IdeaCard {...idea} key={i} condensed />)
-                        : 'Chargement'}
+                        : ''}
                 </div>
             </div>
             <div className="latest-ideas__slider">
                 <div className="latest-ideas__slider--second">
                     {0 < mergeAllIdeasSecond.length
                         ? mergeAllIdeasSecond.map((idea, i) => <IdeaCard {...idea} key={i} condensed />)
-                        : 'Chargement'}
+                        : ''}
                 </div>
             </div>
-            {/* <Link to="atelier-des-idees/soutenir">
-                <p className="link">
-          Voir toutes les propositions finalisées <img src={icn_20px_left_arrow} />
-                </p>
-            </Link> */}
         </article>
     );
 }
