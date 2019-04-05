@@ -151,6 +151,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(length=10, options={"default": "DISABLED"})
+     *
+     * @JMS\Groups({"adherent_change_diff"})
      */
     private $status;
 

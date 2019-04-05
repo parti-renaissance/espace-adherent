@@ -406,6 +406,12 @@ class AdherentAdmin extends AbstractAdmin
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('canaryTester')
+            ->add('status', null, ['label' => 'Etat du compte'], 'choice', [
+                'choices' => [
+                    'Activé' => Adherent::ENABLED,
+                    'Désactivé' => Adherent::DISABLED,
+                ],
+            ])
             ->add('referentTags', ModelAutocompleteFilter::class, [
                 'label' => 'Tags référent souscrits',
                 'field_options' => [

@@ -42,7 +42,7 @@ class Manager implements LoggerAwareInterface
         ;
 
         $result = $this->driver->editMember(
-            $requestBuilder->buildMemberRequest($message->getEmailAddress())
+            $requestBuilder->buildMemberRequest($message->getEmailAddress(), $adherent)
         );
 
         if ($result) {
