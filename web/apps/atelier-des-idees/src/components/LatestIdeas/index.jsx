@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import IdeaCard from './../IdeaCard';
-import icn_20px_left_arrow from './../../img/icn_20px_left_arrow.svg';
 
 function LatestIdeas(props) {
     // Get all finalized ideas;
@@ -49,11 +48,6 @@ function LatestIdeas(props) {
                         : ''}
                 </div>
             </div>
-            {/* <Link to="atelier-des-idees/soutenir">
-                <p className="link">
-          Voir toutes les propositions finalisées <img src={icn_20px_left_arrow} />
-                </p>
-            </Link> */}
         </article>
     );
 }
