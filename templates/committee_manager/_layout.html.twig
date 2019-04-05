@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace animateur' %}
+
+{% block banner '' %}
+
+{% block content %}
+    <main>
+        <section class="b__nudge--bottom-huge adherent-space">
+            <header class="b__nudge--bottom-large adherent-space-header">
+                {% block committee_space_header '' %}
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block committee_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

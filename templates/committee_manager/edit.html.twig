@@ -1,4 +1,4 @@
-{% extends 'committee/_layout.html.twig' %}
+{% extends 'committee_manager/_layout_committee.html.twig' %}
 
 {% block page_title 'Modifier mon comité' %}
 
@@ -13,18 +13,7 @@
 
 {% block committee_content %}
     <main>
-        <section class="l__wrapper--medium space--30-0">
-            <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
-               class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour au comité</a>
-
-            <header class="space--30-0">
-                <h1 class="b__nudge--bottom-small text--medium">
-                    Modifier mon comité
-                </h1>
-            </header>
-
+        <section class="l__wrapper--medium">
             {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form'}}) }}
                 {{ include('committee/_form.html.twig') }}
                 <div>

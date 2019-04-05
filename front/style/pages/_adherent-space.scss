@@ -1,0 +1,62 @@
+.adherent-space {
+    & nav.adherent-space-menu,
+    & div.adherent-space-sub-menu {
+        text-align: center;
+        margin-bottom: 20px;
+
+        ul {
+            display: inline-block;
+            border-bottom: 1px solid $gray--light;
+
+            li {
+                display: inline-block;
+                margin: 0 20px;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                & a {
+                    display: inline-block;
+                    padding: 10px 0;
+                    border-bottom: 2px solid transparent;
+
+                    &:hover {
+                        color: $blue-hover;
+                        border-bottom-color: $blue-hover;
+                    }
+                }
+
+                &:hover {
+                    & .toggle-menu {
+                        display: block;
+                    }
+                }
+
+                &.active a {
+                    color: $blue-hover;
+                    border-bottom-color: $blue-hover;
+                }
+            }
+        }
+    }
+
+    & div.adherent-space-sub-menu {
+        ul {
+            border: 0 none;
+        }
+    }
+
+    & > header.adherent-space-header {
+        height: 270px;
+        background-color: $gray--pale;
+    }
+
+    & .committee-block {
+        background-color: $gray--pale;
+    }
+}

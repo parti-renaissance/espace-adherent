@@ -18,6 +18,8 @@ common.finish_at: Date de fin
 common.ordinal_number_feminine: '1ère|%count%ème'
 common.ordinal_number_masculine: '1er|%count%ème'
 common.optional: optionnel
+common.committees_count: "%count% comité|%count% comités"
+common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 pending: En attente
 approved: Approuvé
@@ -391,7 +393,6 @@ interactive.form.submit_send: Envoyer
 # Citizen Project
 #
 citizen_project.administrators_count: "%count% porteur du projet|%count% porteurs du projet"
-citizen_project.members_count: "%count% membre|%count% membres"
 citizen_project.committees: Comité en soutien|Comités en soutien
 citizen_project.search.filter_radius_citizen_projects: "{-1} Tous les projets citoyens|[1,Inf[ Dans un rayon de %count% Km"
 citizen_project.edit_project: Modifier ce projet
