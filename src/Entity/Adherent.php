@@ -646,6 +646,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->birthdate;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"export"})
+     */
     public function getAge(): ?int
     {
         return $this->birthdate ? $this->birthdate->diff(new \DateTime())->y : null;
@@ -912,6 +915,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->status = $status;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"export"})
+     */
     public function getRegisteredAt(): ?\DateTime
     {
         return $this->registeredAt;
@@ -1428,9 +1434,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @Algolia\Attribute(algoliaName="address_city")
+     *
      * @JMS\Groups({"adherent_change_diff", "public"})
      * @JMS\VirtualProperty
      * @JMS\SerializedName("city")
+     *
+     * @SymfonySerializer\Groups({"export"})
      */
     public function getCityName(): ?string
     {

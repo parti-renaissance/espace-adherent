@@ -7,12 +7,12 @@ use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
-use AppBundle\Committee\Serializer\AdherentCsvSerializer;
 use AppBundle\Entity\Committee;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\ContactMembersType;
+use AppBundle\Serializer\XlsxEncoder;
 use AppBundle\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,6 +23,8 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/comites/{slug}")
@@ -106,8 +108,11 @@ class CommitteeManagerController extends Controller
      * @Route("/membres/export", name="app_committee_manager_export_members")
      * @Method("POST")
      */
-    public function exportMembersAction(Request $request, Committee $committee): Response
-    {
+    public function exportMembersAction(
+        Request $request,
+        Committee $committee,
+        SerializerInterface $serializer
+    ): Response {
         if (!$this->isCsrfTokenValid('committee.export_members', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
         }
@@ -117,9 +122,26 @@ class CommitteeManagerController extends Controller
         $uuids = GroupUtils::getUuidsFromJson($request->request->get('exports', ''));
         $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
 
-        return new Response(AdherentCsvSerializer::serialize($adherents ?? []), 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="membres-du-comite.csv"',
+        return new Response(
+            $serializer->serialize(
+                $adherents,
+                XlsxEncoder::FORMAT,
+                [
+                    'groups' => ['export'],
+                    DateTimeNormalizer::FORMAT_KEY => 'd/m/Y',
+                    XlsxEncoder::HEADERS_KEY => [
+                        'first_name' => 'Prénom',
+                        'last_name_initial' => 'Nom',
+                        'age' => 'Age',
+                        'postal_code' => 'Code postal',
+                        'city_name' => 'Ville',
+                        'registered_at' => "Date d'adhesion",
+                    ],
+                ]
+            ), 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment;filename="membres-du-comite.xlsx"',
+            'Cache-Control' => 'max-age=0',
         ]);
     }
 

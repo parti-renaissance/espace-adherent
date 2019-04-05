@@ -11,7 +11,8 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     * @SymfonySerializer\Groups({"export", "idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     *
      * @JMS\Groups({"adherent_change_diff", "user_profile", "public"})
      * @JMS\SerializedName("firstName")
      */
@@ -21,6 +22,7 @@ trait EntityPersonNameTrait
      * @ORM\Column(length=50)
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     *
      * @JMS\Groups({"adherent_change_diff", "user_profile", "public"})
      * @JMS\SerializedName("lastName")
      */
@@ -51,6 +53,9 @@ trait EntityPersonNameTrait
         return $this->lastName;
     }
 
+    /**
+     * @SymfonySerializer\Groups({"export"})
+     */
     public function getLastNameInitial(): string
     {
         $normalized = preg_replace('/[^a-z]+/', '', strtolower($this->lastName));
