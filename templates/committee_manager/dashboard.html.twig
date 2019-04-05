@@ -1,0 +1,56 @@
+{% extends 'committee_manager/_layout.html.twig' %}
+
+{% block page_title 'Mon espace comité' %}
+
+{% block committee_space_header %}
+    <h1 class="text--center text--large" style="padding-top: 135px;">{{ block('page_title') }}</h1>
+    <p class="text--center text--body text--light-gray">
+        Vous gérez {{ 'common.committees_count'|transchoice(committees|length) }}
+    </p>
+{% endblock %}
+
+{% block committee_content %}
+    <div class="l__row l__row--wrap l__row--center">
+        {% for committee in committees|slice(0, 6) %}
+            {{ block('committee_block') }}
+        {% endfor %}
+
+        {% if not app.user.isSupervisor %}
+            <div class="l__col l__col--half space--20 committee-block b__nudge--top-15">
+                <p class="text--gray">+ Créer un nouveau comité</p>
+            </div>
+        {% endif %}
+    </div>
+
+        {% if committees|length > 6 %}
+            <div class="b__nudge--top-40 l__row l__row--center">
+                <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
+            </div>
+            <div class="l__row l__row--wrap l__row--center hidden" id="committees-next-part">
+                {% for committee in committees|slice(6) %}
+                    {{ block('committee_block') }}
+                {% endfor %}
+            </div>
+        {% endif %}
+{% endblock %}
+
+{% block committee_block %}
+    <div class="l__col l__col--half space--20 committee-block b__nudge--top-15">
+        <p><strong>{{ committee.name }}</strong></p>
+        <div>
+            <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
+            <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        on(window, 'load', function() {
+            once(dom('.show-more-link'), 'click', function () {
+                hide(this);
+                removeClass(dom('#committees-next-part'), 'hidden');
+            });
+        });
+    </script>
+{% endblock %}

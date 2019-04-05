@@ -1,13 +1,18 @@
 {% extends 'message/_layout.html.twig' %}
 
-{% block message_content %}
-    <div class="b__nudge--bottom-small">
-        <form onchange="this.submit();" class="pull-left">
-            <select class="form form__field" name="status">
-                <option value="">Tous les messages</option>
-                <option {{ app.request.query.get('status') == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') }}">Messages envoyés</option>
-                <option {{ app.request.query.get('status') == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
-            </select>
+{% block messages_main_block %}
+    <h3>Mes messages <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}">+ Nouveau message</a></h3>
+    <div class="background--lighter space--20">
+        <form onchange="this.submit();">
+            <p><strong>Filtrer par...</strong></p>
+            <div><label for="message-status-filter">Statut</label></div>
+            <p>
+                <select class="form form__field" id="message-status-filter" name="status">
+                    <option value="">Tous les messages</option>
+                    <option {{ message_filter_status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::SENT_SUCCESSFULLY') }}">Messages envoyés</option>
+                    <option {{ message_filter_status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
+                </select>
+            </p>
         </form>
     </div>
 
@@ -48,12 +53,13 @@
                                 <span class="oval"></span>
                             </a>
                             <div class="action-dropdown-menu">
+                                {% set route_params = route_params|default({})|merge({uuid: message.uuid}) %}
                                 {% if not message.isSent %}
-                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_update", {uuid: message.uuid}) }}">Modifier</a>
+                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
                                 {% endif %}
 
                                 {% if message.isSynchronized %}
-                                    <a class="link--no-decor" href="{{ path("app_message_#{message_type}_preview", {uuid: message.uuid}) }}">Visualiser</a>
+                                    <a class="link--no-decor" href="{{ path("app_message_#{message_type}_preview", route_params) }}">Visualiser</a>
                                 {% else %}
                                     <a class="btn--disabled" href="javascript:void(0);">
                                         <span class="text--small">
@@ -64,10 +70,10 @@
                                 {% endif %}
 
                                 {% if not message.isSent %}
-                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_filter", {uuid: message.uuid}) }}">Filtrer</a>
+                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Filtrer</a>
                                 {% endif %}
 
-                                <a class="link--red" href="{{ path("app_message_#{message_type}_delete", {uuid: message.uuid}) }}">Supprimer</a>
+                                <a class="link--red" href="{{ path("app_message_#{message_type}_delete", route_params) }}">Supprimer</a>
                             </div>
                         </div>
                     </td>

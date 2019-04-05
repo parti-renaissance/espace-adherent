@@ -45,6 +45,6 @@ class MyCommitteeChoiceType extends AbstractType
             return [];
         }
 
-        return $this->repository->findCommitteesByPrivilege($user, CommitteeMembership::getHostPrivileges());
+        return $this->repository->findCommitteesByPrivilege($user, [CommitteeMembership::COMMITTEE_SUPERVISOR]);
     }
 }

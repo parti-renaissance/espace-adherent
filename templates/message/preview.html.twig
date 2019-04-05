@@ -2,13 +2,15 @@
 
 {% block message_page_title 'Prévisualiser mon message' %}
 
+{% set route_params = route_params|default({})|merge({uuid: message.uuid}) %}
+
 {% block messages_header_left_block %}
-    <a href="{{ path("app_message_#{message_type}_list") }}" class="link--blue link--no-decor">← Retour</a>
+    <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}" class="link--blue link--no-decor">← Retour</a>
 {% endblock %}
 
 {% block message_content %}
     <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"
-            src="{{ path("app_message_#{message_type}_content", {uuid: message.uuid}) }}"
+            src="{{ path("app_message_#{message_type}_content", route_params) }}"
     ></iframe>
     <hr/>
     <div class="l__wrapper--slim background--lighter b__nudge--top-40 text--center">
@@ -23,10 +25,12 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                <a class="btn" href="{{ path("app_message_#{message_type}_update", {uuid: message.uuid}) }}">Modifier</a>
-                <a class="btn" href="{{ path("app_message_#{message_type}_filter", {uuid: message.uuid}) }}">Modifier les filtres</a>
+                <a class="btn" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
+                {% if not message.readOnlyFilter %}
+                    <a class="btn" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Modifier les filtres</a>
+                {% endif %}
                 <a class="btn {{ not message.recipientCount ? 'btn--disabled' : 'btn--blue' }}"
-                   href="{{ message.recipientCount ? path("app_message_#{message_type}_send", {uuid: message.uuid}) : 'javascript:void(0);' }}"
+                   href="{{ message.recipientCount ? path("app_message_#{message_type}_send", route_params) : 'javascript:void(0);' }}"
                 >Envoyer</a>
             </div>
         {% endif %}
