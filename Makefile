@@ -24,6 +24,8 @@ help:
 
 start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp var/public.key perm  ## Install and start the project
 
+start-mac: build up app/config/parameters.yml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
+
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill
 	$(DOCKER_COMPOSE) rm -v --force
@@ -100,6 +102,9 @@ db-validate: vendor wait-for-db                                                 
 
 watch: node_modules                                                                                    ## Watch the assets and build their development version on change
 	$(EXEC) yarn watch
+
+watch-mac:
+	yarn watch
 
 assets: node_modules                                                                                   ## Build the development version of the assets
 	$(EXEC) yarn build-dev
@@ -229,6 +234,10 @@ yarn.lock: package.json
 
 web/built: front node_modules
 	$(EXEC) yarn build-dev
+
+web-built-mac:
+	yarn install
+	yarn build-dev
 
 app/config/assets_version.yml:
 	 $(EXEC) yarn build-prod
