@@ -19,9 +19,9 @@ class CommitteeMessageControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
-        $crawler = $this->client->request('GET', '/espace-animateur/messagerie/creer');
+        $crawler = $this->client->request('GET', '/espace-animateur/en-marche-suisse/messagerie/creer');
 
-        $this->client->submit($crawler->selectButton('Suivant')->form(['adherent_message' => [
+        $this->client->submit($crawler->selectButton('Suivant →')->form(['adherent_message' => [
             'label' => 'test',
             'subject' => 'subject',
             'content' => 'message content',
@@ -33,20 +33,9 @@ class CommitteeMessageControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         self::assertSame(
-            'Envoyer un message aux adherents du comité : ',
-            $crawler->filter('form[name="committee_filter"] label')->text()
+            'Message aux membres du comité En Marche - Suisse',
+            trim($crawler->filter('main section div.text--center')->text())
         );
-
-        $this->client->submit($crawler->selectButton('Filtrer')->form(['committee_filter' => [
-            'committee' => '79638242-5101-11e7-b114-b2f933d5fe66',
-        ]]));
-
-        $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
-
-        $crawler = $this->client->followRedirect();
-
-        self::assertCount(1, $flashCrawler = $crawler->filter('.notice-flashes .flash__inner'));
-        self::assertSame('Les filtres ont bien été sauvegardés.', $flashCrawler->text());
     }
 
     protected function setUp()

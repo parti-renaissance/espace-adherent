@@ -14,4 +14,9 @@ class CommitteeAdherentMessage extends AbstractAdherentMessage
     {
         return AdherentMessageTypeEnum::COMMITTEE;
     }
+
+    public function hasReadOnlyFilter(): bool
+    {
+        return true;
+    }
 }

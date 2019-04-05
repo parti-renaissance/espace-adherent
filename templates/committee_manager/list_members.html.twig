@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'committee_manager/_layout_committee.html.twig' %}
 
 {% block page_title 'Membres de mon comité' %}
 
@@ -10,129 +10,87 @@
     </script>
 {% endblock %}
 
-{% block content %}
-    {% set is_host = is_host(committee) %}
+{% block committee_content %}
     {% set is_supervisor = is_supervisor(committee) %}
 
-    <main class="committee">
+    <section class="b__nudge--top-5 b__nudge--bottom-huge">
+        <header class="l__wrapper b__nudge--bottom-tiny">
+            <div class="pull-left">
+                <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}">
+                    <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
+                    <input type="hidden" name="exports" value="" id="members-export-selection" />
 
-        <header class="background--blue space--60-0">
-            <div class="l__wrapper--medium l__row l__row--h-stretch l__mobile--col">
-                <div class="text--white">
-                    <div class="text--uppercase text--small b__nudge--bottom-tiny">Comité local</div>
-                    <div class="committee__name">
-                        {{ include('components/location-pin.html.twig') }}
-                        <h1 id="committee-name" class="text--large b__nudge--left-small">{{ committee.name }}</h1>
-                    </div>
-                </div>
-
-                <div class="l__col">
-                    {% block committee_lcol %}{% endblock %}
-                </div>
+                    <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>
+                </form>
             </div>
+
+            <h2 class="text--center text--medium font-gillsans">Mes adhérents</h2>
+
+            <hr class="clearfix"/>
         </header>
+        <div class="l__wrapper l__col">
+            <table class="committee__members__list" cellpadding="10">
+                <tr>
+                    <th><input type="checkbox" id="members-check-all" /></th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Age</th>
+                    <th>CP</th>
+                    <th>Ville</th>
+                    <th>Rôle</th>
+                    <th>Adhésion</th>
+                    {% if is_supervisor %}
+                        <th style="min-width: 200px;">Actions</th>
+                    {% endif %}
+                </tr>
+                {% for membership in members %}
+                    {% set member = membership.adherent %}
+                    {% set is_promotable_host = membership.promotableHost %}
+                    {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
 
-        <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
-            <div class="committee__main l__wrapper--main l__wrapper--main-left">
-                <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}"
-                   class="back-to-list icon--with-text text--summary space--20-0">
-                    {{ include('components/caret--left.html.twig') }}
-                    Retour au comité
-                </a>
-                <header class="space--30-0">
-                    <h1 class="b__nudge--bottom-small text--medium">
-                        Gérer les adhérents
-                    </h1>
-                </header>
-
-                <div class="committee__members__nav">
-                    <div>
-                        <form method="post" action="{{ path('app_committee_contact_members', {'slug': committee.slug}) }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" id="members-contact-token" />
-                            <input type="hidden" name="contacts" value="" id="members-contact-selection" />
-
-                            <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
-                        </form>
-
-                        <form method="post" action="{{ path('app_committee_manager_export_members', {'slug': committee.slug}) }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
-                            <input type="hidden" name="exports" value="" id="members-export-selection" />
-
-                            <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>
-                        </form>
-                    </div>
-                </div>
-
-                <table class="committee__members__list" cellpadding="10">
-                    <tr>
-                        <th><input type="checkbox" id="members-check-all" /></th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
-                        <th>Age</th>
-                        <th>CP</th>
-                        <th>Ville</th>
-                        <th>Rôle</th>
-                        <th>Adhésion</th>
-                        {% if is_supervisor %}
-                            <th style="min-width: 200px;">Actions</th>
-                        {% endif %}
-                    </tr>
-                    {% for membership in members %}
-                        {% set member = membership.adherent %}
-                        {% set is_promotable_host = membership.promotableHost %}
-                        {% set is_demotable_host = false %}
-
-                        {% if not is_promotable_host %}
-                            {% set is_demotable_host = membership.demotableHost %}
-                        {% endif %}
-
-                        <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
-                            <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
-                            <td class="member-first-name">{{ member.firstName|capitalize }}</td>
-                            <td class="member-last-name">{{ member.lastNameInitial|upper }}</td>
-                            <td class="member-age">{{ member.age }}</td>
-                            <td class="member-postal-code">{{ member.postalCode }}</td>
-                            <td class="member-city-name">{{ member.cityName }}</td>
-                            <td>
-                                {% if not is_promotable_host %}
-                                    {% if member.female %}
-                                        {{ is_demotable_host ? 'Co-animatrice' : 'Animatrice' }}
-                                    {% else %}
-                                        {{ is_demotable_host ? 'Co-animateur' : 'Animateur' }}
-                                    {% endif %}
+                    <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
+                        <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
+                        <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+                        <td class="member-last-name">{{ member.lastNameInitial|upper }}</td>
+                        <td class="member-age">{{ member.age }}</td>
+                        <td class="member-postal-code">{{ member.postalCode }}</td>
+                        <td class="member-city-name">{{ member.cityName }}</td>
+                        <td>
+                            {% if not is_promotable_host %}
+                                {% if member.female %}
+                                    {{ is_demotable_host ? 'Co-animatrice' : 'Animatrice' }}
                                 {% else %}
-                                    Membre
+                                    {{ is_demotable_host ? 'Co-animateur' : 'Animateur' }}
+                                {% endif %}
+                            {% else %}
+                                Membre
+                            {% endif %}
+                        </td>
+
+                        <td class="member-subscription-date">
+                            {{- membership.subscriptionDate|date('d/m/Y') -}}
+                        </td>
+
+                        {% if is_supervisor %}
+                            <td>
+                                {% if is_promotable_host %}
+                                    <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                                       title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
+                                       class="promote-host-link btn btn--small">
+                                        Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
+                                    </a>
+                                {% elseif is_demotable_host %}
+                                    <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                                       title="Définir membre"
+                                       class="demote-host-link btn btn--small">
+                                        Définir membre
+                                    </a>
                                 {% endif %}
                             </td>
-                            <td class="member-subscription-date">
-                                {{- membership.subscriptionDate|date('d/m/Y') -}}
-                            </td>
-                            {% if is_supervisor %}
-                                <td>
-                                    {% if is_promotable_host %}
-                                        <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
-                                           title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
-                                           class="promote-host-link btn btn--small">
-                                            Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
-                                        </a>
-                                    {% elseif is_demotable_host %}
-                                        <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
-                                           title="Définir membre"
-                                           class="demote-host-link btn btn--small">
-                                            Définir membre
-                                        </a>
-                                    {% endif %}
-                                </td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-
-            {{ include('committee/_sidebar.html.twig') }}
-
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
-
-    </main>
-
+    </section>
 {% endblock %}

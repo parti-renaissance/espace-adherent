@@ -1,35 +1,9 @@
-{% form_theme form 'committee/_form_theme.html.twig' %}
-
 <div id="committee-host-nav" class="committee__host__nav">
     <ul class="list__links list__links--default list__links--row list__links--row-left">
         <li>
             <a href="{{ path('app_committee_manager_edit', {'slug': committee.slug}) }}" class="icon--with-text">
-                <i class="fa fa-sliders"></i>
-                Éditer le comité
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="icon--with-text">
-                <i class="fa fa-users"></i>
-                Gérer les adhérents
+                Gérer le comité →
             </a>
         </li>
     </ul>
-</div>
-
-<div id="committee-host-menu" class="committee__host__menu">
-    <ul class="list__links list__links--default list__links--row list__links--row-left">
-        <li>
-            Message à tous les adhérents du comité
-        </li>
-        <li>
-            <a href="{{ path('app_committee_manager_add_event', {'slug': committee.slug}) }}" class="link--no-decor">
-                Créer un événement
-            </a>
-        </li>
-    </ul>
-</div>
-
-<div id="committee-message-form" class="committee__message">
-    {{ form(form) }}
 </div>
