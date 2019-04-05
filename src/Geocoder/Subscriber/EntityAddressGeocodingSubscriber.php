@@ -2,6 +2,7 @@
 
 namespace AppBundle\Geocoder\Subscriber;
 
+use AppBundle\Donation\DonationEvents;
 use AppBundle\Events;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Geocoder\Exception\GeocodingException;
@@ -69,6 +70,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             Events::CITIZEN_ACTION_UPDATED => ['updateCoordinates', -256],
             Events::CITIZEN_PROJECT_CREATED => ['updateCoordinates', -256],
             Events::CITIZEN_PROJECT_UPDATED => ['updateCoordinates', -256],
+            DonationEvents::CREATED => ['updateCoordinates', -256],
         ];
     }
 }

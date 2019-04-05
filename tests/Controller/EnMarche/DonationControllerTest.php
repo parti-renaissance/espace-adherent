@@ -108,6 +108,8 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
+        $this->assertSame(43.69949, $donation->getLatitude());
+        $this->assertSame(7.274206, $donation->getLongitude());
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
