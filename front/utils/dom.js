@@ -8,6 +8,8 @@ window.findAll = (element, selector) => element.querySelectorAll(selector);
 
 window.on = (element, event, handler) => element.addEventListener(event, handler);
 
+window.once = (element, event, handler) => element.addEventListener(event, handler, { once: true });
+
 window.off = (element, event, handler) => element.removeEventListener(event, handler);
 
 window.insertAfter = (element, newElement) => {

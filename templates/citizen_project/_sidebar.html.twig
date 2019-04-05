@@ -79,7 +79,7 @@
 
     <div class="citizen-project__card" id="members">
         <h3>
-            <span class="citizen-project__card__title">{{ 'citizen_project.members_count'|transchoice(citizen_project.membersCount) }}</span>
+            <span class="citizen-project__card__title">{{ 'common.members_count'|transchoice(citizen_project.membersCount) }}</span>
         </h3>
         <span class="l__row l__row--wrap text--small text--normal">
             <a  class="link--newblue" href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Voir</a>

@@ -40,7 +40,7 @@
 {% endblock %}
 
 {%- block meta_description -%}
-    {{ citizen_project.name }} est une action créée dans le cadre des projets citoyens de La République En Marche ! Ce projet, situé à {{ citizen_project.postAddress.cityName }}, a le soutien de {{ 'citizen_project.members_count'|transchoice(citizen_project.membersCount) }}. Rejoignez-le et participez à améliorer le quotidien de votre quartier ou de votre village !
+    {{ citizen_project.name }} est une action créée dans le cadre des projets citoyens de La République En Marche ! Ce projet, situé à {{ citizen_project.postAddress.cityName }}, a le soutien de {{ 'common.members_count'|transchoice(citizen_project.membersCount) }}. Rejoignez-le et participez à améliorer le quotidien de votre quartier ou de votre village !
 {%- endblock -%}
 
 {% block citizen_project_content %}

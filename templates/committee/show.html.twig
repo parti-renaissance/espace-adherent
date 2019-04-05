@@ -39,25 +39,11 @@
     </script>
 {% endblock %}
 
-{% block head_javascripts %}
-    {% if is_host %}
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    {% endif %}
-{% endblock %}
-
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 
-    {% if is_host %}
-        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-        <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
-    {% endif %}
-
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
-            {% if form is defined and form is not null %}
-                {{ js.toggleDisplayingElement("##{form.vars.id}_sendNotification", "##{form.vars.id}_subject") }}
-            {% endif %}
             var committeeSlug = '{{ committee.slug }}';
 
             {% if committee_timeline is defined and committee_timeline|length %}
@@ -103,10 +89,6 @@
                     }
                 );
             });
-            {% endif %}
-
-            {% if is_host %}
-                {{ js.ckeditor(form.vars.id ~ '_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_FEED'), 5000, true) }}
             {% endif %}
         });
     </script>
@@ -235,7 +217,7 @@
 
             {% if committee_timeline|length %}
                 <div id="committee-timeline-page-1">
-                    {{ include('committee/timeline/feed.html.twig') }}
+                    {{ include('committee/timeline/_feed.html.twig') }}
                 </div>
                 <div class="text--center space--30-0">
                     <button role="button" class="btn" id="committee-timeline-more">Afficher plus</button>
