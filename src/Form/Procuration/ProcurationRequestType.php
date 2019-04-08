@@ -63,7 +63,6 @@ class ProcurationRequestType extends AbstractProcurationType
 
             case ProcurationRequest::STEP_URI_PROFILE:
                 parent::buildForm($builder, $options);
-
                 break;
 
             case ProcurationRequest::STEP_URI_ELECTION_ROUNDS:
@@ -96,6 +95,9 @@ class ProcurationRequestType extends AbstractProcurationType
                             'message' => 'procuration.authorization.required',
                             'groups' => [ProcurationRequest::STEP_ELECTION_ROUNDS],
                         ]),
+                    ])
+                    ->add('reachable', CheckboxType::class, [
+                        'required' => false,
                     ])
                 ;
 

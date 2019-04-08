@@ -1,20 +1,23 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.foundRequest %}
-        <div style="margin-bottom: 10px; width: 160px;">
-            <span class="label label-success">Associé</span>
-            <a href="{{ path('app_admin_procuration_request_deassociate', {'id': object.foundRequest.id, 'from': 'proxies'}) }}" class="btn btn-default btn-xs">
-                Désassocier
-            </a>
-        </div>
+    {% if object.foundRequests|length > 0 %}
+        {% for foundRequest in object.foundRequests %}
+            <div style="margin-bottom: 10px; width: 160px;">
+                <span class="label label-success">Associé</span>
+                <a href="{{ path('app_admin_procuration_request_deassociate', {'id': foundRequest.id, 'from': 'proxies'}) }}" class="btn btn-default btn-xs">
+                    Désassocier
+                </a>
+            </div>
 
-        <div>
-            A
-            <a href="{{ path('admin_app_procurationrequest_show', {'id': object.foundRequest.id}) }}">
-                {{ object.foundRequest.firstNames }} {{ object.foundRequest.lastName }}
-            </a>
-        </div>
+            <div>
+                A
+                <a href="{{ path('admin_app_procurationrequest_show', {'id': foundRequest.id}) }}">
+                    {{ foundRequest.firstNames }} {{ foundRequest.lastName }}
+                </a>
+            </div>
+            {% if not loop.last %}<br>{% endif %}
+        {% endfor %}
     {% else %}
         <span class="label label-default">En attente</span>
     {% endif %}

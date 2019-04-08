@@ -146,7 +146,19 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 ->add('address', null, [
                     'label' => 'Adresse postale',
                 ])
-            ->end()
+        ;
+
+        if ('FR' != $this->getSubject()->getCountry()) {
+            $showMapper
+                 ->add('stage', null, [
+                     'label' => 'État/Province',
+                 ])
+             ;
+        }
+
+        $showMapper->end();
+
+        $showMapper
             ->with('Lieu de vote', ['class' => 'col-md-4'])
                 ->add('voteCountry', null, [
                     'label' => 'Pays',
@@ -164,6 +176,11 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ->with('Procuration', ['class' => 'col-md-4'])
                 ->add('electionRounds', null, [
                     'label' => 'Tours',
+                ])
+            ->end()
+            ->with('Mailing', ['class' => 'col-md-4'])
+                ->add('reachable', null, [
+                    'label' => 'Peut être recontacté',
                 ])
             ->end()
         ;

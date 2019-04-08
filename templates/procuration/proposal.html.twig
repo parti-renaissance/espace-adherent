@@ -13,6 +13,8 @@
 {% block footer '' %}
 
 {% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
     {% if google_maps_api_key %}
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
@@ -20,7 +22,10 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.runProcurationProxy();
+            App.runProcurationProxy(
+                '#{{ procuration_form.country.vars.id }}',
+                '#{{ procuration_form.state.vars.id }}'
+            );
 
             App.createVoteLocationSelector(
                 '{{ procuration_form.voteCountry.vars.id }}',
@@ -128,6 +133,13 @@
                                     {{ form_errors(procuration_form.city) }}
                                 </div>
                             </div>
+
+                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                                <div class="register__form--mid">
+                                    {{ form_widget(procuration_form.state, { attr: { placeholder: 'État/Province'} }) }}
+                                    {{ form_errors(procuration_form.state) }}
+                                </div>
+                            </div>
                         </div>
 
                         <div class="l__row l__row--h-stretch register__form--full">
@@ -173,7 +185,7 @@
                                 {{ form_label(procuration_form.voteCity, 'La ville dans laquelle je vote') }}
                             </span>
                             <span id="vote-label-consulate" style="display: none;">
-                                {{ form_label(procuration_form.voteCity, 'Le consulat ou l\'ambassade dans lequel ou laquelle je vote') }}
+                                {{ form_label(procuration_form.voteCity, 'La circonscription consulaire dans laquelle je suis inscrit(e)') }}
                             </span>
                             {{ form_widget(procuration_form.voteCity) }}
                             {{ form_widget(procuration_form.voteCityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
@@ -222,6 +234,12 @@
                     </div>
 
                     <div class="b__nudge--top-40">
+                        {{ form_errors(procuration_form.reachable) }}
+                        <div class="form__row form__checkbox form__checkbox--large" id="procuration_reachable">
+                            {{ form_widget(procuration_form.reachable) }}
+                            {{ form_label(procuration_form.reachable, "J'accepte d’être recontacté par LaREM pour les prochaines échéances électorales") }}
+                        </div>
+
                         {{ form_errors(procuration_form.conditions) }}
                         <div class="form__row form__checkbox form__checkbox--large">
                             {{ form_widget(procuration_form.conditions) }}

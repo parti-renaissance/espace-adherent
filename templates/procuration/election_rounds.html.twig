@@ -68,6 +68,12 @@
                 </div>
 
                 <div class="b__nudge--top-40">
+                    {{ form_errors(procuration_form.reachable) }}
+                    <div class="form__row form__checkbox form__checkbox--large" id="procuration_reachable">
+                        {{ form_widget(procuration_form.reachable) }}
+                        {{ form_label(procuration_form.reachable, "J'accepte d’être recontacté par LaREM pour les prochaines échéances électorales") }}
+                    </div>
+
                     {{ form_errors(procuration_form.authorization) }}
                     <div class="form__row form__checkbox form__checkbox--large">
                         {{ form_widget(procuration_form.authorization) }}

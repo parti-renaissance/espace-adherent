@@ -55,6 +55,10 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('address', TextType::class, [
                 'filter_emojis' => true,
             ])
+            ->add('state', TextType::class, [
+                'required' => false,
+                'filter_emojis' => true,
+            ])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,

@@ -169,6 +169,20 @@ class ProcurationRequest
     private $cityName;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255, groups={"profile"})
+     * @Assert\Expression(
+     *     "this.getCountry() == 'FR' and value == null",
+     *     message="procuration.state.not_empty",
+     *     groups={"profile"}
+     * )
+     */
+    private $state;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=2)
@@ -316,6 +330,13 @@ class ProcurationRequest
      * @ORM\Column(type="boolean", options={"default": true})
      */
     private $requestFromFrance = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public $reachable = false;
 
     public function __construct()
     {
@@ -689,5 +710,25 @@ class ProcurationRequest
     public function setRequestFromFrance(bool $requestFromFrance): void
     {
         $this->requestFromFrance = $requestFromFrance;
+    }
+
+    public function isReachable(): bool
+    {
+        return $this->reachable;
+    }
+
+    public function setReachable(bool $reachable): void
+    {
+        $this->reachable = $reachable;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
     }
 }
