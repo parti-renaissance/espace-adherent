@@ -1,5 +1,4 @@
-import { ideaStatus } from '../../constants/api';
-import { fetchIdeas, fetchIdea, fetchUserIdeas, fetchUserContributions } from './ideas';
+import { fetchIdea, fetchUserIdeas, fetchFinalizedIdeas, fetchPendingIdeas, fetchUserContributions } from './ideas';
 import { setIdeas } from '../actions/ideas';
 import { fetchConsultationPinned } from './pinned';
 import { fetchReports } from './reports';
@@ -30,8 +29,8 @@ export function initHomePage() {
             // ideas
             // flush ideas reducer
             dispatch(setIdeas()),
-            dispatch(fetchIdeas(ideaStatus.PENDING, params)),
-            dispatch(fetchIdeas(ideaStatus.FINALIZED, params)),
+            dispatch(fetchPendingIdeas(params)),
+            dispatch(fetchFinalizedIdeas(params)),
             // reports
             dispatch(fetchReports()),
         ]);

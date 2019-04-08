@@ -39,7 +39,10 @@ class Header extends React.PureComponent {
                                 className="header__item"
                                 options={myWorkShopRoutes}
                                 onSelect={key => myWorkShopRoutes[key].onClick()}
-                                label={['Mon atelier', <img src={arrowDown} alt="ouvrir le sous-menu" />]}
+                                label={[
+                                    'Mon atelier',
+                                    <img src={arrowDown} key="mon-atelier" alt="ouvrir le sous-menu" />,
+                                ]}
                             />
                             <Link
                                 to="/atelier-des-idees/creer-ma-proposition"

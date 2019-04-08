@@ -86,23 +86,32 @@ class IdeaCard extends React.Component {
                                     </span>
                                     <span className="idea-card__content__infos__author__separator" />
 
-                                    <span
-                                        onClick={
-                                            null !== this.props.committee
-                                                ? e => (window.location = `/comites/${this.props.committee.slug}`)
-                                                : ''
-                                        }
-                                        className={classnames(
-                                            'idea-card__content__infos__author__type',
-                                            `idea-card__content__infos__author__type--${this.props.author_category}`
-                                        )}
-                                        data-tip={this.props.committee && this.props.committee.name}
-                                        data-effect="solid"
-                                        data-type="light"
-                                        data-class="idea-card__theme-tip"
-                                        alt="Aperçu">
-                                        {AUTHOR_CATEGORIES[this.props.author_category]}
-                                    </span>
+                                    {null !== this.props.committee ? (
+                                        <span
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                window.location = `/comites/${this.props.committee.slug}`;
+                                            }}
+                                            className={classnames(
+                                                'idea-card__content__infos__author__type',
+                                                `idea-card__content__infos__author__type--${this.props.author_category}`
+                                            )}
+                                            data-tip={this.props.committee.name}
+                                            data-effect="solid"
+                                            data-type="light"
+                                            data-class="idea-card__theme-tip"
+                                            alt="Aperçu">
+                                            {AUTHOR_CATEGORIES[this.props.author_category]}
+                                        </span>
+                                    ) : (
+                                        <span
+                                            className={classnames(
+                                                'idea-card__content__infos__author__type',
+                                                `idea-card__content__infos__author__type--${this.props.author_category}`
+                                            )}>
+                                            {AUTHOR_CATEGORIES[this.props.author_category]}
+                                        </span>
+                                    )}
                                 </span>
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
