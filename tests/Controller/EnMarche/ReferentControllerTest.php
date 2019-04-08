@@ -584,6 +584,7 @@ class ReferentControllerTest extends WebTestCase
             ['/espace-referent/utilisateurs'],
             ['/espace-referent/evenements'],
             ['/espace-referent/comites'],
+            ['/espace-referent/projets-citoyens'],
             ['/espace-referent/evenements/creer'],
         ];
     }
