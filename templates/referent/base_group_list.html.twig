@@ -33,7 +33,7 @@
                         }
                     }
                 ],
-                {{ managedCommitteesJson|raw }}
+                {{ managedGroupsJson|raw }}
             );
         });
     </script>
@@ -41,9 +41,9 @@
 
 {% block referent_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
-        <h3>Comités</h3>
+        <h3>{{ title }}</h3>
         <span class="datagrid__count">
-            <span>45</span> sur 5000 Comités
+            <span>45</span> sur 5000 {{ title }}
         </span>
     </div>
 
