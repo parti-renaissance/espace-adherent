@@ -24,6 +24,7 @@ use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
+use AppBundle\Referent\ManagedCitizenProjectsExporter;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
@@ -31,6 +32,7 @@ use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Referent\SurveyExporter;
+use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
@@ -271,8 +273,22 @@ class ReferentController extends Controller
         CommitteeRepository $committeeRepository,
         ManagedCommitteesExporter $committeesExporter
     ): Response {
-        return $this->render('referent/committees_list.html.twig', [
-            'managedCommitteesJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
+        return $this->render('referent/base_group_list.html.twig', [
+            'title' => 'Comités',
+            'managedGroupsJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
+        ]);
+    }
+
+    /**
+     * @Route("/projets-citoyens", name="app_referent_citizen_projects", methods={"GET"})
+     */
+    public function citizenProjectsAction(
+        CitizenProjectRepository $citizenProjectRepository,
+        ManagedCitizenProjectsExporter $citizenProjectsExporter
+    ): Response {
+        return $this->render('referent/base_group_list.html.twig', [
+            'title' => 'Projets citoyens',
+            'managedGroupsJson' => $citizenProjectsExporter->exportAsJson($citizenProjectRepository->findManagedByReferent($this->getUser())),
         ]);
     }
 
