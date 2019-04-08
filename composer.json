@@ -24,6 +24,7 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
+        "ext-amqp": "*",
         "a2lix/i18n-doctrine-bundle": "^0.1.0",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/algolia-search-bundle": "^2.2",

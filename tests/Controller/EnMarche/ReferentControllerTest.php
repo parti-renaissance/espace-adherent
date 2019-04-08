@@ -548,7 +548,7 @@ class ReferentControllerTest extends WebTestCase
 
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
-                'adherent_message_referent_zone_filter' => [
+                'referent_zone_filter' => [
                     'referentTag' => 13,
                 ],
             ])

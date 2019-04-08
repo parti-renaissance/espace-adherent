@@ -158,7 +158,8 @@
         <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
 
         <!-- Form -->
-        <service id="AppBundle\Form\ReferentTagChoiceType"/>
+        <service id="AppBundle\Form\MyReferentTagChoiceType"/>
+        <service id="AppBundle\Form\MyCommitteeChoiceType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
         <service id="AppBundle\Form\EventRegistrationType"/>
@@ -283,11 +284,13 @@
         <service id="AppBundle\Command\BindDeputiesToDistrictsCommand"/>
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand"/>
         <service id="AppBundle\Command\MailchimpSyncAllAdherentsCommand"/>
+        <service id="AppBundle\Command\MailchimpSyncAllCommitteesCommand"/>
+        <service id="AppBundle\Command\MailchimpSyncAllCommitteeMembershipsCommand"/>
         <service id="AppBundle\Command\MailchimpCreateTagFromReferentTagCommand">
             <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
         </service>
-        <service id="AppBundle\Command\MailchimpUpdateReferentTagExternalIdFromMailchimpCommand">
+        <service id="AppBundle\Command\MailchimpSegmentUpdateDbSegmentIdsCommand">
             <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
         </service>

@@ -164,6 +164,11 @@
             <li>
                 {{ al_committees }}
             </li>
+            {% if is_canary_enabled() %}
+                <li>
+                    <a href="{{ path('app_message_committee_list') }}">Espace animateur ✨</a>
+                </li>
+            {% endif %}
         {% endif %}
         {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
             <li>
@@ -182,7 +187,7 @@
 
             {% if is_canary_enabled() %}
                 <li>
-                    <a href="{{ path('app_message_deputy_list', {prefix: 'espace-depute/'}) }}">Espace député ✨</a>
+                    <a href="{{ path('app_message_deputy_list') }}">Espace député ✨</a>
                 </li>
             {% endif %}
         {% endif %}

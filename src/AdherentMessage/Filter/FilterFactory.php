@@ -4,6 +4,7 @@ namespace AppBundle\AdherentMessage\Filter;
 
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 
@@ -16,6 +17,8 @@ abstract class FilterFactory
                 return static::createReferentFilter($user);
             case AdherentMessageTypeEnum::DEPUTY:
                 return static::createDeputyFilter($user);
+            case AdherentMessageTypeEnum::COMMITTEE:
+                return static::createCommitteeFilter();
         }
     }
 
@@ -39,5 +42,10 @@ abstract class FilterFactory
         }
 
         return new AdherentZoneFilter($user->getManagedDistrict()->getReferentTag());
+    }
+
+    private static function createCommitteeFilter(): AdherentMessageFilterInterface
+    {
+        return new CommitteeFilter();
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use AppBundle\Form\GenderType;
+use AppBundle\Form\MemberInterestsChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -10,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdherentMessageReferentFilterType extends AbstractType
+class ReferentFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
