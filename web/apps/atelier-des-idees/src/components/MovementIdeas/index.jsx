@@ -18,7 +18,7 @@ class MovementIdeas extends React.PureComponent {
     render() {
         const sectionContent = [
             {
-                title: [<span className="underline">Rédiger</span>, <br />, 'une propostion'],
+                title: [<span className="underline">Rédiger</span>, <br />, 'une proposition'],
                 description: ['Soumettez une nouvelle', <br />, 'proposition à la communauté.'],
                 linkLabel: 'Je propose',
                 link: '/atelier-des-idees/proposer',
