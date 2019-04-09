@@ -14,11 +14,4 @@ class ReferentAdherentMessage extends AbstractAdherentMessage
     {
         return AdherentMessageTypeEnum::REFERENT;
     }
-
-    public function getFromName(): ?string
-    {
-        $name = parent::getFromName();
-
-        return $name ? $name.' [Référent]' : null;
-    }
 }
