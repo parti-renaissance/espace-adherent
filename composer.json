@@ -21,11 +21,12 @@
     },
     "require": {
         "php": ">=7.1",
+        "ext-amqp": "*",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
-        "ext-amqp": "*",
-        "a2lix/i18n-doctrine-bundle": "^0.1.0",
+        "ext-zip": "*",
+        "a2lix/i18n-doctrine-bundle": "^0.2",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/algolia-search-bundle": "^2.2",
         "api-platform/api-pack": "^1.1",
@@ -110,7 +111,6 @@
         "liip/functional-test-bundle": "^1.8",
         "pedrotroller/php-cs-custom-fixer": "2.11.0",
         "phpunit/phpunit": "^6.2",
-        "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },
     "scripts": {
