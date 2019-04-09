@@ -39,7 +39,7 @@ final class ReferentMessage extends Message
         );
 
         $message->setSenderEmail('jemarche@en-marche.fr');
-        $message->setSenderName($referent->getFullName().' [Référent]');
+        $message->setSenderName($referent->getFullName());
 
         foreach ($recipients as $recipient) {
             $message->addRecipient(
