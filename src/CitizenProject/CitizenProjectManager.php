@@ -252,8 +252,8 @@ class CitizenProjectManager
             $manager->flush();
         }
 
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent));
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerChangeEvent($citizenProject, $adherent));
     }
 
     public function unfollowCitizenProject(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
@@ -271,8 +271,8 @@ class CitizenProjectManager
             $manager->flush();
         }
 
-        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_REMOVED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent));
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_REMOVED, new CitizenProjectFollowerChangeEvent($citizenProject, $adherent));
     }
 
     public function findAdherentNearCitizenProjectOrAcceptAllNotification(

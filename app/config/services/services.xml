@@ -284,8 +284,7 @@
         <service id="AppBundle\Command\BindDeputiesToDistrictsCommand"/>
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand"/>
         <service id="AppBundle\Command\MailchimpSyncAllAdherentsCommand"/>
-        <service id="AppBundle\Command\MailchimpSyncAllCommitteesCommand"/>
-        <service id="AppBundle\Command\MailchimpSyncAllCommitteeMembershipsCommand"/>
+        <service id="AppBundle\Command\MailchimpSyncAllMembershipsCommand"/>
         <service id="AppBundle\Command\MailchimpCreateTagFromReferentTagCommand">
             <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>

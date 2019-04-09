@@ -2,13 +2,16 @@
 
 namespace AppBundle\Mailchimp\Synchronisation\EventListener;
 
+use AppBundle\AdherentMessage\StaticSegmentInterface;
+use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
 use AppBundle\Committee\Event\CommitteeEventInterface;
 use AppBundle\Committee\Event\FollowCommitteeEvent;
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToCommitteeStaticSegmentCommand;
+use AppBundle\Events;
+use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromCommitteeStaticSegmentCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Utils\ArrayUtils;
@@ -44,12 +47,25 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
             UserEvents::USER_UPDATE_CITIZEN_PROJECT_PRIVILEGE => 'onCitizenProjectPrivilegeChange',
+
+            Events::CITIZEN_PROJECT_FOLLOWER_ADDED => 'onCitizenProjectMembershipCreation',
+            Events::CITIZEN_PROJECT_FOLLOWER_REMOVED => 'onCitizenProjectMembershipDeletion',
         ];
     }
 
     public function onBeforeUpdate(UserEvent $event): void
     {
         $this->before = $this->transformToArray($event->getUser());
+    }
+
+    public function onCitizenProjectMembershipCreation(CitizenProjectFollowerChangeEvent $event): void
+    {
+        $this->dispatchAddAdherentToStaticSegmentCommand($event->getFollower(), $event->getCitizenProject());
+    }
+
+    public function onCitizenProjectMembershipDeletion(CitizenProjectFollowerChangeEvent $event): void
+    {
+        $this->dispatchRemoveAdherentFromStaticSegmentCommand($event->getFollower(), $event->getCitizenProject());
     }
 
     public function onAfterUpdate(UserEvent $event): void
@@ -60,7 +76,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         $changeTo = ArrayUtils::arrayDiffRecursive($after, $this->before);
 
         if ($changeFrom || $changeTo) {
-            $this->dispatchMessage(
+            $this->dispatchAdherentChangeCommand(
                 $adherent->getUuid(),
                 $changeFrom['emailAddress'] ?? $adherent->getEmailAddress(),
                 isset($changeFrom['referentTagCodes']) ? (array) $changeFrom['referentTagCodes'] : []
@@ -70,49 +86,36 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     public function onCitizenProjectPrivilegeChange(UserEvent $event): void
     {
-        $this->dispatchMessage($event->getUser()->getUuid(), $event->getUser()->getEmailAddress());
+        $this->dispatchAdherentChangeCommand($event->getUser()->getUuid(), $event->getUser()->getEmailAddress());
     }
 
     public function onCommitteePrivilegeChange(CommitteeEventInterface $event): void
     {
         $adherent = $event->getAdherent();
 
-        $this->dispatchMessage($adherent->getUuid(), $adherent->getEmailAddress());
+        $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
 
         if (!$committee = $event->getCommittee()) {
             return;
         }
 
         if ($event instanceof FollowCommitteeEvent) {
-            $message = new AddAdherentToCommitteeStaticSegmentCommand(
-                $adherent->getUuid(),
-                $committee->getUuid()
-            );
+            $this->dispatchAddAdherentToStaticSegmentCommand($adherent, $committee);
         } else {
-            $message = new RemoveAdherentFromCommitteeStaticSegmentCommand(
-                $adherent->getUuid(),
-                $committee->getUuid()
-            );
+            $this->dispatchRemoveAdherentFromStaticSegmentCommand($adherent, $committee);
         }
-
-        $this->bus->dispatch($message);
     }
 
     public function onDelete(UserEvent $event): void
     {
-        $this->bus->dispatch(new AdherentDeleteCommand($event->getUser()->getEmailAddress()));
+        $this->dispatch(new AdherentDeleteCommand($event->getUser()->getEmailAddress()));
     }
 
     public function onUserValidated(UserEvent $event): void
     {
         $adherent = $event->getUser();
 
-        $this->dispatchMessage($adherent->getUuid(), $adherent->getEmailAddress());
-    }
-
-    private function dispatchMessage(UuidInterface $uuid, string $identifier, array $removedTags = []): void
-    {
-        $this->bus->dispatch(new AdherentChangeCommand($uuid, $identifier, $removedTags));
+        $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
     }
 
     private function transformToArray(Adherent $adherent): array
@@ -121,5 +124,38 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             $adherent,
             SerializationContext::create()->setGroups(['adherent_change_diff'])
         );
+    }
+
+    private function dispatchAdherentChangeCommand(
+        UuidInterface $uuid,
+        string $identifier,
+        array $removedTags = []
+    ): void {
+        $this->dispatch(new AdherentChangeCommand($uuid, $identifier, $removedTags));
+    }
+
+    private function dispatchAddAdherentToStaticSegmentCommand(Adherent $adherent, StaticSegmentInterface $object): void
+    {
+        $this->dispatch(new AddAdherentToStaticSegmentCommand(
+            $adherent->getUuid(),
+            $object->getUuid(),
+            \get_class($object)
+        ));
+    }
+
+    private function dispatchRemoveAdherentFromStaticSegmentCommand(
+        Adherent $adherent,
+        StaticSegmentInterface $object
+    ): void {
+        $this->dispatch(new RemoveAdherentFromStaticSegmentCommand(
+            $adherent->getUuid(),
+            $object->getUuid(),
+            \get_class($object)
+        ));
+    }
+
+    private function dispatch($command): void
+    {
+        $this->bus->dispatch($command);
     }
 }
