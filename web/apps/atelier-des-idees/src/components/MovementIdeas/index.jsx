@@ -27,7 +27,9 @@ class MovementIdeas extends React.PureComponent {
                 title: ['Les propositions', <br />, 'à ', <span className="underline"> enrichir</span>],
                 description: [
                     'Enrichissez une des ',
-                    <span className="total">{this.props.totalCount.pending.items.length}</span>,
+                    <span className="total">
+                        {this.props.ideas.pending && this.props.ideas.pending.metadata.total_items}
+                    </span>,
                     <br />,
                     ' propositions en cours d\'écriture.',
                 ],
@@ -38,7 +40,9 @@ class MovementIdeas extends React.PureComponent {
                 title: [<span className="underline">Voter</span>, <br />, 'les propositions'],
                 description: [
                     'Donnez votre avis sur les ',
-                    <span className="total">{this.props.totalCount.finalized.items.length}</span>,
+                    <span className="total">
+                        {this.props.ideas.finalized && this.props.ideas.finalized.metadata.total_items}
+                    </span>,
                     <br />,
                     ' propositions finalisées.',
                 ],
@@ -49,7 +53,6 @@ class MovementIdeas extends React.PureComponent {
         const items = sectionContent.map((content, idx) => (
             <CondensedChapter title={content.keyWord} {...content} key={idx} />
         ));
-
         return (
             <article className="movement-ideas">
                 <div className="movement-ideas__first__section">

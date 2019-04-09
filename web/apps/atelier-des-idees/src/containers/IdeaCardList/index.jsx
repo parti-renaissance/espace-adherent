@@ -59,24 +59,27 @@ class IdeaCardListContainer extends React.Component {
                         <div className="idea-card-list__actions__count">
                             <span className="idea-card-list__actions__count__total">{this.props.total}</span>
                             {` proposition${1 < this.props.total ? 's' : ''} ${
-                                this.props.status === ideaStatus.PENDING ? 'en cours' : `finalisée${1 < this.props.total ? 's' : ''}`
+                                this.props.status === ideaStatus.PENDING
+                                    ? 'en cours'
+                                    : `finalisée${1 < this.props.total ? 's' : ''}`
                             }`}
                         </div>
                         <div className="idea-card-list__actions__display">
                             {[
                                 { title: 'Affichage par défaut', condensed: false },
                                 { title: 'Affichage condensé', condensed: true },
-                            ].map(item => (
+                            ].map((item, i) => (
                                 <button
+                                    key={i}
                                     className={classNames('idea-card-list__actions__display__btn', {
-                                        'idea-card-list__actions__display__btn--selected': this.state.condensed === item.condensed,
+                                        'idea-card-list__actions__display__btn--selected':
+                                            this.state.condensed === item.condensed,
                                     })}
                                     data-tip={item.title}
                                     data-effect="solid"
                                     data-type="light"
                                     data-class="idea-card-list__actions__display__btn-tip"
-                                    onClick={() => this.onDisplayModeChange(item.condensed)}
-                                >
+                                    onClick={() => this.onDisplayModeChange(item.condensed)}>
                                     <img src={item.condensed ? condensedIcn : defaultIcn} alt="Condensé" />
                                 </button>
                             ))}

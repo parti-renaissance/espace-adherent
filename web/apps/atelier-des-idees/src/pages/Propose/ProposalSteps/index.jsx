@@ -12,10 +12,10 @@ const steps = [
         title: ['Publiez une nouvelle idée', <br />, 'sur notre plateforme'],
         picto: `${proposePicto}`,
         description: `Vous pouvez la rédiger seul(e) ou en comité. Si vous ne souhaitez pas la publier immédiatement, 
-            vous pouvez enregistrer un brouillon. Attention: une fois votre idée publiée vous disposez de 10 jours pour la modifier en prenant en compte les commentaires des autres marcheurs sur votre proposition.`,
+            vous pouvez enregistrer un brouillon. Une fois votre idée publiée vous disposez de 10 jours pour la modifier en prenant en compte les commentaires des autres marcheurs sur votre proposition.`,
         img: `${proposeImg}`,
         linkLabel: 'Je rédige',
-        link: '/atelier-des-idees/proposer',
+        link: '/atelier-des-idees/creer-ma-proposition',
     },
     {
         title: ['Contribuez aux propositions', <br />, 'en cours de rédaction !'],
@@ -46,7 +46,7 @@ class ProposalSteps extends React.PureComponent {
             <div className="proposal--steps">
                 <h2 className="proposal-steps__title">Pour participer, 3 possibilités :</h2>
                 {steps.map((step, i) => (
-                    <Steps {...step} />
+                    <Steps key={i} {...step} />
                 ))}
             </div>
         );

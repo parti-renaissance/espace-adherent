@@ -37,7 +37,7 @@ SubMenu.defaultProps = {
 
 SubMenu.propTypes = {
     className: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.array,
     onSelect: PropTypes.func.isRequired,
     options: PropTypes.arrayOf(
         PropTypes.shape({ label: PropTypes.string, value: PropTypes.string, isImportant: PropTypes.bool })
