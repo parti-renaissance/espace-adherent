@@ -8,7 +8,11 @@ use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Entity\ManagedArea\EuropeanDeputyManagedArea;
 use AppBundle\Entity\SubscriptionType;
+use AppBundle\Form\Admin\EuropeanDeputyManagedAreaType;
+use AppBundle\Form\Admin\SenatorManagedAreaType;
+use AppBundle\Form\EventListener\ManagedAreaListener;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Form\ActivityPositionType;
@@ -57,6 +61,7 @@ class AdherentAdmin extends AbstractAdmin
 
     private $dispatcher;
     private $emailSubscriptionHistoryManager;
+    private $managedAreaListener;
 
     /**
      * State of adherent data before update
@@ -70,12 +75,14 @@ class AdherentAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
+        ManagedAreaListener $managedAreaListener
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
+        $this->managedAreaListener = $managedAreaListener;
     }
 
     protected function configureRoutes(RouteCollection $collection)
@@ -296,10 +303,6 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'coordinator.label.codes.committee',
                     'sector' => CoordinatorAreaSectors::COMMITTEE_SECTOR,
                 ])
-                ->add('managedArea', ReferentManagedAreaType::class, [
-                    'label' => false,
-                    'required' => false,
-                ])
                 ->add('procurationManagedAreaCodesAsString', TextType::class, [
                     'label' => 'coordinator.label.codes',
                     'required' => false,
@@ -317,6 +320,9 @@ class AdherentAdmin extends AbstractAdmin
                     'btn_add' => false,
                     'required' => false,
                 ])
+                ->add('senatorManagedArea', SenatorManagedAreaType::class)
+                ->add('europeanDeputyManagedArea', EuropeanDeputyManagedAreaType::class)
+                ->add('referentManagedArea', ReferentManagedAreaType::class)
             ->end()
             ->with('Zone expérimentale 🚧', [
                 'class' => 'col-md-6',
@@ -327,7 +333,7 @@ class AdherentAdmin extends AbstractAdmin
         ;
 
         $formMapper->getFormBuilder()
-            ->addEventSubscriber(new ReferentManagedAreaListener())
+            ->addEventSubscriber($this->managedAreaListener)
         ;
     }
 

@@ -4,10 +4,13 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Entity\ManagedArea\EuropeanDeputyManagedArea;
+use AppBundle\Entity\ManagedArea\SenatorManagedArea;
 use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\ManagedArea\ReferentManagedArea;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
@@ -202,13 +205,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $legislativeCandidate;
 
     /**
-     * @var ReferentManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
-     */
-    private $managedArea;
-
-    /**
      * @var CoordinatorManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
@@ -372,6 +368,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
+
+    /**
+     * @var SenatorManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ManagedArea\SenatorManagedArea", cascade={"all"})
+     */
+    private $senatorManagedArea;
+
+    /**
+     * @var EuropeanDeputyManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ManagedArea\EuropeanDeputyManagedArea", cascade={"all"})
+     */
+    private $europeanDeputyManagedArea;
+
+    /**
+     * @var ReferentManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ManagedArea\ReferentManagedArea", cascade={"all"})
+     */
+    private $referentManagedArea;
 
     /**
      * @var bool
@@ -930,16 +947,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->updatedAt;
     }
 
-    public function getManagedArea(): ?ReferentManagedArea
-    {
-        return $this->managedArea;
-    }
-
-    public function setManagedArea(ReferentManagedArea $managedArea): void
-    {
-        $this->managedArea = $managedArea;
-    }
-
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("managedAreaTagCodes"),
@@ -997,20 +1004,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->boardMember = null;
     }
 
-    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
+    public function setReferent(array $tags): void
     {
-        $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
+        $this->referentManagedArea = new ReferentManagedArea($tags);
     }
 
     public function isReferent(): bool
     {
-        return $this->managedArea instanceof ReferentManagedArea
-            && !$this->managedArea->getTags()->isEmpty();
-    }
-
-    public function revokeReferent(): void
-    {
-        $this->managedArea = null;
+        return $this->referentManagedArea instanceof ReferentManagedArea
+            && !$this->referentManagedArea->getTags()->isEmpty();
     }
 
     public function getManagedAreaMarkerLatitude(): ?string
@@ -1446,5 +1448,40 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
+    }
+
+    public function getSenatorManagedArea(): ?SenatorManagedArea
+    {
+        return $this->senatorManagedArea;
+    }
+
+    public function revokeSenator(): void
+    {
+        $this->senatorManagedArea = null;
+    }
+
+    public function getEuropeanDeputyManagedArea(): ?EuropeanDeputyManagedArea
+    {
+        return $this->europeanDeputyManagedArea;
+    }
+
+    public function isEuropeanDeputy(): bool
+    {
+        return null !== $this->europeanDeputyManagedArea;
+    }
+
+    public function revokeEuropeanDeputy(): void
+    {
+        $this->europeanDeputyManagedArea = null;
+    }
+
+    public function getReferentManagedArea(): ?ReferentManagedArea
+    {
+        return $this->referentManagedArea;
+    }
+
+    public function revokeReferent(): void
+    {
+        $this->referentManagedArea = null;
     }
 }

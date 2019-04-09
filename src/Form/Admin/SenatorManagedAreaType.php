@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\Admin;
 
-use AppBundle\Entity\ManagedArea\ReferentManagedArea;
+use AppBundle\Entity\ManagedArea\SenatorManagedArea;
 use AppBundle\Entity\ReferentTag;
 use Sonata\Form\Type\DatePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -10,13 +10,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ReferentManagedAreaType extends AbstractType
+class SenatorManagedAreaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('tags', EntityType::class, [
-                'multiple' => true,
+            ->add('tag', EntityType::class, [
                 'class' => ReferentTag::class,
                 'required' => false,
             ])
@@ -29,7 +28,7 @@ class ReferentManagedAreaType extends AbstractType
         $resolver
             ->setDefaults([
                 'required' => false,
-                'data_class' => ReferentManagedArea::class,
+                'data_class' => SenatorManagedArea::class,
             ])
         ;
     }

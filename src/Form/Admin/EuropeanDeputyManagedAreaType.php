@@ -2,22 +2,19 @@
 
 namespace AppBundle\Form\Admin;
 
-use AppBundle\Entity\ManagedArea\ReferentManagedArea;
-use AppBundle\Entity\ReferentTag;
+use AppBundle\Entity\ManagedArea\EuropeanDeputyManagedArea;
 use Sonata\Form\Type\DatePickerType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ReferentManagedAreaType extends AbstractType
+class EuropeanDeputyManagedAreaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('tags', EntityType::class, [
-                'multiple' => true,
-                'class' => ReferentTag::class,
+            ->add('isEuropeanDeputy', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('since', DatePickerType::class)
@@ -29,7 +26,7 @@ class ReferentManagedAreaType extends AbstractType
         $resolver
             ->setDefaults([
                 'required' => false,
-                'data_class' => ReferentManagedArea::class,
+                'data_class' => EuropeanDeputyManagedArea::class,
             ])
         ;
     }

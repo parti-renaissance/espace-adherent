@@ -172,6 +172,7 @@
             </argument>
         </service>
         <service id="AppBundle\Form\CommitteeAroundAdherentType"/>
+        <service id="AppBundle\Form\EventListener\ManagedAreaListener"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">

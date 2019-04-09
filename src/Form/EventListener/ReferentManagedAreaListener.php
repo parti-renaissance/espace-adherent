@@ -23,7 +23,7 @@ class ReferentManagedAreaListener implements EventSubscriberInterface
             return;
         }
 
-        $managedArea = $adherent->getManagedArea();
+        $managedArea = $adherent->getReferentManagedArea();
 
         if ($managedArea && $managedArea->getTags()->isEmpty()) {
             $adherent->revokeReferent();
