@@ -149,21 +149,12 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         }
     }
 
-    private function getOptinCitizenProjectFollowersChunks(CitizenProject $committee): array
-    {
-        return array_chunk(
-            $this->manager->getCitizenProjectMembers($committee)->toArray(),
-            MailerService::PAYLOAD_MAXSIZE
-        );
-    }
-
     public static function getSubscribedEvents()
     {
         return [
             Events::CITIZEN_PROJECT_CREATED => ['onCitizenProjectCreation', -128],
             Events::CITIZEN_PROJECT_APPROVED => ['onCitizenProjectApprove', -128],
             Events::CITIZEN_PROJECT_FOLLOWER_ADDED => ['onCitizenProjectFollowerAdded', -128],
-            Events::CITIZEN_PROJECT_COMMENT_CREATED => ['sendCommentCreatedEmail', -128],
         ];
     }
 
