@@ -29,7 +29,7 @@ final class ReferentMessage extends Message
             $first->getFullName() ?: '',
             $model->getSubject(),
             [
-                'referant_firstname' => self::escape($referent->getFirstName()),
+                'referant_firstname' => self::escape($referent->getFullName()),
                 'target_message' => $model->getContent(),
             ],
             [
