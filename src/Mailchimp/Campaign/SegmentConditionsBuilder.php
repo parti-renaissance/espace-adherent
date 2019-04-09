@@ -11,6 +11,8 @@ use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Mailchimp\Exception\InvalidFilterException;
+use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 
@@ -201,11 +203,11 @@ class SegmentConditionsBuilder
     private function buildCommitteeFilterCondition(?Committee $committee): array
     {
         if (!$committee) {
-            throw new \InvalidArgumentException('[AdherentMessage] Committee should not be empty');
+            throw new InvalidFilterException('[AdherentMessage] Committee should not be empty');
         }
 
         if (!$committee->getMailchimpId()) {
-            throw new \InvalidArgumentException(
+            throw new StaticSegmentIdMissingException(
                 sprintf('[AdherentMessage] Committee "%s" does not have mailchimp ID', $committee->getUuidAsString())
             );
         }
