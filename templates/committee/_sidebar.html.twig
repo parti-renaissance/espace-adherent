@@ -33,7 +33,7 @@
                         (vous)
                     {% elseif has_role_user %}
                         <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
-                           class="link--no-decor text--blue--dark text--normal">
+                           class="link--no-decor text--blue--dark text--normal b__nudge--left-small">
                             Contacter
                         </a>
                     {% endif %}

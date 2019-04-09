@@ -1,4 +1,4 @@
-{% extends 'citizen_project/_layout.html.twig' %}
+{% extends 'citizen_project/_space_layout.html.twig' %}
 
 {% block page_title 'Modifier mon project citoyen' %}
 
@@ -19,68 +19,58 @@
 {% endblock %}
 
 {% block citizen_project_content %}
-    <main class="citizen-projects__create">
-        <section class="l__wrapper--medium space--30-0">
-            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
-               class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour au projet citoyen</a>
-
-            {% if citizen_project.isRefused %}
-                <div class="citizen-project__waiting-for-approval">
-                    En l'état, votre projet citoyen n'a pas été validé par nos équipes.
-                    Vous pouvez à tout moment modifier ce projet ou en proposer un nouveau.
-                    Pour plus d’informations, reportez-vous à <a class="link--blue" href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf">la Charte des Projets Citoyens</a>.
+<section class="l__wrapper--slim">
+    {% if citizen_project.isRefused %}
+        <div class="tips-information">
+            En l'état, votre projet citoyen n'a pas été validé par nos équipes.
+            Vous pouvez à tout moment modifier ce projet ou en proposer un nouveau.
+            Pour plus d’informations, reportez-vous à <a class="link--blue" href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf">la Charte des Projets Citoyens</a>.
+        </div>
+    {% elseif not citizen_project.isApproved %}
+        <div class="tips-information">
+            Votre projet citoyen est en attente de validation par nos équipes.
+            Vous serez alerté(e) par e-mail quand il sera validé.
+        </div>
+    {% endif %}
+    <h3 class="text--medium b__nudge--bottom-larger">Modifier mon projet citoyen</h3>
+    {{ form_start(form, {attr: {id: 'edit-citizen-project-form', class: 'form b__nudge--bottom-huge'}}) }}
+        {{ include('citizen_project/_form.html.twig', {citizen_project: citizen_project}) }}
+        {% if form.cgu is defined %}
+            <div class="form__checkbox form__checkbox--large">
+                <div>
+                    {{ form_widget(form.cgu) }}
+                    {% block _form_cgu_label %}
+                        <label class="form" for="citizen_project_cgu">
+                            <span>
+                                Je consens au traitement de mes données dans le cadre des Projets citoyens et à la communication de mes coordonnées (téléphone et e-mail) à l'équipe Engagement Citoyen au niveau départemental et national.
+                            </span>
+                        </label>
+                    {% endblock %}
                 </div>
-            {% elseif not citizen_project.isApproved %}
-                <div class="citizen-project__waiting-for-approval">
-                    Votre projet citoyen est en attente de validation par nos équipes.
-                    Vous serez alerté(e) par e-mail quand il sera validé.
+                {{ form_errors(form.cgu) }}
+            </div>
+        {% endif %}
+        {% if form.data_processing is defined %}
+            <div class="form__checkbox form__checkbox--large">
+                <div>
+                    {{ form_widget(form.data_processing) }}
+                    {% block _form_data_processing_label %}
+                        <label class="form" for="citizen_project_data_processing"><span>J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank" class="link--blue">Conditions Générales d’Utilisation des Projets citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank" class="link--blue">Charte des Projets citoyens</a></span></label>
+                    {% endblock %}
                 </div>
-            {% endif %}
+                {{ form_errors(form.data_processing) }}
+            </div>
+        {% endif %}
+        <div class="b__nudge--top-50">
+            <button type="submit" id="edit-citizen-project" class="btn btn--blue btn--large-and-full">
+                Enregistrer
+            </button>
+            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                Annuler
+            </a>
+        </div>
 
-            <header class="space--30-0">
-                <h1 class="b__nudge--bottom-small text--medium">
-                    Modifier mon projet citoyen
-                </h1>
-            </header>
-            {{ form_start(form, {attr: {id: 'edit-citizen-project-form', class: 'form b__nudge--bottom-huge'}}) }}
-                {{ include('citizen_project/_form.html.twig', {citizen_project: citizen_project}) }}
-                {% if form.cgu is defined %}
-                    <div class="form__checkbox form__checkbox--large">
-                        <div>
-                            {{ form_widget(form.cgu) }}
-                            {% block _form_cgu_label %}
-                                <label class="form" for="citizen_project_cgu">
-                                    <span>
-                                        Je consens au traitement de mes données dans le cadre des Projets citoyens et à la communication de mes coordonnées (téléphone et e-mail) à l'équipe Engagement Citoyen au niveau départemental et national.
-                                    </span>
-                                </label>
-                            {% endblock %}
-                        </div>
-                        {{ form_errors(form.cgu) }}
-                    </div>
-                {% endif %}
-                {% if form.data_processing is defined %}
-                    <div class="form__checkbox form__checkbox--large">
-                        <div>
-                            {{ form_widget(form.data_processing) }}
-                            {% block _form_data_processing_label %}
-                                <label class="form" for="citizen_project_data_processing"><span>J’adhère aux <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/CGU%20-%20Projets%20Citoyens.pdf" target="_blank" class="link--blue">Conditions Générales d’Utilisation des Projets citoyens</a> et à la <a href="https://storage.googleapis.com/en-marche-prod/documents/projets-citoyens/La%20Charte%20des%20Projets%20Citoyens.pdf" target="_blank" class="link--blue">Charte des Projets citoyens</a></span></label>
-                            {% endblock %}
-                        </div>
-                        {{ form_errors(form.data_processing) }}
-                    </div>
-                {% endif %}
-                <hr>
-                <button type="submit" id="edit-citizen-project" class="btn btn--blue">
-                    Enregistrer
-                </button>
-                <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}" class="btn">
-                    Annuler
-                </a>
-                {{ form_rest(form) }}
-            {{ form_end(form) }}
-        </section>
-    </main>
+        {{ form_rest(form) }}
+    {{ form_end(form) }}
+</section>
 {% endblock %}

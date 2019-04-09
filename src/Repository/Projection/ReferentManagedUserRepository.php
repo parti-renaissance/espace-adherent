@@ -23,11 +23,13 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentManagedUser::class);
     }
 
-    public function search(Adherent $referent, ManagedUsersFilter $filter = null): Paginator
-    {
+    public function search(
+        Adherent $referent,
+        ManagedUsersFilter $filter = null,
+        bool $onlyEmailSubscribers = false
+    ): Paginator {
         return new Paginator($this
-            ->createFilterQueryBuilder($referent, $filter)
-            ->andWhere('u.isMailSubscriber = 1')
+            ->createFilterQueryBuilder($referent, $filter, $onlyEmailSubscribers)
             ->setFirstResult($filter ? $filter->getOffset() : 0)
             ->setMaxResults(ManagedUsersFilter::PER_PAGE)
             ->getQuery()
@@ -38,8 +40,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
     public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
     {
-        $qb = $this->createFilterQueryBuilder($referent, $filter);
-        $qb->andWhere('u.isMailSubscriber = 1');
+        $qb = $this->createFilterQueryBuilder($referent, $filter, true);
 
         if ($filter) {
             $qb->setFirstResult($filter->getOffset());
@@ -48,8 +49,11 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         return $qb->getQuery()->iterate();
     }
 
-    private function createFilterQueryBuilder(Adherent $referent, ManagedUsersFilter $filter = null): QueryBuilder
-    {
+    private function createFilterQueryBuilder(
+        Adherent $referent,
+        ManagedUsersFilter $filter = null,
+        bool $onlyEmailSubscribers = false
+    ): QueryBuilder {
         $this->checkReferent($referent);
 
         $qb = $this->createQueryBuilder('u');
@@ -59,24 +63,18 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.createdAt', 'DESC')
         ;
 
-        $tagsFilter = $qb->expr()->orX();
-
-        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
-            $tagsFilter->add("FIND_IN_SET(:tag_$key, u.subscribedTags) > 0");
-            $tagsFilter->add(
-                $qb->expr()->andX(
-                    'u.country = \'FR\'',
-                    $qb->expr()->like('u.committeePostalCode', ":tag_prefix_$key")
-                )
-            );
-            $qb->setParameter("tag_$key", $tag->getCode());
-            $qb->setParameter("tag_prefix_$key", $tag->getCode().'%');
+        if ($onlyEmailSubscribers) {
+            $qb->andWhere('u.isMailSubscriber = 1');
         }
 
-        $qb->andWhere($tagsFilter);
-
-        if (!$filter) {
-            return $qb;
+        $managedAreas = $referent->getManagedAreaTagCodes();
+        if ($filter && ($queryZone = $filter->getQueryZone()) && \in_array($queryZone, $managedAreas)) {
+            $this->withReferentZoneCondition($qb, [$queryZone]);
+        } else {
+            $this->withReferentZoneCondition($qb, $managedAreas);
+            if (!$filter) {
+                return $qb;
+            }
         }
 
         if ($queryId = $filter->getQueryId()) {
@@ -145,6 +143,20 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($queryRegisteredFrom = $filter->getQueryRegisteredFrom()) {
+            $qb
+                ->andWhere('u.createdAt >= :registeredFrom')
+                ->setParameter('registeredFrom', $queryRegisteredFrom->format('Y-m-d 00:00:00'))
+            ;
+        }
+
+        if ($queryRegisteredTo = $filter->getQueryRegisteredTo()) {
+            $qb
+                ->andWhere('u.createdAt <= :registeredTo')
+                ->setParameter('registeredTo', $queryRegisteredTo->format('Y-m-d 23:59:59'))
+            ;
+        }
+
         if ($queryCity = $filter->getQueryCity()) {
             $queryCity = array_map('trim', explode(',', $queryCity));
 
@@ -202,6 +214,46 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
         $qb->andWhere($typeExpression);
 
+        if (null !== $filter->onlyEmailSubscribers()) {
+            $qb
+                ->andWhere('u.isMailSubscriber = :isMailSubscriber')
+                ->setParameter('isMailSubscriber', $filter->onlyEmailSubscribers())
+            ;
+        }
+
         return $qb;
+    }
+
+    public function countAdherentInReferentZone(Adherent $referent): int
+    {
+        $qb = $this
+            ->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+        ;
+
+        return (int) $this
+            ->withReferentZoneCondition($qb, $referent->getManagedAreaTagCodes())
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function withReferentZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'u'): QueryBuilder
+    {
+        $tagsFilter = $qb->expr()->orX();
+
+        foreach ($referentTags as $key => $tag) {
+            $tagsFilter->add("FIND_IN_SET(:tag_$key, $alias.subscribedTags) > 0");
+            $tagsFilter->add(
+                $qb->expr()->andX(
+                    "$alias.country = 'FR'",
+                    $qb->expr()->like("$alias.committeePostalCode", ":tag_prefix_$key")
+                )
+            );
+            $qb->setParameter("tag_$key", $tag);
+            $qb->setParameter("tag_prefix_$key", $tag.'%');
+        }
+
+        return $qb->andWhere($tagsFilter);
     }
 }

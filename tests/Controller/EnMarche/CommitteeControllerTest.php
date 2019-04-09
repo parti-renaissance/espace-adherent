@@ -55,11 +55,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        // There is another animator (2 = supervisor + host)
-        $this->assertSame(2, $crawler->filter('.committee__members__list__host')->count());
+        self::assertCount(1, $crawler->selectButton('Quitter ce comité')->extract(['disabled']));
+        self::assertSame(
+            'En tant qu\'animateur, vous ne pouvez pas cesser de suivre votre comité.',
+            trim($crawler->filter('div.committee-follow--anonymous__link')->text())
+        );
     }
 
     public function testAuthenticatedCommitteeHostCanUnfollowCommittee()
@@ -301,7 +301,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
         $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'co-animateur'), 'The host should see his own contact link');
         $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
-        $this->assertTrue($this->seeMessageForm($crawler));
     }
 
     public function testNoEditLinkWithAnonymousUser()
@@ -492,7 +491,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
     {
-        $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count(), $message);
+        self::assertCount($nb, $crawler->filter('.committee__timeline__message'), $message);
     }
 
     private function assertSeeTimelineMessages(Crawler $crawler, array $messages)
@@ -506,7 +505,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
     {
         $facebookLinkPattern = 'a.committee__social--facebook';
-        $googlePlusLinkPattern = 'a.committee__social--google_plus';
         $twitterLinkPattern = 'a.committee__social--twitter';
 
         if ($facebookUrl = $committee->getFacebookPageUrl()) {
@@ -514,13 +512,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             $this->assertSame($facebookUrl, $facebookLink->attr('href'));
         } else {
             $this->assertCount(0, $crawler->filter($facebookLinkPattern));
-        }
-
-        if ($googlePlusUrl = $committee->getGooglePlusPageUrl()) {
-            $this->assertCount(1, $googlePlusLink = $crawler->filter($googlePlusLinkPattern));
-            $this->assertSame($googlePlusUrl, $googlePlusLink->attr('href'));
-        } else {
-            $this->assertCount(0, $crawler->filter($googlePlusLinkPattern));
         }
 
         if ($twitterNickname = $committee->getTwitterNickname()) {

@@ -48,21 +48,24 @@ export default class MessageStatusLoader extends React.Component {
     }
 
     renderLoader() {
-        return <p>
-            Nous recherchons les adhérents correspondant à vos critères<br/>
-            <img src="/images/loader-sm.gif" alt="loader"/>
+        return <p className="space--30-0">
+            <div className="spin-loader"></div>
+            Chargement de vos adhérents
         </p>;
     }
 
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                <p>Votre filtre correspond à <b>{this.state.recipientCount} adhérent(s) !</b></p>
+                <p className="text--medium-small">
+                    Vous allez envoyer un message à <span
+                    className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérents !
+                </p>
                 <p>
-                    <a href="./send" className="btn btn--blue">Envoyer</a>
+                    <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
                     <a
                         href="./visualiser"
-                        className="btn--as-link btn--no-border b__nudge--left-large text--body text--blue--new"
+                        className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
                     >
                         Prévisualiser avant envoi
                     </a>
@@ -71,7 +74,7 @@ export default class MessageStatusLoader extends React.Component {
         }
 
         return <div>
-            <p>Votre filtre ne correspond à aucun adhérent !</p>
+            <p className="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
         </div>;
     }
 
@@ -84,7 +87,7 @@ export default class MessageStatusLoader extends React.Component {
             this.componentWillUnmount();
 
             return <div>
-                <p className="text--italic">
+                <p className="tips-information">
                     Nous n'avons pas encore terminé la recherche, veuillez revenir dans quelques instants.
                 </p>
             </div>;

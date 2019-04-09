@@ -155,6 +155,7 @@ invitation.email.was_invited_recently: Cette personne a déjà été invitée r�
 #
 referent.message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 referent.message.max_length: Le message doit contenir moins de {{ limit }} caractères.
+referent.adherent.can_be_coreferent: Cet adhérent est déjà co-référent d’un autre territoire
 
 #
 # J'écoute

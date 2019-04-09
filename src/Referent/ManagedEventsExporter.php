@@ -34,7 +34,7 @@ class ManagedEventsExporter
                 'beginAt' => $event->getBeginAt()->format('d/m/Y H:i'),
                 'category' => $event->getCategoryName(),
                 'postalCode' => $event->getPostalCode(),
-                'organizer' => $event->getOrganizer() ? $event->getOrganizer()->getPartialName() : 'un ancien adhérent',
+                'organizer' => $event->getOrganizer() ? $event->getOrganizer()->getFullName() : 'un ancien adhérent',
                 'participants' => $event->getParticipantsCount(),
                 'type' => $event->isCitizenAction() ? 'Projet citoyen' : ($event->isReferentEvent() ? 'Référent' : 'Comité'),
             ];

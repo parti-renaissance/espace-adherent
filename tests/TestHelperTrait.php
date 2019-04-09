@@ -30,6 +30,7 @@ use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
+use AppBundle\Entity\ReferentSpaceAccessInformation;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\RepublicanSilence;
@@ -64,6 +65,7 @@ use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
+use AppBundle\Repository\ReferentSpaceAccessInformationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\ThreadCommentRepository;
@@ -303,6 +305,11 @@ trait TestHelperTrait
     public function getThreadCommentRepository(): ThreadCommentRepository
     {
         return $this->getRepository(ThreadComment::class);
+    }
+
+    public function getReferentSpaceAccessInformationRepository(): ReferentSpaceAccessInformationRepository
+    {
+        return $this->getRepository(ReferentSpaceAccessInformation::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager

@@ -154,6 +154,9 @@
         <service id="AppBundle\EventListener\RemoveEmojisListener">
             <tag name="doctrine.event_listener" event="onFlush" />
         </service>
+        <service id="AppBundle\EventListener\ManageReferentTeamMembersListener">
+            <tag name="doctrine.event_subscriber"/>
+        </service>
         <service id="AppBundle\EventSubscriber\ChangeIdeaAuthorCategoryListener">
             <tag name="doctrine.event_listener" event="preUpdate" lazy="true" />
             <tag name="doctrine.event_listener" event="postUpdate" lazy="true" />
@@ -161,6 +164,7 @@
         <service id="AppBundle\Security\EventListener\LastVisitedPageOnGetListener">
             <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
         </service>
+        <service id="AppBundle\EventListener\RecordReferentLastVisitListener" />
 
         <!-- EventSubscriber -->
         <service id="AppBundle\EventSubscriber\CommentsCguSubscriber"/>
@@ -202,7 +206,11 @@
         <service id="AppBundle\Command\ReferentTagInitializeCommitteeEvent"/>
         <service id="AppBundle\Referent\ReferentTagManager" />
         <service id="AppBundle\Referent\ManagedCommitteesExporter" />
+        <service id="AppBundle\Referent\ManagedCitizenProjectsExporter" />
         <service id="AppBundle\Referent\ManagedEventsExporter" />
+        <service id="AppBundle\Validator\CanBeCoReferentValidator" />
+        <service id="AppBundle\Form\ReferentPersonLinkType" />
+        <service id="AppBundle\Form\ReferentPersonLinkForCoReferentType" />
 
         <!-- J'écoute -->
         <service id="AppBundle\Command\ImportJecouteSurveysCommand" />
@@ -524,6 +532,7 @@
 
         <service id="app.mailchimp.content_section_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
+                <argument key="AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />

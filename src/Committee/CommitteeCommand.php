@@ -59,12 +59,6 @@ class CommitteeCommand
     public $twitterNickname;
 
     /**
-     * @Assert\Url
-     * @Assert\Length(max=255)
-     */
-    public $googlePlusPageUrl;
-
-    /**
      * @var UploadedFile|null
      *
      * @Assert\Image(
@@ -87,7 +81,6 @@ class CommitteeCommand
         $dto->phone = $committee->getPhone();
         $dto->facebookPageUrl = $committee->getFacebookPageUrl();
         $dto->twitterNickname = $committee->getTwitterNickname();
-        $dto->googlePlusPageUrl = $committee->getGooglePlusPageUrl();
         $dto->committee = $committee;
 
         return $dto;

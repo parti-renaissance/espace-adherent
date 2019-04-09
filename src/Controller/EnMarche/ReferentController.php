@@ -24,6 +24,7 @@ use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
+use AppBundle\Referent\ManagedCitizenProjectsExporter;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
@@ -31,6 +32,7 @@ use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Referent\SurveyExporter;
+use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
@@ -38,6 +40,7 @@ use AppBundle\Repository\Jecoute\DataAnswerRepository;
 use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use AppBundle\Repository\Jecoute\NationalSurveyRepository;
 use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
+use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
@@ -51,8 +54,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * All the route names should start with 'app_referent_', if not you should modify AppBundle\EventListener\RecordReferentLastVisitListener.
+ *
  * @Route("/espace-referent")
- * @Security("is_granted('ROLE_REFERENT')")
  */
 class ReferentController extends Controller
 {
@@ -60,8 +64,10 @@ class ReferentController extends Controller
 
     /**
      * @Route("/utilisateurs", name="app_referent_users", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT')")
      */
-    public function usersAction(Request $request): Response
+    public function usersAction(Request $request, ReferentManagedUserRepository $repository): Response
     {
         $filter = new ManagedUsersFilter();
         $filter->handleRequest($request);
@@ -70,21 +76,31 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_users');
         }
 
-        $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null);
+        /** @var Adherent $referent */
+        $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
+        $results = $repository->search($referent, $filter->hasToken() ? $filter : null);
+
+        if ($filter->hasToken() && true !== $filter->onlyEmailSubscribers()) {
+            $resultsSubscriptionCount = $repository->search($referent, $filter, true)->count();
+        }
 
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
 
         return $this->render('referent/users_list.html.twig', [
+            'managedArea' => $referent->getManagedArea(),
             'filter' => $filter,
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'results_count' => $results->count(),
+            'results_subscription_count' => $resultsSubscriptionCount ?? $results->count(),
+            'total_count' => $repository->countAdherentInReferentZone($referent),
             'results' => $results->getQuery()->getResult(),
         ]);
     }
 
     /**
      * @Route("/utilisateurs/message", name="app_referent_users_message", methods={"GET", "POST"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function usersSendMessageAction(Request $request): Response
     {
@@ -108,7 +124,7 @@ class ReferentController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null);
+        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null, true);
 
         return $this->render('referent/users_message.html.twig', [
             'filter' => $filter,
@@ -120,6 +136,8 @@ class ReferentController extends Controller
 
     /**
      * @Route("/evenements", name="app_referent_events", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function eventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
     {
@@ -130,6 +148,8 @@ class ReferentController extends Controller
 
     /**
      * @Route("/evenements/creer", name="app_referent_events_create", methods={"GET", "POST"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function eventsCreateAction(Request $request, GeoCoder $geoCoder): Response
     {
@@ -159,6 +179,8 @@ class ReferentController extends Controller
 
     /**
      * @Route("/evenements-institutionnels", name="app_referent_institutional_events", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function institutionalEventsAction(
         InstitutionalEventRepository $institutionalEventRepository,
@@ -173,6 +195,8 @@ class ReferentController extends Controller
 
     /**
      * @Route("/evenements-institutionnels/creer", name="app_referent_institutional_events_create", methods={"GET", "POST"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function institutionalEventsCreateAction(
         Request $request,
@@ -210,7 +234,7 @@ class ReferentController extends Controller
      *     methods={"GET", "POST"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', institutionalEvent)")
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', institutionalEvent)")
      */
     public function institutionalEventsEditAction(
         Request $request,
@@ -249,7 +273,7 @@ class ReferentController extends Controller
      *     methods={"GET"}
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', institutionalEvent)")
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', institutionalEvent)")
      */
     public function institutionalEventsDeleteAction(
         InstitutionalEvent $institutionalEvent,
@@ -264,13 +288,31 @@ class ReferentController extends Controller
 
     /**
      * @Route("/comites", name="app_referent_committees", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function committeesAction(
         CommitteeRepository $committeeRepository,
         ManagedCommitteesExporter $committeesExporter
     ): Response {
-        return $this->render('referent/committees_list.html.twig', [
-            'managedCommitteesJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
+        return $this->render('referent/base_group_list.html.twig', [
+            'title' => 'Comités',
+            'managedGroupsJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
+        ]);
+    }
+
+    /**
+     * @Route("/projets-citoyens", name="app_referent_citizen_projects", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function citizenProjectsAction(
+        CitizenProjectRepository $citizenProjectRepository,
+        ManagedCitizenProjectsExporter $citizenProjectsExporter
+    ): Response {
+        return $this->render('referent/base_group_list.html.twig', [
+            'title' => 'Projets citoyens',
+            'managedGroupsJson' => $citizenProjectsExporter->exportAsJson($citizenProjectRepository->findManagedByReferent($this->getUser())),
         ]);
     }
 
@@ -280,6 +322,8 @@ class ReferentController extends Controller
      *     name="app_referent_jecoute_local_surveys_list",
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function jecouteLocalSurveysListAction(
         LocalSurveyRepository $localSurveyRepository,
@@ -300,6 +344,8 @@ class ReferentController extends Controller
      *     name="app_referent_jecoute_national_surveys_list",
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function jecouteNationalSurveysListAction(
         NationalSurveyRepository $nationalSurveyRepository,
@@ -318,6 +364,8 @@ class ReferentController extends Controller
      *     name="app_referent_jecoute_local_survey_create",
      *     methods={"GET|POST"},
      * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
      */
     public function jecouteSurveyCreateAction(
         Request $request,
@@ -356,7 +404,7 @@ class ReferentController extends Controller
      *     methods={"GET|POST"},
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', survey)")
      */
     public function jecouteSurveyEditAction(
         Request $request,
@@ -393,6 +441,8 @@ class ReferentController extends Controller
      *     methods={"GET"},
      * )
      *
+     * @Security("is_granted('ROLE_REFERENT')")
+     *
      * @Entity("nationalSurvey", expr="repository.findOnePublishedByUuid(uuid)")
      */
     public function jecouteNationalSurveyShowAction(NationalSurvey $nationalSurvey): Response
@@ -416,6 +466,8 @@ class ReferentController extends Controller
      *     methods={"GET"},
      * )
      *
+     * @Security("is_granted('ROLE_REFERENT')")
+     *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
      */
     public function jecouteSurveyStatsAction(Survey $survey, StatisticsProvider $provider): Response
@@ -437,7 +489,7 @@ class ReferentController extends Controller
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', survey)")
      */
     public function jecouteSurveyDuplicateAction(LocalSurvey $survey, ObjectManager $manager): Response
     {
@@ -459,7 +511,7 @@ class ReferentController extends Controller
      *     methods={"GET"},
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion)")
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', surveyQuestion)")
      */
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
@@ -482,7 +534,7 @@ class ReferentController extends Controller
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey) or survey.isNational()")
+     * @Security("is_granted('ROLE_REFERENT') and (is_granted('IS_AUTHOR_OF', survey) or survey.isNational())")
      */
     public function jecouteSurveyStatsDownloadAction(Survey $survey, StatisticsExporter $statisticsExporter): Response
     {
@@ -495,13 +547,13 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/organigramme", name="app_referent_organizational_chart")
-     * @Security("is_granted('IS_ROOT_REFERENT')")
+     * @Route("/mon-equipe", name="app_referent_organizational_chart", methods={"GET"})
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
      */
     public function organizationalChartAction(
         OrganizationalChartItemRepository $organizationalChartItemRepository,
         ReferentRepository $referentRepository
-    ) {
+    ): Response {
         return $this->render('referent/organizational_chart.html.twig', [
             'organization_chart_items' => $organizationalChartItemRepository->getRootNodes(),
             'referent' => $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress()),
@@ -509,8 +561,8 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/organigramme/{id}", name="app_referent_referent_person_link_edit")
-     * @Security("is_granted('IS_ROOT_REFERENT')")
+     * @Route("/mon-equipe/{id}", name="app_referent_referent_person_link_edit")
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
      */
     public function editReferentPersonLink(
         Request $request,
@@ -530,7 +582,6 @@ class ReferentController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ReferentPersonLink $referentPersonLink */
             $referentPersonLink = $form->getData();
-
             $em = $this->getDoctrine()->getManager();
 
             $em->persist($referentPersonLink);

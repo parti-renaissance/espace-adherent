@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche\AdherentMessage;
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\Command\CreateDefaultMessageFilterCommand;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
@@ -47,10 +46,18 @@ abstract class AbstractMessageController extends Controller
             throw new BadRequestHttpException('Invalid status');
         }
 
-        return $this->renderTemplate(
-            'message/list.html.twig',
-            ['messages' => $repository->findAllByAuthor($adherent, $status, $this->getMessageType())]
-        );
+        return $this->renderTemplate('message/list.html.twig', [
+            'messages' => $paginator = $repository->findAllByAuthor(
+                $adherent,
+                $this->getMessageType(),
+                $status,
+                $request->query->getInt('page', 1)
+            ),
+            'total_message_count' => $status ?
+                $repository->countTotalMessage($adherent, $this->getMessageType()) :
+                $paginator->getTotalItems(),
+            'message_filter_status' => $status,
+        ]);
     }
 
     /**
@@ -193,7 +200,7 @@ abstract class AbstractMessageController extends Controller
         }
 
         if ($message->hasReadOnlyFilter()) {
-            return $this->renderTemplate('message/filter.html.twig', ['message' => $message]);
+            return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", ['message' => $message]);
         }
 
         // Reset Filter object
@@ -201,9 +208,7 @@ abstract class AbstractMessageController extends Controller
             $message->resetFilter();
             $manager->flush();
 
-            return $this->redirectToMessageRoute('filter', [
-                'uuid' => $message->getUuid()->toString(),
-            ]);
+            return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
         $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());
@@ -222,7 +227,7 @@ abstract class AbstractMessageController extends Controller
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        return $this->renderTemplate('message/filter.html.twig', [
+        return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", [
             'message' => $message,
             'form' => $form->createView(),
         ]);
@@ -264,34 +269,42 @@ abstract class AbstractMessageController extends Controller
         return $this->redirectToMessageRoute('list');
     }
 
-    abstract protected function getMessageType(): string;
-
-    private function renderTemplate(string $template, array $parameters = []): Response
+    /**
+     * @Route("/{uuid}/tester", name="test", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     */
+    public function sendTestMessageAction(AbstractAdherentMessage $message, Manager $manager): Response
     {
-        switch ($messageType = $this->getMessageType()) {
-            case AdherentMessageTypeEnum::REFERENT:
-                $baseTemplate = 'message/_base_referent.html.twig';
-                break;
+        $this->disableInProduction();
 
-            case AdherentMessageTypeEnum::DEPUTY:
-                $baseTemplate = 'message/_base_deputy.html.twig';
-                break;
-
-            default:
-                $baseTemplate = 'message/_base.html.twig';
-                break;
+        if (!$message->isSynchronized()) {
+            throw new BadRequestHttpException('The message is not yet ready to test sending.');
         }
 
+        if ($manager->sendTestCampaign($message, [$this->getUser()->getEmailAddress()])) {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_successfully');
+        } else {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
+        }
+
+        return $this->redirectToMessageRoute('preview', ['uuid' => $message->getUuid()->toString()]);
+    }
+
+    abstract protected function getMessageType(): string;
+
+    protected function renderTemplate(string $template, array $parameters = []): Response
+    {
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => $baseTemplate,
+                'base_template' => sprintf('message/_base_%s.html.twig', $messageType = $this->getMessageType()),
                 'message_type' => $messageType,
             ]
         ));
     }
 
-    private function redirectToMessageRoute(string $subName, array $parameters = []): Response
+    protected function redirectToMessageRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_message_{$this->getMessageType()}_${subName}", $parameters);
     }

@@ -1,5 +1,5 @@
 Feature:
-  As a adherent or CP administrator
+  As an adherent or CP administrator
   In order to see the CP information
   I should be able to acces CP page
 

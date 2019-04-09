@@ -1,0 +1,69 @@
+{% extends 'committee_manager/_layout.html.twig' %}
+
+{% block page_title 'Mon espace comité' %}
+
+{% block committee_space_header %}
+    <div class="l__wrapper">
+        <div class="pre-space text--center">
+            <h1 class="text--large">{{ block('page_title') }}</h1>
+            <p class="pre-space__item-number text--medium-small">
+                Vous gérez {{ 'common.committees_count'|transchoice(committees|length) }}
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block committee_content %}
+    <div class="l__row l__row--wrap pre-space__items-preview">
+        {% for committee in committees|slice(0, 6) %}
+            {{ block('committee_block') }}
+        {% endfor %}
+
+        {% if not app.user.isSupervisor %}
+            <div class="pre-space__item-card">
+                <p class="text--gray">
+                    <a href="{{ path('app_adherent_create_committee') }}">+ Créer un nouveau comité</a>
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if committees|length > 6 %}
+        <div class="b__nudge--top-40 l__row l__row--center">
+            <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
+        </div>
+        <div class="l__row l__row--wrap l__row--center hidden" id="committees-next-part">
+            {% for committee in committees|slice(6) %}
+                {{ block('committee_block') }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block committee_block %}
+    <div class="pre-space__item-card {{ not committee.isApproved ? 'pre-space__item-card--muted' : '' }}">
+        <p class="text--medium font-gillsans">{{ committee.name }}</p>
+        <div>
+            <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
+            {% if committee.isApproved %}
+                <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+            {% else %}
+                <span class="text--small approval__status approval__status--pending">En attente de validation</span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block manager_sticky_header '' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        on(window, 'load', function() {
+            once(dom('.show-more-link'), 'click', function () {
+                hide(this);
+                removeClass(dom('#committees-next-part'), 'hidden');
+            });
+        });
+    </script>
+{% endblock %}

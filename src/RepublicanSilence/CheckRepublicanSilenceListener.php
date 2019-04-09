@@ -26,13 +26,16 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_committee_show' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_committee_contact_members' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_committee_manager_add_event' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_message_committee_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
 
         // Citizen Project
         'app_citizen_project_contact_actors' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
         'app_citizen_action_manager_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
+        'app_message_citizen_project_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
 
         // Deputy Space
         'app_deputy_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
+        'app_message_deputy_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
     ];
 
     private $tokenStorage;
@@ -115,9 +118,15 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
     {
         switch ($type) {
             case ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR:
-                return $request->attributes->get('slug', $request->attributes->get('project_slug'));
+                return $request->attributes->get(
+                    'slug',
+                    $request->attributes->get(
+                        'citizen_project_slug',
+                        $request->attributes->get('project_slug')
+                    )
+                );
             case ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
-                return $request->attributes->get('slug');
+                return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
         }
 
         return null;

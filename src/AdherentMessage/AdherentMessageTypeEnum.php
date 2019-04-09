@@ -9,4 +9,5 @@ class AdherentMessageTypeEnum extends Enum
     public const DEPUTY = 'deputy';
     public const REFERENT = 'referent';
     public const COMMITTEE = 'committee';
+    public const CITIZEN_PROJECT = 'citizen_project';
 }

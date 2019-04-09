@@ -1,0 +1,196 @@
+@mixin form-label {
+    display: block;
+    font-family: $font-roboto;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: normal;
+    color: $black;
+    margin-bottom: 10px;
+}
+
+@mixin form-field {
+    display: block;
+    width: 100%;
+    font-family: $font-roboto;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: normal;
+    padding-left: 12px;
+    color: $dark;
+    margin: 0;
+    height: 60px;
+    border-radius: 3px;
+    border: solid 1px $lines-grey;
+    background-color: $white;
+    outline: 0;
+    transition: border 0.2s;
+    -webkit-transition: border 0.2s;
+
+        &::placeholder {
+            color: $neutral-grey;
+            font-weight: normal;
+        }
+
+        &:hover {
+            border-color: $lines-hover-grey;
+        }
+
+        &:focus {
+            border-color: $blue--dark;
+        }
+
+        &:disabled {
+            background-color: $pale-grey;
+            color: $silver-grey;
+            cursor: default;
+            &:hover {
+                border-color: $lines-grey;
+            }
+        }
+}
+
+.manager-space,
+.citizen-project__form {
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url('/images/icons/icn-form-select.svg') no-repeat right 10px center;
+        cursor: pointer;
+    }
+
+    .form__row {
+        position: relative;
+        margin-bottom: 20px;
+
+        .form__label {
+            @include form-label;
+
+            span {
+                font-weight: normal;
+                color: $neutral-grey;
+            }
+        }
+
+        .form__field {
+            @include form-field;
+        }
+
+        .form__legend {
+            color: $neutral-grey;
+            display: block;
+            margin-top: 5px;
+            padding-bottom: 10px;
+        }
+
+        textarea.form__field {
+            min-width: 100%;
+            max-width: 100%;
+            min-height: 150px;
+        }
+
+        .character-count {
+            position: absolute;
+            right: 1px;
+            bottom: 1px;
+            background: white;
+            opacity: 0.9;
+            padding: 0 16px;
+            font-size: 14px;
+            line-height: 58px;
+            pointer-events: none;
+        }
+    }
+
+    .form__group {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-end;
+
+        @media (min-width: $mobile) {
+            flex-wrap: nowrap;
+        }
+
+        .form__row {
+            flex-grow: 1;
+
+            @media (min-width: $mobile) {
+                margin-right: 14px;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        &.w-legend {
+            .form__row {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .form__date-and-time {
+        .form__group {
+            align-items: flex-start;
+        }
+
+        .form__group > div {
+            display: flex;
+            flex-direction: row;
+            line-height: 60px;
+
+            .form__field {
+                flex-basis: 100%;
+                margin-right: 14px;
+
+                &:last-child {
+                    margin: 0;
+                    @media (min-width: $mobile) {
+                        margin-right: 14px;
+                    }
+                }
+            }
+
+            &:nth-child(1) {
+                flex-grow: 2;
+                margin-bottom: 10px;
+
+                @media (min-width: $mobile) {
+                    margin-bottom: 0;
+                }
+            }
+
+            &:nth-child(2) {
+                flex-grow: 1;
+
+                .form__field {
+
+                    &:first-child {
+                        margin-left: 0;
+                        margin-right: 10px;
+                    }
+
+                    &:last-child {
+                        margin-left: 10px;
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .form__tel {
+        .form__row {
+            &:nth-child(1) {
+                flex-grow: 1;
+            }
+
+            &:nth-child(2) {
+                flex-grow: 2;
+            }
+        }
+    }
+}

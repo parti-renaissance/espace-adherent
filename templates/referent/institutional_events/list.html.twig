@@ -6,13 +6,6 @@
             App.runManagedList(
                 [
                     {
-                        key: 'id',
-                        name: 'ID',
-                        style: {
-                            width: 25
-                        }
-                    },
-                    {
                         key: 'name',
                         name: 'Nom',
                         style: {
@@ -43,7 +36,7 @@
                     },
                     {
                         key: 'invitationsCount',
-                        name: 'Iinvitations',
+                        name: 'Invitations',
                         style: {
                             width: 25
                         }
@@ -72,17 +65,13 @@
 {% endblock %}
 
 {% block referent_content %}
-    <div class="text--small text--muted b__nudge--top-15 b__nudge--bottom-large">Les événements institutionnels ne sont pas publics. Ils ne font pas l'objet d'une page dédiée sur le site d'En Marche et ne sont connus que des personnes que vous y invitez. Cette option a été pensée pour vous permettre d'organiser des événements en comité restreint tels que les réunions d'équipe départementale, les réunions avec les animateurs locaux ou les comités politiques.</div>
-    <div>
-        <a href="{{ path('app_referent_institutional_events_create') }}" class="btn btn--blue--soft referent__btn-create-event">
-            Créer un événement institutionnel
+    <div class="tips-information">Les réunions privées ne font pas l'objet d'une page dédiée sur le site d'En Marche et ne sont connues que des personnes que vous y invitez. Cette option a été pensée pour vous permettre d'organiser des événements en comité restreint tels que les réunions d'équipe départementale, les réunions avec les animateurs locaux ou les comités politiques.</div>
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Réunions privées</h3>
+        <a href="{{ path('app_referent_institutional_events_create') }}" class="btn-type-table">
+            + Créer
         </a>
-        <h3>
-            Événements institutionnels
-        </h3>
     </div>
-
-    <hr />
 
     <div id="datagrid"></div>
 {% endblock %}

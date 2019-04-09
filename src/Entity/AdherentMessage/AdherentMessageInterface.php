@@ -32,4 +32,18 @@ interface AdherentMessageInterface extends AuthoredInterface, AdherentMessageSyn
     public function getReplyTo(): ?string;
 
     public function hasReadOnlyFilter(): bool;
+
+    public function setLabel(string $label): void;
+
+    public function setSubject(string $subject): void;
+
+    public function setContent(string $content): void;
+
+    public function getStatus(): string;
+
+    public function isSent(): bool;
+
+    public function getRecipientCount(): ?int;
+
+    public function getSentAt(): ?\DateTimeInterface;
 }

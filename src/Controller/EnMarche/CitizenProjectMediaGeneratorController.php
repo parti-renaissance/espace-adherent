@@ -2,25 +2,29 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\CitizenProjectImageType;
 use AppBundle\Form\CitizenProjectTractType;
 use AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator;
 use AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/projets-citoyens/media-generateur")
+ * @Route("/projets-citoyens/{slug}/media-generateur")
+ *
+ * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject)")
  */
 class CitizenProjectMediaGeneratorController extends Controller
 {
     /**
      * @Route("/images", name="app_citizen_project_image_generator", methods={"GET", "POST"})
      */
-    public function generateImageAction(Request $request): Response
+    public function generateImageAction(Request $request, CitizenProject $citizenProject): Response
     {
         $form = $this
             ->createForm(CitizenProjectImageType::class)
@@ -38,6 +42,7 @@ class CitizenProjectMediaGeneratorController extends Controller
             [
                 'form' => $form->createView(),
                 'previewCoverImage' => $coverImage ? $coverImage->getContentAsDataUrl() : null,
+                'citizen_project' => $citizenProject,
             ]
         );
     }
@@ -45,7 +50,7 @@ class CitizenProjectMediaGeneratorController extends Controller
     /**
      * @Route("/tracts", name="app_citizen_project_tract_generator", methods={"GET", "POST"})
      */
-    public function generateTractAction(Request $request): Response
+    public function generateTractAction(Request $request, CitizenProject $citizenProject): Response
     {
         $form = $this
             ->createForm(CitizenProjectTractType::class)
@@ -64,6 +69,7 @@ class CitizenProjectMediaGeneratorController extends Controller
             'citizen_project/media_generator_tract_form.html.twig',
             [
                 'form' => $form->createView(),
+                'citizen_project' => $citizenProject,
             ]
         );
     }

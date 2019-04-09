@@ -13,6 +13,7 @@ export default class DataGrid extends React.Component {
             headerCheckboxChecked: false,
             page: 1,
             loading: false,
+            results: [],
         };
 
         this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
@@ -21,6 +22,9 @@ export default class DataGrid extends React.Component {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
 
+    componentWillMount() {
+        this.setState({ results: this._buildResultsCollection() });
+    }
     handleSearchInputChange(event) {
         const term = event.target.value;
 
@@ -102,33 +106,16 @@ export default class DataGrid extends React.Component {
     }
 
     render() {
-        const results = this._buildResultsCollection();
-        const totalCount = results.length;
+        const totalCount = this.state.results.length;
         const pagesCount = Math.max(1, Math.ceil(totalCount / this._perPage));
         const currentPage = Math.min(this.state.page, pagesCount);
 
         return (
             <div className="datagrid">
-                <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
-                    <span className="datagrid__search__count">
-                        {totalCount} résultat(s)
-                    </span>
-                    <input type="text"
-                           placeholder="Recherche ..."
-                           className="form form__field"
-                           onChange={this.handleSearchInputChange} />
-                </div>
-
-                <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
-                    <ul>
-                        {this._buildPagesList(pagesCount, currentPage, 'top')}
-                    </ul>
-                </div>
-
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
 
                 <table className={
-                    `datagrid__table
+                    `datagrid__table-manager
                     ${this.props.tableClassName || ''}
                     ${this.state.loading ? 'datagrid__table--loading' : ''}`
                 }>
@@ -138,19 +125,28 @@ export default class DataGrid extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this._buildResultsList(this.props.columns, results, this.state.selected, currentPage)}
+                    {this._buildResultsList(this.props.columns, this.state.results, this.state.selected, currentPage)}
                     </tbody>
                 </table>
 
-                <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
-                    <ul>
-                        {this._buildPagesList(pagesCount, currentPage, 'bottom')}
-                    </ul>
-                </div>
+                {1 < pagesCount &&
+                    <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
+                        <ul>
+                            <li>
+                                <div className="pager__go-to-page">
+                                    <span>Aller à la page</span>
+                                    <input type="number" placeholder="5" className="pager__action" />
+                                    <span>{currentPage} sur {pagesCount}</span>
+                                </div>
+
+                            </li>
+                            {this._buildPagesList(pagesCount, currentPage, 'bottom')}
+                        </ul>
+                    </div>
+                }
             </div>
         );
     }
-
     _buildPagesList(pagesCount, current, position) {
         const from = Math.max(1, current - 2);
         const to = Math.min(pagesCount, current + 2);
@@ -160,34 +156,31 @@ export default class DataGrid extends React.Component {
         pagesList.push(
             <li key={`page-${position}-prec`}>
                 <button type="button"
-                        className="btn"
+                        className="pager__action switch"
                         disabled={1 === current}
                         onClick={() => this.handlePagerClick(Math.max(1, current - 1))}>
-                    Prec
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                      <polygon
+                        fill="#444"
+                        points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571"
+                        transform="rotate(45 30.642 -5.743)"/>
+                    </svg>
                 </button>
             </li>
         );
 
-        for (let i = from; i <= to; i += 1) {
-            pagesList.push(
-                <li key={`page-${position}-${i}`}>
-                    <button type="button"
-                            className={`btn ${i === current ? 'btn--disabled' : ''}`}
-                            disabled={i === current}
-                            onClick={() => this.handlePagerClick(i)}>
-                        {i}
-                    </button>
-                </li>
-            );
-        }
-
         pagesList.push(
             <li key={`page-${position}-suiv`}>
                 <button type="button"
-                        className="btn"
+                        className="pager__action switch"
                         disabled={pagesCount === current}
                         onClick={() => this.handlePagerClick(Math.min(pagesCount, current + 1))}>
-                    Suiv
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                      <polygon
+                        fill="#444"
+                        points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571"
+                        transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
+                    </svg>
                 </button>
             </li>
         );
@@ -224,7 +217,6 @@ export default class DataGrid extends React.Component {
     _buildResultsList(columns, results, selected, currentPage) {
         const offset = (currentPage - 1) * this._perPage;
         const limit = offset + this._perPage;
-
         const resultsList = [];
 
         for (let i = offset; i < limit; i += 1) {
@@ -250,11 +242,14 @@ export default class DataGrid extends React.Component {
 
             Object.keys(columns).forEach((j) => {
                 if ('undefined' !== typeof columns[j].link && columns[j].link) {
+                    const targetBlank = 'undefined' !== typeof columns[j].targetBlank && columns[j].targetBlank;
+
                     resultColumns.push(
                         <td key={`result${i}-column${j}`}
                             style={columns[j].style || null}
                             className={columns[j].className || ''}>
-                            <a href={result[columns[j].key].url}
+                            <a target={targetBlank ? '_blank' : '_self'}
+                               href={result[columns[j].key].url}
                                dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
                             </a>
                         </td>

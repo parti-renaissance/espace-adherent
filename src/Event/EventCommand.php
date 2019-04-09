@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventCommand extends BaseEventCommand
 {
     /**
-     * @Assert\Regex("/^\d+$/", message="committee.event.invalid_capacity")
+     * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */
     private $capacity;
 

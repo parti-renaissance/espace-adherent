@@ -63,9 +63,9 @@
                             </li>
                         </ul>
                     {% endif %}
-                    {% if app.user.isReferent %}
+                    {% if app.user.isReferent or app.user.isCoReferent %}
                         <li>
-                            <a href="{{ path('app_referent_events') }}">Espace référent</a>
+                            <a href="{{ path(app.user.isReferent ? 'app_referent_events' : 'app_referent_users') }}">Espace référent</a>
                         </li>
                     {% endif %}
                     {% if app.user.isDeputy %}
