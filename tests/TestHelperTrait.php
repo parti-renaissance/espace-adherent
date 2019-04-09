@@ -6,8 +6,14 @@ use AppBundle\Committee\Feed\CommitteeFeedManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\Administrator;
+use AppBundle\Entity\IdeasWorkshop\Idea;
+use AppBundle\Entity\IdeasWorkshop\Thread;
+use AppBundle\Entity\IdeasWorkshop\ThreadComment;
+use AppBundle\Entity\InstitutionalEvent;
+use AppBundle\Entity\ReferentSpaceAccessInformation;
+use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
+use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -17,10 +23,6 @@ use AppBundle\Entity\Donation;
 use AppBundle\Entity\Email;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Invite;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Entity\MyEuropeChoice;
@@ -31,7 +33,6 @@ use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
-use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\RepublicanSilence;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Entity\Summary;
@@ -64,6 +65,7 @@ use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
+use AppBundle\Repository\ReferentSpaceAccessInformationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\ThreadCommentRepository;
@@ -303,6 +305,11 @@ trait TestHelperTrait
     public function getThreadCommentRepository(): ThreadCommentRepository
     {
         return $this->getRepository(ThreadComment::class);
+    }
+
+    public function getReferentSpaceAccessInformationRepository(): ReferentSpaceAccessInformationRepository
+    {
+        return $this->getRepository(ReferentSpaceAccessInformation::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager
