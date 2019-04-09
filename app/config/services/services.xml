@@ -161,6 +161,7 @@
         <service id="AppBundle\Security\EventListener\LastVisitedPageOnGetListener">
             <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
         </service>
+        <service id="AppBundle\EventListener\RecordReferentLastVisitListener" />
 
         <!-- EventSubscriber -->
         <service id="AppBundle\EventSubscriber\CommentsCguSubscriber"/>

@@ -51,6 +51,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * All the route names should start with 'app_referent_', if not you should modify AppBundle\EventListener\RecordReferentLastVisitListener.
+ *
  * @Route("/espace-referent")
  * @Security("is_granted('ROLE_REFERENT')")
  */

@@ -61,6 +61,26 @@ class ReferentControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
+    /**
+     * @dataProvider providePages
+     */
+    public function testChangeOfPageAccessInformationToReferentSpace($path)
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
+        $accessInformation = $this->getReferentSpaceAccessInformationRepository()->findByAdherent($adherent);
+
+        $this->assertNull($accessInformation);
+
+        $this->client->request(Request::METHOD_GET, $path);
+        $this->manager->clear();
+        $accessInformation = $this->getReferentSpaceAccessInformationRepository()->findByAdherent($adherent);
+
+        $this->assertNotNull($accessInformation);
+        $this->assertNotNull($accessInformation->getLastDate());
+        $this->assertNotNull($accessInformation->getPreviousDate());
+    }
+
     public function testCreateEventFailed()
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
