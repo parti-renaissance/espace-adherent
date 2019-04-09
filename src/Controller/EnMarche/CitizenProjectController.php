@@ -195,13 +195,16 @@ class CitizenProjectController extends Controller
      * @Method("POST")
      * @Security("is_granted('FOLLOW_CITIZEN_PROJECT', citizenProject)")
      */
-    public function followAction(Request $request, CitizenProject $citizenProject): Response
-    {
+    public function followAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectManager $manager
+    ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow citizen project.');
         }
 
-        $this->get('app.citizen_project.authority')->followCitizenProject($this->getUser(), $citizenProject);
+        $manager->followCitizenProject($this->getUser(), $citizenProject);
 
         return new JsonResponse([
             'button' => [
@@ -217,13 +220,16 @@ class CitizenProjectController extends Controller
      * @Method("POST")
      * @Security("is_granted('UNFOLLOW_CITIZEN_PROJECT', citizenProject)")
      */
-    public function unfollowAction(Request $request, CitizenProject $citizenProject): Response
-    {
+    public function unfollowAction(
+        Request $request,
+        CitizenProject $citizenProject,
+        CitizenProjectManager $manager
+    ): Response {
         if (!$this->isCsrfTokenValid('citizen_project.unfollow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow citizen project.');
         }
 
-        $this->get(CitizenProjectManager::class)->unfollowCitizenProject($this->getUser(), $citizenProject);
+        $manager->unfollowCitizenProject($this->getUser(), $citizenProject);
 
         return new JsonResponse([
             'button' => [

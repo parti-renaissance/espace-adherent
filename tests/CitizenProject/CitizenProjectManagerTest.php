@@ -3,12 +3,21 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\CitizenProject\CitizenProjectAuthority;
+use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
+use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
+use AppBundle\Entity\Adherent;
+use AppBundle\Events;
 use AppBundle\Membership\CitizenProjectNotificationDistance;
+use Doctrine\Common\Persistence\ObjectManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
@@ -80,6 +89,35 @@ class CitizenProjectManagerTest extends WebTestCase
         $this->assertSame(8, $adherents->count());
     }
 
+    public function testFollowerAddedSuccessfully()
+    {
+        $citizenProject = $this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
+        $adherent = $this->createMock(Adherent::class);
+        $adherent
+            ->expects($this->once())
+            ->method('followCitizenProject')
+            ->with($citizenProject)
+        ;
+
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->will($this->returnValueMap([
+                [Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent), Event::class],
+                [Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject), Event::class],
+            ]))
+        ;
+
+        $citizenProjectManager = new CitizenProjectManager(
+            $this->createConfiguredMock(RegistryInterface::class, ['getManager' => $this->createMock(ObjectManager::class)]),
+            $this->getStorage(),
+            $this->createMock(CitizenProjectAuthority::class),
+            $eventDispatcher
+        );
+        $citizenProjectManager->followCitizenProject($adherent, $citizenProject);
+    }
+
     protected function setUp()
     {
         parent::setUp();
@@ -89,7 +127,8 @@ class CitizenProjectManagerTest extends WebTestCase
         $this->citizenProjectManager = new CitizenProjectManager(
             $this->getManagerRegistry(),
             $this->getStorage(),
-            $this->createMock(CitizenProjectAuthority::class)
+            $this->createMock(CitizenProjectAuthority::class),
+            $this->createMock(EventDispatcherInterface::class)
         );
     }
 
