@@ -60,7 +60,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->sendCoordinatorCreationValidation($creator, $citizenProject);
     }
 
-    public function onCitizenProjectFollowerAdded(CitizenProjectFollowerAddedEvent $followerAddedEvent): void
+    public function onCitizenProjectFollowerAdded(CitizenProjectFollowerChangeEvent $followerAddedEvent): void
     {
         if (!$hosts = $this->manager->getCitizenProjectAdministrators($followerAddedEvent->getCitizenProject())->toArray()) {
             return;
@@ -69,7 +69,7 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->mailer->sendMessage(CitizenProjectNewFollowerMessage::create(
             $followerAddedEvent->getCitizenProject(),
             $hosts,
-            $followerAddedEvent->getNewFollower()
+            $followerAddedEvent->getFollower()
         ));
     }
 

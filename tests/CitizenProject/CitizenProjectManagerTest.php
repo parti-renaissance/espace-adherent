@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\CitizenProject\CitizenProjectAuthority;
-use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
+use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
 use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
@@ -104,7 +104,7 @@ class CitizenProjectManagerTest extends WebTestCase
             ->expects($this->exactly(2))
             ->method('dispatch')
             ->will($this->returnValueMap([
-                [Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent), Event::class],
+                [Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerChangeEvent($citizenProject, $adherent), Event::class],
                 [Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject), Event::class],
             ]))
         ;

@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToCommitteeStaticSegmentCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromCommitteeStaticSegmentCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
 use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
@@ -83,7 +83,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertMessageIsDispatched(RemoveAdherentFromCommitteeStaticSegmentCommand::class);
+        $this->assertMessageIsDispatched(RemoveAdherentFromStaticSegmentCommand::class);
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -128,7 +128,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         // Email sent to the host
         $this->assertCountMails(1, CommitteeNewFollowerMessage::class, 'francis.brioul@yahoo.com');
-        $this->assertMessageIsDispatched(AddAdherentToCommitteeStaticSegmentCommand::class);
+        $this->assertMessageIsDispatched(AddAdherentToStaticSegmentCommand::class);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

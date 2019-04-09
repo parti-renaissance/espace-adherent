@@ -2,7 +2,9 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
+use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -18,6 +20,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
     private $referentTagRepository;
     private $committeeRepository;
+    private $citizenProjectRepository;
     private $client;
     private $entityManager;
     private $mailchimpListId;
@@ -27,12 +30,14 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
     public function __construct(
         ReferentTagRepository $referentTagRepository,
         CommitteeRepository $committeeRepository,
+        CitizenProjectRepository $citizenProjectRepository,
         ClientInterface $client,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
         $this->referentTagRepository = $referentTagRepository;
         $this->committeeRepository = $committeeRepository;
+        $this->citizenProjectRepository = $citizenProjectRepository;
         $this->client = $client;
         $this->entityManager = $entityManager;
         $this->mailchimpListId = $mailchimpListId;
@@ -66,6 +71,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
         $this->updateReferentTags($tags);
         $this->updateCommittees($tags);
+        $this->updateCitizenProjects($tags);
 
         $this->io->progressFinish();
     }
@@ -111,6 +117,34 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
             foreach ($segments as $tag) {
                 if ($tag['name'] === $committee->getUuid()->toString()) {
                     $committee->setMailchimpId($tag['id']);
+
+                    $this->io->progressAdvance();
+                    break;
+                }
+            }
+        }
+
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+    }
+
+    private function updateCitizenProjects(array $segments): void
+    {
+        $iterator = $this->citizenProjectRepository->createQueryBuilder('cp')
+            ->where('cp.mailchimpId IS NULL')
+            ->andWhere('cp.status = :status')
+            ->setParameter('status', CitizenProject::APPROVED)
+            ->getQuery()
+            ->iterate()
+        ;
+
+        foreach ($iterator as $cp) {
+            /** @var CitizenProject $cp */
+            $cp = current($cp);
+
+            foreach ($segments as $tag) {
+                if ($tag['name'] === $cp->getUuid()->toString()) {
+                    $cp->setMailchimpId($tag['id']);
 
                     $this->io->progressAdvance();
                     break;
