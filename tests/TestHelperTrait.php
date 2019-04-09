@@ -11,6 +11,7 @@ use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\InstitutionalEvent;
+use AppBundle\Entity\ReferentSpaceAccessInformation;
 use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\CitizenAction;
@@ -64,6 +65,7 @@ use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use AppBundle\Repository\MyEuropeChoiceRepository;
 use AppBundle\Repository\MyEuropeInvitationRepository;
+use AppBundle\Repository\ReferentSpaceAccessInformationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\SummaryRepository;
 use AppBundle\Repository\ThreadCommentRepository;
@@ -303,6 +305,11 @@ trait TestHelperTrait
     public function getThreadCommentRepository(): ThreadCommentRepository
     {
         return $this->getRepository(ThreadComment::class);
+    }
+
+    public function getReferentSpaceAccessInformationRepository(): ReferentSpaceAccessInformationRepository
+    {
+        return $this->getRepository(ReferentSpaceAccessInformation::class);
     }
 
     public function getCommitteeFeedManager(): CommitteeFeedManager
