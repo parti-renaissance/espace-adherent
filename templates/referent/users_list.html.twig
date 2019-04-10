@@ -1,5 +1,24 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            if ($('#referent_filter_interests').length) {
+                $('#referent_filter_interests').select2({placeholder: '{{ 'referent.filter.interests'|trans|e('js') }}'});
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block referent_content %}
     <h2 class="text--center">
         Envoyer un message
@@ -168,12 +187,11 @@
                         <legend class="label__header label__header__interest">Centres d'intérêt</legend>
                         <div class="referent__filters__search__col__interest">
                             <div class="form l__row l__row--wrap">
-                                {% for key, value in adherent_interests %}
-                                    <div class="form__checkbox form__checkbox--col">
-                                        <input type="checkbox" id="referent_pin_interests_{{ loop.index0 }}" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" value="{{ key }}" {{ key in filter.queryInterests ? 'checked' }}>
-                                        <label class="form form__label" for="referent_pin_interests_{{ loop.index0 }}">{{ value }}</label>
-                                    </div>
-                                {% endfor %}
+                                <select id="referent_filter_interests" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" class="l__row l__row--wrap form form__field" multiple="multiple">
+                                    {% for key, value in adherent_interests %}
+                                        <option value="{{ key }}" {{ key in filter.queryInterests ? 'selected' }}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <legend class="text--gray text--small">
                                 Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts
