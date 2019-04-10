@@ -11,23 +11,20 @@
 {% endblock %}
 
 {% block message_content %}
-    {% include('message/filter/'~ message.type ~'.html.twig') %}
-
+    {% block filter_content '' %}
     <div id="message-actions-block" class="l__wrapper--slim background--lighter b__nudge--top-40 text--center"></div>
 {% endblock %}
 
 {% block javascripts %}
     {% if message.filter %}
         <script type="text/javascript">
-            Kernel.onLoad(
-                () => {
-                    App.runMessageFilters(
-                        '{{ message.uuid|e('js') }}',
-                        {{ message.synchronized ? 'true' : 'false' }},
-                        {{ message.recipientCount|e('js') }}
-                    )
-                }
-            )
+            Kernel.onLoad(function() {
+                App.runMessageFilters(
+                    '{{ message.uuid|e('js') }}',
+                    {{ message.synchronized ? 'true' : 'false' }},
+                    {{ message.recipientCount|e('js') }}
+                );
+            });
         </script>
     {% endif %}
 {% endblock %}
