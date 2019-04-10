@@ -25,7 +25,7 @@ final class Events
     public const CITIZEN_PROJECT_DELETED = 'citizen_project.deleted';
     public const CITIZEN_PROJECT_APPROVED = 'citizen_project.approved';
     public const CITIZEN_PROJECT_FOLLOWER_ADDED = 'citizen_project_follower_added';
-    public const CITIZEN_PROJECT_COMMENT_CREATED = 'citizen_project_comment_created';
+    public const CITIZEN_PROJECT_FOLLOWER_REMOVED = 'citizen_project_follower_removed';
 
     private function __construct()
     {

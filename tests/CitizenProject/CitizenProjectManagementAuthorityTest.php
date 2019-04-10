@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
 use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
 use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
@@ -58,50 +57,6 @@ class CitizenProjectManagementAuthorityTest extends TestCase
 
         $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
         $citizenProjectManagementAuthority->refuse($citizenProject);
-    }
-
-    public function testFollowerAddedWithAdministrators()
-    {
-        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
-        $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
-        $adherent = $this->createMock(Adherent::class);
-
-        $manager = $this->createManager($administrator);
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
-
-        $manager->expects($this->once())->method('followCitizenProject')->with($adherent, $citizenProject);
-
-        $eventDispatcher
-            ->expects($this->exactly(2))
-            ->method('dispatch')
-            ->will($this->returnValueMap([
-                [Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent), Event::class],
-                [Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject), Event::class],
-            ]))
-        ;
-
-        $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
-        $citizenProjectManagementAuthority->followCitizenProject($adherent, $citizenProject);
-    }
-
-    public function testFollowerAddedWithoutAdministrators()
-    {
-        $citizenProject = $this->createCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID, 'Paris 8e');
-        $administrator = $this->createAdministrator(LoadAdherentData::ADHERENT_3_UUID);
-        $adherent = $this->createMock(Adherent::class);
-
-        $manager = $this->createManager($administrator);
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
-
-        $manager->expects($this->once())->method('followCitizenProject')->with($adherent, $citizenProject);
-
-        $eventDispatcher
-            ->expects($this->exactly(2))
-            ->method('dispatch')
-        ;
-
-        $citizenProjectManagementAuthority = new CitizenProjectManagementAuthority($manager, $eventDispatcher);
-        $citizenProjectManagementAuthority->followCitizenProject($adherent, $citizenProject);
     }
 
     private function createCitizenProject(string $uuid, string $cityName): CitizenProject

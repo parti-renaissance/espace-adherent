@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\AdherentMessage\StaticSegmentInterface;
 use AppBundle\Exception\CommitteeAlreadyApprovedException;
 use AppBundle\Report\ReportType;
 use AppBundle\ValueObject\Link;
@@ -85,7 +86,7 @@ use Ramsey\Uuid\UuidInterface;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity
+class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;

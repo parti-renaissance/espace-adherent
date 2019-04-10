@@ -521,7 +521,7 @@
             <tag name="messenger.message_handler" />
         </service>
 
-        <service id="AppBundle\AdherentMessage\Handler\CreateCommitteeStaticSegmentCommandHandler">
+        <service id="AppBundle\AdherentMessage\Handler\CreateStaticSegmentCommandHandler">
             <tag name="messenger.message_handler" />
         </service>
 
@@ -562,7 +562,7 @@
             <argument type="string">%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%</argument>
         </service>
 
-        <service id="AppBundle\AdherentMessage\Listener\CreateCommitteeStaticSegmentListener" />
+        <service id="AppBundle\AdherentMessage\Listener\CreateStaticSegmentListener" />
 
         <service id="AppBundle\AdherentMessage\Listener\AdherentMessageChangeSubscriber">
             <tag name="doctrine.event_subscriber"/>

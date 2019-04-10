@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\AdherentMessage\StaticSegmentInterface;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Exception\CitizenProjectAlreadyApprovedException;
 use AppBundle\Report\ReportType;
@@ -33,7 +34,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity
+class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface
 {
     use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
@@ -200,6 +201,13 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $turnkeyProject;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $mailchimpId;
 
     /**
      * @var CitizenAction|null
@@ -729,5 +737,15 @@ class CitizenProject extends BaseGroup implements SynchronizedEntity, ReferentTa
         }
 
         return self::TYPES[self::SIMPLE_TYPE];
+    }
+
+    public function getMailchimpId(): ?int
+    {
+        return $this->mailchimpId;
+    }
+
+    public function setMailchimpId(?int $mailchimpId): void
+    {
+        $this->mailchimpId = $mailchimpId;
     }
 }

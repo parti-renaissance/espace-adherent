@@ -10,6 +10,7 @@ use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
 use AppBundle\Entity\TurnkeyProject;
+use AppBundle\Events;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Entity\CitizenProjectMembership;
@@ -25,6 +26,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CitizenProjectManager
@@ -34,6 +36,7 @@ class CitizenProjectManager
     private $registry;
     private $storage;
     private $projectAuthority;
+    private $eventDispatcher;
 
     /**
      * @var Server
@@ -43,11 +46,13 @@ class CitizenProjectManager
     public function __construct(
         RegistryInterface $registry,
         Filesystem $storage,
-        CitizenProjectAuthority $projectAuthority
+        CitizenProjectAuthority $projectAuthority,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->registry = $registry;
         $this->storage = $storage;
         $this->projectAuthority = $projectAuthority;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function setGlide(Server $glide): void
@@ -246,6 +251,9 @@ class CitizenProjectManager
         if ($flush) {
             $manager->flush();
         }
+
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_ADDED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent));
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
     }
 
     public function unfollowCitizenProject(Adherent $adherent, CitizenProject $citizenProject, bool $flush = true): void
@@ -262,6 +270,9 @@ class CitizenProjectManager
         if ($flush) {
             $manager->flush();
         }
+
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_REMOVED, new CitizenProjectFollowerAddedEvent($citizenProject, $adherent));
+        $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
     }
 
     public function findAdherentNearCitizenProjectOrAcceptAllNotification(

@@ -43,7 +43,6 @@ class CitizenActionManager
     ): array {
         $adherentsEmails = [];
         $eventsRegistrationHydrated = [];
-        $administrators = [];
 
         /** @var EventRegistration $registration */
         foreach ($registrations as $registration) {

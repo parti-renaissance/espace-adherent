@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Admin;
 
-use AppBundle\AdherentMessage\Command\CreateCommitteeStaticSegmentCommand;
+use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Repository\CommitteeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -34,7 +34,7 @@ class CommitteeAdminTest extends WebTestCase
 
         $this->assertClientIsRedirectedTo('/admin/app/committee/list', $this->client);
 
-        $this->assertMessageIsDispatched(CreateCommitteeStaticSegmentCommand::class);
+        $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
     }
 
     protected function setUp()
