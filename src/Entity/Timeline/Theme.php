@@ -2,11 +2,12 @@
 
 namespace AppBundle\Entity\Timeline;
 
+use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AbstractTranslatableEntity;
 use AppBundle\Entity\AlgoliaIndexedEntityInterface;
 use AppBundle\Entity\EntityMediaInterface;
 use AppBundle\Entity\EntityMediaTrait;
-use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,10 +26,10 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class Theme implements EntityMediaInterface, AlgoliaIndexedEntityInterface
+class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
-    use EntityTranslatableTrait;
+    use Translatable;
 
     /**
      * @var int

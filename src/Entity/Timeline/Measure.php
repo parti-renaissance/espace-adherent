@@ -2,9 +2,10 @@
 
 namespace AppBundle\Entity\Timeline;
 
+use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AbstractTranslatableEntity;
 use AppBundle\Entity\AlgoliaIndexedEntityInterface;
-use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,9 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Measure implements AlgoliaIndexedEntityInterface
+class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
-    use EntityTranslatableTrait;
+    use Translatable;
 
     public const TITLE_MAX_LENGTH = 100;
 

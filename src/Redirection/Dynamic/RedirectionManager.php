@@ -3,6 +3,7 @@
 namespace AppBundle\Redirection\Dynamic;
 
 use AppBundle\Entity\Redirection;
+use AppBundle\Repository\RedirectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Serializer;
 use Psr\Cache\CacheItemPoolInterface;
@@ -10,19 +11,20 @@ use Psr\Cache\CacheItemPoolInterface;
 class RedirectionManager
 {
     private $cache;
-
     private $entityManager;
-
     private $serializer;
+    private $repository;
 
     public function __construct(
         CacheItemPoolInterface $cache,
         EntityManagerInterface $entityManager,
-        Serializer $serializer
+        Serializer $serializer,
+        RedirectionRepository $repository
     ) {
         $this->cache = $cache;
         $this->entityManager = $entityManager;
         $this->serializer = $serializer;
+        $this->repository = $repository;
     }
 
     public function refreshRedirectionCache(Redirection $redirection): void
@@ -36,7 +38,7 @@ class RedirectionManager
 
     public function optimiseRedirection(Redirection $originRedirection): void
     {
-        $redirections = $this->entityManager->getRepository(Redirection::class)->findByTargetUri($originRedirection->getFrom());
+        $redirections = $this->repository->findByTargetUri($originRedirection->getFrom());
 
         foreach ($redirections as $redirection) {
             if ($redirection->getFrom() === $originRedirection->getTo()) {
@@ -51,7 +53,7 @@ class RedirectionManager
 
     public function setRedirection(string $source, string $target, int $type = 301): Redirection
     {
-        if (!$redirection = $this->entityManager->getRepository(Redirection::class)->findOneByOriginUri($source)) {
+        if (!$redirection = $this->repository->findOneByOriginUri($source)) {
             $redirection = new Redirection();
             $this->entityManager->persist($redirection);
         }
@@ -75,7 +77,7 @@ class RedirectionManager
             return $this->serializer->deserialize($item->get(), Redirection::class, 'json');
         }
 
-        if ($redirection = $this->entityManager->getRepository(Redirection::class)->findOneByOriginUri($source)) {
+        if ($redirection = $this->repository->findOneByOriginUri($source)) {
             $this->refreshRedirectionCache($redirection);
         }
 
