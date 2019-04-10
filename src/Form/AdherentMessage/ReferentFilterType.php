@@ -32,7 +32,7 @@ class ReferentFilterType extends AbstractType
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
-            ->add('interests', MemberInterestsChoiceType::class, ['required' => false])
+            ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
         ;
     }
 

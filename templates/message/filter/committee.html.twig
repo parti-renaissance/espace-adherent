@@ -1,5 +1,8 @@
-<div>
-    {{ form_start(form) }}
+{% extends 'message/filter.html.twig' %}
+
+{% block filter_content %}
+    <div>
+        {{ form_start(form) }}
 
         <div class="text--center">
             <div class="l__col--grow-1 b__nudge--right">
@@ -12,5 +15,6 @@
             <button type="submit" class="btn btn--dual">Filtrer</button>
             <button type="submit" name="reset" class="btn--as-link b__nudge--left-large text--body text--blue--new">Réinitialiser le filtre</button>
         </div>
-    {{ form_end(form) }}
-</div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
