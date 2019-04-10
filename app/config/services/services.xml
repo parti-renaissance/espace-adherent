@@ -505,8 +505,24 @@
             <argument type="collection">
                 <argument key="AppBundle\Mailchimp\Synchronisation\RequestBuilder" type="service" id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
                 <argument key="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
+                <argument key="AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder" type="service" id="AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder" />
             </argument>
             <tag name="container.service_locator" />
+        </service>
+
+        <prototype namespace="AppBundle\Mailchimp\Campaign\ContentSection\" resource="../../../src/Mailchimp/Campaign/ContentSection/" />
+
+        <service id="app.mailchimp.content_section_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+            <argument type="collection">
+                <argument key="AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
+                <argument key="AppBundle\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
+                <argument key="AppBundle\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
+            </argument>
+            <tag name="container.service_locator" />
+        </service>
+
+        <service id="AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder">
+            <argument type="service" key="$sectionBuildersLocator" id="app.mailchimp.content_section_builders_locator" />
         </service>
 
         <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler">

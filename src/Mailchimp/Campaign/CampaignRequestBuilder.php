@@ -2,11 +2,8 @@
 
 namespace AppBundle\Mailchimp\Campaign;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
-use AppBundle\Utils\StringCleaner;
 
 class CampaignRequestBuilder
 {
@@ -41,29 +38,5 @@ class CampaignRequestBuilder
             ->setFromName($message->getFromName() ?? $this->fromName)
             ->setReplyTo($message->getReplyTo() ?? $this->replyEmailAddress)
         ;
-    }
-
-    public function createContentRequest(AdherentMessageInterface $message): EditCampaignContentRequest
-    {
-        $request = new EditCampaignContentRequest(
-            $this->objectIdMapping->getTemplateIdByType($message->getType()),
-            $message->getContent()
-        );
-
-        switch ($message->getType()) {
-            case AdherentMessageTypeEnum::DEPUTY:
-                $request
-                    ->addSection('full_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFullName()))
-                    ->addSection('first_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFirstName()))
-                    ->addSection('district_name', (string) $message->getAuthor()->getManagedDistrict())
-                ;
-                break;
-
-            case AdherentMessageTypeEnum::REFERENT:
-                $request->addSection('first_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFirstName()));
-                break;
-        }
-
-        return $request;
     }
 }
