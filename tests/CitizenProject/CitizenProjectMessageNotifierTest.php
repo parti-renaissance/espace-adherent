@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectFollowerAddedEvent;
+use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
 use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
@@ -117,7 +117,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $mailer->expects($this->once())->method('sendMessage');
 
         $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $manager, $mailer, $committeeManager, $router);
-        $followerAddedEvent = new CitizenProjectFollowerAddedEvent($citizenProject, $adherent);
+        $followerAddedEvent = new CitizenProjectFollowerChangeEvent($citizenProject, $adherent);
         $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
 
@@ -134,7 +134,7 @@ class CitizenProjectMessageNotifierTest extends TestCase
         $mailer->expects($this->never())->method('sendMessage');
 
         $citizenProjectMessageNotifier = new CitizenProjectMessageNotifier($this->adherentRepository, $manager, $mailer, $committeeManager, $router);
-        $followerAddedEvent = new CitizenProjectFollowerAddedEvent($citizenProject, $adherent);
+        $followerAddedEvent = new CitizenProjectFollowerChangeEvent($citizenProject, $adherent);
         $citizenProjectMessageNotifier->onCitizenProjectFollowerAdded($followerAddedEvent);
     }
 
