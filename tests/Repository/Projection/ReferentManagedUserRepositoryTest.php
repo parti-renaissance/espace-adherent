@@ -45,6 +45,56 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         $this->assertCount(3, $results);
     }
 
+    public function testSearchWithoutEmailSubscribers()
+    {
+        $referent = $this->createAdherent('referent@en-marche-dev.fr');
+        $referent->setReferent(
+            [
+                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
+            ],
+            '1.123456',
+            '2.34567'
+        );
+
+        $filter = $this->createMock(ManagedUsersFilter::class);
+        $filter->expects($this->any())->method('onlyEmailSubscribers')->willReturn(false);
+
+        $results = $this->referentManagedUserRepository->search($referent, $filter)->getQuery()->getResult();
+
+        $this->assertCount(1, $results);
+    }
+
+    /**
+     * @dataProvider providesOnlyEmailSubscribers
+     */
+    public function testSearchWithEmailSubscribersInevitably(?bool $onlyEmailSubscribers, int $count)
+    {
+        $referent = $this->createAdherent('referent@en-marche-dev.fr');
+        $referent->setReferent(
+            [
+                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
+            ],
+            '1.123456',
+            '2.34567'
+        );
+
+        $filter = $this->createMock(ManagedUsersFilter::class);
+        $filter->expects($this->any())->method('onlyEmailSubscribers')->willReturn($onlyEmailSubscribers);
+
+        $results = $this->referentManagedUserRepository->search($referent, $filter, true)->getQuery()->getResult();
+
+        $this->assertCount($count, $results);
+    }
+
+    public function providesOnlyEmailSubscribers(): \Generator
+    {
+        yield [null, 2];
+        yield [true, 2];
+        yield [false, 0];
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */

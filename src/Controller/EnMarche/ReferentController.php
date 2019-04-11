@@ -113,7 +113,7 @@ class ReferentController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null);
+        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null, true);
 
         return $this->render('referent/users_message.html.twig', [
             'filter' => $filter,
