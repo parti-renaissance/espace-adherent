@@ -13,7 +13,6 @@ use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,8 +29,7 @@ class AssetsController extends Controller
     ];
 
     /**
-     * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url")
-     * @Method("GET")
+     * @Route("/assets/{path}", requirements={"path": ".+"}, name="asset_url", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
     public function assetAction(string $path, Request $request)
@@ -76,9 +74,9 @@ class AssetsController extends Controller
      * @Route(
      *     "/maps/{latitude},{longitude}",
      *     requirements={"latitude": "^%pattern_coordinate%$", "longitude": "^%pattern_coordinate%$"},
-     *     name="map_url"
+     *     name="map_url",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      * @Cache(maxage=900, smaxage=900)
      */
     public function mapAction(Request $request, string $latitude, string $longitude)
@@ -94,8 +92,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/video/homepage.{format}", requirements={"format": "mov|mp4"}, name="homepage_video_url")
-     * @Method("GET")
+     * @Route("/video/homepage.{format}", requirements={"format": "mov|mp4"}, name="homepage_video_url", methods={"GET"})
      * @Cache(maxage=60, smaxage=60)
      */
     public function videoAction(string $format)
@@ -108,8 +105,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/algolia/{type}/{slug}", requirements={"type": "proposal|custom|article|clarification"})
-     * @Method("GET")
+     * @Route("/algolia/{type}/{slug}", requirements={"type": "proposal|custom|article|clarification"}, methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
     public function algoliaAction(Request $request, string $type, string $slug)
@@ -186,8 +182,7 @@ class AssetsController extends Controller
     }
 
     /**
-     * @Route("/image-transformer.jpg", name="asset_timeline")
-     * @Method("GET")
+     * @Route("/image-transformer.jpg", name="asset_timeline", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
     public function timelineImageAction(Request $request)

@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Adherent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,9 +18,9 @@ class AdherentController extends AbstractController
     /**
      * @Route(
      *     "/adherents/me/anonymize",
-     *     name="api_adherent_anonymize_me"
+     *     name="api_adherent_anonymize_me",
+     *     methods={"PUT"}
      * )
-     * @Method("PUT")
      * @Security("is_granted('ROLE_ADHERENT')")
      */
     public function anonymizeAction(

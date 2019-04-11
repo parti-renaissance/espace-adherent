@@ -22,7 +22,6 @@ use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,8 +37,7 @@ class DonationController extends Controller
     public const RESULT_STATUS_ERREUR = 'erreur';
 
     /**
-     * @Route(name="donation_index")
-     * @Method("GET")
+     * @Route(name="donation_index", methods={"GET"})
      */
     public function indexAction(Request $request): Response
     {
@@ -58,8 +56,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/coordonnees", name="donation_informations")
-     * @Method({"GET", "POST"})
+     * @Route("/coordonnees", name="donation_informations", methods={"GET", "POST"})
      */
     public function informationsAction(
         Request $request,
@@ -99,8 +96,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="donation_pay")
-     * @Method("GET")
+     * @Route("/{uuid}/paiement", requirements={"uuid": "%pattern_uuid%"}, name="donation_pay", methods={"GET"})
      */
     public function payboxAction(PayboxFormFactory $payboxFormFactory, Donation $donation): Response
     {
@@ -113,8 +109,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/callback/{_callback_token}", name="donation_callback")
-     * @Method("GET")
+     * @Route("/callback/{_callback_token}", name="donation_callback", methods={"GET"})
      */
     public function callbackAction(
         Request $request,
@@ -134,10 +129,10 @@ class DonationController extends Controller
      * @Route(
      *     "/{uuid}/{status}",
      *     requirements={"status": "effectue|erreur", "uuid": "%pattern_uuid%"},
-     *     name="donation_result"
+     *     name="donation_result",
+     *     methods={"GET"}
      * )
      * @ParamConverter("donation", options={"mapping": {"uuid": "uuid"}})
-     * @Method("GET")
      */
     public function resultAction(
         Request $request,
@@ -178,8 +173,7 @@ class DonationController extends Controller
     }
 
     /**
-     * @Route("/mensuel/annuler", name="donation_subscription_cancel")
-     * @Method({"GET", "POST"})
+     * @Route("/mensuel/annuler", name="donation_subscription_cancel", methods={"GET", "POST"})
      */
     public function cancelSubscriptionAction(
         Request $request,

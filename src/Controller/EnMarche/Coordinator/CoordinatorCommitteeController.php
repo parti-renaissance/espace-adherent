@@ -6,7 +6,6 @@ use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Form\CoordinatorAreaType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CoordinatorCommitteeController extends Controller
 {
     /**
-     * @Route("/list", name="app_coordinator_committees")
-     * @Method("GET")
+     * @Route("/list", name="app_coordinator_committees", methods={"GET"})
      */
     public function committeesAction(Request $request): Response
     {
@@ -56,8 +54,7 @@ class CoordinatorCommitteeController extends Controller
     /**
      * Pre-approves or pre-refuses a committee.
      *
-     * @Route("/{uuid}/{slug}/pre-valider-comite", name="app_coordinator_committee_validate")
-     * @Method("POST")
+     * @Route("/{uuid}/{slug}/pre-valider-comite", name="app_coordinator_committee_validate", methods={"POST"})
      */
     public function validateAction(Request $request, Committee $committee): Response
     {

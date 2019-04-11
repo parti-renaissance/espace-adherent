@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\MyEuropeChoice;
 use AppBundle\Entity\MyEuropeInvitation;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,8 +21,7 @@ class AdminMyEuropeController extends Controller
     const PER_PAGE = 1000;
 
     /**
-     * @Route("/export/choices", name="app_admin_myeurope_export_choices")
-     * @Method("GET")
+     * @Route("/export/choices", name="app_admin_myeurope_export_choices", methods={"GET"})
      */
     public function exportChoicesAction(): Response
     {
@@ -34,8 +32,7 @@ class AdminMyEuropeController extends Controller
     }
 
     /**
-     * @Route("/export/invitations", name="app_admin_myeurope_export_invitations")
-     * @Method("GET")
+     * @Route("/export/invitations", name="app_admin_myeurope_export_invitations", methods={"GET"})
      */
     public function exportInvitationsAction(): Response
     {
@@ -58,8 +55,7 @@ class AdminMyEuropeController extends Controller
     }
 
     /**
-     * @Route("/export/invitations/partial", name="app_admin_myeurope_export_invitations_partial")
-     * @Method("GET")
+     * @Route("/export/invitations/partial", name="app_admin_myeurope_export_invitations_partial", methods={"GET"})
      */
     public function exportInvitationsPartialAction(Request $request): Response
     {

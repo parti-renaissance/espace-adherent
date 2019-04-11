@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\TonMacronFriendInvitation;
 use AppBundle\Form\TonMacronInvitationType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TonMacronController extends Controller
 {
     /**
-     * @Route("/pourquoi-voter-macron")
-     * @Method("GET")
+     * @Route("/pourquoi-voter-macron", methods={"GET"})
      */
     public function redirectAction(): Response
     {
@@ -22,8 +20,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoi-voter-le-candidat-la-republique-en-marche")
-     * @Method("GET")
+     * @Route("/pourquoi-voter-le-candidat-la-republique-en-marche", methods={"GET"})
      */
     public function redirectLegislativesAction(): Response
     {
@@ -31,8 +28,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoivoterenmarche", name="app_ton_macron_invite")
-     * @Method("GET|POST")
+     * @Route("/pourquoivoterenmarche", name="app_ton_macron_invite", methods={"GET", "POST"})
      */
     public function inviteAction(Request $request): Response
     {
@@ -62,8 +58,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoivoterenmarche/recommencer", name="app_ton_macron_invite_restart")
-     * @Method("GET")
+     * @Route("/pourquoivoterenmarche/recommencer", name="app_ton_macron_invite_restart", methods={"GET"})
      */
     public function restartInviteAction(Request $request): Response
     {
@@ -73,8 +68,7 @@ class TonMacronController extends Controller
     }
 
     /**
-     * @Route("/pourquoivoterenmarche/{uuid}/merci", name="app_ton_macron_invite_sent")
-     * @Method("GET")
+     * @Route("/pourquoivoterenmarche/{uuid}/merci", name="app_ton_macron_invite_sent", methods={"GET"})
      */
     public function inviteSentAction(TonMacronFriendInvitation $invitation): Response
     {

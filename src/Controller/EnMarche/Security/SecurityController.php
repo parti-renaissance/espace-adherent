@@ -12,7 +12,6 @@ use AppBundle\Membership\AdherentChangeEmailHandler;
 use AppBundle\Membership\MembershipRequestHandler;
 use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +24,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/connexion", name="app_user_login")
-     * @Method("GET")
+     * @Route("/connexion", name="app_user_login", methods={"GET"})
      */
     public function loginAction(): Response
     {
@@ -47,24 +45,21 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/connexion/check", name="app_user_login_check")
-     * @Method("POST")
+     * @Route("/connexion/check", name="app_user_login_check", methods={"POST"})
      */
     public function loginCheckAction()
     {
     }
 
     /**
-     * @Route("/deconnexion", name="logout")
-     * @Method("GET")
+     * @Route("/deconnexion", name="logout", methods={"GET"})
      */
     public function logoutAction()
     {
     }
 
     /**
-     * @Route("/mot-de-passe-oublie", name="forgot_password")
-     * @Method("GET|POST")
+     * @Route("/mot-de-passe-oublie", name="forgot_password", methods={"GET", "POST"})
      */
     public function retrieveForgotPasswordAction(Request $request)
     {
@@ -103,9 +98,9 @@ class SecurityController extends Controller
      *     requirements={
      *         "adherent_uuid": "%pattern_uuid%",
      *         "reset_password_token": "%pattern_sha1%"
-     *     }
+     *     },
+     *     methods={"GET", "POST"}
      * )
-     * @Method("GET|POST")
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("resetPasswordToken", expr="repository.findByToken(reset_password_token)")
      */
@@ -143,8 +138,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/renvoyer-validation", name="adherent_resend_validation")
-     * @Method("GET")
+     * @Route("/renvoyer-validation", name="adherent_resend_validation", methods={"GET"})
      */
     public function resendValidationEmailAction(
         MembershipRequestHandler $membershipRequestHandler,
@@ -169,9 +163,9 @@ class SecurityController extends Controller
      *     requirements={
      *         "adherent_uuid": "%pattern_uuid%",
      *         "change_email_token": "%pattern_sha1%"
-     *     }
+     *     },
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("token", expr="repository.findByToken(change_email_token)")
      */

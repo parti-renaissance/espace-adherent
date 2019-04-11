@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Referent;
 use AppBundle\Exporter\ReferentPersonLinkExport;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminReferentExportsController extends Controller
 {
     /**
-     * @Route("/{id}/equipe-departementale", name="app_admin_referent_exports_departemental_team")
-     * @Method("GET")
+     * @Route("/{id}/equipe-departementale", name="app_admin_referent_exports_departemental_team", methods={"GET"})
      */
     public function exportDepartementaleTeam(
         ReferentPersonLinkExport $referentPersonLinkExport,

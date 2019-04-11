@@ -15,7 +15,6 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Serializer\XlsxEncoder;
 use AppBundle\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -33,8 +32,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class CommitteeManagerController extends Controller
 {
     /**
-     * @Route("/editer", name="app_committee_manager_edit")
-     * @Method("GET|POST")
+     * @Route("/editer", name="app_committee_manager_edit", methods={"GET", "POST"})
      */
     public function editAction(Request $request, Committee $committee): Response
     {
@@ -59,8 +57,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/evenements/ajouter", name="app_committee_manager_add_event")
-     * @Method("GET|POST")
+     * @Route("/evenements/ajouter", name="app_committee_manager_add_event", methods={"GET", "POST"})
      */
     public function addEventAction(Request $request, Committee $committee, GeoCoder $geoCoder): Response
     {
@@ -90,8 +87,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres", name="app_committee_manager_list_members")
-     * @Method("GET")
+     * @Route("/membres", name="app_committee_manager_list_members", methods={"GET"})
      */
     public function listMembersAction(Committee $committee): Response
     {
@@ -105,8 +101,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres/export", name="app_committee_manager_export_members")
-     * @Method("POST")
+     * @Route("/membres/export", name="app_committee_manager_export_members", methods={"POST"})
      */
     public function exportMembersAction(
         Request $request,
@@ -146,8 +141,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/membres/contact", name="app_committee_contact_members")
-     * @Method("POST")
+     * @Route("/membres/contact", name="app_committee_contact_members", methods={"POST"})
      */
     public function contactMembersAction(Request $request, Committee $committee): Response
     {
@@ -194,8 +188,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/promouvoir-suppleant/{member_uuid}", name="app_committee_promote_host")
-     * @Method("GET|POST")
+     * @Route("/promouvoir-suppleant/{member_uuid}", name="app_committee_promote_host", methods={"GET", "POST"})
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */
@@ -231,8 +224,7 @@ class CommitteeManagerController extends Controller
     }
 
     /**
-     * @Route("/retirer-suppleant/{member_uuid}", name="app_committee_demote_host")
-     * @Method("GET|POST")
+     * @Route("/retirer-suppleant/{member_uuid}", name="app_committee_demote_host", methods={"GET", "POST"})
      * @Security("is_granted('SUPERVISE_COMMITTEE', committee)")
      * @Entity("member", expr="repository.findByUuid(member_uuid)")
      */

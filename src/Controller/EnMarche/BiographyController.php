@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Entity\Biography\ExecutiveOfficeMember;
 use AppBundle\Repository\Biography\ExecutiveOfficeMemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,8 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BiographyController extends Controller
 {
     /**
-     * @Route("/le-mouvement/notre-organisation", name="app_our_organization")
-     * @Method("GET")
+     * @Route("/le-mouvement/notre-organisation", name="app_our_organization", methods={"GET"})
      */
     public function executiveOfficeMemberListAction(ExecutiveOfficeMemberRepository $repository): Response
     {
@@ -27,8 +25,7 @@ class BiographyController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/notre-organisation/{slug}", name="app_our_organization_show")
-     * @Method("GET")
+     * @Route("/le-mouvement/notre-organisation/{slug}", name="app_our_organization_show", methods={"GET"})
      * @Entity("executiveOfficeMember", expr="repository.findOnePublishedBySlug(slug)")
      */
     public function executiveOfficeMemberAction(ExecutiveOfficeMember $executiveOfficeMember): Response

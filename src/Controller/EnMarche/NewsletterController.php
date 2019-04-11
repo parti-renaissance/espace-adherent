@@ -8,7 +8,6 @@ use AppBundle\Form\NewsletterInvitationType;
 use AppBundle\Form\NewsletterSubscriptionType;
 use AppBundle\Form\NewsletterUnsubscribeType;
 use AppBundle\Newsletter\Invitation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
@@ -17,8 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NewsletterController extends Controller
 {
     /**
-     * @Route("/newsletter", name="newsletter_subscription")
-     * @Method({"GET", "POST"})
+     * @Route("/newsletter", name="newsletter_subscription", methods={"GET", "POST"})
      */
     public function subscriptionAction(Request $request, GeoCoder $geoCoder)
     {
@@ -55,8 +53,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/merci", name="newsletter_subscription_subscribed")
-     * @Method("GET")
+     * @Route("/newsletter/merci", name="newsletter_subscription_subscribed", methods={"GET"})
      */
     public function subscribedAction()
     {
@@ -64,8 +61,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/desinscription", name="newsletter_unsubscribe")
-     * @Method({"GET", "POST"})
+     * @Route("/newsletter/desinscription", name="newsletter_unsubscribe", methods={"GET", "POST"})
      */
     public function unsubscribeAction(Request $request)
     {
@@ -84,8 +80,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/desinscription/desinscrit", name="newsletter_unsubscribe_unsubscribed")
-     * @Method("GET")
+     * @Route("/newsletter/desinscription/desinscrit", name="newsletter_unsubscribe_unsubscribed", methods={"GET"})
      */
     public function unsubscribedAction()
     {
@@ -93,8 +88,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/invitation", name="newsletter_invitation")
-     * @Method("GET|POST")
+     * @Route("/newsletter/invitation", name="newsletter_invitation", methods={"GET", "POST"})
      */
     public function invitationAction(Request $request)
     {
@@ -117,8 +111,7 @@ class NewsletterController extends Controller
     }
 
     /**
-     * @Route("/newsletter/invitation/merci", name="newsletter_invitation_sent")
-     * @Method("GET")
+     * @Route("/newsletter/invitation/merci", name="newsletter_invitation_sent", methods={"GET"})
      */
     public function invitationSentAction(Request $request)
     {

@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Repository\ReferentTagRepository;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReferentTagController extends Controller
 {
     /**
-     * @Route("/referent-tags", name="api_referent_tag")
-     * @Method("GET")
+     * @Route("/referent-tags", name="api_referent_tag", methods={"GET"})
      */
     public function getReferentTagsAction(
         Request $request,

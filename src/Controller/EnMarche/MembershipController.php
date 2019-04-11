@@ -25,7 +25,6 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,8 +38,7 @@ class MembershipController extends Controller
     /**
      * This action enables a guest user to adhere to the community.
      *
-     * @Route("/inscription-utilisateur", name="app_membership_register")
-     * @Method("GET|POST")
+     * @Route("/inscription-utilisateur", name="app_membership_register", methods={"GET", "POST"})
      */
     public function registerAction(
         Request $request,
@@ -79,8 +77,7 @@ class MembershipController extends Controller
     /**
      * This action enables a guest user to adhere to the community.
      *
-     * @Route("/adhesion", name="app_membership_join")
-     * @Method("GET|POST")
+     * @Route("/adhesion", name="app_membership_join", methods={"GET", "POST"})
      */
     public function adhesionAction(Request $request, GeoCoder $geoCoder): Response
     {
@@ -163,8 +160,7 @@ class MembershipController extends Controller
     /**
      * This action is the landing page at the end of the subscription process.
      *
-     * @Route("/presque-fini", name="app_membership_complete")
-     * @Method("GET")
+     * @Route("/presque-fini", name="app_membership_complete", methods={"GET"})
      */
     public function completeAction(MembershipRegistrationProcess $membershipRegistrationProcess): Response
     {
@@ -187,9 +183,9 @@ class MembershipController extends Controller
      *     requirements={
      *         "adherent_uuid": "%pattern_uuid%",
      *         "activation_token": "%pattern_sha1%"
-     *     }
+     *     },
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      * @Entity("adherent", expr="repository.findOneByUuid(adherent_uuid)")
      * @Entity("activationToken", expr="repository.findByToken(activation_token)")
      */
@@ -237,8 +233,7 @@ class MembershipController extends Controller
     /**
      * This action enables a new user to pin his/her interests during the registration process.
      *
-     * @Route("/inscription/centre-interets", name="app_membership_pin_interests")
-     * @Method("GET|POST")
+     * @Route("/inscription/centre-interets", name="app_membership_pin_interests", methods={"GET", "POST"})
      * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
      */
     public function pinInterestsAction(
@@ -271,8 +266,7 @@ class MembershipController extends Controller
     /**
      * This action enables a user to follow some committees during the registration process.
      *
-     * @Route("/inscription/choisir-des-comites", name="app_membership_choose_committees_around_adherent")
-     * @Method("GET|POST")
+     * @Route("/inscription/choisir-des-comites", name="app_membership_choose_committees_around_adherent", methods={"GET", "POST"})
      * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
      */
     public function chooseCommitteesAction(
@@ -321,8 +315,7 @@ class MembershipController extends Controller
     /**
      * This action enables a user to donate during the registration process.
      *
-     * @Route("/inscription/don", name="app_membership_donation")
-     * @Method("GET")
+     * @Route("/inscription/don", name="app_membership_donation", methods={"GET"})
      * @Security("is_granted('MEMBERSHIP_REGISTRATION_IN_PROGRESS')")
      */
     public function donationAction(

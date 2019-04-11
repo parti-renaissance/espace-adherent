@@ -7,7 +7,6 @@ use AppBundle\BoardMember\BoardMemberMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Form\BoardMemberMessageType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +22,7 @@ class BoardMemberController extends Controller
     const TOKEN_ID = 'board_member_search';
 
     /**
-     * @Route("/", name="app_board_member_home")
-     * @Method("GET")
+     * @Route("/", name="app_board_member_home", methods={"GET"})
      */
     public function indexAction()
     {
@@ -32,8 +30,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/recherche", name="app_board_member_search")
-     * @Method("GET")
+     * @Route("/recherche", name="app_board_member_search", methods={"GET"})
      */
     public function searchAction(Request $request): Response
     {
@@ -58,8 +55,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/profils-sauvegardes", name="app_board_member_saved_profile")
-     * @Method("GET")
+     * @Route("/profils-sauvegardes", name="app_board_member_saved_profile", methods={"GET"})
      */
     public function savedProfilAction()
     {
@@ -73,8 +69,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/recherche/message", name="app_board_member_message_search")
-     * @Method("GET|POST")
+     * @Route("/recherche/message", name="app_board_member_message_search", methods={"GET", "POST"})
      */
     public function sendMessageToSearchResultsAction(Request $request): Response
     {
@@ -107,8 +102,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/profils-sauvegardes/message", name="app_board_member_message_saved_profile")
-     * @Method("GET|POST")
+     * @Route("/profils-sauvegardes/message", name="app_board_member_message_saved_profile", methods={"GET", "POST"})
      */
     public function sendMessageToSavedProfilesAction(Request $request): Response
     {
@@ -133,8 +127,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/message/{member}", name="app_board_member_message_member")
-     * @Method("GET|POST")
+     * @Route("/message/{member}", name="app_board_member_message_member", methods={"GET", "POST"})
      */
     public function sendMessageToMemberAction(Request $request, Adherent $member): Response
     {
@@ -163,8 +156,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/list/boardmember", name="app_board_add_profile_on_list")
-     * @Method("POST")
+     * @Route("/list/boardmember", name="app_board_add_profile_on_list", methods={"POST"})
      */
     public function addBoardMemberOnListAction(Request $request)
     {
@@ -188,8 +180,7 @@ class BoardMemberController extends Controller
     }
 
     /**
-     * @Route("/list/boardmember/{boardMemberId}", name="app_board_remove_profile_on_list")
-     * @Method("DELETE")
+     * @Route("/list/boardmember/{boardMemberId}", name="app_board_remove_profile_on_list", methods={"DELETE"})
      */
     public function deleteBoardMemberOnListAction($boardMemberId)
     {

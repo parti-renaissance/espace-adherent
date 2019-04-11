@@ -7,7 +7,6 @@ use AppBundle\Repository\TurnkeyProjectRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TurnkeyProjectController extends Controller
 {
     /**
-     * @Route(name="api_approved_turnkey_projects")
-     * @Method("GET")
+     * @Route(name="api_approved_turnkey_projects", methods={"GET"})
      */
     public function getApprovedTurnkeyProjectAction(
         TurnkeyProjectRepository $repository,
@@ -35,8 +33,7 @@ class TurnkeyProjectController extends Controller
     }
 
     /**
-     * @Route("/count", name="api_count_approved_turnkey_projects")
-     * @Method("GET")
+     * @Route("/count", name="api_count_approved_turnkey_projects", methods={"GET"})
      */
     public function countApprovedTurnkeyProjectAction(TurnkeyProjectRepository $repository): Response
     {
@@ -47,8 +44,7 @@ class TurnkeyProjectController extends Controller
     }
 
     /**
-     * @Route("/pinned", name="api_pinned_turnkey_project")
-     * @Method("GET")
+     * @Route("/pinned", name="api_pinned_turnkey_project", methods={"GET"})
      */
     public function getPinnedTurnkeyProjectAction(
         TurnkeyProjectRepository $repository,
@@ -63,9 +59,8 @@ class TurnkeyProjectController extends Controller
     }
 
     /**
-     * @Route("/{slug}", name="api_turnkey_project")
+     * @Route("/{slug}", name="api_turnkey_project", methods={"GET"})
      * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
-     * @Method("GET")
      */
     public function getTurnkeyProjectAction(TurnkeyProject $turnkeyProject, Serializer $serializer): Response
     {

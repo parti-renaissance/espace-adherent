@@ -10,7 +10,6 @@ use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\Form\CitizenProjectContactActorsType;
 use AppBundle\Utils\GroupUtils;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -26,8 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CitizenProjectManagerController extends Controller
 {
     /**
-     * @Route("/editer", name="app_citizen_project_manager_edit")
-     * @Method("GET|POST")
+     * @Route("/editer", name="app_citizen_project_manager_edit", methods={"GET", "POST"})
      */
     public function editAction(
         Request $request,
@@ -59,8 +57,7 @@ class CitizenProjectManagerController extends Controller
     }
 
     /**
-     * @Route("/acteurs/contact", name="app_citizen_project_contact_actors")
-     * @Method("POST")
+     * @Route("/acteurs/contact", name="app_citizen_project_contact_actors", methods={"POST"})
      */
     public function contactActorsAction(
         Request $request,

@@ -34,7 +34,6 @@ use AppBundle\Search\SearchResultsProvidersManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,8 +50,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class AdherentController extends Controller
 {
     /**
-     * @Route("/accueil", name="app_adherent_home")
-     * @Method("GET")
+     * @Route("/accueil", name="app_adherent_home", methods={"GET"})
      */
     public function homeAction(
         Request $request,
@@ -86,8 +84,7 @@ class AdherentController extends Controller
     }
 
     /**
-     * @Route("/tableau-de-bord", name="app_user_dashboard")
-     * @Method("GET")
+     * @Route("/tableau-de-bord", name="app_user_dashboard", methods={"GET"})
      */
     public function dashboardAction(
         AdherentRepository $adherentRepository,
@@ -114,8 +111,7 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to pin his/her interests.
      *
-     * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests")
-     * @Method("GET|POST")
+     * @Route("/mon-compte/centres-d-interet", name="app_adherent_pin_interests", methods={"GET", "POST"})
      */
     public function pinInterestsAction(Request $request, EventDispatcherInterface $dispatcher): Response
     {
@@ -142,8 +138,7 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to create a committee.
      *
-     * @Route("/creer-mon-comite", name="app_adherent_create_committee")
-     * @Method("GET|POST")
+     * @Route("/creer-mon-comite", name="app_adherent_create_committee", methods={"GET", "POST"})
      * @Security("is_granted('CREATE_COMMITTEE')")
      */
     public function createCommitteeAction(Request $request): Response
@@ -168,9 +163,8 @@ class AdherentController extends Controller
     /**
      * This action enables an adherent to create a citizen project.
      *
-     * @Route("/creer-mon-projet-citoyen/{slug}", defaults={"slug": null}, name="app_adherent_create_citizen_project")
+     * @Route("/creer-mon-projet-citoyen/{slug}", defaults={"slug": null}, name="app_adherent_create_citizen_project", methods={"GET", "POST"})
      * @Entity("turnkeyProject", expr="repository.findOneApprovedBySlug(slug)")
-     * @Method("GET|POST")
      */
     public function createCitizenProjectAction(Request $request, TurnkeyProject $turnkeyProject = null): Response
     {
@@ -208,8 +202,7 @@ class AdherentController extends Controller
     }
 
     /**
-     * @Route("/mes-evenements", name="app_adherent_events")
-     * @Method("GET")
+     * @Route("/mes-evenements", name="app_adherent_events", methods={"GET"})
      */
     public function eventsAction(Request $request): Response
     {
@@ -227,8 +220,7 @@ class AdherentController extends Controller
     }
 
     /**
-     * @Route("/contacter/{uuid}", name="app_adherent_contact", requirements={"uuid": "%pattern_uuid%"})
-     * @Method("GET|POST")
+     * @Route("/contacter/{uuid}", name="app_adherent_contact", requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
      */
     public function contactAction(Request $request, Adherent $adherent): Response
     {

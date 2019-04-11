@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Api;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,8 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReferentsController extends Controller
 {
     /**
-     * @Route("/referents", name="api_referents")
-     * @Method("GET")
+     * @Route("/referents", name="api_referents", methods={"GET"})
      */
     public function indexAction()
     {

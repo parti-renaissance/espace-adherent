@@ -7,7 +7,6 @@ use AppBundle\OAuth\Model\ApiUser;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,8 +16,7 @@ use Zend\Diactoros\Response;
 class UserController extends Controller
 {
     /**
-     * @Route("/me", name="app_api_user_show_me_for_oauth")
-     * @Method("GET")
+     * @Route("/me", name="app_api_user_show_me_for_oauth", methods={"GET"})
      */
     public function oauthShowMe(Serializer $serializer)
     {
@@ -42,8 +40,7 @@ class UserController extends Controller
 
     /**
      * @Security("is_granted('ROLE_ADHERENT')")
-     * @Route("/users/me", name="app_api_user_show_me")
-     * @Method("GET")
+     * @Route("/users/me", name="app_api_user_show_me", methods={"GET"})
      */
     public function showMe(Serializer $serializer): JsonResponse
     {

@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Mooc\AttachmentFile;
 use AppBundle\Storage\FileRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MoocController extends Controller
 {
     /**
-     * @Route("/file/{slug}.{extension}", name="mooc_get_file")
-     * @Method("GET")
+     * @Route("/file/{slug}.{extension}", name="mooc_get_file", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
     public function getFile(FileRequestHandler $fileRequestHandler, AttachmentFile $file): Response

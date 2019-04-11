@@ -13,7 +13,6 @@ use AppBundle\Form\Procuration\ProcurationRequestType;
 use AppBundle\Procuration\ElectionContext;
 use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Procuration\ProcurationSession;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,8 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProcurationController extends Controller
 {
     /**
-     * @Route(name="app_procuration_landing")
-     * @Method("GET")
+     * @Route(name="app_procuration_landing", methods={"GET"})
      */
     public function landingAction(ProcurationSession $procurationSession): Response
     {
@@ -41,9 +39,9 @@ class ProcurationController extends Controller
      * @Route(
      *     "/choisir/{action}",
      *     requirements={"action": AppBundle\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
-     *     name="app_procuration_choose_election"
+     *     name="app_procuration_choose_election",
+     *     methods={"GET", "POST"}
      * )
-     * @Method("GET|POST")
      */
     public function chooseElectionAction(
         Request $request,
@@ -71,13 +69,12 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande", name="app_procuration_index_legacy")
+     * @Route("/je-demande", name="app_procuration_index_legacy", methods={"GET", "POST"})
      * @Route(
      *     "/je-demande/{step}",
      *     requirements={"step": "mon-lieu-de-vote|mes-coordonnees|ma-procuration"},
      *     name="app_procuration_request"
      * )
-     * @Method("GET|POST")
      */
     public function requestAction(
         Request $request,
@@ -130,8 +127,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-demande/merci", name="app_procuration_request_thanks")
-     * @Method("GET")
+     * @Route("/je-demande/merci", name="app_procuration_request_thanks", methods={"GET"})
      */
     public function requestThanksAction(): Response
     {
@@ -139,8 +135,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-propose", name="app_procuration_proxy_proposal")
-     * @Method("GET|POST")
+     * @Route("/je-propose", name="app_procuration_proxy_proposal", methods={"GET", "POST"})
      */
     public function proxyProposalAction(
         Request $request,
@@ -193,8 +188,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/je-propose/merci", name="app_procuration_proposal_thanks")
-     * @Method("GET")
+     * @Route("/je-propose/merci", name="app_procuration_proposal_thanks", methods={"GET"})
      */
     public function proposalThanksAction(Request $request): Response
     {
@@ -204,8 +198,7 @@ class ProcurationController extends Controller
     }
 
     /**
-     * @Route("/ma-demande/{id}/{token}", requirements={"token": "%pattern_uuid%"}, name="app_procuration_my_request")
-     * @Method("GET")
+     * @Route("/ma-demande/{id}/{token}", requirements={"token": "%pattern_uuid%"}, name="app_procuration_my_request", methods={"GET"})
      */
     public function myRequestAction(ProcurationRequest $request, string $token): Response
     {

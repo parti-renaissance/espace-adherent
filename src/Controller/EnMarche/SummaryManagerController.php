@@ -14,7 +14,6 @@ use AppBundle\Form\TrainingType;
 use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Repository\SkillRepository;
 use AppBundle\Summary\SummaryManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,8 +28,7 @@ class SummaryManagerController extends Controller
     use EntityControllerTrait;
 
     /**
-     * @Route(name="app_summary_manager_index")
-     * @Method("GET")
+     * @Route(name="app_summary_manager_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -46,8 +44,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/activites_recentes/cacher_afficher", name="app_summary_manager_toggle_showing_recent_activities")
-     * @Method("GET")
+     * @Route("/activites_recentes/cacher_afficher", name="app_summary_manager_toggle_showing_recent_activities", methods={"GET"})
      */
     public function toggleShowingRecentActivitiesAction()
     {
@@ -62,8 +59,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/experience/{id}", defaults={"id": ""}, name="app_summary_manager_handle_experience")
-     * @Method("GET|POST")
+     * @Route("/experience/{id}", defaults={"id": ""}, name="app_summary_manager_handle_experience", methods={"GET", "POST"})
      */
     public function handleExperienceAction(Request $request, ?JobExperience $experience)
     {
@@ -88,8 +84,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/experience/{id}/supprimer", name="app_summary_manager_remove_experience")
-     * @Method("DELETE")
+     * @Route("/experience/{id}/supprimer", name="app_summary_manager_remove_experience", methods={"DELETE"})
      */
     public function removeExperienceAction(Request $request, JobExperience $experience)
     {
@@ -107,8 +102,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/formation/{id}", defaults={"id": ""}, name="app_summary_manager_handle_training")
-     * @Method("GET|POST")
+     * @Route("/formation/{id}", defaults={"id": ""}, name="app_summary_manager_handle_training", methods={"GET", "POST"})
      */
     public function handleTrainingAction(Request $request, ?Training $training)
     {
@@ -133,8 +127,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/formation/{id}/supprimer", name="app_summary_manager_remove_training")
-     * @Method("DELETE")
+     * @Route("/formation/{id}/supprimer", name="app_summary_manager_remove_training", methods={"DELETE"})
      */
     public function removeTrainingAction(Request $request, Training $training)
     {
@@ -152,8 +145,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/langue/{id}", defaults={"id": ""}, name="app_summary_manager_handle_language")
-     * @Method("GET|POST")
+     * @Route("/langue/{id}", defaults={"id": ""}, name="app_summary_manager_handle_language", methods={"GET", "POST"})
      */
     public function handleLanguageAction(Request $request, ?Language $language)
     {
@@ -172,8 +164,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/langue/{id}/supprimer", name="app_summary_manager_remove_language")
-     * @Method("DELETE")
+     * @Route("/langue/{id}/supprimer", name="app_summary_manager_remove_language", methods={"DELETE"})
      */
     public function removeLanguageAction(Request $request, Language $language)
     {
@@ -191,8 +182,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/publier", name="app_summary_manager_publish")
-     * @Method("GET")
+     * @Route("/publier", name="app_summary_manager_publish", methods={"GET"})
      */
     public function publishAction()
     {
@@ -207,8 +197,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/depublier", name="app_summary_manager_unpublish")
-     * @Method("GET")
+     * @Route("/depublier", name="app_summary_manager_unpublish", methods={"GET"})
      */
     public function unpublishAction()
     {
@@ -224,9 +213,9 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/competences/autocompletion",
      *     name="app_summary_manager_skills_autocomplete",
-     *     condition="request.isXmlHttpRequest()"
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function skillsAutocompleteAction(Request $request)
     {
@@ -238,8 +227,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/{step}", name="app_summary_manager_step")
-     * @Method("GET|POST")
+     * @Route("/{step}", name="app_summary_manager_step", methods={"GET", "POST"})
      */
     public function stepAction(Request $request, string $step)
     {
@@ -266,8 +254,7 @@ class SummaryManagerController extends Controller
     }
 
     /**
-     * @Route("/photo/supprimer", name="app_summary_manager_remove_photo")
-     * @Method("DELETE")
+     * @Route("/photo/supprimer", name="app_summary_manager_remove_photo", methods={"DELETE"})
      */
     public function removePhotoAction(Request $request): Response
     {

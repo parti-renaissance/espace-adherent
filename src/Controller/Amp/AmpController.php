@@ -8,7 +8,6 @@ use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\Proposal;
 use AppBundle\Sitemap\SitemapFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,8 +17,7 @@ class AmpController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/articles/{categorySlug}/{articleSlug}", name="amp_article_view")
-     * @Method("GET")
+     * @Route("/articles/{categorySlug}/{articleSlug}", name="amp_article_view", methods={"GET"})
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
     public function articleAction(Article $article): Response
@@ -28,8 +26,7 @@ class AmpController extends Controller
     }
 
     /**
-     * @Route("/proposition/{slug}", name="amp_proposal_view")
-     * @Method("GET")
+     * @Route("/proposition/{slug}", name="amp_proposal_view", methods={"GET"})
      * @Entity("proposal", expr="repository.findPublishedProposal(slug)")
      */
     public function proposalAction(Proposal $proposal): Response
@@ -40,8 +37,7 @@ class AmpController extends Controller
     }
 
     /**
-     * @Route("/transformer-la-france/{slug}", name="amp_explainer_article_show")
-     * @Method("GET")
+     * @Route("/transformer-la-france/{slug}", name="amp_explainer_article_show", methods={"GET"})
      * @Entity("article", expr="repository.findPublishedArticle(slug)")
      */
     public function orderArticleAction(OrderArticle $article): Response
@@ -50,8 +46,7 @@ class AmpController extends Controller
     }
 
     /**
-     * @Route("/sitemap.xml", name="amp_sitemap")
-     * @Method("GET")
+     * @Route("/sitemap.xml", name="amp_sitemap", methods={"GET"})
      */
     public function sitemapIndexAction(): Response
     {

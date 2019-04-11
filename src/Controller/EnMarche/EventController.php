@@ -13,7 +13,6 @@ use AppBundle\Form\EventRegistrationType;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,8 +28,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EventController extends Controller
 {
     /**
-     * @Route(name="app_event_show")
-     * @Method("GET")
+     * @Route(name="app_event_show", methods={"GET"})
      */
     public function showAction(Event $event, EventRepository $eventRepository): Response
     {
@@ -42,8 +40,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/ical", name="app_event_export_ical")
-     * @Method("GET")
+     * @Route("/ical", name="app_event_export_ical", methods={"GET"})
      */
     public function exportIcalAction(Event $event): Response
     {
@@ -57,8 +54,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/inscription", name="app_event_attend")
-     * @Method("GET|POST")
+     * @Route("/inscription", name="app_event_attend", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function attendAction(Request $request, Event $event): Response
@@ -99,9 +95,9 @@ class EventController extends Controller
      * @Route(
      *     path="/confirmation",
      *     name="app_event_attend_confirmation",
-     *     condition="request.query.has('registration')"
+     *     condition="request.query.has('registration')",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function attendConfirmationAction(Request $request, Event $event): Response
     {
@@ -127,8 +123,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/invitation", name="app_event_invite")
-     * @Method("GET|POST")
+     * @Route("/invitation", name="app_event_invite", methods={"GET", "POST"})
      */
     public function inviteAction(Request $request, Event $event): Response
     {
@@ -160,8 +155,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/invitation/merci", name="app_event_invitation_sent")
-     * @Method("GET")
+     * @Route("/invitation/merci", name="app_event_invitation_sent", methods={"GET"})
      */
     public function invitationSentAction(Request $request, Event $event): Response
     {
@@ -178,8 +172,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/desinscription", name="app_event_unregistration", condition="request.isXmlHttpRequest()")
-     * @Method("GET|POST")
+     * @Route("/desinscription", name="app_event_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
      */
     public function unregistrationAction(
         Request $request,

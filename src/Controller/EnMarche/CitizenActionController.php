@@ -14,7 +14,6 @@ use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,8 +31,7 @@ class CitizenActionController extends Controller
     use EntityControllerTrait;
 
     /**
-     * @Route("/{slug}", name="app_citizen_action_show")
-     * @Method("GET")
+     * @Route("/{slug}", name="app_citizen_action_show", methods={"GET"})
      */
     public function showAction(CitizenAction $action, CitizenActionManager $citizenActionManager): Response
     {
@@ -44,8 +42,7 @@ class CitizenActionController extends Controller
     }
 
     /**
-     * @Route("/{slug}/inscription", name="app_citizen_action_attend")
-     * @Method("GET|POST")
+     * @Route("/{slug}/inscription", name="app_citizen_action_attend", methods={"GET", "POST"})
      */
     public function attendAction(Request $request, CitizenAction $citizenAction): Response
     {
@@ -85,8 +82,7 @@ class CitizenActionController extends Controller
     }
 
     /**
-     * @Route("/{slug}/desinscription", name="app_citizen_action_unregistration", condition="request.isXmlHttpRequest()")
-     * @Method("GET|POST")
+     * @Route("/{slug}/desinscription", name="app_citizen_action_unregistration", condition="request.isXmlHttpRequest()", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER_CITIZEN_ACTION', citizenAction)")
      */
     public function unregistrationAction(Request $request, CitizenAction $citizenAction): JsonResponse
@@ -111,9 +107,9 @@ class CitizenActionController extends Controller
      * @Route(
      *     path="/{slug}/confirmation",
      *     name="app_citizen_action_attend_confirmation",
-     *     condition="request.query.has('registration')"
+     *     condition="request.query.has('registration')",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function attendConfirmationAction(Request $request, CitizenAction $citizenAction): Response
     {
@@ -138,8 +134,7 @@ class CitizenActionController extends Controller
     }
 
     /**
-     * @Route("/{slug}/ical", name="app_citizen_action_export_ical")
-     * @Method("GET")
+     * @Route("/{slug}/ical", name="app_citizen_action_export_ical", methods={"GET"})
      */
     public function exportIcalAction(CitizenAction $citizenAction): Response
     {
@@ -152,8 +147,7 @@ class CitizenActionController extends Controller
     }
 
     /**
-     * @Route("/{slug}/participants", name="app_citizen_action_list_participants")
-     * @Method("GET")
+     * @Route("/{slug}/participants", name="app_citizen_action_list_participants", methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function listParticipantsAction(

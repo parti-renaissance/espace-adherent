@@ -6,7 +6,6 @@ use AppBundle\Entity\UserDocument;
 use AppBundle\UserDocument\UserDocumentManager;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use League\Flysystem\FileNotFoundException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UploadDocumentController extends Controller
 {
     /**
-     * @Route("/upload/{type}", name="app_filebrowser_upload")
-     * @Method("POST")
+     * @Route("/upload/{type}", name="app_filebrowser_upload", methods={"POST"})
      * @Security("is_granted('FILE_UPLOAD', type)")
      */
     public function filebrowserUploadAction(string $type, Request $request)
@@ -49,8 +47,7 @@ class UploadDocumentController extends Controller
     }
 
     /**
-     * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, name="app_download_user_document")
-     * @Method("GET")
+     * @Route("/documents-partages/{uuid}/{filename}", requirements={"uuid": "%pattern_uuid%"}, name="app_download_user_document", methods={"GET"})
      */
     public function downloadDocumentAction(UserDocument $document, string $filename)
     {

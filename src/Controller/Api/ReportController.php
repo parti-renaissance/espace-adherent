@@ -8,7 +8,6 @@ use AppBundle\Report\ReportCommand;
 use AppBundle\Report\ReportCreationCommandHandler;
 use AppBundle\Report\ReportManager;
 use AppBundle\Report\ReportType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,9 +27,9 @@ class ReportController extends AbstractController
      *     requirements={
      *         "type": AppBundle\Report\ReportType::TYPES_URI_PATTERN,
      *         "uuid": "%pattern_uuid%"
-     *     }
+     *     },
+     *     methods={"POST"}
      * )
-     * @Method("POST")
      * @Security("is_granted('REPORT')")
      */
     public function reportAction(
@@ -71,8 +70,7 @@ class ReportController extends AbstractController
     }
 
     /**
-     * @Route("/report/reasons", name="api_report_reasons")
-     * @Method("GET")
+     * @Route("/report/reasons", name="api_report_reasons", methods={"GET"})
      * @Security("is_granted('REPORT')")
      */
     public function reasonsAction(TranslatorInterface $translator): Response

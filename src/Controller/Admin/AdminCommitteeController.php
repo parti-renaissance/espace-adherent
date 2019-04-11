@@ -10,7 +10,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Form\Admin\CommitteeMergeType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +25,7 @@ class AdminCommitteeController extends Controller
     /**
      * Approves the committee.
      *
-     * @Route("/{id}/approve", name="app_admin_committee_approve")
-     * @Method("GET")
+     * @Route("/{id}/approve", name="app_admin_committee_approve", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function approveAction(Committee $committee): Response
@@ -58,8 +56,7 @@ class AdminCommitteeController extends Controller
     /**
      * Refuses the committee.
      *
-     * @Route("/{id}/refuse", name="app_admin_committee_refuse")
-     * @Method("GET")
+     * @Route("/{id}/refuse", name="app_admin_committee_refuse", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function refuseAction(Committee $committee): Response
@@ -75,8 +72,7 @@ class AdminCommitteeController extends Controller
     }
 
     /**
-     * @Route("/{id}/members", name="app_admin_committee_members")
-     * @Method("GET")
+     * @Route("/{id}/members", name="app_admin_committee_members", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function membersAction(Committee $committee): Response
@@ -91,8 +87,7 @@ class AdminCommitteeController extends Controller
     }
 
     /**
-     * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege")
-     * @Method("GET")
+     * @Route("/{committee}/members/{adherent}/set-privilege/{privilege}", name="app_admin_committee_change_privilege", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
      */
     public function changePrivilegeAction(
@@ -121,8 +116,7 @@ class AdminCommitteeController extends Controller
     }
 
     /**
-     * @Route("/merge", name="app_admin_committee_merge")
-     * @Method({"GET", "POST"})
+     * @Route("/merge", name="app_admin_committee_merge", methods={"GET", "POST"})
      *
      * @Security("has_role('ROLE_ADMIN_COMMITTEES_MERGE')")
      */

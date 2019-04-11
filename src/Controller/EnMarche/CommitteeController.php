@@ -12,7 +12,6 @@ use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
 use AppBundle\Form\CommitteeFeedMessageType;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,8 +28,7 @@ class CommitteeController extends Controller
     use EntityControllerTrait;
 
     /**
-     * @Route(name="app_committee_show")
-     * @Method("GET|POST")
+     * @Route(name="app_committee_show", methods={"GET", "POST"})
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
     public function showAction(Request $request, Committee $committee): Response
@@ -75,10 +73,9 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/timeline/{id}/modifier", name="app_committee_timeline_edit")
+     * @Route("/timeline/{id}/modifier", name="app_committee_timeline_edit", methods={"GET", "POST"})
      * @ParamConverter("committee", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping": {"id": "id"}})
-     * @Method("GET|POST")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
     public function timelineEditAction(
@@ -112,10 +109,9 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/timeline/{id}/supprimer", name="app_committee_timeline_delete")
+     * @Route("/timeline/{id}/supprimer", name="app_committee_timeline_delete", methods={"DELETE"})
      * @ParamConverter("committee", options={"mapping": {"slug": "slug"}})
      * @ParamConverter("committeeFeedItem", options={"mapping": {"id": "id"}})
-     * @Method("DELETE")
      * @Security("is_granted('ADMIN_FEED_COMMITTEE', committeeFeedItem)")
      */
     public function timelineDeleteAction(
@@ -139,8 +135,7 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/timeline", name="app_committee_timeline")
-     * @Method("GET")
+     * @Route("/timeline", name="app_committee_timeline", methods={"GET"})
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
     public function timelineAction(Request $request, Committee $committee): Response
@@ -161,8 +156,7 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')")
-     * @Method("POST")
+     * @Route("/rejoindre", name="app_committee_follow", condition="request.request.has('token')", methods={"POST"})
      * @Security("is_granted('FOLLOW_COMMITTEE', committee)")
      */
     public function followAction(Request $request, Committee $committee): Response
@@ -183,8 +177,7 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/quitter", name="app_committee_unfollow", condition="request.request.has('token')")
-     * @Method("POST")
+     * @Route("/quitter", name="app_committee_unfollow", condition="request.request.has('token')", methods={"POST"})
      * @Security("is_granted('UNFOLLOW_COMMITTEE', committee)")
      */
     public function unfollowAction(Request $request, Committee $committee): Response

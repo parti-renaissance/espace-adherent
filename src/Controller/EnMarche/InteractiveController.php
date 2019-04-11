@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\MyEuropeInvitation;
 use AppBundle\Form\MyEuropeType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +14,7 @@ class InteractiveController extends Controller
     public const MESSAGE_SUBJECT = 'Pour une Renaissance européenne';
 
     /**
-     * @Route("/mon-europe", name="app_my_europe")
-     * @Method("GET|POST")
+     * @Route("/mon-europe", name="app_my_europe", methods={"GET", "POST"})
      */
     public function myEuropeAction(Request $request): Response
     {
@@ -49,8 +47,7 @@ class InteractiveController extends Controller
     }
 
     /**
-     * @Route("/mon-europe/recommencer", name="app_my_europe_restart")
-     * @Method("GET")
+     * @Route("/mon-europe/recommencer", name="app_my_europe_restart", methods={"GET"})
      */
     public function restartMyEuropeAction(Request $request): Response
     {
@@ -60,8 +57,7 @@ class InteractiveController extends Controller
     }
 
     /**
-     * @Route("/mon-europe/{uuid}/merci", name="app_my_europe_mail_sent")
-     * @Method("GET")
+     * @Route("/mon-europe/{uuid}/merci", name="app_my_europe_mail_sent", methods={"GET"})
      */
     public function mailSentAction(MyEuropeInvitation $myEurope): Response
     {
