@@ -29,12 +29,14 @@ class ManagedUsersFilter
     public const PARAMETER_AGE_MAX = 'amax';
     public const PARAMETER_INTEREST = 'i';
     public const PARAMETER_INCLUDE_CP = 'cp';
+    public const PARAMETER_EMAIL_SUBSCRIPTION = 'es';
 
     protected $includeAdherentsNoCommittee = true;
     protected $includeAdherentsInCommittee = true;
     protected $includeHosts = true;
     protected $includeSupervisors = true;
     protected $includeCP = true;
+    protected $onlyEmailSubscribers = null;
 
     /**
      * @Assert\NotNull
@@ -112,6 +114,11 @@ class ManagedUsersFilter
         $this->queryAgeMaximum = $query->getInt(self::PARAMETER_AGE_MAX);
         $this->queryInterests = (array) $query->get(self::PARAMETER_INTEREST, []);
         $this->includeCP = $query->getBoolean(self::PARAMETER_INCLUDE_CP);
+        if ('' !== $query->get(self::PARAMETER_EMAIL_SUBSCRIPTION) && null !== $query->get(self::PARAMETER_EMAIL_SUBSCRIPTION)) {
+            $this->onlyEmailSubscribers = $query->getBoolean(self::PARAMETER_EMAIL_SUBSCRIPTION);
+        } else {
+            $this->onlyEmailSubscribers = null;
+        }
 
         return $this;
     }
@@ -140,6 +147,7 @@ class ManagedUsersFilter
             self::PARAMETER_AGE_MAX => $this->queryAgeMaximum,
             self::PARAMETER_INTEREST => $this->queryInterests,
             self::PARAMETER_INCLUDE_CP => $this->includeCP ? '1' : '0',
+            self::PARAMETER_EMAIL_SUBSCRIPTION => null === $this->onlyEmailSubscribers ? null : ($this->onlyEmailSubscribers ? '1' : '0'),
         ]);
     }
 
@@ -273,5 +281,10 @@ class ManagedUsersFilter
     public function includeCitizenProject(): bool
     {
         return $this->includeCP;
+    }
+
+    public function onlyEmailSubscribers(): ?bool
+    {
+        return $this->onlyEmailSubscribers;
     }
 }

@@ -246,7 +246,16 @@
 
                 </div>
 
-                <!-- Le champ de checkbox ci dessous devient un input multi sélection - frontdev -->
+                <div class="l__row l__row--top l__mobile--col">
+                    <legend class="label__header">{{ 'referent.status.email'|trans }}</legend>
+                    <div class="l__row">
+                        <select class="form form__field form--full" name="{{ constant('PARAMETER_EMAIL_SUBSCRIPTION', filter) }}">
+                            <option value="">{{ 'referent.adherent.all'|trans }}</option>
+                            <option value="1" {{ filter.onlyEmailSubscribers is same as(true) ? 'selected' }}>{{ 'referent.adherent.subscribed'|trans }}</option>
+                            <option value="0" {{ filter.onlyEmailSubscribers is same as(false) ? 'selected' }}>{{ 'referent.adherent.unsubscribed'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
 
                 <!-- <div class="referent__filters__subtitle">
                     Envoyer un message aux ...
@@ -349,7 +358,6 @@
                             Exemple: "59400, 18, CH"
                         </legend>
 
-
                         <legend class="label__header label__header__interest">Centres d'intérêt</legend>
                         <div class="referent__filters__search__col__interest">
                             <div class="form l__row l__row--wrap">
@@ -367,7 +375,6 @@
                     </div>
                 </div>
 
-
                 <div class="manager__filters__actions b__nudge--top">
                     <button type="submit" class="btn btn--black b__nudge--bottom-medium">
                         Appliquer
@@ -379,7 +386,6 @@
                     {% endif %}
                 </div>
 
-                <!-- What is this? was already here -->
                 <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
                 <input type="hidden" name="c" value="{{ 'now'|date('His') }}" />
             </form>
@@ -404,7 +410,7 @@
                     <th style="width: 100px;">Téléphone</th>
                     <th style="width: 100px;">Commune</th>
                     <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion le</th>
-                    <th style="width: 100px;">Statut (e-mail)</th>
+                    <th style="width: 100px;">{{ 'referent.status.email'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -484,8 +490,8 @@
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}
                         </td>
-                        <td class="status status__1">
-                            <span></span>Abonné(e)
+                        <td class="status status__{{ user.isMailSubscriber ? '1' : '3' }}">
+                            <span></span>{{ (user.isMailSubscriber ? 'referent.adherent.subscribed' : 'referent.adherent.unsubscribed')|trans }}
                         </td>
                     </tr>
                 {% endfor %}
