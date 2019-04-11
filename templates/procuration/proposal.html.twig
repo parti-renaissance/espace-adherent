@@ -24,6 +24,7 @@
         Kernel.onLoad(function() {
             App.runProcurationProxy(
                 '#{{ procuration_form.country.vars.id }}',
+                '#{{ procuration_form.postalCode.vars.id }}',
                 '#{{ procuration_form.state.vars.id }}'
             );
 
@@ -123,8 +124,9 @@
                                     {{ form_errors(procuration_form.country) }}
                                 </div>
 
-                                <div id="vote-row-postal-code" class="register__form__zip_code register__form--third">
+                                <div class="register__form__zip_code register__form--third">
                                     {{ form_widget(procuration_form.postalCode, { attr: { placeholder: 'Code postal' } }) }}
+                                    {{ form_errors(procuration_form.postalCode) }}
                                 </div>
 
                                 <div class="register__form__city register__form--third">
@@ -175,7 +177,7 @@
                             {{ form_widget(procuration_form.voteCountry, { attr: { class: 'form--full' } }) }}
                         </div>
 
-                        <div class="form__row">
+                        <div id="vote-row-postal-code" class="form__row">
                             {{ form_label(procuration_form.votePostalCode, 'Le code postal où je vote') }}
                             {{ form_widget(procuration_form.votePostalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
                         </div>

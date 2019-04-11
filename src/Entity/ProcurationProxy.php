@@ -134,6 +134,11 @@ class ProcurationProxy
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"front"})
+     * @Assert\Expression(
+     *     "(this.getCountry() == 'FR' and value != null) or (this.getCountry() != 'FR' and value == null)",
+     *     message="procuration.postal_code.not_empty",
+     *     groups={"front"}
+     * )
      */
     private $postalCode = '';
 
@@ -162,7 +167,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\Expression(
-     *     "this.getCountry() == 'FR' and value == null",
+     *     "(this.getCountry() == 'FR' and value == null) or (this.getCountry() != 'FR' and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"front"}
      * )
@@ -216,6 +221,11 @@ class ProcurationProxy
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"front"})
+     * @Assert\Expression(
+     *     "(this.getVoteCountry() == 'FR' and value != null) or (this.getVoteCountry() != 'FR' and value == null)",
+     *     message="procuration.postal_code.not_empty",
+     *     groups={"front"}
+     * )
      */
     private $votePostalCode = '';
 

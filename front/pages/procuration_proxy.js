@@ -1,8 +1,8 @@
 import AutocompletedAddressForm from '../services/address/AutocompletedAddressForm';
 import AddressObject from '../services/address/AddressObject';
-import changeStateFieldVisibility from '../services/form/changeStateFieldVisibility';
+import changeFieldsVisibility from '../services/form/changeFieldsVisibility';
 
-export default (countryFieldSelector, stateFieldSelector) => {
+export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) => {
     (new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
@@ -15,5 +15,5 @@ export default (countryFieldSelector, stateFieldSelector) => {
         )
     )).buildWidget();
 
-    changeStateFieldVisibility(countryFieldSelector, stateFieldSelector);
+    changeFieldsVisibility(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector);
 };
