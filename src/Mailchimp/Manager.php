@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
@@ -106,11 +107,12 @@ class Manager implements LoggerAwareInterface
             );
         }
 
-        $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
+        /** @var CampaignContentRequestBuilder $requestBuilder */
+        $contentRequestBuilder = $this->requestBuildersLocator->get(CampaignContentRequestBuilder::class);
 
         if (!$this->driver->editCampaignContent(
             $message->getExternalId(),
-            $requestBuilder->createContentRequest($message)
+            $contentRequestBuilder->createContentRequest($message)
         )) {
             $this->logger->warning(
                 sprintf('Campaign content of "%s" message has not been modified', $message->getUuid()->toString())
