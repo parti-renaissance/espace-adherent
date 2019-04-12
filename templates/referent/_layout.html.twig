@@ -12,13 +12,18 @@
 {% endblock %}
 
 {% block content %}
+    {% if app.user.isCoReferent %}
+        {% set managedAreaTags = app.user.referentTeamMember.referent.managedArea.tags|join(', ') %}
+    {% else %}
+        {% set managedAreaTags = app.user.managedArea.tags|join(', ') %}
+    {% endif %}
     <main>
         <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
             <header class="manager-header">
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
+                            <p>Vous gérez : <span>{{ managedAreaTags }}</span></p>
                             <p>Dernière visite le <span>{{ get_referent_previous_visit_date(app.user) }}</span> à <span>8h45</span></p>
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
@@ -29,12 +34,15 @@
                         <h1 class="page-title text--large b__nudge--bottom">
                             {{ block('page_title') }}
                         </h1>
-                        <div class="direct-actions">
-                            <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                            <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
-                        </div>
+                        {% if is_granted('ROLE_REFERENT') %}
+                            <div class="direct-actions">
+                                <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                                <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                            </div>
+                        {% endif %}
                     </div>
 
+                    {% if is_granted('ROLE_REFERENT') %}
                     <nav class="manager-header__menu">
                         <ul>
                             {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
@@ -76,6 +84,7 @@
                             {% endif %}
                         </ul>
                     </nav>
+                    {% endif %}
 
                 </div>
             </header>
@@ -86,11 +95,13 @@
 
             <div id="managerOnScroll" class="manager__fixed-bar">
                 <div class="l__wrapper manager__fixed-bar__content">
-                    <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
-                    <div class="direct-actions">
-                        <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                        <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
-                    </div>
+                    <p>Vous gérez : <span>{{ managedAreaTags }}</span></p>
+                    {% if is_granted('ROLE_REFERENT') %}
+                        <div class="direct-actions">
+                            <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                            <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </section>

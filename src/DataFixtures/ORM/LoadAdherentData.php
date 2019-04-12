@@ -721,6 +721,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($deputy_75_1);
         $manager->persist($deputy_ch_li);
 
+        // For Organizational chart: adherent which is co-referent in the referent@en-marche-dev.fr team
+        $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
         // For Organizational chart: adherent which is co-referent in another referent team
         $adherent4->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-19')));
 
