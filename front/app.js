@@ -223,15 +223,15 @@ class App {
         });
     }
 
-    runProcurationProxy(countryFieldSelector, stateFieldSelector) {
+    runProcurationProxy(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) {
         System.import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector, stateFieldSelector);
+            module.default(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector);
         });
     }
 
-    runProcurationRequest(countryFieldSelector, stateFieldSelector) {
+    runProcurationRequest(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) {
         System.import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector, stateFieldSelector);
+            module.default(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector);
         });
     }
 }

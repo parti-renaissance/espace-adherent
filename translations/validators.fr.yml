@@ -211,6 +211,7 @@ procuration.vote_country.conditions.fr: Attention, vous ne pouvez être mandatai
 procuration.vote_country.conditions.other: Attention, vous ne pouvez être mandataire que pour trois procurations dont une seule maximum établie en France.
 procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
 procuration.state.not_empty: Vous devez remplir l'État/Province si le pays de résidence n'est pas en France.
+procuration.postal_code.not_empty: Pour la France, la saisie du code postal est obligatoire.
 
 #
 # Event

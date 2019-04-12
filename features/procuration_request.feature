@@ -24,7 +24,9 @@ Feature:
     When I fill in the following:
       | app_procuration_request[country] | FR |
     Then I should see 1 "#app_procuration_request_state.hidden" element
+    And I should see 0 "#app_procuration_request_postalCode.hidden" element
 
     When I fill in the following:
       | app_procuration_request[country] | ES |
     Then I should see 0 "#app_procuration_request_state.hidden" element
+    And I should see 1 "#app_procuration_request_postalCode.hidden" element

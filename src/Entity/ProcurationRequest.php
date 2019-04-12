@@ -147,6 +147,11 @@ class ProcurationRequest
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"profile"})
+     * @Assert\Expression(
+     *     "(this.getCountry() == 'FR' and value != null) or (this.getCountry() != 'FR' and value == null)",
+     *     message="procuration.postal_code.not_empty",
+     *     groups={"profile"}
+     * )
      */
     private $postalCode = '';
 
@@ -175,7 +180,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=255, groups={"profile"})
      * @Assert\Expression(
-     *     "this.getCountry() == 'FR' and value == null",
+     *     "(this.getCountry() == 'FR' and value == null) or (this.getCountry() != 'FR' and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"profile"}
      * )
@@ -229,6 +234,11 @@ class ProcurationRequest
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"vote"})
+     * @Assert\Expression(
+     *     "(this.getVoteCountry() == 'FR' and value != null) or (this.getVoteCountry() != 'FR' and value == null)",
+     *     message="procuration.postal_code.not_empty",
+     *     groups={"vote"}
+     * )
      */
     private $votePostalCode = '';
 

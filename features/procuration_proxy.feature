@@ -26,7 +26,9 @@ Feature:
     When I fill in the following:
       | app_procuration_proposal[country] | FR |
     Then I should see 1 "#app_procuration_proposal_state.hidden" element
+    And I should see 0 "#app_procuration_proposal_postalCode.hidden" element
 
     When I fill in the following:
       | app_procuration_proposal[country] | ES |
     Then I should see 0 "#app_procuration_proposal_state.hidden" element
+    And I should see 1 "#app_procuration_proposal_postalCode.hidden" element
