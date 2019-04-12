@@ -30,9 +30,10 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadOrganizationalChartItemData |
     And I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
-    And I should see 2 "div.referent-person-link" elements
+    And I should see 3 "div.referent-person-link" elements
     And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And I should see 1 "span.already-co-referent" element
 
     When I follow "Nom du responsable Responsable logistique"
@@ -47,9 +48,10 @@ Feature: Make sure we can see and interact with organizational chart
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
     And I should see "Dupoint Jean Responsable logistique"
-    And I should see 2 "div.referent-person-link" elements
+    And I should see 3 "div.referent-person-link" elements
     And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And I should see 1 "span.already-co-referent" element
 
     When I follow "Nom du responsable Responsable Financier"
@@ -62,16 +64,17 @@ Feature: Make sure we can see and interact with organizational chart
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
     And I should see "VASSEUR Michel Responsable Financier"
-    And I should see 3 "div.referent-person-link" elements
+    And I should see 4 "div.referent-person-link" elements
     And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_4_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_5_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And I should see 1 "span.already-co-referent" element
     And the "potential_co_referents_referentPersonLinks_1_isCoReferent" checkbox should be unchecked
     And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be unchecked
-    And the "potential_co_referents_referentPersonLinks_4_isCoReferent" checkbox should be unchecked
+    And the "potential_co_referents_referentPersonLinks_3_isCoReferent" checkbox should be unchecked
+    And the "potential_co_referents_referentPersonLinks_5_isCoReferent" checkbox should be unchecked
 
-  @rol
   Scenario: As a root referent I can transform a member to co-referent
     Given the following fixtures are loaded:
       | LoadAdherentData                |
@@ -80,10 +83,12 @@ Feature: Make sure we can see and interact with organizational chart
     And I am on "/espace-referent/mon-equipe"
     And the "potential_co_referents_referentPersonLinks_1_isCoReferent" checkbox should be unchecked
     And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be unchecked
-    When I check "potential_co_referents_referentPersonLinks_2_isCoReferent"
+    And the "potential_co_referents_referentPersonLinks_3_isCoReferent" checkbox should be unchecked
+    When I check "potential_co_referents_referentPersonLinks_3_isCoReferent"
     And I press "Enregistrer"
     Then the "potential_co_referents_referentPersonLinks_1_isCoReferent" checkbox should be unchecked
-    And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be checked
+    Then the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be unchecked
+    And the "potential_co_referents_referentPersonLinks_3_isCoReferent" checkbox should be checked
 
     When I follow "Carl Mirabeau Responsable digital"
     Then I should see 1 "#referent_person_link_isCoReferent" element
@@ -94,6 +99,7 @@ Feature: Make sure we can see and interact with organizational chart
     And I should see "Carl Mirabeau Responsable digital"
     And the "potential_co_referents_referentPersonLinks_1_isCoReferent" checkbox should be unchecked
     And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be unchecked
+    And the "potential_co_referents_referentPersonLinks_3_isCoReferent" checkbox should be unchecked
 
     When I follow "Carl Mirabeau Responsable digital"
     And I check "referent_person_link_isCoReferent"
@@ -101,4 +107,5 @@ Feature: Make sure we can see and interact with organizational chart
     Then I should be on "/espace-referent/mon-equipe"
     And I should see "Carl Mirabeau Responsable digital"
     And the "potential_co_referents_referentPersonLinks_1_isCoReferent" checkbox should be unchecked
-    And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be checked
+    And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be unchecked
+    And the "potential_co_referents_referentPersonLinks_3_isCoReferent" checkbox should be checked

@@ -265,7 +265,7 @@
         </div>
     </div>
 
-    {% if has_filter %}
+    {% if has_filter and is_granted('ROLE_REFERENT') %}
         <div class="b__nudge--bottom-large">
             <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn-type-table" id="send-message-btn">
                 Contacter ({{ results_count }})

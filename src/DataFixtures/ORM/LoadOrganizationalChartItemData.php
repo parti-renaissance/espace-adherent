@@ -47,6 +47,14 @@ class LoadOrganizationalChartItemData extends Fixture
                                                 'resp_local_committee_bis_bis' => [
                                                     'class' => PersonOrganizationalChartItem::class,
                                                     'label' => 'Responsable comités locaux',
+                                                    'referent_person_link' => [
+                                                        'firstName' => 'Benjamin',
+                                                        'lastName' => 'Duroc',
+                                                        'email' => 'benjyd@aol.com',
+                                                        'phone' => '',
+                                                        'postalAddress' => '39 rue de Crimée, Marseille',
+                                                        'referent' => 'referent3',
+                                                    ],
                                                 ],
                                             ],
                                         ],
