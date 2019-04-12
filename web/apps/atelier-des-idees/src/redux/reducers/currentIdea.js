@@ -37,7 +37,7 @@ function ideaReducer(state = initialState.idea, action) {
         return { ...state, answers: updatedAnswers };
     }
     case EXTEND_PERIOD:
-        return { ...state, extendable: payload.data };
+        return { ...state, ...payload.data };
     case TOGGLE_VOTE_CURRENT_IDEA: {
         const { voteType, voteId } = payload;
         return toggleVote(state, voteType, voteId);

@@ -3,7 +3,7 @@ import history from '../../history';
 
 import { redirectToSignin } from '../../helpers/navigation';
 import { SAVE_CURRENT_IDEA, FETCH_GUIDELINES, PUBLISH_IDEA, AUTOCOMPLETE_TITLE_IDEA } from '../constants/actionTypes';
-import { publishIdea, voteIdea } from '../thunk/ideas';
+import { publishIdea, voteIdea, fetchIdea } from '../thunk/ideas';
 import { postComment, fetchThreads, deleteComment } from '../thunk/threads';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
 import { selectIsAuthenticated, selectAuthUser } from '../selectors/auth';
@@ -45,8 +45,9 @@ export function updatePeriod() {
     return (dispatch, getState, axios) => {
         const { uuid } = selectCurrentIdea(getState());
         return axios.put(`/api/ideas-workshop/ideas/${uuid}/extend`).then((res) => {
-            const isExtendable = res.data.extendable;
-            dispatch(extendPeriod(isExtendable));
+            const data = res.data;
+            // dispatch(fetchIdea(uuid));
+            dispatch(extendPeriod(data));
             dispatch(hideModal());
             window.scrollTo(0, 0);
         });

@@ -301,8 +301,6 @@ class IdeaPageBase extends React.Component {
                         )}
                     </div>
                     <div className="l__wrapper--medium">
-
-                      
                         {this.props.isAuthor && idea.extendable && (
                             <CtaSection
                                 onClick={e => this.onExtendClicked(e)}
