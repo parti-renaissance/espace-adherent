@@ -8,6 +8,11 @@
   padding: 40px 100px;
   margin: 50px auto;
 
+  @media #{$mobile} {
+    flex-direction: column;
+    padding: 20px;
+  }
+
   h3 {
     color: $blue;
     font-size: 18px;
@@ -25,6 +30,10 @@
     padding: 10px 15px;
     font-family:$font-gillsans;
     font-size: 14px;
+
+    @media #{$mobile} {
+      margin-top: 10px;
+    }
 
     &:hover {
       background-color: black;
