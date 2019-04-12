@@ -1,9 +1,8 @@
 export default function (
-    countryFieldSelector,
+    countryElement,
     postalCodeFieldSelector,
     stateFieldSelector
 ) {
-    const countryElement = dom(countryFieldSelector);
     const postalCodeElement = dom(postalCodeFieldSelector);
     const stateElement = dom(stateFieldSelector);
 
@@ -15,9 +14,11 @@ export default function (
 function changeFieldsVisibility(country, postalCode, state) {
     if ('FR' === country.value) {
         state.classList.add('hidden');
+        state.value = '';
         postalCode.classList.remove('hidden');
     } else {
         state.classList.remove('hidden');
         postalCode.classList.add('hidden');
+        postalCode.value = '';
     }
 }
