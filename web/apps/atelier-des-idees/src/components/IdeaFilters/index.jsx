@@ -93,7 +93,7 @@ class IdeaFilters extends React.Component {
                     <p className="idea-filters__label">Filtrer par</p>
                     <div className="idea-filters__section__filters">
                         <span className="idea-filters__input-wrapper">
-                            <img src={searchIcn} className="idea-filters__input-icon" />
+                            <img src={searchIcn} className="idea-filters__input-icon" alt="Recherche" />
                             <input
                                 className="idea-filters__input"
                                 value={this.state.name}
@@ -107,13 +107,8 @@ class IdeaFilters extends React.Component {
                                     <Select
                                         options={this.props.options.categories}
                                         placeholder="Échelon"
-                                        defaultValue={this.getDefaultValue(
-                                            this.props.options.categories,
-                                            'category.name'
-                                        )}
-                                        onSelected={([selected]) =>
-                                            this.onFilterChange('category.name', selected && selected.value)
-                                        }
+                                        defaultValue={this.getDefaultValue(this.props.options.categories, 'category.name')}
+                                        onSelected={([selected]) => this.onFilterChange('category.name', selected && selected.value)}
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
                                     />
@@ -123,9 +118,7 @@ class IdeaFilters extends React.Component {
                                         options={this.props.options.themes}
                                         defaultValue={this.getDefaultValue(this.props.options.themes, 'themes.name')}
                                         placeholder="Thème"
-                                        onSelected={([selected]) =>
-                                            this.onFilterChange('themes.name', selected && selected.value)
-                                        }
+                                        onSelected={([selected]) => this.onFilterChange('themes.name', selected && selected.value)}
                                         isClearable={true}
                                         isDisabled={this.props.disabled}
                                     />
@@ -135,30 +128,21 @@ class IdeaFilters extends React.Component {
                         <Select
                             options={this.filterItems.authorCategory.options}
                             placeholder="Type de contributeur"
-                            defaultValue={this.getDefaultValue(
-                                this.filterItems.authorCategory.options,
-                                'authorCategory'
-                            )}
-                            onSelected={([selected]) =>
-                                this.onFilterChange('authorCategory', selected && selected.value)
-                            }
+                            defaultValue={this.getDefaultValue(this.filterItems.authorCategory.options, 'authorCategory')}
+                            onSelected={([selected]) => this.onFilterChange('authorCategory', selected && selected.value)}
                             isClearable={true}
                             isDisabled={this.props.disabled}
                         />
-                        {this.props.status === ideaStatus.PENDING &&
-                            !!this.props.options &&
-                            !!this.props.options.needs.length && (
-                                <Select
-                                    options={this.props.options.needs}
-                                    defaultValue={this.getDefaultValue(this.props.options.needs, 'needs.name')}
-                                    placeholder="Besoin"
-                                    onSelected={([selected]) =>
-                                        this.onFilterChange('needs.name', selected && selected.value)
-                                    }
-                                    isClearable={true}
-                                    isDisabled={this.props.disabled}
-                                />
-                            )}
+                        {this.props.status === ideaStatus.PENDING && !!this.props.options && !!this.props.options.needs.length && (
+                            <Select
+                                options={this.props.options.needs}
+                                defaultValue={this.getDefaultValue(this.props.options.needs, 'needs.name')}
+                                placeholder="Besoin"
+                                onSelected={([selected]) => this.onFilterChange('needs.name', selected && selected.value)}
+                                isClearable={true}
+                                isDisabled={this.props.disabled}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="idea-filters__section idea-filters__sort">

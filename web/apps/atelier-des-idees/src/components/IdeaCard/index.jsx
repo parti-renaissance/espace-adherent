@@ -67,8 +67,7 @@ class IdeaCard extends React.Component {
                 className={classnames('idea-card', {
                     'idea-card--condensed': this.props.condensed,
                 })}
-                ref={this.cardRef}
-            >
+                ref={this.cardRef}>
                 <Link to={`/atelier-des-idees/proposition/${this.props.uuid}`} className="idea-card__link">
                     <div className="idea-card__main">
                         <div className="idea-card__content">
@@ -76,8 +75,7 @@ class IdeaCard extends React.Component {
                                 className={classnames('idea-card__content__title', {
                                     'idea-card__content__title--read': this.props.hasBeenRead,
                                 })}
-                                title={this.props.name}
-                            >
+                                title={this.props.name}>
                                 {this.props.name}
                             </p>
                             <div className="idea-card__content__infos">
@@ -87,14 +85,33 @@ class IdeaCard extends React.Component {
                                         {getUserDisplayName(this.props.author)}
                                     </span>
                                     <span className="idea-card__content__infos__author__separator" />
-                                    <span
-                                        className={classnames(
-                                            'idea-card__content__infos__author__type',
-                                            `idea-card__content__infos__author__type--${this.props.author_category}`
-                                        )}
-                                    >
-                                        {AUTHOR_CATEGORIES[this.props.author_category]}
-                                    </span>
+
+                                    {null !== this.props.committee ? (
+                                        <span
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                window.location = `/comites/${this.props.committee.slug}`;
+                                            }}
+                                            className={classnames(
+                                                'idea-card__content__infos__author__type',
+                                                `idea-card__content__infos__author__type--${this.props.author_category}`
+                                            )}
+                                            data-tip={this.props.committee.name}
+                                            data-effect="solid"
+                                            data-type="light"
+                                            data-class="idea-card__theme-tip"
+                                            alt="Aperçu">
+                                            {AUTHOR_CATEGORIES[this.props.author_category]}
+                                        </span>
+                                    ) : (
+                                        <span
+                                            className={classnames(
+                                                'idea-card__content__infos__author__type',
+                                                `idea-card__content__infos__author__type--${this.props.author_category}`
+                                            )}>
+                                            {AUTHOR_CATEGORIES[this.props.author_category]}
+                                        </span>
+                                    )}
                                 </span>
                                 {'QG' !== this.props.author_category && (
                                     <div className="idea-card__content__infos__ideas">
@@ -107,11 +124,11 @@ class IdeaCard extends React.Component {
                                                 data-effect="solid"
                                                 data-type="light"
                                                 data-class="idea-card__tip"
-                                                data-place="bottom"
-                                            >
+                                                data-place="bottom">
                                                 <img
                                                     className="idea-card__content__infos__ideas__contributors__icon"
                                                     src={icn_20px_contributors}
+                                                    alt="Contributeurs"
                                                 />
                                                 <span className="idea-card__content__infos__ideas__contributors__text">
                                                     {this.props.contributors_count}
@@ -127,11 +144,11 @@ class IdeaCard extends React.Component {
                                                 data-effect="solid"
                                                 data-type="light"
                                                 data-class="idea-card__tip"
-                                                data-place="bottom"
-                                            >
+                                                data-place="bottom">
                                                 <img
                                                     className="idea-card__content__infos__ideas__comments__icon"
                                                     src={icn_20px_comments}
+                                                    alt="Commentaires"
                                                 />
                                                 <span className="idea-card__content__infos__ideas__comments__text">
                                                     {this.props.comments_count}
@@ -163,6 +180,7 @@ class IdeaCard extends React.Component {
                                     data-effect="solid"
                                     data-type="light"
                                     data-class="idea-card__theme-tip"
+                                    alt="Aperçu"
                                 />
                             </div>
                         )}

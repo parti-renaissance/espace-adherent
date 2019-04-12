@@ -1,12 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import ScrollMenu from 'react-horizontal-scrolling-menu';
 import { Link, NavLink } from 'react-router-dom';
-// import { NotMobile, Mobile } from '../../helpers/responsive';
-import Button from '../Button';
+import arrowDown from './../../img/icn_arrow_down.svg';
+import SubMenu from './../SubMenu';
 
 class Header extends React.PureComponent {
     render() {
+        const myWorkShopRoutes = [
+            {
+                label: 'Mes propositions',
+                value: 'propositions',
+                onClick: () => this.props.onMyIdeasBtnClicked('my_ideas'),
+            },
+            {
+                label: 'Mes contributions',
+                value: 'contribution',
+                onClick: () => this.props.onMyIdeasBtnClicked('my_contributions'),
+            },
+            { label: 'Mon pseudo', value: 'pseudo', onClick: () => this.props.onMyNicknameClicked() },
+        ];
         return (
             <section className="header">
                 <div className="header__inner l__wrapper">
@@ -14,53 +26,37 @@ class Header extends React.PureComponent {
                         <NavLink exact className="header__item" to="/atelier-des-idees">
                             Vue d'ensemble
                         </NavLink>
-                        {this.props.isAuthenticated && (
-                            <React.Fragment>
-                                <button
-                                    className="header__item header__button"
-                                    onClick={() => this.props.onMyIdeasBtnClicked('my_ideas')}
-                                >
-                                    Mes propositions
-                                </button>
-                                <button
-                                    className="header__item header__button"
-                                    onClick={() => this.props.onMyIdeasBtnClicked('my_contributions')}
-                                >
-                                    Mes contributions
-                                </button>
-                                <button
-                                    className="header__item header__button"
-                                    onClick={() => this.props.onMyNicknameClicked()}
-                                >
-                                    Mon pseudo
-                                </button>
-                            </React.Fragment>
-                        )}
+                        <NavLink exact className="header__item" to="/atelier-des-idees/contribuer">
+                            Les propositions
+                        </NavLink>
+                        <NavLink exact className="header__item" to="/atelier-des-idees/proposer">
+                            Comment participer ?
+                        </NavLink>
                     </div>
                     {this.props.isAuthenticated ? (
-                        <Link
-                            to="/atelier-des-idees/creer-ma-proposition"
-                            className="header__create-btn button button--primary"
-                        >
-                            J'ai une proposition
-                        </Link>
+                        <div>
+                            <SubMenu
+                                className="header__item"
+                                options={myWorkShopRoutes}
+                                onSelect={key => myWorkShopRoutes[key].onClick()}
+                                label={[
+                                    'Mon atelier',
+                                    <img src={arrowDown} key="mon-atelier" alt="ouvrir le sous-menu" />,
+                                ]}
+                            />
+                            <Link
+                                to="/atelier-des-idees/creer-ma-proposition"
+                                className="header__create-btn button button--primary">
+                                J'ai une proposition
+                            </Link>
+                        </div>
                     ) : (
                         <a
                             href="/atelier-des-idees/creer-ma-proposition?anonymous_authentication_intention=/connexion"
-                            className="header__create-btn button button--primary"
-                        >
+                            className="header__create-btn button button--primary">
                             J'ai une proposition
                         </a>
                     )}
-                    {/* <Mobile>
-                <ScrollMenu
-                    alignCenter={false}
-                    arrowRight={<div>{'>'}</div>}
-                    data={menuItems}
-                    hideArrows={true}
-                    hideSingleArrow={true}
-                />
-            </Mobile>*/}
                 </div>
             </section>
         );

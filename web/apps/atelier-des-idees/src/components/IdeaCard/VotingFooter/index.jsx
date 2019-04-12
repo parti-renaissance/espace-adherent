@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import Mobile from './../../../helpers/responsive';
 import icnThumbWhite from './../../../img/icn_20px_thumb.svg';
 import icnThumbGreen from './../../../img/icn_20px_thumb_green.svg';
 import VoteButton from '../../VoteButton';
@@ -53,10 +54,20 @@ class VotingFooter extends React.Component {
                     'voting-footer--close': !this.state.toggleFadeout,
                     'voting-footer--condensed': this.props.condensed,
                 })}
-                ref={this.footerRef}
-            >
+                ref={this.footerRef}>
                 <div className="voting-footer__container">
                     {/* MOBILE ELEMENTS */}
+                    <Mobile>
+                        {this.state.toggleVotes &&
+                            (0 < this.props.totalVotes ? (
+                                <p className="voting-footer__total-votes">
+                                    {this.props.totalVotes} vote{1 < this.props.totalVotes ? 's' : ''}
+                                </p>
+                            ) : (
+                                <p />
+                            ))}
+                    </Mobile>
+
                     <button
                         className="voting-footer__container__action-vote--mobile"
                         onClick={() =>
@@ -72,9 +83,9 @@ class VotingFooter extends React.Component {
                                     }
                                 }
                             )
-                        }
-                    >
+                        }>
                         <p className="voting-footer__container__action-vote--mobile__text">Je vote</p>
+
                         <div
                             className={classnames('voting-footer__container__action-vote--mobile__arrow', {
                                 rotate: this.state.toggleVotes,
@@ -84,7 +95,9 @@ class VotingFooter extends React.Component {
 
                     {!this.state.toggleVotes &&
                         (0 < this.props.totalVotes ? (
-                            <p className="voting-footer__total-votes">{this.props.totalVotes} votes</p>
+                            <p className="voting-footer__total-votes">
+                                {this.props.totalVotes} vote{1 < this.props.totalVotes ? 's' : ''}
+                            </p>
                         ) : (
                             <p />
                         ))}
@@ -104,11 +117,11 @@ class VotingFooter extends React.Component {
                                             this.props.onToggleVotePanel(true);
                                             this.resetTimeout();
                                         })
-                                    }
-                                >
+                                    }>
                                     <img
                                         className="voting-footer__container__action-vote__icon"
                                         src={this.props.hasUserVoted ? icnThumbGreen : icnThumbWhite}
+                                        alt="Vote"
                                     />
                                     {this.props.hasUserVoted ? 'J\'ai voté' : 'Je vote'}
                                 </button>

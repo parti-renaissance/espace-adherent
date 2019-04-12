@@ -29,6 +29,9 @@ export const SAVE_IDEA = createRequestTypes('SAVE_IDEA');
 export const VOTE_IDEA = createRequestTypes('VOTE_IDEA');
 export const SET_IDEAS = 'SET_IDEAS';
 export const ADD_IDEAS = 'ADD_IDEAS';
+export const ADD_IDEAS_FINALIZED = 'ADD_IDEAS_FINALIZED';
+export const ADD_IDEAS_PENDING = 'ADD_IDEAS_PENDING';
+export const EXTEND_PERIOD = 'EXTEND_PERIOD';
 export const REMOVE_IDEA = 'REMOVE_IDEA';
 export const TOGGLE_VOTE_IDEA = 'TOGGLE_VOTE_IDEA';
 

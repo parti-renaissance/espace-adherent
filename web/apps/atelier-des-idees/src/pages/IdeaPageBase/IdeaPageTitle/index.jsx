@@ -54,9 +54,8 @@ class IdeaPageTitle extends React.Component {
                             <div className="idea-page-title__title__editing-footer">
                                 <button
                                     className="idea-page-title__title__editing-footer__btn"
-                                    onClick={() => this.setState({ isEditing: false, value: this.props.title })}
-                                >
-									Annuler
+                                    onClick={() => this.setState({ isEditing: false, value: this.props.title })}>
+                                    Annuler
                                 </button>
                                 {this.state.value.length >= this.props.minLength && (
                                     <button
@@ -64,9 +63,8 @@ class IdeaPageTitle extends React.Component {
                                         onClick={() => {
                                             this.props.onTitleChange(this.state.value, true);
                                             this.setState({ isEditing: false });
-                                        }}
-                                    >
-										Enregistrer
+                                        }}>
+                                        Enregistrer
                                     </button>
                                 )}
                             </div>
@@ -79,16 +77,15 @@ class IdeaPageTitle extends React.Component {
                             {!this.props.isReadOnly && !this.props.isEditing && this.props.isAuthor && (
                                 <button
                                     className="idea-page-title__title__editing-footer__btn editing-footer__btn--edit"
-                                    onClick={() => this.setState({ isEditing: true })}
-                                >
-									Editer
+                                    onClick={() => this.setState({ isEditing: true })}>
+                                    Editer
                                 </button>
                             )}
                         </h1>
                         <div className="idea-page-title__info">
                             {this.props.authorName && (
                                 <span className="idea-page-title__info__author">
-									Par{' '}
+                                    Par{' '}
                                     <span className="idea-page-title__info__author-name">{this.props.authorName}</span>
                                 </span>
                             )}
@@ -99,9 +96,11 @@ class IdeaPageTitle extends React.Component {
                             )}
                             <ul>
                                 {this.props.themes &&
-									this.props.themes.map(theme => (
-									    <li className="idea-page-title__tags__item">{theme.name}</li>
-									))}
+                                    this.props.themes.map((theme, i) => (
+                                        <li key={i} className="idea-page-title__tags__item">
+                                            {theme.name}
+                                        </li>
+                                    ))}
                             </ul>
                         </div>
                     </React.Fragment>

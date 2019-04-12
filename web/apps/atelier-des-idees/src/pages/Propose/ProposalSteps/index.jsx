@@ -1,7 +1,41 @@
 import React from 'react';
-import step1 from './../../../img/proposal_step_1.svg';
-import step2 from './../../../img/proposal_step_2.svg';
-import step3 from './../../../img/proposal_step_3.svg';
+import Steps from './Steps';
+import contributeImg from './../../../img/contribute_img_step.svg';
+import proposeImg from './../../../img/propose_img_step.svg';
+import voteImg from './../../../img/vote_img_step.svg';
+import contributePicto from './../../../img/contribute_picto_step.svg';
+import proposePicto from './../../../img/propose_picto_step.svg';
+import votePicto from './../../../img/vote_picto_step.svg';
+
+const steps = [
+    {
+        title: ['Publiez une nouvelle idée', <br />, 'sur notre plateforme'],
+        picto: `${proposePicto}`,
+        description: `Vous pouvez la rédiger seul(e) ou en comité. Si vous ne souhaitez pas la publier immédiatement, 
+            vous pouvez enregistrer un brouillon. Une fois votre idée publiée vous disposez de 10 jours pour la modifier en prenant en compte les commentaires des autres marcheurs sur votre proposition.`,
+        img: `${proposeImg}`,
+        linkLabel: 'Je rédige',
+        link: '/atelier-des-idees/creer-ma-proposition',
+    },
+    {
+        title: ['Contribuez aux propositions', <br />, 'en cours de rédaction !'],
+        picto: `${contributePicto}`,
+        description:
+            'Découvrez les propositions en cours de rédaction sur la plate-forme et partager vos commentaires pour aider les autres marcheurs à construire leur proposition. Vous pouvez même rechercher les contributions en fonction des domaines sur lesquels les rédacteurs ont signalé avoir besoin d\'aide !',
+        img: `${contributeImg}`,
+        linkLabel: 'Je contribue',
+        link: '/atelier-des-idees/contribuer',
+    },
+    {
+        title: ['Détaillez les modalités', <br />, 'du vote'],
+        picto: `${votePicto}`,
+        description:
+            'Vous trouvez une idée particulièrement “essentielle”, “réalisable” ou “innovante” ? Votez avec l’une ou plusieurs de ces options !',
+        img: `${voteImg}`,
+        linkLabel: 'Je vote',
+        link: '/atelier-des-idees/soutenir',
+    },
+];
 
 class ProposalSteps extends React.PureComponent {
     componentDidMount() {
@@ -9,37 +43,11 @@ class ProposalSteps extends React.PureComponent {
     }
     render() {
         return (
-            <div className="proposal-steps">
-                <article className="l__wrapper">
-                    <h2 className="proposal-steps__title">Comment ça marche ?</h2>
-                    <div className="proposal-steps__container">
-                        <div className="proposal-steps__container__step">
-                            <img className="proposal-steps__container__step__img" src={step1} />
-                            <span className="proposal-steps__container__step__number">1</span>
-                            <p className="proposal-steps__container__step__text">
-								Écrivez votre proposition seul(e) ou en groupe. Vous pourrez enregistrer votre brouillon
-								à tout moment et continuer plus tard.
-                            </p>
-                        </div>
-                        <div className="proposal-steps__container__separator" />
-                        <div className="proposal-steps__container__step">
-                            <img className="proposal-steps__container__step__img" src={step2} />
-                            <span className="proposal-steps__container__step__number">2</span>
-                            <p className="proposal-steps__container__step__text">
-								Quand vous êtes prêt(e), publiez votre proposition. Pendant 10 jours, les marcheurs
-								pourront vous suggérer des améliorations que vous serez libre d'accepter (ou non).
-                            </p>
-                        </div>
-                        <div className="proposal-steps__container__separator" />
-                        <div className="proposal-steps__container__step">
-                            <img className="proposal-steps__container__step__img" src={step3} />
-                            <span className="proposal-steps__container__step__number">3</span>
-                            <p className="proposal-steps__container__step__text">
-								Une fois finalisée, les marcheurs pourront voter pour votre proposition.
-                            </p>
-                        </div>
-                    </div>
-                </article>
+            <div className="proposal--steps">
+                <h2 className="proposal-steps__title">Pour participer, 3 possibilités :</h2>
+                {steps.map((step, i) => (
+                    <Steps key={i} {...step} />
+                ))}
             </div>
         );
     }

@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 import { connect } from 'react-redux';
 import { selectCurrentIdea } from '../../../redux/selectors/currentIdea';
 import { voteCurrentIdea } from '../../../redux/thunk/currentIdea';
@@ -28,8 +27,9 @@ function VotingFooterIdeaPage(props) {
         <div className="voting-footer-idea-page">
             <h2 className="voting-footer-idea-page__title">Je soutiens cette proposition car elle est&nbsp;: </h2>
             <div className="voting-footer-idea-page__vote">
-                {votes.map(vote => (
+                {votes.map((vote, i) => (
                     <VoteButton
+                        key={i}
                         vote={vote}
                         onSelected={props.onVote}
                         className="voting-footer-idea-page__vote__button"

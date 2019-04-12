@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ConsultationPinned from '../containers/ConsultationPinned';
 import MovementIdeas from '../components/MovementIdeas';
 import Header from '../containers/Header';
-import LatestIdeas from '../containers/LatestIdeas';
+import LatestIdeas from '../components/LatestIdeas';
 import Reports from '../containers/Reports';
 import { initHomePage } from '../redux/thunk/navigation';
 import { setIdeas } from '../redux/actions/ideas';
@@ -21,8 +21,8 @@ class Home extends React.Component {
                 <Header />
                 <div className="home-page">
                     <ConsultationPinned />
-                    <MovementIdeas />
-                    <LatestIdeas />
+                    <MovementIdeas ideas={this.props.ideas} />
+                    <LatestIdeas ideas={this.props.ideas} />
                     <Reports />
                 </div>
             </React.Fragment>
@@ -35,8 +35,10 @@ Home.propTypes = {
     setIdeas: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = state => ({ ideas: state.ideas });
+
 export default connect(
-    null,
+    mapStateToProps,
     {
         initHomePage,
         setIdeas,

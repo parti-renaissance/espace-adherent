@@ -11,8 +11,8 @@
     padding-right: 50px;
 
     @media screen and (min-width: $width-lg) {
-        margin-left: 100px;
-        max-width: 500px;
+      margin-left: 100px;
+      max-width: 500px;
     }
 
     &__title {
@@ -26,14 +26,13 @@
   }
 
   &__second-section {
-
     img.hp-illustration-rapports {
-        max-width: 100%;
+      max-width: 100%;
 
-        @media screen and (max-width: $width-md) {
-            max-width: 460px;
-            width: 100%;
-        }
+      @media screen and (max-width: $width-md) {
+        max-width: 460px;
+        width: 100%;
+      }
     }
   }
 

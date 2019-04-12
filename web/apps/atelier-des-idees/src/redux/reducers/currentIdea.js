@@ -6,6 +6,7 @@ import {
     TOGGLE_VOTE_CURRENT_IDEA,
     UPDATE_CURRENT_IDEA_ANSWER,
     SET_AUTOCOMPLETE_RESULT,
+    EXTEND_PERIOD,
 } from '../constants/actionTypes';
 import { toggleVote } from './ideas';
 
@@ -35,6 +36,8 @@ function ideaReducer(state = initialState.idea, action) {
         });
         return { ...state, answers: updatedAnswers };
     }
+    case EXTEND_PERIOD:
+        return { ...state, extendable: payload.data };
     case TOGGLE_VOTE_CURRENT_IDEA: {
         const { voteType, voteId } = payload;
         return toggleVote(state, voteType, voteId);

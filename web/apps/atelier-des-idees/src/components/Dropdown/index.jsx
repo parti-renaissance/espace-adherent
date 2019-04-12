@@ -15,24 +15,16 @@ function Dropdown(props) {
                     key={option.value}
                     className={classNames('dropdown-menu__item', {
                         'dropdown-menu__item--important': option.isImportant,
-                    })}
-                >
+                    })}>
                     {option.label}
                 </MenuItem>
             ))}
         </Menu>
     );
     return (
-        <RCDropdown
-            trigger={['click']}
-            overlay={menu}
-            overlayClassName={'dropdown-menu'}
-            align={{
-                points: ['tr', 'br'],
-            }}
-        >
+        <RCDropdown trigger={['click']} overlay={menu} overlayClassName={'dropdown-menu'}>
             <button className={classNames('dropdown-button', props.className)}>
-                {props.label || <img src={moreIcn} />}
+                {props.label || <img src={moreIcn} alt="Plus" />}
             </button>
         </RCDropdown>
     );

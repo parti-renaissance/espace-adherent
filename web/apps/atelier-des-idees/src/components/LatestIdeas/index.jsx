@@ -1,41 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '../Tabs/index';
-import LatestIdeasPane from './LatestIdeasPane';
+import _ from 'lodash';
+import { Link } from 'react-router-dom';
+import IdeaCard from './../IdeaCard';
 
 function LatestIdeas(props) {
-    const { finalized = {}, pending = {}, read = [] } = props.ideas;
-    const panes = [
-        {
-            title: 'Propositions en cours d\'élaboration',
-            component: (
-                <LatestIdeasPane
-                    link="/atelier-des-idees/contribuer"
-                    ideas={pending.items}
-                    isLoading={pending.isLoading}
-                    readIdeas={read}
-                />
-            ),
-        },
-        {
-            title: 'Propositions finalisées',
-            component: (
-                <LatestIdeasPane
-                    link="/atelier-des-idees/soutenir"
-                    ideas={finalized.items}
-                    isLoading={finalized.isLoading}
-                    onVoteIdea={props.onVoteIdea}
-                    readIdeas={read}
-                />
-            ),
-        },
-    ];
+    // Get all finalized ideas;
+    const finalized = undefined !== props.ideas.finalized ? props.ideas.finalized.items.map(idea => idea) : '';
+    const pending = undefined !== props.ideas.pending ? props.ideas.pending.items.map(idea => idea) : '';
+
+    // / Merge and mix all the finalized and pending ideas;
+    const allIdeas = [...finalized, ...pending];
+    const mergeAllIdeas = _.shuffle(allIdeas);
+    const mergeAllIdeasSecond = _.shuffle(mergeAllIdeas);
+
+    for (let i = 0; 2 > i; i++) {
+        allIdeas.push(...finalized, ...pending);
+    }
 
     return (
         <article className="latest-ideas">
             <div className="l__wrapper">
-                <h2 className="latest-ideas__title">Les dernières propositions des marcheurs</h2>
-                <Tabs panes={panes} />
+                <div className="latest-ideas--header">
+                    <h2 className="latest-ideas__title">Comment ça marche ?</h2>
+                    <p>Plusieurs façons d'utiliser l'Atelier des idées, trouvez celle qui vous correspond le mieux !</p>
+                    <div className="latest-ideas__pane__footer">
+                        <Link
+                            to={'/atelier-des-idees/proposer'}
+                            className="button button--tertiary latest-ideas__pane__footer__btn">
+                            En savoir plus
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
+            <div className="latest-ideas__slider">
+                <div>
+                    {0 < mergeAllIdeas.length
+                        ? mergeAllIdeas.map((idea, i) => <IdeaCard {...idea} key={i} condensed />)
+                        : ''}
+                </div>
+            </div>
+            <div className="latest-ideas__slider">
+                <div className="latest-ideas__slider--second">
+                    {0 < mergeAllIdeasSecond.length
+                        ? mergeAllIdeasSecond.map((idea, i) => <IdeaCard {...idea} key={i} condensed />)
+                        : ''}
+                </div>
             </div>
         </article>
     );

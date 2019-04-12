@@ -16,6 +16,7 @@ import {
     setGuidelines,
     toggleVoteCurrentIdea,
     updateCurrentIdeaAnswer,
+    extendPeriod,
 } from '../actions/currentIdea';
 import { addThreads, addThreadComments, updateThread, setThreadPagingData } from '../actions/threads';
 import { hideModal } from '../actions/modal';
@@ -37,6 +38,18 @@ export function deleteCurrentIdea() {
         }
         dispatch(hideModal());
         history.push('/atelier-des-idees');
+    };
+}
+
+export function updatePeriod() {
+    return (dispatch, getState, axios) => {
+        const { uuid } = selectCurrentIdea(getState());
+        return axios.put(`/api/ideas-workshop/ideas/${uuid}/extend`).then((res) => {
+            const isExtendable = res.data.extendable;
+            dispatch(extendPeriod(isExtendable));
+            dispatch(hideModal());
+            window.scrollTo(0, 0);
+        });
     };
 }
 

@@ -3,31 +3,7 @@ import { NotMobile, Mobile } from '../../helpers/responsive';
 import Slider from 'react-slick';
 import hpMainIllustration from './../../img/hp-main-illustration.svg';
 
-import MovementIdeasSection from './MovementIdeasSection/.';
-
-const sectionContent = [
-    {
-        keyWord: 'propose',
-        title: 'une idée',
-        text: 'Soumettez une nouvelle proposition à la communauté.',
-        linkLabel: 'Je propose',
-        link: '/atelier-des-idees/proposer',
-    },
-    {
-        keyWord: 'contribue',
-        title: 'aux propositions',
-        text: 'Enrichissez les propositions en cours d\'écriture.',
-        linkLabel: 'Je contribue',
-        link: '/atelier-des-idees/contribuer',
-    },
-    {
-        keyWord: 'soutiens',
-        title: 'des propositions',
-        text: 'Donnez votre avis sur les propositions finalisées.',
-        linkLabel: 'Je soutiens',
-        link: '/atelier-des-idees/soutenir',
-    },
-];
+import CondensedChapter from './CondensedChapter';
 
 const settingsSlider = {
     dots: true,
@@ -40,7 +16,43 @@ const settingsSlider = {
 
 class MovementIdeas extends React.PureComponent {
     render() {
-        const items = sectionContent.map(content => <MovementIdeasSection key={content.keyWord} {...content} />);
+        const sectionContent = [
+            {
+                title: [<span className="underline">Rédiger</span>, <br />, 'une proposition'],
+                description: ['Soumettez une nouvelle', <br />, 'proposition à la communauté.'],
+                linkLabel: 'Je propose',
+                link: '/atelier-des-idees/proposer',
+            },
+            {
+                title: ['Les propositions', <br />, 'à ', <span className="underline"> enrichir</span>],
+                description: [
+                    'Enrichissez une des ',
+                    <span className="total">
+                        {this.props.ideas.pending && this.props.ideas.pending.metadata.total_items}
+                    </span>,
+                    <br />,
+                    ' propositions en cours d\'écriture.',
+                ],
+                linkLabel: 'Je contribue',
+                link: '/atelier-des-idees/contribuer',
+            },
+            {
+                title: [<span className="underline">Voter</span>, <br />, 'les propositions'],
+                description: [
+                    'Donnez votre avis sur les ',
+                    <span className="total">
+                        {this.props.ideas.finalized && this.props.ideas.finalized.metadata.total_items}
+                    </span>,
+                    <br />,
+                    ' propositions finalisées.',
+                ],
+                linkLabel: 'Je soutiens',
+                link: '/atelier-des-idees/soutenir',
+            },
+        ];
+        const items = sectionContent.map((content, idx) => (
+            <CondensedChapter title={content.keyWord} {...content} key={idx} />
+        ));
         return (
             <article className="movement-ideas">
                 <div className="movement-ideas__first__section">
@@ -53,18 +65,21 @@ class MovementIdeas extends React.PureComponent {
                         <img
                             className="movement-ideas__first__section__in__main-illustration"
                             src={hpMainIllustration}
+                            alt="Illustration"
                         />
                     </div>
                 </div>
-                <div className="l__wrapper">
-                    <NotMobile>
-                        <div className="movement-ideas__second__section">{items}</div>
-                    </NotMobile>
-                    <Mobile>
-                        <Slider className="movement-ideas__slider" {...settingsSlider}>
-                            {items}
-                        </Slider>
-                    </Mobile>
+                <div className="movement-ideas__second__section--background">
+                    <div className="l__wrapper">
+                        <NotMobile>
+                            <div className="movement-ideas__second__section">{items}</div>
+                        </NotMobile>
+                        <Mobile>
+                            <Slider className="movement-ideas__slider" {...settingsSlider}>
+                                {items}
+                            </Slider>
+                        </Mobile>
+                    </div>
                 </div>
             </article>
         );

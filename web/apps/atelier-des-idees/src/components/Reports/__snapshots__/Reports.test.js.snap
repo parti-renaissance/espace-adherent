@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reports renders correctly 1`] = `
+<div
+  className="l__wrapper reports"
+>
+  <div
+    className="reports__first-section"
+  >
+    <h3
+      className="reports__first-section__title"
+    >
+      Nous n’avons pas attendu l’Atelier des idées pour vous consulter
+    </h3>
+    <p
+      className="reports__first-section__text"
+    >
+      Vous êtes déjà plus de 100 000 à avoir répondu à nos consultations.
+    </p>
+    <button
+      className="button button--quaternary"
+      onClick={[Function]}
+    >
+      Je lis les restitutions
+    </button>
+  </div>
+  <div
+    className="reports__second-section"
+  >
+    <img
+      className="hp-illustration-rapports"
+      src="hp-illustration-rapports.svg"
+    />
+  </div>
+</div>
+`;

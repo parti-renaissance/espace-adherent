@@ -1,4 +1,11 @@
-import { SET_IDEAS, ADD_IDEAS, REMOVE_IDEA, TOGGLE_VOTE_IDEA } from '../constants/actionTypes';
+import {
+    SET_IDEAS,
+    ADD_IDEAS,
+    REMOVE_IDEA,
+    TOGGLE_VOTE_IDEA,
+    ADD_IDEAS_FINALIZED,
+    ADD_IDEAS_PENDING,
+} from '../constants/actionTypes';
 
 export const initialState = { items: [], metadata: {} };
 
@@ -50,6 +57,17 @@ const ideasReducer = (state = initialState, action) => {
     case ADD_IDEAS: {
         const { items, metadata } = payload;
         return { items: [...state.items, ...items], metadata };
+    }
+    case ADD_IDEAS_PENDING: {
+        const { items, metadata } = payload;
+        return { ...state, pending: { items, metadata } };
+    }
+    case ADD_IDEAS_FINALIZED: {
+        const { items, metadata } = payload;
+        return {
+            ...state,
+            finalized: { items, metadata },
+        };
     }
     case REMOVE_IDEA: {
         return {

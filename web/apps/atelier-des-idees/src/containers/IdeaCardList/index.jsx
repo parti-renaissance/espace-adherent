@@ -68,8 +68,9 @@ class IdeaCardListContainer extends React.Component {
                             {[
                                 { title: 'Affichage par défaut', condensed: false },
                                 { title: 'Affichage condensé', condensed: true },
-                            ].map(item => (
+                            ].map((item, i) => (
                                 <button
+                                    key={i}
                                     className={classNames('idea-card-list__actions__display__btn', {
                                         'idea-card-list__actions__display__btn--selected':
                                             this.state.condensed === item.condensed,
@@ -78,9 +79,8 @@ class IdeaCardListContainer extends React.Component {
                                     data-effect="solid"
                                     data-type="light"
                                     data-class="idea-card-list__actions__display__btn-tip"
-                                    onClick={() => this.onDisplayModeChange(item.condensed)}
-                                >
-                                    <img src={item.condensed ? condensedIcn : defaultIcn} />
+                                    onClick={() => this.onDisplayModeChange(item.condensed)}>
+                                    <img src={item.condensed ? condensedIcn : defaultIcn} alt="Condensé" />
                                 </button>
                             ))}
                         </div>
@@ -108,7 +108,7 @@ class IdeaCardListContainer extends React.Component {
                     </React.Fragment>
                 ) : (
                     <div className="idea-card-list__empty">
-                        <img className="idea-card-list__empty__img" src={noIdeaImg} />
+                        <img className="idea-card-list__empty__img" src={noIdeaImg} alt="Pas d'idée" />
                         <p>Il n'y a pas de proposition correspondant à votre recherche</p>
                     </div>
                 )}

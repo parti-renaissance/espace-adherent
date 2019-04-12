@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { FETCH_IDEAS, FETCH_IDEA, SAVE_IDEA, PUBLISH_IDEA, FETCH_MY_IDEAS, POST_FLAG } from '../constants/actionTypes';
 import { createRequest, createRequestSuccess, createRequestFailure } from '../actions/loading';
-import { addIdeas, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
+import { addIdeas, addIdeasFinalized, addIdeasPending, setIdeas, removeIdea, toggleVoteIdea } from '../actions/ideas';
 import { setCurrentIdea } from '../actions/currentIdea';
 import { selectIdeasMetadata, selectIdea } from '../selectors/ideas';
 import { setMyIdeas, removeMyIdea } from '../actions/myIdeas';
@@ -22,6 +22,49 @@ let cancel;
  * @param {object} params Query params
  * @param {boolean} setMode If true, set ideas by erasing previous ones. Default: false
  */
+
+export function fetchFinalizedIdeas(params = {}) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(FETCH_IDEAS, 'FINALIZED'));
+        return axios
+            .get('/api/ideas-workshop/ideas?status=FINALIZED', {
+                params,
+                cancelToken: new CancelToken((c) => {
+                    cancel = c;
+                }),
+            })
+            .then(res => res.data)
+            .then(({ items, metadata, status }) => {
+                dispatch(addIdeasFinalized(items, metadata, status));
+                dispatch(createRequestSuccess(FETCH_IDEAS, 'FINALIZED'));
+            })
+            .catch((error) => {
+                dispatch(createRequestFailure(FETCH_IDEAS, 'FINALIZED'));
+            });
+    };
+}
+
+export function fetchPendingIdeas(params = {}) {
+    return (dispatch, getState, axios) => {
+        dispatch(createRequest(FETCH_IDEAS, 'PENDING'));
+        return axios
+            .get('/api/ideas-workshop/ideas?status=PENDING', {
+                params,
+                cancelToken: new CancelToken((c) => {
+                    cancel = c;
+                }),
+            })
+            .then(res => res.data)
+            .then(({ items, metadata, status }) => {
+                dispatch(addIdeasPending(items, metadata, status));
+                dispatch(createRequestSuccess(FETCH_IDEAS, 'PENDING'));
+            })
+            .catch((error) => {
+                dispatch(createRequestFailure(FETCH_IDEAS, 'PENDING'));
+            });
+    };
+}
+
 export function fetchIdeas(status, params = {}, options = { setMode: false, cancel: false }) {
     return (dispatch, getState, axios) => {
         dispatch(createRequest(FETCH_IDEAS, status));

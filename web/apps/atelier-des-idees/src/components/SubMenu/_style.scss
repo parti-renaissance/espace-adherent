@@ -1,0 +1,43 @@
+.dropdown-button {
+  @extend %reset-button;
+  cursor: pointer;
+
+  img {
+    margin-left: 5px;
+    position: relative;
+    bottom: 3px;
+    transition: all 0.3s;
+  }
+}
+.rc-dropdown-open {
+  img {
+    transform: rotate(180deg);
+    transition: all 0.3s;
+  }
+}
+
+.dropdown-menu {
+  .rc-dropdown-menu {
+    border:1px solid $snow;
+    min-width: 250px;
+    margin-top: 15px;
+    border-radius: 0;
+
+    li {
+      color:$black;
+      font-family: $font-roboto;
+      font-size: 18px;
+    }
+  }
+
+  .rc-dropdown-menu-item.dropdown-menu__item {
+    padding: 5px 15px;
+    font-size: 15px;
+    font-family: $font-roboto;
+    cursor: pointer;
+
+    &--important {
+      color: $rose-madder;
+    }
+  }
+}
