@@ -1,16 +1,16 @@
 import { SET_AUTH_USER, UPDATE_AUTH_USER } from '../constants/actionTypes';
 
 // Comment initial state to override
-// const initialState = {
-//     isAuthenticated: false,
-//     user: {},
-// };
+const initialState = {
+    isAuthenticated: false,
+    user: {},
+};
 
 // and add the custom initial state
-const initialState = {
-    isAuthenticated: true,
-    user: { uuid: '0000', firstName: 'Jean-Pierre', lastName: 'Français' },
-};
+// const initialState = {
+//     isAuthenticated: true,
+//     user: { uuid: '0000', firstName: 'Jean-Pierre', lastName: 'Français' },
+// };
 
 function authReducer(state = initialState, action) {
     const { type, payload } = action;

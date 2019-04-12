@@ -11,6 +11,7 @@ import IdeaPageSkeleton from './IdeaPageSkeleton';
 import autoSaveIcn from '../../img/icn_20px_autosave.svg';
 import greenCheckIcn from '../../img/icn_checklist.svg';
 import greenHourglassIcn from '../../img/icn_hourglass_green.svg';
+import CtaSection from '../../components/CtaSection';
 
 const TITLE_MIN_LENGTH = 15;
 const ANSWER_MIN_LENGTH = 15;
@@ -149,10 +150,10 @@ class IdeaPageBase extends React.Component {
         const missingValues = Object.entries(answers).reduce((acc, [questionId, answer]) => {
             const isRequired = withRequired && this.requiredQuestions.includes(parseInt(questionId, 10));
             if (
-            // if an answer is required, it must have at least ANSWER_MIN_LENGTH characters
+                // if an answer is required, it must have at least ANSWER_MIN_LENGTH characters
                 (isRequired && answer.length < ANSWER_MIN_LENGTH) ||
-				// otherwise it can be empty or have at least ANSWER_MIN_LENGTH characters
-				(!isRequired && 0 < answer.length && answer.length < ANSWER_MIN_LENGTH)
+                // otherwise it can be empty or have at least ANSWER_MIN_LENGTH characters
+                (!isRequired && 0 < answer.length && answer.length < ANSWER_MIN_LENGTH)
             ) {
                 acc[questionId] = true;
             }
@@ -169,11 +170,15 @@ class IdeaPageBase extends React.Component {
         return hasRequiredAnswers;
     }
 
+    onExtendClicked(uuid) {
+        this.props.onExtendClicked(uuid);
+    }
+
     componentDidUpdate(prevProps) {
         if (
             this.props.idea.status === ideaStatus.DRAFT &&
-			prevProps.isSaveSuccess !== this.props.isSaveSuccess &&
-			this.props.isSaveSuccess
+            prevProps.isSaveSuccess !== this.props.isSaveSuccess &&
+            this.props.isSaveSuccess
         ) {
             // idea save is successful, notify user (only in draft mode)
             clearTimeout(this.saveBannerTimer);
@@ -221,7 +226,11 @@ class IdeaPageBase extends React.Component {
                     {!this.props.isLoading && idea.status === ideaStatus.DRAFT && (
                         <div className="idea-page__auto-save">
                             <p className="idea-page__auto-save__label">
-                                <img className="idea-page__auto-save__icon" src={autoSaveIcn} alt="Sauvegarde automatique"/>
+                                <img
+                                    className="idea-page__auto-save__icon"
+                                    src={autoSaveIcn}
+                                    alt="Sauvegarde automatique"
+                                />
                                 <span>Votre contenu sera sauvegardé toutes les minutes</span>
                             </p>
                         </div>
@@ -289,6 +298,18 @@ class IdeaPageBase extends React.Component {
                                 )}
                                 {idea.status === ideaStatus.FINALIZED && <VotingFooterIdeaPage />}
                             </React.Fragment>
+                        )}
+                    </div>
+                    <div className="l__wrapper--medium">
+
+                      
+                        {this.props.isAuthor && idea.extendable && (
+                            <CtaSection
+                                onClick={e => this.onExtendClicked(e)}
+                                title="Besoin de plus de temps pour faire enrichir votre proposition ?"
+                                description="Prolongez de 10 jours la période de contribution !"
+                                cta="prolonger la période"
+                            />
                         )}
                     </div>
                 </div>

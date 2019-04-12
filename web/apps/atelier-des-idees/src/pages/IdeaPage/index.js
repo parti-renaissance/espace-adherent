@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import IdeaPageBase from '../IdeaPageBase';
-import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL, FLAG_MODAL } from '../../constants/modalTypes';
+import { DELETE_IDEA_MODAL, PUBLISH_IDEA_MODAL, FLAG_MODAL, EXTEND_IDEA_PERIOD } from '../../constants/modalTypes';
 import { showModal } from '../../redux/actions/modal';
 import { initIdeaPage } from '../../redux/thunk/navigation';
 import {
@@ -11,6 +11,7 @@ import {
     publishCurrentIdea,
     deleteCurrentIdea,
     goBackFromCurrentIdea,
+    updatePeriod,
 } from '../../redux/thunk/currentIdea';
 import { reportIdea } from '../../redux/thunk/ideas';
 import { selectAuthUser, selectIsAuthenticated } from '../../redux/selectors/auth';
@@ -34,6 +35,7 @@ class IdeaPage extends React.Component {
             // redirect to home is error in fetch
             return <Redirect to="/atelier-des-idees" />;
         }
+
         return (
             <IdeaPageBase
                 {...this.props}
@@ -99,6 +101,13 @@ function mapDispatchToProps(dispatch, ownProps) {
                 showModal(PUBLISH_IDEA_MODAL, {
                     id,
                     submitForm: ideaData => dispatch(publishCurrentIdea({ ...ideaData, ...data }, true)),
+                })
+            );
+        },
+        onExtendClicked: () => {
+            dispatch(
+                showModal(EXTEND_IDEA_PERIOD, {
+                    onExtendPeriod: () => dispatch(updatePeriod()),
                 })
             );
         },

@@ -24,8 +24,7 @@ class VoteButton extends React.Component {
                     if (resetTimeout) {
                         resetTimeout();
                     }
-                }}
-            >
+                }}>
                 <span className={'vote-button__name'}>{vote.name}</span>
                 <span className={'vote-button__count'}>{vote.count}</span>
                 <span className={'vote-button__flag'}>{'down' === this.state.animate ? '-' : '+'}1</span>
@@ -42,7 +41,7 @@ VoteButton.propTypes = {
     className: PropTypes.string,
     onSelected: PropTypes.func.isRequired,
     vote: PropTypes.shape({
-        count: PropTypes.number,
+        count: PropTypes.any,
         isSelected: PropTypes.bool,
         name: PropTypes.string,
     }).isRequired,
