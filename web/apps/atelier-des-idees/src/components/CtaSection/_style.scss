@@ -1,0 +1,36 @@
+.cta__section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $back-light;
+  border-radius: 4px;
+  font-family: $font-roboto;
+  padding: 40px 100px;
+  margin: 50px auto;
+
+  h3 {
+    color: $blue;
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 16px;
+    color:$light-black;
+    margin: 5px 0;
+  }
+  button {
+    background-color: transparent;
+    border: 1px solid black;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    font-family:$font-gillsans;
+    font-size: 14px;
+
+    &:hover {
+      background-color: black;
+      cursor: pointer;
+      color:white;
+      transition: all 0.3s;
+    }
+  }
+}

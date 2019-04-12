@@ -13,6 +13,7 @@ import MyNicknameModal from '../../containers/MyNicknameModal';
 import MyIdeasContainer from '../../containers/MyIdeas';
 import FlagModal from '../../containers/FlagModal';
 import DeleteCommentModal from '../../components/Modal/DeleteCommentModal';
+import ExtendModal from '../../components/Modal/ExtendModal';
 import icn_close from './../../img/icn_close.svg';
 
 const MODAL_COMPONENTS = {
@@ -26,6 +27,7 @@ const MODAL_COMPONENTS = {
     [modalTypes.FLAG_MODAL]: FlagModal,
     [modalTypes.MY_NICKNAME_MODAL]: MyNicknameModal,
     [modalTypes.DELETE_COMMENT_MODAL]: DeleteCommentModal,
+    [modalTypes.EXTEND_IDEA_PERIOD]: ExtendModal,
 };
 
 class ModalRoot extends React.Component {
@@ -52,8 +54,7 @@ class ModalRoot extends React.Component {
                 overlayClassName="modal-overlay"
                 isOpen={isOpen}
                 onRequestClose={this.closeModal}
-                ariaHideApp={false}
-            >
+                ariaHideApp={false}>
                 <button className="modal-closeBtn" onClick={this.closeModal}>
                     <img src={icn_close} alt="Fermer" />
                 </button>

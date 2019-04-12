@@ -27,8 +27,13 @@ function VotingFooterIdeaPage(props) {
         <div className="voting-footer-idea-page">
             <h2 className="voting-footer-idea-page__title">Je soutiens cette proposition car elle est&nbsp;: </h2>
             <div className="voting-footer-idea-page__vote">
-                {votes.map(vote => (
-                    <VoteButton vote={vote} onSelected={props.onVote} className="voting-footer-idea-page__vote__button" />
+                {votes.map((vote, i) => (
+                    <VoteButton
+                        key={i}
+                        vote={vote}
+                        onSelected={props.onVote}
+                        className="voting-footer-idea-page__vote__button"
+                    />
                 ))}
             </div>
         </div>
