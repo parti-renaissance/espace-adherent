@@ -3,7 +3,8 @@ import AddressObject from '../services/address/AddressObject';
 import changeFieldsVisibility from '../services/form/changeFieldsVisibility';
 
 export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelector) => {
-    (new AutocompletedAddressForm(
+    const countryElement = dom(countryFieldSelector);
+    const autocompleteAddressForm = new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
         new AddressObject(
@@ -13,7 +14,15 @@ export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelecto
             null,
             dom('#app_procuration_request_country')
         )
-    )).buildWidget();
+    );
 
-    changeFieldsVisibility(countryFieldSelector, postalCodeFieldSelector, stateFieldSelector);
+    autocompleteAddressForm.once('changed', () => {
+        countryElement.dispatchEvent(new CustomEvent('change', {
+            target: countryElement,
+        }));
+    });
+
+    autocompleteAddressForm.buildWidget();
+
+    changeFieldsVisibility(countryElement, postalCodeFieldSelector, stateFieldSelector);
 };
