@@ -171,6 +171,12 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('procurationManagedAreaCodesAsString', null, [
                     'label' => 'Responsable procurations',
                 ])
+                ->add('isAssessorManager', 'boolean', [
+                    'label' => 'Est responsable assesseur ?',
+                ])
+                ->add('assessorManagedAreaCodesAsString', null, [
+                    'label' => 'Responsable assesseurs',
+                ])
                 ->add('coordinatorCitizenProjectArea', null, [
                     'label' => 'coordinator.label.codes.cp',
                 ])
@@ -304,6 +310,11 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'coordinator.label.codes',
                     'required' => false,
                     'help' => "Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
+                ])
+                ->add('assessorManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'assessors_manager',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
                 ])
                 ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.cp',
@@ -510,6 +521,12 @@ class AdherentAdmin extends AbstractAdmin
                     if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
                         $where->add('procurationManagedArea IS NOT NULL AND procurationManagedArea.codes IS NOT NULL');
+                    }
+
+                    // Assessor Manager
+                    if (\in_array(AdherentRoleEnum::ASSESSOR_MANAGER, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.assessorManagedArea', $alias), 'assessorManagedArea');
+                        $where->add('assessorManagedArea IS NOT NULL AND assessorManagedArea.codes IS NOT NULL');
                     }
 
                     // User

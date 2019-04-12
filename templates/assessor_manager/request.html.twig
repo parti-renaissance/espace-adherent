@@ -1,0 +1,114 @@
+{% extends 'assessor_manager/_layout.html.twig' %}
+
+{% import 'assessor_manager/_layout.html.twig' as macro %}
+
+{% block assessor_manager_content %}
+    <div class="text--summary b__nudge--bottom-large">
+        <a href="{{ path('app_assessor_manager_requests') }}" class="back-to-list icon--with-text">
+            {{ include('components/caret--left.html.twig') }}
+            Retour à la liste
+        </a>
+    </div>
+
+    <h3 class="b__nudge--bottom-large">
+        <span id="request-title">Demande d'attribution</span>
+
+        {% if request.votePlace %}
+            <a href="{{ path('app_assessor_manager_request_deassociate', { uuid: request.uuid }) }}"
+               class="btn btn--small assessor-manager__request__process" id="request-deassociate">
+                Désassocier de {{ request.votePlace.name }}
+            </a>
+        {% endif %}
+    </h3>
+
+    <hr />
+
+    <div class="l__row l__tablet--col l__row--v-stretch b__nudge--bottom-60 assessor-manager__request">
+        <div class="assessor-manager__request__col-left">
+            <h4 class="b__nudge--bottom">
+                {% if request.processedAt %}
+                    Demande traitée le {{ request.processedAt|date('d/m/Y à H:i') }}
+                {% else %}
+                    Demande en attente
+                {% endif %}
+            </h4>
+
+            {{ include('assessor_manager/_assessor_profile.html.twig') }}
+        </div>
+
+        <div class="assessor-manager__request__col-right">
+            {% if request.processedAt %}
+                <h4 class="b__nudge--bottom">
+                    Demande associée à {{ request.votePlace.name }}
+                </h4>
+
+                <div class="profile-label">
+                    Lieu du bureau de vote
+                </div>
+                <div class="profile-value">
+                    {{ request.votePlace.postalCode }} {{ request.votePlace.city }}
+                </div>
+
+                <div class="profile-label">
+                    Disponibilités
+                </div>
+                <div class="profile-value">
+                    {{ request.votePlace.getAvailableOfficesAsString|nl2br }}
+                </div>
+            {% else %}
+                <h4 class="b__nudge--bottom">
+                    Bureau de vote trouvés dans la même commune
+                </h4>
+                {% set vote_places_count = matchingVotePlaces|length %}
+                {% if vote_places_count is same as(0) %}
+                    <div class="text--body b__nudge--bottom-large">
+                        Aucun bureau de vote trouvé pour cette demande.
+                    </div>
+                {% else %}
+                    <div class="text--body b__nudge--bottom-large">
+                        {% if vote_places_count is same as(1) %}
+                            1 bureau de vote semble correspondre à cette demande.
+                        {% else %}
+                            {{ vote_places_count }} bureaux de vote semblent correspondre à cette demande.
+                        {% endif %}
+                    </div>
+
+                    <table class="datagrid__table datagrid__table--bordered-rows datagrid__table--no-hover">
+                        <thead>
+                            <tr>
+                                <th class="datagrid__table__col--left" colspan="2">Bureau de vote</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for votePlace in matchingVotePlaces %}
+                            <tr>
+                                <td style="border: 0;"></td>
+                                <td colspan="3" class="datagrid__table__col--left datagrid__table__col--top proxy_name" style="border: 0;">
+                                    <strong>{{ votePlace.name }}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="datagrid__table__col--left datagrid__table__col--top">
+                                    <em>Disponibilités :</em><br />
+                                    {{ votePlace.getAvailableOfficesAsString|nl2br }}
+                                </td>
+                                <td class="datagrid__table__col--left">
+                                    <em>Adresse du bureau de vote :</em><br />
+                                    {{ votePlace.address ~ ' ' ~ votePlace.postalCode ~ ', ' ~ votePlace.city }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_assessor_manager_request_associate', {uuid: request.uuid, votePlaceId: votePlace.id}) }}"
+                                       id="associate-link-{{ votePlace.id }}">
+                                        Associer
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
