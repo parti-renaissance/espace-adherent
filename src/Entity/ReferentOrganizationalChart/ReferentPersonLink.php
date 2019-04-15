@@ -2,12 +2,15 @@
 
 namespace AppBundle\Entity\ReferentOrganizationalChart;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Referent;
+use AppBundle\Validator\CanBeCoReferent;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\PersonLinkAdherentAttachListener"})
  */
 class ReferentPersonLink
 {
@@ -71,6 +74,23 @@ class ReferentPersonLink
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $referent;
+
+    /**
+     * @var Adherent
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", cascade={"persist"}, fetch="EAGER")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $adherent;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
+     * @CanBeCoReferent
+     */
+    private $isCoReferent = false;
 
     public function __construct(PersonOrganizationalChartItem $personOrganizationalChartItem, Referent $referent)
     {
@@ -141,6 +161,26 @@ class ReferentPersonLink
     public function setReferent(?Referent $referent): void
     {
         $this->referent = $referent;
+    }
+
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    public function setAdherent(?Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
+    }
+
+    public function isCoReferent(): bool
+    {
+        return $this->isCoReferent;
+    }
+
+    public function setIsCoReferent(bool $isCoReferent): void
+    {
+        $this->isCoReferent = $isCoReferent;
     }
 
     public function getPersonOrganizationalChartItem(): ?PersonOrganizationalChartItem

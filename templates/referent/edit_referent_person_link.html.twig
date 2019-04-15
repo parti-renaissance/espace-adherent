@@ -9,7 +9,23 @@
             Edition de {{ person_organizational_chart_item.label }}
         </h3>
         {{ form_start(form_referent_person_link, { attr: { class: 'b__nudge--top-40' } }) }}
-            {{ form_row(form_referent_person_link) }}
+            {{ form_row(form_referent_person_link.firstName) }}
+            {{ form_row(form_referent_person_link.lastName) }}
+            {{ form_row(form_referent_person_link.email) }}
+            {% if form_referent_person_link.email.vars.disabled %}
+                <div class="text--small text--gray b__nudge--bottom">
+                    {{ 'referent.email.unchangeable'|trans }}
+                </div>
+            {% endif %}
+            {{ form_row(form_referent_person_link.phone) }}
+            {{ form_row(form_referent_person_link.postalAddress) }}
+            {% if form_referent_person_link.isCoReferent is defined %}
+                {{ form_widget(form_referent_person_link.isCoReferent) }}
+                <label class="form form__label" for="{{ form_referent_person_link.isCoReferent.vars.id }}">
+                    {{ 'referent.checkbox.co_referent'|trans|raw }}
+                </label>
+            {% endif %}
+        <span class="text--small text--gray">{{ form_referent_person_link.isCoReferent is defined and form_referent_person_link.isCoReferent.vars.disabled ? 'referent.adherent.can_be_coreferent'|trans|raw : '' }}</span>
 
             <div class="form__row text--center b__nudge--top-50">
                 <button type="submit" class="btn btn--blue btn--large-and-full">Sauvegarder</button>
