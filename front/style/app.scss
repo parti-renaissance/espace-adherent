@@ -55,7 +55,6 @@
 @import "pages/donation";
 @import "pages/profile";
 @import "pages/register";
-@import "pages/referent";
 @import "pages/search";
 @import "pages/procuration";
 @import "pages/ton_macron";
@@ -68,3 +67,9 @@
 @import "pages/complete";
 @import "pages/grande-marche-europe";
 @import "pages/adherent-dashboard";
+
+@import "manager-space/_base-layout";
+@import "manager-space/_filters";
+@import "manager-space/_forms";
+@import "manager-space/_tables";
+@import "manager-space/roles/_referent";

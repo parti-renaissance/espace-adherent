@@ -1,7 +1,36 @@
-/* Lots of important tags to overide the library we are using... Not ideal 😇 */
+.organizational-chart *,
+.organizational-chart *:before,
+.organizational-chart *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.organizational-chart a {
+    border-bottom: none;
+}
+
+.organizational-chart span.function {
+    border-bottom: 1px solid white;
+}
+
+ol.organizational-chart,
+ol.organizational-chart ol,
+ol.organizational-chart li,
+ol.organizational-chart li > div {
+    position: relative;
+    display: inline-block;
+}
+
+ol.organizational-chart,
+ol.organizational-chart ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
 
 ol.organizational-chart ol:before, ol.organizational-chart ol:after, ol.organizational-chart li:before, ol.organizational-chart li:after, ol.organizational-chart > li > div:before, ol.organizational-chart > li > div:after {
-    /* Hiding the gray connectors */
     display: none;
 }
 
@@ -28,21 +57,30 @@ ol.organizational-chart > li > ol > li {
     margin-bottom: 15px !important;
 }
 
-ol.organizational-chart > li > ol > li > ol > li > div {
+ol.organizational-chart > li > ol > li > ol > li > div,
+ol.organizational-chart > li > ol > li > ol > li > ol > li > ol > li > div,
+ol.organizational-chart > li > ol > li > ol > li > ol > li > ol > li > div >ol >li > div {
     background: white !important;
-    border: 1px solid $gray--light;
+}
 
-    &:hover {
-        background: $bg--gray !important;
-    }
+ol.organizational-chart > li > ol > li > ol > li > ol > li > ol > li > div,
+ol.organizational-chart > li > ol > li > ol > li > ol > li > ol > li > div >ol >li > div {
+
+
 }
 
 ol.organizational-chart > li > div {
-    background: black !important;
+
+}
+
+ol.organizational-chart > li > div > h3 {
+    font-size: 21px;
+    color: $black;
+    text-transform: none;
+    font-weight: bold;
 }
 
 ol.organizational-chart > li > ol > li > div {
-    background: $dark !important;
 }
 
 ol.organizational-chart > li > ol.organizational-chart > li > ol > li {
@@ -53,6 +91,7 @@ ol.organizational-chart > li > ol.organizational-chart > li > ol > li {
     @media (max-width: $mobile) {
         padding-right: 0 !important;
     }
+
 }
 
 ol.organizational-chart > li > ol.organizational-chart > li > ol > li:last-child {
@@ -65,6 +104,11 @@ ol.organizational-chart > li > ol.organizational-chart > li > ol > li:last-child
 
 .organizational-chart h3 {
     font-weight: normal;
+    color: $silver-grey;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    margin-right: 12px;
 
     a {
         display: flex;
@@ -73,20 +117,35 @@ ol.organizational-chart > li > ol.organizational-chart > li > ol > li:last-child
         justify-content: center;
         padding: 10px 0;
         color: black;
+        border: 1px solid $gray--light;
 
-        .function {
-            border: 0;
+        width: 280px;
+        height: 165px;
+        border: none;
+        border-radius: 3px;
+        box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.04), 0 2px 5px 0 rgba(0, 0, 0, 0.06);
+        background-color: $white;
+
+        .name {
+            color: black;
+            text-transform: none;
+            font-size: 18px;
             font-weight: bold;
-
+            color: $black;
             &--empty {
                 font-style: italic;
                 color: $gray;
-                @include text--small;
+                font-weight: normal;
             }
         }
 
-        span {
-            color: black;
+        .function {
+            border: 0;
+            margin-top: 8px;
+            font-size: 16px;
+            color: #8c8c8c;
+            text-transform: none;
+
         }
     }
 }

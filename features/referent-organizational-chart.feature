@@ -9,10 +9,10 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadOrganizationalChartItemData |
     And I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/utilisateurs"
-    When I follow "Mon organigramme"
+    When I follow "Mon équipe"
     Then I should see "Référent départemental"
-    And I should see "Responsable logistique Entrez le nom du responsable"
-    And I should see "Co-Référent Jean Dupont"
+    And I should see "Responsable logistique Nom du responsable"
+    And I should see "Jean Dupont Co-Référent"
 
   Scenario: As a child referent I can't see and click to access to organizational chart page
     Given the following fixtures are loaded:
@@ -20,8 +20,8 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadOrganizationalChartItemData |
     And I am logged as "referent-child@en-marche-dev.fr"
     And I am on "/espace-referent/utilisateurs"
-    Then I should not see "Mon organigramme"
-    When I am on "/espace-referent/organigramme"
+    Then I should not see "Mon équipe"
+    When I am on "/espace-referent/mon-equipe"
     Then the response status code should be 403
 
   Scenario: As a root referent I can edit a node in the organizational chart
@@ -29,8 +29,8 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadAdherentData                |
       | LoadOrganizationalChartItemData |
     And I am logged as "referent@en-marche-dev.fr"
-    And I am on "/espace-referent/organigramme"
-    When I follow "Responsable logistique Entrez le nom du responsable"
+    And I am on "/espace-referent/mon-equipe"
+    When I follow "Nom du responsable Responsable logistique"
     Then I should see "Edition de Responsable logistique"
     When I fill in the following:
       | Nom             | Jean                     |
@@ -39,5 +39,5 @@ Feature: Make sure we can see and interact with organizational chart
       | Téléphone       | 0612345678               |
       | Adresse postale | 1 avenue des chez élisée |
     And I press "Sauvegarder"
-    Then I should be on "/espace-referent/organigramme"
-    And I should see "Responsable logistique Dupoint Jean"
+    Then I should be on "/espace-referent/mon-equipe"
+    And I should see "Dupoint Jean Responsable logistique"

@@ -85,7 +85,7 @@ class DeputyControllerTest extends WebTestCase
 
         static::assertSame(
             'Recherche dans la zone : Français établis hors de France, 6ème circonscription (FDE-06)',
-            trim($crawler->filter('.l__wrapper .l__col .text--center')->text())
+            trim($crawler->filter('#deputy-managed-areas')->text())
         );
     }
 
