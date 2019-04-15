@@ -1,6 +1,7 @@
 .referent {
+
     h2 {
-        font-family: $font-gillsans;
+        font-family: $font-roboto;
     }
 
     &__filters {
@@ -16,10 +17,6 @@
             margin: 20px 0 10px 0;
             font-family: $font-roboto;
             font-weight: bold;
-        }
-
-        &__form {
-            padding-top: 30px;
         }
 
         .form__row {
@@ -73,12 +70,12 @@
         }
     }
 
-    &__btn-create-event {
-        float: right;
-        margin: -8px 0 0 0;
-    }
-
     &__menu-list-event {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 40px;
+
         .menu-items {
             span.separator {
                 float: left;
@@ -103,80 +100,6 @@
         }
     }
 
-    .datagrid__table {
-        font-family: $font-roboto;
-        font-size: 14px;
-    }
-
-    &__item {
-        td {
-            padding: 10px 0;
-        }
-
-        &__metadata {
-            color: $gray--muted;
-        }
-
-        &--host {
-            background: #fffad3;
-
-            &:hover {
-                background: #f4efcb !important;
-            }
-        }
-    }
-
-    & nav.referent-menu,
-    & div.referent-sub-menu {
-        text-align: center;
-        margin-bottom: 20px;
-
-        ul {
-            display: inline-block;
-            border-bottom: 1px solid $gray--light;
-
-            li {
-                display: inline-block;
-                margin: 0 20px;
-
-                &:first-child {
-                    margin-left: 0;
-                }
-
-                &:last-child {
-                    margin-right: 0;
-                }
-
-                & a {
-                    display: inline-block;
-                    padding: 10px 0;
-                    border-bottom: 2px solid transparent;
-
-                    &:hover {
-                        color: $blue-hover;
-                        border-bottom-color: $blue-hover;
-                    }
-                }
-
-                &:hover {
-                    & .toggle-menu {
-                        display: block;
-                    }
-                }
-
-                &.active a {
-                    color: $blue-hover;
-                    border-bottom-color: $blue-hover;
-                }
-            }
-        }
-    }
-
-    & div.referent-sub-menu {
-        ul {
-            border: 0 none;
-        }
-    }
 }
 
 .message_referent__filter__search__col {

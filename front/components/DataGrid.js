@@ -109,6 +109,7 @@ export default class DataGrid extends React.Component {
 
         return (
             <div className="datagrid">
+                {/*
                 <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
                     <span className="datagrid__search__count">
                         {totalCount} résultat(s)
@@ -118,17 +119,12 @@ export default class DataGrid extends React.Component {
                            className="form form__field"
                            onChange={this.handleSearchInputChange} />
                 </div>
-
-                <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
-                    <ul>
-                        {this._buildPagesList(pagesCount, currentPage, 'top')}
-                    </ul>
-                </div>
+                */}
 
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
 
                 <table className={
-                    `datagrid__table
+                    `datagrid__table-manager
                     ${this.props.tableClassName || ''}
                     ${this.state.loading ? 'datagrid__table--loading' : ''}`
                 }>

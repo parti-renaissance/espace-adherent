@@ -150,6 +150,7 @@ table {
 
 .action-menu-oval {
     position: relative;
+    font-size: 0;
 
     & > a {
         border: 0 none;
@@ -158,8 +159,9 @@ table {
             display: inline-block;
             width: 5px;
             height: 5px;
-            background-color: $black--half;
+            background-color: #ced4dd;
             border-radius: 50%;
+            margin-right: 3px;
         }
     }
 

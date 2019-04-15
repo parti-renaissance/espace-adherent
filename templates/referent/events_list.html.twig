@@ -6,16 +6,23 @@
             App.runManagedList(
                 [
                     {
-                        key: 'id',
-                        name: 'ID',
+                        key: 'name',
+                        name: 'Nom de l\'événement',
+                        link: true,
+                    },
+                    {
+                        key: 'organizer',
+                        name: 'Organisateur',
                         style: {
-                            width: 25
+                            width: 150
                         }
                     },
                     {
-                        key: 'name',
-                        name: 'Nom',
-                        link: true
+                        key: 'postalCode',
+                        name: 'Code postal',
+                        style: {
+                            width: 150
+                        }
                     },
                     {
                         key: 'beginAt',
@@ -25,26 +32,11 @@
                         }
                     },
                     {
-                        key: 'postalCode',
-                        name: 'Code postal',
-                        style: {
-                            width: 100
-                        }
-                    },
-                    {
-                        key: 'organizer',
-                        name: 'Organisateur',
-                        className: 'datagrid__table__col--hide-mobile',
-                        style: {
-                            width: 150
-                        }
-                    },
-                    {
                         key: 'participants',
                         name: 'Participants',
                         className: 'datagrid__table__col--hide-mobile',
                         style: {
-                            width: 50
+                            width: 100
                         }
                     }
                 ],
@@ -55,16 +47,89 @@
 {% endblock %}
 
 {% block referent_content %}
-    <div>
-        <a href="{{ path('app_referent_events_create') }}" class="btn btn--blue--soft referent__btn-create-event">
-            Créer un événement
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Événements</h3>
+        <a href="{{ path('app_referent_events_create') }}" class="btn-type-table">
+            + Créer
         </a>
-        <h3>
-            Événements
-        </h3>
+        <span class="datagrid__count">
+            <span>45</span> sur 904 résultat(s)
+        </span>
     </div>
 
-    <hr />
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            <form method="get" action="">
+                <h4 class="manager__filters__subtitle">Filtrer par...</h4>
+                <div class="manager__filters__row">
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Nom d'événement</label>
+                                <input type="text"
+                                       name=""
+                                       value=""
+                                       class="filter__field"
+                                       placeholder="Saisissez un nom d'événement"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Statut</label>
+                                <input type="text"
+                                       name=""
+                                       value=""
+                                       class="filter__field"
+                                       placeholder="Choisissez un statut"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Type d'événement</label>
+                                <input type="text"
+                                       name=""
+                                       value=""
+                                       class="filter__field"
+                                       placeholder="Référent, Comité..."/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="manager__filters__row">
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Code postal</label>
+                                <input type="text"
+                                       name=""
+                                       value=""
+                                       class="filter__field"
+                                       placeholder="Saisissez un code postal"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">
+                        Appliquer
+                    </button>
+                    <a href="" class="btn btn--no-border b__nudge--bottom-medium">
+                        Réinitialiser les filtres
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div id="datagrid"></div>
 {% endblock %}
