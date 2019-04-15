@@ -23,11 +23,13 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentManagedUser::class);
     }
 
-    public function search(Adherent $referent, ManagedUsersFilter $filter = null): Paginator
-    {
+    public function search(
+        Adherent $referent,
+        ManagedUsersFilter $filter = null,
+        bool $onlyEmailSubscribers = false
+    ): Paginator {
         return new Paginator($this
-            ->createFilterQueryBuilder($referent, $filter)
-            ->andWhere('u.isMailSubscriber = 1')
+            ->createFilterQueryBuilder($referent, $filter, $onlyEmailSubscribers)
             ->setFirstResult($filter ? $filter->getOffset() : 0)
             ->setMaxResults(ManagedUsersFilter::PER_PAGE)
             ->getQuery()
@@ -38,8 +40,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
     public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
     {
-        $qb = $this->createFilterQueryBuilder($referent, $filter);
-        $qb->andWhere('u.isMailSubscriber = 1');
+        $qb = $this->createFilterQueryBuilder($referent, $filter, true);
 
         if ($filter) {
             $qb->setFirstResult($filter->getOffset());
@@ -48,8 +49,11 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         return $qb->getQuery()->iterate();
     }
 
-    private function createFilterQueryBuilder(Adherent $referent, ManagedUsersFilter $filter = null): QueryBuilder
-    {
+    private function createFilterQueryBuilder(
+        Adherent $referent,
+        ManagedUsersFilter $filter = null,
+        bool $onlyEmailSubscribers = false
+    ): QueryBuilder {
         $this->checkReferent($referent);
 
         $qb = $this->createQueryBuilder('u');
@@ -58,6 +62,10 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             ->setParameter('status', ReferentManagedUser::STATUS_READY)
             ->orderBy('u.createdAt', 'DESC')
         ;
+
+        if ($onlyEmailSubscribers) {
+            $qb->andWhere('u.isMailSubscriber = 1');
+        }
 
         $tagsFilter = $qb->expr()->orX();
 
@@ -201,6 +209,13 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         }
 
         $qb->andWhere($typeExpression);
+
+        if (null !== $filter->onlyEmailSubscribers()) {
+            $qb
+                ->andWhere('u.isMailSubscriber = :isMailSubscriber')
+                ->setParameter('isMailSubscriber', $filter->onlyEmailSubscribers())
+            ;
+        }
 
         return $qb;
     }
