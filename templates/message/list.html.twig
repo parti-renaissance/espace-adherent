@@ -9,28 +9,37 @@
                 <option {{ app.request.query.get('status') == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'selected="selected"' }} value="{{ constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') }}">Brouillons</option>
             </select>
         </form>
-        <a class="btn btn--blue" href="{{ path("app_message_#{message_type}_create") }}">Nouveau message</a>
     </div>
 
-    <table class="table__default">
+    <table class="datagrid__table-manager">
         <thead>
             <tr>
                 <th>Statut</th>
                 <th class="c__width-20">Label</th>
                 <th class="c__width-40">Objet</th>
-                <th>Date de création</th>
-                <th>Date d'envoi</th>
+                <th>Date</th>
+                <th>Taux d'ouverture</th>
+                <th>Taux de clique</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for message in messages %}
-                <tr class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'text--gray' : '' }}">
-                    <td>{{ message.status|trans }}</td>
+                <tr>
+                    <td class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
+                        <span></span>{{ message.status|trans }}
+                    </td>
                     <td>{{ message.label }}</td>
                     <td>{{ message.subject }}</td>
-                    <td class="text--small">{{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}</td>
-                    <td class="text--small">{{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") : '~' }}</td>
+                    <td>
+                        {% if message.isSent %}
+                            {{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") : '~' }}
+                        {% else %}
+                            {{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}
+                        {% endif %}
+                    </td>
+                    <td>11% (3603)</td>
+                    <td>5% (603)</td>
                     <td>
                         <div class="action-menu-oval">
                             <a href="javascript:void(0);">

@@ -13,22 +13,19 @@
 {% block referent_content %}
     {% set is_edit_view = form.vars.view == constant('AppBundle\\Form\\InstitutionalEventCommandType::EDIT_VIEW') %}
 
-    <a href="{{ path('app_referent_institutional_events') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
-        {{ include('components/caret--left.html.twig') }}
-        Retour à la liste des événements institutionnels
+    <a href="{{ path('app_referent_institutional_events') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+         ⟵ Annuler
     </a>
 
-    <h3>
-        {% if is_edit_view %}
-            Modifier l'événement institutionel
-        {% else %}
-            Créer un événement institutionnel
-        {% endif %}
-    </h3>
-
-    <hr />
-
     <div class="l__wrapper--slim">
+        <h3>
+            {% if is_edit_view %}
+                Modifier la réunion privée
+            {% else %}
+                Créer une réunion privée
+            {% endif %}
+        </h3>
+
         {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
         {{ form_errors(form) }}
 
@@ -44,16 +41,16 @@
             {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de l'événement institutionnel" } }) }}
         </div>
 
-        <div class="form__row" id="institutional_event-beginat-field">
+        <div class="form__row form__date-and-time" id="institutional_event-beginat-field">
             {{ form_errors(form.beginAt) }}
             {{ form_label(form.beginAt, 'Début', { label_attr: { class: 'text--bold' }}) }}
-            {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at', autocomplete: 'off' } }) }}
+            {{ form_widget(form.beginAt, { attr: { class: 'form__group event__begin_at', autocomplete: 'off' } }) }}
         </div>
 
-        <div class="form__row" id="institutional_event-event-finishat-field">
+        <div class="form__row form__date-and-time" id="institutional_event-event-finishat-field">
             {{ form_errors(form.finishAt) }}
             {{ form_label(form.finishAt, 'Fin', { label_attr: { class: 'text--bold' }}) }}
-            {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at', autocomplete: 'off' } }) }}
+            {{ form_widget(form.finishAt, { attr: { class: 'form__group event__finish_at', autocomplete: 'off' } }) }}
         </div>
 
         <div id="institutional_event-address">
@@ -65,25 +62,25 @@
                 {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement institutionnel" } }) }}
             </div>
 
-            <div class="event__address l__row l__row--h-stretch">
+            <div class="form__group dual__fields">
                 <div class="form__row committee_event__form__zip_code b__nudge--right-nano register__form--third" id="institutional_event-address-zipcode-field">
                     {{ form_label(form.address.postalCode, 'Code postal', { label_attr: { class: 'text--bold' }}) }}
                     {{ form_widget(form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
                 </div>
-
                 <div class="form__row committee_event__form__city b__nudge--right-nano register__form--third" id="institutional_event-address-city-field">
                     {{ form_errors(form.address.city) }}
                     {{ form_label(form.address.cityName, 'Ville', { label_attr: { class: 'text--bold' }}) }}
                     {{ form_widget(form.address.city, { attr: { class: 'committee_event__form__city'}}) }}
                     {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', placeholder: 'Ville' } }) }}
                 </div>
+            </div>
 
+            <div class="form__group dual__fields">
                 <div class="form__row committee_event__form__country register__form--third " id="institutional_event-address-country-field">
                     {{ form_errors(form.address.country) }}
                     {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'text--bold' }}) }}
                     {{ form_widget(form.address.country, { attr: { class: 'form--full', placeholder: 'Choisissez le pays' } }) }}
                 </div>
-
                 <div class="form__row committee_event__form__timezone register__form--third"
                      id="committee_event-address-timezone-field">
                     {{ form_errors(form.timeZone) }}
@@ -116,8 +113,8 @@
             </p>
         {% endif %}
 
-        <div class="form__row text--center b__nudge--top">
-            <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">
+        <div class="form__row text--center b__nudge--top-50">
+            <button type="submit" class="btn btn--blue btn--large-and-full">
                 {% if is_edit_view %}
                     Modifier cet événement institutionnel
                 {% else %}

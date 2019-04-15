@@ -191,6 +191,17 @@
     }
 }
 
+@mixin btn--ghosting--blue {
+    color: $blue--dark;
+    background: transparent;
+    border-color: $blue--dark;
+
+    &:hover {
+        background-color: $blue-hover;
+        border-color: $blue-hover;
+    }
+}
+
 @mixin btn--blue--adi {
     color: white !important;
     background: $blue--adi;
@@ -312,6 +323,12 @@ button.btn {
         }
     }
 
+    &--large-and-full {
+        width: 100%;
+        font-size: 17px;
+        padding: 17px 0;
+    }
+
     &--no-border {
         border-color: white;
 
@@ -347,6 +364,10 @@ button.btn {
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--ghosting--blue {
+        @include btn--ghosting--blue;
     }
 
     &--blue--adi {
