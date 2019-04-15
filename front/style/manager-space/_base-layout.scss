@@ -74,10 +74,16 @@
             flex-wrap: wrap;
             border-bottom: 1px solid $lines-grey;
             padding-bottom: 15px;
+            @media (min-width: $tablet) {
+                padding-bottom: 0;
+            }
 
             li {
                 display: inline-block;
                 margin: 0 15px -1px 0;
+                @media (min-width: $tablet) {
+                    margin: 10px 25px -1px 0;
+                }
 
                 &:first-child {
                     margin-left: 0;
@@ -95,7 +101,9 @@
 
                     &:hover {
                         color: $black;
-                        border-bottom-color: #46d5c7;
+                        @media (min-width: $tablet) {
+                            border-bottom-color: $turquoise;
+                        }
                     }
                 }
 
@@ -108,7 +116,10 @@
                 &.active a {
                     color: $black;
                     font-weight: bold;
-                    border-bottom-color: #46d5c7;
+                    @media (min-width: $tablet) {
+                        border-bottom-color: $turquoise;
+                    }
+
                 }
             }
         }
@@ -148,23 +159,6 @@
 
                     span {
                         display: inline;
-                    }
-                }
-            }
-        }
-
-        &__menu {
-            ul {
-                padding-bottom: 0;
-                li {
-                    margin: 10px 25px -1px 0;
-
-                    & a {
-                        &:hover {
-                        }
-                    }
-
-                    &.active a {
                     }
                 }
             }
