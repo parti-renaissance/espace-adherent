@@ -1,0 +1,122 @@
+@mixin form-label {
+    display: block;
+    font-family: $font-roboto;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: normal;
+    color: $black;
+    margin-bottom: 10px;
+}
+
+@mixin form-field {
+    display: block;
+    font-family: $font-roboto;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: normal;
+    padding-left: 12px;
+    color: $dark;
+    margin: 0;
+    height: 60px;
+    border-radius: 3px;
+    border: solid 1px $lines-grey;
+    background-color: $white;
+}
+
+.manager-space {
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .form__row {
+        margin-bottom: 20px;
+
+        .form__label {
+            @include form-label;
+        }
+
+        .form__field {
+            @include form-field;
+
+            &::placeholder {
+                color: $neutral-grey;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .form__group {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        @media (min-width: $mobile) {
+            flex-wrap: nowrap;
+        }
+
+        &.dual__fields {
+            .form__row {
+                flex-basis: 100%;
+
+                @media (min-width: $mobile) {
+                    margin-right: 14px;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .form__date-and-time {
+
+        .form__group > div {
+            display: flex;
+            flex-direction: row;
+            line-height: 60px;
+
+            .form__field {
+                flex-basis: 100%;
+                margin-right: 14px;
+
+                &:last-child {
+                    margin: 0;
+                    @media (min-width: $mobile) {
+                        margin-right: 14px;
+                    }
+                }
+            }
+
+            &:nth-child(1){
+                flex-grow: 2;
+                margin-bottom: 10px;
+
+                @media (min-width: $mobile) {
+                    margin-bottom: 0;
+                }
+            }
+
+            &:nth-child(2) {
+                flex-grow: 1;
+
+                .form__field {
+
+                    &:first-child {
+                        margin-left: 0;
+                        margin-right: 10px;
+                    }
+
+                    &:last-child {
+                        margin-left: 10px;
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+
+    }
+}

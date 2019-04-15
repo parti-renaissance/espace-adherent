@@ -1,0 +1,185 @@
+.manager-header {
+    background-color: $pale-grey;
+    margin-bottom: 68px;
+
+    .first-section {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        padding: 35px 0;
+
+        .manager-information {
+            margin-top: 20px;
+            p {
+                font-family: $font-roboto;
+                font-size: $text--size-small;
+                color: $silver-grey;
+                margin: 0;
+
+                span {
+                    color: $black;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .report {
+            @include text--uppercase;
+            font-size: 13px;
+            color: $silver-grey;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+    }
+
+    .second-section {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        h1.page-title {
+            margin-bottom: 20px;
+            margin-right: 30px;
+        }
+
+        .direct-actions {
+            font-size: 0;
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+
+            .btn {
+                flex-basis: 50%;
+
+                span {
+                    display: none;
+                }
+            }
+
+            .btn:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &__menu {
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            border-bottom: 1px solid $lines-grey;
+            padding-bottom: 15px;
+
+            li {
+                display: inline-block;
+                margin: 0 15px -1px 0;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                & a {
+                    @include manager-menu-item;
+                    display: inline-block;
+                    padding: 5px 0 14px 0;
+                    border-bottom: 3px solid transparent;
+
+                    &:hover {
+                        color: $black;
+                        border-bottom-color: #46d5c7;
+                    }
+                }
+
+                &:hover {
+                    & .toggle-menu {
+                        display: block;
+                    }
+                }
+
+                &.active a {
+                    color: $black;
+                    font-weight: bold;
+                    border-bottom-color: #46d5c7;
+                }
+            }
+        }
+    }
+
+    // I know, it's a custom size... but goes great like this
+    @media (min-width: 1150px) {
+
+        &__menu {
+            ul {
+                li {
+                    &.menu-right {
+                        margin-left: auto;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (min-width: $mobile) {
+
+        .first-section {
+            flex-direction: row;
+
+            .manager-information {
+                margin: 0 20px 20px 0;
+            }
+        }
+
+        .second-section {
+
+            .direct-actions {
+                width: auto;
+
+                .btn {
+                    flex-basis: auto;
+
+                    span {
+                        display: inline;
+                    }
+                }
+            }
+        }
+
+        &__menu {
+            ul {
+                padding-bottom: 0;
+                li {
+                    margin: 10px 25px -1px 0;
+
+                    & a {
+                        &:hover {
+                        }
+                    }
+
+                    &.active a {
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.tips-information {
+    max-width: 900px;
+    background-color: $warning-bkg;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 20px;
+    padding: 20px;
+    margin-bottom: 60px;
+    color: $warning-text;
+}

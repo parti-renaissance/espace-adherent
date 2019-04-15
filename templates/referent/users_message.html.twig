@@ -17,15 +17,12 @@
 {% endblock %}
 
 {% block referent_content %}
-    <p>
-        <a href="{{ path('app_referent_users') ~ filter }}" class="icon--with-text">
-            {{ include('components/caret--left.html.twig') }}
-            Retour
-        </a>
-    </p>
+    <a href="{{ path('app_referent_users') ~ filter }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+         ⟵ Annuler
+    </a>
 
     <div class="l__wrapper--slim">
-        <h3>Envoyer un message</h3>
+        <h3>Rédiger mon message</h3>
 
         <div class="space--30-0">
             {{ form_start(form) }}
@@ -59,10 +56,10 @@
                 </legend>
             </div>
 
-            <button class="btn btn--blue b__nudge--bottom-small" type="submit">
+            <button class="btn btn--blue btn--large-and-full b__nudge--top-50" type="submit">
                 Envoyer le message
             </button>
-            <a href="{{ path('app_referent_users') }}" class="btn">
+            <a href="{{ path('app_referent_users') ~ filter }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
                 Annuler
             </a>
 

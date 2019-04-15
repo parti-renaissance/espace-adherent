@@ -1,20 +1,18 @@
 {% extends 'referent/_layout.html.twig' %}
 
 {% block referent_content %}
-    <h3>Edition de {{ person_organizational_chart_item.label }}</h3>
-    <a href="{{ path('app_referent_organizational_chart') }}" class="back-to-list icon--with-text text--summary b__nudge--top-10">
-        <svg width="10px" height="16px" viewBox="-1 0 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <polygon id="caret-left" stroke="none" fill="#000000" fill-rule="nonzero" points="8.46391544 1.3808921 7.81608456 0.619107904 -0.771841426 7.92238841 7.81611398 15.2245509 8.46388602 14.4627167 0.771841426 7.92232879"></polygon>
-        </svg>
-        Retour à l'Équipe départementale
+    <a href="{{ path('app_referent_organizational_chart') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+         ⟵ Retour
     </a>
-    <hr>
     <div class="l__wrapper--slim">
+        <h3>
+            Edition de {{ person_organizational_chart_item.label }}
+        </h3>
         {{ form_start(form_referent_person_link, { attr: { class: 'b__nudge--top-40' } }) }}
             {{ form_row(form_referent_person_link) }}
 
-            <div class="form__row text--center b__nudge--top">
-                <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Sauvegarder</button>
+            <div class="form__row text--center b__nudge--top-50">
+                <button type="submit" class="btn btn--blue btn--large-and-full">Sauvegarder</button>
             </div>
         {{ form_end(form_referent_person_link) }}
     </div>
