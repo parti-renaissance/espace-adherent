@@ -1,15 +1,15 @@
-{% macro orga_chart_row(items, referent, editable, admin) %}
+{% macro orga_chart_row(items, referent, editable, admin, form) %}
     {% import _self as oc %}
     <ol{% if items is not empty and items|first.level <= 2 %} class="organizational-chart"{% endif %}>
         {% for item in items %}
             <li>
-                {{ oc.orga_chart_item(item, referent, editable, admin) }}
+                {{ oc.orga_chart_item(item, referent, editable, admin, form) }}
             </li>
         {% endfor %}
     </ol>
 {% endmacro %}
 
-{% macro orga_chart_item(item, referent, editable, admin) %}
+{% macro orga_chart_item(item, referent, editable, admin, form) %}
     {% import _self as oc %}
     <div>
         <h3>
@@ -28,6 +28,22 @@
                         <span class="function">
                             {{ item.label }}
                         </span>
+                        {% if ref_person_link and ref_person_link.adherent.id is defined %}
+                            {% for potentialCoReferent in form.referentPersonLinks %}
+                                {% if potentialCoReferent.vars.data.id == ref_person_link.id %}
+                                    <div class="form__row referent-person-link">
+                                        {{ form_errors(potentialCoReferent) }}
+                                        {{ form_widget(potentialCoReferent.isCoReferent) }}
+                                        <label class="form form__label" for="{{ potentialCoReferent.isCoReferent.vars.id }}">
+                                            {{ 'referent.checkbox.co_referent'|trans|raw }}
+                                        </label>
+                                        {% if potentialCoReferent.isCoReferent.vars.disabled %}
+                                            <span class="text--small text--gray already-co-referent">{{ 'referent.adherent.can_be_coreferent'|trans|raw }}</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                 {% if editable %}
                     </a>
                 {% endif %}
@@ -41,6 +57,6 @@
         </h3>
     </div>
     {% if item.children|length %}
-        {{ oc.orga_chart_row(item.children, referent, editable, admin) }}
+        {{ oc.orga_chart_row(item.children, referent, editable, admin, form) }}
     {% endif %}
 {% endmacro %}

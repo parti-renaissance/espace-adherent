@@ -205,6 +205,9 @@
         <service id="AppBundle\Referent\ManagedCommitteesExporter" />
         <service id="AppBundle\Referent\ManagedCitizenProjectsExporter" />
         <service id="AppBundle\Referent\ManagedEventsExporter" />
+        <service id="AppBundle\Validator\CanBeCoReferentValidator" />
+        <service id="AppBundle\Form\ReferentPersonLinkType" />
+        <service id="AppBundle\Form\ReferentPersonLinkForCoReferentType" />
 
         <!-- J'écoute -->
         <service id="AppBundle\Command\ImportJecouteSurveysCommand" />

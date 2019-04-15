@@ -13,5 +13,13 @@
         les échanges et la coordination avec les équipes du QG.
     </div>
     <hr>
-    {{ oc.orga_chart_row(organization_chart_items, referent, true) }}
+    {% set showForm = referent.referentPersonLinks.count and form.referentPersonLinks is defined %}
+    {% if showForm %}
+        {{ form_start(form) }}
+    {% endif %}
+    {{ oc.orga_chart_row(organization_chart_items, referent, true, false, form) }}
+    {% if showForm %}
+        {{ form_widget(form.save, {'label': 'referent.save', 'attr': {'class': 'btn btn-primary'}}) }}
+        {{ form_end(form) }}
+    {% endif %}
 {% endblock %}

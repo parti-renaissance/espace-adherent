@@ -2,12 +2,15 @@
 
 namespace AppBundle\Entity\ReferentOrganizationalChart;
 
+use AppBundle\Entity\Adherent;
+use AppBundle\Validator\CanBeCoReferent;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Referent;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\ReferentPersonLinkListener"})
  */
 class ReferentPersonLink
 {
@@ -71,6 +74,21 @@ class ReferentPersonLink
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $referent;
+
+    /**
+     * @var Adherent
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", fetch="LAZY")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $adherent;
+
+    /**
+     * @var bool
+     *
+     * @CanBeCoReferent
+     */
+    private $isCoReferent = false;
 
     public function __construct(PersonOrganizationalChartItem $personOrganizationalChartItem, Referent $referent)
     {
@@ -143,6 +161,26 @@ class ReferentPersonLink
         $this->referent = $referent;
     }
 
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
+    public function setAdherent(?Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
+    }
+
+    public function isCoReferent(): bool
+    {
+        return $this->isCoReferent;
+    }
+
+    public function setIsCoReferent(bool $isCoReferent): void
+    {
+        $this->isCoReferent = $isCoReferent;
+    }
+
     public function getPersonOrganizationalChartItem(): ?PersonOrganizationalChartItem
     {
         return $this->personOrganizationalChartItem;
@@ -152,6 +190,19 @@ class ReferentPersonLink
         ?PersonOrganizationalChartItem $personOrganizationalChartItem
     ): void {
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
+    }
+
+    public function updateCoReferentRole(Adherent $referent): void
+    {
+        if (!$this->getAdherent()) {
+            return;
+        }
+
+        if ($this->isCoReferent()) {
+            $this->getAdherent()->setReferent($referent);
+        } elseif ($this->getAdherent()->getReferent() === $referent) {
+            $this->getAdherent()->setReferent(null);
+        }
     }
 
     public function getAdminDisplay(): string

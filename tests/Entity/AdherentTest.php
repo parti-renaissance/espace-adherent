@@ -149,7 +149,7 @@ class AdherentTest extends TestCase
 
         // Referent
         $adherent = $this->createAdherent();
-        $adherent->setReferent([new ReferentTag('06')], -1.6743, 48.112);
+        $adherent->setReferentInfo([new ReferentTag('06')], -1.6743, 48.112);
 
         $this->assertFalse($adherent->isBasicAdherent());
 

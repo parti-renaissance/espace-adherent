@@ -183,9 +183,9 @@ SQL;
             }
 
             if ($latitude && $longitude) {
-                $adherent->setReferent($managedAreaTags, $latitude, $longitude);
+                $adherent->setReferentInfo($managedAreaTags, $latitude, $longitude);
             } else {
-                $adherent->setReferent($managedAreaTags);
+                $adherent->setReferentInfo($managedAreaTags);
             }
 
             ++$count;

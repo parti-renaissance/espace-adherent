@@ -209,6 +209,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $managedArea;
 
     /**
+     * Defines to which referent team the adherent belongs.
+     *
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(name="referent_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $referent;
+
+    /**
      * @var CoordinatorManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
@@ -507,6 +517,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
+        }
+
+        if ($this->isCoReferent()) {
+            $roles[] = 'ROLE_COREFERENT';
         }
 
         if ($this->isDeputy()) {
@@ -952,6 +966,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedArea = $managedArea;
     }
 
+    public function getReferent(): ?Adherent
+    {
+        return $this->referent;
+    }
+
+    public function setReferent(?Adherent $referent): void
+    {
+        $this->referent = $referent;
+    }
+
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("managedAreaTagCodes"),
@@ -1019,7 +1043,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->boardMember = null;
     }
 
-    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
+    public function setReferentInfo(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
     {
         $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
     }
@@ -1028,6 +1052,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->managedArea instanceof ReferentManagedArea
             && !$this->managedArea->getTags()->isEmpty();
+    }
+
+    public function isCoReferent(): bool
+    {
+        return $this->referent ? true : false;
     }
 
     public function revokeReferent(): void

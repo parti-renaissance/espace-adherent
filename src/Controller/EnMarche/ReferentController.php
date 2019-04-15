@@ -15,6 +15,7 @@ use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Form\PotentialCoReferentsType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
 use AppBundle\Form\ReferentMessageType;
@@ -521,14 +522,31 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/mon-equipe", name="app_referent_organizational_chart")
+     * @Route("/mon-equipe", name="app_referent_organizational_chart", methods={"GET|POST"})
      * @Security("is_granted('IS_ROOT_REFERENT')")
      */
     public function organizationalChartAction(
+        Request $request,
         OrganizationalChartItemRepository $organizationalChartItemRepository,
-        ReferentRepository $referentRepository
+        ReferentRepository $referentRepository,
+        ObjectManager $manager
     ) {
+        $referent = $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress());
+        $personalLinks = $referent->getReferentPersonLinksWithExistingAdherent();
+        $form = $this
+            ->createForm(PotentialCoReferentsType::class, ['referentPersonLinks' => $personalLinks])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($personalLinks as $personalLink) {
+                $personalLink->updateCoReferentRole($this->getUser());
+            }
+            $manager->flush();
+        }
+
         return $this->render('referent/organizational_chart.html.twig', [
+            'form' => $form->createView(),
             'organization_chart_items' => $organizationalChartItemRepository->getRootNodes(),
             'referent' => $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress()),
         ]);
@@ -556,6 +574,7 @@ class ReferentController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ReferentPersonLink $referentPersonLink */
             $referentPersonLink = $form->getData();
+            $referentPersonLink->updateCoReferentRole($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
 
