@@ -261,6 +261,7 @@ referent.button.accept: J'ai lu et j'accepte
 referent.popup.title: Charte de bonne utilisation des outils numériques
 referent.popup.subtitle: à l’usage des référents
 referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
+referent.filter.interests: Choisissez des centres d'intérêt
 
 #
 # J'écoute

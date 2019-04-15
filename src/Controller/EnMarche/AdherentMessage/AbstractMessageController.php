@@ -193,7 +193,7 @@ abstract class AbstractMessageController extends Controller
         }
 
         if ($message->hasReadOnlyFilter()) {
-            return $this->renderTemplate('message/filter.html.twig', ['message' => $message]);
+            return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", ['message' => $message]);
         }
 
         // Reset Filter object
@@ -222,7 +222,7 @@ abstract class AbstractMessageController extends Controller
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        return $this->renderTemplate('message/filter.html.twig', [
+        return $this->renderTemplate("message/filter/{$message->getType()}.html.twig", [
             'message' => $message,
             'form' => $form->createView(),
         ]);
