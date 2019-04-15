@@ -505,7 +505,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/organigramme", name="app_referent_organizational_chart")
+     * @Route("/mon-equipe", name="app_referent_organizational_chart")
      * @Security("is_granted('IS_ROOT_REFERENT')")
      */
     public function organizationalChartAction(
@@ -519,7 +519,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/organigramme/{id}", name="app_referent_referent_person_link_edit")
+     * @Route("/mon-equipe/{id}", name="app_referent_referent_person_link_edit")
      * @Security("is_granted('IS_ROOT_REFERENT')")
      */
     public function editReferentPersonLink(

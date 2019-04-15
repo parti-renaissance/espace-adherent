@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Espace référent' %}
+{% block page_title 'Mon espace référent' %}
 {% block canonical_url url('app_referent_users') %}
 
 {% block banner '' %}
@@ -13,63 +13,74 @@
 
 {% block content %}
     <main>
-        <section class="referent procuration-manager b__nudge--bottom-huge">
-            <header class="l__wrapper--slim b__nudge--bottom-large b__nudge--top">
-                <h1 class="text--center text--large">
-                    {{ block('page_title') }}
-                </h1>
-                <p class="text--center text--body">
-                    <strong>Vous gérez :</strong> {{ app.user.managedArea.tags|join(', ') }}
-                    <br>
-                    <a href="https://en-marche.helprace.com/" target="_blank" class="text--body text--blue--dark text--small link--no-decor">
-                        🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
-                    </a>
-                </p>
+        <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
+                            <p>Dernière connexion : <span>01/02/04</span></p>
+                        </div>
+                        <p class="report">🐛 Bug ? Nouveau besoin ?
+                            <a href="https://en-marche.helprace.com/" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                        </p>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large">
+                            {{ block('page_title') }}
+                        </h1>
+                        <div class="direct-actions">
+                            <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                            <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                        </div>
+                    </div>
+
+                    <nav class="manager-header__menu">
+                        <ul>
+                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_events') }}">Événements</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_committees') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_committees') }}">Comités</a>
+                            </li>
+
+                            <li class="">
+                                <a href="">Projets citoyens</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_users*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_users') }}">Adhérents</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_jecoute_*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
+                            </li>
+
+                            {% if is_canary_enabled() %}
+                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
+                                    <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
+                                </li>
+                            {% endif %}
+
+                            <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' : '' }}">
+                                <a href="{{ path('app_referent_institutional_events') }}">Mes réunions privées</a>
+                            </li>
+
+                            {% if is_granted('IS_ROOT_REFERENT') %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_organizational_chart') ? 'active' : '' }}">
+                                    <a href="{{ path('app_referent_organizational_chart') }}">Mon équipe</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+
+                </div>
             </header>
 
             <div class="l__wrapper procuration-manager__content text--body">
-                <nav class="referent-menu">
-                    <ul>
-                        {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
-
-                        <li class="{{ is_mobilisation_links ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_events') }}">Mobilisation</a>
-                        </li>
-
-                        {% if is_canary_enabled() %}
-                            <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'active' : '' }}">
-                                <a href="{{ path('app_message_referent_list') }}">Envoyer un message</a>
-                            </li>
-                        {% endif %}
-
-                        {% if is_granted('IS_ROOT_REFERENT') %}
-                            <li class="{{ is_active_route(app.request, 'app_referent_organizational_chart') ? 'active' : '' }}">
-                                <a href="{{ path('app_referent_organizational_chart') }}">Mon organigramme</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-
-                <div class="referent-sub-menu" {{ not is_mobilisation_links ? 'style="display: none;"' : '' }}>
-                    <ul>
-                        <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_events') }}">Événements</a>
-                        </li>
-                        <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_institutional_events') }}">Mes événements institutionnels</a>
-                        </li>
-                        <li class="{{ is_active_route(app.request, 'app_referent_committees') ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_committees') }}">Comités</a>
-                        </li>
-                        <li class="{{ is_active_route(app.request, 'app_referent_users*') ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_users') }}">Envoyer un message</a>
-                        </li>
-                        <li class="{{ is_active_route(app.request, 'app_referent_jecoute_*') ? 'active' : '' }}">
-                            <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
-                        </li>
-                    </ul>
-                </div>
-
                 {% block referent_content %}{% endblock %}
             </div>
         </section>

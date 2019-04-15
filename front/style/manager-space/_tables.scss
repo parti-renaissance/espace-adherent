@@ -1,0 +1,147 @@
+@mixin table-btn {
+    background-color: white;
+    font-size: 16px;
+    color: $blue--dark;
+    font-weight: bold;
+    padding: 6px 15px;
+    border: 1px solid #c5d1e6;
+    border-radius: 20px;
+    line-height: normal;
+
+    &:hover {
+        background-color: $blue--dark;
+        border: 1px solid $blue--dark;
+        color: white;
+    }
+}
+
+.btn-type-table {
+    @include table-btn;
+}
+
+
+.datagrid__pre-table {
+    font-family: $font-roboto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    h3 {
+        font-size: $text--size-medium;
+        line-height: 32px;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .datagrid__count {
+        color: $dark;
+        font-size: $text--size-default;
+        line-height: 32px;
+
+        span {
+            font-weight: bold;
+            color: $blue--dark;
+        }
+    }
+
+    @media (min-width: $mobile) {
+
+        justify-content: flex-start;
+
+        .datagrid__count {
+            margin-left: auto;
+            font-size: 18px;
+        }
+
+    }
+}
+
+.datagrid__table-manager {
+    width: 100%;
+    text-align: left;
+    font-family: $font-roboto;
+    color: $dark;
+    font-size: $text--size-small;
+    margin-bottom: 30px;
+
+    thead {
+        @include manager-table-thead;
+
+        tr {
+            height: 48px;
+
+            th {
+                line-height: normal;
+            }
+
+            th:first-child { padding-left: 20px; }
+            th:last-child { padding-right: 20px; }
+        }
+    }
+
+    tbody {
+
+        tr {
+            height: 68px;
+            border-bottom: solid 1px $lines-grey;
+
+            td {
+                padding: 16px 0;
+                line-height: normal;
+
+                &.adherent-identity {
+                    .adherent-name {
+                        color: $black;
+                        font-weight: bold;
+                    }
+
+                    .adherent-caracs {
+                        font-size: 12px;
+                        color: $silver-grey;
+                    }
+                }
+
+                &.status {
+
+                    span {
+                        width: 7px;
+                        height: 7px;
+                        display: inline-block;
+                        border-radius: 50%;
+                        margin: 0 10px 1px 0;
+                        box-sizing: border-box;
+                    }
+
+                    &__1 {
+                        color: $status-green;
+                        span { background-color: $status-green; }
+                    }
+
+                    &__2 {
+                        color: $silver-grey;
+                        span { border: 2px solid $silver-grey; }
+                    }
+
+                    &__3 {
+                        color: $status-red;
+                        span { border: 2px solid $status-red; }
+                    }
+                }
+
+                a {
+                    color: $blue--dark;
+                    border-color: $blue--dark;
+
+                    &.person {
+                        color: $dark;
+                        border-color: $dark;
+                    }
+                }
+            }
+
+            td:first-child { padding-left: 20px; }
+            td:last-child { padding-right: 20px; }
+        }
+    }
+}
