@@ -14,8 +14,14 @@ class ReferentSpaceAccessInformationRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentSpaceAccessInformation::class);
     }
 
-    public function findByAdherent(Adherent $adherent): ?ReferentSpaceAccessInformation
+    public function findByAdherent(Adherent $adherent, int $resultTtl = null): ?ReferentSpaceAccessInformation
     {
-        return $this->findOneBy(['adherent' => $adherent]);
+        return $this->createQueryBuilder('accessInfo')
+            ->where('accessInfo.adherent = :adherent')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->useResultCache((bool) $resultTtl, $resultTtl)
+            ->getOneOrNullResult()
+        ;
     }
 }
