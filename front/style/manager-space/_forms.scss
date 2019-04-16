@@ -21,6 +21,23 @@
     border-radius: 3px;
     border: solid 1px $lines-grey;
     background-color: $white;
+    outline: 0;
+    transition: border 0.2s;
+    -webkit-transition: border 0.2s;
+
+
+        &::placeholder {
+            color: $neutral-grey;
+            font-weight: normal;
+        }
+
+        &:hover {
+            border-color: $lines-hover-grey;
+        }
+
+        &:focus {
+            border-color: $blue--dark;
+        }
 }
 
 .manager-space {
@@ -29,6 +46,10 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
+        background-image: url('/images/icons/icn-form-select.svg');
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        cursor: pointer;
     }
 
     .form__row {
@@ -41,10 +62,14 @@
         .form__field {
             @include form-field;
 
-            &::placeholder {
-                color: $neutral-grey;
-                font-weight: normal;
-            }
+
+        }
+
+        textarea.form__field {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            min-height: 100px;
         }
     }
 
