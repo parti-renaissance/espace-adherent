@@ -11,8 +11,9 @@
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\AdherentExtension">
-            <argument>%adherent_interests%</argument>
+        <service id="AppBundle\Twig\AdherentRuntime">
+            <argument key="$interests">%adherent_interests%</argument>
+            <tag name="twig.runtime" />
         </service>
 
         <service id="Twig\Extensions\IntlExtension" />
