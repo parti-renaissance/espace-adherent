@@ -11,14 +11,14 @@
         {{ form_errors(form) }}
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Pays où vous souhaitez être assesseur(e)</p>
+                <p class="b__nudge--bottom-tiny text--bold">Pays où vous souhaitez être assesseur(e) <span class="text--normal">*</span></p>
                 {{ form_widget(form.assessorCountry, { attr: { class: 'form--full' } }) }}
             </div>
         </div>
 
         <div class="french-block l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Code postal</p>
+                <p class="b__nudge--bottom-tiny text--bold">Code postal <span class="text--normal">*</span></p>
                 {{ form_widget(form.assessorPostalCode, { attr: { placeholder: 'Code postal où vous souhaitez être assesseur(e)' } }) }}
                 {{ form_errors(form.assessorPostalCode) }}
             </div>
@@ -26,7 +26,7 @@
 
         <div class="french-block l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Ville</p>
+                <p class="b__nudge--bottom-tiny text--bold">Ville <span class="text--normal">*</span></p>
                 {{ form_widget(form.assessorCity, { attr: { placeholder: 'Ville où vous souhaitez être assesseur(e)' } }) }}
                 {{ form_errors(form.assessorCity) }}
             </div>
@@ -34,7 +34,7 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col vote-place-wishes">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Bureaux de votes disponibles</p>
+                <p class="b__nudge--bottom-tiny text--bold">Bureaux de votes disponibles <span class="text--normal">*</span></p>
                 {{ form_widget(form.votePlaceWishes, { attr: { class: 'multi_vote_place_wishes' } }) }}
                 {{ form_errors(form.votePlaceWishes) }}
                 <p class="text--small text--gray">
@@ -46,28 +46,53 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Fonction</p>
+                <p class="b__nudge--bottom-tiny text--bold">Fonction <span class="text--normal">*</span></p>
                 {{ form_widget(form.office) }}
                 {{ form_errors(form.office) }}
             </div>
         </div>
 
         <div class="form__row form__checkbox b__nudge--top-large">
+            {{ form_widget(form.reachable) }}
+            <label for="{{ form.reachable.vars.id }}">
+                J’accepte d’être recontacté par LaREM pour les prochaines échéances électorales.
+            </label>
+            {{ form_errors(form.reachable) }}
+        </div>
+
+        <div class="form__row form__checkbox b__nudge--top-large">
+            {{ form_widget(form.acceptDataTreatment) }}
+            <label for="{{ form.acceptDataTreatment.vars.id }}">
+                Je consens au traitement de mes données personnelles et à la communication de celles-ci à la mairie/au bureau de vote qui sera attribué(e) à ma candidature.
+            </label>
+            {{ form_errors(form.acceptDataTreatment) }}
+        </div>
+
+        <div class="form__row form__checkbox b__nudge--top-large">
             {{ form_widget(form.acceptValuesCharter) }}
             <label for="{{ form.acceptValuesCharter.vars.id }}">
-                J'ai pris connaissance de la Charte des valeurs de LaREM et je suis informé que j’engage ma responsabilité pour tout propos injurieux, diffamatoire, illicite ou contraire à l’ordre public et aux bonnes mœurs.
+                J'ai pris connaissance et accepte la Charte des valeurs de LaREM et je suis informé que j’engage ma responsabilité pour tout propos injurieux, diffamatoire, illicite ou contraire à l’ordre public et aux bonnes mœurs.
             </label>
             {{ form_errors(form.acceptValuesCharter) }}
         </div>
 
-        <p class="text--small text--light-gray text--justify">
-            Les données recueillies sur ce formulaire sont traitées par LaREM dans le cadre de l’utilisation du service
-            de l’Atelier des idées et permettent à LaREM de vous contacter à ce sujet. Conformément à la règlementation, vous disposez d'un droit d'opposition et d'un droit à la limitation du
-            traitement de données vous concernant, ainsi que d'un droit d'accès, de rectification, de portabilité et
-            d'effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-            Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d'une copie de votre pièce d'identité
-            à l'adresse postale ou électronique suivante :
-            La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France et mes-donnees@en-marche.fr.
+        <p class="b__nudge--top-large text--small text--gray text--justify">
+            Les informations recueillies via le formulaire ci-dessus et le formulaire précédent sont utilisées par
+            LaREM afin de traiter votre demande de devenir assesseur dans un bureau de vote lors des
+            élections européennes.<br/><br/>
+
+            Les champs marqués d’un astérisque (*) sont obligatoires, tout défaut de réponse ne permettra pas à LaREM
+            de traiter votre demande.<br/><br/>
+
+            Conformément aux dispositions légales et règlementaires relatives à la protection des données personnelles,
+            vous disposez d’un droit d’accès, de rectification, d’effacement et de portabilité de vos données,
+            ainsi que d’un droit d’opposition et d’un droit à la limitation du traitement des données vous concernant.
+            Vous du droit de donner des directives sur le sort de vos données après votre décès.<br/><br/>
+
+            Pour plus d’informations sur le traitement de vos données personnelles, vous pouvez consulter la
+            Politique de protection des données à l'adresse <a href="https://en-marche.fr/politique-protection-donnees" target="_blank" rel="noopener noreferrer" class="link--no-decor">https://en-marche.fr/politique-protection-donnees</a> et
+            exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à
+            l’adresse électronique suivante: <a target="_blank" class="link--no-decor" href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>
         </p>
 
         <div class="text--center b__nudge--top-large">

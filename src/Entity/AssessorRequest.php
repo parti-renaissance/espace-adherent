@@ -269,6 +269,13 @@ class AssessorRequest
      */
     private $enabled = true;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public $reachable = false;
+
     public function __construct()
     {
         $this->phone = static::createPhoneNumber();
@@ -294,6 +301,7 @@ class AssessorRequest
         string $office = AssessorOfficeEnum::HOLDER,
         ?string $birthName = null,
         bool $enabled = true,
+        bool $reachable = false,
         string $assessorCountry = 'FR',
         ?array $votePlaceWishes = []
     ): AssessorRequest {
@@ -318,6 +326,7 @@ class AssessorRequest
         $assessorRequest->setOffice($office);
         $assessorRequest->setAssessorCountry($assessorCountry);
         $assessorRequest->setVotePlaceWishes(new ArrayCollection($votePlaceWishes));
+        $assessorRequest->setReachable($reachable);
 
         if (!$enabled) {
             $assessorRequest->disable();
@@ -628,5 +637,15 @@ class AssessorRequest
     public function setUuid(UuidInterface $uuid): void
     {
         $this->uuid = $uuid;
+    }
+
+    public function isReachable(): bool
+    {
+        return $this->reachable;
+    }
+
+    public function setReachable(bool $reachable): void
+    {
+        $this->reachable = $reachable;
     }
 }

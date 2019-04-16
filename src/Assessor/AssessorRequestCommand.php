@@ -162,6 +162,8 @@ class AssessorRequestCommand
      */
     public $recaptcha = '';
 
+    public $reachable = false;
+
     /**
      * Handled by the workflow.
      *
@@ -389,5 +391,15 @@ class AssessorRequestCommand
     public function isFrenchAssessorRequest(): bool
     {
         return 'FR' === $this->getAssessorCountry();
+    }
+
+    public function isReachable(): bool
+    {
+        return $this->reachable;
+    }
+
+    public function setReachable(bool $reachable): void
+    {
+        $this->reachable = $reachable;
     }
 }

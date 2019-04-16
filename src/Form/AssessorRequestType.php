@@ -83,6 +83,12 @@ class AssessorRequestType extends AbstractType
                     ->add('votePlaceWishes', ChoiceType::class, [
                         'multiple' => true,
                     ])
+                    ->add('reachable', CheckboxType::class, [
+                        'required' => false,
+                    ])
+                    ->add('acceptDataTreatment', CheckboxType::class, [
+                        'mapped' => false,
+                    ])
                     ->add('acceptValuesCharter', CheckboxType::class, [
                         'mapped' => false,
                     ])

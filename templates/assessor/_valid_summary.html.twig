@@ -61,6 +61,10 @@
                 <td>Adresse e-mail</td>
                 <td>{{ assessorRequest.emailAddress }}</td>
             </tr>
+            <tr class="reachable">
+                <td>Accepte d'être recontacté par LaREM</td>
+                <td>{{ assessorRequest.isReachable ? 'Oui' : 'Non'}}</td>
+            </tr>
         </table>
 
         <h2 class="text--medium-small b__nudge--top-large b__nudge--bottom">Informations assesseur(e)</h2>
