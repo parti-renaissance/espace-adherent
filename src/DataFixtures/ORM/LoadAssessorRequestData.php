@@ -47,6 +47,7 @@ class LoadAssessorRequestData extends Fixture
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59350',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
+            'reachable' => true,
         ]);
 
         $unmatchedRequest1->addVotePlaceWish($votePlaceLilleWazemmes);

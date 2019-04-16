@@ -24,12 +24,12 @@
         {{ form_errors(form) }}
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="form__radio-button register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Genre</p>
+                <p class="b__nudge--bottom-tiny text--bold">Genre <span class="text--normal">*</span></p>
                 {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
                 {{ form_errors(form.gender) }}
             </div>
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Prénom</p>
+                <p class="b__nudge--bottom-tiny text--bold">Prénom <span class="text--normal">*</span></p>
                 {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
                 {{ form_errors(form.firstName) }}
             </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Nom</p>
+                <p class="b__nudge--bottom-tiny text--bold">Nom <span class="text--normal">*</span></p>
                 {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
                 {{ form_errors(form.lastName) }}
             </div>
@@ -50,7 +50,7 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
+                <p class="b__nudge--bottom-tiny text--bold">Adresse <span class="text--normal">*</span></p>
                 {{ form_widget(form.address, { attr: { placeholder: 'Votre adresse postale' } }) }}
                 {{ form_errors(form.address) }}
             </div>
@@ -58,12 +58,12 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Code postal</p>
+                <p class="b__nudge--bottom-tiny text--bold">Code postal <span class="text--normal">*</span></p>
                 {{ form_widget(form.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
                 {{ form_errors(form.postalCode) }}
             </div>
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Ville</p>
+                <p class="b__nudge--bottom-tiny text--bold">Ville <span class="text--normal">*</span></p>
                 {{ form_widget(form.city, { attr: { placeholder: 'Ville où vous vivez' } }) }}
                 {{ form_errors(form.city) }}
             </div>
@@ -71,12 +71,12 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Ville d'inscription</p>
+                <p class="b__nudge--bottom-tiny text--bold">Ville d'inscription <span class="text--normal">*</span></p>
                 {{ form_widget(form.voteCity, { attr: { placeholder: 'Ville où vous votez' } }) }}
                 {{ form_errors(form.voteCity) }}
             </div>
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">N° du bureau de vote</p>
+                <p class="b__nudge--bottom-tiny text--bold">N° du bureau de vote <span class="text--normal">*</span></p>
                 {{ form_widget(form.officeNumber, { attr: { placeholder: 'N° du breau de vote' } }) }}
                 {{ form_errors(form.officeNumber) }}
             </div>
@@ -84,12 +84,12 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="register__form__zip_code register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Date de naissance</p>
+                <p class="b__nudge--bottom-tiny text--bold">Date de naissance <span class="text--normal">*</span></p>
                 {{ form_widget(form.birthdate, { attr: { placeholder: 'Votre date de naissance', class: 'l__row l__row--h-stretch' } }) }}
                 {{ form_errors(form.birthdate) }}
             </div>
             <div class="register__form--mid">
-                <p class="b__nudge--bottom-tiny text--bold">Lieu de naissance</p>
+                <p class="b__nudge--bottom-tiny text--bold">Lieu de naissance <span class="text--normal">*</span></p>
                 {{ form_widget(form.birthCity, { attr: { placeholder: 'Votre lieu de naissance' } }) }}
                 {{ form_errors(form.birthCity) }}
             </div>
@@ -98,14 +98,14 @@
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
             <div class="l__row--h-stretch register__form--full">
-                <p class="b__nudge--bottom-tiny text--bold">Adresse e-mail</p>
+                <p class="b__nudge--bottom-tiny text--bold">Adresse e-mail <span class="text--normal">*</span></p>
                 {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail' } }) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
         </div>
 
         <div class="l__col l__col--top register__form__phone">
-            <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
+            <p class="b__nudge--bottom-tiny text--bold">Téléphone <span class="text--normal">*</span></p>
             <div class="l__row l__row--top l__row--h-stretch">
                 {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
                 {{ form_widget(form.phone.number, { attr: { placeholder: ' Votre numéro de téléphone' } }) }}

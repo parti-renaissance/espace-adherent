@@ -39,6 +39,7 @@ class AssessorRequestFactory
             $data['office'],
             $data['birthName'] ?? null,
             $data['enabled'] ?? true,
+            $data['reachable'] ?? false,
             $data['assessorCountry'] ?? 'FR'
         );
 
@@ -66,6 +67,7 @@ class AssessorRequestFactory
             $assessorRequestCommand->getOffice(),
             $assessorRequestCommand->getBirthName(),
             true,
+            $assessorRequestCommand->isReachable(),
             $assessorRequestCommand->getAssessorCountry(),
             $this->getVotePlaceWishesChoices($assessorRequestCommand->getVotePlaceWishes())
         );

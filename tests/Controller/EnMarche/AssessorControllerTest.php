@@ -70,6 +70,8 @@ class AssessorControllerTest extends WebTestCase
                 'assessorCity' => 'Lille',
                 'votePlaceWishes' => [0 => 1],
                 'office' => AssessorOfficeEnum::HOLDER,
+                'reachable' => 1,
+                'acceptDataTreatment' => 1,
                 'acceptValuesCharter' => 1,
                 '_token' => $form['assessor_request[_token]']->getValue(),
             ],
@@ -97,6 +99,7 @@ class AssessorControllerTest extends WebTestCase
         $this->assertContains('ernestino@bonsoirini.fr', $crawler->filter(
             '.summary-bloc tr.email td:last-child')->text()
         );
+        $this->assertContains('Oui', $crawler->filter('.summary-bloc tr.reachable td:last-child')->text());
         $this->assertContains('+33 6 20 20 20 20', $crawler->filter('.summary-bloc tr.phone td:last-child')->text());
         $this->assertContains('France', $crawler->filter('.summary-bloc tr.assessor-country td:last-child')->text());
         $this->assertContains('Lille', $crawler->filter('.summary-bloc tr.assessor-city td:last-child')->text());

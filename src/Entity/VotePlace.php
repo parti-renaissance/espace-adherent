@@ -149,7 +149,7 @@ class VotePlace
         $this->address = $address;
     }
 
-    public function getPostalCode(): string
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
