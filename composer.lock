@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c631401dd1f44cc265271ca236881db",
+    "content-hash": "54c31fdd2d848cb0c0eecc1846879126",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -9734,16 +9734,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.20",
+            "version": "v3.4.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "f6b8ddc362b1cf3fb06548693c3adbb736092412"
+                "reference": "24454234816e061b4b9c5787eaa2bb6326ead1da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/f6b8ddc362b1cf3fb06548693c3adbb736092412",
-                "reference": "f6b8ddc362b1cf3fb06548693c3adbb736092412",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/24454234816e061b4b9c5787eaa2bb6326ead1da",
+                "reference": "24454234816e061b4b9c5787eaa2bb6326ead1da",
                 "shasum": ""
             },
             "require": {
@@ -9885,7 +9885,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-12-06T15:24:36+00:00"
+            "time": "2019-04-16T06:02:31+00:00"
         },
         {
             "name": "symfony/thanks",
@@ -13182,7 +13182,8 @@
         "php": ">=7.1",
         "ext-json": "*",
         "ext-openssl": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-amqp": "*"
     },
     "platform-dev": []
 }
