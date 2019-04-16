@@ -60,9 +60,8 @@ class VotePlaceRepository extends AbstractAssessorRepository
     {
         $qb = $this->createQueryBuilder(self::ALIAS);
 
-        self::addAndWherePostalCodeFindInSet($qb, $assessorRequest, self::ALIAS);
+        self::addAndWhereAssessorRequestLocation($qb, $assessorRequest, self::ALIAS);
         self::addAndWhereOfficeAvailability($qb, $assessorRequest);
-        self::addAndWhereCity($qb, $assessorRequest);
 
         $qb->addOrderBy('vp.name', 'ASC');
 
@@ -95,14 +94,6 @@ class VotePlaceRepository extends AbstractAssessorRepository
         }
 
         return $qb;
-    }
-
-    public static function addAndWhereCity(QueryBuilder $qb, AssessorRequest $assessorRequest): QueryBuilder
-    {
-        return $qb
-            ->andWhere('vp.city = :city')
-            ->setParameter('city', $assessorRequest->getCity())
-        ;
     }
 
     private static function addAndWhereManagedBy(QueryBuilder $qb, Adherent $assessorManager): QueryBuilder
