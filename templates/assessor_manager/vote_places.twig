@@ -1,0 +1,53 @@
+{% extends 'assessor_manager/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runAssessorManagerVotePlaces('{{ filters.toQueryString|e('js') }}', {{ total_count }}, {{ filters.limit }});
+        });
+    </script>
+{% endblock %}
+
+{% block assessor_manager_content %}
+    {% if 0 == votePlaces|length %}
+        <div class="text--body text--center">
+            {% if constant('UNASSOCIATED', filters) == filters.status %}
+                Vous n'avez pas encore de bureau de vote disponible.
+            {% elseif constant('ASSOCIATED', filters) == filters.status %}
+                Vous n'avez pas encore de bureau de vote associée à une demande d'assesseur.
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="text--body text--center b__nudge--bottom-large assessor_vote_places_total_count">
+            {% if constant('UNASSOCIATED', filters) == filters.status %}
+                {{ 'vote_place.unassociated.choices'|transchoice(total_count) }}
+            {% elseif constant('ASSOCIATED', filters) == filters.status %}
+                {{ 'vote_place.associated.choices'|transchoice(total_count) }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if votePlaces|length %}
+        <table class="datagrid__table datagrid__table--bordered-rows">
+            <thead>
+            <tr>
+                <th class="datagrid__table__col--hide-mobile" style="width: 70px;">Numéro</th>
+                <th class="datagrid__table__col--left">Coordonnées du bureau de vote</th>
+                <th class="datagrid__table__col--left">Disponibilités restantes</th>
+                <th class="datagrid__table__col--hide-mobile" style="width: 170px;">Places disponibles</th>
+                <th>Statut</th>
+            </tr>
+            </thead>
+            <tbody id="proposals-list">
+                {{ include('assessor_manager/_vote_places_list.html.twig') }}
+            </tbody>
+        </table>
+
+        {% if total_count > filters.limit %}
+            <div class="text--center space--30">
+                <button class="btn" id="btn-more">Afficher plus</button>
+                <span id="loader" style="display: none;">Chargement ...</span>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

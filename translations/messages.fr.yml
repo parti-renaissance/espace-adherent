@@ -50,6 +50,8 @@ host: co-animateur
 board_member: membre du conseil
 coordinator: coordinateur
 procuration_manager: responsable procuration
+assessor_manager: responsable assesseur
+assessors_manager: Responsable assesseurs
 user: utilisateur
 citizen_project_holder: porteur de projet
 
@@ -121,6 +123,7 @@ dashboard.shortcut.leaflets_posters: 🎨 Tracts et posters
 dashboard.shortcut.my_documents: 📄 Mes documents
 dashboard.shortcut.contact: 🐛 Bug ? Nouveau besoin ? Faites-le nous savoir.
 dashboard.shortcut.procuration_manager_space: 🐼 Espace responsable procuration
+dashboard.shortcut.assessor_manager_space: 🐼 Espace responsable assesseur
 dashboard.shortcut.committee_coordinator_space: 🐸 Espace coordinateur de comité
 dashboard.shortcut.citizen_project_coordinator_space_space: 🐨 Espace coordinateur de projet citoyen
 dashboard.my_skills: Mes compétences
@@ -531,3 +534,27 @@ ideas_workshop.status.draft: Brouillon
 ideas_workshop.status.pending: En cours
 ideas_workshop.status.unpublished: Dépublié
 ideas_workshop.status.finalized: Finalisé
+
+#
+# Assessor
+#
+assessor.processed.choices: "{1} Vous avez une demande d'assesseur traitée.|[2, Inf[ Vous avez %count% demandes d'assesseur traitées."
+assessor.unprocessed.choices: "{1} Vous avez une demande d'assesseur à traiter.|[2, Inf[ Vous avez %count% demandes d'assesseur à traiter."
+assessor.associate.success: L'assesseur a bien été associée au bureau de vote.
+assessor.deassociate.success: L'assesseur a bien été désassociée du bureau de vote.
+assessor.disabled.success: L'assesseur a bien été désactivé.
+assessor.enabled.success: L'assesseur a bien été réactivé.
+
+#
+# Assessor request
+#
+assessor_request.create.success: Votre demande a bien été prise en compte.
+assessor_request.office.holder.label: Titulaire
+assessor_request.office.substitute.label: Suppléant
+
+#
+# Vote Place
+#
+vote_place.unassociated.choices: "{1} Vous avez un bureau de vote à remplir.|[2, Inf[ Vous avez %count% bureaux de vote à remplir."
+vote_place.associated.choices: "{1} Vous avez un bureau de vote complet.|[2, Inf[ Vous avez %count% bureaux de vote complet."
+vote_place.availability:none: 'Aucune'

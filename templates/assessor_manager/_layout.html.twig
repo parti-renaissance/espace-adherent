@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Espace responsable asséseur' %}
+{% block canonical_url url('app_assessor_manager_requests') %}
+
+{% macro displayVotePlaceWishes(voteplaces) %}
+    {% if voteplaces|length > 0 %}
+        {% for votePlace in voteplaces %}
+            <span>{{ votePlace }}</span>{% if not loop.last %}<br>{% endif %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+    <main>
+        <section class="assessor-manager">
+            <header class="l__wrapper--slim b__nudge--bottom-large">
+                <h1 class="text--center text--large">
+                    Espace responsable assesseur
+                </h1>
+                <p class="text--center">
+                    Zones gérées : {{ app.user.assessorManagedAreaCodesAsString }}
+                </p>
+            </header>
+
+            <div class="l__wrapper assessor-manager__content">
+                {% set pages = [
+                    {
+                        route: 'app_assessor_manager_requests',
+                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::UNPROCESSED'),
+                        label: 'Demandes à traiter'
+                    },
+                    {
+                        route: 'app_assessor_manager_requests',
+                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::PROCESSED'),
+                        label: 'Demandes traitées'
+                    },
+                    {
+                        route: 'app_assessor_manager_vote_places',
+                        status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::UNASSOCIATED'),
+                        label: 'Bureaux de vote disponibles'
+                    },
+                    {
+                        route: 'app_assessor_manager_vote_places',
+                        status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
+                        label: 'Bureaux de vote traités'
+                    },
+                    {
+                        route: 'app_assessor_manager_requests',
+                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
+                        label: 'Demandes désactivés'
+                    }
+                ] %}
+
+                <ul class="assessor-manager__tabs">
+                    {% for page in pages %}
+                        <li class="{{ app.request.attributes.get('_route') == page.route and filters.status == page.status ? 'active' : '' }}">
+                            <a href="{{ path(page.route, { status: page.status }) }}">
+                                {{ page.label }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <hr />
+
+                {% block assessor_manager_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

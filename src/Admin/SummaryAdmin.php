@@ -40,9 +40,11 @@ class SummaryAdmin extends AbstractAdmin
             ->addSelect('adherent')
             ->addSelect('boardMember')
             ->addSelect('procurationManagedArea')
+            ->addSelect('assessorManagedArea')
             ->join("$alias.member", 'adherent')
             ->leftJoin('adherent.boardMember', 'boardMember')
             ->leftJoin('adherent.procurationManagedArea', 'procurationManagedArea')
+            ->leftJoin('adherent.assessorManagedArea', 'assessorManagedArea')
         ;
 
         return $query;

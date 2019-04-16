@@ -120,6 +120,9 @@
                     {% if is_granted('ROLE_PROCURATION_MANAGER') %}
                         <a href="{{ path('app_procuration_manager_requests') }}" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.procuration_manager_space'|trans }}</a>
                     {% endif %}
+                    {% if is_granted('ROLE_ASSESSOR_MANAGER') %}
+                        <a href="{{ path('app_procuration_manager_requests') }}" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.assessor_manager_space'|trans }}</a>
+                    {% endif %}
                     {% if is_granted('ROLE_COORDINATOR_COMMITTEE') %}
                         <a href="{{ path('app_coordinator_committees') }}" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.committee_coordinator_space'|trans }}</a>
                     {% endif %}
