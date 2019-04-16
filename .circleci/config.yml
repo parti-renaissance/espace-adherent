@@ -181,7 +181,7 @@ workflows:
                     branches:
                         only:
                             - master
-                            - adi-react
+                            - referent-space
 
     prod_deploy:
         jobs:
