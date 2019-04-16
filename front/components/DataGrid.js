@@ -140,6 +140,14 @@ export default class DataGrid extends React.Component {
 
                 <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
                     <ul>
+                        <li>
+                            <div className="pager__go-to-page">
+                                <span>Aller à la page</span>
+                                <input type="number" placeholder="5" className="pager__action" />
+                                <span>1 sur 19</span>
+                            </div>
+
+                        </li>
                         {this._buildPagesList(pagesCount, currentPage, 'bottom')}
                     </ul>
                 </div>
@@ -156,19 +164,22 @@ export default class DataGrid extends React.Component {
         pagesList.push(
             <li key={`page-${position}-prec`}>
                 <button type="button"
-                        className="btn"
+                        className="pager__action switch"
                         disabled={1 === current}
                         onClick={() => this.handlePagerClick(Math.max(1, current - 1))}>
-                    Prec
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                      <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
+                    </svg>
                 </button>
             </li>
         );
 
+        {/*
         for (let i = from; i <= to; i += 1) {
             pagesList.push(
                 <li key={`page-${position}-${i}`}>
                     <button type="button"
-                            className={`btn ${i === current ? 'btn--disabled' : ''}`}
+                            className={`pager__action switch ${i === current ? 'pager-action--disabled' : ''}`}
                             disabled={i === current}
                             onClick={() => this.handlePagerClick(i)}>
                         {i}
@@ -176,14 +187,17 @@ export default class DataGrid extends React.Component {
                 </li>
             );
         }
+        */}
 
         pagesList.push(
             <li key={`page-${position}-suiv`}>
                 <button type="button"
-                        className="btn"
+                        className="pager__action switch"
                         disabled={pagesCount === current}
                         onClick={() => this.handlePagerClick(Math.min(pagesCount, current + 1))}>
-                    Suiv
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                      <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
+                    </svg>
                 </button>
             </li>
         );
