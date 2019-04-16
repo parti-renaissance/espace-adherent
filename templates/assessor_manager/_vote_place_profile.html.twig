@@ -1,0 +1,29 @@
+<h4 class="b__nudge--bottom">
+    Bureau de vote
+</h4>
+
+<div class="profile-label">
+    Nom
+</div>
+<div class="profile-value">
+    <span id="vote-place-name">{{ votePlace.name }}</span>
+</div>
+
+<div class="profile-label">
+    Adresse
+</div>
+<div class="profile-value">
+    <span id="vote-place-address">{{ votePlace.address }}</span><br />
+    <span id="vote-place-postalCode">{{ votePlace.postalCode }}</span> <span id="vote-place-city">{{ votePlace.city }}</span>
+</div>
+
+<div class="profile-label">
+    Disponibilités
+</div>
+<div class="profile-value">
+    <ul id="vote-place-available-offices">
+        {% for availableOffice in votePlace.getAvailableOffices %}
+            <li>{{ availableOffice|trans }}</li>
+        {% endfor %}
+    </ul>
+</div>

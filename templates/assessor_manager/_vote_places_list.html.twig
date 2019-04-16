@@ -1,0 +1,38 @@
+{% for votePlace in votePlaces %}
+    <tr>
+        <td class="datagrid__table__col--hide-mobile">
+            {{ votePlace.id }}
+        </td>
+        <td class="datagrid__table__col--left">
+            <strong>{{ votePlace.name ~ ' ' ~ votePlace.code }}</strong>
+            <br/>
+            <span class="datagrid__table__col--hide-mobile">
+                <em>Adresse :</em>
+                {{ votePlace.postalCode }} {{ votePlace.city }} {{ votePlace.country }}
+            </span>
+        </td>
+        <td class="datagrid__table__col--left">
+            {{ constant('AppBundle\\Entity\\VotePlace::MAX_ASSESSOR_REQUESTS') - votePlace.assessorRequests|length }}
+        </td>
+        <td>
+            {% if not votePlace.getAvailableOffices is empty %}
+                <ul>
+                    {% for availableOffice in votePlace.getAvailableOffices %}
+                        <li>{{ availableOffice|trans }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {{ 'vote_place.availability:none'|trans }}
+            {% endif %}
+        </td>
+        <td>
+            {% if not votePlace.assessorRequests.isEmpty %}
+                {% for assessorRequest in votePlace.assessorRequests %}
+                    Associé à la demande de <a href="{{ path('app_assessor_manager_request', { uuid: assessorRequest.uuid }) }}">{{ assessorRequest.firstname ~ ' ' ~ assessorRequest.lastName}}</a><br>
+                {% endfor %}
+            {% else %}
+                <strong>Disponible</strong>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}

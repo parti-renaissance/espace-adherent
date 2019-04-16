@@ -308,6 +308,22 @@
             <argument />
         </service>
 
+        <service id="app.admin.vote_place_admin" class="AppBundle\Admin\VotePlaceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Bureaux de vote" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\VotePlace</argument>
+            <argument />
+        </service>
+
+	<service id="app.admin.assessor_request_admin" class="AppBundle\Admin\AssessorRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Demandes" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\AssessorRequest</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Legislatives

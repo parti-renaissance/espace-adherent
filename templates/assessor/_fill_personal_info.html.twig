@@ -1,0 +1,121 @@
+<div class="intro b__nudge--bottom-50">
+    <p class="text--gray">
+        Madame, Monsieur,<br/>
+        <br/>
+        Merci de vous porter volontaire pour être assesseur(e) lors des élections européennes qui se tiendront le 26 mai prochain !<br/>
+        Ce formulaire vous permettra de renseigner l'ensemble des informations nécessaires.<br/><br/>
+        En raison du nombre limité de places par bureau de vote pour chaque liste (1 assesseur(e) titulaire et 1 assesseur(e) suppléant(e)),
+        nous vous invitons à en sélectionner plusieurs dans l’ordre de vos préférences. Nous en tiendrons compte au maximum lors des attributions.<br/>
+        Vous recevrez prochainement un mail de confirmation et d’explication si votre candidature est retenue.<br/>
+        <br/>
+        Merci encore pour votre engagement !
+    </p>
+</div>
+
+<div class="l__wrapper--600">
+    <div class="header-bloc">
+        <div class="title">
+            <h1 class="text--medium">Informations personnelles</h1>
+            <span class="step text--medium text--normal text--light-gray">1/3</span>
+        </div>
+    </div>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="form__radio-button register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Genre</p>
+                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                {{ form_errors(form.gender) }}
+            </div>
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Prénom</p>
+                {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+
+        </div>
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Nom</p>
+                {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Nom de naissance <span class="text--normal text--light-gray">(Optionnel)</span></p>
+                {{ form_widget(form.birthName, { attr: { placeholder: 'Votre nom de naissance' } }) }}
+                {{ form_errors(form.birthName) }}
+            </div>
+        </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="l__row--h-stretch register__form--full">
+                <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
+                {{ form_widget(form.address, { attr: { placeholder: 'Votre adresse postale' } }) }}
+                {{ form_errors(form.address) }}
+            </div>
+        </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Code postal</p>
+                {{ form_widget(form.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
+                {{ form_errors(form.postalCode) }}
+            </div>
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Ville</p>
+                {{ form_widget(form.city, { attr: { placeholder: 'Ville où vous vivez' } }) }}
+                {{ form_errors(form.city) }}
+            </div>
+        </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Ville d'inscription</p>
+                {{ form_widget(form.voteCity, { attr: { placeholder: 'Ville où vous votez' } }) }}
+                {{ form_errors(form.voteCity) }}
+            </div>
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">N° du bureau de vote</p>
+                {{ form_widget(form.officeNumber, { attr: { placeholder: 'N° du breau de vote' } }) }}
+                {{ form_errors(form.officeNumber) }}
+            </div>
+        </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form__zip_code register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Date de naissance</p>
+                {{ form_widget(form.birthdate, { attr: { placeholder: 'Votre date de naissance', class: 'l__row l__row--h-stretch' } }) }}
+                {{ form_errors(form.birthdate) }}
+            </div>
+            <div class="register__form--mid">
+                <p class="b__nudge--bottom-tiny text--bold">Lieu de naissance</p>
+                {{ form_widget(form.birthCity, { attr: { placeholder: 'Votre lieu de naissance' } }) }}
+                {{ form_errors(form.birthCity) }}
+            </div>
+            {{ form_errors(form.birthCity) }}
+        </div>
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="l__row--h-stretch register__form--full">
+                <p class="b__nudge--bottom-tiny text--bold">Adresse e-mail</p>
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail' } }) }}
+                {{ form_errors(form.emailAddress) }}
+            </div>
+        </div>
+
+        <div class="l__col l__col--top register__form__phone">
+            <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
+            <div class="l__row l__row--top l__row--h-stretch">
+                {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
+                {{ form_widget(form.phone.number, { attr: { placeholder: ' Votre numéro de téléphone' } }) }}
+            </div>
+            {{ form_errors(form.phone) }}
+        </div>
+
+        <div class="text--center b__nudge--top-large">
+            {{ form_widget(form.fill_personal_info, { attr: {class: 'btn btn--medium newbtn--blue-dark'}}) }}
+        </div>
+
+    {{ form_end(form) }}
+</div>
