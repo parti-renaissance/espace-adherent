@@ -74,9 +74,8 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         foreach ($assessorRequests as $key => $assessorRequest) {
             $votePlacesCountQuery = clone $qb;
 
-            self::addAndWherePostalCodeFindInSet($votePlacesCountQuery, $assessorRequest, $alias);
+            self::addAndWhereAssessorRequestLocation($votePlacesCountQuery, $assessorRequest, $alias);
             VotePlaceRepository::addAndWhereOfficeAvailability($votePlacesCountQuery, $assessorRequest);
-            VotePlaceRepository::addAndWhereCity($votePlacesCountQuery, $assessorRequest);
 
             $assessorRequests[$key] = [
                 'data' => $assessorRequest,

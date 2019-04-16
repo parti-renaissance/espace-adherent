@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class ImportVotePlacesCommand extends Command
@@ -15,6 +16,11 @@ class ImportVotePlacesCommand extends Command
     private const BATCH_SIZE = 1000;
 
     private $em;
+
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -32,14 +38,17 @@ class ImportVotePlacesCommand extends Command
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
             $rows = $this->parseCSV($input->getArgument('fileUrl'));
         } catch (FileNotFoundException $exception) {
-            $output->writeln(
-                sprintf('%s file not found', $input->getArgument('fileUrl'))
-            );
+            $this->io->error(sprintf('%s file not found', $input->getArgument('fileUrl')));
 
             return 1;
         }
@@ -48,7 +57,8 @@ class ImportVotePlacesCommand extends Command
 
         $this->createAndPersistVotePlaces($rows);
 
-        $output->writeln(['', 'Vote places load OK']);
+        $this->io->text('Vote places are loaded');
+        $this->io->success('Done');
     }
 
     private function parseCSV(string $filename): array
@@ -85,6 +95,10 @@ class ImportVotePlacesCommand extends Command
         $batch = 0;
         $votePlaceRepository = $this->em->getRepository(VotePlace::class);
 
+        $this->io->success('Start importing Vote places');
+
+        $this->io->progressStart(\count($rows));
+
         foreach ($rows as $row) {
             if ($votePlaceRepository->findOneByCode($row['code_bdv'])) {
                 continue;
@@ -103,10 +117,14 @@ class ImportVotePlacesCommand extends Command
             ++$batch;
 
             if (0 === $batch % self::BATCH_SIZE) {
+                $this->io->progressAdvance(self::BATCH_SIZE);
+
                 $this->em->flush();
                 $this->em->clear();
             }
         }
+
+        $this->io->progressFinish();
 
         $this->em->flush();
         $this->em->commit();

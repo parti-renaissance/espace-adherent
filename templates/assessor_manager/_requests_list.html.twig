@@ -9,7 +9,7 @@
             {{ request.data.firstName }} {{ request.data.lastName }}<br />
             <span class="datagrid__table__col--hide-mobile">
                 <em>Lieu de vote :</em><br>
-                {{ request.data.assessorPostalCode }} {{ request.data.assessorCity }}
+                {{ request.data.assessorPostalCode }} {{ request.data.assessorCity }} {{ request.data.assessorCountry|countryName }}
             </span>
             <br>
             <span class="datagrid__table__col--hide-mobile">
