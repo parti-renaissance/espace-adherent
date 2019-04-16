@@ -499,34 +499,37 @@
             </table>
         </div>
 
-        <div class="text--center">
-            {% block pager %}
+        {% block pager %}
+            <div class="datagrid__pager">
                 {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
                 {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+                <ul>
+                    <li>
+                        <div class="pager__go-to-page">
+                            <span>Aller à la page</span>
+                            <input type="number" placeholder="5" class="pager__action" />
+                            <span>Page {{ current_page }} sur {{ last_page }}</span>
+                        </div>
+                    </li>
 
-                {% if filter.offset > 0 %}
-                    <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
-                        Première
-                    </a>
-                    <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="btn btn--small">
-                        Précédente
-                    </a>
-                {% endif %}
+                    <li>
+                        <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="pager__action switch">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                              <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
+                            </svg>
+                        </a>
+                    </li>
 
-                <span class="btn btn--small btn--no-border">
-                        Page {{ current_page }} / {{ last_page }}
-                    </span>
-
-                {% if filter.offset + constant('PER_PAGE', filter) < results_count %}
-                    <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="btn btn--small">
-                        Suivante
-                    </a>
-                    <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
-                        Dernière
-                    </a>
-                {% endif %}
-            {% endblock %}
-        </div>
+                    <li>
+                        <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="pager__action switch">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                              <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% endblock %}
 
         <!-- <div class="text--center">
             {{ block('pager') }}
