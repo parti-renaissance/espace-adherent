@@ -9,106 +9,120 @@
         <div class="nav-mobile--menu">
             <ul>
                 {% if not app.user %}
-                    <li>
-                        <a href="{{ path('app_user_login') }}">Connexion</a>
-                    </li>
-                {% endif %}
-                {% if not has_role_adherent %}
-                    <li>
-                        <a href="{{ path('app_membership_join') }}">Adhérer</a>
-                    </li>
+                <li>
+                    <a href="{{ path('app_user_login') }}">Connexion</a>
+                </li>
+                {% endif %} {% if not has_role_adherent %}
+                <li>
+                    <a href="{{ path('app_membership_join') }}">Adhérer</a>
+                </li>
                 {% endif %}
                 <li>
                     <a href="{{ path('donation_index') }}">Donner</a>
                 </li>
             </ul>
-            <hr>
-            {% if has_role_user %}
-                <ul>
-                    <li>
-                        <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
-                            <div class="text--bold">{{ app.user.firstName }}</div>
-                            <div class="text--small text--gray">{{ get_user_level_label(app.user) }}</div>
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                {% if has_role_adherent %}
-                    <ul>
-                        <li>
-                            <a href="{{ path('app_summary_manager_index') }}">Profil</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_adherent_events') }}">Mes activités</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_user_profile_donation') }}">Mes dons</a>
-                        </li>
-                        {% if app.user.isHost %}
-                            <li class="visually-hidden">
-                                <a href="{{ path('app_formation_intro') }}">Je me forme</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                {% endif %}
-                <ul>
-                {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
-                    <ul>
-                        <li>
-                            <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
-                        </li>
-                    </ul>
-                {% endif %}
-                {% if app.user.isReferent %}
-                    <li>
-                        <a href="{{ path('app_referent_events') }}">Espace référent</a>
-                    </li>
-                {% endif %}
-                {% if app.user.isDeputy %}
-                    <li>
-                        <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
-                    </li>
-                {% endif %}
-                {% if app.user.isCoordinatorCitizenProjectSector %}
-                    <li>
-                        <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
-                    </li>
-                {% endif %}
-                {% if app.user.isCoordinatorCommitteeSector %}
-                    <li>
-                        <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
-                    </li>
-                {% endif %}
-                {% if app.user.isProcurationManager %}
-                    <li>
-                        <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
-                    </li>
-                {% endif %}
-                </ul>
-                <ul>
-                    <li>
-                        <a href="{{ path('app_user_set_email_notifications') }}">Notifications via e-mail et mobile</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_user_profile') }}">Paramètres</a>
-                    </li>
-                    <li>
-                        <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
-                    </li>
-                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                        <li>
-                            <a href="{{ path('app_admin_impersonation_exit') }}">
-                            Quitter l'impersonnification
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-                <hr>
-            {% endif %}
+            <hr> {% if has_role_user %}
             <ul>
                 <li>
-                    <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
+                    <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
+                        <div class="text--bold">{{ app.user.firstName }}</div>
+                        <div class="text--small text--gray">{{ get_user_level_label(app.user) }}</div>
+                    </a>
                 </li>
+            </ul>
+            <hr> {% if has_role_adherent %}
+            <ul>
+                <li>
+                    <a href="{{ path('app_summary_manager_index') }}">Profil</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_adherent_events') }}">Mes activités</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_user_profile_donation') }}">Mes dons</a>
+                </li>
+                {% if app.user.isHost %}
+                <li class="visually-hidden">
+                    <a href="{{ path('app_formation_intro') }}">Je me forme</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% endif %}
+            <ul>
+                {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
+                <ul>
+                    <li>
+                        <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                    </li>
+                </ul>
+                {% endif %} {% if app.user.isReferent %}
+                <li>
+                    <a href="{{ path('app_referent_events') }}">Espace référent</a>
+                </li>
+                {% endif %} {% if app.user.isDeputy %}
+                <li>
+                    <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
+                </li>
+                {% endif %} {% if app.user.isCoordinatorCitizenProjectSector %}
+                <li>
+                    <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                </li>
+                {% endif %} {% if app.user.isCoordinatorCommitteeSector %}
+                <li>
+                    <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
+                </li>
+                {% endif %} {% if app.user.isProcurationManager %}
+                <li>
+                    <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul>
+                <li>
+                    <a href="{{ path('app_user_set_email_notifications') }}">Notifications via e-mail et mobile</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_user_profile') }}">Paramètres</a>
+                </li>
+                <li>
+                    <a href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
+                </li>
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                <li>
+                    <a href="{{ path('app_admin_impersonation_exit') }}">
+                            Quitter l'impersonnification
+                            </a>
+                </li>
+                {% endif %}
+            </ul>
+            <hr> {% endif %}
+            <small>LE MOUVEMENT</small>
+            <ul>
+                <li>
+                    <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_our_organization') }}">Notre organisation</a>
+                </li>
+                <li>
+                    <a href="{{ path('our_referents_homepage') }}">Nos référents</a>
+                </li>
+                <li>
+                    <a href="https://dpt.en-marche.fr">Nos sites départementaux</a>
+                </li>
+                <li>
+                    <a href="{{ path('legislatives_homepage') }}"> Nos députés</a>
+                </li>
+            </ul>
+            <ul class="space--10-0">
+                <li>
+                    <a href="https://eu-renaissance.org/fr" class="text--blue--dark" target="_blank" rel="noopener noreferrer">
+                        <strong>Élections Européennes</strong>
+                    </a>
+                </li>
+            </ul>
+            <small>S'ENGAGER</small>
+            <ul>
                 <li>
                     <a href="{{ path('app_search_events') }}">Événements</a>
                 </li>
@@ -125,40 +139,43 @@
                     <a href="{{ path('page_campus') }}">Formation</a>
                 </li>
                 <li>
+                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                </li>
+                <li>
+                    <a href="{{ path('donation_index') }}">Faire un don</a>
+                </li>
+                <br/>
+                <li>
                     <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
                 </li>
                 {% if has_role_adherent %}
-                    <li>
-                        <a href="{{ path('app_documents_index') }}">Mes documents</a>
-                    </li>
+                <li>
+                    <a href="{{ path('app_documents_index') }}">Mes documents</a>
+                </li>
                 {% endif %}
-                <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
+                <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;" {% endif %}>
                     <a href="javascript:void(0)" class="je-cherche">
                         {{ include('components/search.html.twig') }}
                     </a>
                 </li>
             </ul>
+            <hr> {% if has_role_adherent %}
+            <div>
+                <div class="text--body text--bold text--small">Comités</div>
+                {{ adherent_committees }}
+            </div>
             <hr>
-            {% if has_role_adherent %}
-                <div>
-                    <div class="text--body text--bold text--small">Comités</div>
-                    {{ adherent_committees }}
-                </div>
-                <hr>
-                <div>
-                    <div class="text--body text--bold text--small">Projets citoyens</div>
-                    {{ adherent_citizen_projects }}
-                </div>
-                <hr>
-            {% endif %}
-            {% if has_role_user %}
-                <ul>
-                    <li>
-                        <a href="{{ path('logout') }}">Déconnexion</a>
-                    </li>
-                </ul>
-                <hr>
-            {% endif %}
+            <div>
+                <div class="text--body text--bold text--small">Projets citoyens</div>
+                {{ adherent_citizen_projects }}
+            </div>
+            <hr> {% endif %} {% if has_role_user %}
+            <ul>
+                <li>
+                    <a href="{{ path('logout') }}">Déconnexion</a>
+                </li>
+            </ul>
+            <hr> {% endif %}
             <ul class="list__links list__links--row b__nudge--bottom-small">
                 <li class="head">Suivez La République En Marche !</li>
             </ul>

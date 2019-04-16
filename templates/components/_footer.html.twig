@@ -1,6 +1,4 @@
-{% set has_role_user = is_granted('ROLE_USER') %}
-{% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
-{% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
+{% set has_role_user = is_granted('ROLE_USER') %} {% set has_role_adherent = is_granted('ROLE_ADHERENT') %} {% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
 
 <footer class="background--lighter space--30-0">
     <div class="l__wrapper">
@@ -37,7 +35,10 @@
                     <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
                 </li>
                 <li>
-                    <a href="{{ path('legislatives_homepage') }}" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ path('our_referents_homepage') }}">Nos référents</a>
+                </li>
+                <li>
+                    <a href="{{ path('legislatives_homepage') }}">
                         Nos députés
                     </a>
                 </li>
@@ -73,14 +74,15 @@
                     </a>
                 </li>
                 <li>
-                <li>
-                    <a href="https://microlearning.en-marche.fr" target="_blank" rel="noopener noreferrer">
+                    <li>
+                        <a href="https://microlearning.en-marche.fr" target="_blank" rel="noopener noreferrer">
                         Les microlearning
                     </a>
-                </li>
+                    </li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
-                <li><h4><a href="{{ path('articles_list', { category: 'tout' }) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
+                <li>
+                    <h4><a href="{{ path('articles_list', { category: 'tout' }) }}" class="text--bold text--medium-small">Actualités</a></h4></li>
                 <li><a href="{{ path('articles_list', { category: 'tout' }) }}">Toute l'actualité</a></li>
                 <li><a href="{{ path('articles_list', { category: 'actualites' }) }}">Articles</a></li>
                 <li><a href="{{ path('articles_list', { category: 'videos' }) }}">Vidéos</a></li>
@@ -90,7 +92,8 @@
                 <li><a href="{{ path('articles_list', { category: 'opinions' }) }}">Opinions</a></li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
-                <li><h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
+                <li>
+                    <h4><a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a></h4></li>
                 <li><a href="{{ path('app_membership_join') }}">Adhérer en ligne</a></li>
                 <li><a href="https://storage.googleapis.com/en-marche-fr/bulletin-d-adhesion-EMa.pdf">Adhérer par courrier</a></li>
                 <li><a href="{{ path('donation_index') }}">Donner en ligne</a></li>
@@ -105,7 +108,8 @@
                 </li>
             </ul>
             <ul class="list__links list__links--col list__links--no-decor">
-                <li><h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>
+                <li>
+                    <h4><a href="https://twitter.com/hashtag/TousEnMarche" class="text--bold text--medium-small" target="_blank" rel="noopener noreferrer">#TousEnMarche</a></h4></li>
                 <li><a href="{{ path('app_facebook_index') }}">Filtre photo Facebook</a></li>
                 <li><a href="{{ path('page_elles_marchent') }}">Elles Marchent</a></li>
                 <li><a href="https://lesjam.fr/" target="_blank" rel="noopener noreferrer">Les Jeunes avec Macron</a></li>
