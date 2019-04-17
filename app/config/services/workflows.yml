@@ -66,7 +66,7 @@ framework:
                 - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
                 - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
                 - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SENT
+                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
             transitions:
                 !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_FILL_PERSONAL_INFO:
                     from:
@@ -81,7 +81,7 @@ framework:
                 !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_VALID_SUMMARY:
                     from:
                         - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SENT
+                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
 
                 !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_BACK_ASSESSOR_INFO:
                     from:
