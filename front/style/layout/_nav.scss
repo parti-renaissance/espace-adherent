@@ -1,6 +1,7 @@
 .nav-mobile {
     position: relative;
     top: -35px;
+
     input[type=checkbox] {
         position: absolute;
         top: 0;
@@ -8,7 +9,7 @@
         width: 30px;
         height: 30px;
         opacity: 0;
-   }
+}
 
     label {
         position: relative;
@@ -22,8 +23,8 @@
 
         &:hover {
             content: $three_bars--gray;
-       }
-   }
+        }
+    }
 
     input[type=checkbox]:checked ~ label {
         height: 23px;
@@ -34,14 +35,14 @@
 
         &:hover {
             content: $cross--gray;
-       }
-   }
+        }
+    }
 
     input[type=checkbox]:checked ~ &--menu {
         height: auto;
         margin-top: 40px;
         opacity: 1;
-   }
+    }
 
     &--menu {
         clear: both;
@@ -51,22 +52,22 @@
         width: 100%;
         opacity: 0;
         transition: all 0.3s ease;
-   }
+    }
 
     ul {
         font-family: $font-roboto;
    
         a {
             border: 0;
-       }
-   }
+        }
+    }
 
     small {
         color: $gray--muted;
         margin-bottom: 10px;
         position: relative;
         display: block;
-   }
+    }
 }
 
 .nav-dropdown {
@@ -79,19 +80,19 @@
 
         &:hover {
             cursor: pointer;
-       }
-   }
+        }
+    }
 
     .nav__chevron {
         transition: all 0.3s;
-   }
+    }
  
     &:hover {
         .nav__chevron {
             transform: rotate(180deg);
             transition: all 0.3s;
-       }
-   }
+        }
+    }
 
     &__caret {
         display: none;
@@ -110,7 +111,7 @@
             display: inline-block;
             margin-left: -1px;
             margin-left: 0;
-       }
+        }
 
         &--inner {
             top: 1px;
@@ -118,7 +119,7 @@
             border-left: 9px solid transparent;
             border-right: 8px solid transparent;
             border-bottom: 14px solid $gray--light;
-       }
+        }
 
         &--outer {
             border-left: 9px solid transparent;
@@ -128,12 +129,12 @@
             width: auto;
             left: 0;
             top: 0;
-       }
-   }
+        }
+    }
 
     &__name {
         padding: 20px 0;
-   }
+    }
 
     &__item {
         display: none;
@@ -150,8 +151,8 @@
             font-size:15px;
             line-height: 1.73;
             white-space: nowrap;
-       }
-   }
+        }
+    }
 
     &__menu {
         display: none;
@@ -173,11 +174,11 @@
 
             &:first-child {
                 padding: 0 0 3px 0;
-           }
+            }
 
             &:last-child {
                 padding: 3px 0 0 0;
-           }
+            }
 
             a {
                 border: 0;
@@ -186,7 +187,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-           }
+            }
 
             span {
                 font-size: $text--size-xs;
@@ -197,9 +198,9 @@
                 text-transform: uppercase;
                 font-weight: bold;
                 margin-left: 5px;
-           }
-       }
-   }
+            }
+        }
+    }
 
     &__row {
         display: flex;
@@ -209,9 +210,9 @@
             border-right: 1px solid $gray--light;
             &:last-child {
                 border: 0;
-           }
-       }
-   }
+            }
+        }
+    }
 
     &__section {
         padding: 13px 18px;
@@ -222,46 +223,47 @@
             font-weight: bold;
             font-size: 18px;
             padding: 0;
+            
             a {
                 display: block;
                 width: 100%;
-           }
-       }
-   }
+            }
+        }
+    }
 
     &__separator {
         border-top: 1px solid $gray--light;
         height: 1px;
-   }
+    }
 
     &:hover {
         .nav-dropdown__menu, .nav-dropdown__caret, .nav-dropdown__item {
             display: block;
-       }
+        } 
 
         .fa-caret-down {
             display: none;
-       }
+        }
 
         .fa-caret-up {
             display: inline;
-       }
-   }
+        }
+    }
 
     .fa {
         color: $white;
         float: right;
         padding-top: 5px;
         padding-left: 5px;
-   }
+    }
 
     .fa-caret-down {
         display: inline;
-   }
+    }
 
     .fa-caret-up {
         display: none;
-   }
+    }
 
     &__black {
         position: absolute;
@@ -272,13 +274,13 @@
         padding: 15px 10px 5px;
         line-height: 24px;
         background-color: $darker;
-        
+
         ul {
             padding-left: 5px;
             display: block;
             li a {
                 width: auto;
            }
-       }
-   }
+        }
+    }
 }
