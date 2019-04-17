@@ -164,7 +164,60 @@
             }
         }
     }
+}
 
+.manager__fixed-bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: -80px;
+    opacity: 0;
+    background-color: $white;
+    box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.15);
+    width: 100%;
+    height: 80px;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+
+    @media (min-width: $tablet) {
+        &.active {
+            top: 0;
+            opacity: 1;
+            position: fixed;
+
+        }
+    }
+
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        p {
+            font-size: 18px;
+            font-family: $font-roboto;
+            width: calc(100% - 500px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .direct-actions {
+            font-size: 0;
+
+            .btn {
+                margin-left: 10px;
+            }
+        }
+    }
 }
 
 .tips-information {

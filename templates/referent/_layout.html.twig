@@ -87,6 +87,16 @@
             <div class="l__wrapper procuration-manager__content text--body">
                 {% block referent_content %}{% endblock %}
             </div>
+
+            <div id="managerOnScroll" class="manager__fixed-bar">
+                <div class="l__wrapper manager__fixed-bar__content">
+                    <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
+                    <div class="direct-actions">
+                        <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                        <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                    </div>
+                </div>
+            </div>
         </section>
 
         {% if not app.user.isChartAccepted %}
@@ -100,17 +110,27 @@
 {% endblock %}
 
 {% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
     {% if not app.user.isChartAccepted %}
         {% if js is not defined %}
             {% import 'javascript.js.twig' as js %}
         {% endif %}
-
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 {{ js.chart_acceptation('#chart_dialog') }}
             });
         </script>
     {% endif %}
+    <script type="text/javascript">
+        $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+            if (scroll >= 350) {
+                $("#managerOnScroll").addClass("active");
+            } else {
+                $("#managerOnScroll").removeClass("active");
+            }
+        });
+    </script>
 {% endblock %}
