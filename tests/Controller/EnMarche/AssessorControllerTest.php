@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\AssessorOfficeEnum;
+use AppBundle\Mailer\Message\AssessorRequestConfirmationMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,8 @@ class AssessorControllerTest extends WebTestCase
     public function testAssessorRequest()
     {
         $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_REQUEST_PATH);
+
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(AssessorRequestConfirmationMessage::class));
 
         // Step 1
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -121,6 +124,7 @@ class AssessorControllerTest extends WebTestCase
         // Confirmation
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'Votre demande a bien été prise en compte.');
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(AssessorRequestConfirmationMessage::class));
     }
 
     protected function setUp()

@@ -136,6 +136,9 @@
         <service id="AppBundle\Assessor\AssessorRequestHandler">
             <argument type="service" id="state_machine.assessor_request" />
         </service>
+        <service id="AppBundle\Assessor\AssessorRequestNotifier">
+            <argument type="service" id="app.mailer.transactional"/>
+        </service>
         <service id="AppBundle\Form\AssessorRequestType" />
 
         <!-- EventListener -->
