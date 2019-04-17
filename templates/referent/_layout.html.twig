@@ -19,10 +19,10 @@
                     <div class="first-section">
                         <div class="manager-information">
                             <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
-                            <p>Dernière connexion : <span>{{ get_referent_previous_visit_date(app.user) }}</span></p>
+                            <p>Dernière visite le <span>{{ get_referent_previous_visit_date(app.user) }}</span> à <span>8h45</span></p>
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
-                            <a href="https://en-marche.helprace.com/" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                            <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
                         </p>
                     </div>
                     <div class="second-section">
@@ -83,6 +83,16 @@
             <div class="l__wrapper procuration-manager__content text--body">
                 {% block referent_content %}{% endblock %}
             </div>
+
+            <div id="managerOnScroll" class="manager__fixed-bar">
+                <div class="l__wrapper manager__fixed-bar__content">
+                    <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
+                    <div class="direct-actions">
+                        <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                        <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                    </div>
+                </div>
+            </div>
         </section>
 
         {% if not app.user.isChartAccepted %}
@@ -96,17 +106,23 @@
 {% endblock %}
 
 {% block final_javascripts %}
-    {% if not app.user.isChartAccepted %}
-        {% if js is not defined %}
-            {% import 'javascript.js.twig' as js %}
-        {% endif %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
 
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if not app.user.isChartAccepted %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 {{ js.chart_acceptation('#chart_dialog') }}
             });
         </script>
     {% endif %}
+    
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
+        });
+    </script>
 {% endblock %}
