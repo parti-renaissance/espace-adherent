@@ -78,7 +78,7 @@
         <a href="{{ path('articles_list', { category: 'tout' }) }}" class="link--no-decor">Actualités</a>
     </li>
     <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %}>
-        <a class="je-cherche" href="javascript:void(0)">
+        <a class="je-cherche" href="javascript:void(0)" class="link--no-decor">
             {{ include('components/search.html.twig') }}
         </a>
     </li>
