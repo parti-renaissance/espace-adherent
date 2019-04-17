@@ -16,7 +16,7 @@
                     <li>
                         <a href="{{ path('app_user_login') }}">Connexion</a>
                     </li>
-                {% endif %} 
+                {% endif %}
                 {% if not has_role_adherent %}
                     <li>
                         <a href="{{ path('app_membership_join') }}">Adhérer</a>
@@ -26,7 +26,7 @@
                     <a href="{{ path('donation_index') }}">Donner</a>
                 </li>
             </ul>
-            <hr> 
+            <hr>
             {% if has_role_user %}
                 <ul>
                     <li>
@@ -36,7 +36,7 @@
                         </a>
                     </li>
                 </ul>
-                <hr> 
+                <hr>
                 {% if has_role_adherent %}
                     <ul>
                         <li>
@@ -55,59 +55,57 @@
                         {% endif %}
                     </ul>
                 {% endif %}
-            <ul>
-                {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
-                    <ul>
+                <ul>
+                    {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
+                        <ul>
+                            <li><ahref="{{path('app_adherent_create_committee')}}">Créer un comité</a></li>
+                        </ul>
+                    {% endif %}
+                    {% if app.user.isReferent %}
                         <li>
-                            <ahref="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                            <a href="{{ path('app_referent_events') }}">Espace référent</a>
                         </li>
-                    </ul>
-                {% endif %} 
-                {% if app.user.isReferent %}
+                    {% endif %}
+                    {% if app.user.isDeputy %}
+                        <li>
+                            <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
+                        </li>
+                    {% endif %}
+                    {% if app.user.isCoordinatorCitizenProjectSector %}
+                        <li>
+                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                        </li>
+                    {% endif %}
+                    {% if app.user.isCoordinatorCommitteeSector %}
+                        <li>
+                            <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
+                        </li>
+                    {% endif %}
+                    {% if app.user.isProcurationManager %}
+                        <li>
+                            <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul>
                     <li>
-                        <a href="{{ path('app_referent_events') }}">Espace référent</a>
+                        <a href="{{ path('app_user_set_email_notifications') }}">Notifications via e-mail et mobile</a>
                     </li>
-                {% endif %} 
-                {% if app.user.isDeputy %}
                     <li>
-                        <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
+                        <a href="{{ path('app_user_profile') }}">Paramètres</a>
                     </li>
-                {% endif %} 
-                {% if app.user.isCoordinatorCitizenProjectSector %}
                     <li>
-                        <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                        <a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a>
                     </li>
-                {% endif %} 
-                {% if app.user.isCoordinatorCommitteeSector %}
-                    <li>
-                        <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
-                    </li>
-                {% endif %} 
-                {% if app.user.isProcurationManager %}
-                    <li>
-                        <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
-                    </li>
-            {% endif %}
-            </ul>
-            <ul>
-                <li>
-                    <a href="{{ path('app_user_set_email_notifications') }}">Notifications via e-mail et mobile</a>
-                </li>
-                <li>
-                    <a href="{{ path('app_user_profile') }}">Paramètres</a>
-                </li>
-                <li>
-                    <a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a>
-                </li>
-                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                    <li>
-                        <a href="{{ path('app_admin_impersonation_exit') }}">
-                            Quitter l'impersonnification
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-            <hr> 
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                        <li>
+                            <a href="{{ path('app_admin_impersonation_exit') }}">
+                                Quitter l'impersonnification
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <hr>
             {% endif %}
             <small>LE MOUVEMENT</small>
             <ul>
@@ -125,7 +123,7 @@
                 </li>
                 <li>
                     <a href="{{ path('legislatives_homepage') }}">
-            Nos députés</a>
+                        Nos députés</a>
                 </li>
             </ul>
             <ul class="space--10-0">
@@ -162,7 +160,7 @@
                 <li>
                     <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
                 </li>
-                    {% if has_role_adherent %}
+                {% if has_role_adherent %}
                     <li>
                         <a href="{{ path('app_documents_index') }}">Mes documents</a>
                     </li>
@@ -173,7 +171,7 @@
                     </a>
                 </li>
             </ul>
-            <hr> 
+            <hr>
             {% if has_role_adherent %}
                 <div>
                     <div class="text--body text--bold text--small">Comités</div>
@@ -184,15 +182,15 @@
                     <div class="text--body text--bold text--small">Projets citoyens</div>
                     {{ adherent_citizen_projects }}
                 </div>
-                <hr> 
-            {% endif %} 
+                <hr>
+            {% endif %}
             {% if has_role_user %}
                 <ul>
                     <li>
                         <a href="{{ path('logout') }}">Déconnexion</a>
                     </li>
                 </ul>
-                <hr> 
+                <hr>
             {% endif %}
             <ul class="list__links list__links--row b__nudge--bottom-small">
                 <li class="head">Suivez La République En Marche !</li>
