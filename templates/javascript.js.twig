@@ -390,6 +390,17 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
+{% macro manager_sticky_header(selector) %}
+    $(window).scroll(function() {
+    var scroll = $(window).scrollTop();
+        if (scroll >= 350) {
+            $("{{ selector }}").addClass("active");
+        } else {
+            $("{{ selector }}").removeClass("active");
+        }
+    });
+{% endmacro %}
+
 {% macro toggleMandatesSelect(checkboxSelector, selectSelector) %}
     (function (checkboxSelector, selectSelector) {
         const formElected = $(checkboxSelector);
