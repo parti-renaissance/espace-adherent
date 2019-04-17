@@ -19,11 +19,7 @@
                     <div class="first-section">
                         <div class="manager-information">
                             <p>Vous gérez : <span>{{ app.user.managedArea.tags|join(', ') }}</span></p>
-<<<<<<< HEAD
-                            <p>Dernière connexion : <span>{{ get_referent_previous_visit_date(app.user) }}</span></p>
-=======
-                            <p>Dernière visite le <span>01/04/19</span> à <span>8h45</span></p>
->>>>>>> various adds on manager header
+                            <p>Dernière visite le <span>{{ get_referent_previous_visit_date(app.user) }}</span> à <span>8h45</span></p>
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
                             <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
