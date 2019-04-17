@@ -58,7 +58,9 @@
                 <ul>
                     {% if has_role_adherent and is_granted('CREATE_COMMITTEE') %}
                         <ul>
-                            <li><ahref="{{path('app_adherent_create_committee')}}">Créer un comité</a></li>
+                            <li>
+                                <a href="{{ path('app_adherent_create_committee') }}">Créer un comité</a>
+                            </li>
                         </ul>
                     {% endif %}
                     {% if app.user.isReferent %}
