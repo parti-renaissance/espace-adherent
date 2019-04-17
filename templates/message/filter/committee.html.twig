@@ -1,20 +1,7 @@
 {% extends 'message/filter.html.twig' %}
 
 {% block filter_content %}
-    <div>
-        {{ form_start(form) }}
-
-        <div class="text--center">
-            <div class="l__col--grow-1 b__nudge--right">
-                {{ form_label(form.committee, 'Envoyer un message aux adherents du comité : ') }}
-                {{ form_widget(form.committee, {placeholder: 'Choisir un comité'}) }}
-            </div>
-        </div>
-
-        <div class="text--center l__wrapper--500 b__nudge--top-40">
-            <button type="submit" class="btn btn--dual">Filtrer</button>
-            <button type="submit" name="reset" class="btn--as-link b__nudge--left-large text--body text--blue--new">Réinitialiser le filtre</button>
-        </div>
-        {{ form_end(form) }}
+    <div class="text--center">
+        Message aux membres du comité <strong>{{ message.filter.committee.name }}</strong>
     </div>
 {% endblock %}

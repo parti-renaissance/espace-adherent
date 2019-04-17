@@ -26,6 +26,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_committee_show' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_committee_contact_members' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
         'app_committee_manager_add_event' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
+        'app_message_committee_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR,
 
         // Citizen Project
         'app_citizen_project_contact_actors' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
@@ -117,7 +118,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             case ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR:
                 return $request->attributes->get('slug', $request->attributes->get('project_slug'));
             case ReferentTagExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
-                return $request->attributes->get('slug');
+                return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
         }
 
         return null;

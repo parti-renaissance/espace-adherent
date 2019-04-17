@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'committee_manager/_layout_committee.html.twig' %}
 
 {% block page_title 'Nouvel événement' %}
 
@@ -16,23 +16,18 @@
     </script>
 {% endblock %}
 
-{% block content %}
-<main class="committee__event__create l__wrapper l__row l__row--top l__row--h-stretch">
-    <section class="l__wrapper--main l__wrapper--main-left">
-        <div class="text--summary b__nudge--bottom">
-            <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" class="back-to-list icon--with-text">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à mon comité local
-            </a>
-        </div>
-
-        <div id="committee-event-form">
-            <h2 class="text--large b__nudge--bottom-small">Créer mon événement</h2>
+{% block committee_content %}
+    <section class="b__nudge--top-5 b__nudge--bottom-huge">
+        <header class="l__wrapper b__nudge--bottom-tiny">
+            <h2 class="text--center text--medium font-gillsans">Créer mon événement</h2>
+            <hr/>
+        </header>
+        <div id="committee-event-form" class="l__wrapper l__col committee__event__create">
             <h3 class="text--body text--normal">Vous créez un événement au sein du comité <strong>{{ committee.name }}</strong>.</h3>
 
             {{ include('components/alert_european_elections.html.twig') }}
 
-            {{ form_start(form, { attr: { class: 'b__nudge--top-40', autocomplete: 'off' } }) }}
+            {{ form_start(form, { attr: { class: 'b__nudge--top-40 l__wrapper--600', autocomplete: 'off' } }) }}
             {{ form_errors(form) }}
 
             <div class="form__row" id="committee-event-name-field">
@@ -115,11 +110,4 @@
             {{ form_end(form) }}
         </div>
     </section>
-
-    <aside class="l__wrapper--aside">
-        <div class="committee__card">
-            {{ include('committee/hosts.html.twig') }}
-        </div>
-    </aside>
-</main>
 {% endblock %}

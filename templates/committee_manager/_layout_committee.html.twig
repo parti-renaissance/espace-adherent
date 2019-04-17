@@ -1,0 +1,34 @@
+{% extends 'committee_manager/_layout.html.twig' %}
+
+{% block banner '' %}
+
+{% block committee_space_header %}
+    <div class="l__wrapper">
+        <div><a href="{{ path('app_committee_space_dashboard') }}" class="btn--text-blue">⟵ Tous vos comités</a></div>
+
+        <h1 class="text--large b__nudge--top-40">{{ committee.name }}</h1>
+
+        <div>
+            <a class="btn btn--blue" href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}">+ Nouveau message</a>
+            <a class="btn " href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}">+ Créer un événement</a>
+        </div>
+
+        <nav class="adherent-space-menu">
+            <ul>
+                <li class="{{ is_active_route(app.request, 'app_committee_manager_edit') ? 'active' : '' }}">
+                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug }) }}">Modifier mon comité</a>
+                </li>
+
+                <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host']) ? 'active' : '' }}">
+                    <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}">Mes adhérents</a>
+                </li>
+
+                {% if is_canary_enabled() %}
+                    <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
+                        <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Envoyer un message</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

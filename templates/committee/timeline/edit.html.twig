@@ -1,0 +1,28 @@
+{% extends 'committee/show.html.twig' %}
+
+{% block page_title %}{{ committee.name }} - {{ committee.cityName }}{% endblock %}
+{% block canonical_url url('app_committee_show', {'slug': committee.slug}) %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            {{ js.toggleDisplayingElement("##{form.vars.id}_sendNotification", "##{form.vars.id}_subject") }}
+            {{ js.ckeditor(form.vars.id ~ '_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_FEED'), 5000, true) }}
+        });
+    </script>
+{% endblock %}
+
+{% block committee_content %}
+    <div id="committee-message-form" class="committee__message b__nudge--top-40">
+        {{ form(form) }}
+    </div>
+{% endblock %}

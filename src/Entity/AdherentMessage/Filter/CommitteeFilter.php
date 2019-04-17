@@ -20,6 +20,11 @@ class CommitteeFilter extends AbstractAdherentMessageFilter
      */
     private $committee;
 
+    public function __construct(Committee $committee = null)
+    {
+        $this->committee = $committee;
+    }
+
     public function getCommittee(): ?Committee
     {
         return $this->committee;

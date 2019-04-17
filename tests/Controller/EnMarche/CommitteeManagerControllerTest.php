@@ -61,7 +61,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -133,7 +133,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -219,7 +219,8 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Créer un événement')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -346,7 +347,8 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Créer un événement')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -420,6 +422,8 @@ class CommitteeManagerControllerTest extends WebTestCase
 
     public function testAuthenticatedCommitteeHostCanPostMessages()
     {
+        $this->markTestSkipped('Skipped temporary, need to implement this feature with a new Message form');
+
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
@@ -513,7 +517,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, $username);
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
         $this->assertSame('Jacques', $crawler->filter('.member-first-name')->eq(0)->text());
@@ -537,7 +542,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
 
         $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
         $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
@@ -555,7 +561,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
 
         $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
     }
@@ -566,7 +573,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
@@ -602,80 +610,6 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $lines = $this->transformToArray($this->client->getResponse()->getContent());
         $this->assertCount(1, $lines);
-    }
-
-    public function testCommitteeContactMembers()
-    {
-        // Authenticate as the committee supervisor
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer les adhérents')->link());
-
-        $token = $crawler->filter('#members-contact-token')->attr('value');
-        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
-
-        $membersUrl = $this->client->getRequest()->getPathInfo();
-        $contactUrl = $membersUrl.'/contact';
-
-        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
-            'token' => $token,
-            'contacts' => json_encode($uuids),
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        // Try to post with an empty subject and an empty message
-        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
-            'token' => $crawler->filter('input[name="token"]')->attr('value'),
-            'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
-            'subject' => ' ',
-            'message' => ' ',
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $crawler->filter('.subject .form__errors > .form__error')->text()
-        );
-
-        $this->assertSame('Cette valeur ne doit pas être vide.',
-            $crawler->filter('.message .form__errors > .form__error')->text()
-        );
-
-        $this->client->request(Request::METHOD_POST, $contactUrl, [
-            'token' => $crawler->filter('input[name="token"]')->attr('value'),
-            'contacts' => $crawler->filter('input[name="contacts"]')->attr('value'),
-            'subject' => 'Comité local',
-            'message' => 'Hello à tous, j\'espère que vous allez bien!',
-        ]);
-
-        $this->assertClientIsRedirectedTo($membersUrl, $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->seeFlashMessage($crawler, 'Félicitations, votre message a bien été envoyé aux membres sélectionnés.');
-
-        // Try to illegally contact an adherent
-        $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
-
-        $crawler = $this->client->request(Request::METHOD_POST, $contactUrl, [
-            'token' => $token,
-            'contacts' => json_encode($uuids),
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(1, json_decode($crawler->filter('input[name="contacts"]')->attr('value'), true));
-
-        // Force the contact form with foreign uuid
-        $this->client->request(Request::METHOD_POST, $contactUrl, [
-            'token' => $crawler->filter('input[name="token"]')->attr('value'),
-            'contacts' => json_encode($uuids),
-            'subject' => 'Comité local',
-            'message' => 'Hello à tous, j\'espère que vous allez bien!',
-        ]);
-
-        $this->assertClientIsRedirectedTo($membersUrl, $this->client);
     }
 
     public function testAllowToCreateCommmitee()

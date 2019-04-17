@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block messages_header_left_block %}
-    <a href="{{ path("app_message_#{message_type}_list") }}">← Retour</a>
+    <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}">← Retour</a>
 {% endblock %}
 
 {% block messages_header_right_block %}
