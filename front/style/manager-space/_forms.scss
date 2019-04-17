@@ -25,7 +25,6 @@
     transition: border 0.2s;
     -webkit-transition: border 0.2s;
 
-
         &::placeholder {
             color: $neutral-grey;
             font-weight: normal;
@@ -46,9 +45,7 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        background-image: url('/images/icons/icn-form-select.svg');
-        background-repeat: no-repeat;
-        background-position: right 10px center;
+        background: url('/images/icons/icn-form-select.svg') no-repeat right 10px center;
         cursor: pointer;
     }
 
@@ -67,7 +64,6 @@
 
         textarea.form__field {
             width: 100%;
-            min-width: 100%;
             max-width: 100%;
             min-height: 100px;
         }
