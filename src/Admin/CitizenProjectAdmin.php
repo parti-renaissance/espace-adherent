@@ -94,7 +94,10 @@ class CitizenProjectAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->remove('create');
+        $collection
+            ->remove('create')
+            ->remove('delete')
+        ;
     }
 
     public function postUpdate($object)
