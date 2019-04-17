@@ -1,38 +1,87 @@
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
 
 <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop {{ app.user ? '' : 'space--20-0' }}">
-    <ul class="list__links list__links--row list__links--no-decor list__links--nav">
+    <ul class="list__links list__links--row list__links--nav">
         <li>
             <a href="{{ path('homepage') }}" class="link--no-decor text--logo">EM!</a>
         </li>
-        {% if not has_role_adherent %}
-            <li>
-                <a href="{{ path('page_le_mouvement') }}">Le Mouvement</a>
-            </li>
-        {% endif %}
+        <div class="l__row">
+            <div class="nav-dropdown">
+                <p>
+                    Le Mouvement
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item list__links--no-decor">
+                    <li>
+                        <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_our_organization') }}">Notre organisation</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('our_referents_homepage') }}">Nos référents</a>
+                    </li>
+                    <li>
+                        <a href="https://dpt.en-marche.fr" rel="noopener noreferrer" target="_blank">
+                            Nos sites départementaux
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('legislatives_homepage') }}">
+                            Nos députés
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </br>
+    <div>
         <li>
-            <a href="{{ path('app_search_events') }}">Événements</a>
-        </li>
-        <li>
-            <a href="{{ path('app_search_committees') }}">Comités</a>
-        </li>
-        <li>
-            <a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a>
-        </li>
-        <li>
-            <a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a>
-        </li>
-        <li>
-            <a href="{{ path('page_campus') }}">Formation</a>
-        </li>
-        <li>
-            <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
-        </li>
-        <li {% if not algolia_app_id or not algolia_api_key %}style="display: none;"{% endif %}>
-            <a href="javascript:void(0)" class="je-cherche">
-                {{ include('components/search.html.twig') }}
+            <a href="https://eu-renaissance.org/fr" rel="noopener noreferrer" target="_blank">
+                Élections Européennes
             </a>
         </li>
+    </div>
+    <div class="l__row">
+        <div class="nav-dropdown">
+            <p>
+                S'engager
+                <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+            </p>
+            <ul class="nav-dropdown__item list__links--no-decor">
+                <li>
+                    <a href="{{ path('app_search_events') }}" class="link--no-decor">Événements</a>
+                </li>
+                <li>
+                    <a href="{{ path('app_search_committees') }}" class="link--no-decor">Comités</a>
+                </li>
+                <li>
+                    <a href="{{ path('react_app_citizen_projects_home') }}" class="link--no-decor">Projets citoyens</a>
+                </li>
+                <li>
+                    <a href="{{ path('react_app_ideas_workshop_home') }}" class="link--no-decor">Atelier des idées</a>
+                </li>
+                <li>
+                    <a href="{{ path('page_campus') }}" class="link--no-decor">Formation</a>
+                </li>
+                <li>
+                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                </li>
+                <li>
+                    <a href="{{ path('donation_index') }}">Faire un don</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <li>
+        <a href="{{ path('articles_list', { category: 'tout' }) }}" class="link--no-decor">Actualités</a>
+    </li>
+    <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %}>
+        <a class="je-cherche" href="javascript:void(0)">
+            {{ include('components/search.html.twig') }}
+        </a>
+    </li>
     </ul>
     <div class="l__row">
         <div class="nav-dropdown">
@@ -84,7 +133,9 @@
                                         {% endif %}
                                         {% if app.user.isHost %}
                                             <li class="visually-hidden">
-                                                <a href="{{ path('app_formation_intro') }}">Je me forme <span>Nouveau</span></a>
+                                                <a href="{{ path('app_formation_intro') }}">Je me forme
+                                                    <span>Nouveau</span>
+                                                </a>
                                             </li>
                                         {% endif %}
                                     </ul>
@@ -115,7 +166,7 @@
                                         <a class="text--gray" href="{{ path('app_user_profile') }}">Paramètres</a>
                                     </li>
                                     <li>
-                                        <a class="text--gray" href="https://aide.en-marche.fr" target="_blank" rel="noopener noreferrer">Aide</a>
+                                        <a class="text--gray" href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a>
                                     </li>
                                     <li>
                                         <a class="text--gray" href="{{ path('logout') }}">Déconnexion</a>
@@ -184,22 +235,22 @@
             <li>
                 <a href="{{ path('app_deputy_users_message') }}">Espace député</a>
             </li>
-
             {% if is_canary_enabled() %}
                 <li>
                     <a href="{{ path('app_message_deputy_list') }}">Espace député ✨</a>
                 </li>
             {% endif %}
         {% endif %}
-        {# Space temporarily closed #}
-        {#{% if app.user.isBoardMember %}#}
-            {#<li>#}
-                {#<a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>#}
-            {#</li>#}
-        {#{% endif %}#}
+{# Space temporarily closed #}
+{#{% if app.user.isBoardMember %}#}
+{#<li>#}
+{#<a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>#}
+{#</li>#}
+{#{% endif %}#}
         {% if app.user.isCoordinatorCitizenProjectSector %}
             <li>
-                <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}"> Espace Responsable Engagement Citoyen
+                </a>
             </li>
         {% endif %}
         {% if app.user.isCoordinatorCommitteeSector %}

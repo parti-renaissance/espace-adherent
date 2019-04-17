@@ -9,21 +9,21 @@
         width: 30px;
         height: 30px;
         opacity: 0;
-    }
+}
 
     label {
-      position: relative;
-      display: block;
-      float: right;
-      cursor: pointer;
-      height: 28px;
-      width: 28px;
-      margin-top: 4px;
-      content: $three_bars--black;
+        position: relative;
+        display: block;
+        float: right;
+        cursor: pointer;
+        height: 28px;
+        width: 28px;
+        margin-top: 4px;
+        content: $three_bars--black;
 
-      &:hover {
-          content: $three_bars--gray;
-      }
+        &:hover {
+            content: $three_bars--gray;
+        }
     }
 
     input[type=checkbox]:checked ~ label {
@@ -56,10 +56,17 @@
 
     ul {
         font-family: $font-roboto;
-
+   
         a {
             border: 0;
         }
+    }
+
+    small {
+        color: $gray--muted;
+        margin-bottom: 10px;
+        position: relative;
+        display: block;
     }
 }
 
@@ -67,6 +74,25 @@
     position: relative;
     font-family: $font-roboto;
     margin: 0 15px;
+
+    &>p {
+        display: flex;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .nav__chevron {
+        transition: all 0.3s;
+    }
+ 
+    &:hover {
+        .nav__chevron {
+            transform: rotate(180deg);
+            transition: all 0.3s;
+        }
+    }
 
     &__caret {
         display: none;
@@ -108,6 +134,24 @@
 
     &__name {
         padding: 20px 0;
+    }
+
+    &__item {
+        display: none;
+        position: absolute;
+        background: white;
+        min-width: 190px;
+        padding: 10px 25px 10px 15px;
+        top: 45px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        z-index: $zIndex__overlay-menu;
+        box-sizing: border-box;
+
+        li {
+            font-size:15px;
+            line-height: 1.73;
+            white-space: nowrap;
+        }
     }
 
     &__menu {
@@ -161,11 +205,9 @@
     &__row {
         display: flex;
 
-        > ul,
-        > div {
+        > ul, > div {
             flex: 1;
             border-right: 1px solid $gray--light;
-
             &:last-child {
                 border: 0;
             }
@@ -181,7 +223,7 @@
             font-weight: bold;
             font-size: 18px;
             padding: 0;
-
+            
             a {
                 display: block;
                 width: 100%;
@@ -195,10 +237,9 @@
     }
 
     &:hover {
-        .nav-dropdown__menu,
-        .nav-dropdown__caret {
+        .nav-dropdown__menu, .nav-dropdown__caret, .nav-dropdown__item {
             display: block;
-        }
+        } 
 
         .fa-caret-down {
             display: none;
@@ -237,10 +278,9 @@
         ul {
             padding-left: 5px;
             display: block;
-
             li a {
                 width: auto;
-            }
+           }
         }
     }
 }
