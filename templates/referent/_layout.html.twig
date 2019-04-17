@@ -108,25 +108,21 @@
 {% block final_javascripts %}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
 
     {% if not app.user.isChartAccepted %}
-        {% if js is not defined %}
-            {% import 'javascript.js.twig' as js %}
-        {% endif %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 {{ js.chart_acceptation('#chart_dialog') }}
             });
         </script>
     {% endif %}
+    
     <script type="text/javascript">
-        $(window).scroll(function() {
-        var scroll = $(window).scrollTop();
-            if (scroll >= 350) {
-                $("#managerOnScroll").addClass("active");
-            } else {
-                $("#managerOnScroll").removeClass("active");
-            }
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
         });
     </script>
 {% endblock %}
