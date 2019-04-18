@@ -6,14 +6,37 @@
 
 {% block content %}
     <main>
-        <section class="b__nudge--bottom-huge adherent-space">
-            <header class="b__nudge--bottom-large adherent-space-header">
+        <section class="manager-space b__nudge--bottom-huge adherent-space">
+            <header class="manager-header b__nudge--bottom-large adherent-space-header">
                 {% block committee_space_header '' %}
             </header>
 
             <div class="l__wrapper text--body">
                 {% block committee_content %}{% endblock %}
             </div>
+
+            <div id="managerOnScroll" class="manager__fixed-bar">
+                <div class="l__wrapper manager__fixed-bar__content">
+                    <p><span></span></p>
+                    <div class="direct-actions">
+                        <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                        <a href="" class="btn btn--ghosting--blue">+&nbsp;<span>Action&nbsp;</span>citoyenne</a>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
+        });
+    </script>
 {% endblock %}

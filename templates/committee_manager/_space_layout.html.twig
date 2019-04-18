@@ -4,16 +4,22 @@
 
 {% block committee_space_header %}
     <div class="l__wrapper">
-        <div><a href="{{ path('app_committee_space_dashboard') }}" class="btn--text-blue">⟵ Tous vos comités</a></div>
-
-        <h1 class="text--large b__nudge--top-40">{{ committee.name }}</h1>
-
-        <div>
-            <a class="btn btn--blue" href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}">+ Nouveau message</a>
-            <a class="btn " href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}">+ Créer un événement</a>
+        <div class="first-section">
+            <div class="manager-information">
+                <a href="{{ path('app_committee_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous vos comités</a>
+            </div>
+        </div>
+        <div class="second-section">
+            <h1 class="page-title text--large">
+                {{ committee.name }}
+            </h1>
+            <div class="direct-actions">
+                <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;Action&nbsp;citoyenne</a>
+            </div>
         </div>
 
-        <nav class="adherent-space-menu">
+        <nav class="manager-header__menu">
             <ul>
                 <li class="{{ is_active_route(app.request, 'app_committee_manager_edit') ? 'active' : '' }}">
                     <a href="{{ path('app_committee_manager_edit', {slug: committee.slug }) }}">Modifier mon comité</a>

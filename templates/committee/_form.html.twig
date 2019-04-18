@@ -1,6 +1,7 @@
 {{ form_errors(form) }}
 
 <div class="form__row" id="field-name">
+    {{ form_label(form.name, 'Nom du comité') }}
     {{ form_errors(form.name) }}
     {{ form_widget(form.name, {
         'attr': {
@@ -70,6 +71,7 @@
 {% endif %}
 
 <div class="form__row" id="field-facebook-page-url">
+    {{ form_label(form.facebookPageUrl, 'Facebook') }}
     {{ form_errors(form.facebookPageUrl) }}
     {{ form_widget(form.facebookPageUrl, { 'attr': {
         'class': 'form--full',
@@ -78,6 +80,7 @@
 </div>
 
 <div class="form__row" id="field-twitter-nickname">
+    {{ form_label(form.twitterNickname, 'Twitter') }}
     {{ form_errors(form.twitterNickname) }}
     {{ form_widget(form.twitterNickname, { 'attr': {
         'class': 'form--full',
@@ -86,10 +89,10 @@
 </div>
 
 <div class="form__row" id="field-googleplus-page-url">
+    {{ form_label(form.googlePlusPageUrl, 'Google+') }}
     {{ form_errors(form.googlePlusPageUrl) }}
     {{ form_widget(form.googlePlusPageUrl, { 'attr': {
         'class': 'form--full',
         'placeholder': 'URL de la page Google+ de votre comité (si vous en avez une)'
     } }) }}
 </div>
-
