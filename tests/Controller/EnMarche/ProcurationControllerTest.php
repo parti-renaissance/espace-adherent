@@ -299,7 +299,9 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->assertSame('J\'accepte d’être recontacté par LaREM pour les prochaines échéances électorales', $crawler->filter('#procuration_reachable > label')->text());
+        $this->assertSame('En cochant cette case j’accepte que LaREM traite mes données dans le cadre de la plateforme de procuration en ligne.*', $crawler->filter('#procuration_reachable > label')->text());
+        $this->assertSame('En cochant cette case, j\'accepte d’être recontacté par LaREM pour la prochaine échéance électorale, à savoir les élections municipales 2019', $crawler->filter('#procuration_authorization > label')->text());
+        $this->assertContains('Les informations marquées d’un astérisque sont obligatoires', $crawler->filter('#procuration_legal_notices')->text());
 
         $crawler = $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
