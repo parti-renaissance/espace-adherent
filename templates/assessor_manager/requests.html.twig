@@ -9,6 +9,11 @@
 {% endblock %}
 
 {% block assessor_manager_content %}
+
+    {{ include('assessor_manager/_filters_assessor_requests.html.twig') }}
+
+    <hr />
+
     {% if 0 == requests|length %}
         <div class="text--body text--center">
             {% if constant('PROCESSED', filters) == filters.status %}

@@ -1,0 +1,13 @@
+{% extends 'assessor_manager/_filters.html.twig' %}
+
+{% block filter_content %}
+    <div class="l__col--grow-1 b__nudge--right">
+        <label>
+            Nom de famille :<br />
+            <input type="text"
+                   name="{{ constant('PARAMETER_LAST_NAME', filters) }}"
+                   value="{{ filters.lastName }}"
+                   class="form form__field form--full">
+        </label>
+    </div>
+{% endblock %}

@@ -18,6 +18,7 @@ class LoadAssessorRequestData extends Fixture
     private const ASSESSOR_REQUEST_5_UUID = '9e2e1fe6-9ff9-4b04-8fe7-1620c9df0e45';
     private const ASSESSOR_REQUEST_6_UUID = 'd320b698-10b7-4dd7-a70a-cedb95fceeda';
     private const ASSESSOR_REQUEST_7_UUID = 'f9286607-c3b5-4531-be03-81c3fb4fafe8';
+    private const ASSESSOR_REQUEST_8_UUID = '64b8b8ca-0708-4fcc-a3ce-844ff2e3852d';
 
     public function load(ObjectManager $manager)
     {
@@ -159,7 +160,7 @@ class LoadAssessorRequestData extends Fixture
             'birthName' => null,
         ]);
 
-        $foreignRequestOutOfManagedArea = AssessorRequestFactory::createFromArray([
+        $foreignRequestDisabled = AssessorRequestFactory::createFromArray([
             'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_7_UUID),
             'gender' => 'male',
             'lastName' => 'Cochet',
@@ -181,12 +182,35 @@ class LoadAssessorRequestData extends Fixture
             'assessorCountry' => 'UK',
         ]);
 
+        $foreignRequestOutOfManagedArea = AssessorRequestFactory::createFromArray([
+            'uuid' => Uuid::fromString(self::ASSESSOR_REQUEST_8_UUID),
+            'gender' => 'male',
+            'lastName' => 'Luigi',
+            'firstName' => 'Leonardo',
+            'birthdate' => '12-11-1972',
+            'birthCity' => 'Italie',
+            'address' => '4 piazza della pasta',
+            'postalCode' => null,
+            'city' => 'Italie',
+            'voteCity' => 'Italie',
+            'officeNumber' => '99999_0253',
+            'emailAddress' => 'luigi.leonardo@example.it',
+            'phoneNumber' => '33 612345678',
+            'assessorCity' => 'Rome',
+            'assessorPostalCode' => null,
+            'office' => AssessorOfficeEnum::HOLDER,
+            'birthName' => null,
+            'enabled' => true,
+            'assessorCountry' => 'IT',
+        ]);
+
         $manager->persist($unmatchedRequest1);
         $manager->persist($matchedRequest1);
         $manager->persist($matchedRequest2);
         $manager->persist($matchedRequest3);
         $manager->persist($request4);
         $manager->persist($requestOutOfManagedArea);
+        $manager->persist($foreignRequestDisabled);
         $manager->persist($foreignRequestOutOfManagedArea);
 
         $manager->flush();

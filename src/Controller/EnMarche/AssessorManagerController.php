@@ -192,7 +192,7 @@ class AssessorManagerController extends Controller
     }
 
     /**
-     * @Route("/vote-places", name="app_assessor_manager_vote_places", methods={"GET"})
+     * @Route("/vote-places", name="app_assessor_manager_vote_places", methods={"GET", "POST"})
      */
     public function votePlacesAction(Request $request, AssessorManager $manager): Response
     {

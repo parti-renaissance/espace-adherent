@@ -360,7 +360,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '1994-03-09 00:00:00',
         ]);
         $adherent16->setPosition(ActivityPositions::EMPLOYED);
-        $adherent16->setAssessorManagedAreaCodesAsString('93, 59');
+        $adherent16->setAssessorManagedAreaCodesAsString('93, 59, UK');
 
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::REFERENT_1_UUID,

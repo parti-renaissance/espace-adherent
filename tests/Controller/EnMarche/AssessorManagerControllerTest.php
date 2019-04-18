@@ -2,6 +2,8 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\Assessor\Filter\AssessorRequestFilters;
+use AppBundle\Assessor\Filter\VotePlaceFilters;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +18,10 @@ class AssessorManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    private const ASSESSOR_MANAGER_REQUEST_PATH = '/espace-responsable-assesseur';
+    private const ASSESSOR_MANAGER_VOTE_PLACE_PATH = self::ASSESSOR_MANAGER_REQUEST_PATH.'/vote-places';
     private const ASSESSOR_MANAGER_EMAIL = 'commissaire.biales@example.fr';
-    private const SUBJECT_REQUEST = 'demandes d\'assesseur';
+    private const SUBJECT_REQUEST = 'demandes? d\'assesseur';
     private const SUBJECT_VOTE_PLACE = 'bureaux? de vote';
     private const SUBJECTS = [
         self::SUBJECT_REQUEST,
@@ -54,19 +58,19 @@ class AssessorManagerControllerTest extends WebTestCase
 
     public function providePages(): \Generator
     {
-        yield ['/espace-responsable-assesseur'];
-        yield ['/espace-responsable-assesseur/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c'];
-        yield ['/espace-responsable-assesseur/vote-places'];
+        yield [self::ASSESSOR_MANAGER_REQUEST_PATH];
+        yield [self::ASSESSOR_MANAGER_REQUEST_PATH.'/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c'];
+        yield [self::ASSESSOR_MANAGER_VOTE_PLACE_PATH];
     }
 
     public function testAssessorManagerBackendIsForbiddenOnWrongArea()
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
-        $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur/demande/d320b698-10b7-4dd7-a70a-cedb95fceeda');
+        $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'/demande/d320b698-10b7-4dd7-a70a-cedb95fceeda');
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
 
-        $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur/demande/f9286607-c3b5-4531-be03-81c3fb4fafe8');
+        $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'/demande/64b8b8ca-0708-4fcc-a3ce-844ff2e3852d');
         $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
@@ -75,7 +79,7 @@ class AssessorManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
         // Requests list
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur');
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -154,7 +158,7 @@ class AssessorManagerControllerTest extends WebTestCase
 
         $this->client->submit($crawler->filter('#confirm_action_allow')->form());
 
-        $this->assertClientIsRedirectedTo('/espace-responsable-assesseur/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c', $this->client);
+        $this->assertClientIsRedirectedTo(self::ASSESSOR_MANAGER_REQUEST_PATH.'/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -203,7 +207,7 @@ class AssessorManagerControllerTest extends WebTestCase
 
         $this->client->submit($crawler->filter('#confirm_action_allow')->form());
 
-        $this->assertClientIsRedirectedTo('/espace-responsable-assesseur/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c', $this->client);
+        $this->assertClientIsRedirectedTo(self::ASSESSOR_MANAGER_REQUEST_PATH.'/demande/be61ba07-c8e7-4533-97e1-0ab215cd752c', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -220,7 +224,7 @@ class AssessorManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur?status=unprocessed');
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'?status='.AssessorRequestFilters::UNPROCESSED);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -234,7 +238,7 @@ class AssessorManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur?status=processed');
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'?status='.AssessorRequestFilters::PROCESSED);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -249,7 +253,7 @@ class AssessorManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur/vote-places?status=unassociated');
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_VOTE_PLACE_PATH.'?status'.VotePlaceFilters::UNASSOCIATED);
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -259,17 +263,266 @@ class AssessorManagerControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Restaurant Scolaire")'));
     }
 
+    public function testAssessorManagerRequestsDisabledList()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'?status='.AssessorRequestFilters::DISABLED);
+
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->assertAssessorRequestTotalCount($crawler, self::SUBJECT_REQUEST, 1, 'à traiter');
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Henri Cochet")'));
+    }
+
     public function testAssessorManagerVotePlacesAssociatedList()
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-responsable-assesseur/vote-places?status=associated');
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_VOTE_PLACE_PATH.'?status='.VotePlaceFilters::ASSOCIATED);
 
         $this->isSuccessful($this->client->getResponse());
 
         $this->assertAssessorRequestTotalCount($crawler, self::SUBJECT_VOTE_PLACE, 1, 'complet');
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Ecole Maternelle La Source")'));
+    }
+
+    public function testAssessorManagerUnprocessedRequestListsFilters()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH);
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('Filtrer')->form();
+
+        $formValues = [
+            AssessorRequestFilters::PARAMETER_LAST_NAME => null,
+            AssessorRequestFilters::PARAMETER_VOTE_PLACE => null,
+            AssessorRequestFilters::PARAMETER_CITY => null,
+            AssessorRequestFilters::PARAMETER_COUNTRY => null,
+        ];
+
+        // Test last name filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_LAST_NAME => 'Kepoura']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_LAST_NAME => 'Kepourapas']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test vote place wishes filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => 'Salle']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => '59350_0113']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => 'Maternelle']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => '59000_0113']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test city filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => 'Lille']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => 'Paris']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => '59350']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => '75010']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test country filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_COUNTRY => 'FR']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_COUNTRY => 'AF']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test reset button
+        $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+    }
+
+    public function testAssessorManagerProcessedRequestListsFilters()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'?status='.AssessorRequestFilters::PROCESSED);
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('Filtrer')->form();
+
+        $formValues = [
+            AssessorRequestFilters::PARAMETER_LAST_NAME => null,
+            AssessorRequestFilters::PARAMETER_VOTE_PLACE => null,
+            AssessorRequestFilters::PARAMETER_CITY => null,
+            AssessorRequestFilters::PARAMETER_COUNTRY => null,
+        ];
+
+        // Test last name filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_LAST_NAME => 'Coptère']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_LAST_NAME => 'Kepourapas']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test vote place wishes filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => 'Ecole']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => '59350_0113']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => 'Paris']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_VOTE_PLACE => '59000_0113']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test city filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => 'Bobigny']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => 'Paris']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => '93008']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_CITY => '75010']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test country filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_COUNTRY => 'FR']));
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_COUNTRY => 'AF']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test reset button
+        $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
+        $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
+    }
+
+    public function testAssessorManagerDisabledRequestListsFilters()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH.'?status='.AssessorRequestFilters::DISABLED);
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('Filtrer')->form();
+
+        $formValues = [
+            AssessorRequestFilters::PARAMETER_LAST_NAME => null,
+            AssessorRequestFilters::PARAMETER_VOTE_PLACE => null,
+            AssessorRequestFilters::PARAMETER_CITY => null,
+            AssessorRequestFilters::PARAMETER_COUNTRY => null,
+        ];
+
+        // Test last name filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_LAST_NAME => 'Cochet']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [AssessorRequestFilters::PARAMETER_LAST_NAME => 'Kepourapas']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test reset button
+        $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+    }
+
+    public function testAssessorManagerUnassociatedVotePlaceListsFilters()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_VOTE_PLACE_PATH.'?status='.VotePlaceFilters::UNASSOCIATED);
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('Filtrer')->form();
+
+        $formValues = [
+            VotePlaceFilters::PARAMETER_VOTE_PLACE => null,
+            VotePlaceFilters::PARAMETER_CITY => null,
+            VotePlaceFilters::PARAMETER_COUNTRY => null,
+        ];
+
+        // Test vote place wishes filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => 'Salle']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => '59350_0113']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => 'Paris']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => '59000_0113']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test city filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_CITY => 'Lille']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_CITY => 'Paris']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_CITY => '59350']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_CITY => '75010']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test country filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_COUNTRY => 'FR']));
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_COUNTRY => 'AF']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test reset button
+        $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
+        $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+    }
+
+    public function testAssessorManagerAssociatedVotePlaceListsFilters()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_VOTE_PLACE_PATH.'?status='.VotePlaceFilters::ASSOCIATED);
+        $this->isSuccessful($this->client->getResponse());
+
+        $form = $crawler->selectButton('Filtrer')->form();
+
+        $formValues = [
+            VotePlaceFilters::PARAMETER_VOTE_PLACE => null,
+            VotePlaceFilters::PARAMETER_CITY => null,
+            VotePlaceFilters::PARAMETER_COUNTRY => null,
+        ];
+
+        // Test vote place wishes filter
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => 'Ecole']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => '93066_0004']));
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => 'Le Havre']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [VotePlaceFilters::PARAMETER_VOTE_PLACE => '59000_0113']));
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
+        // Test reset button
+        $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
     }
 
     private function assertSameAssessorProfile(Crawler $crawler, array $profile): void
@@ -312,7 +565,7 @@ class AssessorManagerControllerTest extends WebTestCase
         }
 
         $regexp = sprintf(
-            'Vous avez %s %s %ss?.',
+            'Vous avez %se? %s %ss?.',
             $count > 1 ? $count : 'un',
             $subject,
             $status

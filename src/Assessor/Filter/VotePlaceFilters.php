@@ -52,6 +52,41 @@ class VotePlaceFilters extends AssessorFilters
             ;
         }
 
+        if ($this->getCity()) {
+            if (is_numeric($this->getCity())) {
+                $qb
+                    ->andWhere("FIND_IN_SET(:postalCode, $alias.postalCode) > 0")
+                    ->setParameter('postalCode', $this->getCity())
+                ;
+            } else {
+                $qb
+                    ->andWhere("LOWER($alias.city) LIKE :city")
+                    ->setParameter('city', '%'.strtolower($this->getCity()).'%')
+                ;
+            }
+        }
+
+        if ($this->getCountry()) {
+            $qb
+                ->andWhere("$alias.country = :country")
+                ->setParameter('country', $this->getCountry())
+            ;
+        }
+
+        if ($this->getVotePlace()) {
+            if (preg_match(AssessorFilters::VOTE_PLACE_CODE_REGEX, $this->getVotePlace())) {
+                $qb
+                    ->andWhere("$alias.code = :code")
+                    ->setParameter('code', $this->getVotePlace())
+                ;
+            } else {
+                $qb
+                    ->andWhere("$alias.name LIKE :name")
+                    ->setParameter('name', '%'.strtolower($this->getVotePlace()).'%')
+                ;
+            }
+        }
+
         $qb->addOrderBy("$alias.name", 'DESC');
     }
 }
