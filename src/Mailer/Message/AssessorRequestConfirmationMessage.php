@@ -18,7 +18,7 @@ final class AssessorRequestConfirmationMessage extends Message
             '',
             [
                 'firstname' => $assessorRequest->getFirstName(),
-                'city_name_candidacy' => $assessorRequest->getAssessorCity(),
+                'city_name_candidacy' => (string) $assessorRequest->getAssessorCity(),
                 'country_name_candidacy' => Intl::getRegionBundle()->getCountryName(
                     $assessorRequest->getAssessorCountry()
                 ),
