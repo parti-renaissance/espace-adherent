@@ -5,10 +5,10 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Form\JeMarcheReportType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class JeMarcheController extends Controller
 {
