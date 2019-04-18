@@ -10,6 +10,7 @@
 
 @mixin form-field {
     display: block;
+    width: 100%;
     font-family: $font-roboto;
     font-size: 16px;
     font-weight: normal;
@@ -73,27 +74,29 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        align-items: flex-end;
 
         @media (min-width: $mobile) {
             flex-wrap: nowrap;
         }
 
-        &.dual__fields {
-            .form__row {
-                flex-basis: 100%;
+        .form__row {
+            flex-grow: 1;
 
-                @media (min-width: $mobile) {
-                    margin-right: 14px;
-                }
+            @media (min-width: $mobile) {
+                margin-right: 14px;
+            }
 
-                &:last-child {
-                    margin-right: 0;
-                }
+            &:last-child {
+                margin-right: 0;
             }
         }
     }
 
     .form__date-and-time {
+        .form__group {
+            align-items: flex-start;
+        }
 
         .form__group > div {
             display: flex;
@@ -112,7 +115,7 @@
                 }
             }
 
-            &:nth-child(1){
+            &:nth-child(1) {
                 flex-grow: 2;
                 margin-bottom: 10px;
 
@@ -138,6 +141,17 @@
                 }
             }
         }
+    }
 
+    .form__tel {
+        .form__row {
+            &:nth-child(1) {
+                flex-grow: 1;
+            }
+
+            &:nth-child(2) {
+                flex-grow: 2;
+            }
+        }
     }
 }
