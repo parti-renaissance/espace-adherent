@@ -103,8 +103,7 @@ Feature:
 
     # As an animator, I should have 2 shortcuts
     Then I should see "Raccourcis"
-    And I should see 2 ".shortcuts ul li" elements
-    And I should see "Tracts et posters"
+    And I should see 1 ".shortcuts ul li" elements
     And I should see "Mes documents"
 
     # As an animator, I should have a skills section

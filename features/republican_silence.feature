@@ -28,7 +28,6 @@ Feature:
       | /comites/en-marche-comite-de-singapour                    |
       | /comites/en-marche-comite-de-singapour/evenements/ajouter |
 
-  @javascript
   Scenario: As committee host I cannot access to member contact page
     Given I am logged as "lolodie.dutemps@hotnix.tld"
       And I am on "/espace-animateur/en-marche-comite-de-singapour/messagerie"
@@ -41,15 +40,6 @@ Feature:
     Examples:
       | uri                                                                              |
       | /projets-citoyens/91000-formation-en-ligne-ouverte-a-tous-a-evry/actions/creer   |
-
-  @javascript
-  Scenario: As CP host I cannot access to member contact page
-    Given I am logged as "francis.brioul@yahoo.com"
-    And I am on "/projets-citoyens/91000-formation-en-ligne-ouverte-a-tous-a-evry/acteurs"
-    And I check "members[]"
-    When I click the "members-contact-button" element
-    Then I should be on "/projets-citoyens/91000-formation-en-ligne-ouverte-a-tous-a-evry/acteurs/contact"
-    And I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
 
   Scenario: As deputy of 75001 I cannot communicate with adherents from my deputy space.
     Given I am logged as "deputy@en-marche-dev.fr"

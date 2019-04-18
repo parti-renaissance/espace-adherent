@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% set is_cp_administrator = is_citizen_project_administrator(citizen_project) %}
+
+{% block content %}
+    <main>
+        <section class="b__nudge--bottom-huge adherent-space">
+            <header class="b__nudge--bottom-large adherent-space-header">
+                <div class="l__wrapper">
+                    <div><a href="{{ path('app_citizen_project_space_dashboard') }}" class="btn--text-blue">⟵ Tous mes projets citoyens</a></div>
+
+                    <h1 class="text--large b__nudge--top-40">{{ citizen_project.name }}</h1>
+
+                    <div>
+                        <a class="btn " href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
+                    </div>
+
+                    <nav class="adherent-space-menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_citizen_project_manager_edit') ? 'active' : '' }}">
+                                <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug }) }}">Modifier mon projet</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
+                                <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' : '' }}">
+                                <a href="{{ path('app_citizen_project_image_generator', {slug: citizen_project.slug}) }}">Images de promotion</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block citizen_project_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
