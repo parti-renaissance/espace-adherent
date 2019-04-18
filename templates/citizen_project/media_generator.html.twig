@@ -1,29 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'citizen_project/_space_layout.html.twig' %}
+
 {% set currentRoute = app.request.attributes.get('_route') %}
 {% set imageRoute = 'app_citizen_project_image_generator' %}
 {% set pdfRoute = 'app_citizen_project_tract_generator' %}
 
 {% block page_title 'Projets citoyens - Media generateur' %}
 
-{% block content %}
-<main class="image-generator">
-  <section class="l__wrapper space--30-0">
-    <header>
-      <h1 class="image-generator__headline">Créer vos images de promotion</h1>
-    </header>
-    <nav class="img-tabs">
-      <ul>
-        <li class="{{ currentRoute == imageRoute ? 'active' }}">
-          <a href="{{ path(imageRoute) }}">Réseaux sociaux</a>
-        </li>
-        <li class="{{ currentRoute == pdfRoute ?  'active' }}">
-          <a href="{{ path(pdfRoute) }}">Poster ou tract</a>
-        </li>
-      </ul>
-    </nav>
-    <div class="img-gen__body">
-      {% block media_generator_form %}{% endblock %}
-    </div>
-  </section>
-</main>
-{% endblock content %}
+{% block citizen_project_content %}
+    <main class="image-generator">
+        <section class="space--10">
+            <nav class="img-tabs">
+                <ul>
+                    <li class="{{ currentRoute == imageRoute ? 'active' }}">
+                        <a href="{{ path(imageRoute, {slug: citizen_project.slug}) }}">Réseaux sociaux</a>
+                    </li>
+                    <li class="{{ currentRoute == pdfRoute ?  'active' }}">
+                        <a href="{{ path(pdfRoute, {slug: citizen_project.slug}) }}">Poster ou tract</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="img-gen__body">
+                {% block media_generator_form %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

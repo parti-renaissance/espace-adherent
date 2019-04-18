@@ -129,9 +129,6 @@
                     {% if is_granted('ROLE_COORDINATOR_CITIZEN_PROJECT') %}
                         <a href="{{ path('app_coordinator_citizen_project') }}" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.citizen_project_coordinator_space_space'|trans }}</a>
                     {% endif %}
-                    {% if app.user.isCitizenProjectAdministrator %}
-                        <li><a href="{{ path('app_citizen_project_image_generator') }}" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.leaflets_posters'|trans }}</a></li>
-                    {% endif %}
                     <li><a href="{{ path('app_documents_index') }}" class="link--no-decor link--newblue">{{ 'dashboard.shortcut.my_documents'|trans }}</a></li>
 
                     {% if is_granted('ROLE_REFERENT') %}

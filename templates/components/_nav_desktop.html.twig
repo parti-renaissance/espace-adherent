@@ -222,6 +222,11 @@
             {% endif %}
         {% endif %}
         {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
+            {% if is_canary_enabled() %}
+                <li>
+                    <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet ✨</a>
+                </li>
+            {% endif %}
             <li>
                 {{ administrated_citizen_projects }}
             </li>
