@@ -14,8 +14,8 @@
                 {{ committee.name }}
             </h1>
             <div class="direct-actions">
-                <a href="" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;Action&nbsp;citoyenne</a>
+                <a href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+                <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;Créer&nbsp;événement</a>
             </div>
         </div>
 
