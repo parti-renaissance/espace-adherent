@@ -59,6 +59,22 @@ class CitizenProjectManagerController extends Controller
     }
 
     /**
+     * @Route("/acteurs", name="app_citizen_project_list_actors")
+     * @Method("GET")
+     */
+    public function listActorsAction(
+        CitizenProject $citizenProject,
+        CitizenProjectManager $citizenProjectManager
+    ): Response {
+        return $this->render('citizen_project/list_actors.html.twig', [
+            'citizen_project' => $citizenProject,
+            'administrators' => $citizenProjectManager->getCitizenProjectAdministrators($citizenProject),
+            'form_committee_support' => $this->createForm(FormType::class)->createView(),
+            'actors' => $citizenProjectManager->getCitizenProjectMemberships($citizenProject),
+        ]);
+    }
+
+    /**
      * @Route("/acteurs/contact", name="app_citizen_project_contact_actors")
      * @Method("POST")
      */

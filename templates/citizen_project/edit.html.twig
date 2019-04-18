@@ -1,4 +1,4 @@
-{% extends 'citizen_project/_layout.html.twig' %}
+{% extends 'citizen_project/_space_layout.html.twig' %}
 
 {% block page_title 'Modifier mon project citoyen' %}
 
@@ -20,12 +20,7 @@
 
 {% block citizen_project_content %}
     <main class="citizen-projects__create">
-        <section class="l__wrapper--medium space--30-0">
-            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
-               class="back-to-list icon--with-text text--summary">
-                {{ include('components/caret--left.html.twig') }}
-                Retour au projet citoyen</a>
-
+        <section class="l__wrapper--medium">
             {% if citizen_project.isRefused %}
                 <div class="citizen-project__waiting-for-approval">
                     En l'état, votre projet citoyen n'a pas été validé par nos équipes.

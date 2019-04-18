@@ -19,6 +19,7 @@ common.ordinal_number_feminine: '1ère|%count%ème'
 common.ordinal_number_masculine: '1er|%count%ème'
 common.optional: optionnel
 common.committees_count: "%count% comité|%count% comités"
+common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
 common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 pending: En attente
