@@ -87,7 +87,10 @@ class CommitteeAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->remove('create');
+        $collection
+            ->remove('create')
+            ->remove('delete')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
