@@ -5,7 +5,7 @@
     <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block javascripts %}
+{% block final_javascripts %}
     {{ parent() }}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
