@@ -45,6 +45,7 @@ adherent.activity_position.employed: En activité
 adherent.activity_position.unemployed: En recherche d'emploi
 
 referent: référent
+coreferent: co-référent
 deputy: député
 committee_supervisor: animateur
 supervisor: animateur

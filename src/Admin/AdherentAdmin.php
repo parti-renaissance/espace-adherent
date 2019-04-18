@@ -479,6 +479,12 @@ class AdherentAdmin extends AbstractAdmin
                         $where->add(sprintf('%s.managedArea IS NOT NULL', $alias));
                     }
 
+                    // Co-Referent
+                    if (\in_array(AdherentRoleEnum::COREFERENT, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.referentTeamMember', $alias), 'rtm');
+                        $where->add('rtm.id IS NOT NULL');
+                    }
+
                     // Committee supervisor & host
                     if ($committeeRoles = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_HOST], $value['value'])) {
                         $qb->leftJoin(sprintf('%s.memberships', $alias), 'ms');
