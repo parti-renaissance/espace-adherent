@@ -13,14 +13,15 @@
 
 {% block committee_content %}
     <main>
-        <section class="l__wrapper--medium">
-            {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form'}}) }}
+        <section class="l__wrapper--slim">
+            <h3 class="text--medium">Modifier mon comité</h3>
+            {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form b__nudge--top-40'}}) }}
                 {{ include('committee/_form.html.twig') }}
-                <div>
-                    <button type="submit" id="edit-committee" class="btn btn--blue">
+                <div class="b__nudge--top-50">
+                    <button type="submit" id="edit-committee" class="btn btn--blue btn--large-and-full">
                         Enregistrer
                     </button>
-                    <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" class="btn">
+                    <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
                         Annuler
                     </a>
                 </div>

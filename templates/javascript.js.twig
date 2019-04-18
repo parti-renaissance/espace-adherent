@@ -392,7 +392,7 @@ $(document).ready(function() {
 
 {% macro manager_sticky_header(selector) %}
     $(window).scroll(function() {
-    var scroll = $(window).scrollTop();
+        var scroll = $(window).scrollTop();
         if (scroll >= 350) {
             $("{{ selector }}").addClass("active");
         } else {
