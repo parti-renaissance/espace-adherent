@@ -1,9 +1,9 @@
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
 
 <nav class="gtm__navigation__desktop l__wrapper l__row l__row--h-stretch l__hide--on-small-laptop {{ app.user ? '' : 'space--20-0' }}">
-    <ul class="list__links list__links--row list__links--nav">
+    <ul class="list__links list__links--row list__links--nav list__links--no-decor">
         <li>
-            <a href="{{ path('homepage') }}" class="link--no-decor text--logo">EM!</a>
+            <a href="{{ path('homepage') }}" class="text--logo b__nudge--right-0">EM!</a>
         </li>
         <div class="l__row">
             <div class="nav-dropdown">
@@ -11,7 +11,7 @@
                     Le Mouvement
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
                 </p>
-                <ul class="nav-dropdown__item list__links--no-decor">
+                <ul class="nav-dropdown__item">
                     <li>
                         <a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a>
                     </li>
@@ -38,7 +38,7 @@
     <div>
         <li>
             <a href="https://eu-renaissance.org/fr" rel="noopener noreferrer" target="_blank">
-                Élections Européennes
+                <strong>Élections Européennes</strong>
             </a>
         </li>
     </div>
@@ -48,21 +48,21 @@
                 S'engager
                 <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
             </p>
-            <ul class="nav-dropdown__item list__links--no-decor">
+            <ul class="nav-dropdown__item">
                 <li>
-                    <a href="{{ path('app_search_events') }}" class="link--no-decor">Événements</a>
+                    <a href="{{ path('app_search_events') }}">Événements</a>
                 </li>
                 <li>
-                    <a href="{{ path('app_search_committees') }}" class="link--no-decor">Comités</a>
+                    <a href="{{ path('app_search_committees') }}">Comités</a>
                 </li>
                 <li>
-                    <a href="{{ path('react_app_citizen_projects_home') }}" class="link--no-decor">Projets citoyens</a>
+                    <a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a>
                 </li>
                 <li>
-                    <a href="{{ path('react_app_ideas_workshop_home') }}" class="link--no-decor">Atelier des idées</a>
+                    <a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a>
                 </li>
                 <li>
-                    <a href="{{ path('page_campus') }}" class="link--no-decor">Formation</a>
+                    <a href="{{ path('page_campus') }}">Formation</a>
                 </li>
                 <li>
                     <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
@@ -75,10 +75,10 @@
     </div>
 
     <li>
-        <a href="{{ path('articles_list', { category: 'tout' }) }}" class="link--no-decor">Actualités</a>
+        <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
     </li>
     <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %}>
-        <a class="je-cherche" href="javascript:void(0)" class="link--no-decor">
+        <a class="je-cherche" href="javascript:void(0)">
             {{ include('components/search.html.twig') }}
         </a>
     </li>
