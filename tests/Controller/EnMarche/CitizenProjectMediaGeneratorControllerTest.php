@@ -13,19 +13,11 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @dataProvider getMediaGeneratorUrls
-     */
-    public function testUserCanAccessToMediaGeneratorUrls($url): void
-    {
-        $this->client->request('GET', $url);
-
-        $this->isSuccessful($this->client->getResponse());
-    }
-
     public function testCoverImageIsGeneratedSuccessfully(): void
     {
-        $crawler = $this->client->request('GET', '/projets-citoyens/media-generateur/images');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request('GET', '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/media-generateur/images');
 
         $crawler = $this->client->submit($crawler->selectButton('Aperçu')->form([
             'citizen_project_media[citizenProjectTitle]' => 'Mon super projet!',
@@ -46,7 +38,9 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
 
     public function testTractPdfFileIsGeneratedSuccessfully(): void
     {
-        $crawler = $this->client->request('GET', '/projets-citoyens/media-generateur/tracts');
+        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+
+        $crawler = $this->client->request('GET', '/projets-citoyens/75008-le-projet-citoyen-a-paris-8/media-generateur/tracts');
 
         $this->client->submit($crawler->selectButton('Créer mon PDF')->form([
             'citizen_project_media[citizenProjectTitle]' => 'Mon super projet!',
@@ -62,14 +56,6 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
         $this->assertArrayHasKey('content-disposition', $response->headers->all());
         $this->assertContains('attachment; filename="tract_', $response->headers->get('content-disposition'));
         $this->assertSame('application/pdf', $response->headers->get('content-type'));
-    }
-
-    public function getMediaGeneratorUrls(): array
-    {
-        return [
-            ['/projets-citoyens/media-generateur/images'],
-            ['/projets-citoyens/media-generateur/tracts'],
-        ];
     }
 
     protected function setUp()
