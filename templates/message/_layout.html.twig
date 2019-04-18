@@ -3,16 +3,6 @@
 {% block messages_main_block %}
     <main>
         <section class="b__nudge--top-5 b__nudge--bottom-huge">
-            <div class="datagrid__pre-table b__nudge--bottom-larger">
-                <h3>{% block message_page_title %}Mes messages{% endblock %}</h3>
-                <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-type-table">
-                    + Nouveau message
-                </a>
-                <span class="datagrid__count">
-                    <span>45</span> sur 904 résultat(s)
-                </span>
-            </div>
-
             {% block message_content %}{% endblock %}
         </section>
     </main>
