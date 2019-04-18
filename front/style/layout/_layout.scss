@@ -281,6 +281,10 @@
         padding: 35px 0 15px;
     }
 
+    &--20-30 {
+        padding: 20px 30px;
+    }
+
     &--20 {
         padding: 20px;
     }
@@ -289,20 +293,16 @@
         padding: 20px 0;
     }
 
-    &--5-20 {
-        padding: 5px 0 20px;
-    }
-
-    &--20-30 {
-        padding: 20px 30px;
+    &--10-15 {
+        padding: 10px 15px;
     }
 
     &--10-0 {
         padding: 10px 0;
     }
 
-    &--10-15 {
-        padding: 10px 15px;
+    &--5-20 {
+        padding: 5px 0 20px;
     }
 }
 
@@ -393,6 +393,10 @@
 
         &--bottom-huge {
             margin-bottom: 80px;
+        }
+
+        &--right-0 {
+            margin-right: 0px;
         }
 
         &--right-nano {
