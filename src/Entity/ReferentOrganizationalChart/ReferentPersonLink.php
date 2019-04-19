@@ -86,6 +86,8 @@ class ReferentPersonLink
     /**
      * @var bool
      *
+     * @ORM\Column(type="boolean", options={"default": false})
+     *
      * @CanBeCoReferent
      */
     private $isCoReferent = false;
@@ -199,9 +201,9 @@ class ReferentPersonLink
         }
 
         if ($this->isCoReferent()) {
-            $this->getAdherent()->setReferent($referent);
-        } elseif ($this->getAdherent()->getReferent() === $referent) {
-            $this->getAdherent()->setReferent(null);
+            $this->getAdherent()->setReferentTeamReferent($referent);
+        } elseif ($this->getAdherent()->getReferentTeamReferent() === $referent) {
+            $this->getAdherent()->setReferentTeam(null);
         }
     }
 

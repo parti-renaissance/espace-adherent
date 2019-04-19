@@ -23,8 +23,8 @@ class ReferentPersonLinkListener
         if ($adherent) {
             $personLink->setAdherent($adherent);
         } elseif ($personLink->getAdherent()) {
-            if ($personLink->getAdherent()->getReferent()) {
-                $personLink->getAdherent()->setReferent(null);
+            if ($personLink->getAdherent()->getReferentTeamReferent()) {
+                $personLink->getAdherent()->getReferentTeam(null);
             }
             $personLink->setAdherent(null);
         }

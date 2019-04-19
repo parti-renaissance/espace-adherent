@@ -31,7 +31,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     public function testSearch()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferentInfo(
+        $referent->setReferent(
             [
                 $this->referentTagRepository->findOneBy(['code' => 'ch']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
@@ -48,7 +48,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     public function testSearchWithoutEmailSubscribers()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferentInfo(
+        $referent->setReferent(
             [
                 $this->referentTagRepository->findOneBy(['code' => 'ch']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
@@ -71,7 +71,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     public function testSearchWithEmailSubscribersInevitably(?bool $onlyEmailSubscribers, int $count)
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferentInfo(
+        $referent->setReferent(
             [
                 $this->referentTagRepository->findOneBy(['code' => 'ch']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
@@ -101,7 +101,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     public function testSearchWithInvalidReferent()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferentInfo([], '1.123456', '2.34567');
+        $referent->setReferent([], '1.123456', '2.34567');
 
         $this->referentManagedUserRepository->search($referent);
     }
@@ -109,7 +109,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     public function testCreateDispatcherIterator()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferentInfo(
+        $referent->setReferent(
             [
                 $this->referentTagRepository->findOneBy(['code' => '92']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
@@ -134,7 +134,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     public function testCreateDispatcherIteratorWithOffset()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferentInfo(
+        $referent->setReferent(
             [
                 $this->referentTagRepository->findOneBy(['code' => '92']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),

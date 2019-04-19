@@ -29,7 +29,7 @@ class CanBeCoReferentValidator extends ConstraintValidator
 
         /** @var Adherent $adherent */
         $adherent = $this->context->getObject()->getAdherent();
-        if ($adherent && $adherent->isCoReferent() && $adherent->getReferent() !== $this->getAuthenticatedUser()) {
+        if ($adherent && $adherent->isCoReferent() && $adherent->getReferentTeamReferent() !== $this->getAuthenticatedUser()) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation()
             ;

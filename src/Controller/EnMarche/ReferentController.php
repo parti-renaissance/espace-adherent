@@ -548,7 +548,7 @@ class ReferentController extends Controller
         return $this->render('referent/organizational_chart.html.twig', [
             'form' => $form->createView(),
             'organization_chart_items' => $organizationalChartItemRepository->getRootNodes(),
-            'referent' => $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress()),
+            'referent' => $referent,
         ]);
     }
 

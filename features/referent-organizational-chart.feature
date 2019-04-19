@@ -55,13 +55,13 @@ Feature: Make sure we can see and interact with organizational chart
     When I follow "Nom du responsable Responsable Financier"
     And I fill in the following:
       | Nom             | Michel                    |
-      | Prénom          | VASSEAUR                  |
+      | Prénom          | VASSEUR                   |
       | E-mail          | michel.vasseur@example.ch |
       | Téléphone       | 0698765432                |
       | Adresse postale | Station Javel             |
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
-    And I should see "VASSEAUR Michel Responsable Financier"
+    And I should see "VASSEUR Michel Responsable Financier"
     And should see 3 "div.referent-person-link" elements
     And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
     And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"

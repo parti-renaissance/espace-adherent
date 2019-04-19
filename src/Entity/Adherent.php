@@ -211,12 +211,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Defines to which referent team the adherent belongs.
      *
-     * @var Adherent|null
+     * @var ReferentTeam|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(name="referent_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTeam", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
-    private $referent;
+    private $referentTeam;
 
     /**
      * @var CoordinatorManagedArea|null
@@ -966,14 +965,30 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedArea = $managedArea;
     }
 
-    public function getReferent(): ?Adherent
+    public function getReferentTeam(): ?ReferentTeam
     {
-        return $this->referent;
+        return $this->referentTeam;
     }
 
-    public function setReferent(?Adherent $referent): void
+    public function setReferentTeam(?ReferentTeam $referentTeam): void
     {
-        $this->referent = $referent;
+        $this->referentTeam = $referentTeam;
+    }
+
+    public function getReferentTeamReferent(): ?Adherent
+    {
+        return $this->getReferentTeam() ? $this->getReferentTeam()->getReferent() : null;
+    }
+
+    public function setReferentTeamReferent(?Adherent $referent): void
+    {
+        if ($referent && $this->referentTeam) {
+            $this->referentTeam->setReferent($referent);
+        } elseif ($referent) {
+            $this->referentTeam = new ReferentTeam($this, $referent);
+        } else {
+            $this->referentTeam = null;
+        }
     }
 
     /**
@@ -1043,7 +1058,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->boardMember = null;
     }
 
-    public function setReferentInfo(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
+    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
     {
         $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
     }
@@ -1056,7 +1071,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isCoReferent(): bool
     {
-        return $this->referent ? true : false;
+        return $this->referentTeam instanceof ReferentTeam;
     }
 
     public function revokeReferent(): void

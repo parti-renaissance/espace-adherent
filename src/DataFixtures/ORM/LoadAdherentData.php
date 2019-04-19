@@ -375,7 +375,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referent->setReferentInfo(
+        $referent->setReferent(
             [
                 $this->getReference('referent_tag_ch'),
                 $this->getReference('referent_tag_es'),
@@ -408,7 +408,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 6765204050',
             'registered_at' => '2018-05-12 12:31:45',
         ]);
-        $referent75and77->setReferentInfo(
+        $referent75and77->setReferent(
             [
                 $this->getReference('referent_tag_77'),
                 $this->getReference('referent_tag_75'),
@@ -435,7 +435,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654348',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referentChild->setReferentInfo(
+        $referentChild->setReferent(
             [
                 $this->getReference('referent_tag_ch'),
                 $this->getReference('referent_tag_93'),
@@ -721,7 +721,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($deputy_ch_li);
 
         // For Organizational chart: adherent which is co-referent in another referent team
-        $adherent4->setReferent($this->getReference('adherent-19'));
+        $adherent4->setReferentTeamReferent($this->getReference('adherent-19'));
 
         $manager->persist($key1);
         $manager->persist($key2);
