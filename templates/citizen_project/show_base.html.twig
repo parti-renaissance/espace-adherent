@@ -55,7 +55,7 @@
                 </li>
                 {% if citizen_project.isApproved %}
                     <li>
-                        <a href="{{ path('app_citizen_project_image_generator') }}" class="text--body link--newblue">
+                        <a href="{{ path('app_citizen_project_image_generator', {slug: citizen_project.slug}) }}" class="text--body link--newblue">
                             {{ 'citizen_project.create_image'|trans }}
                         </a>
                     </li>
