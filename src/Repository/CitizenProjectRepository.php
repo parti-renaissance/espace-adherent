@@ -131,6 +131,26 @@ class CitizenProjectRepository extends AbstractGroupRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findManagedByReferent(Adherent $referent): array
+    {
+        if (!$referent->isReferent()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('cp')
+            ->select('cp')
+            ->join('cp.referentTags', 'tag')
+            ->where('cp.status = :status')
+            ->andWhere('tag IN (:tags)')
+            ->setParameter('status', BaseGroup::APPROVED)
+            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->orderBy('cp.name', 'ASC')
+            ->orderBy('cp.createdAt', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @return CitizenProject[]
      */

@@ -192,6 +192,7 @@
         <service id="AppBundle\Command\ReferentTagInitializeCommitteeEvent"/>
         <service id="AppBundle\Referent\ReferentTagManager" />
         <service id="AppBundle\Referent\ManagedCommitteesExporter" />
+        <service id="AppBundle\Referent\ManagedCitizenProjectsExporter" />
         <service id="AppBundle\Referent\ManagedEventsExporter" />
 
         <!-- J'écoute -->
