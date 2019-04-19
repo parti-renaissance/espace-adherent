@@ -22,16 +22,16 @@
         {% endif %}
     </div>
 
-        {% if committees|length > 6 %}
-            <div class="b__nudge--top-40 l__row l__row--center">
-                <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
-            </div>
-            <div class="l__row l__row--wrap l__row--center hidden" id="committees-next-part">
-                {% for committee in committees|slice(6) %}
-                    {{ block('committee_block') }}
-                {% endfor %}
-            </div>
-        {% endif %}
+    {% if committees|length > 6 %}
+        <div class="b__nudge--top-40 l__row l__row--center">
+            <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
+        </div>
+        <div class="l__row l__row--wrap l__row--center hidden" id="committees-next-part">
+            {% for committee in committees|slice(6) %}
+                {{ block('committee_block') }}
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block committee_block %}

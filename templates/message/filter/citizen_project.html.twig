@@ -1,0 +1,7 @@
+{% extends 'message/filter.html.twig' %}
+
+{% block filter_content %}
+    <div class="text--center">
+        Message aux membres du projet <strong>{{ message.filter.citizenProject.name }}</strong>
+    </div>
+{% endblock %}

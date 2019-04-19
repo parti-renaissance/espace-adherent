@@ -45,3 +45,10 @@ Feature:
     Given I am logged as "deputy@en-marche-dev.fr"
     When I go to "/espace-depute/utilisateurs/message"
     Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
+    When I go to "/espace-depute/messagerie"
+    Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
+
+  Scenario: As CP host I cannot access to member contact page
+    Given I am logged as "francis.brioul@yahoo.com"
+    When I am on "/espace-porteur-projet/91000-formation-en-ligne-ouverte-a-tous-a-evry/messagerie"
+    And I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
