@@ -525,6 +525,7 @@
 
         <service id="app.mailchimp.content_section_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
+                <argument key="AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />

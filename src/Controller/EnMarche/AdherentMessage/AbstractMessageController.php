@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche\AdherentMessage;
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\Command\CreateDefaultMessageFilterCommand;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
@@ -269,28 +268,10 @@ abstract class AbstractMessageController extends Controller
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
-        switch ($messageType = $this->getMessageType()) {
-            case AdherentMessageTypeEnum::REFERENT:
-                $baseTemplate = 'message/_base_referent.html.twig';
-                break;
-
-            case AdherentMessageTypeEnum::DEPUTY:
-                $baseTemplate = 'message/_base_deputy.html.twig';
-                break;
-
-            case AdherentMessageTypeEnum::COMMITTEE:
-                $baseTemplate = 'message/_base_committee.html.twig';
-                break;
-
-            default:
-                $baseTemplate = 'message/_base.html.twig';
-                break;
-        }
-
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => $baseTemplate,
+                'base_template' => sprintf('message/_base_%s.html.twig', $messageType = $this->getMessageType()),
                 'message_type' => $messageType,
             ]
         ));
