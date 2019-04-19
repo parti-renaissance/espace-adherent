@@ -4,18 +4,25 @@
 
 {% block content %}
     <main>
-        <section class="b__nudge--bottom-huge adherent-space">
-            <header class="b__nudge--bottom-large adherent-space-header">
+        <section class="manager-space b__nudge--bottom-huge adherent-space">
+            <header class="manager-header b__nudge--bottom-large adherent-space-header">
                 <div class="l__wrapper">
-                    <div><a href="{{ path('app_citizen_project_space_dashboard') }}" class="btn--text-blue">⟵ Tous mes projets citoyens</a></div>
-
-                    <h1 class="text--large b__nudge--top-40">{{ citizen_project.name }}</h1>
-
-                    <div>
-                        <a class="btn " href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <a href="{{ path('app_citizen_project_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous mes projets citoyens</a>
+                        </div>
                     </div>
 
-                    <nav class="adherent-space-menu">
+                    <div class="second-section">
+                        <h1 class="page-title text--large">{{ citizen_project.name }}</h1>
+
+                        <div class="direct-actions">
+                            <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
+                            <a class="btn " href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
+                        </div>
+                    </div>
+
+                    <nav class="manager-header__menu">
                         <ul>
                             <li class="{{ is_active_route(app.request, 'app_citizen_project_manager_edit') ? 'active' : '' }}">
                                 <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug }) }}">Modifier mon projet</a>
@@ -24,6 +31,12 @@
                             <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
                                 <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
                             </li>
+
+                            {% if is_canary_enabled() %}
+                                <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
+                                    <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
+                                </li>
+                            {% endif %}
 
                             <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' : '' }}">
                                 <a href="{{ path('app_citizen_project_image_generator', {slug: citizen_project.slug}) }}">Images de promotion</a>

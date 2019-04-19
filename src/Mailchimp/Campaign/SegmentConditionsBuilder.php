@@ -3,6 +3,7 @@
 namespace AppBundle\Mailchimp\Campaign;
 
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
@@ -69,8 +70,11 @@ class SegmentConditionsBuilder
             case CommitteeAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::LOCAL_HOST_EMAIL;
                 break;
+            case CitizenProjectAdherentMessage::class:
+                $interestKeys[] = SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL;
+                break;
             default:
-                throw new \InvalidArgumentException(sprintf('Message type %s don\'t match any subscription type', $messageClass));
+                throw new \InvalidArgumentException(sprintf('Message type %s does not match any subscription type', $messageClass));
         }
 
         return $this->buildInterestCondition($interestKeys, $this->subscriptionTypeInterestGroupId, $matchAll);
