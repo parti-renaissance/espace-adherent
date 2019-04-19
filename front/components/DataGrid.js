@@ -255,7 +255,7 @@ export default class DataGrid extends React.Component {
                         <td key={`result${i}-column${j}`}
                             style={columns[j].style || null}
                             className={columns[j].className || ''}>
-                            <a href={result[columns[j].key].url}
+                            <a target={'_blank'} href={result[columns[j].key].url}
                                dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
                             </a>
                         </td>
