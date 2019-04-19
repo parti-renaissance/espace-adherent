@@ -47,7 +47,7 @@
                                 <a href="{{ path('app_referent_committees') }}">Comités</a>
                             </li>
 
-                            <li class="">
+                            <li class="{{ is_active_route(app.request, 'app_referent_citizen_projects') ? 'active' : '' }}">
                                 <a href="{{ path('app_referent_citizen_projects') }}">Projets citoyens</a>
                             </li>
 
@@ -119,7 +119,7 @@
             });
         </script>
     {% endif %}
-    
+
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.manager_sticky_header('#managerOnScroll') }}
