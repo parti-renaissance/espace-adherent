@@ -13,84 +13,76 @@
 {% block committee_content %}
     {% set is_supervisor = is_supervisor(committee) %}
 
-    <section class="b__nudge--top-5 b__nudge--bottom-huge">
-        <header class="l__wrapper b__nudge--bottom-tiny">
-            <div class="pull-left">
-                <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
-                    <input type="hidden" name="exports" value="" id="members-export-selection" />
+    <section>
+        <div class="datagrid__pre-table b__nudge--bottom">
+            <h3>Mes adhérents</h3>
+        </div>
+        <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}" class="b__nudge--bottom">
+            <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
+            <input type="hidden" name="exports" value="" id="members-export-selection" />
+            <button id="members-export-button" disabled="disabled" class="btn-type-table">Exporter</button>
+        </form>
+        <table class="datagrid__table-manager" cellpadding="10">
+            <thead>
+                <th width="50px"><input type="checkbox" id="members-check-all" /></th>
+                <th width="150px">Prénom</th>
+                <th width="150px">Nom</th>
+                <th width="75px">Age</th>
+                <th width="100px">CP</th>
+                <th width="150px">Ville</th>
+                <th width="100px">Rôle</th>
+                <th width="100px">Adhésion</th>
+                {% if is_supervisor %}
+                    <th style="min-width: 200px;">Actions</th>
+                {% endif %}
+            </thead>
+            {% for membership in members %}
+                {% set member = membership.adherent %}
+                {% set is_promotable_host = membership.promotableHost %}
+                {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
 
-                    <button id="members-export-button" disabled="disabled" class="btn">Exporter</button>
-                </form>
-            </div>
-
-            <h2 class="text--center text--medium font-gillsans">Mes adhérents</h2>
-
-            <hr class="clearfix"/>
-        </header>
-        <div class="l__wrapper l__col">
-            <table class="committee__members__list" cellpadding="10">
-                <tr>
-                    <th><input type="checkbox" id="members-check-all" /></th>
-                    <th>Prénom</th>
-                    <th>Nom</th>
-                    <th>Age</th>
-                    <th>CP</th>
-                    <th>Ville</th>
-                    <th>Rôle</th>
-                    <th>Adhésion</th>
-                    {% if is_supervisor %}
-                        <th style="min-width: 200px;">Actions</th>
-                    {% endif %}
-                </tr>
-                {% for membership in members %}
-                    {% set member = membership.adherent %}
-                    {% set is_promotable_host = membership.promotableHost %}
-                    {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
-
-                    <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
-                        <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
-                        <td class="member-first-name">{{ member.firstName|capitalize }}</td>
-                        <td class="member-last-name">{{ member.lastNameInitial|upper }}</td>
-                        <td class="member-age">{{ member.age }}</td>
-                        <td class="member-postal-code">{{ member.postalCode }}</td>
-                        <td class="member-city-name">{{ member.cityName }}</td>
-                        <td>
-                            {% if not is_promotable_host %}
-                                {% if member.female %}
-                                    {{ is_demotable_host ? 'Co-animatrice' : 'Animatrice' }}
-                                {% else %}
-                                    {{ is_demotable_host ? 'Co-animateur' : 'Animateur' }}
-                                {% endif %}
+                <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
+                    <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
+                    <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+                    <td class="member-last-name">{{ member.lastNameInitial|upper }}</td>
+                    <td class="member-age">{{ member.age }}</td>
+                    <td class="member-postal-code">{{ member.postalCode }}</td>
+                    <td class="member-city-name">{{ member.cityName }}</td>
+                    <td>
+                        {% if not is_promotable_host %}
+                            {% if member.female %}
+                                {{ is_demotable_host ? 'Co-animatrice' : 'Animatrice' }}
                             {% else %}
-                                Membre
+                                {{ is_demotable_host ? 'Co-animateur' : 'Animateur' }}
+                            {% endif %}
+                        {% else %}
+                            Membre
+                        {% endif %}
+                    </td>
+
+                    <td class="member-subscription-date">
+                        {{- membership.subscriptionDate|date('d/m/Y') -}}
+                    </td>
+
+                    {% if is_supervisor %}
+                        <td>
+                            {% if is_promotable_host %}
+                                <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                                   title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
+                                   class="promote-host-link text--blue--dark link--no-decor">
+                                    Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
+                                </a>
+                            {% elseif is_demotable_host %}
+                                <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                                   title="Définir membre"
+                                   class="demote-host-link text--blue--dark link--no-decor">
+                                    Définir membre
+                                </a>
                             {% endif %}
                         </td>
-
-                        <td class="member-subscription-date">
-                            {{- membership.subscriptionDate|date('d/m/Y') -}}
-                        </td>
-
-                        {% if is_supervisor %}
-                            <td>
-                                {% if is_promotable_host %}
-                                    <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
-                                       title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
-                                       class="promote-host-link btn btn--small">
-                                        Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
-                                    </a>
-                                {% elseif is_demotable_host %}
-                                    <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
-                                       title="Définir membre"
-                                       class="demote-host-link btn btn--small">
-                                        Définir membre
-                                    </a>
-                                {% endif %}
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
     </section>
 {% endblock %}
