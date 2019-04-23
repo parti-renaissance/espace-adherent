@@ -2,11 +2,11 @@
 
 namespace Tests\AppBundle\Donation;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Donation\DonationFactory;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Address\GeoCoder;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;

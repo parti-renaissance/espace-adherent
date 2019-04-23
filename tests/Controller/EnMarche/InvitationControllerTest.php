@@ -4,11 +4,11 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Invite;
 use AppBundle\Mailer\Message\InvitationMessage;
+use AppBundle\Repository\InvitationRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use AppBundle\Repository\InvitationRepository;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

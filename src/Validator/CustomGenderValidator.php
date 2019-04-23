@@ -4,9 +4,9 @@ namespace AppBundle\Validator;
 
 use AppBundle\Jecoute\GenderEnum;
 use AppBundle\Membership\MembershipRequest;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CustomGenderValidator extends ConstraintValidator
 {

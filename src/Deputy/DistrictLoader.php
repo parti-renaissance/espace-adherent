@@ -2,8 +2,8 @@
 
 namespace AppBundle\Deputy;
 
-use AppBundle\Entity\GeoData;
 use AppBundle\Entity\District;
+use AppBundle\Entity\GeoData;
 use AppBundle\Geo\GeometryFactory;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Psr\Log\LoggerInterface;

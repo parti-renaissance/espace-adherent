@@ -9,14 +9,14 @@ use AppBundle\Membership\ActivityPositions;
 use AppBundle\Summary\Contract;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
-use League\Glide\Signatures\SignatureFactory;
 use AppBundle\Summary\JobLocation;
+use League\Glide\Signatures\SignatureFactory;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

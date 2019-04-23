@@ -2,11 +2,11 @@
 
 namespace AppBundle\Event;
 
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Events;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventRegistration;
+use AppBundle\Events;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventNotificationMessage;

@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity\Report;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\CitizenAction;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 
 /**
  * @ORM\Entity

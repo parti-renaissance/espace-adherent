@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\MediaGenerator\Pdf;
 
 use AppBundle\MediaGenerator\Command\CitizenProjectTractCommand;
-use AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use AppBundle\MediaGenerator\MediaContent;
+use AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Snappy\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Templating\EngineInterface;

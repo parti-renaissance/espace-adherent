@@ -3,8 +3,8 @@
 namespace AppBundle\Interactive;
 
 use AppBundle\Entity\MyEuropeInvitation;
-use AppBundle\Mailer\Message\MyEuropeMessage;
 use AppBundle\Mailer\MailerService;
+use AppBundle\Mailer\Message\MyEuropeMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;

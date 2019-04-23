@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\ReferentArea;
 use AppBundle\Entity\Referent;
+use AppBundle\Entity\ReferentArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

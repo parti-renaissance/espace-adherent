@@ -7,8 +7,8 @@ use AppBundle\DataFixtures\ORM\LoadIdeaData;
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\Thread;
@@ -19,18 +19,18 @@ use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Mailer\Message\AdherentContactMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
-use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Mailer\Message\CitizenProjectCreationConfirmationMessage;
+use AppBundle\Mailer\Message\CommitteeCreationConfirmationMessage;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\UnregistrationRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

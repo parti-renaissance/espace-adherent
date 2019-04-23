@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\BoardMember\BoardMember;
@@ -15,6 +14,7 @@ use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\MembershipInterface;
 use AppBundle\Membership\MembershipRequest;
+use AppBundle\OAuth\Model\User as InMemoryOAuthUser;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;

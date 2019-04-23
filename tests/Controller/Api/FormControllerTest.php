@@ -6,11 +6,11 @@ use AppBundle\Form\AdherentRegistrationType;
 use AppBundle\Form\BecomeAdherentType;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Form\UserRegistrationType;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ApiControllerTestTrait;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

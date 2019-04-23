@@ -3,11 +3,11 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use AppBundle\Mailer\Message\CommitteeNewFollowerMessage;
-use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

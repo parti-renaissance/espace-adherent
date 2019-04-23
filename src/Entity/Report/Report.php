@@ -2,14 +2,14 @@
 
 namespace AppBundle\Entity\Report;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthoredTrait;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
 use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
+use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Ramsey\Uuid\Uuid;
 
 /**

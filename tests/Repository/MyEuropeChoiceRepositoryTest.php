@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Repository;
 
 use AppBundle\Entity\MyEuropeChoice;
 use AppBundle\Repository\MyEuropeChoiceRepository;
-use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional

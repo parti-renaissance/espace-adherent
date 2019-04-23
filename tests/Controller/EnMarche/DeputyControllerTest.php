@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\Entity\DeputyManagedUsersMessage;
 use AppBundle\Repository\DeputyManagedUsersMessageRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\MessengerTestTrait;
 
 /**

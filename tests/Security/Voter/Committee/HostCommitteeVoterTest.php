@@ -4,9 +4,9 @@ namespace Tests\AppBundle\Security\Voter\Committee;
 
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Security\Voter\AbstractAdherentVoter;
 use AppBundle\Security\Voter\Committee\HostCommitteeVoter;
-use AppBundle\Entity\Committee;
 use Ramsey\Uuid\UuidInterface;
 use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
 

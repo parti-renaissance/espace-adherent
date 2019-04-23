@@ -2,13 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 
 /**
  * @ORM\Entity

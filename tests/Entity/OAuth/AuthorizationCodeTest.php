@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Entity;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\OAuth\AuthorizationCode;
 use AppBundle\Entity\OAuth\Client;
-use AppBundle\Entity\Adherent;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

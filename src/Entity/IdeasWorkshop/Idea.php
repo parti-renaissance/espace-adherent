@@ -7,6 +7,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Committee;
@@ -14,8 +16,8 @@ use AppBundle\Entity\EnabledInterface;
 use AppBundle\Entity\EntityNameSlugTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\ContributorsCountFilter;
+use AppBundle\Filter\IdeaStatusFilter;
 use AppBundle\Filter\OrTextSearchFilter;
 use AppBundle\Report\ReportType;
 use AppBundle\Validator\CommitteeMember;
@@ -28,8 +30,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(

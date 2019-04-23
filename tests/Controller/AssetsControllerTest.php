@@ -4,9 +4,9 @@ namespace Tests\AppBundle\Controller;
 
 use League\Glide\Signatures\Signature;
 use League\Glide\Signatures\SignatureFactory;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

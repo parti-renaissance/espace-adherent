@@ -5,8 +5,8 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertUniqueEntity(fields={"email"}, message="neswletter.already_registered")

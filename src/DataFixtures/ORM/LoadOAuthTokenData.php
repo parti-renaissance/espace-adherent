@@ -2,13 +2,13 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\OAuth\AccessToken;
 use AppBundle\Entity\OAuth\AuthorizationCode;
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\RefreshToken;
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\OAuth\ClientRepository;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\OAuth\ClientRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

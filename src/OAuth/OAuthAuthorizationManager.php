@@ -2,8 +2,8 @@
 
 namespace AppBundle\OAuth;
 
-use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\UserAuthorization;
 use AppBundle\OAuth\Model\Scope;
 use AppBundle\Repository\OAuth\UserAuthorizationRepository;

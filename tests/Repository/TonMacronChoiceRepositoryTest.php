@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Repository;
 
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Repository\TonMacronChoiceRepository;
-use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional

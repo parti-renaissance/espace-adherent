@@ -2,8 +2,8 @@
 
 namespace AppBundle\Form\TypeExtension;
 
-use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumber;
+use libphonenumber\PhoneNumberUtil;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -4,10 +4,10 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Mailer\Message\LegislativeCampaignContactMessage;
 use AppBundle\Repository\EmailRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

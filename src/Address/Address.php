@@ -5,10 +5,10 @@ namespace AppBundle\Address;
 use AppBundle\Geocoder\GeocodableInterface;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Validator\Address as AssertValidAddress;
+use AppBundle\Validator\FrenchZipCode;
 use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\FrenchZipCode;
 
 /**
  * @AssertValidAddress

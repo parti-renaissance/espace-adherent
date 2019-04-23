@@ -4,8 +4,8 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\History\CommitteeMembershipHistoryHandler;
-use AppBundle\Membership\AdherentManager;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
+use AppBundle\Membership\AdherentManager;
 use AppBundle\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;

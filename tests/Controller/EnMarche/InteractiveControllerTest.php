@@ -3,15 +3,15 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Controller\EnMarche\InteractiveController;
+use AppBundle\Interactive\MyEuropeProcessor;
+use AppBundle\Interactive\MyEuropeProcessorHandler;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\MyEuropeChoiceRepository;
 use AppBundle\Repository\MyEuropeInvitationRepository;
-use AppBundle\Interactive\MyEuropeProcessor;
-use AppBundle\Interactive\MyEuropeProcessorHandler;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

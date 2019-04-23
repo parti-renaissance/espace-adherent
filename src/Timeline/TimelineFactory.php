@@ -3,9 +3,9 @@
 namespace AppBundle\Timeline;
 
 use AppBundle\Content\MediaFactory;
+use AppBundle\Entity\Media;
 use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Entity\Media;
 use AppBundle\Repository\MediaRepository;
 use Cocur\Slugify\Slugify;
 use League\Flysystem\Filesystem as Storage;

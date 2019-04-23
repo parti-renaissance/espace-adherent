@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form\DataTransformer;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Event\BaseEventCommand;
 use Symfony\Component\Form\DataTransformerInterface;
-use AppBundle\Address\GeoCoder;
 
 class EventDateTimeZoneTransformer implements DataTransformerInterface
 {

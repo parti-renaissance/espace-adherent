@@ -2,11 +2,11 @@
 
 namespace AppBundle\OAuth;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\OAuth\AccessToken;
 use AppBundle\Entity\OAuth\AuthorizationCode;
 use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\RefreshToken;
-use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\OAuth\AccessTokenRepository;
 use AppBundle\Repository\OAuth\ClientRepository;

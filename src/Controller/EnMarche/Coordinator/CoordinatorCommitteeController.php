@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche\Coordinator;
 
+use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
-use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Form\CoordinatorAreaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

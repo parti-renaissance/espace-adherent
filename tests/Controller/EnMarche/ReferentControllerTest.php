@@ -10,10 +10,10 @@ use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
 use AppBundle\Mailer\Message\InstitutionalEventInvitationMessage;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\MessengerTestTrait;
 
 /**

@@ -11,10 +11,10 @@ use AppBundle\Repository\TonMacronFriendInvitationRepository;
 use AppBundle\TonMacron\InvitationProcessor;
 use AppBundle\TonMacron\InvitationProcessorHandler;
 use Doctrine\Common\Collections\ArrayCollection;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

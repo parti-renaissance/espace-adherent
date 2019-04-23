@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
-use AppBundle\Controller\CanaryControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

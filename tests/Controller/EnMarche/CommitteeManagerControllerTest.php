@@ -6,22 +6,22 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Mailer\Message\EventNotificationMessage;
 use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
+use AppBundle\Mailer\Message\EventNotificationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\Repository\EventRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

@@ -3,14 +3,14 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
+use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
 use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\CitizenProject\CitizenProjectManager;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Mailer\MailerService;

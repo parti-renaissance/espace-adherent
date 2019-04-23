@@ -3,18 +3,18 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Collection\CommitteeCollection;
+use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
 use AppBundle\Entity\Event;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Search\SearchParametersFilter;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
