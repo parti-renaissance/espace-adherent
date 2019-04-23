@@ -60,14 +60,14 @@ class CommitteeTest extends TestCase
             '@EnMarcheLyon'
         );
 
-        $this->assertCount(3, $committee->getSocialNetworksLinks());
+        $this->assertCount(2, $committee->getSocialNetworksLinks());
         $this->assertSame('https://facebook.com/en-marche', $committee->getFacebookPageUrl());
         $this->assertSame('EnMarcheLyon', $committee->getTwitterNickname());
 
         $committee->setFacebookPageUrl('https://facebook.com/en-marche-avant');
         $committee->setTwitterNickname('EnMarcheLyon69');
 
-        $this->assertCount(3, $committee->getSocialNetworksLinks());
+        $this->assertCount(2, $committee->getSocialNetworksLinks());
         $this->assertSame('https://facebook.com/en-marche-avant', $committee->getFacebookPageUrl());
         $this->assertSame('EnMarcheLyon69', $committee->getTwitterNickname());
     }
