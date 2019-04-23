@@ -135,13 +135,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $twitterNickname;
 
     /**
-     * The committee Google+ page URL.
-     *
-     * @ORM\Column(nullable=true)
-     */
-    private $googlePlusPageUrl;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -314,11 +307,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         return $this->twitterNickname;
     }
 
-    public function getGooglePlusPageUrl(): ?string
-    {
-        return $this->googlePlusPageUrl;
-    }
-
     public function getAdminComment(): ?string
     {
         return $this->adminComment;
@@ -360,12 +348,10 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function setSocialNetworks(
         string $facebookPageUrl = null,
-        string $twitterNickname = null,
-        string $googlePlusPageUrl = null
+        string $twitterNickname = null
     ) {
         $this->facebookPageUrl = $facebookPageUrl;
         $this->setTwitterNickname($twitterNickname);
-        $this->googlePlusPageUrl = $googlePlusPageUrl;
     }
 
     public function setFacebookPageUrl($facebookPageUrl)
@@ -376,11 +362,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function setTwitterNickname($twitterNickname)
     {
         $this->twitterNickname = ltrim((string) $twitterNickname, '@');
-    }
-
-    public function setGooglePlusPageUrl($googlePlusPageUrl)
-    {
-        $this->googlePlusPageUrl = $googlePlusPageUrl;
     }
 
     /**
@@ -394,10 +375,6 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
         if ($this->facebookPageUrl) {
             $links['facebook'] = $this->createLink($this->facebookPageUrl, 'Facebook');
-        }
-
-        if ($this->googlePlusPageUrl) {
-            $links['google_plus'] = $this->createLink($this->googlePlusPageUrl, 'Google +');
         }
 
         if ($this->twitterNickname) {

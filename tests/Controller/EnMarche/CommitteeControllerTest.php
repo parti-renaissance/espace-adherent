@@ -505,7 +505,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     private function assertSeeSocialLinks(Crawler $crawler, Committee $committee)
     {
         $facebookLinkPattern = 'a.committee__social--facebook';
-        $googlePlusLinkPattern = 'a.committee__social--google_plus';
         $twitterLinkPattern = 'a.committee__social--twitter';
 
         if ($facebookUrl = $committee->getFacebookPageUrl()) {
@@ -513,13 +512,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
             $this->assertSame($facebookUrl, $facebookLink->attr('href'));
         } else {
             $this->assertCount(0, $crawler->filter($facebookLinkPattern));
-        }
-
-        if ($googlePlusUrl = $committee->getGooglePlusPageUrl()) {
-            $this->assertCount(1, $googlePlusLink = $crawler->filter($googlePlusLinkPattern));
-            $this->assertSame($googlePlusUrl, $googlePlusLink->attr('href'));
-        } else {
-            $this->assertCount(0, $crawler->filter($googlePlusLinkPattern));
         }
 
         if ($twitterNickname = $committee->getTwitterNickname()) {

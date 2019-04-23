@@ -23,7 +23,6 @@ class CommitteeCommandTest extends TestCase
         $uuid = Committee::createUuid($name);
         $facebook = 'https://facebook.com/en-marche';
         $twitter = 'enMarcheLyon';
-        $googlePlus = 'https://googleplus.com/en-marche';
 
         $committee = new Committee(
             $uuid,
@@ -36,8 +35,7 @@ class CommitteeCommandTest extends TestCase
         );
         $committee->setSocialNetworks(
             $facebook,
-            $twitter,
-            $googlePlus
+            $twitter
         );
 
         $committeeCommand = CommitteeCommand::createFromCommittee($committee);
@@ -49,6 +47,5 @@ class CommitteeCommandTest extends TestCase
         $this->assertSame($description, $committeeCommand->description);
         $this->assertSame($facebook, $committeeCommand->facebookPageUrl);
         $this->assertSame($twitter, $committeeCommand->twitterNickname);
-        $this->assertSame($googlePlus, $committeeCommand->googlePlusPageUrl);
     }
 }
