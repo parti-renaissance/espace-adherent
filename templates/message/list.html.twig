@@ -68,25 +68,25 @@
                             <div class="action-dropdown-menu">
                                 {% set route_params = route_params|default({})|merge({uuid: message.uuid}) %}
                                 {% if not message.isSent %}
-                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
+                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
                                 {% endif %}
 
                                 {% if message.isSynchronized %}
-                                    <a class="link--no-decor" href="{{ path("app_message_#{message_type}_preview", route_params) }}">Visualiser</a>
+                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_preview", route_params) }}">Visualiser</a>
                                 {% else %}
                                     <a class="btn--disabled" href="javascript:void(0);">
-                                        <span class="text--small">
-                                            Visualiser<br/>
+                                        Visualiser<br/>
+                                        <span class="text--smallest">
                                             (en cours de préparation ...)
                                         </span>
                                     </a>
                                 {% endif %}
 
                                 {% if not message.isSent %}
-                                    <a class="link--blue" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Filtrer</a>
+                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Filtrer</a>
                                 {% endif %}
 
-                                <a class="link--red" href="{{ path("app_message_#{message_type}_delete", route_params) }}">Supprimer</a>
+                                <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_delete", route_params) }}">Supprimer</a>
                             </div>
                         </div>
                     </td>
