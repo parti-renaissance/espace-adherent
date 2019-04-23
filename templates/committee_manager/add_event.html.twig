@@ -17,17 +17,14 @@
 {% endblock %}
 
 {% block committee_content %}
-    <section class="b__nudge--top-5 b__nudge--bottom-huge">
-        <header class="l__wrapper b__nudge--bottom-tiny">
-            <h2 class="text--center text--medium font-gillsans">Créer mon événement</h2>
-            <hr/>
-        </header>
-        <div id="committee-event-form" class="l__wrapper l__col committee__event__create">
+    <section class="l__wrapper--slim">
+        <h2 class="text--medium b__nudge--bottom-40">Créer mon événement</h2>
+        <div id="committee-event-form" class="committee__event__create">
             <h3 class="text--body text--normal">Vous créez un événement au sein du comité <strong>{{ committee.name }}</strong>.</h3>
 
             {{ include('components/alert_european_elections.html.twig') }}
 
-            {{ form_start(form, { attr: { class: 'b__nudge--top-40 l__wrapper--600', autocomplete: 'off' } }) }}
+            {{ form_start(form, { attr: { class: 'b__nudge--top-40', autocomplete: 'off' } }) }}
             {{ form_errors(form) }}
 
             <div class="form__row" id="committee-event-name-field">
@@ -42,16 +39,16 @@
                 {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de l'événement" } }) }}
             </div>
 
-            <div class="form__row" id="committee-event-beginat-field">
+            <div class="form__row form__date-and-time" id="committee-event-beginat-field">
                 {{ form_errors(form.beginAt) }}
                 {{ form_label(form.beginAt, 'Début') }}
-                {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at', autocomplete: 'off' } }) }}
+                {{ form_widget(form.beginAt, { attr: { class: 'form__group event__begin_at', autocomplete: 'off' } }) }}
             </div>
 
-            <div class="form__row" id="committee-event-finishat-field">
+            <div class="form__row form__date-and-time" id="committee-event-finishat-field">
                 {{ form_errors(form.finishAt) }}
                 {{ form_label(form.finishAt, 'Fin') }}
-                {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at', autocomplete: 'off' } }) }}
+                {{ form_widget(form.finishAt, { attr: { class: 'form__group event__finish_at', autocomplete: 'off' } }) }}
                 <div class="form__info">Votre événement ne peut pas durer plus de 3 jours.</div>
             </div>
 
@@ -103,8 +100,8 @@
                 {{ form_widget(form.capacity, { attr: { class: 'committee_event__form__capacity' } }) }}
             </div>
 
-            <div class="form__row text--center b__nudge--top">
-                <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Créer cet événement</button>
+            <div class="form__row text--center b__nudge--top-50">
+                <button type="submit" class="btn btn--blue btn--large-and-full">Créer cet événement</button>
             </div>
 
             {{ form_end(form) }}
