@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Referent;
 
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Referent\ManagedEventsExporter;
-use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional

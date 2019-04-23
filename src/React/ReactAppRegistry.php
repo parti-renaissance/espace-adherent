@@ -2,8 +2,8 @@
 
 namespace AppBundle\React;
 
-use AppBundle\React\App\IdeasWorkshopApp;
 use AppBundle\React\App\CitizenProjectApp;
+use AppBundle\React\App\IdeasWorkshopApp;
 use Symfony\Component\Routing\RouteCollection;
 
 class ReactAppRegistry

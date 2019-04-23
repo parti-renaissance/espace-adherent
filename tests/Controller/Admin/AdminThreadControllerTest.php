@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Controller\Admin;
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
 use AppBundle\Entity\IdeasWorkshop\Thread;
 use AppBundle\Repository\ThreadRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

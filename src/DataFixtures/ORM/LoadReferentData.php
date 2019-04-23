@@ -2,8 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\ReferentArea;
 use AppBundle\Entity\Referent;
+use AppBundle\Entity\ReferentArea;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;

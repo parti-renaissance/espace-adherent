@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity\Report;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 
 /**
  * @ORM\Entity

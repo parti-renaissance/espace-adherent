@@ -2,12 +2,12 @@
 
 namespace Tests\AppBundle\User;
 
-use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\UserAuthorization;
 use AppBundle\OAuth\Model\Scope;
-use AppBundle\Repository\OAuth\UserAuthorizationRepository;
 use AppBundle\OAuth\OAuthAuthorizationManager;
+use AppBundle\Repository\OAuth\UserAuthorizationRepository;
 use PHPUnit\Framework\TestCase;
 
 class OAuthAuthorizationManagerTest extends TestCase

@@ -3,8 +3,8 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
+use AppBundle\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

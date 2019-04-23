@@ -3,9 +3,9 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Form\DeputyMessageType;
 use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Deputy\DeputyMessageNotifier;
+use AppBundle\Form\DeputyMessageType;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Repository\AdherentRepository;

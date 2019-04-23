@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
 use AppBundle\Contact\ContactMessage;
@@ -15,10 +16,9 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\EventRegistrationException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\AdherentInterestsFormType;
+use AppBundle\Form\CitizenProjectCommandType;
 use AppBundle\Form\ContactMessageType;
 use AppBundle\Form\CreateCommitteeCommandType;
-use AppBundle\Form\CitizenProjectCommandType;
-use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Membership\MemberActivityTracker;
 use AppBundle\Membership\UserEvent;

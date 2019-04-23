@@ -11,11 +11,11 @@ use AppBundle\Entity\Report\CitizenProjectReport;
 use AppBundle\Entity\Report\CommitteeReport;
 use AppBundle\Entity\Report\CommunityEventReport;
 use AppBundle\Report\ReportType;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

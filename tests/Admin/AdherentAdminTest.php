@@ -4,9 +4,9 @@ namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

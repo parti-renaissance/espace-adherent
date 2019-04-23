@@ -6,8 +6,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AuthoredInterface;
 use AppBundle\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\LocalSurveyRepository")

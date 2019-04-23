@@ -2,8 +2,8 @@
 
 namespace AppBundle\Security\Voter;
 
-use AppBundle\Membership\MembershipPermissions;
 use AppBundle\Entity\Adherent;
+use AppBundle\Membership\MembershipPermissions;
 
 class MembershipVoter extends AbstractAdherentVoter
 {

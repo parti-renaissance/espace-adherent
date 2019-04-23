@@ -2,11 +2,12 @@
 
 namespace AppBundle\Committee;
 
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Committee\Event\FollowCommitteeEvent;
 use AppBundle\Committee\Event\UnfollowCommitteeEvent;
+use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Entity\Adherent;
-use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
@@ -15,7 +16,6 @@ use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
 use AppBundle\Events;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Geocoder\Coordinates;
-use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;

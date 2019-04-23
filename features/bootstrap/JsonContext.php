@@ -1,10 +1,10 @@
 <?php
 
 use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behatch\Context\JsonContext as BehatchJsonContext;
 use Coduo\PHPMatcher\PHPMatcher;
-use Behat\Gherkin\Node\TableNode;
 
 class JsonContext extends BehatchJsonContext
 {

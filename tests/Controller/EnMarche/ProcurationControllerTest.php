@@ -11,11 +11,11 @@ use AppBundle\Procuration\ProcurationSession;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use libphonenumber\PhoneNumber;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

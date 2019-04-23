@@ -3,9 +3,9 @@
 namespace AppBundle\Address;
 
 use GeoIp2\Exception\GeoIp2Exception;
+use GeoIp2\Model\City;
 use GeoIp2\ProviderInterface;
 use Psr\Log\LoggerInterface;
-use GeoIp2\Model\City;
 
 class GeoCoder
 {

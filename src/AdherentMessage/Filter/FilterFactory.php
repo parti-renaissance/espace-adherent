@@ -4,9 +4,9 @@ namespace AppBundle\AdherentMessage\Filter;
 
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 
 abstract class FilterFactory
 {

@@ -2,10 +2,10 @@
 
 namespace AppBundle\Entity\Report\IdeasWorkshop;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use AppBundle\Entity\Report\Report;
 use Doctrine\ORM\Mapping as ORM;
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 
 /**
  * @ORM\Entity

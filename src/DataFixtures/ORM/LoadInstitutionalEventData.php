@@ -2,8 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Event\EventFactory;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Event\EventFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

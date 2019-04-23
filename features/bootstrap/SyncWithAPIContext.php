@@ -1,5 +1,10 @@
 <?php
 
+use AppBundle\CitizenAction\CitizenActionEvent;
+use AppBundle\CitizenProject\CitizenProjectEvent;
+use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
+use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
+use AppBundle\Committee\CommitteeEvent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
@@ -7,11 +12,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Event\EventEvent;
 use AppBundle\Events;
-use AppBundle\CitizenAction\CitizenActionEvent;
-use AppBundle\CitizenProject\CitizenProjectEvent;
-use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\Committee\CommitteeEvent;
 use AppBundle\Membership\UserEvent;
 use Behat\Behat\Context\Context;
 use Doctrine\Bundle\DoctrineBundle\Registry;

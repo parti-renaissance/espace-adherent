@@ -5,8 +5,8 @@ namespace Tests\AppBundle\Repository;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Repository\CommitteeMembershipRepository;
-use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional

@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Membership\Mandates;
 use AppBundle\Membership\MembershipRequest;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,7 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 
 class AdherentType extends AbstractType
 {

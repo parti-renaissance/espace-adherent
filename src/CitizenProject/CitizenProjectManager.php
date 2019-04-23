@@ -2,22 +2,22 @@
 
 namespace AppBundle\CitizenProject;
 
+use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\Adherent;
-use AppBundle\Collection\AdherentCollection;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCommitteeSupport;
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Events;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\TurnkeyProject;
+use AppBundle\Events;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
+use AppBundle\Geocoder\Coordinates;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\CitizenActionRepository;
 use AppBundle\Repository\CitizenProjectCommitteeSupportRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;

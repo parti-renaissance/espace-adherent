@@ -2,9 +2,9 @@
 
 namespace AppBundle\Event;
 
+use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\Event;
 use AppBundle\Events;
-use AppBundle\Entity\CommitteeFeedItem;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

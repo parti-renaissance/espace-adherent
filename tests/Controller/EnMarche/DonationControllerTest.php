@@ -10,10 +10,10 @@ use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\TransactionRepository;
 use Goutte\Client as PayboxClient;
 use GuzzleHttp\Client;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Test\Payment\PayboxProvider;
 
 /**

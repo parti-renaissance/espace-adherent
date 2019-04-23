@@ -2,12 +2,12 @@
 
 namespace Tests\AppBundle\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\CitizenProject\CitizenProjectManagementAuthority;
 use AppBundle\CitizenProject\CitizenProjectManager;
+use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
+use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
+use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Events;

@@ -9,11 +9,11 @@ use AppBundle\Entity\AuthorInterface;
 use AppBundle\Entity\Report\ReportableInterface;
 use AppBundle\Report\ReportType;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource(

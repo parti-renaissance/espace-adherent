@@ -7,10 +7,10 @@ use AppBundle\BoardMember\BoardMemberMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Form\BoardMemberMessageType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity\ReferentOrganizationalChart;
 
-use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Referent;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

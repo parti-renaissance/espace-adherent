@@ -8,12 +8,12 @@ use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
 use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
 use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

@@ -3,14 +3,14 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\InstitutionalEvent\InstitutionalEventEvent;
 use AppBundle\Events;
 use AppBundle\Form\InstitutionalEventCategoryType;
 use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\InstitutionalEvent\InstitutionalEventEvent;
 use AppBundle\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DateRangePickerType;

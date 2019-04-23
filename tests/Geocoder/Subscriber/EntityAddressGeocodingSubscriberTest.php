@@ -2,16 +2,16 @@
 
 namespace Tests\AppBundle\Geocoder\Subscriber;
 
+use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
 use AppBundle\Committee\CommitteeEvent;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectCategory;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\NullablePostAddress;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Geocoder\GeoPointInterface;
 use AppBundle\Geocoder\Subscriber\EntityAddressGeocodingSubscriber;
-use AppBundle\CitizenProject\CitizenProjectWasCreatedEvent;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentAccountWasCreatedEvent;
 use AppBundle\Membership\AdherentProfileWasUpdatedEvent;

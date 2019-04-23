@@ -5,9 +5,9 @@ namespace Tests\AppBundle\Repository;
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Search\SearchParametersFilter;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

@@ -3,9 +3,9 @@
 namespace Tests\AppBundle\Interactive;
 
 use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Repository\MyEuropeChoiceRepository;
-use AppBundle\Interactive\MyEuropeProcessor;
 use AppBundle\Interactive\MyEuropeMessageBodyBuilder;
+use AppBundle\Interactive\MyEuropeProcessor;
+use AppBundle\Repository\MyEuropeChoiceRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

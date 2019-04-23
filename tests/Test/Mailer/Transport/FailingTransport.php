@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Test\Mailer\Transport;
 
-use AppBundle\Mailer\Exception\MailerException;
 use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\Exception\MailerException;
 use AppBundle\Mailer\Transport\TransportInterface;
 
 class FailingTransport implements TransportInterface

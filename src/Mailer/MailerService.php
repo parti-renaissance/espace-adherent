@@ -4,8 +4,8 @@ namespace AppBundle\Mailer;
 
 use AppBundle\Mailer\Event\MailerEvent;
 use AppBundle\Mailer\Event\MailerEvents;
-use AppBundle\Mailer\Message\Message;
 use AppBundle\Mailer\Exception\MailerException;
+use AppBundle\Mailer\Message\Message;
 use AppBundle\Mailer\Transport\TransportInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

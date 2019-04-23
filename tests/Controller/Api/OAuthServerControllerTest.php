@@ -9,10 +9,10 @@ use AppBundle\OAuth\Model\Client;
 use AppBundle\OAuth\Model\Scope;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

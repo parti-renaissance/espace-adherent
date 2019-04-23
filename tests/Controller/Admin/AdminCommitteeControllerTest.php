@@ -5,10 +5,10 @@ namespace Tests\AppBundle\Controller\Admin;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

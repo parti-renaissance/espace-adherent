@@ -3,10 +3,10 @@
 namespace Tests\AppBundle\Mailer\Transport;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
 use Tests\AppBundle\Test\Mailer\Transport\NullTransport;
-use Psr\Log\LoggerInterface;
 
 class NullTransportTest extends TestCase
 {

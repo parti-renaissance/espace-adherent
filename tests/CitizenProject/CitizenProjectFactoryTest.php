@@ -3,14 +3,14 @@
 namespace Tests\AppBundle\CitizenProject;
 
 use AppBundle\Address\NullableAddress;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Entity\NullablePostAddress;
-use AppBundle\Entity\PostAddress;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\CitizenProject\CitizenProjectFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\CitizenProjectCategory;
+use AppBundle\Entity\CitizenProjectSkill;
+use AppBundle\Entity\NullablePostAddress;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;

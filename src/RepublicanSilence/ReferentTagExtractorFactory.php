@@ -3,11 +3,11 @@
 namespace AppBundle\RepublicanSilence;
 
 use AppBundle\Exception\InvalidAdherentTypeException;
-use AppBundle\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
-use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
 use AppBundle\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
 use AppBundle\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
+use AppBundle\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
 use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractor;
+use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
 
 abstract class ReferentTagExtractorFactory
 {

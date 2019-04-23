@@ -3,19 +3,19 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Controller\PrintControllerTrait;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Event\EventCanceledHandler;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventContactMembersCommand;
-use AppBundle\Entity\Event;
 use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;

@@ -3,12 +3,12 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Assessor\AssessorManager;
+use AppBundle\Assessor\Filter\AssessorRequestFilters;
 use AppBundle\Assessor\Filter\VotePlaceFilters;
 use AppBundle\Entity\ActionEnum;
 use AppBundle\Entity\AssessorRequest;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exception\AssessorException;
-use AppBundle\Assessor\Filter\AssessorRequestFilters;
 use AppBundle\Form\ConfirmActionType;
 use AppBundle\Repository\VotePlaceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

@@ -4,8 +4,8 @@ namespace AppBundle\Twig;
 
 use AppBundle\Entity\Media;
 use League\Glide\Signatures\SignatureFactory;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AssetRuntime

@@ -4,11 +4,11 @@ namespace AppBundle\Assessor;
 
 use AppBundle\Entity\AssessorOfficeEnum;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
+use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use AppBundle\ValueObject\Genders;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 
 class AssessorRequestCommand
 {

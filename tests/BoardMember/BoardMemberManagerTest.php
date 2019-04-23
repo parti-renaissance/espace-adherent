@@ -10,8 +10,8 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional

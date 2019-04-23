@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Repository;
 
 use AppBundle\Repository\CommitteeRepository;
-use Tests\AppBundle\Controller\ControllerTestTrait;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional

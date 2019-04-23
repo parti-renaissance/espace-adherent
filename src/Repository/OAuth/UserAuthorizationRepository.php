@@ -2,8 +2,8 @@
 
 namespace AppBundle\Repository\OAuth;
 
-use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\OAuth\Client;
 use AppBundle\Entity\OAuth\UserAuthorization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;

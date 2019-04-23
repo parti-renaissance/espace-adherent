@@ -2,10 +2,10 @@
 
 namespace AppBundle\Consumer;
 
+use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Entity\DeputyManagedUsersMessage;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\DeputyMessage as Message;
-use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\DeputyManagedUsersMessageRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;

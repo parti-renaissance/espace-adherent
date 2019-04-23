@@ -4,14 +4,14 @@ namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
 use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
+use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\EmailRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * @group functional

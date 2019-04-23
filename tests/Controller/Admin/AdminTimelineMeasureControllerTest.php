@@ -9,10 +9,10 @@ use AppBundle\Entity\Timeline\Theme;
 use AppBundle\Repository\Timeline\MeasureRepository;
 use AppBundle\Repository\Timeline\ProfileRepository;
 use AppBundle\Repository\Timeline\ThemeRepository;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Test\Algolia\DummyIndexer;
 
 /**
