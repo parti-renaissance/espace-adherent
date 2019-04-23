@@ -25,7 +25,6 @@ class CommitteeFactoryTest extends TestCase
         $description = 'Le comité En Marche ! de Lyon 1er';
         $facebook = 'https://facebook.com/en-marche';
         $twitter = 'enMarcheLyon';
-        $googlePlus = 'https://googleplus.com/en-marche';
         $address = Address::createFromAddress(PostAddress::createFrenchAddress('2 Rue de la République', '69001-69381'));
 
         $adherent = Adherent::create(
@@ -47,7 +46,6 @@ class CommitteeFactoryTest extends TestCase
         $command->description = $description;
         $command->facebookPageUrl = $facebook;
         $command->twitterNickname = $twitter;
-        $command->googlePlusPageUrl = $googlePlus;
 
         $referentTagManager = $this->createMock(ReferentTagManager::class);
         $referentTagManager
@@ -65,6 +63,5 @@ class CommitteeFactoryTest extends TestCase
         $this->assertSame($adherent->getUuid()->toString(), $committee->getCreatedBy());
         $this->assertSame($facebook, $committee->facebookPageUrl);
         $this->assertSame($twitter, $committee->twitterNickname);
-        $this->assertSame($googlePlus, $committee->googlePlusPageUrl);
     }
 }
