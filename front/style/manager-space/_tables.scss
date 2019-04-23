@@ -13,6 +13,7 @@
         background-color: $blue--dark;
         border: 1px solid $blue--dark;
         color: white;
+        cursor: pointer;
     }
 
     &:disabled,
@@ -20,6 +21,7 @@
         background-color: white;
         border: 1px solid $lines-grey;
         color: $lines-grey;
+        cursor: not-allowed;
     }
 }
 

@@ -12,8 +12,7 @@
     <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"
             src="{{ path("app_message_#{message_type}_content", route_params) }}"
     ></iframe>
-    <hr/>
-    <div class="l__wrapper--slim background--lighter b__nudge--top-40 text--center">
+    <div class="l__wrapper--slim b__nudge--top-40 text--center">
         {% if not message.isSent %}
             <div class="space--60-0">
                 {% if message.recipientCount is not null %}
@@ -21,15 +20,15 @@
                         {% if message.recipientCount == 0 %}
                             <p>Votre filtre ne correspond à aucun adhérent !</p>
                         {% else %}
-                            <p>Votre filtre correspond à <b>{{ message.recipientCount }} adhérent(s) !</b></p>
+                            <p className="text--medium">Votre filtre correspond à <span className="text--bold text--blue--dark">{{ message.recipientCount }}</span> adhérent !</p>
                         {% endif %}
                     </div>
                 {% endif %}
-                <a class="btn" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
+                <a class="btn btn--blue btn--large-and-full b__nudge--top-50" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
                 {% if not message.readOnlyFilter %}
-                    <a class="btn" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Modifier les filtres</a>
+                    <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Modifier les filtres</a>
                 {% endif %}
-                <a class="btn {{ not message.recipientCount ? 'btn--disabled' : 'btn--blue' }}"
+                <a class="btn btn--large-and-full b__nudge--top-15 {{ not message.recipientCount ? 'btn--disabled' : 'btn--ghosting--blue' }}"
                    href="{{ message.recipientCount ? path("app_message_#{message_type}_send", route_params) : 'javascript:void(0);' }}"
                 >Envoyer</a>
             </div>
