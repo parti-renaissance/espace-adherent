@@ -48,8 +48,7 @@ class CommitteeUpdateCommandHandler
 
         $committee->setSocialNetworks(
             $command->facebookPageUrl,
-            $command->twitterNickname,
-            $command->googlePlusPageUrl
+            $command->twitterNickname
         );
 
         $this->referentTagManager->assignReferentLocalTags($committee);

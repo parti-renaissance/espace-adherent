@@ -121,9 +121,6 @@ class CommitteeAdmin extends AbstractAdmin
                 ->add('twitterNickname', null, [
                     'label' => 'Twitter',
                 ])
-                ->add('googlePlusPageUrl', UrlType::class, [
-                    'label' => 'Google+',
-                ])
                 ->add('status', null, [
                     'label' => 'Statut',
                 ])
@@ -190,10 +187,6 @@ class CommitteeAdmin extends AbstractAdmin
                 ])
                 ->add('twitterNickname', null, [
                     'label' => 'Twitter',
-                    'required' => false,
-                ])
-                ->add('googlePlusPageUrl', UrlType::class, [
-                    'label' => 'Google+',
                     'required' => false,
                 ])
             ->end()

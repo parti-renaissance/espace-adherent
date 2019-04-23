@@ -49,8 +49,7 @@ class CommitteeFactory
         $committee->setNameLocked(isset($data['name_locked']) ? $data['name_locked'] : false);
         $committee->setSocialNetworks(
             $data['facebook_page_url'] ?? null,
-            $data['twitter_nickname'] ?? null,
-            $data['google_plus_page_url'] ?? null
+            $data['twitter_nickname'] ?? null
         );
 
         if (isset($data['slug'])) {
@@ -81,10 +80,6 @@ class CommitteeFactory
 
         if ($command->twitterNickname) {
             $committee->setTwitterNickname($command->twitterNickname);
-        }
-
-        if ($command->googlePlusPageUrl) {
-            $committee->setGooglePlusPageUrl($command->googlePlusPageUrl);
         }
 
         return $committee;
