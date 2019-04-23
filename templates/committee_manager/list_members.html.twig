@@ -32,7 +32,8 @@
                     <th width="100px">CP</th>
                     <th width="150px">Ville</th>
                     <th width="100px">Rôle</th>
-                    <th width="100px">Adhésion</th>
+                    <th width="100px">Adhérent depuis le</th>
+                    <th width="100px">A rejoint le comité le</th>
                     {% if is_supervisor %}
                         <th style="min-width: 200px;">Actions</th>
                     {% endif %}
@@ -47,7 +48,7 @@
                 <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
                     <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
                     <td class="member-first-name">{{ member.firstName|capitalize }}</td>
-                    <td class="member-last-name">{{ member.lastNameInitial|upper }}</td>
+                    <td class="member-last-name">{{ member.lastName|capitalize }}</td>
                     <td class="member-age">{{ member.age }}</td>
                     <td class="member-postal-code">{{ member.postalCode }}</td>
                     <td class="member-city-name">{{ member.cityName }}</td>
@@ -63,9 +64,8 @@
                         {% endif %}
                     </td>
 
-                    <td class="member-subscription-date">
-                        {{- membership.subscriptionDate|date('d/m/Y') -}}
-                    </td>
+                    <td>{{ membership.adherent.registeredAt|date('d/m/Y') }}</td>
+                    <td class="member-subscription-date">{{ membership.subscriptionDate|date('d/m/Y') }}</td>
 
                     {% if is_supervisor %}
                         <td>
