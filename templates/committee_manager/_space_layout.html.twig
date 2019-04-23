@@ -31,7 +31,7 @@
 
                 {% if is_canary_enabled() %}
                     <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
-                        <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Envoyer un message</a>
+                        <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
                     </li>
                 {% endif %}
             </ul>

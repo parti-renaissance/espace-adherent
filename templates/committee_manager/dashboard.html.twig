@@ -3,16 +3,42 @@
 {% block page_title 'Mon espace comité' %}
 
 {% block committee_space_header %}
-    <h1 class="text--center text--large" style="padding-top: 135px;">{{ block('page_title') }}</h1>
-    <p class="text--center text--body text--light-gray">
-        Vous gérez {{ 'common.committees_count'|transchoice(committees|length) }}
-    </p>
+    <div class="l__wrapper">
+        <div class="pre-space text--center">
+            <h1 class="text--large">{{ block('page_title') }}</h1>
+            <p class="pre-space__item-number text--medium-small">
+                Vous gérez {{ 'common.committees_count'|transchoice(committees|length) }}
+            </p>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block committee_content %}
-    <div class="l__row l__row--wrap l__row--center">
+    <div class="l__row l__row--wrap pre-space__items-preview">
         {% for committee in committees|slice(0, 6) %}
-            {{ block('committee_block') }}
+            {# {{ block('committee_block') }} #}
+            <div class="pre-space__item-card">
+                <p class="text--medium font-gillsans">{{ committee.name }}</p>
+                <div>
+                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
+                    <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+                </div>
+            </div>
+            <div class="pre-space__item-card">
+                <p class="text--medium font-gillsans">{{ committee.name }}</p>
+                <div>
+                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
+                    <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+                </div>
+            </div>
+            <div class="pre-space__item-card">
+                <p class="text--medium font-gillsans">{{ committee.name }}</p>
+                <div>
+                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
+                    <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+                </div>
+            </div>
         {% endfor %}
 
         {% if not app.user.isSupervisor %}
