@@ -929,7 +929,7 @@ class AdherentControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(11, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
         $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());

@@ -82,7 +82,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(7, $crawler->filter('#edit-committee-form .form__errors > li')->count());
+        $this->assertSame(6, $crawler->filter('#edit-committee-form .form__errors > li')->count());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
@@ -696,7 +696,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     private function seeMembersList(Crawler $crawler, int $count): bool
     {
         // Header row is part of the count
-        return $count === \count($crawler->filter('table > tr'));
+        return $count === \count($crawler->filter('table tr'));
     }
 
     private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool
