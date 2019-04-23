@@ -88,7 +88,7 @@
             </div>
             <div class="profile-value">
                 <span id="request-address">{{ request.address }}</span><br />
-                <span id="request-city">{{ request.postalCode }} {{ request.cityName }} {{ request.country }}</span>
+                <span id="request-city">{{ request.postalCode }} {{ request.cityName }}{% if request.state %} {{ request.state }}{% endif %} {{ request.country }}</span>
             </div>
 
             <div class="profile-label">
@@ -165,7 +165,7 @@
                     </div>
                     <div class="profile-value">
                         {{ request.foundProxy.address }}<br />
-                        {{ request.foundProxy.postalCode }} {{ request.foundProxy.cityName }} {{ request.foundProxy.country }}
+                        {{ request.foundProxy.postalCode }} {{ request.foundProxy.cityName }}{% if request.foundProxy.state %} {{ request.foundProxy.state }}{% endif %} {{ request.foundProxy.country }}
                     </div>
 
                     <div class="profile-label">
@@ -243,7 +243,7 @@
                                     {% endif %}
                                     <br />
                                     <em>Lieu de résidence :</em><br />
-                                    {{ proxy.address }}, {{ proxy.postalCode }} {{ proxy.cityName }}, {{ proxy.country }}
+                                    {{ proxy.address }}, {{ proxy.postalCode }} {{ proxy.cityName }},{% if proxy.state %} {{ proxy.state }},{% endif %} {{ proxy.country }}
                                 </td>
                                 <td>
                                     <a href="{{ path('app_procuration_manager_request_associate', {id: request.id, proxyId: proxy.id}) }}"

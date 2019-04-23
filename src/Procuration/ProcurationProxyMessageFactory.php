@@ -28,8 +28,12 @@ class ProcurationProxyMessageFactory
         ProcurationRequest $request,
         ?Adherent $referent
     ): ProcurationProxyCancelledMessage {
-        $message = ProcurationProxyCancelledMessage::create($request, $referent);
+        $message = ProcurationProxyCancelledMessage::create($request);
         $message->setReplyTo($this->replyToEmailAddress);
+
+        if ($referent) {
+            $message->addBCC($referent->getEmailAddress());
+        }
 
         return $message;
     }
