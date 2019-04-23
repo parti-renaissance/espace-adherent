@@ -78,7 +78,6 @@ class CommitteeManagerControllerTest extends WebTestCase
                 ],
                 'facebookPageUrl' => 'yo',
                 'twitterNickname' => '@!!',
-                'googlePlusPageUrl' => 'yo',
             ],
         ]));
 
@@ -90,7 +89,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
         $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
-        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-googleplus-page-url > .form__errors > li')->text());
+        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
 
         // Submit the committee form with valid data to create committee
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -106,7 +105,6 @@ class CommitteeManagerControllerTest extends WebTestCase
                 ],
                 'facebookPageUrl' => 'https://www.facebook.com/EnMarcheClichy',
                 'twitterNickname' => '@enmarcheclichy',
-                'googlePlusPageUrl' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
             ],
         ]));
 
