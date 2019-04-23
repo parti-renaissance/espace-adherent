@@ -10,7 +10,7 @@
             <span>45</span> sur 904 résultat(s)
         </span>
     </div>
-    
+
     <div class="manager__filters">
         <div class="manager__filters__form">
             <form onchange="this.submit();">
@@ -40,8 +40,6 @@
                 <th class="c__width-20">Label</th>
                 <th class="c__width-40">Objet</th>
                 <th>Date</th>
-                <th>Taux d'ouverture</th>
-                <th>Taux de clique</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -60,8 +58,6 @@
                             {{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}
                         {% endif %}
                     </td>
-                    <td>11% (3603)</td>
-                    <td>5% (603)</td>
                     <td>
                         <div class="action-menu-oval">
                             <a href="javascript:void(0);">
