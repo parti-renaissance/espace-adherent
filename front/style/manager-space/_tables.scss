@@ -7,11 +7,19 @@
     border: 1px solid #c5d1e6;
     border-radius: 20px;
     line-height: normal;
+    outline: 0;
 
     &:hover {
         background-color: $blue--dark;
         border: 1px solid $blue--dark;
         color: white;
+    }
+
+    &:disabled,
+    &:disabled:hover {
+        background-color: white;
+        border: 1px solid $lines-grey;
+        color: $lines-grey;
     }
 }
 
@@ -143,6 +151,25 @@
             td:first-child { padding-left: 20px; }
             td:last-child { padding-right: 20px; }
         }
+    }
+
+    input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        padding: 2px;
+        border-radius: 1px;
+        border: solid 1px $filter-field-border;
+        background-color: #ffffff;
+        outline: 0;
+    }
+
+    input[type="checkbox"]:checked {
+        background-color: $blue--dark;
+        border-color: $blue--dark;
+        content: $checkbox__mark;
     }
 }
 
