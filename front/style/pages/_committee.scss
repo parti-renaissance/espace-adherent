@@ -111,7 +111,7 @@
             }
 
             &__host {
-                background: #fcecc2;
+                background: $specific-table-row;
             }
 
             @media (max-width: $mobile) {
