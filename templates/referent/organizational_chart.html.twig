@@ -19,7 +19,7 @@
     {% endif %}
     {{ oc.orga_chart_row(organization_chart_items, referent, true, false, form) }}
     {% if showForm %}
-        {{ form_widget(form.save, {'label': 'referent.save', 'attr': {'class': 'btn btn-primary'}}) }}
+        {{ form_widget(form.save, {label: 'referent.save', attr: {class: 'btn btn-primary'}}) }}
         {{ form_end(form) }}
     {% endif %}
 {% endblock %}

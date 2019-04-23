@@ -532,16 +532,13 @@ class ReferentController extends Controller
         ObjectManager $manager
     ) {
         $referent = $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress());
-        $personalLinks = $referent->getReferentPersonLinksWithExistingAdherent();
+
         $form = $this
-            ->createForm(PotentialCoReferentsType::class, ['referentPersonLinks' => $personalLinks])
+            ->createForm(PotentialCoReferentsType::class, ['referentPersonLinks' => $referent->getReferentPersonLinks()])
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($personalLinks as $personalLink) {
-                $personalLink->updateCoReferentRole($this->getUser());
-            }
             $manager->flush();
         }
 
@@ -574,7 +571,6 @@ class ReferentController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ReferentPersonLink $referentPersonLink */
             $referentPersonLink = $form->getData();
-            $referentPersonLink->updateCoReferentRole($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
 

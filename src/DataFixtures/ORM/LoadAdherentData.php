@@ -11,6 +11,7 @@ use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\ReferentTeamMember;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
 use AppBundle\Subscription\SubscriptionTypeEnum;
@@ -721,7 +722,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($deputy_ch_li);
 
         // For Organizational chart: adherent which is co-referent in another referent team
-        $adherent4->setReferentTeamReferent($this->getReference('adherent-19'));
+        $adherent4->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-19')));
 
         $manager->persist($key1);
         $manager->persist($key2);

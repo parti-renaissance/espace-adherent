@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\ReferentPersonLinkListener"})
+ * @ORM\EntityListeners({"AppBundle\EntityListener\PersonLinkAdherentAttachListener"})
  */
 class ReferentPersonLink
 {
@@ -192,19 +192,6 @@ class ReferentPersonLink
         ?PersonOrganizationalChartItem $personOrganizationalChartItem
     ): void {
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
-    }
-
-    public function updateCoReferentRole(Adherent $referent): void
-    {
-        if (!$this->getAdherent()) {
-            return;
-        }
-
-        if ($this->isCoReferent()) {
-            $this->getAdherent()->setReferentTeamReferent($referent);
-        } elseif ($this->getAdherent()->getReferentTeamReferent() === $referent) {
-            $this->getAdherent()->setReferentTeam(null);
-        }
     }
 
     public function getAdminDisplay(): string

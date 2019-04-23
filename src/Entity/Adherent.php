@@ -211,11 +211,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * Defines to which referent team the adherent belongs.
      *
-     * @var ReferentTeam|null
+     * @var ReferentTeamMember|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTeam", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="ReferentTeamMember", mappedBy="member", cascade={"all"}, orphanRemoval=true)
      */
-    private $referentTeam;
+    private $referentTeamMember;
 
     /**
      * @var CoordinatorManagedArea|null
@@ -965,30 +965,23 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedArea = $managedArea;
     }
 
-    public function getReferentTeam(): ?ReferentTeam
+    public function getReferentTeam(): ?ReferentTeamMember
     {
-        return $this->referentTeam;
+        return $this->referentTeamMember;
     }
 
-    public function setReferentTeam(?ReferentTeam $referentTeam): void
+    public function setReferentTeamMember(?ReferentTeamMember $referentTeam): void
     {
-        $this->referentTeam = $referentTeam;
+        if ($referentTeam) {
+            $referentTeam->setMember($this);
+        }
+
+        $this->referentTeamMember = $referentTeam;
     }
 
     public function getReferentTeamReferent(): ?Adherent
     {
         return $this->getReferentTeam() ? $this->getReferentTeam()->getReferent() : null;
-    }
-
-    public function setReferentTeamReferent(?Adherent $referent): void
-    {
-        if ($referent && $this->referentTeam) {
-            $this->referentTeam->setReferent($referent);
-        } elseif ($referent) {
-            $this->referentTeam = new ReferentTeam($this, $referent);
-        } else {
-            $this->referentTeam = null;
-        }
     }
 
     /**
@@ -1071,7 +1064,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isCoReferent(): bool
     {
-        return $this->referentTeam instanceof ReferentTeam;
+        return $this->referentTeamMember instanceof ReferentTeamMember;
     }
 
     public function revokeReferent(): void
