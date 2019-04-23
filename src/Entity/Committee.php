@@ -346,10 +346,8 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
         $this->refusedAt = null;
     }
 
-    public function setSocialNetworks(
-        string $facebookPageUrl = null,
-        string $twitterNickname = null
-    ) {
+    public function setSocialNetworks(string $facebookPageUrl = null, string $twitterNickname = null)
+    {
         $this->facebookPageUrl = $facebookPageUrl;
         $this->setTwitterNickname($twitterNickname);
     }
