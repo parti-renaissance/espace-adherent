@@ -255,7 +255,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->sentAt;
     }
 
-    public function updateFromDataObject(AdherentMessageDataObject $dataObject): self
+    public function updateFromDataObject(AdherentMessageDataObject $dataObject): AdherentMessageInterface
     {
         if ($dataObject->getContent()) {
             $this->setContent($dataObject->getContent());

@@ -2,25 +2,26 @@
 
 namespace AppBundle\Controller\EnMarche\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\Filter\FilterFormFactory;
+use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
+use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\Committee;
-use AppBundle\Form\AdherentMessage\AdherentMessageType;
+use AppBundle\Entity\CommitteeFeedItem;
+use AppBundle\Form\AdherentMessage\CommitteeAdherentMessageType;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,8 +32,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Security("is_granted('HOST_COMMITTEE', committee)")
  */
-class CommitteeMessageController extends AbstractMessageController
+class CommitteeMessageController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route(name="list", methods={"GET"})
      *
@@ -42,7 +45,7 @@ class CommitteeMessageController extends AbstractMessageController
         Request $request,
         UserInterface $adherent,
         AdherentMessageRepository $repository,
-        Committee $committee = null
+        Committee $committee
     ): Response {
         $this->disableInProduction();
 
@@ -52,10 +55,8 @@ class CommitteeMessageController extends AbstractMessageController
             throw new BadRequestHttpException('Invalid status');
         }
 
-        return $this->renderTemplate('message/list.html.twig', [
+        return $this->renderTemplate('message/list.html.twig', $committee, [
             'messages' => $repository->findAllCommitteeMessage($adherent, $committee, $status),
-            'committee' => $committee,
-            'route_params' => ['committee_slug' => $committee->getSlug()],
             'message_filter_status' => $status,
         ]);
     }
@@ -69,44 +70,42 @@ class CommitteeMessageController extends AbstractMessageController
         Request $request,
         UserInterface $adherent,
         ObjectManager $manager,
-        MessageBusInterface $bus,
-        Committee $committee = null
+        Committee $committee
     ): Response {
         $this->disableInProduction();
 
         $form = $this
-            ->createForm(AdherentMessageType::class)
+            ->createForm(CommitteeAdherentMessageType::class)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = AdherentMessageFactory::create($adherent, $form->getData(), $this->getMessageType());
+            $message = AdherentMessageFactory::create(
+                $adherent,
+                $command = $form->getData(),
+                AdherentMessageTypeEnum::COMMITTEE
+            );
             $message->setFilter(new CommitteeFilter($committee));
 
             $manager->persist($message);
-
             $manager->flush();
 
             $this->addFlash('info', 'adherent_message.created_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToMessageRoute('filter', [
+                return $this->redirectToRoute('app_message_committee_filter', [
                     'uuid' => $message->getUuid()->toString(),
                     'committee_slug' => $committee->getSlug(),
                 ]);
             }
 
-            return $this->redirectToMessageRoute('update', [
+            return $this->redirectToRoute('app_message_committee_update', [
                 'uuid' => $message->getUuid(),
                 'committee_slug' => $committee->getSlug(),
             ]);
         }
 
-        return $this->renderTemplate('message/create.html.twig', [
-            'form' => $form->createView(),
-            'committee' => $committee,
-            'route_params' => ['committee_slug' => $committee->getSlug()],
-        ]);
+        return $this->renderTemplate('message/committee_create.html.twig', $committee, ['form' => $form->createView()]);
     }
 
     /**
@@ -116,9 +115,9 @@ class CommitteeMessageController extends AbstractMessageController
      */
     public function updateMessageAction(
         Request $request,
-        AbstractAdherentMessage $message,
+        CommitteeAdherentMessage $message,
         ObjectManager $manager,
-        Committee $committee = null
+        Committee $committee
     ): Response {
         $this->disableInProduction();
 
@@ -127,7 +126,10 @@ class CommitteeMessageController extends AbstractMessageController
         }
 
         $form = $this
-            ->createForm(AdherentMessageType::class, $dataObject = AdherentMessageDataObject::createFromEntity($message))
+            ->createForm(
+                CommitteeAdherentMessageType::class,
+                $dataObject = CommitteeAdherentMessageDataObject::createFromEntity($message)
+            )
             ->handleRequest($request)
         ;
 
@@ -139,23 +141,19 @@ class CommitteeMessageController extends AbstractMessageController
             $this->addFlash('info', 'adherent_message.updated_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToMessageRoute('filter', [
+                return $this->redirectToRoute('app_message_committee_filter', [
                     'uuid' => $message->getUuid()->toString(),
                     'committee_slug' => $committee->getSlug(),
                 ]);
             }
 
-            return $this->redirectToMessageRoute('update', [
+            return $this->redirectToRoute('app_message_committee_update', [
                 'uuid' => $message->getUuid(),
                 'committee_slug' => $committee->getSlug(),
             ]);
         }
 
-        return $this->renderTemplate('message/update.html.twig', [
-            'form' => $form->createView(),
-            'committee' => $committee,
-            'route_params' => ['committee_slug' => $committee->getSlug()],
-        ]);
+        return $this->renderTemplate('message/committee_update.html.twig', $committee, ['form' => $form->createView()]);
     }
 
     /**
@@ -163,24 +161,15 @@ class CommitteeMessageController extends AbstractMessageController
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function filterMessageAction(
-        Request $request,
-        AbstractAdherentMessage $message,
-        FilterFormFactory $formFactory,
-        ObjectManager $manager,
-        Committee $committee = null
-    ): Response {
+    public function filterMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
+    {
         $this->disableInProduction();
 
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has already been sent.');
         }
 
-        return $this->renderTemplate('message/filter/committee.html.twig', [
-            'message' => $message,
-            'committee' => $committee,
-            'route_params' => ['committee_slug' => $committee->getSlug()],
-        ]);
+        return $this->renderTemplate('message/filter/committee.html.twig', $committee, ['message' => $message]);
     }
 
     /**
@@ -188,7 +177,7 @@ class CommitteeMessageController extends AbstractMessageController
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function previewMessageAction(AbstractAdherentMessage $message, Committee $committee = null): Response
+    public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
         $this->disableInProduction();
 
@@ -196,11 +185,7 @@ class CommitteeMessageController extends AbstractMessageController
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
 
-        return $this->renderTemplate('message/preview.html.twig', [
-            'message' => $message,
-            'committee' => $committee,
-            'route_params' => ['committee_slug' => $committee->getSlug()],
-        ]);
+        return $this->renderTemplate('message/preview.html.twig', $committee, ['message' => $message]);
     }
 
     /**
@@ -209,9 +194,9 @@ class CommitteeMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function getMessageTemplateAction(
-        AbstractAdherentMessage $message,
+        CommitteeAdherentMessage $message,
         Manager $manager,
-        Committee $committee = null
+        Committee $committee
     ): Response {
         $this->disableInProduction();
 
@@ -224,9 +209,9 @@ class CommitteeMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function deleteMessageAction(
-        AbstractAdherentMessage $message,
+        CommitteeAdherentMessage $message,
         ObjectManager $manager,
-        Committee $committee = null
+        Committee $committee
     ): Response {
         $this->disableInProduction();
 
@@ -235,7 +220,7 @@ class CommitteeMessageController extends AbstractMessageController
 
         $this->addFlash('info', 'adherent_message.deleted_successfully');
 
-        return $this->redirectToMessageRoute('list', ['committee_slug' => $committee->getSlug()]);
+        return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
     /**
@@ -244,10 +229,10 @@ class CommitteeMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function sendMessageAction(
-        AbstractAdherentMessage $message,
+        CommitteeAdherentMessage $message,
         Manager $manager,
         ObjectManager $entityManager,
-        Committee $committee = null
+        Committee $committee
     ): Response {
         $this->disableInProduction();
 
@@ -265,6 +250,15 @@ class CommitteeMessageController extends AbstractMessageController
 
         if ($manager->sendCampaign($message)) {
             $message->markAsSent();
+
+            if ($message->isSendToTimeline()) {
+                $entityManager->persist(CommitteeFeedItem::createMessage(
+                    $committee,
+                    $message->getAuthor(),
+                    $message->getContent()
+                ));
+            }
+
             $entityManager->flush();
 
             $this->addFlash('info', 'adherent_message.campaign_sent_successfully');
@@ -272,11 +266,24 @@ class CommitteeMessageController extends AbstractMessageController
             $this->addFlash('info', 'adherent_message.campaign_sent_failure');
         }
 
-        return $this->redirectToMessageRoute('list', ['committee_slug' => $committee->getSlug()]);
+        return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
     protected function getMessageType(): string
     {
         return AdherentMessageTypeEnum::COMMITTEE;
+    }
+
+    private function renderTemplate(string $template, Committee $committee, array $parameters = []): Response
+    {
+        return $this->render($template, array_merge(
+            $parameters,
+            [
+                'committee' => $committee,
+                'route_params' => ['committee_slug' => $committee->getSlug()],
+                'base_template' => 'message/_base_committee.html.twig',
+                'message_type' => AdherentMessageTypeEnum::COMMITTEE,
+            ]
+        ));
     }
 }
