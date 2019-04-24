@@ -17,33 +17,14 @@
 {% block committee_content %}
     <div class="l__row l__row--wrap pre-space__items-preview">
         {% for committee in committees|slice(0, 6) %}
-            {# {{ block('committee_block') }} #}
-            <div class="pre-space__item-card">
-                <p class="text--medium font-gillsans">{{ committee.name }}</p>
-                <div>
-                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
-                    <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
-                </div>
-            </div>
-            <div class="pre-space__item-card">
-                <p class="text--medium font-gillsans">{{ committee.name }}</p>
-                <div>
-                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
-                    <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
-                </div>
-            </div>
-            <div class="pre-space__item-card">
-                <p class="text--medium font-gillsans">{{ committee.name }}</p>
-                <div>
-                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
-                    <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
-                </div>
-            </div>
+            {{ block('committee_block') }}
         {% endfor %}
 
         {% if not app.user.isSupervisor %}
-            <div class="l__col l__col--half space--20 committee-block b__nudge--top-15">
-                <p class="text--gray">+ Créer un nouveau comité</p>
+            <div class="pre-space__item-card">
+                <p class="text--gray">
+                    <a href="{{ path('app_adherent_create_committee') }}">+ Créer un nouveau comité</a>
+                </p>
             </div>
         {% endif %}
     </div>
@@ -61,8 +42,8 @@
 {% endblock %}
 
 {% block committee_block %}
-    <div class="l__col l__col--half space--20 committee-block b__nudge--top-15">
-        <p><strong>{{ committee.name }}</strong></p>
+    <div class="pre-space__item-card">
+        <p class="text--medium font-gillsans">{{ committee.name }}</p>
         <div>
             <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
             <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>

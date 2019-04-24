@@ -1,0 +1,61 @@
+{% extends 'message/create.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.ckeditor('committee_adherent_message_content', null, false, 5000, true) }}
+        });
+    </script>
+{% endblock %}
+
+{% block message_form %}
+    <div class="l__wrapper--slim">
+        <h3 class="text--medium b__nudge--bottom-40">Rédiger mon message</h3>
+        <div class="space--30-0">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="form__row subject">
+                {{ form_label(form.label, 'Label') }}
+                {{ form_errors(form.label) }}
+                {{ form_widget(form.label, {attr: {class: 'form--full', placeholder: 'Donnez un label à votre message'}}) }}
+            </div>
+
+            <div class="form__row">
+                <label class="form form__label" for="sender">Expéditeur</label>
+                <input id="sender" type="text" disabled="disabled" class="form form__field form--full" value="{{ app.user.fullName }}" />
+            </div>
+
+            <div class="form__row subject">
+                {{ form_label(form.subject, 'Objet') }}
+                {{ form_errors(form.subject) }}
+                {{ form_widget(form.subject, {attr: {class: 'form--full', placeholder: 'Entrez l\'objet de votre message'}}) }}
+            </div>
+
+            <div class="form__row message">
+                {{ form_label(form.content, 'Message') }}
+                {{ form_errors(form.content) }}
+                {{ form_widget(form.content, {attr: {class: 'form--full form__field--textarea-300', placeholder: 'Écrivez votre message'}}) }}
+            </div>
+
+            <legend class="text--gray text--small message-legend">
+                NB : le compteur de caractères peut indiquer une valeur différente de celle que vous aviez sur votre
+                éditeur de texte sur lequel vous avez écrit votre message. Pour ne pas dépasser cette limite, vous
+                pouvez sélectionner votre texte et cliquer sur le bouton pour supprimer la mise en forme. A noter que
+                les liens ne sont pas pris en compte dans le compteur et peuvent bloquer l'envoi. Pour le bon
+                déroulement de l'envoi, n'ajoutez pas d'emoji dans votre texte.
+            </legend>
+
+            {{ form_row(form.sendToTimeline, {label: 'Publier sur la page du comité'}) }}
+
+            {{ form_widget(form.next, {label: 'Suivant →', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-50'}}) }}
+            {{ form_widget(form.save, {label: 'Enregistrer le brouillon', attr: {class: 'btn btn--ghosting--blue btn--large-and-full b__nudge--top-15'}}) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
