@@ -6,10 +6,14 @@
     <main>
         <section class="manager-space b__nudge--bottom-huge adherent-space">
             <header class="manager-header b__nudge--bottom-large adherent-space-header">
-                <h1 class="text--center text--large" style="padding-top: 135px;">{{ block('page_title') }}</h1>
-                <p class="text--center text--body text--light-gray">
-                    Vous gérez {{ 'common.citizen_projects_count'|transchoice(citizen_projects|length) }}
-                </p>
+                <div class="l__wrapper">
+                    <div class="pre-space text--center">
+                        <h1 class="text--large">{{ block('page_title') }}</h1>
+                        <p class="pre-space__item-number text--medium-small">
+                            Vous gérez {{ 'common.citizen_projects_count'|transchoice(citizen_projects|length) }}
+                        </p>
+                    </div>
+                </div>
             </header>
 
             <div class="l__row l__row--wrap l__row--center">
