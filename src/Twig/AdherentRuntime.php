@@ -59,6 +59,16 @@ class AdherentRuntime implements RuntimeExtensionInterface
 
     public function getReferentPreviousVisitDate(Adherent $adherent, string $format = 'd/m/Y'): string
     {
+        return $this->getReferentPreviousVisitDateTime($adherent, $format);
+    }
+
+    public function getReferentPreviousVisitHour(Adherent $adherent, string $format = 'H\hi'): string
+    {
+        return $this->getReferentPreviousVisitDateTime($adherent, $format);
+    }
+
+    private function getReferentPreviousVisitDateTime(Adherent $adherent, string $format): string
+    {
         /** @var ReferentSpaceAccessInformation $accessInformation */
         $accessInformation = $this->accessInformationRepository->findByAdherent($adherent, 7200);
 
