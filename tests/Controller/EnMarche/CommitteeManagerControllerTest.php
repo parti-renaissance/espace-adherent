@@ -218,7 +218,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('+ Créer événement')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -346,7 +346,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('+ Créer événement')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

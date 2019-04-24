@@ -24,18 +24,21 @@
         </form>
         <table class="datagrid__table-manager" cellpadding="10">
             <thead>
-                <th width="50px"><input type="checkbox" id="members-check-all" /></th>
-                <th width="150px">Prénom</th>
-                <th width="150px">Nom</th>
-                <th width="75px">Age</th>
-                <th width="100px">CP</th>
-                <th width="150px">Ville</th>
-                <th width="100px">Rôle</th>
-                <th width="100px">Adhésion</th>
-                {% if is_supervisor %}
-                    <th style="min-width: 200px;">Actions</th>
-                {% endif %}
+                <tr>
+                    <th width="50px"><input type="checkbox" id="members-check-all" /></th>
+                    <th width="150px">Prénom</th>
+                    <th width="150px">Nom</th>
+                    <th width="75px">Age</th>
+                    <th width="100px">CP</th>
+                    <th width="150px">Ville</th>
+                    <th width="100px">Rôle</th>
+                    <th width="100px">Adhésion</th>
+                    {% if is_supervisor %}
+                        <th style="min-width: 200px;">Actions</th>
+                    {% endif %}
+                </tr>
             </thead>
+            <tbody>
             {% for membership in members %}
                 {% set member = membership.adherent %}
                 {% set is_promotable_host = membership.promotableHost %}
@@ -83,6 +86,7 @@
                     {% endif %}
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     </section>
 {% endblock %}
