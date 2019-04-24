@@ -51,6 +51,7 @@
     }
 
     .form__row {
+        position: relative;
         margin-bottom: 20px;
 
         .form__label {
@@ -59,14 +60,31 @@
 
         .form__field {
             @include form-field;
+        }
 
-
+        .form__legend {
+            color: $neutral-grey;
+            display: block;
+            margin-top: 5px;
+            padding-bottom: 10px;
         }
 
         textarea.form__field {
             width: 100%;
             max-width: 100%;
             min-height: 100px;
+        }
+
+        .character-count {
+            position: absolute;
+            right: 1px;
+            bottom: 1px;
+            background: white;
+            opacity: 0.9;
+            padding: 0 16px;
+            font-size: 14px;
+            line-height: 58px;
+            pointer-events: none;
         }
     }
 
