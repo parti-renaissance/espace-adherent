@@ -154,6 +154,9 @@
         <service id="AppBundle\EventListener\RemoveEmojisListener">
             <tag name="doctrine.event_listener" event="onFlush" />
         </service>
+        <service id="AppBundle\EventListener\ManageReferentTeamMembersListener">
+            <tag name="doctrine.event_subscriber"/>
+        </service>
         <service id="AppBundle\EventSubscriber\ChangeIdeaAuthorCategoryListener">
             <tag name="doctrine.event_listener" event="preUpdate" lazy="true" />
             <tag name="doctrine.event_listener" event="postUpdate" lazy="true" />
@@ -205,6 +208,9 @@
         <service id="AppBundle\Referent\ManagedCommitteesExporter" />
         <service id="AppBundle\Referent\ManagedCitizenProjectsExporter" />
         <service id="AppBundle\Referent\ManagedEventsExporter" />
+        <service id="AppBundle\Validator\CanBeCoReferentValidator" />
+        <service id="AppBundle\Form\ReferentPersonLinkType" />
+        <service id="AppBundle\Form\ReferentPersonLinkForCoReferentType" />
 
         <!-- J'écoute -->
         <service id="AppBundle\Command\ImportJecouteSurveysCommand" />

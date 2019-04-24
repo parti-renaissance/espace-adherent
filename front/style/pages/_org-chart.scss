@@ -139,13 +139,20 @@ ol.organizational-chart > li > ol.organizational-chart > li > ol > li:last-child
             }
         }
 
-        .function {
+        .function,
+        .form__label,
+        .already-co-referent {
             border: 0;
             margin-top: 8px;
             font-size: 16px;
             color: #8c8c8c;
             text-transform: none;
 
+        }
+
+        .form__label {
+            font-weight: normal;
+            display: inline;
         }
     }
 }

@@ -310,6 +310,16 @@ class Referent implements EntityMediaInterface
         return $this->referentPersonLinks;
     }
 
+    /**
+     * @return Collection|ReferentPersonLink[]
+     */
+    public function getReferentPersonLinksWithExistingAdherent(): Collection
+    {
+        return $this->referentPersonLinks->filter(function (ReferentPersonLink $personLink) {
+            return null !== $personLink->getAdherent();
+        });
+    }
+
     public function setReferentPersonLinks(Collection $referentPersonLinks): void
     {
         $this->referentPersonLinks = $referentPersonLinks;
