@@ -57,7 +57,10 @@ export default class MessageStatusLoader extends React.Component {
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                <p className="text--medium">Votre filtre correspond à <span className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérent !</p>
+                <p className="text--medium">
+                    Votre filtre correspond à <
+                    span className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérent !
+                </p>
                 <p>
                     <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top-50">Envoyer</a>
                     <a

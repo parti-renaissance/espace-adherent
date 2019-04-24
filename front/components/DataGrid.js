@@ -251,15 +251,28 @@ export default class DataGrid extends React.Component {
 
             Object.keys(columns).forEach((j) => {
                 if ('undefined' !== typeof columns[j].link && columns[j].link) {
-                    resultColumns.push(
-                        <td key={`result${i}-column${j}`}
-                            style={columns[j].style || null}
-                            className={columns[j].className || ''}>
-                            <a target={'_blank'} href={result[columns[j].key].url}
-                               dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
-                            </a>
-                        </td>
-                    );
+                    if ('undefined' !== typeof columns[j].targetBlank && columns[j].targetBlank) {
+                        resultColumns.push(
+                            <td key={`result${i}-column${j}`}
+                                style={columns[j].style || null}
+                                className={columns[j].className || ''}>
+                                <a target="_blank"
+                                   href={result[columns[j].key].url}
+                                   dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
+                                </a>
+                            </td>
+                        );
+                    } else {
+                        resultColumns.push(
+                            <td key={`result${i}-column${j}`}
+                                style={columns[j].style || null}
+                                className={columns[j].className || ''}>
+                                <a href={result[columns[j].key].url}
+                                   dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
+                                </a>
+                            </td>
+                        );
+                    }
                 } else {
                     resultColumns.push(
                         <td key={`result${i}-column${j}`}
