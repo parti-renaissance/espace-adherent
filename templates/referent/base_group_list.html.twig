@@ -6,30 +6,24 @@
             App.runManagedList(
                 [
                     {
-                        key: 'id',
-                        name: 'ID',
-                        style: {
-                            width: 25
-                        }
-                    },
-                    {
                         key: 'name',
                         name: 'Nom',
-                        link: true
+                        link: true,
+                        targetBlank: true,
                     },
                     {
                         key: 'postalCode',
                         name: 'Code postal',
                         style: {
-                            width: 100
+                            width: 175
                         }
                     },
                     {
                         key: 'members',
-                        name: 'Suiveurs',
+                        name: 'Membres',
                         className: 'datagrid__table__col--hide-mobile',
                         style: {
-                            width: 50
+                            width: 100
                         }
                     }
                 ],
@@ -42,54 +36,6 @@
 {% block referent_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>{{ title }}</h3>
-        <span class="datagrid__count">
-            <span>45</span> sur 5000 {{ title }}
-        </span>
-    </div>
-
-    <div class="manager__filters">
-        <div class="manager__filters__form">
-            <form method="get" action="">
-                <h4 class="manager__filters__subtitle">Filtrer par...</h4>
-                <div class="manager__filters__row">
-
-                    <div class="manager__filters__section">
-                        <div class="manager__filters__group">
-                            <div class="filter__row">
-                                <label class="filter__label">Nom</label>
-                                <input type="text"
-                                       name=""
-                                       value=""
-                                       class="filter__field"
-                                       placeholder="Saisissez un nom"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="manager__filters__section">
-                        <div class="manager__filters__group">
-                            <div class="filter__row">
-                                <label class="filter__label">Code postal</label>
-                                <input type="text"
-                                       name=""
-                                       value=""
-                                       class="filter__field"
-                                       placeholder="Saisissez un code postal"/>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="manager__filters__actions b__nudge--top">
-                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">
-                        Appliquer
-                    </button>
-                    <a href="" class="btn btn--no-border b__nudge--bottom-medium">
-                        Réinitialiser les filtres
-                    </a>
-                </div>
-            </form>
-        </div>
     </div>
 
     <div id="datagrid"></div>

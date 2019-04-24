@@ -42,10 +42,6 @@ class CommitteeCommandType extends AbstractType
             ->add('twitterNickname', TextType::class, [
                 'required' => false,
             ])
-            ->add('googlePlusPageUrl', UrlType::class, [
-                'required' => false,
-                'default_protocol' => null,
-            ])
         ;
 
         if (!$committee || $committee->isWaitingForApproval()) {

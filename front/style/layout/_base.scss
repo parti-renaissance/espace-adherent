@@ -151,6 +151,10 @@ table {
 .action-menu-oval {
     position: relative;
     font-size: 0;
+    padding: 15px 0;
+    cursor: pointer;
+    display: block;
+    width: 25px;
 
     & > a {
         border: 0 none;
@@ -168,17 +172,26 @@ table {
     .action-dropdown-menu {
         display: none;
         position: absolute;
-        text-align: center;
-        left: -60px;
-        border: 1px solid $gray;
-        border-radius: 2px;
-        width: 140px;
+        text-align: left;
+        left: 0;
+        top: 30px;
+        background-color: $white;
+        z-index: 5;
+        box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.15);
+        border-radius: 3px;
+        width: 180px;
+        padding: 5px 0;
 
         & a {
             display: block;
-            padding: 8px 20px;
-            border-bottom: 1px solid $gray;
+            padding: 8px 15px;
             background-color: white;
+            font-size: 15px;
+            border: none;
+
+            &:hover {
+                opacity: 0.6;
+            }
         }
 
         & a:last-child {

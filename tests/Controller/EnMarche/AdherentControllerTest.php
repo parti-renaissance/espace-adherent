@@ -925,12 +925,11 @@ class AdherentControllerTest extends WebTestCase
                 ],
                 'facebookPageUrl' => 'yo',
                 'twitterNickname' => '@!!',
-                'googlePlusPageUrl' => 'yo',
             ],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(11, $crawler->filter('#create-committee-form .form__errors > li')->count());
+        $this->assertSame(10, $crawler->filter('#create-committee-form .form__errors > li')->count());
         $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > li')->eq(1)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
@@ -939,7 +938,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
         $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
-        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-googleplus-page-url > .form__errors > li')->text());
+        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
         $this->assertSame('Vous devez accepter les règles de confidentialité.', $crawler->filter('#field-confidentiality-terms > .form__errors > li')->text());
         $this->assertSame("Vous devez accepter d'être contacté(e) par la plateforme En Marche !", $crawler->filter('#field-contacting-terms > .form__errors > li')->text());
 
@@ -956,7 +955,6 @@ class AdherentControllerTest extends WebTestCase
             'create_committee[phone][number]' => '0478457898',
             'create_committee[facebookPageUrl]' => 'https://www.facebook.com/EnMarcheLyon',
             'create_committee[twitterNickname]' => '@enmarchelyon',
-            'create_committee[googlePlusPageUrl]' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
             'create_committee[acceptConfidentialityTerms]' => true,
             'create_committee[acceptContactingTerms]' => true,
             'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, \UPLOAD_ERR_OK, true),

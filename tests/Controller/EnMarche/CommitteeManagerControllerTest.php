@@ -78,19 +78,18 @@ class CommitteeManagerControllerTest extends WebTestCase
                 ],
                 'facebookPageUrl' => 'yo',
                 'twitterNickname' => '@!!',
-                'googlePlusPageUrl' => 'yo',
             ],
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(7, $crawler->filter('#edit-committee-form .form__errors > li')->count());
+        $this->assertSame(6, $crawler->filter('#edit-committee-form .form__errors > li')->count());
         $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#committee-address > .form__errors > .form__error')->eq(0)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#field-address > .form__errors > li')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#field-name > .form__errors > li')->text());
         $this->assertSame('Votre texte de description est trop court. Il doit compter 5 caractères minimum.', $crawler->filter('#field-description > .form__errors > li')->text());
         $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
         $this->assertSame('Un identifiant Twitter ne peut contenir que des lettres, des chiffres et des underscores.', $crawler->filter('#field-twitter-nickname > .form__errors > li')->text());
-        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-googleplus-page-url > .form__errors > li')->text());
+        $this->assertSame("Cette valeur n'est pas une URL valide.", $crawler->filter('#field-facebook-page-url > .form__errors > li')->text());
 
         // Submit the committee form with valid data to create committee
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -106,7 +105,6 @@ class CommitteeManagerControllerTest extends WebTestCase
                 ],
                 'facebookPageUrl' => 'https://www.facebook.com/EnMarcheClichy',
                 'twitterNickname' => '@enmarcheclichy',
-                'googlePlusPageUrl' => 'https://plus.google.com/+EnMarcheavecEmmanuelMacron?hl=fr',
             ],
         ]));
 
@@ -220,8 +218,8 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('+ Créer événement')->link());
 
+        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $eventCategory = $this->getEventCategoryIdForName(LoadEventCategoryData::LEGACY_EVENT_CATEGORIES['CE003']);
@@ -348,7 +346,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('+ Créer événement')->link());
+        $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -698,7 +696,7 @@ class CommitteeManagerControllerTest extends WebTestCase
     private function seeMembersList(Crawler $crawler, int $count): bool
     {
         // Header row is part of the count
-        return $count === \count($crawler->filter('table > tr'));
+        return $count === \count($crawler->filter('table tr'));
     }
 
     private function seeMessageForm(Crawler $crawler, array $errorMessages = []): bool

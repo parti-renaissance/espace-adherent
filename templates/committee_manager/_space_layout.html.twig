@@ -6,16 +6,16 @@
     <div class="l__wrapper">
         <div class="first-section">
             <div class="manager-information">
-                <a href="{{ path('app_committee_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous vos comités</a>
+                <a href="{{ path('app_committee_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous mes comités</a>
             </div>
         </div>
         <div class="second-section">
-            <h1 class="page-title text--large">
+            <h1 class="page-title text--large b__nudge--bottom">
                 {{ committee.name }}
             </h1>
             <div class="direct-actions">
                 <a href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;Créer&nbsp;événement</a>
+                <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer&nbsp;un&nbsp;</span>événement</a>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
 
                 {% if is_canary_enabled() %}
                     <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
-                        <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Envoyer un message</a>
+                        <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
                     </li>
                 {% endif %}
             </ul>
