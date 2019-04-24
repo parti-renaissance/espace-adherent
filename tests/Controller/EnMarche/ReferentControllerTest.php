@@ -176,7 +176,7 @@ class ReferentControllerTest extends WebTestCase
         $data['institutional_event']['invitations'] = 'jean@exemple.fr;michel@exemple.fr;marcel@exemple.fr';
 
         $this->client->submit(
-            $this->client->getCrawler()->selectButton('Créer cet événement institutionnel')->form(), $data
+            $this->client->getCrawler()->selectButton('Créer cette réunion privée')->form(), $data
         );
 
         /** @var InstitutionalEvent $event */
@@ -205,7 +205,7 @@ class ReferentControllerTest extends WebTestCase
 
         // Submit the form with empty values
         $this->client->submit($this->client->getCrawler()
-            ->selectButton('Créer cet événement institutionnel')->form(), [])
+            ->selectButton('Créer cette réunion privée')->form(), [])
         ;
 
         $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
