@@ -11,72 +11,80 @@
 
 {{ form_errors(form) }}
 
-<div class="form__new" id="field-name">
-    {{ form_label(form.name, 'Donnez un nom à votre projet :', {label_attr: {class: 'label__header--large'}}) }}
+<div class="form__row" id="field-name">
+    {{ form_label(form.name, 'Donnez un nom à votre projet :', {label_attr: {class: 'form__label'}}) }}
     {% if form.name.vars.disabled %}
         <div id="citizen_project_name_text">{{ form.vars.data.name }}</div>
         <div class="visually-hidden">{{ form_widget(form.name) }}</div>
     {% else %}
         {{ form_errors(form.name) }}
-        {{ form_widget(form.name, {
-            attr: {
-                'class': 'form--full',
-                'placeholder': 'Un nom court et clair',
-            }
-        }) }}
-        <small>Ex: "Un stage pour tous"</small>
+        <div class="pst--relative">
+            {{ form_widget(form.name, {
+                attr: {
+                    'class': 'form__field',
+                    'placeholder': 'Un nom court et clair',
+                }
+            }) }}
+        </div>
+        <span class="form__legend text--small">Ex: "Un stage pour tous"</span>
     {% endif %}
 </div>
 
 {% if form.district is defined %}
-    <div class="form__new" id="field-district">
-        {{ form_label(form.district, "Ajoutez ici le nom de votre quartier pour qu'il apparaisse dans le titre du projet :", {label_attr: {class: 'label__header--large'}}) }}
+    <div class="form__row" id="field-district">
+        {{ form_label(form.district, "Ajoutez ici le nom de votre quartier pour qu'il apparaisse dans le titre du projet :", {label_attr: {class: 'form__label'}}) }}
         {{ form_errors(form.district) }}
-        {{ form_widget(form.district, {
-            attr: {
-                'class': 'form--full',
-                'placeholder': 'Le nom de votre quartier',
-            }
-        }) }}
-        <small>Laissez vide pour afficher la ville.</small>
+        <div class="pst--relative">
+            {{ form_widget(form.district, {
+                attr: {
+                    'class': 'form__field',
+                    'placeholder': 'Le nom de votre quartier',
+                }
+            }) }}
+        </div>
+        <span class="form__legend text--small">Laissez vide pour afficher la ville.</span>
     </div>
 {% endif %}
 
-<div class="form__new" id="field-subtitle">
-    {{ form_label(form.subtitle, 'Et un sous-titre :', {label_attr: {class: 'label__header--large'}}) }}
+<div class="form__row" id="field-subtitle">
+    {{ form_label(form.subtitle, 'Et un sous-titre :', {label_attr: {class: 'form__label'}}) }}
     {% if form.subtitle.vars.disabled %}
         <div id="citizen_project_subtitle_text">{{ form.vars.data.subtitle }}</div>
         <div class="visually-hidden">{{ form_widget(form.subtitle) }}</div>
     {% else %}
         {{ form_errors(form.subtitle) }}
-        {{ form_widget(form.subtitle, {
-            attr: {
-                class: 'form--full',
-                placeholder: 'Un sous-titre explicatif',
-            }
-        }) }}
-        <small>Ex: "Aider les élèves de 3e à trouver un stage en entreprise"</small>
+        <div class="pst--relative">
+            {{ form_widget(form.subtitle, {
+                attr: {
+                    class: 'form__field',
+                    placeholder: 'Un sous-titre explicatif',
+                }
+            }) }}
+        </div>
+        <span class="form__legend text--small">Ex: "Aider les élèves de 3e à trouver un stage en entreprise"</span>
     {% endif %}
 </div>
 
-<div class="form__new" id="field-category">
-    {{ form_label(form.category, 'Choisissez le thème de votre projet :', {label_attr: {class: 'label__header--large'}}) }}
+<div class="form__row" id="field-category">
+    {{ form_label(form.category, 'Choisissez le thème de votre projet :', {label_attr: {class: 'form__label'}}) }}
     {% if form.category.vars.disabled %}
         <div id="citizen_project_category_text">{{ form.vars.data.category }}</div>
         <div class="visually-hidden">{{ form_widget(form.category) }}</div>
     {% else %}
         {{ form_errors(form.category) }}
-        {{ form_widget(form.category, {
-            attr: {
-                class: 'form--full',
-                placeholder: 'Sélectionnez un thème',
-            }
-        }) }}
+        <div class="pst--relative">
+            {{ form_widget(form.category, {
+                attr: {
+                    class: 'form__field',
+                    placeholder: 'Sélectionnez un thème',
+                }
+            }) }}
+        </div>
     {% endif %}
 </div>
 
-<div class="form__new" id="field-image">
-    <label class="label__header--large">Ajoutez une image d'illustration : <span>(Optionnel)</span></label>
+<div class="form__row" id="field-image">
+    <label class="form__label">Ajoutez une image d'illustration : <span>(Optionnel)</span></label>
     {{ form_errors(form.image) }}
     {% if citizen_project is defined and citizen_project.hasImageUploaded %}
         <div class="citizen_project_form__picture_preview">
@@ -93,32 +101,34 @@
         <div>JPEG ou PNG - 5 Mo maximum</div>
         <div>Au moins 1200x675 pixels - format 16:9</div>
     </div>
-    <small>Choisissez une image sans texte, représentative de votre projet et libre de droit.</small>
+    <span class="form__legend text--small">Choisissez une image sans texte, représentative de votre projet et libre de droit.</span>
 </div>
 
-<div class="form__new" id="field-problem-description">
-    {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {label_attr: {class: 'label__header--large'}}) }}
+<div class="form__row" id="field-problem-description">
+    {{ form_label(form.problem_description, 'À quelle problématique locale répond votre projet ?', {label_attr: {class: 'form__label'}}) }}
     {% if form.problem_description.vars.disabled %}
         <div id="citizen_project_problem_description_text">{{ form.vars.data.problemDescription }}</div>
         <div class="visually-hidden">{{ form_widget(form.problem_description) }}</div>
     {% else %}
         {{ form_errors(form.problem_description) }}
-        {{ form_widget(form.problem_description, {
-            attr: {
-                class: 'form--full form__field--textarea-120',
-                placeholder: 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
-            }
-        }) }}
-        <small>
+        <div class="pst--relative">
+            {{ form_widget(form.problem_description, {
+                attr: {
+                    class: 'form__field form__field--textarea-120',
+                    placeholder: 'Décrivez en 1 ou 2 phrases le problème local auquel vous proposez de répondre.',
+                }
+            }) }}
+        </div>
+        <span class="form__legend text--small">
             Ex: "Les collégiens doivent effectuer un stage d'observation en classe de 3e ou de 4e
             pour les aider à déterminer leur orientation professionnelle mais
             ils ont parfois du mal à le trouver en dehors de leur réseau famillial."
-        </small>
+        </span>
     {% endif %}
 </div>
 
-<div class="form__new" id="field-proposed-solution">
-    {{ form_label(form.proposed_solution, 'Comment votre projet tend à répondre à ce problème ?', {label_attr: {class:'label__header--large'}}) }}
+<div class="form__row" id="field-proposed-solution">
+    {{ form_label(form.proposed_solution, 'Comment votre projet tend à répondre à ce problème ?', {label_attr: {class:'form__label'}}) }}
     {% if form.proposed_solution.vars.disabled %}
         <div id="citizen_project_proposed_solution_text">{{ form.vars.data.proposedSolution|raw }}</div>
         <div class="visually-hidden">{{ form_widget(form.proposed_solution) }}</div>
@@ -126,45 +136,45 @@
         {{ form_errors(form.proposed_solution) }}
         {{ form_widget(form.proposed_solution, {
             attr: {
-                class: 'form--full form__field--textarea-120',
+                class: 'form__field form__field--textarea-120',
                 placeholder: 'Un court paragraphe sur la ou les solutions que vous proposez',
             }
         }) }}
-        <small>
+        <span class="form__legend text--small">
             Ex: Le projet a pour objectif de mettre en relation ces élèves avec un réseau de professionnels
             (entreprises, commerçants, artisans, etc.) volontaires pour les accueillir.
-        </small>
+        </span>
     {% endif %}
 </div>
 
-<div class="form__new" id="field-required-means">
-    {{ form_label(form.required_means, 'Quel est votre plan d\'action ?', {label_attr: {class: 'label__header--large'}}) }}
+<div class="form__row" id="field-required-means">
+    {{ form_label(form.required_means, 'Quel est votre plan d\'action ?', {label_attr: {class: 'form__label'}}) }}
     {{ form_errors(form.required_means) }}
     {{ form_widget(form.required_means, {
         attr: {
-            class: 'form--full form__field--textarea-120',
+            class: 'form__field form__field--textarea-120',
             placeholder: 'Votre calendrier prévisionnel et les principales étapes de votre projet',
         }
     }) }}
-    <small>
+    <span class="form__legend text--small">
         Ex: Nous vous proposons:<br>
         (i) de nous aider à identifier des professionnels susceptibles de proposer des stages<br>
         (ii) de faire connaître l'initiative auprès d'un maximum d'élèves, notamment via des associations<br>
         (iii) de participer à des ateliers d'orientation de collégiens, via des associations partenaires.<br>
-    </small>
+    </span>
 </div>
 
-<div class="form__new" id="field-skills">
+<div class="form__row" id="field-skills">
     {{ form_errors(form.skills) }}
-    <label class="label__header--large">Ce projet a besoin de : <span>(Optionnel)</span></label>
+    <label class="form__label">Ce projet a besoin de : <span>(Optionnel)</span></label>
     <div class="form_checkbox_multi_column">
         {{ form_label(form.skills) }}
         {{ form_widget(form.skills, {attr: {class: 'hidden'}}) }}
     </div>
 </div>
 
-<div class="form__new" id="citizen-project-address">
-    {{ form_label(form.address, 'Autour de quelle ville se déroulera ce projet ?', {label_attr: {class: 'label__header--large'}}) }}
+<div class="form__row" id="citizen-project-address">
+    {{ form_label(form.address, 'Autour de quelle ville se déroulera ce projet ?', {label_attr: {class: 'form__label'}}) }}
     {{ form_errors(form.address) }}
     <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
         <div class="register__form__zip_code register__form--third" id="field-postal-code-city">
@@ -186,33 +196,33 @@
     </div>
 </div>
 
-<div class="form__new" id="field-committee">
+<div class="form__row" id="field-committee">
     {{ form_errors(form.committees) }}
-    <label class="label__header--large">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
+    <label class="form__label">Vous avez déjà le soutien d'un comité local ?<br />Indiquez son nom : <span>(Optionnel)</span></label>
     <div>
-        {{ form_widget(form.committees_search, {attr: {class: 'form--full'} }) }}
+        {{ form_widget(form.committees_search, {attr: {class: 'form__field'} }) }}
         {{ form_widget(form.committees, {attr: {class: 'citizen-project__skills'} }) }}
     </div>
 </div>
 
-<div class="form__new" id="citizen-project-phone">
+<div class="form__row" id="citizen-project-phone">
     <div class="register__form__phone">
-        {{ form_label(form.phone, 'Votre téléphone :', {label_attr: {class: 'label__header--large'}}) }}
+        {{ form_label(form.phone, 'Votre téléphone :', {label_attr: {class: 'form__label'}}) }}
         <div class="l__row l__row--top l__row--h-stretch">
             {{ form_widget(form.phone.country) }}
             {{ form_widget(form.phone.number, {attr: { placeholder: 'Téléphone' }}) }}
         </div>
-        <div class="text--summary text--small text--gray b__nudge--top-10 b__nudge--bottom">
+        <div class="text--summary text--span text--gray b__nudge--top-10 b__nudge--bottom">
             Nous vous contacterons sur ce numéro, il sera uniquement mis à disposition de nos équipes départementales.
         </div>
     </div>
     {{ form_errors(form.phone) }}
 </div>
 
-<div class="form__new" id="field-personal-phone">
-    <label class="label__header--large">Vérifiez votre e-mail :</label>
+<div class="form__row" id="field-personal-phone">
+    <label class="form__label">Vérifiez votre e-mail :</label>
     <div class="flex--left">
-        <div class="b__nudge--right-small">{{ app.user.emailAddress }}</div>
+        <div class="b__nudge--right-span">{{ app.user.emailAddress }}</div>
         <a href="{{ path('app_user_profile') }}" class="link--blue link--no-decor" target="_blank"><i class="fa fa-pencil"></i></a>
     </div>
 </div>

@@ -480,6 +480,16 @@
     display: block;
 }
 
+.pst {
+    &--relative {
+        position: relative;
+    }
+
+    &--absolute {
+        position: absolute;
+    }
+}
+
 .ui-dialog {
     top: 2% !important;
     height: 90% !important;
