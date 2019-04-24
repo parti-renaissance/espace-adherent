@@ -540,8 +540,8 @@ ideas_workshop.status.finalized: Finalisé
 #
 assessor.processed.choices: "{1} Vous avez une demande d'assesseur traitée.|[2, Inf[ Vous avez %count% demandes d'assesseur traitées."
 assessor.unprocessed.choices: "{1} Vous avez une demande d'assesseur à traiter.|[2, Inf[ Vous avez %count% demandes d'assesseur à traiter."
-assessor.associate.success: L'assesseur a bien été associée au bureau de vote.
-assessor.deassociate.success: L'assesseur a bien été désassociée du bureau de vote.
+assessor.associate.success: L'assesseur a bien été associé au bureau de vote.
+assessor.deassociate.success: L'assesseur a bien été désassocié du bureau de vote.
 assessor.disabled.success: L'assesseur a bien été désactivé.
 assessor.enabled.success: L'assesseur a bien été réactivé.
 

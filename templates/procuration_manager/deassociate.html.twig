@@ -73,7 +73,7 @@
             </div>
             <div class="profile-value">
                 {{ request.address }}<br />
-                {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
+                {{ request.postalCode }} {{ request.cityName }}{% if request.state %} {{ request.state }}{% endif %} {{ request.country }}
             </div>
 
             <div class="profile-label">
@@ -144,7 +144,7 @@
             </div>
             <div class="profile-value">
                 {{ proxy.address }}<br />
-                {{ proxy.postalCode }} {{ proxy.cityName }} {{ proxy.country }}
+                {{ proxy.postalCode }} {{ proxy.cityName }}{% if proxy.state %} {{ proxy.state }}{% endif %} {{ proxy.country }}
             </div>
 
             <div class="profile-label">

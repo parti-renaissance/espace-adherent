@@ -15,7 +15,7 @@ parameters:
     timeline_max_messages:                30
     search_max_results:                   30
     enable_canary:                        "%env(ENABLE_CANARY)%"
-    procurations_reply_to_email:          'archiveprocurations@en-marche.fr'
+    procurations_reply_to_email:          'procurations@en-marche.fr'
     transactional_sender_email:           'contact@en-marche.fr'
     transactional_sender_name:            'En Marche !'
     campaign_sender_email:                'jemarche@en-marche.fr'

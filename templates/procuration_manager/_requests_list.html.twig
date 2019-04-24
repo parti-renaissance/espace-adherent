@@ -12,7 +12,7 @@
             <br>
             <span class="datagrid__table__col--hide-mobile">
                 <em>Lieu de résidence :</em><br>
-                {{ request.data.postalCode }} {{ request.data.cityName }} {{ request.data.country }}
+                {{ request.data.postalCode }} {{ request.data.cityName }}{% if request.data.state %} {{ request.data.state }}{% endif %} {{ request.data.country }}
             </span>
         </td>
         <td>

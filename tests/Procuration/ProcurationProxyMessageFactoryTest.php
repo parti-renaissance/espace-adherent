@@ -75,9 +75,14 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $this->assertSame(
             [
                 'monique@en-marche-dev.fr',
-                'john@smith.tld',
             ],
             $message->getCC()
+        );
+        $this->assertSame(
+            [
+                'john@smith.tld',
+            ],
+            $message->getBCC()
         );
     }
 
