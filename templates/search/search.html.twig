@@ -15,7 +15,7 @@
             var referentEvents = dom("[name='re']");
 
             on(moreButton, 'click', function () {
-                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, referentEvents.checked, function (response) {
+                di.get('api').getSearchResults(query.value, radius.value, city.value, type, (page * limit), eventCategory.value, referentEvents ? referentEvents.checked : null, function (response) {
                     if (response instanceof XMLHttpRequest) {
                         hide(moreButton);
                         return;
@@ -60,7 +60,7 @@
                 // setTimeout avoids sending all HTTP request while the user is typing
                 clearTimeout(waitQueue);
                 waitQueue = setTimeout(function() {
-                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, referentEvents.checked, function (response) {
+                    di.get('api').getSearchResults(query.value, radius.value, city.value, type, 0, eventCategory.value, referentEvents ? referentEvents.checked : null, function (response) {
                         if (response instanceof XMLHttpRequest) {
                             dom('#search-results').innerHTML = '<div class="text--body text--center l__wrapper">Aucun résultat pour ces critères de recherche.</div>';
                             hide(moreButton);
