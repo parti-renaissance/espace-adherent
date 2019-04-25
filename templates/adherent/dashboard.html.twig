@@ -15,7 +15,7 @@
 
             <p>
                 <b>{{ 'dashboard.welcome'|trans({'%firstname%': app.user.firstname}) }} 👋</b><br>
-                {% if app.user.isReferent or app.user.isDeputy or app.user.isSupervisor or app.user.isHost %}
+                {% if app.user.isReferent or app.user.isCoReferent or app.user.isDeputy or app.user.isSupervisor or app.user.isHost %}
                     {{ get_user_level_label(app.user) }},
                 {% endif %}
 

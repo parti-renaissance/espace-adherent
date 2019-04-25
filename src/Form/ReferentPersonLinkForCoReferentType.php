@@ -32,10 +32,7 @@ class ReferentPersonLinkForCoReferentType extends AbstractType
 
             if ($referentPersonLink->getAdherent() && $referent = $referentPersonLink->getAdherent()->getReferentOfReferentTeam()) {
                 if ($referent !== $this->user) {
-                    $referentPersonLink->setIsCoReferent(false);
                     $options = array_merge($options, ['disabled' => true]);
-                } else {
-                    $referentPersonLink->setIsCoReferent(true);
                 }
             }
 
