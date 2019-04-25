@@ -72,7 +72,7 @@
         textarea.form__field {
             width: 100%;
             max-width: 100%;
-            min-height: 100px;
+            min-height: 150px;
         }
 
         .character-count {
@@ -107,6 +107,12 @@
 
             &:last-child {
                 margin-right: 0;
+            }
+        }
+
+        &.w-legend {
+            .form__row {
+                margin-bottom: 0;
             }
         }
     }

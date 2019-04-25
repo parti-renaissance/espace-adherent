@@ -150,12 +150,14 @@
 <div class="form__row" id="field-required-means">
     {{ form_label(form.required_means, 'Quel est votre plan d\'action ?', {label_attr: {class: 'form__label'}}) }}
     {{ form_errors(form.required_means) }}
-    {{ form_widget(form.required_means, {
-        attr: {
-            class: 'form__field form__field--textarea-120',
-            placeholder: 'Votre calendrier prévisionnel et les principales étapes de votre projet',
-        }
-    }) }}
+    <div class="pst--relative">
+        {{ form_widget(form.required_means, {
+            attr: {
+                class: 'form__field form__field--textarea-120',
+                placeholder: 'Votre calendrier prévisionnel et les principales étapes de votre projet',
+            }
+        }) }}
+    </div>
     <span class="form__legend text--small">
         Ex: Nous vous proposons:<br>
         (i) de nous aider à identifier des professionnels susceptibles de proposer des stages<br>
@@ -205,24 +207,18 @@
     </div>
 </div>
 
-<div class="form__row" id="citizen-project-phone">
-    <div class="register__form__phone">
-        {{ form_label(form.phone, 'Votre téléphone :', {label_attr: {class: 'form__label'}}) }}
-        <div class="l__row l__row--top l__row--h-stretch">
+<div class="form__row">
+    <div class="form__group w-legend" id="citizen-project-phone">
+        <div class="form__row register__form__phone">
+            {{ form_label(form.phone, 'Votre téléphone :', {label_attr: {class: 'form__label'}}) }}
             {{ form_widget(form.phone.country) }}
+        </div>
+        <div class="form__row">
             {{ form_widget(form.phone.number, {attr: { placeholder: 'Téléphone' }}) }}
         </div>
-        <div class="text--summary text--span text--gray b__nudge--top-10 b__nudge--bottom">
-            Nous vous contacterons sur ce numéro, il sera uniquement mis à disposition de nos équipes départementales.
-        </div>
+        {{ form_errors(form.phone) }}
     </div>
-    {{ form_errors(form.phone) }}
-</div>
-
-<div class="form__row" id="field-personal-phone">
-    <label class="form__label">Vérifiez votre e-mail :</label>
-    <div class="flex--left">
-        <div class="b__nudge--right-span">{{ app.user.emailAddress }}</div>
-        <a href="{{ path('app_user_profile') }}" class="link--blue link--no-decor" target="_blank"><i class="fa fa-pencil"></i></a>
-    </div>
+    <span class="form__legend text--small">
+        Nous vous contacterons sur ce numéro, il sera uniquement mis à disposition de nos équipes départementales.
+    </span>
 </div>

@@ -16,33 +16,35 @@
                 </div>
             </header>
 
-            <div class="l__row l__row--wrap l__row--center">
-                {% for citizen_project in citizen_projects|slice(0, 6) %}
-                    {{ block('citizen_project_block') }}
-                {% endfor %}
-
-                <div class="l__col l__col--half space--20 citizen-project-block b__nudge--top-15">
-                    <p class="text--gray">+ Créer un nouveau projet citoyen</p>
-                </div>
-            </div>
-
-            {% if citizen_projects|length > 6 %}
-                <div class="b__nudge--top-40 l__row l__row--center">
-                    <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
-                </div>
-                <div class="l__row l__row--wrap l__row--center hidden" id="citizen-projects-next-part">
-                    {% for citizen_project in citizen_projects|slice(6) %}
+            <div class="l__wrapper text--body">
+                <div class="l__row l__row--wrap pre-space__items-preview">
+                    {% for citizen_project in citizen_projects|slice(0, 6) %}
                         {{ block('citizen_project_block') }}
                     {% endfor %}
+
+                    <a href="#" class="pre-space__item-card iterate">
+                        <p class="text--medium-small text--blue--dark">+ Créer un projet citoyen</p>
+                    </a>
                 </div>
-            {% endif %}
+
+                {% if citizen_projects|length > 6 %}
+                    <div class="b__nudge--top-40 l__row l__row--center">
+                        <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
+                    </div>
+                    <div class="l__row l__row--wrap l__row--center hidden" id="citizen-projects-next-part">
+                        {% for citizen_project in citizen_projects|slice(6) %}
+                            {{ block('citizen_project_block') }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
         </section>
     </main>
 {% endblock %}
 
 {% block citizen_project_block %}
-    <div class="l__col l__col--half space--20 citizen-project-block b__nudge--top-15">
-        <p><strong>{{ citizen_project.name }}</strong></p>
+    <div class="pre-space__item-card">
+        <p class="text--medium font-gillsans">{{ citizen_project.name }}</p>
         <div>
             <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}" class="btn btn--blue">Gérer</a>
             <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membres</span>
