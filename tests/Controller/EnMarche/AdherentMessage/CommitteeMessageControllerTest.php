@@ -21,7 +21,7 @@ class CommitteeMessageControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-animateur/en-marche-suisse/messagerie/creer');
 
-        $this->client->submit($crawler->selectButton('Suivant →')->form(['adherent_message' => [
+        $this->client->submit($crawler->selectButton('Suivant →')->form(['committee_adherent_message' => [
             'label' => 'test',
             'subject' => 'subject',
             'content' => 'message content',
