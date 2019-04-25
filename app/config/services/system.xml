@@ -132,6 +132,7 @@
             <argument type="service" id="app.cache.redirection" />
             <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <argument type="service" id="jms_serializer.serializer"/>
+            <argument type="service" id="AppBundle\Repository\RedirectionRepository"/>
         </service>
 
         <!-- Dynamic redirections "to remove uuid" handler-->

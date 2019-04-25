@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\EventListener;
 
-use AppBundle\Entity\EntityTranslatableTrait;
+use AppBundle\Entity\AbstractTranslatableEntity;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,7 +25,7 @@ class EmptyTranslationRemoverListener implements EventSubscriberInterface
 
     public function removeEmptyTranslations(FormEvent $event): void
     {
-        /** @var EntityTranslatableTrait $translatable */
+        /** @var AbstractTranslatableEntity $translatable */
         if (!$translatable = $event->getData()) {
             return;
         }

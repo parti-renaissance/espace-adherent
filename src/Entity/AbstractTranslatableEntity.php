@@ -2,20 +2,18 @@
 
 namespace AppBundle\Entity;
 
-use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-trait EntityTranslatableTrait
+abstract class AbstractTranslatableEntity
 {
-    use Translatable;
-
     /**
      * @var EntityTranslationInterface[]|Collection
      *
      * @Assert\Valid
      */
-    private $translations;
+    protected $translations;
 
     public function translate(string $locale = 'fr'): ?EntityTranslationInterface
     {
@@ -46,4 +44,13 @@ trait EntityTranslatableTrait
             $this->removeTranslation($translation);
         }
     }
+
+    /** @return Collection */
+    abstract public function getTranslations();
+
+    abstract public function setTranslations(ArrayCollection $translations);
+
+    abstract public function addTranslation($translation);
+
+    abstract public function removeTranslation($translation);
 }

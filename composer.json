@@ -21,11 +21,12 @@
     },
     "require": {
         "php": ">=7.1",
+        "ext-amqp": "*",
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
-        "ext-amqp": "*",
-        "a2lix/i18n-doctrine-bundle": "^0.1.0",
+        "ext-zip": "*",
+        "a2lix/i18n-doctrine-bundle": "^0.2",
         "a2lix/translation-form-bundle": "^2.1",
         "algolia/algolia-search-bundle": "^2.2",
         "api-platform/api-pack": "^1.1",
@@ -84,12 +85,32 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "suin/php-rss-writer": "^1.5",
         "superbalist/flysystem-google-storage": "^3.0",
-        "symfony/messenger": "~4.2",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/psr-http-message-bridge": "^1.0",
-        "symfony/symfony": "3.4.*",
-        "symfony/thanks": "^1.0",
+        "symfony/asset": "3.4.*",
+        "symfony/cache": "3.4.*",
+        "symfony/config": "3.4.*",
+        "symfony/doctrine-bridge": "3.4.*",
+        "symfony/event-dispatcher": "3.4.*",
+        "symfony/expression-language": "3.4.*",
+        "symfony/http-foundation": "3.4.*",
+        "symfony/http-kernel": "3.4.*",
+        "symfony/inflector": "3.4.*",
+        "symfony/intl": "3.4.*",
+        "symfony/messenger": "4.2",
+        "symfony/monolog-bundle": "^3.3",
+        "symfony/polyfill-apcu": "^1.10",
+        "symfony/property-info": "3.4.*",
+        "symfony/psr-http-message-bridge": "^1.1",
+        "symfony/routing": "3.4.*",
+        "symfony/security": "3.4.*",
+        "symfony/security-bundle": "3.4.*",
+        "symfony/serializer": "3.4.*",
+        "symfony/templating": "3.4.*",
+        "symfony/thanks": "^1.1",
+        "symfony/translation": "3.4.*",
+        "symfony/twig-bridge": "3.4.*",
+        "symfony/twig-bundle": "3.4.*",
+        "symfony/validator": "3.4.*",
+        "symfony/workflow": "3.4.*",
         "syslogic/doctrine-json-functions": "^2.1",
         "tackk/cartographer": "^1.1",
         "twig/twig": "^2.7",
@@ -110,8 +131,9 @@
         "liip/functional-test-bundle": "^1.8",
         "pedrotroller/php-cs-custom-fixer": "2.11.0",
         "phpunit/phpunit": "^6.2",
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/debug-bundle": "3.4.*",
+        "symfony/phpunit-bridge": "3.4.*",
+        "symfony/web-profiler-bundle": "3.4.*"
     },
     "scripts": {
         "symfony-scripts": [
@@ -139,5 +161,8 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     }
 }

@@ -2,9 +2,10 @@
 
 namespace AppBundle\Entity\Timeline;
 
+use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\AbstractTranslatableEntity;
 use AppBundle\Entity\AlgoliaIndexedEntityInterface;
-use AppBundle\Entity\EntityTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,9 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Profile implements AlgoliaIndexedEntityInterface
+class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
-    use EntityTranslatableTrait;
+    use Translatable;
 
     /**
      * @var int
