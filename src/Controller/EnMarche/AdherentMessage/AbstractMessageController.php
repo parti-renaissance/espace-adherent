@@ -266,6 +266,28 @@ abstract class AbstractMessageController extends Controller
         return $this->redirectToMessageRoute('list');
     }
 
+    /**
+     * @Route("/{uuid}/tester", name="test", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     */
+    public function sendTestMessageAction(AbstractAdherentMessage $message, Manager $manager): Response
+    {
+        $this->disableInProduction();
+
+        if (!$message->isSynchronized()) {
+            throw new BadRequestHttpException('The message is not yet ready to test sending.');
+        }
+
+        if ($manager->sendTestCampaign($message, [$this->getUser()->getEmailAddress()])) {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_successfully');
+        } else {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
+        }
+
+        return $this->redirectToMessageRoute('preview', ['uuid' => $message->getUuid()->toString()]);
+    }
+
     abstract protected function getMessageType(): string;
 
     protected function renderTemplate(string $template, array $parameters = []): Response

@@ -528,6 +528,8 @@ adherent_message.deleted_successfully: 'Votre message a bien été supprimé.'
 adherent_message.filter_updated: 'Les filtres ont bien été sauvegardés.'
 adherent_message.campaign_sent_successfully: 'Votre message a bien été envoyé'
 adherent_message.campaign_sent_failure: "Votre message n'a pas été envoyé"
+adherent_message.test_campaign_sent_successfully: 'Votre test message a bien été envoyé.'
+adherent_message.test_campaign_sent_failure: "Votre test message n'a pas été envoyé."
 adherent_message.referent: Message référent
 adherent_message.deputy: Message député
 adherent_message.host: Message co-animateur

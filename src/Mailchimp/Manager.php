@@ -101,11 +101,7 @@ class Manager implements LoggerAwareInterface
 
     public function editCampaignContent(AdherentMessageInterface $message): bool
     {
-        if (!$message->getExternalId()) {
-            throw new InvalidCampaignIdException(
-                sprintf('Message "%s" does not have a valid campaign id', $message->getUuid()->toString())
-            );
-        }
+        $this->checkMessageExternalId($message);
 
         /** @var CampaignContentRequestBuilder $requestBuilder */
         $contentRequestBuilder = $this->requestBuildersLocator->get(CampaignContentRequestBuilder::class);
@@ -133,13 +129,16 @@ class Manager implements LoggerAwareInterface
 
     public function sendCampaign(AdherentMessageInterface $message): bool
     {
-        if (!$message->getExternalId()) {
-            throw new InvalidCampaignIdException(
-                sprintf('Message "%s" does not have a valid campaign id', $message->getUuid()->toString())
-            );
-        }
+        $this->checkMessageExternalId($message);
 
         return $this->driver->sendCampaign($message->getExternalId());
+    }
+
+    public function sendTestCampaign(AdherentMessageInterface $message, array $emails): bool
+    {
+        $this->checkMessageExternalId($message);
+
+        return $this->driver->sendTestCampaign($message->getExternalId(), $emails);
     }
 
     public function createStaticSegment(string $name): ?int
@@ -160,5 +159,14 @@ class Manager implements LoggerAwareInterface
     public function deleteMember(string $mail): void
     {
         $this->driver->deleteMember($mail);
+    }
+
+    private function checkMessageExternalId(AdherentMessageInterface $message): void
+    {
+        if (!$message->getExternalId()) {
+            throw new InvalidCampaignIdException(
+                sprintf('Message "%s" does not have a valid campaign id', $message->getUuid()->toString())
+            );
+        }
     }
 }

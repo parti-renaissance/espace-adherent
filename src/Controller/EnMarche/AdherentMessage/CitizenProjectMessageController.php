@@ -262,6 +262,34 @@ class CitizenProjectMessageController extends Controller
         return $this->redirectToRoute('app_message_citizen_project_list', ['citizen_project_slug' => $citizenProject->getSlug()]);
     }
 
+    /**
+     * @Route("/{uuid}/tester", name="test", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     */
+    public function sendTestMessageAction(
+        CitizenProjectAdherentMessage $message,
+        Manager $manager,
+        CitizenProject $citizenProject
+    ): Response {
+        $this->disableInProduction();
+
+        if (!$message->isSynchronized()) {
+            throw new BadRequestHttpException('The message is not yet ready to test sending.');
+        }
+
+        if ($manager->sendTestCampaign($message, [$this->getUser()->getEmailAddress()])) {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_successfully');
+        } else {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
+        }
+
+        return $this->redirectToRoute('app_message_citizen_project_preview', [
+            'citizen_project_slug' => $citizenProject->getSlug(),
+            'uuid' => $message->getUuid()->toString(),
+        ]);
+    }
+
     private function renderTemplate(string $template, CitizenProject $citizenProject, array $parameters)
     {
         return $this->render($template, array_merge(
