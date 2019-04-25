@@ -143,14 +143,16 @@ class CitizenProjectSearch extends Component {
                     </button>
                 )}
 
-                <div className="citizen__wrapper__footer">
-                    <a href="/espace-adherent/creer-mon-projet-citoyen" target="_blank" rel="nofollow noopener">
-                        <span role="img" aria-label="emoji">
-                            🚀
-                        </span>{' '}
-                        Une idée de projet ? Lancez-vous ! &rarr;
-                    </a>
-                </div>
+                {canCreateProject && (
+                    <div className="citizen__wrapper__footer">
+                        <a href="/espace-adherent/creer-mon-projet-citoyen" target="_blank" rel="nofollow noopener">
+                            <span role="img" aria-label="emoji">
+                                🚀
+                            </span>{' '}
+                            Une idée de projet ? Lancez-vous ! &rarr;
+                        </a>
+                    </div>
+                )}
             </div>
         );
     }
