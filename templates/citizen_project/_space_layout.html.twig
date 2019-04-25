@@ -18,7 +18,7 @@
 
                         <div class="direct-actions">
                             <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
-                            <a class="btn " href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
+                            <a class="btn btn--ghosting--blue" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
                         </div>
                     </div>
 
@@ -49,6 +49,32 @@
             <div class="l__wrapper text--body">
                 {% block citizen_project_content %}{% endblock %}
             </div>
+
+            {% block manager_sticky_header %}
+                <div id="managerOnScroll" class="manager__fixed-bar">
+                    <div class="l__wrapper manager__fixed-bar__content">
+                        <p><span>{{ citizen_project.name }}</span></p>
+                        <div class="direct-actions">
+                            <a href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}" class="btn btn--blue">+ Nouveau message</a>
+                            <a href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}" class="btn btn--ghosting--blue">+ Action citoyenne</a>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
         </section>
     </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
+        });
+    </script>
 {% endblock %}
