@@ -46,13 +46,15 @@ abstract class AbstractMessageController extends Controller
             throw new BadRequestHttpException('Invalid status');
         }
 
-        return $this->renderTemplate(
-            'message/list.html.twig',
-            [
-                'messages' => $repository->findAllByAuthor($adherent, $status, $this->getMessageType()),
-                'message_filter_status' => $status,
-            ]
-        );
+        return $this->renderTemplate('message/list.html.twig', [
+            'messages' => $repository->findAllByAuthor(
+                $adherent,
+                $status,
+                $this->getMessageType(),
+                $request->query->getInt('page', 1)
+            ),
+            'message_filter_status' => $status,
+        ]);
     }
 
     /**

@@ -122,7 +122,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     private $recipientCount;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
@@ -162,11 +162,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function getExternalId(): ?string
     {
         return $this->externalId;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
     }
 
     public function setLabel(string $label): void
@@ -250,7 +245,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return null;
     }
 
-    public function getSentAt(): ?\DateTime
+    public function getSentAt(): ?\DateTimeInterface
     {
         return $this->sentAt;
     }

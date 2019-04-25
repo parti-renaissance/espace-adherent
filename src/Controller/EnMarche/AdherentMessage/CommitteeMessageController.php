@@ -56,7 +56,12 @@ class CommitteeMessageController extends Controller
         }
 
         return $this->renderTemplate('message/list.html.twig', $committee, [
-            'messages' => $repository->findAllCommitteeMessage($adherent, $committee, $status),
+            'messages' => $repository->findAllCommitteeMessage(
+                $adherent,
+                $committee,
+                $status,
+                $request->query->getInt('page', 1)
+            ),
             'message_filter_status' => $status,
         ]);
     }
@@ -267,11 +272,6 @@ class CommitteeMessageController extends Controller
         }
 
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
-    }
-
-    protected function getMessageType(): string
-    {
-        return AdherentMessageTypeEnum::COMMITTEE;
     }
 
     private function renderTemplate(string $template, Committee $committee, array $parameters = []): Response

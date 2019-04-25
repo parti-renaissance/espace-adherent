@@ -6,9 +6,12 @@
         <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-type-table">
             + Nouveau message
         </a>
-        <span class="datagrid__count">
-            <span>45</span> sur 904 résultat(s)
-        </span>
+
+        {% if messages.count %}
+            <span class="datagrid__count">
+                <span>{{ messages.count }}</span> sur {{ messages.totalItems }} résultat(s)
+            </span>
+        {% endif %}
     </div>
 
     <div class="manager__filters">
@@ -66,13 +69,13 @@
                                 <span class="oval"></span>
                             </a>
                             <div class="action-dropdown-menu">
-                                {% set route_params = route_params|default({})|merge({uuid: message.uuid}) %}
+                                {% set message_route_params = route_params|default({})|merge({uuid: message.uuid}) %}
                                 {% if not message.isSent %}
-                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
+                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_update", message_route_params) }}">Modifier</a>
                                 {% endif %}
 
                                 {% if message.isSynchronized %}
-                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_preview", route_params) }}">Visualiser</a>
+                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_preview", message_route_params) }}">Visualiser</a>
                                 {% else %}
                                     <a class="btn--disabled" href="javascript:void(0);">
                                         Visualiser<br/>
@@ -83,10 +86,10 @@
                                 {% endif %}
 
                                 {% if not message.isSent %}
-                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Filtrer</a>
+                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Filtrer</a>
                                 {% endif %}
 
-                                <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_delete", route_params) }}">Supprimer</a>
+                                <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_delete", message_route_params) }}">Supprimer</a>
                             </div>
                         </div>
                     </td>
@@ -96,4 +99,43 @@
             {% endfor %}
         </tbody>
     </table>
+
+    {% if messages.count %}
+        {% set current_page = messages.currentPage %}
+        {% set total_pages = messages.lastPage %}
+        {% set pagination_route_name = app.request.attributes.get('_route') %}
+        {% set pagination_route_params = route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {}) %}
+
+        <div class="datagrid__pager">
+            <ul>
+                <li>
+                    <form method="get" class="pager__go-to-page">
+                        <span>Aller à la page </span>
+                        {% if message_filter_status %}
+                            <input type="hidden" name="status" value="{{ message_filter_status }}" />
+                        {% endif %}
+                        <input type="number" max="{{ total_pages }}" name="page" class="pager__action" value="{{ current_page }}"/>
+                        <input type="submit" class="btn btn--blue" value="OK" />
+                        <span class="b__nudge--left-large">{{ current_page }} sur {{ total_pages }}</span>
+                    </form>
+
+                </li>
+                <li>
+                    <a href="{{ current_page > 1 ? path(pagination_route_name, pagination_route_params|merge({ page: current_page - 1 })) : 'javascript:void(0);' }}" class="pager__action switch">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                            <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
+                        </svg>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ current_page < total_pages ? path(pagination_route_name, pagination_route_params|merge({ page: current_page + 1 })) : 'javascript:void(0);' }}" class="pager__action switch">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                            <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
 {% endblock %}
