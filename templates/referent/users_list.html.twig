@@ -30,7 +30,7 @@
     <div class="manager__filters">
         <div class="manager__filters__form">
             <form method="get" action="{{ path('app_referent_users') }}#send-message">
-                <h4 class="manager__filters__subtitle">Filtrer par...</h4>
+                <h4 class="manager__filters__subtitle">Filtrer par</h4>
                 <div class="manager__filters__row">
                     <div class="manager__filters__section">
                         <div class="manager__filters__group">
@@ -201,7 +201,6 @@
                                         <option value="{{ key }}" {{ key in filter.queryInterests ? 'selected' }}>{{ value }}</option>
                                     {% endfor %}
                                 </select>
-                                <span class="filter__compl-info">Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts</span>
                             </div>
                         </div>
                     </div>

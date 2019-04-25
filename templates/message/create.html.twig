@@ -27,12 +27,23 @@
 {% endblock %}
 
 {% block message_content %}
+<<<<<<< HEAD
     {% block message_form %}
         <div class="l__wrapper--slim">
             <h3 class="text--medium b__nudge--bottom-larger">Rédiger mon message</h3>
             <div>
                 {{ form_start(form) }}
                 {{ form_errors(form) }}
+=======
+    <a href="#" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+         ⟵ Annuler
+    </a>
+    <div class="l__wrapper--slim">
+        <h3 class="text--medium b__nudge--bottom-larger">Rédiger mon message</h3>
+        <div>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+>>>>>>> various hotfixes
 
                 <div class="form__row subject">
                     {{ form_label(form.label, 'Label') }}

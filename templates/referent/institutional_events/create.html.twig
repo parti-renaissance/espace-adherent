@@ -31,14 +31,14 @@
 
         <div class="form__row" id="institutional_event-name-field">
             {{ form_errors(form.name) }}
-            {{ form_label(form.name, "Nom de l'événement institutionnel", { label_attr: { class: 'text--bold' }}) }}
-            {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom de l'événement institutionnel" } }) }}
+            {{ form_label(form.name, "Nom de la réunion privée", { label_attr: { class: 'text--bold' }}) }}
+            {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom de la réunion privée" } }) }}
         </div>
 
         <div class="form__row" id="institutional_event-description-field">
             {{ form_errors(form.category) }}
             {{ form_label(form.category, 'Type', { label_attr: { class: 'text--bold' }}) }}
-            {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de l'événement institutionnel" } }) }}
+            {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de la réunion privée" } }) }}
         </div>
 
         <div class="form__row form__date-and-time" id="institutional_event-beginat-field">
@@ -59,7 +59,7 @@
             <div class="form__row committee_event__form--trunc" id="institutional_event-address-address-field">
                 {{ form_errors(form.address.address) }}
                 {{ form_label(form.address.address, 'Adresse', { label_attr: { class: 'text--bold' }}) }}
-                {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement institutionnel" } }) }}
+                {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de la réunion privée" } }) }}
             </div>
 
             <div class="form__group dual__fields">
@@ -93,7 +93,7 @@
         <div class="form__row b__nudge--top-15" id="institutional_event-description-field">
             {{ form_errors(form.description) }}
             {{ form_label(form.description, 'À propos', { label_attr: { class: 'text--bold' }}) }}
-            {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300', placeholder: 'Entrez un paragraphe afin de décrire cet événement institutionnel.', rows: '20', cols: '70' } }) }}
+            {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300', placeholder: 'Entrez un paragraphe afin de décrire cette réunion privée.', rows: '20', cols: '70' } }) }}
         </div>
 
         <div class="form__row b__nudge--top-15" id="institutional_event-invitations-field">
