@@ -134,12 +134,14 @@
         <div class="visually-hidden">{{ form_widget(form.proposed_solution) }}</div>
     {% else %}
         {{ form_errors(form.proposed_solution) }}
-        {{ form_widget(form.proposed_solution, {
-            attr: {
-                class: 'form__field form__field--textarea-120',
-                placeholder: 'Un court paragraphe sur la ou les solutions que vous proposez',
-            }
-        }) }}
+        <div class="pst--relative">
+            {{ form_widget(form.proposed_solution, {
+                attr: {
+                    class: 'form__field form__field--textarea-120',
+                    placeholder: 'Un court paragraphe sur la ou les solutions que vous proposez',
+                }
+            }) }}
+        </div>
         <span class="form__legend text--small">
             Ex: Le projet a pour objectif de mettre en relation ces élèves avec un réseau de professionnels
             (entreprises, commerçants, artisans, etc.) volontaires pour les accueillir.

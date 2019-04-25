@@ -36,7 +36,7 @@ class DeputyControllerTest extends WebTestCase
         $data = [];
         $data['deputy_message']['subject'] = $subject;
         $data['deputy_message']['content'] = $content;
-        $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Suivant →')->form(), $data);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->client->followRedirect();
