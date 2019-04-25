@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -16,6 +18,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
 class AdherentMessageRepository extends ServiceEntityRepository
 {
@@ -29,8 +32,12 @@ class AdherentMessageRepository extends ServiceEntityRepository
     /**
      * @return AdherentMessageInterface[]
      */
-    public function findAllByAuthor(Adherent $adherent, string $status = null, string $type = null): array
-    {
+    public function findAllByAuthor(
+        Adherent $adherent,
+        string $status = null,
+        string $type = null,
+        int $page = 1
+    ): PaginatorInterface {
         $queryBuilder = $this->createQueryBuilder('message')
             ->where('message.author = :author')
             ->setParameter('author', $adherent)
@@ -50,7 +57,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ;
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->configurePaginator($queryBuilder, $page);
     }
 
     /**
@@ -59,8 +66,9 @@ class AdherentMessageRepository extends ServiceEntityRepository
     public function findAllCommitteeMessage(
         Adherent $adherent,
         Committee $committee = null,
-        string $status = null
-    ): array {
+        string $status = null,
+        int $page = 1
+    ): PaginatorInterface {
         $queryBuilder = $this->createQueryBuilder('message');
 
         $this
@@ -80,7 +88,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ;
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->configurePaginator($queryBuilder, $page);
     }
 
     /**
@@ -89,8 +97,9 @@ class AdherentMessageRepository extends ServiceEntityRepository
     public function findAllCitizenProjectMessage(
         Adherent $adherent,
         CitizenProject $citizenProject,
-        string $status = null
-    ): array {
+        string $status = null,
+        int $page = 1
+    ): PaginatorInterface {
         $queryBuilder = $this->createQueryBuilder('message');
 
         $this
@@ -108,7 +117,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ->setParameter('citizen_project', $citizenProject)
         ;
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->configurePaginator($queryBuilder, $page);
     }
 
     private function withMessageType(QueryBuilder $queryBuilder, string $messageType, string $alias = 'message'): self
@@ -143,5 +152,18 @@ class AdherentMessageRepository extends ServiceEntityRepository
         ;
 
         return $this;
+    }
+
+    private function configurePaginator(QueryBuilder $queryBuilder, int $page, int $limit = 30): PaginatorInterface
+    {
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        return new ApiPaginator(new DoctrinePaginator($queryBuilder
+            ->setMaxResults($limit)
+            ->setFirstResult(($page - 1) * $limit)
+            ->getQuery()
+        ));
     }
 }

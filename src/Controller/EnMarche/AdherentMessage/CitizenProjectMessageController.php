@@ -6,9 +6,9 @@ use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\Filter\FilterFormFactory;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
+use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Form\AdherentMessage\AdherentMessageType;
@@ -17,10 +17,10 @@ use AppBundle\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,8 +31,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject)")
  */
-class CitizenProjectMessageController extends AbstractMessageController
+class CitizenProjectMessageController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route(name="list", methods={"GET"})
      *
@@ -42,7 +44,7 @@ class CitizenProjectMessageController extends AbstractMessageController
         Request $request,
         UserInterface $adherent,
         AdherentMessageRepository $repository,
-        CitizenProject $citizenProject = null
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -52,10 +54,13 @@ class CitizenProjectMessageController extends AbstractMessageController
             throw new BadRequestHttpException('Invalid status');
         }
 
-        return $this->renderTemplate('message/list.html.twig', [
-            'messages' => $repository->findAllCitizenProjectMessage($adherent, $citizenProject, $status),
-            'citizen_project' => $citizenProject,
-            'route_params' => ['citizen_project_slug' => $citizenProject->getSlug()],
+        return $this->renderTemplate('message/list.html.twig', $citizenProject, [
+            'messages' => $repository->findAllCitizenProjectMessage(
+                $adherent,
+                $citizenProject,
+                $status,
+                $request->query->getInt('page', 1)
+            ),
             'message_filter_status' => $status,
         ]);
     }
@@ -69,8 +74,7 @@ class CitizenProjectMessageController extends AbstractMessageController
         Request $request,
         UserInterface $adherent,
         ObjectManager $manager,
-        MessageBusInterface $bus,
-        CitizenProject $citizenProject = null
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -80,7 +84,7 @@ class CitizenProjectMessageController extends AbstractMessageController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message = AdherentMessageFactory::create($adherent, $form->getData(), $this->getMessageType());
+            $message = AdherentMessageFactory::create($adherent, $form->getData(), AdherentMessageTypeEnum::CITIZEN_PROJECT);
             $message->setFilter(new CitizenProjectFilter($citizenProject));
 
             $manager->persist($message);
@@ -90,23 +94,19 @@ class CitizenProjectMessageController extends AbstractMessageController
             $this->addFlash('info', 'adherent_message.created_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToMessageRoute('filter', [
+                return $this->redirectToRoute('app_message_citizen_project_filter', [
                     'uuid' => $message->getUuid()->toString(),
                     'citizen_project_slug' => $citizenProject->getSlug(),
                 ]);
             }
 
-            return $this->redirectToMessageRoute('update', [
+            return $this->redirectToRoute('app_message_citizen_project_update', [
                 'uuid' => $message->getUuid(),
                 'citizen_project_slug' => $citizenProject->getSlug(),
             ]);
         }
 
-        return $this->renderTemplate('message/create.html.twig', [
-            'form' => $form->createView(),
-            'citizen_project' => $citizenProject,
-            'route_params' => ['citizen_project_slug' => $citizenProject->getSlug()],
-        ]);
+        return $this->renderTemplate('message/create.html.twig', $citizenProject, ['form' => $form->createView()]);
     }
 
     /**
@@ -116,9 +116,9 @@ class CitizenProjectMessageController extends AbstractMessageController
      */
     public function updateMessageAction(
         Request $request,
-        AbstractAdherentMessage $message,
+        CitizenProjectAdherentMessage $message,
         ObjectManager $manager,
-        CitizenProject $citizenProject = null
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -139,23 +139,19 @@ class CitizenProjectMessageController extends AbstractMessageController
             $this->addFlash('info', 'adherent_message.updated_successfully');
 
             if ($form->get('next')->isClicked()) {
-                return $this->redirectToMessageRoute('filter', [
+                return $this->redirectToRoute('app_message_citizen_project_filter', [
                     'uuid' => $message->getUuid()->toString(),
                     'citizen_project_slug' => $citizenProject->getSlug(),
                 ]);
             }
 
-            return $this->redirectToMessageRoute('update', [
+            return $this->redirectToRoute('app_message_citizen_project_update', [
                 'uuid' => $message->getUuid(),
                 'citizen_project_slug' => $citizenProject->getSlug(),
             ]);
         }
 
-        return $this->renderTemplate('message/update.html.twig', [
-            'form' => $form->createView(),
-            'citizen_project' => $citizenProject,
-            'route_params' => ['citizen_project_slug' => $citizenProject->getSlug()],
-        ]);
+        return $this->renderTemplate('message/update.html.twig', $citizenProject, ['form' => $form->createView()]);
     }
 
     /**
@@ -164,11 +160,8 @@ class CitizenProjectMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function filterMessageAction(
-        Request $request,
-        AbstractAdherentMessage $message,
-        FilterFormFactory $formFactory,
-        ObjectManager $manager,
-        CitizenProject $citizenProject = null
+        CitizenProjectAdherentMessage $message,
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -176,11 +169,7 @@ class CitizenProjectMessageController extends AbstractMessageController
             throw new BadRequestHttpException('This message has already been sent.');
         }
 
-        return $this->renderTemplate('message/filter/citizen_project.html.twig', [
-            'message' => $message,
-            'citizen_project' => $citizenProject,
-            'route_params' => ['citizen_project_slug' => $citizenProject->getSlug()],
-        ]);
+        return $this->renderTemplate('message/filter/citizen_project.html.twig', $citizenProject, ['message' => $message]);
     }
 
     /**
@@ -189,8 +178,8 @@ class CitizenProjectMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function previewMessageAction(
-        AbstractAdherentMessage $message,
-        CitizenProject $citizenProject = null
+        CitizenProjectAdherentMessage $message,
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -198,11 +187,7 @@ class CitizenProjectMessageController extends AbstractMessageController
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
 
-        return $this->renderTemplate('message/preview.html.twig', [
-            'message' => $message,
-            'citizen_project' => $citizenProject,
-            'route_params' => ['citizen_project_slug' => $citizenProject->getSlug()],
-        ]);
+        return $this->renderTemplate('message/preview.html.twig', $citizenProject, ['message' => $message]);
     }
 
     /**
@@ -211,9 +196,9 @@ class CitizenProjectMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function getMessageTemplateAction(
-        AbstractAdherentMessage $message,
+        CitizenProjectAdherentMessage $message,
         Manager $manager,
-        CitizenProject $citizenProject = null
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -226,9 +211,9 @@ class CitizenProjectMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function deleteMessageAction(
-        AbstractAdherentMessage $message,
+        CitizenProjectAdherentMessage $message,
         ObjectManager $manager,
-        CitizenProject $citizenProject = null
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -237,7 +222,7 @@ class CitizenProjectMessageController extends AbstractMessageController
 
         $this->addFlash('info', 'adherent_message.deleted_successfully');
 
-        return $this->redirectToMessageRoute('list', ['citizen_project_slug' => $citizenProject->getSlug()]);
+        return $this->redirectToRoute('app_message_citizen_project_list', ['citizen_project_slug' => $citizenProject->getSlug()]);
     }
 
     /**
@@ -246,10 +231,10 @@ class CitizenProjectMessageController extends AbstractMessageController
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function sendMessageAction(
-        AbstractAdherentMessage $message,
+        CitizenProjectAdherentMessage $message,
         Manager $manager,
         ObjectManager $entityManager,
-        CitizenProject $citizenProject = null
+        CitizenProject $citizenProject
     ): Response {
         $this->disableInProduction();
 
@@ -274,11 +259,19 @@ class CitizenProjectMessageController extends AbstractMessageController
             $this->addFlash('info', 'adherent_message.campaign_sent_failure');
         }
 
-        return $this->redirectToMessageRoute('list', ['citizen_project_slug' => $citizenProject->getSlug()]);
+        return $this->redirectToRoute('app_message_citizen_project_list', ['citizen_project_slug' => $citizenProject->getSlug()]);
     }
 
-    protected function getMessageType(): string
+    private function renderTemplate(string $template, CitizenProject $citizenProject, array $parameters)
     {
-        return AdherentMessageTypeEnum::CITIZEN_PROJECT;
+        return $this->render($template, array_merge(
+            $parameters,
+            [
+                'base_template' => 'message/_base_citizen_project.html.twig',
+                'message_type' => AdherentMessageTypeEnum::CITIZEN_PROJECT,
+                'citizen_project' => $citizenProject,
+                'route_params' => ['citizen_project_slug' => $citizenProject->getSlug()],
+            ]
+        ));
     }
 }
