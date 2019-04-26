@@ -61,6 +61,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+            $bundles[] = new steevanb\DoctrineStats\Bridge\DoctrineStatsBundle\DoctrineStatsBundle();
         }
 
         if ('test' === $this->getEnvironment()) {
