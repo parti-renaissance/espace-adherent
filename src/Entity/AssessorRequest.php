@@ -87,7 +87,7 @@ class AssessorRequest
      *
      * @ORM\Column(type="date")
      *
-     * @Assert\NotBlank(message="assessor.birthdate.not_blank")
+     * @Assert\NotBlank(message="common.birthdate.not_blank")
      * @Assert\Range(max="-18 years", maxMessage="assessor.birthdate.minimum_required_age")
      */
     private $birthdate;
@@ -95,9 +95,10 @@ class AssessorRequest
     /**
      * @var string
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column
      *
-     * @Assert\Length(max=15)
+     * @Assert\NotBlank(message="common.birthcity.not_blank")
+     * @Assert\Length(max=255)
      */
     private $birthCity;
 
@@ -123,19 +124,20 @@ class AssessorRequest
     /**
      * @var string
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column
      *
-     * @Assert\Length(max=15)
+     * @Assert\NotBlank(message="common.city_name.not_blank")
+     * @Assert\Length(max=255)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=15)
+     * @ORM\Column
      *
      * @Assert\NotBlank(message="assessor.vote_city.not_blank")
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=255)
      */
     private $voteCity;
 
@@ -173,7 +175,7 @@ class AssessorRequest
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Expression(
      *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
@@ -181,7 +183,7 @@ class AssessorRequest
      *     groups={"fill_assessor_info"}
      * )
      * @Assert\NotBlank(message="assessor.assessor_city.not_blank")
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=255)
      */
     private $assessorCity;
 

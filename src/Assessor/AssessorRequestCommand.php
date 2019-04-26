@@ -59,7 +59,7 @@ class AssessorRequestCommand
     private $birthName;
 
     /**
-     * @Assert\NotBlank(message="assessor.birthdate.not_blank", groups={"fill_personal_info"})
+     * @Assert\NotBlank(message="common.birthdate.not_blank", groups={"fill_personal_info"})
      * @Assert\Range(
      *     max="-18 years",
      *     maxMessage="assessor.birthdate.minimum_required_age",
@@ -69,6 +69,7 @@ class AssessorRequestCommand
     private $birthdate;
 
     /**
+     * @Assert\NotBlank(message="common.birthcity.not_blank", groups={"fill_personal_info"})
      * @Assert\Length(max=15, groups={"fill_personal_info"})
      */
     private $birthCity;
@@ -80,11 +81,13 @@ class AssessorRequestCommand
     private $address;
 
     /**
+     * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"fill_personal_info"})
      * @Assert\Length(max=15, groups={"fill_personal_info"})
      */
     private $postalCode;
 
     /**
+     * @Assert\NotBlank(message="common.city_name.not_blank", groups={"fill_personal_info"})
      * @Assert\Length(max=15, groups={"fill_personal_info"})
      */
     private $city;
@@ -120,7 +123,7 @@ class AssessorRequestCommand
      *     message="assessor.assessor_city.not_blank",
      *     groups={"fill_assessor_info"}
      * )
-     * @Assert\Length(max=15, groups={"fill_assessor_info"})
+     * @Assert\Length(max=255, groups={"fill_assessor_info"})
      */
     private $assessorCity;
 

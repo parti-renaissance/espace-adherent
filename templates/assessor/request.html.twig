@@ -14,7 +14,7 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            $('.multi_vote_place_wishes').select2({
+            $('.select-vote-place-wishes').select2({
                 placeholder: "Sélectionnez vos bureaux de votes"
             });
 
@@ -34,12 +34,26 @@
                 $('.french-block').show();
             }
 
+            var refreshAssessorCity = function (url) {
+                $.ajax({
+                    url: url
+                })
+                .then(function (data) {
+                    const assessorCitySelect = $('.select-assessor-city');
+                    assessorCitySelect.empty();
+
+                    $.each(data, function (key, value) {
+                        assessorCitySelect.append($('<option></option>').attr('value', value).text(value));
+                    });
+                });
+            };
+
             var refreshVotePlaceWishes = function (url) {
                 $.ajax({
                     url: url
                 })
                 .then(function (data) {
-                    const votePlaceWishesSelect = $('.multi_vote_place_wishes');
+                    const votePlaceWishesSelect = $('.select-vote-place-wishes');
                     const votePlaces = [];
 
                     $.each(data, function (value, key) {
@@ -70,8 +84,11 @@
             assessorPostalCodeInput.on('input', function() {
                 if ($(this).val().length > 4) {
 
-                    let url = "{{ path('app_assessor_request_find_vote_places', { postalCode: 'postalCodeVal' }) }}";
-                    refreshVotePlaceWishes(url.replace('postalCodeVal', $(this).val()));
+                    let apiPostalCodeUrl = "{{ path('api_postal_code', { postalCode: 'postalCodeVal' }) }}";
+                    refreshAssessorCity(apiPostalCodeUrl.replace('postalCodeVal', $(this).val()));
+
+                    let apiVotePlacesUrl = "{{ path('app_assessor_request_find_vote_places', { postalCode: 'postalCodeVal' }) }}";
+                    refreshVotePlaceWishes(apiVotePlacesUrl.replace('postalCodeVal', $(this).val()));
                 }
             });
         });
