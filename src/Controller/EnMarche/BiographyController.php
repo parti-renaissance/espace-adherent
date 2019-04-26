@@ -6,9 +6,9 @@ use AppBundle\Entity\Biography\ExecutiveOfficeMember;
 use AppBundle\Repository\Biography\ExecutiveOfficeMemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class BiographyController extends Controller
 {

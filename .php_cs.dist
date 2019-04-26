@@ -26,6 +26,7 @@ return PhpCsFixer\Config::create()
         'PedroTroller/line_break_between_statements' => true,
         'PedroTroller/useless_comment' => true,
         'App/doctrine_migration_clean' => true,
+        'App/sensio_to_symfony_route' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
@@ -34,6 +35,7 @@ return PhpCsFixer\Config::create()
         new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer,
         new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenStatementsFixer,
         new PedroTroller\CS\Fixer\Comment\UselessCommentFixer,
-        new AppBundle\Fixer\DoctrineMigrationCleanFixer
+        new AppBundle\Fixer\DoctrineMigrationCleanFixer,
+        new AppBundle\Fixer\SensioToSymfonyRouteFixer,
     ])
 ;

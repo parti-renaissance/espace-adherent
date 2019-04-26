@@ -7,8 +7,8 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MapController extends Controller
 {

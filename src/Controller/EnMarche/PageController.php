@@ -7,9 +7,9 @@ use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Each time you add or update a custom url with an harcorded slug in the controller code, you must update the
