@@ -8,7 +8,6 @@ use AppBundle\Coordinator\Filter\CitizenProjectFilter;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Form\CoordinatorAreaType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CoordinatorCitizenProjectController extends Controller
 {
     /**
-     * @Route(path="/list", name="app_coordinator_citizen_project")
-     * @Method("GET")
+     * @Route(path="/list", name="app_coordinator_citizen_project", methods={"GET"})
      */
     public function listAction(Request $request): Response
     {
@@ -61,8 +59,7 @@ class CoordinatorCitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/{slug}/pre-valider", name="app_coordinator_citizen_project_validate")
-     * @Method("POST")
+     * @Route("/{uuid}/{slug}/pre-valider", name="app_coordinator_citizen_project_validate", methods={"POST"})
      */
     public function validateAction(Request $request, CitizenProject $project): Response
     {

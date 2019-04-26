@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Legislatives;
 
 use AppBundle\Entity\LegislativeCandidate;
 use AppBundle\Entity\LegislativeDistrictZone;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends Controller
 {
     /**
-     * @Route("/", name="legislatives_homepage")
-     * @Method("GET")
+     * @Route("/", name="legislatives_homepage", methods={"GET"})
      */
     public function indexAction(Request $request): Response
     {
@@ -35,8 +33,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/redirection-en-marche", name="legislatives_redirect_en_marche")
-     * @Method("GET")
+     * @Route("/redirection-en-marche", name="legislatives_redirect_en_marche", methods={"GET"})
      */
     public function redirectEnMarcheAction(): Response
     {
@@ -44,8 +41,7 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/candidat/{slug}", name="legislatives_candidate")
-     * @Method("GET")
+     * @Route("/candidat/{slug}", name="legislatives_candidate", methods={"GET"})
      */
     public function candidateAction(LegislativeCandidate $candidate): Response
     {

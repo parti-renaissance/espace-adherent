@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Documents\DocumentRepository;
 use AppBundle\Entity\Adherent;
 use League\Flysystem\FileNotFoundException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DocumentsController extends Controller
 {
     /**
-     * @Route(name="app_documents_index")
-     * @Method("GET")
+     * @Route(name="app_documents_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -30,9 +28,9 @@ class DocumentsController extends Controller
      * @Route(
      *     "/dossier/{type}/{path}",
      *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers", "path": ".+"},
-     *     name="app_documents_directory"
+     *     name="app_documents_directory",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function directoryAction($type, $path)
     {
@@ -49,9 +47,9 @@ class DocumentsController extends Controller
      * @Route(
      *     "/telecharger/{type}/{path}",
      *     requirements={"type": "adherents|animateurs|referents|animateurs-etrangers", "path": ".+"},
-     *     name="app_documents_file"
+     *     name="app_documents_file",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function fileAction($type, $path)
     {

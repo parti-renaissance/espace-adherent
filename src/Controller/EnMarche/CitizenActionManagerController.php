@@ -24,7 +24,6 @@ use AppBundle\Form\ContactMembersType;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -52,8 +51,7 @@ class CitizenActionManagerController extends Controller
     ];
 
     /**
-     * @Route("/creer", name="app_citizen_action_manager_create")
-     * @Method("GET|POST")
+     * @Route("/creer", name="app_citizen_action_manager_create", methods={"GET", "POST"})
      * @Security("is_granted('CREATE_CITIZEN_ACTION', project)")
      */
     public function createAction(
@@ -87,8 +85,7 @@ class CitizenActionManagerController extends Controller
     }
 
     /**
-     * @Route("/{slug}/editer", name="app_citizen_action_manager_edit", requirements={"slug": "[A-Za-z0-9\-]+"})
-     * @Method("GET|POST")
+     * @Route("/{slug}/editer", name="app_citizen_action_manager_edit", requirements={"slug": "[A-Za-z0-9\-]+"}, methods={"GET", "POST"})
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
     public function editAction(
@@ -120,8 +117,7 @@ class CitizenActionManagerController extends Controller
     }
 
     /**
-     * @Route("/{slug}/annuler", name="app_citizen_action_manager_cancel")
-     * @Method("GET|POST")
+     * @Route("/{slug}/annuler", name="app_citizen_action_manager_cancel", methods={"GET", "POST"})
      * @Security("is_granted('CANCEL_CITIZEN_ACTION', project)")
      */
     public function cancelAction(
@@ -151,8 +147,7 @@ class CitizenActionManagerController extends Controller
     }
 
     /**
-     * @Route("/{slug}/participants/exporter", name="app_citizen_action_export_participants")
-     * @Method("POST")
+     * @Route("/{slug}/participants/exporter", name="app_citizen_action_export_participants", methods={"POST"})
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
     public function exportParticipantsAction(
@@ -182,8 +177,7 @@ class CitizenActionManagerController extends Controller
     }
 
     /**
-     * @Route("/{slug}/participants/contacter", name="app_citizen_action_contact_participants")
-     * @Method("POST")
+     * @Route("/{slug}/participants/contacter", name="app_citizen_action_contact_participants", methods={"POST"})
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
     public function contactParticipantsAction(
@@ -231,8 +225,7 @@ class CitizenActionManagerController extends Controller
     }
 
     /**
-     * @Route("/{slug}/participants/imprimer", name="app_citizen_action_print_participants")
-     * @Method("POST")
+     * @Route("/{slug}/participants/imprimer", name="app_citizen_action_print_participants", methods={"POST"})
      * @Security("is_granted('EDIT_CITIZEN_ACTION', project)")
      */
     public function printParticipantsAction(

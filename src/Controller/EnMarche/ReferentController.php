@@ -43,7 +43,6 @@ use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepositor
 use AppBundle\Repository\ReferentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,8 +59,7 @@ class ReferentController extends Controller
     public const TOKEN_ID = 'referent_managed_users';
 
     /**
-     * @Route("/utilisateurs", name="app_referent_users")
-     * @Method("GET")
+     * @Route("/utilisateurs", name="app_referent_users", methods={"GET"})
      */
     public function usersAction(Request $request): Response
     {
@@ -86,8 +84,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/utilisateurs/message", name="app_referent_users_message")
-     * @Method("GET|POST")
+     * @Route("/utilisateurs/message", name="app_referent_users_message", methods={"GET", "POST"})
      */
     public function usersSendMessageAction(Request $request): Response
     {
@@ -122,8 +119,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/evenements", name="app_referent_events")
-     * @Method("GET")
+     * @Route("/evenements", name="app_referent_events", methods={"GET"})
      */
     public function eventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
     {
@@ -133,8 +129,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/evenements/creer", name="app_referent_events_create")
-     * @Method("GET|POST")
+     * @Route("/evenements/creer", name="app_referent_events_create", methods={"GET", "POST"})
      */
     public function eventsCreateAction(Request $request, GeoCoder $geoCoder): Response
     {
@@ -163,8 +158,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/evenements-institutionnels", name="app_referent_institutional_events")
-     * @Method("GET")
+     * @Route("/evenements-institutionnels", name="app_referent_institutional_events", methods={"GET"})
      */
     public function institutionalEventsAction(
         InstitutionalEventRepository $institutionalEventRepository,
@@ -178,8 +172,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/evenements-institutionnels/creer", name="app_referent_institutional_events_create")
-     * @Method("GET|POST")
+     * @Route("/evenements-institutionnels/creer", name="app_referent_institutional_events_create", methods={"GET", "POST"})
      */
     public function institutionalEventsCreateAction(
         Request $request,
@@ -270,8 +263,7 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/comites", name="app_referent_committees")
-     * @Method("GET")
+     * @Route("/comites", name="app_referent_committees", methods={"GET"})
      */
     public function committeesAction(
         CommitteeRepository $committeeRepository,

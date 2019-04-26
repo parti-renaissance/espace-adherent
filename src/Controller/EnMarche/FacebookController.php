@@ -7,7 +7,6 @@ use AppBundle\Exception\BadUuidRequestException;
 use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class FacebookController extends Controller
 {
     /**
-     * @Route("", name="app_facebook_index")
-     * @Method("GET")
+     * @Route("", name="app_facebook_index", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -30,8 +28,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/connexion", name="app_facebook_auth")
-     * @Method("GET")
+     * @Route("/connexion", name="app_facebook_auth", methods={"GET"})
      */
     public function authAction(Request $request): RedirectResponse
     {
@@ -48,8 +45,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/import", name="app_facebook_user_id")
-     * @Method("GET")
+     * @Route("/import", name="app_facebook_user_id", methods={"GET"})
      */
     public function importAction(Request $request): RedirectResponse
     {
@@ -75,8 +71,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/choisir-une-image", name="app_facebook_picture_choose")
-     * @Method("GET")
+     * @Route("/choisir-une-image", name="app_facebook_picture_choose", methods={"GET"})
      */
     public function choosePictureAction(Request $request): Response
     {
@@ -112,8 +107,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/build", name="app_facebook_picture_build")
-     * @Method("GET")
+     * @Route("/build", name="app_facebook_picture_build", methods={"GET"})
      */
     public function buildPictureAction(Request $request): Response
     {
@@ -129,8 +123,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/upload/permission", name="app_facebook_picture_upload_permission")
-     * @Method("GET")
+     * @Route("/upload/permission", name="app_facebook_picture_upload_permission", methods={"GET"})
      */
     public function uploadPicturePermissionAction(Request $request): Response
     {
@@ -156,8 +149,7 @@ class FacebookController extends Controller
     }
 
     /**
-     * @Route("/upload/executer", name="app_facebook_picture_upload_execute")
-     * @Method("GET")
+     * @Route("/upload/executer", name="app_facebook_picture_upload_execute", methods={"GET"})
      */
     public function uploadPictureExecuteAction(Request $request): Response
     {

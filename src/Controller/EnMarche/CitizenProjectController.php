@@ -13,7 +13,6 @@ use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use AppBundle\Storage\FileRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -28,8 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CitizenProjectController extends Controller
 {
     /**
-     * @Route("/aide", name="app_citizen_project_help")
-     * @Method("GET|POST")
+     * @Route("/aide", name="app_citizen_project_help", methods={"GET", "POST"})
      */
     public function helpAction(): Response
     {
@@ -37,8 +35,7 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{slug}", name="app_citizen_project_show")
-     * @Method("GET")
+     * @Route("/{slug}", name="app_citizen_project_show", methods={"GET"})
      * @Security("is_granted('SHOW_CITIZEN_PROJECT', citizenProject)")
      */
     public function showAction(
@@ -63,9 +60,9 @@ class CitizenProjectController extends Controller
     /**
      * @Route("/skills/autocompletion",
      *     name="app_citizen_project_skills_autocomplete",
-     *     condition="request.isXmlHttpRequest() and request.query.get('category')"
+     *     condition="request.isXmlHttpRequest() and request.query.get('category')",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function skillsAutocompleteAction(Request $request)
@@ -94,9 +91,9 @@ class CitizenProjectController extends Controller
     /**
      * @Route("/comite/autocompletion",
      *     name="app_citizen_project_committee_autocomplete",
-     *     condition="request.isXmlHttpRequest()"
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function committeeAutocompleteAction(Request $request)
@@ -122,9 +119,8 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/mon-comite-soutien/{slug}", name="app_citizen_project_committee_support")
+     * @Route("/mon-comite-soutien/{slug}", name="app_citizen_project_committee_support", methods={"GET", "POST"})
      * @Security("is_granted('ROLE_SUPERVISOR')")
-     * @Method("GET|POST")
      */
     public function committeeSupportAction(
         Request $request,
@@ -174,8 +170,7 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{slug}/acteurs", name="app_citizen_project_list_actors")
-     * @Method("GET")
+     * @Route("/{slug}/acteurs", name="app_citizen_project_list_actors", methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function listActorsAction(
@@ -191,8 +186,7 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{slug}/rejoindre", name="app_citizen_project_follow", condition="request.request.has('token')")
-     * @Method("POST")
+     * @Route("/{slug}/rejoindre", name="app_citizen_project_follow", condition="request.request.has('token')", methods={"POST"})
      * @Security("is_granted('FOLLOW_CITIZEN_PROJECT', citizenProject)")
      */
     public function followAction(
@@ -216,8 +210,7 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{slug}/quitter", name="app_citizen_project_unfollow", condition="request.request.has('token')")
-     * @Method("POST")
+     * @Route("/{slug}/quitter", name="app_citizen_project_unfollow", condition="request.request.has('token')", methods={"POST"})
      * @Security("is_granted('UNFOLLOW_CITIZEN_PROJECT', citizenProject)")
      */
     public function unfollowAction(
@@ -241,8 +234,7 @@ class CitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/kits/{slug}.{extension}", name="app_citizen_project_kit_file")
-     * @Method("GET")
+     * @Route("/kits/{slug}.{extension}", name="app_citizen_project_kit_file", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
     public function getKitFile(FileRequestHandler $fileRequestHandler, TurnkeyProjectFile $file): Response

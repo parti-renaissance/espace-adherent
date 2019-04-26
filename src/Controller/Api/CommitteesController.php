@@ -11,7 +11,6 @@ use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,8 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CommitteesController extends Controller
 {
     /**
-     * @Route("/committees", name="api_committees")
-     * @Method("GET")
+     * @Route("/committees", name="api_committees", methods={"GET"})
      */
     public function getApprovedCommitteesAction(): Response
     {
@@ -32,8 +30,7 @@ class CommitteesController extends Controller
     }
 
     /**
-     * @Route("/statistics/committees/count-for-referent-area", name="app_committees_count_for_referent_area")
-     * @Method("GET")
+     * @Route("/statistics/committees/count-for-referent-area", name="app_committees_count_for_referent_area", methods={"GET"})
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
@@ -51,8 +48,7 @@ class CommitteesController extends Controller
     }
 
     /**
-     * @Route("/statistics/committees/members/count-by-month", name="app_committee_members_count_by_month_for_referent_area")
-     * @Method("GET")
+     * @Route("/statistics/committees/members/count-by-month", name="app_committee_members_count_by_month_for_referent_area", methods={"GET"})
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
@@ -68,8 +64,7 @@ class CommitteesController extends Controller
     }
 
     /**
-     * @Route("/statistics/committees/top-5-in-referent-area", name="app_most_active_committees")
-     * @Method("GET")
+     * @Route("/statistics/committees/top-5-in-referent-area", name="app_most_active_committees", methods={"GET"})
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")

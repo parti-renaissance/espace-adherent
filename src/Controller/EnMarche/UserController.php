@@ -21,7 +21,6 @@ use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\TransactionRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -39,8 +38,7 @@ class UserController extends Controller
     private const UNREGISTER_TOKEN = 'unregister_token';
 
     /**
-     * @Route("", name="app_user_profile")
-     * @Method("GET")
+     * @Route("", name="app_user_profile", methods={"GET"})
      */
     public function profileOverviewAction(): Response
     {
@@ -48,8 +46,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/mes-dons", name="app_user_profile_donation")
-     * @Method("GET")
+     * @Route("/mes-dons", name="app_user_profile_donation", methods={"GET"})
      */
     public function profileDonationAction(
         DonationRepository $donationRepository,
@@ -65,8 +62,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/modifier", name="app_user_edit")
-     * @Method("GET|POST")
+     * @Route("/modifier", name="app_user_edit", methods={"GET", "POST"})
      */
     public function profileAction(Request $request): Response
     {
@@ -88,8 +84,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/modifier-email", name="app_user_change_email")
-     * @Method({"POST", "GET"})
+     * @Route("/modifier-email", name="app_user_change_email", methods={"POST", "GET"})
      */
     public function changeEmailAction(Request $request, AdherentChangeEmailHandler $handler): Response
     {
@@ -110,8 +105,7 @@ class UserController extends Controller
     /**
      * This action enables an adherent to change his/her current password.
      *
-     * @Route("/changer-mot-de-passe", name="app_user_change_password")
-     * @Method("GET|POST")
+     * @Route("/changer-mot-de-passe", name="app_user_change_password", methods={"GET", "POST"})
      */
     public function changePasswordAction(Request $request): Response
     {
@@ -132,8 +126,7 @@ class UserController extends Controller
     /**
      * This action enables an adherent to choose his/her email notifications.
      *
-     * @Route("/preferences-des-emails", name="app_user_set_email_notifications")
-     * @Method("GET|POST")
+     * @Route("/preferences-des-emails", name="app_user_set_email_notifications", methods={"GET", "POST"})
      */
     public function setEmailNotificationsAction(
         Request $request,
@@ -166,8 +159,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/desadherer", name="app_user_terminate_membership")
-     * @Method("GET|POST")
+     * @Route("/desadherer", name="app_user_terminate_membership", methods={"GET", "POST"})
      * @Security("is_granted('UNREGISTER')")
      */
     public function terminateMembershipAction(Request $request): Response
@@ -204,9 +196,9 @@ class UserController extends Controller
     /**
      * @Route("/chart",
      *     name="app_user_set_accept_chart",
-     *     condition="request.isXmlHttpRequest()"
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"PUT"}
      * )
-     * @Method("PUT")
      */
     public function chartAcceptationAction(ObjectManager $manager): JsonResponse
     {

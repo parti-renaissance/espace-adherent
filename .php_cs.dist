@@ -27,6 +27,7 @@ return PhpCsFixer\Config::create()
         'PedroTroller/useless_comment' => true,
         'App/doctrine_migration_clean' => true,
         'App/sensio_to_symfony_route' => true,
+        'App/method_to_route_annotation' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
@@ -37,5 +38,6 @@ return PhpCsFixer\Config::create()
         new PedroTroller\CS\Fixer\Comment\UselessCommentFixer,
         new AppBundle\Fixer\DoctrineMigrationCleanFixer,
         new AppBundle\Fixer\SensioToSymfonyRouteFixer,
+        new AppBundle\Fixer\MethodToRouteAnnotationFixer,
     ])
 ;

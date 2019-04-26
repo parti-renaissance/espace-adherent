@@ -11,7 +11,6 @@ use AppBundle\Procuration\Filter\ProcurationRequestFilters;
 use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Repository\ProcurationRequestRepository;
 use Doctrine\DBAL\Driver\DriverException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,8 +28,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProcurationManagerController extends Controller
 {
     /**
-     * @Route(name="app_procuration_manager_requests")
-     * @Method("GET")
+     * @Route(name="app_procuration_manager_requests", methods={"GET"})
      */
     public function requestsAction(Request $request, ProcurationManager $manager): Response
     {
@@ -51,8 +49,7 @@ class ProcurationManagerController extends Controller
     }
 
     /**
-     * @Route("/plus", name="app_procuration_manager_requests_list", condition="request.isXmlHttpRequest()")
-     * @Method("GET")
+     * @Route("/plus", name="app_procuration_manager_requests_list", condition="request.isXmlHttpRequest()", methods={"GET"})
      */
     public function requestsMoreAction(Request $request, ProcurationManager $manager): Response
     {
@@ -72,8 +69,7 @@ class ProcurationManagerController extends Controller
     }
 
     /**
-     * @Route("/mandataires", name="app_procuration_manager_proposals")
-     * @Method("GET")
+     * @Route("/mandataires", name="app_procuration_manager_proposals", methods={"GET"})
      */
     public function proposalsAction(Request $request, ProcurationManager $manager): Response
     {
@@ -94,8 +90,7 @@ class ProcurationManagerController extends Controller
     }
 
     /**
-     * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list", condition="request.isXmlHttpRequest()")
-     * @Method("GET")
+     * @Route("/mandataires/plus", name="app_procuration_manager_proposals_list", condition="request.isXmlHttpRequest()", methods={"GET"})
      */
     public function proposalsMoreAction(Request $request, ProcurationManager $manager): Response
     {
@@ -118,9 +113,9 @@ class ProcurationManagerController extends Controller
      * @Route(
      *     "/mandataires/{id}/{action}",
      *     requirements={ "id": "\d+", "action": AppBundle\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
-     *     name="app_procuration_manager_proposal_transform"
+     *     name="app_procuration_manager_proposal_transform",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function proposalTransformAction(int $id, string $action, ProcurationManager $manager): Response
     {
@@ -143,9 +138,9 @@ class ProcurationManagerController extends Controller
      * @Route(
      *     "/demande/{id}",
      *     requirements={"id": "\d+"},
-     *     name="app_procuration_manager_request"
+     *     name="app_procuration_manager_request",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function requestAction(int $id, ProcurationManager $manager): Response
     {
@@ -163,9 +158,9 @@ class ProcurationManagerController extends Controller
      * @Route(
      *     "/demande/{id}/{action}/{token}",
      *     requirements={"id": "\d+", "action": AppBundle\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
-     *     name="app_procuration_manager_request_transform"
+     *     name="app_procuration_manager_request_transform",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function requestTransformAction(
         int $id,
@@ -196,9 +191,9 @@ class ProcurationManagerController extends Controller
      * @Route(
      *     "/demande/{id}/associer/{proxyId}",
      *     requirements={"id": "\d+"},
-     *     name="app_procuration_manager_request_associate"
+     *     name="app_procuration_manager_request_associate",
+     *     methods={"GET", "POST"}
      * )
-     * @Method("GET|POST")
      * @ParamConverter("proxy", class="AppBundle\Entity\ProcurationProxy", options={"id": "proxyId"})
      */
     public function requestAssociateAction(
@@ -243,9 +238,9 @@ class ProcurationManagerController extends Controller
      * @Route(
      *     "/demande/{id}/desassocier",
      *     requirements={"id": "\d+"},
-     *     name="app_procuration_manager_request_deassociate"
+     *     name="app_procuration_manager_request_deassociate",
+     *     methods={"GET", "POST"}
      * )
-     * @Method("GET|POST")
      */
     public function requestDessociateAction(
         Request $sfRequest,

@@ -11,7 +11,6 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,8 +30,7 @@ class OAuthServerController extends Controller
     }
 
     /**
-     * @Route("/auth", name="app_front_oauth_authorize")
-     * @Method("GET|POST")
+     * @Route("/auth", name="app_front_oauth_authorize", methods={"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY') and not is_granted('ROLE_ADMIN_DASHBOARD')")
      */
     public function authorizeAction(Request $request, ClientRepository $repository, OAuthAuthorizationManager $manager)
@@ -72,8 +70,7 @@ class OAuthServerController extends Controller
     }
 
     /**
-     * @Route("/token", name="app_front_oauth_get_access_token")
-     * @Method("POST")
+     * @Route("/token", name="app_front_oauth_get_access_token", methods={"POST"})
      */
     public function getAccessTokenAction(Request $request)
     {
@@ -87,8 +84,7 @@ class OAuthServerController extends Controller
     }
 
     /**
-     * @Route("/tokeninfo", name="app_front_oauth_get_access_token_info")
-     * @Method("GET")
+     * @Route("/tokeninfo", name="app_front_oauth_get_access_token_info", methods={"GET"})
      */
     public function getAccessTokenInfo(Request $request, ResourceServer $resourceServer, ClientRepository $repository)
     {

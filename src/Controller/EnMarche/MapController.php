@@ -6,15 +6,13 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MapController extends Controller
 {
     /**
-     * @Route("/le-mouvement/la-carte", name="map_committees")
-     * @Method("GET")
+     * @Route("/le-mouvement/la-carte", name="map_committees", methods={"GET"})
      */
     public function committeesAction()
     {

@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\SocialShare;
 use AppBundle\Entity\SocialShareCategory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,8 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SocialShareController extends Controller
 {
     /**
-     * @Route("/jepartage", name="app_social_share_list")
-     * @Method("GET")
+     * @Route("/jepartage", name="app_social_share_list", methods={"GET"})
      */
     public function listAction(): Response
     {
@@ -27,8 +25,7 @@ class SocialShareController extends Controller
     }
 
     /**
-     * @Route("/jepartage/{slug}", name="app_social_share_show")
-     * @Method("GET")
+     * @Route("/jepartage/{slug}", name="app_social_share_show", methods={"GET"})
      */
     public function showAction(SocialShareCategory $category): Response
     {
@@ -42,8 +39,7 @@ class SocialShareController extends Controller
     }
 
     /**
-     * @Route("/je-partage")
-     * @Method("GET")
+     * @Route("/je-partage", methods={"GET"})
      */
     public function redirectAction(): Response
     {

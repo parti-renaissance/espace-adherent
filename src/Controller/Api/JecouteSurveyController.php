@@ -7,7 +7,6 @@ use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
@@ -24,8 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class JecouteSurveyController extends Controller
 {
     /**
-     * @Route("/survey", name="api_surveys_list")
-     * @Method("GET")
+     * @Route("/survey", name="api_surveys_list", methods={"GET"})
      */
     public function surveyListAction(
         LocalSurveyRepository $localSurveyRepository,
@@ -45,8 +43,7 @@ class JecouteSurveyController extends Controller
     }
 
     /**
-     * @Route("/survey/reply", name="api_survey_reply")
-     * @Method("POST")
+     * @Route("/survey/reply", name="api_survey_reply", methods={"POST"})
      */
     public function surveyReplyAction(Request $request, ObjectManager $manager): JsonResponse
     {

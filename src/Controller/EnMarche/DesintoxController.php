@@ -6,15 +6,13 @@ use AppBundle\Entity\Clarification;
 use AppBundle\Entity\Page;
 use AppBundle\Repository\ClarificationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DesintoxController extends Controller
 {
     /**
-     * @Route("/desintox", name="desintox_list")
-     * @Method("GET")
+     * @Route("/desintox", name="desintox_list", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('desintox')")
      */
     public function listAction(Page $page, ClarificationRepository $clarificationRepository)
@@ -26,8 +24,7 @@ class DesintoxController extends Controller
     }
 
     /**
-     * @Route("/desintox/{slug}", name="desintox_view")
-     * @Method("GET")
+     * @Route("/desintox/{slug}", name="desintox_view", methods={"GET"})
      * @Entity("clarification", expr="repository.findPublishedClarification(slug)")
      */
     public function viewAction(Clarification $clarification)

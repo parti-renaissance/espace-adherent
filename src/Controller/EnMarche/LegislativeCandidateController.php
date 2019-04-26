@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Form\LegislativeCampaignContactMessageType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,8 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LegislativeCandidateController extends Controller
 {
     /**
-     * @Route("", name="app_legislative_candidates_platform")
-     * @Method("GET")
+     * @Route("", name="app_legislative_candidates_platform", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -26,8 +24,7 @@ class LegislativeCandidateController extends Controller
     }
 
     /**
-     * @Route("/contact", name="app_legislative_candidates_platform_contact")
-     * @Method("GET|POST")
+     * @Route("/contact", name="app_legislative_candidates_platform_contact", methods={"GET", "POST"})
      */
     public function contactAction(Request $request): Response
     {

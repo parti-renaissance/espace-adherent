@@ -14,7 +14,6 @@ use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -41,8 +40,7 @@ class EventManagerController extends Controller
     ];
 
     /**
-     * @Route("/modifier", name="app_event_edit")
-     * @Method("GET|POST")
+     * @Route("/modifier", name="app_event_edit", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function editAction(Request $request, Event $event): Response
@@ -67,8 +65,7 @@ class EventManagerController extends Controller
     }
 
     /**
-     * @Route("/annuler", name="app_event_cancel")
-     * @Method("GET|POST")
+     * @Route("/annuler", name="app_event_cancel", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function cancelAction(Request $request, Event $event, EventCanceledHandler $eventCanceledHandler): Response
@@ -93,8 +90,7 @@ class EventManagerController extends Controller
     }
 
     /**
-     * @Route("/inscrits", name="app_event_members")
-     * @Method("GET")
+     * @Route("/inscrits", name="app_event_members", methods={"GET"})
      */
     public function membersAction(Event $event): Response
     {
@@ -108,8 +104,7 @@ class EventManagerController extends Controller
     }
 
     /**
-     * @Route("/inscrits/exporter", name="app_event_export_members")
-     * @Method("POST")
+     * @Route("/inscrits/exporter", name="app_event_export_members", methods={"POST"})
      */
     public function exportMembersAction(Request $request, Event $event): Response
     {
@@ -127,8 +122,7 @@ class EventManagerController extends Controller
     }
 
     /**
-     * @Route("/inscrits/contacter", name="app_event_contact_members")
-     * @Method("POST")
+     * @Route("/inscrits/contacter", name="app_event_contact_members", methods={"POST"})
      */
     public function contactMembersAction(Request $request, Event $event): Response
     {
@@ -169,8 +163,7 @@ class EventManagerController extends Controller
     }
 
     /**
-     * @Route("/inscrits/imprimer", name="app_event_print_members")
-     * @Method("POST")
+     * @Route("/inscrits/imprimer", name="app_event_print_members", methods={"POST"})
      */
     public function printMembersAction(Request $request, Event $event): Response
     {

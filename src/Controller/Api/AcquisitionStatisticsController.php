@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Statistics\Acquisition\Aggregator;
 use AppBundle\Statistics\Acquisition\StatisticsRequest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AcquisitionStatisticsController extends Controller
 {
     /**
-     * @Route("/statistics/acquisition", name="api_acquisition_statistics")
-     * @Method("GET")
+     * @Route("/statistics/acquisition", name="api_acquisition_statistics", methods={"GET"})
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
      */

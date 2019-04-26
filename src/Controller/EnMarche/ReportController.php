@@ -7,7 +7,6 @@ use AppBundle\Report\ReportCommand;
 use AppBundle\Report\ReportCreationCommandHandler;
 use AppBundle\Report\ReportManager;
 use AppBundle\Report\ReportType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +24,9 @@ class ReportController extends AbstractController
      *     requirements={
      *         "type": AppBundle\Report\ReportType::TYPES_URI_PATTERN,
      *         "uuid": "%pattern_uuid%"
-     *     }
+     *     },
+     *     methods={"GET", "POST"}
      * )
-     * @Method("GET|POST")
      * @Security("is_granted('REPORT')")
      */
     public function reportAction(

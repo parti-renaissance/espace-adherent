@@ -11,7 +11,6 @@ use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +26,7 @@ class DeputyController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/utilisateurs/message", name="app_deputy_users_message")
-     * @Method("GET|POST")
+     * @Route("/utilisateurs/message", name="app_deputy_users_message", methods={"GET", "POST"})
      */
     public function usersSendMessageAction(Request $request, AdherentRepository $adherentRepository): Response
     {
@@ -55,8 +53,7 @@ class DeputyController extends Controller
     }
 
     /**
-     * @Route("/evenements", name="app_deputy_events")
-     * @Method("GET")
+     * @Route("/evenements", name="app_deputy_events", methods={"GET"})
      */
     public function listEventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
     {
@@ -68,8 +65,7 @@ class DeputyController extends Controller
     }
 
     /**
-     * @Route("/comites", name="app_deputy_committees")
-     * @Method("GET")
+     * @Route("/comites", name="app_deputy_committees", methods={"GET"})
      */
     public function listCommitteesAction(
         CommitteeRepository $committeeRepository,

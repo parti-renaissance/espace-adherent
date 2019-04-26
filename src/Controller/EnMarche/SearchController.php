@@ -11,7 +11,6 @@ use AppBundle\Entity\EventGroupCategory;
 use AppBundle\Geocoder\Exception\GeocodingException;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\Search\SearchResultsProvidersManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class SearchController extends Controller
 {
     /**
-     * @Route("/evenements", name="app_search_events")
+     * @Route("/evenements", name="app_search_events", methods={"GET"})
      * @Route("/evenements/categorie/{slug}", name="app_search_events_by_category")
-     * @Method("GET")
      */
     public function searchEventsAction(Request $request, string $slug = null)
     {
@@ -61,8 +59,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/comites", name="app_search_committees")
-     * @Method("GET")
+     * @Route("/comites", name="app_search_committees", methods={"GET"})
      */
     public function searchCommitteesAction(Request $request)
     {
@@ -88,8 +85,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/recherche/projets-citoyens", name="app_search_citizen_projects")
-     * @Method("GET")
+     * @Route("/recherche/projets-citoyens", name="app_search_citizen_projects", methods={"GET"})
      */
     public function searchCitizenProjectsAction()
     {
@@ -97,8 +93,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/recherche", name="app_search")
-     * @Method("GET")
+     * @Route("/recherche", name="app_search", methods={"GET"})
      */
     public function resultsAction(Request $request)
     {
@@ -118,8 +113,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/tous-les-evenements/{page}", requirements={"page": "\d+"}, name="app_search_all_events")
-     * @Method("GET")
+     * @Route("/tous-les-evenements/{page}", requirements={"page": "\d+"}, name="app_search_all_events", methods={"GET"})
      */
     public function allEventsAction(int $page = 1)
     {
@@ -142,8 +136,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/tous-les-comites/{page}", requirements={"page": "\d+"}, name="app_search_all_committees")
-     * @Method("GET")
+     * @Route("/tous-les-comites/{page}", requirements={"page": "\d+"}, name="app_search_all_committees", methods={"GET"})
      */
     public function allCommitteesAction(int $page = 1)
     {

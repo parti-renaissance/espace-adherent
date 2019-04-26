@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Form\JeMarcheReportType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class JeMarcheController extends Controller
 {
     /**
-     * @Route("/jagis", name="app_je_marche")
-     * @Method("GET")
+     * @Route("/jagis", name="app_je_marche", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -22,8 +20,7 @@ class JeMarcheController extends Controller
     }
 
     /**
-     * @Route("/jemarche", name="app_je_marche_action")
-     * @Method("GET|POST")
+     * @Route("/jemarche", name="app_je_marche_action", methods={"GET", "POST"})
      */
     public function actionAction(Request $request): Response
     {
@@ -44,8 +41,7 @@ class JeMarcheController extends Controller
     }
 
     /**
-     * @Route("/jemarche/merci", name="app_je_marche_thanks")
-     * @Method("GET")
+     * @Route("/jemarche/merci", name="app_je_marche_thanks", methods={"GET"})
      */
     public function thanksAction(): Response
     {
@@ -53,8 +49,7 @@ class JeMarcheController extends Controller
     }
 
     /**
-     * @Route("/je-marche", name="app_je_marche_redirect")
-     * @Method("GET")
+     * @Route("/je-marche", name="app_je_marche_redirect", methods={"GET"})
      */
     public function redirectAction(): Response
     {

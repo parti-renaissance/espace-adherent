@@ -7,7 +7,6 @@ use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Procuration\ProcurationRequestSerializer;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -25,8 +24,7 @@ class AdminProcurationController extends Controller
     /**
      * List the procuration referents invitations URLs.
      *
-     * @Route("/referents-invitation-urls", name="app_admin_procuration_referents_invitations_urls")
-     * @Method("GET")
+     * @Route("/referents-invitation-urls", name="app_admin_procuration_referents_invitations_urls", methods={"GET"})
      */
     public function referentsInvitationUrlsAction(AdherentRepository $repository): Response
     {
@@ -36,8 +34,7 @@ class AdminProcurationController extends Controller
     }
 
     /**
-     * @Route("/export")
-     * @Method("GET")
+     * @Route("/export", methods={"GET"})
      */
     public function exportMailsAction(
         ProcurationRequestRepository $repository,
@@ -52,8 +49,7 @@ class AdminProcurationController extends Controller
     /**
      * List the procuration referents invitations URLs.
      *
-     * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate")
-     * @Method("GET|POST")
+     * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate", methods={"GET", "POST"})
      */
     public function deassociateAction(Request $sfRequest, ProcurationRequest $request): Response
     {

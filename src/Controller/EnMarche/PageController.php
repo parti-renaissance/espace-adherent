@@ -6,7 +6,6 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,8 +19,7 @@ class PageController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/formation", name="page_campus")
-     * @Method("GET")
+     * @Route("/formation", name="page_campus", methods={"GET"})
      */
     public function campusAction()
     {
@@ -29,8 +27,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/formation/dificultes-internet", name="page_campus_internet")
-     * @Method("GET")
+     * @Route("/formation/dificultes-internet", name="page_campus_internet", methods={"GET"})
      */
     public function campusInternetAction()
     {
@@ -38,8 +35,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron", name="page_emmanuel_macron")
-     * @Method("GET")
+     * @Route("/emmanuel-macron", name="page_emmanuel_macron", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron')")
      */
     public function emmanuelMacronAction(Page $page)
@@ -48,8 +44,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/revolution", name="page_emmanuel_macron_revolution")
-     * @Method("GET")
+     * @Route("/emmanuel-macron/revolution", name="page_emmanuel_macron_revolution", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('emmanuel-macron/revolution')")
      */
     public function emmanuelMacronRevolutionAction(Page $page)
@@ -58,8 +53,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/emmanuel-macron/videos", name="page_emmanuel_macron_videos")
-     * @Method("GET")
+     * @Route("/emmanuel-macron/videos", name="page_emmanuel_macron_videos", methods={"GET"})
      */
     public function emmanuelMacronVideosAction()
     {
@@ -69,8 +63,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement", name="page_le_mouvement")
-     * @Method("GET")
+     * @Route("/le-mouvement", name="page_le_mouvement", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement')")
      */
     public function mouvementValeursAction(Page $page)
@@ -79,8 +72,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives")
-     * @Method("GET")
+     * @Route("/le-mouvement/legislatives", name="page_le_mouvement_legislatives", methods={"GET"})
      */
     public function mouvementLegislativesAction()
     {
@@ -88,8 +80,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/les-comites", name="page_le_mouvement_les_comites")
-     * @Method("GET")
+     * @Route("/le-mouvement/les-comites", name="page_le_mouvement_les_comites", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement/les-comites')")
      */
     public function mouvementComitesAction(Page $page)
@@ -98,8 +89,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole")
-     * @Method("GET")
+     * @Route("/le-mouvement/devenez-benevole", name="page_le_mouvement_devenez_benevole", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('le-mouvement/devenez-benevole')")
      */
     public function mouvementBenevoleAction(Page $page)
@@ -108,8 +98,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/mentions-legales", name="page_mentions_legales")
-     * @Method("GET")
+     * @Route("/mentions-legales", name="page_mentions_legales", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('mentions-legales')")
      */
     public function mentionsLegalesAction(Page $page)
@@ -118,8 +107,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/politique-cookies", name="page_politique_cookies")
-     * @Method("GET")
+     * @Route("/politique-cookies", name="page_politique_cookies", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('politique-cookies')")
      */
     public function politiqueCookiesAction(Page $page)
@@ -128,8 +116,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/okcandidatlegislatives", name="legislatives_confirm_newsletter")
-     * @Method("GET")
+     * @Route("/okcandidatlegislatives", name="legislatives_confirm_newsletter", methods={"GET"})
      */
     public function legislativesConfirmNewsletterAction()
     {
@@ -137,8 +124,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/elles-marchent", name="page_elles_marchent")
-     * @Method("GET")
+     * @Route("/elles-marchent", name="page_elles_marchent", methods={"GET"})
      */
     public function ellesMarchentAction()
     {
@@ -146,8 +132,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/candidatures-delegue-general-et-bureau-executif", name="page_burex")
-     * @Method("GET")
+     * @Route("/candidatures-delegue-general-et-bureau-executif", name="page_burex", methods={"GET"})
      */
     public function burexAction()
     {
@@ -155,8 +140,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/1000-talents", name="page_1000_talents")
-     * @Method("GET")
+     * @Route("/1000-talents", name="page_1000_talents", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('1000-talents')")
      */
     public function page1000TalentsAction(Page $page)
@@ -165,8 +149,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/cestduconcret", name="page_concrete")
-     * @Method("GET")
+     * @Route("/cestduconcret", name="page_concrete", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('concrete')")
      */
     public function concreteAction(Page $page)
@@ -175,8 +158,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/action-talents", name="page_action_talents")
-     * @Method("GET")
+     * @Route("/action-talents", name="page_action_talents", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('action-talents')")
      */
     public function actionTalentsAction(Page $page)
@@ -185,8 +167,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/grande-marche-europe", name="page_grande_marche_europe")
-     * @Method("GET")
+     * @Route("/grande-marche-europe", name="page_grande_marche_europe", methods={"GET"})
      */
     public function grandeMarcheEuropeAction()
     {
@@ -194,8 +175,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/action-talents/candidater", name="page_action_talents_apply")
-     * @Method("GET")
+     * @Route("/action-talents/candidater", name="page_action_talents_apply", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('action-talents/candidater')")
      */
     public function actionTalentsApplicationAction(Page $page)
@@ -204,8 +184,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/nos-offres", name="page_jobs")
-     * @Method("GET")
+     * @Route("/nos-offres", name="page_jobs", methods={"GET"})
      * @Entity("page", expr="repository.findOneBySlug('nos-offres')")
      */
     public function jobsAction(Page $page)

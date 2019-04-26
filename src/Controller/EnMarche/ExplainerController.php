@@ -6,7 +6,6 @@ use AppBundle\Entity\OrderArticle;
 use AppBundle\Entity\OrderSection;
 use AppBundle\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,8 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExplainerController extends AbstractController
 {
     /**
-     * @Route(name="app_explainer_index")
-     * @Method("GET")
+     * @Route(name="app_explainer_index", methods={"GET"})
      */
     public function indexAction()
     {
@@ -28,8 +26,7 @@ class ExplainerController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="app_explainer_article_show")
-     * @Method("GET")
+     * @Route("/{slug}", name="app_explainer_article_show", methods={"GET"})
      * @Entity("article", expr="repository.findPublishedArticle(slug)")
      */
     public function proposalAction(OrderArticle $article)

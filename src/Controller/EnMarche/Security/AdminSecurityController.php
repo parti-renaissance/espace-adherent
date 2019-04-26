@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche\Security;
 use AppBundle\Entity\Administrator;
 use AppBundle\Form\LoginType;
 use AppBundle\Security\QrCodeResponseFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminSecurityController extends Controller
 {
     /**
-     * @Route("/login", name="app_admin_login")
-     * @Method("GET")
+     * @Route("/login", name="app_admin_login", methods={"GET"})
      */
     public function loginAction(): Response
     {
@@ -44,8 +42,7 @@ class AdminSecurityController extends Controller
     }
 
     /**
-     * @Route("/login", name="app_admin_login_check")
-     * @Method("POST")
+     * @Route("/login", name="app_admin_login_check", methods={"POST"})
      */
     public function loginCheckAction()
     {
@@ -54,8 +51,7 @@ class AdminSecurityController extends Controller
     /**
      * QR-code generator to be used with Google Authenticator.
      *
-     * @Route("/qr-code/{id}", name="app_admin_qr_code")
-     * @Method("GET")
+     * @Route("/qr-code/{id}", name="app_admin_qr_code", methods={"GET"})
      */
     public function qrCodeAction(QrCodeResponseFactory $qrCodeResponseFactory, Administrator $administrator): Response
     {

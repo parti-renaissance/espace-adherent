@@ -6,7 +6,6 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use Psr\Cache\CacheItemPoolInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +20,9 @@ class ArticleController extends Controller
      *     "/articles/{category}/{page}",
      *     requirements={"category": "\w+", "page": "\d+"},
      *     defaults={"category": "tout", "page": 1},
-     *     name="articles_list"
+     *     name="articles_list",
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      */
     public function actualitesAction(Request $request, string $category, int $page): Response
     {
@@ -61,8 +60,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view")
-     * @Method("GET")
+     * @Route("/articles/{categorySlug}/{articleSlug}", name="article_view", methods={"GET"})
      * @Entity("article", expr="repository.findOnePublishedBySlugAndCategorySlug(articleSlug, categorySlug)")
      */
     public function articleAction(Article $article): Response
@@ -76,8 +74,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/feed.xml", name="articles_feed")
-     * @Method("GET")
+     * @Route("/feed.xml", name="articles_feed", methods={"GET"})
      */
     public function feedAction(): Response
     {

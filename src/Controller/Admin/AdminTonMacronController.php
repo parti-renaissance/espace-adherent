@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\TonMacronChoice;
 use AppBundle\Entity\TonMacronFriendInvitation;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,8 +20,7 @@ class AdminTonMacronController extends Controller
     const PER_PAGE = 1000;
 
     /**
-     * @Route("/export/choices", name="app_admin_tonmacron_export_choices")
-     * @Method("GET")
+     * @Route("/export/choices", name="app_admin_tonmacron_export_choices", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
      */
     public function exportChoicesAction(): Response
@@ -34,8 +32,7 @@ class AdminTonMacronController extends Controller
     }
 
     /**
-     * @Route("/export/invitations", name="app_admin_tonmacron_export_invitations")
-     * @Method("GET")
+     * @Route("/export/invitations", name="app_admin_tonmacron_export_invitations", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
      */
     public function exportInvitationsAction(): Response
@@ -59,8 +56,7 @@ class AdminTonMacronController extends Controller
     }
 
     /**
-     * @Route("/export/invitations/partial", name="app_admin_tonmacron_export_invitations_partial")
-     * @Method("GET")
+     * @Route("/export/invitations/partial", name="app_admin_tonmacron_export_invitations_partial", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN_TON_MACRON')")
      */
     public function exportInvitationsPartialAction(Request $request): Response

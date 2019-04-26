@@ -8,7 +8,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Exception\CitizenProjectMembershipException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +24,7 @@ class AdminCitizenProjectController extends Controller
     /**
      * Approves the citizen project.
      *
-     * @Route("/{id}/approve", name="app_admin_citizenproject_approve")
-     * @Method("GET")
+     * @Route("/{id}/approve", name="app_admin_citizenproject_approve", methods={"GET"})
      */
     public function approveAction(CitizenProject $citizenProject): Response
     {
@@ -43,8 +41,7 @@ class AdminCitizenProjectController extends Controller
     /**
      * Refuses the citizen project.
      *
-     * @Route("/{id}/refuse", name="app_admin_citizenproject_refuse")
-     * @Method("GET")
+     * @Route("/{id}/refuse", name="app_admin_citizenproject_refuse", methods={"GET"})
      */
     public function refuseAction(CitizenProject $citizenProject): Response
     {
@@ -59,8 +56,7 @@ class AdminCitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{id}/members", name="app_admin_citizenproject_members")
-     * @Method("GET")
+     * @Route("/{id}/members", name="app_admin_citizenproject_members", methods={"GET"})
      */
     public function membersAction(CitizenProject $citizenProject, CitizenProjectManager $manager): Response
     {
@@ -71,8 +67,7 @@ class AdminCitizenProjectController extends Controller
     }
 
     /**
-     * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege")
-     * @Method("GET")
+     * @Route("/{citizenProject}/members/{adherent}/set-privilege/{privilege}", name="app_admin_citizenproject_change_privilege", methods={"GET"})
      */
     public function changePrivilegeAction(
         Request $request,

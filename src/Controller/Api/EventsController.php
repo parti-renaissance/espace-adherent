@@ -8,7 +8,6 @@ use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,8 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EventsController extends Controller
 {
     /**
-     * @Route("/events", name="api_committees_events")
-     * @Method("GET")
+     * @Route("/events", name="api_committees_events", methods={"GET"})
      */
     public function getUpcomingCommitteesEventsAction(Request $request): Response
     {
@@ -29,8 +27,7 @@ class EventsController extends Controller
     }
 
     /**
-     * @Route("/statistics/events/count-by-month", name="app_committee_events_count_by_month")
-     * @Method("GET")
+     * @Route("/statistics/events/count-by-month", name="app_committee_events_count_by_month", methods={"GET"})
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
@@ -55,8 +52,7 @@ class EventsController extends Controller
     }
 
     /**
-     * @Route("/statistics/events/count", name="app_events_count")
-     * @Method("GET")
+     * @Route("/statistics/events/count", name="app_events_count", methods={"GET"})
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")
@@ -73,8 +69,7 @@ class EventsController extends Controller
     }
 
     /**
-     * @Route("/statistics/events/count-participants", name="app_committee_events_count_participants")
-     * @Method("GET")
+     * @Route("/statistics/events/count-participants", name="app_committee_events_count_participants", methods={"GET"})
      * @Entity("referent", expr="repository.findReferent(referent)", converter="querystring")
      *
      * @Security("is_granted('ROLE_OAUTH_SCOPE_READ:STATS')")

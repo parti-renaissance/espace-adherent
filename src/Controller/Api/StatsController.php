@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,8 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class StatsController extends Controller
 {
     /**
-     * @Route("/stats", name="api_stats")
-     * @Method("GET")
+     * @Route("/stats", name="api_stats", methods={"GET"})
      */
     public function indexAction()
     {

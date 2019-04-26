@@ -7,7 +7,6 @@ use AppBundle\Form\CitizenProjectTractType;
 use AppBundle\MediaGenerator\Image\CitizenProjectCoverGenerator;
 use AppBundle\MediaGenerator\Pdf\CitizenProjectTractGenerator;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CitizenProjectMediaGeneratorController extends Controller
 {
     /**
-     * @Route("/images", name="app_citizen_project_image_generator")
-     * @Method({"GET", "POST"})
+     * @Route("/images", name="app_citizen_project_image_generator", methods={"GET", "POST"})
      */
     public function generateImageAction(Request $request): Response
     {
@@ -45,8 +43,7 @@ class CitizenProjectMediaGeneratorController extends Controller
     }
 
     /**
-     * @Route("/tracts", name="app_citizen_project_tract_generator")
-     * @Method({"GET", "POST"})
+     * @Route("/tracts", name="app_citizen_project_tract_generator", methods={"GET", "POST"})
      */
     public function generateTractAction(Request $request): Response
     {
