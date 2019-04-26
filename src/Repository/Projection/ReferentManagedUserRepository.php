@@ -67,21 +67,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere('u.isMailSubscriber = 1');
         }
 
-        $tagsFilter = $qb->expr()->orX();
-
-        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
-            $tagsFilter->add("FIND_IN_SET(:tag_$key, u.subscribedTags) > 0");
-            $tagsFilter->add(
-                $qb->expr()->andX(
-                    'u.country = \'FR\'',
-                    $qb->expr()->like('u.committeePostalCode', ":tag_prefix_$key")
-                )
-            );
-            $qb->setParameter("tag_$key", $tag->getCode());
-            $qb->setParameter("tag_prefix_$key", $tag->getCode().'%');
-        }
-
-        $qb->andWhere($tagsFilter);
+        $this->withReferentZoneCondition($qb, $referent->getManagedAreaTagCodes());
 
         if (!$filter) {
             return $qb;
@@ -218,5 +204,38 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         }
 
         return $qb;
+    }
+
+    public function countAdherentInReferentZone(Adherent $referent): int
+    {
+        $qb = $this
+            ->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+        ;
+
+        return (int) $this
+            ->withReferentZoneCondition($qb, $referent->getManagedAreaTagCodes())
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    private function withReferentZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'u'): QueryBuilder
+    {
+        $tagsFilter = $qb->expr()->orX();
+
+        foreach ($referentTags as $key => $tag) {
+            $tagsFilter->add("FIND_IN_SET(:tag_$key, $alias.subscribedTags) > 0");
+            $tagsFilter->add(
+                $qb->expr()->andX(
+                    "$alias.country = 'FR'",
+                    $qb->expr()->like("$alias.committeePostalCode", ":tag_prefix_$key")
+                )
+            );
+            $qb->setParameter("tag_$key", $tag);
+            $qb->setParameter("tag_prefix_$key", $tag.'%');
+        }
+
+        return $qb->andWhere($tagsFilter);
     }
 }

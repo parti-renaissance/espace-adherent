@@ -88,6 +88,7 @@ class ReferentController extends Controller
             'filter' => $filter,
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'results_count' => $results->count(),
+            'total_count' => $repository->countAdherentInReferentZone($referent),
             'results' => $results->getQuery()->getResult(),
         ]);
     }

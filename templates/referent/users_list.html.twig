@@ -22,9 +22,11 @@
 {% block referent_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Adhérents</h3>
-        <span class="datagrid__count">
-            <span>{{ results_count }}</span> sur 19 042 adhérents
-        </span>
+        {% if total_count %}
+            <span class="datagrid__count">
+                <span>{{ results_count }}</span> sur {{ total_count }} adhérents
+            </span>
+        {% endif %}
     </div>
 
     <div class="manager__filters">
