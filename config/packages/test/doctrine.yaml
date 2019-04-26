@@ -3,4 +3,4 @@ doctrine:
         connections:
             default:
                 logging: false
-                profiling: false
+                profiling: true
