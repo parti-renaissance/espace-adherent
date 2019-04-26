@@ -1,59 +1,63 @@
-<p class="text--gray text--small">Vous pouvez envoyer un message aux adhérents abonnés à vos e-mails uniquement</p>
-
-<div class="referent__filters__subtitle">
-    Envoyer un message aux ...
-</div>
-<div class="l__row l__row--top l__mobile--col">
-    <div class="l__col--grow-1 b__nudge--right">
-        {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité'}) }}
-        {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)'}) }}
-    </div>
-
-    <div class="l__col--grow-1 b__nudge--right">
-        {{ form_row(form.includeCommitteeSupervisors, {label: 'Animateurs de comités locaux'}) }}
-        {{ form_row(form.includeCommitteeHosts, {label: 'Co-animateurs de comités locaux'}) }}
-        {{ form_row(form.includeCitizenProjectHosts, {label: 'Porteurs de projets citoyens'}) }}
-    </div>
-</div>
-
-<div class="referent__filters__subtitle">
-    Et filtrer par ...
-</div>
-
-<div class="referent__filters__search l__row l__row--v-stretch l__tablet--col">
-    <div class="referent__filters__search__col">
-        <legend class="label__header">Genre</legend>
-        {{ form_widget(form.gender, {attr: {class: 'l__row'}}) }}
-
-        <legend class="label__header">Age</legend>
-        <div class="l__row l__row--h-stretch">
-            <label style="width: 45%">
-                {{ form_widget(form.ageMin, {label: false, attr: {class: 'form--full', placeholder: 18}}) }}
-            </label>
-            à
-            <label style="width: 45%">
-                {{ form_widget(form.ageMax, {label: false, attr: {placeholder: 99}}) }}
-            </label>
-        </div>
-
-        <legend class="label__header">Nom</legend>
-        <div class="l__row">
-            {{ form_widget(form.lastName, {attr: {class: 'form--full', placeholder: 'Saisissez un nom'}}) }}
-        </div>
-
-        <legend class="label__header">Prénom</legend>
-        <div class="l__row">
-            {{ form_widget(form.firstName, {attr: {class: 'form--full', placeholder: 'Saisissez un prénom'}}) }}
+<h4 class="manager__filters__subtitle">Filtrer par</h4>
+<div class="manager__filters__row">
+    <div class="manager__filters__section">
+        <div class="manager__filters__group">
+            <div class="filter__row">
+                <label class="filter__label">Rôles</label>
+                    {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité'}) }}
+                    {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)'}) }}
+                    {{ form_row(form.includeCommitteeSupervisors, {label: 'Animateurs de comités locaux'}) }}
+                    {{ form_row(form.includeCommitteeHosts, {label: 'Co-animateurs de comités locaux'}) }}
+                    {{ form_row(form.includeCitizenProjectHosts, {label: 'Porteurs de projets citoyens'}) }}
+            </div>
         </div>
     </div>
 
-    <div class="referent__filters__search__col message_referent__filter__search__col">
-        <legend class="label__header">Ville ou code postal</legend>
-        <div class="l__row">
-            {{ form_widget(form.city, {attr: {class: 'form--full', placeholder: 'Saisissez une ville'}}) }}
-        </div>
+    <div class="manager__filters__section">
+        <div class="manager__filters__group">
+            <div class="filter__row">
+                <label class="filter__label">Genre</label>
+                {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+            </div>
 
-        <legend class="label__header label__header__interest">Centres d'intérêt</legend>
-        {{ form_widget(form.interests, {attr: {class: 'l__row l__row--wrap multi_interests'}}) }}
+            <div class="filter__row">
+                <label class="filter__label">Age</label>
+                <div class="filter__multi">
+                    <label style="width: 45%">
+                        {{ form_widget(form.ageMin, {label: false, attr: {class: 'filter__field', placeholder: 18}}) }}
+                    </label>
+                    à
+                    <label style="width: 45%">
+                        {{ form_widget(form.ageMax, {label: false, attr: {class: 'filter__field', placeholder: 99}}) }}
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter__row">
+                <label class="filter__label">Centres d'intéret</label>
+                {{ form_widget(form.interests, {attr: {class: 'filter__field'}}) }}
+            </div>
+
+        </div>
     </div>
+
+    <div class="manager__filters__section">
+        <div class="manager__filters__group">
+            <div class="filter__row">
+                <label class="filter__label">Nom</label>
+                {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+            </div>
+
+            <div class="filter__row">
+                <label class="filter__label">Prénom</label>
+                {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+            </div>
+
+            <div class="filter__row">
+                <label class="filter__label">Ville ou code postal</label>
+                {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Saisissez une ville'}}) }}
+            </div>
+        </div>
+    </div>
+
 </div>
