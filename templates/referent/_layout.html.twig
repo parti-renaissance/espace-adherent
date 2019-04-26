@@ -24,8 +24,14 @@
                     <div class="first-section">
                         <div class="manager-information">
                             <p>Vous gérez : <span>{{ managedAreaTags }}</span></p>
-                            <p>Dernière visite le <span>{{ get_referent_previous_visit_date(app.user) }}</span>
-                            à <span>{{ get_referent_previous_visit_hour(app.user) }}</span></p>
+
+                            {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
+                            {% if last_visit_date is not null %}
+                            <p>
+                                Dernière visite le <span>{{ last_visit_date|date('d/m/Y') }}</span>
+                                à <span>{{ last_visit_date|date('H\\hi') }}</span>
+                            </p>
+                            {% endif %}
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
                             <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
