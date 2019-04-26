@@ -57,25 +57,15 @@ class AdherentRuntime implements RuntimeExtensionInterface
         return $adherent->isFemale() ? 'Adhérente 😍' : 'Adhérent 😍';
     }
 
-    public function getReferentPreviousVisitDate(Adherent $adherent, string $format = 'd/m/Y'): string
-    {
-        return $this->getReferentPreviousVisitDateTime($adherent, $format);
-    }
-
-    public function getReferentPreviousVisitHour(Adherent $adherent, string $format = 'H\hi'): string
-    {
-        return $this->getReferentPreviousVisitDateTime($adherent, $format);
-    }
-
-    private function getReferentPreviousVisitDateTime(Adherent $adherent, string $format): string
+    public function getReferentPreviousVisitDate(Adherent $adherent): ?\DateTimeInterface
     {
         /** @var ReferentSpaceAccessInformation $accessInformation */
         $accessInformation = $this->accessInformationRepository->findByAdherent($adherent, 7200);
 
         if ($accessInformation) {
-            return $accessInformation->getPreviousDate()->format($format);
+            return $accessInformation->getPreviousDate();
         }
 
-        return '';
+        return null;
     }
 }
