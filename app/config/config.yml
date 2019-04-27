@@ -157,7 +157,7 @@ doctrine:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
 
 doctrine_migrations:
-    dir_name: "%kernel.root_dir%/migrations"
+    dir_name: "%kernel.project_dir%/migrations"
     namespace: Migrations
     table_name: migrations
     name: En Marche migrations
