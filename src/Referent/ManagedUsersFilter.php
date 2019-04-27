@@ -30,13 +30,15 @@ class ManagedUsersFilter
     public const PARAMETER_INTEREST = 'i';
     public const PARAMETER_INCLUDE_CP = 'cp';
     public const PARAMETER_EMAIL_SUBSCRIPTION = 'es';
+    public const PARAMETER_REGISTERED_FROM = 'rf';
+    public const PARAMETER_REGISTERED_TO = 'rt';
 
     protected $includeAdherentsNoCommittee = true;
     protected $includeAdherentsInCommittee = true;
     protected $includeHosts = true;
     protected $includeSupervisors = true;
     protected $includeCP = true;
-    protected $onlyEmailSubscribers = null;
+    protected $onlyEmailSubscribers;
 
     /**
      * @Assert\NotNull
@@ -63,7 +65,8 @@ class ManagedUsersFilter
     protected $queryAgeMinimum = 0;
     protected $queryAgeMaximum = 0;
     protected $queryInterests = [];
-
+    private $queryRegisteredFrom;
+    private $queryRegisteredTo;
     private $token;
 
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
@@ -84,6 +87,8 @@ class ManagedUsersFilter
         $filter->queryAgeMinimum = $message->getAgeMinimum();
         $filter->queryAgeMaximum = $message->getAgeMaximum();
         $filter->includeCP = $message->includeCitizenProject();
+        $filter->queryRegisteredFrom = $message->getRegisteredFrom();
+        $filter->queryRegisteredTo = $message->getRegisteredTo();
 
         return $filter;
     }
@@ -120,6 +125,9 @@ class ManagedUsersFilter
             $this->onlyEmailSubscribers = null;
         }
 
+        $this->queryRegisteredFrom = ($date = $query->get(self::PARAMETER_REGISTERED_FROM)) ? new \DateTime($date) : null;
+        $this->queryRegisteredTo = ($date = $query->get(self::PARAMETER_REGISTERED_TO)) ? new \DateTime($date) : null;
+
         return $this;
     }
 
@@ -148,6 +156,8 @@ class ManagedUsersFilter
             self::PARAMETER_INTEREST => $this->queryInterests,
             self::PARAMETER_INCLUDE_CP => $this->includeCP ? '1' : '0',
             self::PARAMETER_EMAIL_SUBSCRIPTION => null === $this->onlyEmailSubscribers ? null : ($this->onlyEmailSubscribers ? '1' : '0'),
+            self::PARAMETER_REGISTERED_FROM => $this->queryRegisteredFrom ? $this->queryRegisteredFrom->format('Y-m-d') : null,
+            self::PARAMETER_REGISTERED_TO => $this->queryRegisteredTo ? $this->queryRegisteredTo->format('Y-m-d') : null,
         ]);
     }
 
@@ -286,5 +296,15 @@ class ManagedUsersFilter
     public function onlyEmailSubscribers(): ?bool
     {
         return $this->onlyEmailSubscribers;
+    }
+
+    public function getQueryRegisteredFrom(): ?\DateTimeInterface
+    {
+        return $this->queryRegisteredFrom;
+    }
+
+    public function getQueryRegisteredTo(): ?\DateTimeInterface
+    {
+        return $this->queryRegisteredTo;
     }
 }
