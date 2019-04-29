@@ -27,7 +27,7 @@ class ManagedEventsExporterTest extends WebTestCase
         $expectedDate = $event->getBeginAt()->format('Y-m-d');
 
         $this->assertSame(
-            '[{"id":11,"name":{"label":"R\u00e9union de r\u00e9flexion parisienne","url":"'.$this->hosts['scheme'].':\/\/'.$this->hosts['app'].'\/evenements\/'.$expectedDate.'-reunion-de-reflexion-parisienne"},"beginAt":"'.$expectedBeginAt.'","category":"Atelier du programme","postalCode":"75008","organizer":"Jacques P.","participants":1,"type":"Comit\u00e9"}]',
+            '[{"id":11,"name":{"label":"R\u00e9union de r\u00e9flexion parisienne","url":"'.$this->hosts['scheme'].':\/\/'.$this->hosts['app'].'\/evenements\/'.$expectedDate.'-reunion-de-reflexion-parisienne"},"beginAt":"'.$expectedBeginAt.'","category":"Atelier du programme","postalCode":"75008","organizer":"Jacques Picard","participants":1,"type":"Comit\u00e9"}]',
             $this->exporter->exportAsJson([$event])
         );
     }
