@@ -41,6 +41,7 @@ use AppBundle\Repository\Jecoute\DataAnswerRepository;
 use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use AppBundle\Repository\Jecoute\NationalSurveyRepository;
 use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
+use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
@@ -67,7 +68,7 @@ class ReferentController extends Controller
      *
      * @Security("is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT')")
      */
-    public function usersAction(Request $request): Response
+    public function usersAction(Request $request, ReferentManagedUserRepository $repository): Response
     {
         $filter = new ManagedUsersFilter();
         $filter->handleRequest($request);
@@ -76,9 +77,12 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_users');
         }
 
-        $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
         $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
         $results = $repository->search($referent, $filter->hasToken() ? $filter : null);
+
+        if ($filter->hasToken() && true !== $filter->onlyEmailSubscribers()) {
+            $resultsSubscriptionCount = $repository->search($referent, $filter, true)->count();
+        }
 
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
 
@@ -86,6 +90,7 @@ class ReferentController extends Controller
             'filter' => $filter,
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'results_count' => $results->count(),
+            'results_subscription_count' => $resultsSubscriptionCount ?? $results->count(),
             'total_count' => $repository->countAdherentInReferentZone($referent),
             'results' => $results->getQuery()->getResult(),
         ]);
