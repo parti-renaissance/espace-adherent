@@ -23,6 +23,9 @@ common.email.invalid: Ceci n'est pas une adresse e-mail valide.
 common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.
 common.email.repeated: Les adresses email ne correspondent pas.
 
+common.birthdate.not_blank: Vous devez spécifier votre date de naissance.
+common.birthcity.not_blank: Vous devez spécifier votre lieu de naissance.
+
 common.country.invalid: Ce pays n'est pas valide.
 
 common.nationality.invalid: Cette nationalité n'est pas valide.
@@ -323,7 +326,6 @@ assessor.last_name.not_blank: Votre nom est requis.
 assessor.last_name.min_length: Votre nom doit comporter au moins 2 caractères.
 assessor.last_name.max_length: Vos nom ne peuvent pas dépasser 100 caractères.
 
-assessor.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 assessor.birthdate.minimum_required_age: Vous devez être âgé d'au moins 18 ans pour être assesseur.
 
 assessor.office.invalid_choice: Vous devez choisir l'une des fonctions proposées.

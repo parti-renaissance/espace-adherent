@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Assessor\AssessorRequestCommand;
 use AppBundle\Assessor\AssessorRequestEnum;
 use AppBundle\Entity\AssessorOfficeEnum;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\VotePlace\VotePlaceManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
@@ -73,7 +74,7 @@ class AssessorRequestType extends AbstractType
                     ->add('assessorPostalCode', TextType::class, [
                         'required' => false,
                     ])
-                    ->add('assessorCity', TextType::class, [
+                    ->add('assessorCity', ChoiceType::class, [
                         'required' => false,
                     ])
                     ->add('assessorCountry', UnitedNationsCountryType::class)
@@ -94,8 +95,8 @@ class AssessorRequestType extends AbstractType
                     ])
                 ;
 
-                $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'addVotePlaceWishesType']);
-                $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'addVotePlaceWishesType']);
+                $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'addAssessorCityAndVotePlaceWishesType']);
+                $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'addAssessorCityAndVotePlaceWishesType']);
 
                 $this->addSubmitButton(
                     $builder, AssessorRequestEnum::TRANSITION_FILL_ASSESSOR_INFO, 'Dernière étape'
@@ -133,7 +134,7 @@ class AssessorRequestType extends AbstractType
         ]);
     }
 
-    public function addVotePlaceWishesType(FormEvent $formEvent): void
+    public function addAssessorCityAndVotePlaceWishesType(FormEvent $formEvent): void
     {
         $command = $formEvent->getData();
 
@@ -145,7 +146,7 @@ class AssessorRequestType extends AbstractType
             $assessorPostalCode = $command['assessorPostalCode'];
         }
 
-        if ((null !== $assessorPostalCode && 'FR' === $assessorCountry) || 'FR' !== $assessorCountry) {
+        if ((!empty($assessorPostalCode) && 'FR' === $assessorCountry) || 'FR' !== $assessorCountry) {
             $formEvent->getForm()
                 ->add('votePlaceWishes', ChoiceType::class, [
                     'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode) {
@@ -157,5 +158,27 @@ class AssessorRequestType extends AbstractType
                 ])
             ;
         }
+
+        if (!empty($assessorPostalCode)) {
+            $formEvent->getForm()
+                ->add('assessorCity', ChoiceType::class, [
+                    'choice_loader' => new CallbackChoiceLoader(function () use ($assessorPostalCode) {
+                        return $this->formatCitiesByPostalCode($assessorPostalCode);
+                    }),
+                ])
+            ;
+        }
+    }
+
+    public function formatCitiesByPostalCode(string $postalCode): array
+    {
+        $data = FranceCitiesBundle::$cities[$postalCode];
+
+        $cities = [];
+        foreach ($data as $city) {
+            $cities[$city] = $city;
+        }
+
+        return $cities;
     }
 }
