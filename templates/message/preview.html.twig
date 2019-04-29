@@ -18,13 +18,13 @@
                 {% if message.recipientCount is not null %}
                     <div>
                         {% if message.recipientCount == 0 %}
-                            <p>Votre filtre ne correspond à aucun adhérent !</p>
+                            <p class="text--medium">Votre filtre ne correspond à aucun adhérent !</p>
                         {% else %}
-                            <p className="text--medium">Votre filtre correspond à <span className="text--bold text--blue--dark">{{ message.recipientCount }}</span> adhérent !</p>
+                            <p class="text--medium">Votre filtre correspond à <span className="text--bold text--blue--dark">{{ message.recipientCount }}</span> adhérent !</p>
                         {% endif %}
                     </div>
                 {% endif %}
-                <a class="btn btn--blue btn--large-and-full b__nudge--top-50" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
+                <a class="btn btn--blue btn--large-and-full b__nudge--top" href="{{ path("app_message_#{message_type}_update", route_params) }}">Modifier</a>
                 {% if not message.readOnlyFilter %}
                     <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Modifier les filtres</a>
                 {% endif %}

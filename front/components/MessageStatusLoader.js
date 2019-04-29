@@ -62,7 +62,7 @@ export default class MessageStatusLoader extends React.Component {
                     span className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérent !
                 </p>
                 <p>
-                    <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top-50">Envoyer</a>
+                    <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
                     <a
                         href="./visualiser"
                         className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
