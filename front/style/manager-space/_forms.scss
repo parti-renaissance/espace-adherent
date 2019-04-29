@@ -38,6 +38,15 @@
         &:focus {
             border-color: $blue--dark;
         }
+
+        &:disabled {
+            background-color: $pale-grey;
+            color: $silver-grey;
+            cursor: default;
+            &:hover {
+                border-color: $lines-grey;
+            }
+        }
 }
 
 .manager-space,

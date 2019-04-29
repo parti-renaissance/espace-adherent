@@ -48,9 +48,9 @@ export default class MessageStatusLoader extends React.Component {
     }
 
     renderLoader() {
-        return <p class className="space--30-0">
-            Patientez pendant le chargement de vos adhérents<br/>
-            <img src="/images/loader-sm.gif" alt="loader" className="b__nudge--top"/>
+        return <p className="space--30-0">
+            <div className="spin-loader"></div>
+            Chargement de vos adhérents
         </p>;
     }
 
