@@ -239,10 +239,10 @@
     {% endfor -%}
 {% endblock %}
 
-{% block _adherent_message_referent_filter_gender_widget %}
+{% block _referent_filter_gender_widget %}
     <div {{ block('widget_container_attributes') }}>
         {%- for child in form %}
-            <div class="form__radio-button--tab">
+            <div class="filter__radio__tab">
                 {{- form_widget(child) -}}
                 {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
             </div>

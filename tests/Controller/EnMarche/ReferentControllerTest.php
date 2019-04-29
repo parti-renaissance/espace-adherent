@@ -365,7 +365,7 @@ class ReferentControllerTest extends WebTestCase
             's' => 1,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->client->click($this->client->getCrawler()->selectLink('Contacter (4)')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Contacter (3)')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('http://'.$this->hosts['app'].'/espace-referent/utilisateurs/message', $this->client->getRequest()->getUri());
 
@@ -386,7 +386,7 @@ class ReferentControllerTest extends WebTestCase
             's' => 1,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->client->click($this->client->getCrawler()->selectLink('Contacter (4)')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Contacter (3)')->link());
 
         $data = [];
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
@@ -410,7 +410,7 @@ class ReferentControllerTest extends WebTestCase
             's' => 1,
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->client->click($this->client->getCrawler()->selectLink('Contacter (4)')->link());
+        $this->client->click($this->client->getCrawler()->selectLink('Contacter (3)')->link());
         $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
         $this->assertContains('3 marcheur(s)', $this->client->getCrawler()->filter('form')->html());
 
@@ -503,7 +503,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('Contacter (4)', $this->client->getCrawler()->filter('#send-message-btn')->text());
+        $this->assertContains('Contacter (3)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
         $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
@@ -518,7 +518,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('Contacter (3)', $this->client->getCrawler()->filter('#send-message-btn')->text());
+        $this->assertContains('Contacter (2)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
