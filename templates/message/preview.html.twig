@@ -28,6 +28,7 @@
                 {% if not message.readOnlyFilter %}
                     <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_filter", route_params) }}">Modifier les filtres</a>
                 {% endif %}
+                <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_test", route_params) }}">M'envoyer un e-mail test</a>
                 <a class="btn btn--large-and-full b__nudge--top-15 {{ not message.recipientCount ? 'btn--disabled' : 'btn--ghosting--blue' }}"
                    href="{{ message.recipientCount ? path("app_message_#{message_type}_send", route_params) : 'javascript:void(0);' }}"
                 >Envoyer</a>

@@ -274,6 +274,34 @@ class CommitteeMessageController extends Controller
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
+    /**
+     * @Route("/{uuid}/tester", name="test", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     */
+    public function sendTestMessageAction(
+        CommitteeAdherentMessage $message,
+        Manager $manager,
+        Committee $committee
+    ): Response {
+        $this->disableInProduction();
+
+        if (!$message->isSynchronized()) {
+            throw new BadRequestHttpException('The message is not yet ready to test sending.');
+        }
+
+        if ($manager->sendTestCampaign($message, [$this->getUser()->getEmailAddress()])) {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_successfully');
+        } else {
+            $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
+        }
+
+        return $this->redirectToRoute('app_message_committee_preview', [
+            'committee_slug' => $committee->getSlug(),
+            'uuid' => $message->getUuid()->toString(),
+        ]);
+    }
+
     private function renderTemplate(string $template, Committee $committee, array $parameters = []): Response
     {
         return $this->render($template, array_merge(

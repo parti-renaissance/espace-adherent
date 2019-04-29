@@ -23,6 +23,21 @@ class LoadAdherentMessageData extends Fixture
         $faker = Factory::create('FR_fr');
 
         foreach ($this->getMessageClasses() as $class) {
+            /** @var AdherentMessageInterface $messageCompleted */
+            $messageCompleted = $class::createFromAdherent($this->getAuthor($class));
+            $messageCompleted->setContent($faker->randomHtml());
+            $className = substr(strrchr($class, '\\'), 1);
+            $messageCompleted->setSubject("Synchronized $className message with externalId");
+            $messageCompleted->setLabel($faker->sentence(2));
+            $messageCompleted->setExternalId('123abc');
+            $messageCompleted->setSynchronized(true);
+
+            if ($filter = $this->getFilter($class)) {
+                $messageCompleted->setFilter($filter);
+            }
+
+            $manager->persist($messageCompleted);
+
             for ($i = 1; $i <= 100; ++$i) {
                 /** @var AdherentMessageInterface $message */
                 $message = $class::createFromAdherent($this->getAuthor($class));

@@ -88,6 +88,14 @@ class Driver implements LoggerAwareInterface
         return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/send', $externalId));
     }
 
+    public function sendTestCampaign(string $externalId, array $emails): bool
+    {
+        return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/test', $externalId), [
+            'test_emails' => $emails,
+            'send_type' => 'html',
+        ]);
+    }
+
     public function createStaticSegment(string $name): array
     {
         $response = $this->send('POST', sprintf('/lists/%s/segments', $this->listId), [
