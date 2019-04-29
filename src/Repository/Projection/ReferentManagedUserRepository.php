@@ -139,6 +139,20 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($queryRegisteredFrom = $filter->getQueryRegisteredFrom()) {
+            $qb
+                ->andWhere('u.createdAt >= :registeredFrom')
+                ->setParameter('registeredFrom', $queryRegisteredFrom->format('Y-m-d 00:00:00'))
+            ;
+        }
+
+        if ($queryRegisteredTo = $filter->getQueryRegisteredTo()) {
+            $qb
+                ->andWhere('u.createdAt <= :registeredTo')
+                ->setParameter('registeredTo', $queryRegisteredTo->format('Y-m-d 23:59:59'))
+            ;
+        }
+
         if ($queryCity = $filter->getQueryCity()) {
             $queryCity = array_map('trim', explode(',', $queryCity));
 

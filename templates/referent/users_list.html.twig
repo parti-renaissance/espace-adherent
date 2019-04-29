@@ -170,19 +170,21 @@
                                 <label class="filter__label">Date d'adhésion</label>
                                 <div class="filter__multi">
                                     <label style="width: 45%">
-                                        <input type="number"
-                                               name=""
-                                               value=""
-                                               class="filter__field"
-                                               placeholder="avril 2018"/>
+                                        <input
+                                            type="date"
+                                            name="{{ constant('PARAMETER_REGISTERED_FROM', filter) }}"
+                                            value="{{ filter.queryRegisteredFrom ? filter.queryRegisteredFrom|date('Y-m-d') : "" }}"
+                                            class="filter__field"
+                                        />
                                     </label>
                                     à
                                     <label style="width: 45%">
-                                        <input type="number"
-                                               name=""
-                                               value=""
-                                               class="filter__field"
-                                               placeholder="sept. 2018"/>
+                                        <input
+                                            type="date"
+                                            name="{{ constant('PARAMETER_REGISTERED_TO', filter) }}"
+                                            value="{{ filter.queryRegisteredTo ? filter.queryRegisteredTo|date('Y-m-d') : "" }}"
+                                            class="filter__field"
+                                        />
                                     </label>
                                 </div>
                             </div>
