@@ -23,6 +23,10 @@ common.email.invalid: Ceci n'est pas une adresse e-mail valide.
 common.email.max_length: L'adresse e-mail est trop longue, 255 caractères maximum.
 common.email.repeated: Les adresses email ne correspondent pas.
 
+common.birth_name.note_blank: Votre nom de naissance est requis.
+common.birth_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
+common.birth_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
+
 common.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 common.birthcity.not_blank: Vous devez spécifier votre lieu de naissance.
 
@@ -315,8 +319,6 @@ idea.question.mandatory: Pour publier votre idée, vous devez apporter des répo
 #
 # Assessor
 #
-assessor.birth_name.min_length: Votre nom de naissance doit comporter au moins 2 caractères.
-assessor.birth_name.max_length: Votre nom de naissance ne peut pas dépasser 50 caractères.
 
 assessor.first_name.not_blank: Votre prénom est requis.
 assessor.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.

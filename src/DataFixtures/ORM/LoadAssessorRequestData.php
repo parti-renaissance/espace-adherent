@@ -47,6 +47,7 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59350',
+            'birthName' => 'Kepoura',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
             'reachable' => true,
         ]);
@@ -70,6 +71,7 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Bobigny',
             'assessorPostalCode' => '93008',
+            'birthName' => 'Hytté',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
         ]);
 
@@ -92,6 +94,7 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Bobigny',
             'assessorPostalCode' => '93008',
+            'birthName' => 'Luc',
             'office' => AssessorOfficeEnum::HOLDER,
         ]);
 
@@ -114,6 +117,7 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59000',
+            'birthName' => 'Coptère',
             'office' => AssessorOfficeEnum::HOLDER,
         ]);
 
@@ -136,8 +140,8 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Lille',
             'assessorPostalCode' => '59100',
+            'birthName' => 'Sahalor',
             'office' => AssessorOfficeEnum::SUBSTITUTE,
-            'birthName' => null,
         ]);
 
         $requestOutOfManagedArea = AssessorRequestFactory::createFromArray([
@@ -156,8 +160,8 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Angers',
             'assessorPostalCode' => '49000',
+            'birthName' => 'Parbal',
             'office' => AssessorOfficeEnum::HOLDER,
-            'birthName' => null,
         ]);
 
         $foreignRequestDisabled = AssessorRequestFactory::createFromArray([
@@ -176,8 +180,8 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'London',
             'assessorPostalCode' => null,
+            'birthName' => 'Cochet',
             'office' => AssessorOfficeEnum::HOLDER,
-            'birthName' => null,
             'enabled' => false,
             'assessorCountry' => 'UK',
         ]);
@@ -198,8 +202,8 @@ class LoadAssessorRequestData extends Fixture
             'phoneNumber' => '33 612345678',
             'assessorCity' => 'Rome',
             'assessorPostalCode' => null,
+            'birthName' => 'Luigi',
             'office' => AssessorOfficeEnum::HOLDER,
-            'birthName' => null,
             'enabled' => true,
             'assessorCountry' => 'IT',
         ]);

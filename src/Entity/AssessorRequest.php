@@ -73,11 +73,12 @@ class AssessorRequest
      *
      * @ORM\Column(length=50, nullable=true)
      *
+     * @Assert\NotBlank(message="common.birth_name.not_blank")
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     minMessage="assessor.birth_name.min_length",
-     *     maxMessage="assessor.birth_name.max_length"
+     *     minMessage="common.birth_name.min_length",
+     *     maxMessage="common.birth_name.max_length"
      * )
      */
     private $birthName;
@@ -300,8 +301,8 @@ class AssessorRequest
         PhoneNumber $phoneNumber,
         ?string $assessorCity,
         ?string $assessorPostalCode,
+        string $birthName,
         string $office = AssessorOfficeEnum::HOLDER,
-        ?string $birthName = null,
         bool $enabled = true,
         bool $reachable = false,
         string $assessorCountry = 'FR',
@@ -409,12 +410,12 @@ class AssessorRequest
         $this->firstName = $firstName;
     }
 
-    public function getBirthName(): ?string
+    public function getBirthName(): string
     {
         return $this->birthName;
     }
 
-    public function setBirthName(?string $birthName): void
+    public function setBirthName(string $birthName): void
     {
         $this->birthName = $birthName;
     }

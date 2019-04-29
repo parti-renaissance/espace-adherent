@@ -40,9 +40,7 @@ class AssessorRequestType extends AbstractType
                     ->add('gender', GenderType::class)
                     ->add('lastName', TextType::class)
                     ->add('firstName', TextType::class)
-                    ->add('birthName', TextType::class, [
-                        'required' => false,
-                    ])
+                    ->add('birthName', TextType::class)
                     ->add('address', TextType::class)
                     ->add('postalCode', TextType::class)
                     ->add('city', TextType::class)
