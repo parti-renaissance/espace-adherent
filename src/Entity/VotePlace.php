@@ -119,6 +119,26 @@ class VotePlace
         $this->assessorRequests = new ArrayCollection();
     }
 
+    public static function create(
+        string $name,
+        string $code,
+        ?string $postalCode,
+        ?string $city,
+        string $address,
+        string $country = 'FR'
+    ): self {
+        $votePlace = new self();
+
+        $votePlace->setName($name);
+        $votePlace->setCode($code);
+        $votePlace->setPostalCode($postalCode);
+        $votePlace->setCity($city);
+        $votePlace->setAddress($address);
+        $votePlace->setCountry($country);
+
+        return $votePlace;
+    }
+
     public function __toString(): string
     {
         return (string) $this->name;

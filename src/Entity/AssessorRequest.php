@@ -304,7 +304,7 @@ class AssessorRequest
         bool $reachable = false,
         string $assessorCountry = 'FR',
         ?array $votePlaceWishes = []
-    ): AssessorRequest {
+    ): self {
         $assessorRequest = new self();
 
         $assessorRequest->setUuid($uuid);

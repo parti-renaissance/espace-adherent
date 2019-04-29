@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\VotePlace;
+use AppBundle\VotePlace\VotePlaceFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -104,13 +105,14 @@ class ImportVotePlacesCommand extends Command
                 continue;
             }
 
-            $votePlace = new VotePlace();
-            $votePlace->setName($row['nom_bdv']);
-            $votePlace->setAddress($row['adresse_bdv']);
-            $votePlace->setPostalCode($this->formatPostalCode($row['code_postal']));
-            $votePlace->setCity($row['nom_commune_bdv']);
-            $votePlace->setCode($row['code_bdv']);
-            $votePlace->setCountry($this->formatCountry($row['code_insee_departement']));
+            $votePlace = VotePlaceFactory::createFromArray([
+                    'name' => $row['nom_bdv'],
+                    'code' => $row['code_bdv'],
+                    'postalCode' => $this->formatPostalCode($row['code_postal']),
+                    'city' => $row['nom_commune_bdv'],
+                    'address' => $row['adresse_bdv'],
+                ]
+            );
 
             $this->em->persist($votePlace);
 

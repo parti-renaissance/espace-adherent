@@ -2,7 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\VotePlace;
+use AppBundle\VotePlace\VotePlaceFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -10,46 +10,51 @@ class LoadVotePlaceData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $manager->persist($votePlaceLilleWazemmes = $this->createVotePlace(
-            'Salle Polyvalente De Wazemmes',
-            '59350_0113',
-            '59000,59100',
-            'Lille',
-            "Rue De L'Abbé Aerts"
+        $manager->persist($votePlaceLilleWazemmes = VotePlaceFactory::createFromArray([
+                'name' => 'Salle Polyvalente De Wazemmes',
+                'code' => '59350_0113',
+                'postalCode' => '59000,59100',
+                'city' => 'Lille',
+                'address' => "Rue De L'Abbé Aerts",
+            ]
         ));
 
-        $manager->persist($votePlaceLilleJeanZay = $this->createVotePlace(
-            'Restaurant Scolaire - Rue H. Lefebvre',
-            '59350_0407',
-            '59350',
-            'Lille',
-            'Groupe Scolaire Jean Zay'
+        $manager->persist($votePlaceLilleJeanZay = VotePlaceFactory::createFromArray([
+                'name' => 'Restaurant Scolaire - Rue H. Lefebvre',
+                'code' => '59350_0407',
+                'postalCode' => '59350',
+                'city' => 'Lille',
+                'address' => 'Groupe Scolaire Jean Zay',
+            ]
         ));
 
-        $manager->persist($votePlaceBobignyBlanqui = $this->createVotePlace(
-            'Ecole Maternelle La Source',
-            '93066_0004',
-            '93200,93066',
-            'Saint-Denis',
-            '15, Rue Auguste Blanqui'
+        $manager->persist($votePlaceBobignyBlanqui = VotePlaceFactory::createFromArray([
+                'name' => 'Ecole Maternelle La Source',
+                'code' => '93066_0004',
+                'postalCode' => '93200,93066',
+                'city' => 'Saint-Denis',
+                'address' => '15, Rue Auguste Blanqui',
+            ]
         ));
 
-        $manager->persist($this->createVotePlace(
-            'Milan',
-            '99999_0249',
-            null,
-            'Milan',
-            'Ecole suisse de Milan',
-            'IT'
+        $manager->persist(VotePlaceFactory::createFromArray([
+                'name' => 'Milan',
+                'code' => '99999_0249',
+                'postalCode' => null,
+                'city' => 'Milan',
+                'address' => 'Ecole suisse de Milan',
+                'country' => 'IT',
+            ]
         ));
 
-        $manager->persist($this->createVotePlace(
-            'Naples',
-            '99999_0251',
-            null,
-            'Naples',
-            'Consulat général de France à Naples',
-            'IT'
+        $manager->persist(VotePlaceFactory::createFromArray([
+                'name' => 'Naples',
+                'code' => '99999_0251',
+                'postalCode' => null,
+                'city' => 'Naples',
+                'address' => 'Consulat général de France à Naples',
+                'country' => 'IT',
+            ]
         ));
 
         $this->addReference('vote-place-lille-wazemmes', $votePlaceLilleWazemmes);
@@ -59,25 +64,5 @@ class LoadVotePlaceData extends Fixture
         $this->addReference('vote-place-consulat-france-naples', $votePlaceLilleJeanZay);
 
         $manager->flush();
-    }
-
-    private function createVotePlace(
-        string $name,
-        string $code,
-        ?string $postalCode,
-        string $city,
-        string $address,
-        string $country = 'FR'
-    ): VotePlace {
-        $votePlace = new VotePlace();
-
-        $votePlace->setName($name);
-        $votePlace->setCode($code);
-        $votePlace->setPostalCode($postalCode);
-        $votePlace->setCity($city);
-        $votePlace->setAddress($address);
-        $votePlace->setCountry($country);
-
-        return $votePlace;
     }
 }
