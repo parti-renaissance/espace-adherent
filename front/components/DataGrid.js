@@ -122,21 +122,22 @@ export default class DataGrid extends React.Component {
                 */}
 
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
-
-                <table className={
-                    `datagrid__table-manager
-                    ${this.props.tableClassName || ''}
-                    ${this.state.loading ? 'datagrid__table--loading' : ''}`
-                }>
-                    <thead>
-                    <tr>
-                        {this._buildColumns(this.props.columns)}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this._buildResultsList(this.props.columns, results, this.state.selected, currentPage)}
-                    </tbody>
-                </table>
+                <div className="datagrid__table-manager-ctn">
+                    <table className={
+                        `datagrid__table-manager
+                        ${this.props.tableClassName || ''}
+                        ${this.state.loading ? 'datagrid__table--loading' : ''}`
+                    }>
+                        <thead>
+                        <tr>
+                            {this._buildColumns(this.props.columns)}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this._buildResultsList(this.props.columns, results, this.state.selected, currentPage)}
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
                     <ul>

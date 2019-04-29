@@ -67,13 +67,19 @@
     }
 }
 
+.datagrid__table-manager-ctn {
+    width: 100%;
+    overflow-x: auto;
+}
+
 .datagrid__table-manager {
     width: 100%;
+    min-width: 700px;
     text-align: left;
     font-family: $font-roboto;
     color: $dark;
     font-size: $text--size-small;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 
     thead {
         @include manager-table-thead;
@@ -83,6 +89,7 @@
 
             th {
                 line-height: normal;
+                padding-right: 20px;
             }
 
             th:first-child { padding-left: 20px; }
@@ -175,7 +182,10 @@
     }
 }
 
+
 .datagrid__pager {
+    margin-top: 20px;
+
     ul {
         li {
             display: inline-block;
