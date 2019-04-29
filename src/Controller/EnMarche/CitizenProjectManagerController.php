@@ -57,8 +57,7 @@ class CitizenProjectManagerController extends Controller
     }
 
     /**
-     * @Route("/acteurs", name="app_citizen_project_list_actors")
-     * @Method("GET")
+     * @Route("/acteurs", name="app_citizen_project_list_actors", methods={"GET"})
      */
     public function listActorsAction(
         CitizenProject $citizenProject,
