@@ -18,9 +18,9 @@
                 {% if message.recipientCount is not null %}
                     <div>
                         {% if message.recipientCount == 0 %}
-                            <p class="text--medium">Votre filtre ne correspond à aucun adhérent !</p>
+                            <p class="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
                         {% else %}
-                            <p class="text--medium">Votre filtre correspond à <span className="text--bold text--blue--dark">{{ message.recipientCount }}</span> adhérent !</p>
+                            <p class="text--medium-small">Votre filtre correspond à <span className="text--bold text--blue--dark">{{ message.recipientCount }}</span> adhérent !</p>
                         {% endif %}
                     </div>
                 {% endif %}

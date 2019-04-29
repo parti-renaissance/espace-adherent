@@ -57,7 +57,7 @@ export default class MessageStatusLoader extends React.Component {
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                <p className="text--medium">
+                <p className="text--medium-small">
                     Votre filtre correspond à <
                     span className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérent !
                 </p>
@@ -74,7 +74,7 @@ export default class MessageStatusLoader extends React.Component {
         }
 
         return <div>
-            <p>Votre filtre ne correspond à aucun adhérent !</p>
+            <p className="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
         </div>;
     }
 
