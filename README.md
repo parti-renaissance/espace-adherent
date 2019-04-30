@@ -30,7 +30,7 @@ This repository is the Symfony application powering the [en-marche.fr](https://e
 
 ## How can I help?
 
-At *En Marche !*, we chose Open-Source as it corresponds to our idea of creating a democratic movement ran by its
+At *En Marche !*, we chose Open-Source as it corresponds to our idea of creating a movement ran by its
 members. Thus we would be glad to help you contribute!
 
 * The first step to contribute is to read
