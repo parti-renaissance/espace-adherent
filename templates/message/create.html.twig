@@ -27,10 +27,10 @@
 {% endblock %}
 
 {% block message_content %}
+    <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+         ⟵ Retour
+    </a>
     {% block message_form %}
-        <a href="#" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
-             ⟵ Annuler
-        </a>
         <div class="l__wrapper--slim">
             <h3 class="text--medium b__nudge--bottom-larger">Rédiger mon message</h3>
             <div>

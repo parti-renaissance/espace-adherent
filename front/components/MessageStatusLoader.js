@@ -48,21 +48,21 @@ export default class MessageStatusLoader extends React.Component {
     }
 
     renderLoader() {
-        return <p class className="space--30-0">
-            Patientez pendant le chargement de vos adhérents<br/>
-            <img src="/images/loader-sm.gif" alt="loader" className="b__nudge--top"/>
+        return <p className="space--30-0">
+            <div className="spin-loader"></div>
+            Chargement de vos adhérents
         </p>;
     }
 
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                <p className="text--medium">
+                <p className="text--medium-small">
                     Votre filtre correspond à <
                     span className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérent !
                 </p>
                 <p>
-                    <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top-50">Envoyer</a>
+                    <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
                     <a
                         href="./visualiser"
                         className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
@@ -74,7 +74,7 @@ export default class MessageStatusLoader extends React.Component {
         }
 
         return <div>
-            <p>Votre filtre ne correspond à aucun adhérent !</p>
+            <p className="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
         </div>;
     }
 
