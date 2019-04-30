@@ -9,6 +9,11 @@
 {% endblock %}
 
 {% block assessor_manager_content %}
+
+    {{ include('assessor_manager/_filters.html.twig') }}
+
+    <hr />
+
     {% if 0 == votePlaces|length %}
         <div class="text--body text--center">
             {% if constant('UNASSOCIATED', filters) == filters.status %}

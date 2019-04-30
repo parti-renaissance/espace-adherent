@@ -1,0 +1,47 @@
+<form method="get">
+   <div class="l__row l__row--top l__mobile--col">
+        {% block filter_content %}{% endblock %}
+
+       <input type="hidden" name="{{ constant('PARAMETER_STATUS', filters) }}" value="{{ filters.status }}" />
+
+       <div class="l__col--grow-1 b__nudge--right">
+           <label>
+               Nom / Numéro du bureau de vote :<br />
+               <input type="text"
+                      name="{{ constant('PARAMETER_VOTE_PLACE', filters) }}"
+                      value="{{ filters.votePlace }}"
+                      class="form form__field form--full">
+           </label>
+       </div>
+
+       <div class="l__col--grow-1 b__nudge--right">
+           <label>
+               Ville / Code Postal :<br />
+               <input type="text"
+                      name="{{ constant('PARAMETER_CITY', filters) }}"
+                      value="{{ filters.city }}"
+                      class="form form__field form--full">
+           </label>
+       </div>
+
+       <div class="l__col--grow-1 b__nudge--right">
+           <label>
+               Pays :<br />
+               <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="form form__field form--full">
+                   <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>
+                   {% for code, label in filters.countries %}
+                       <option value="{{ code }}" {{ filters.country == code ? 'selected="selected"' }}>{{ label }}</option>
+                   {% endfor %}
+               </select>
+           </label>
+       </div>
+
+        <div style="width: 220px;">
+            <br />
+            <button type="submit" class="btn btn--blue b__nudge--right">Filtrer</button>
+            {% if filters.hasData %}
+                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'status': filters.status})) }}">Annuler</a>
+            {% endif %}
+        </div>
+    </div>
+</form>
