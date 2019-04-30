@@ -67,10 +67,14 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere('u.isMailSubscriber = 1');
         }
 
-        $this->withReferentZoneCondition($qb, $referent->getManagedAreaTagCodes());
-
-        if (!$filter) {
-            return $qb;
+        $managedAreas = $referent->getManagedAreaTagCodes();
+        if ($filter && ($queryZone = $filter->getQueryZone()) && \in_array($queryZone, $managedAreas)) {
+            $this->withReferentZoneCondition($qb, [$queryZone]);
+        } else {
+            $this->withReferentZoneCondition($qb, $managedAreas);
+            if (!$filter) {
+                return $qb;
+            }
         }
 
         if ($queryId = $filter->getQueryId()) {

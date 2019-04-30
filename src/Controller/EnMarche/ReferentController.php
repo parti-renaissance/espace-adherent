@@ -77,6 +77,7 @@ class ReferentController extends Controller
             return $this->redirectToRoute('app_referent_users');
         }
 
+        /** @var Adherent $referent */
         $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
         $results = $repository->search($referent, $filter->hasToken() ? $filter : null);
 
@@ -87,6 +88,7 @@ class ReferentController extends Controller
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
 
         return $this->render('referent/users_list.html.twig', [
+            'managedArea' => $referent->getManagedArea(),
             'filter' => $filter,
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'results_count' => $results->count(),
