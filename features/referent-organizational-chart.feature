@@ -31,9 +31,9 @@ Feature: Make sure we can see and interact with organizational chart
     And I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
     And I should see 3 "div.referent-person-link" elements
-    And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
     And I should see 1 "span.already-co-referent" element
 
     When I follow "Nom du responsable Responsable logistique"
@@ -49,9 +49,9 @@ Feature: Make sure we can see and interact with organizational chart
     Then I should be on "/espace-referent/mon-equipe"
     And I should see "Dupoint Jean Responsable logistique"
     And I should see 3 "div.referent-person-link" elements
-    And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
     And I should see 1 "span.already-co-referent" element
 
     When I follow "Nom du responsable Responsable Financier"
@@ -65,10 +65,10 @@ Feature: Make sure we can see and interact with organizational chart
     Then I should be on "/espace-referent/mon-equipe"
     And I should see "VASSEUR Michel Responsable Financier"
     And I should see 4 "div.referent-person-link" elements
-    And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
-    And the "label[for='potential_co_referents_referentPersonLinks_5_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b> en le nommant co-référent"
+    And the "label[for='potential_co_referents_referentPersonLinks_1_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_2_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_3_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
+    And the "label[for='potential_co_referents_referentPersonLinks_5_isCoReferent']" element should contain "Donner un accès à l'onglet <b>Adhérents</b>"
     And I should see 1 "span.already-co-referent" element
     And the "potential_co_referents_referentPersonLinks_1_isCoReferent" checkbox should be unchecked
     And the "potential_co_referents_referentPersonLinks_2_isCoReferent" checkbox should be unchecked
