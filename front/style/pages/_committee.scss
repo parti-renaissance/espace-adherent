@@ -4,7 +4,10 @@
 }
 
 .committee-follow--anonymous {
-    text-align: right;
+    text-align: center;
+    @media (min-width: $mobile) {
+        text-align: right;
+    }
 
     &__link {
         padding-top: 3px;
@@ -25,11 +28,13 @@
 
     &__name {
         display: flex;
+        max-width: 600px;
         @include breakword;
     }
 
     &__header__titles {
         margin-right: 25px;
+        padding-bottom: 15px;
 
         @media (max-width: $mobile) {
             margin: 0;
@@ -415,6 +420,9 @@
 
             &__social {
                 margin-top: 15px;
+                @media (min-width: $mobile) {
+                    justify-content: flex-end;
+                }
 
                 li .fa {
                     cursor: pointer;
