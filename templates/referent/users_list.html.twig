@@ -36,6 +36,17 @@
                 <div class="manager__filters__row">
                     <div class="manager__filters__section">
                         <div class="manager__filters__group">
+                            {% if managedArea.tags.count > 1 %}
+                                <div class="filter__row">
+                                    <label class="filter__label">{{ 'referent.managed_area'|trans }}</label>
+                                    <select class="filter__field" name="{{ constant('PARAMETER_QUERY_ZONE', filter) }}">
+                                        <option value="">{{ 'referent.adherent.all'|trans }}</option>
+                                        {% for tag in managedArea.tags %}
+                                            <option value="{{ tag.code }}" {{ filter.queryZone ? tag.code is same as(filter.queryZone) ? 'selected' : '' }}>{{ tag.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endif %}
                             <div class="filter__row">
                                 <span class="filter__label">Rôles</span>
                                 <div class="form__checkbox">

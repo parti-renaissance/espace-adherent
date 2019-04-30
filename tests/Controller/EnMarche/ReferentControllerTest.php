@@ -351,6 +351,18 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($form, $data);
         $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        // Managed Area
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'qz' => '77',
+        ];
+
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['s']->untick();
+
+        $this->client->submit($form, $data);
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testCancelSendMail()

@@ -13,6 +13,7 @@ class ManagedUsersFilter
 {
     public const PER_PAGE = 50;
 
+    public const PARAMETER_QUERY_ZONE = 'qz';
     public const PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE = 'anc';
     public const PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE = 'aic';
     public const PARAMETER_INCLUDE_HOSTS = 'h';
@@ -59,6 +60,7 @@ class ManagedUsersFilter
      * @Assert\NotNull
      */
     protected $offset = 0;
+    protected $queryZone = '';
     protected $queryGender = '';
     protected $queryLastName = '';
     protected $queryFirstName = '';
@@ -72,6 +74,7 @@ class ManagedUsersFilter
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
         $filter = new self();
+        $filter->queryZone = $message->getQueryZone();
         $filter->includeAdherentsNoCommittee = $message->includeAdherentsNoCommittee();
         $filter->includeAdherentsInCommittee = $message->includeAdherentsInCommittee();
         $filter->includeHosts = $message->includeHosts();
@@ -103,6 +106,7 @@ class ManagedUsersFilter
             return $this;
         }
 
+        $this->queryZone = trim($query->get(self::PARAMETER_QUERY_ZONE, ''));
         $this->includeAdherentsNoCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE);
         $this->includeAdherentsInCommittee = $query->getBoolean(self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE);
         $this->includeHosts = $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS);
@@ -139,6 +143,7 @@ class ManagedUsersFilter
     public function getQueryStringForOffset(int $offset): string
     {
         return '?'.http_build_query([
+            self::PARAMETER_QUERY_ZONE => $this->queryZone,
             self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts ? '1' : '0',
@@ -171,6 +176,11 @@ class ManagedUsersFilter
     public function getNextPageQueryString(): string
     {
         return $this->getQueryStringForOffset($this->offset + self::PER_PAGE);
+    }
+
+    public function getQueryZone(): ?string
+    {
+        return $this->queryZone;
     }
 
     public function getQueryAreaCode(): string

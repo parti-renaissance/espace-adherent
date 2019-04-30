@@ -36,6 +36,11 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     private $includeSupervisors;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $queryZone;
+
+    /**
      * @ORM\Column(type="text")
      */
     private $queryAreaCode;
@@ -112,6 +117,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         bool $includeSupervisors,
         string $firstName,
         string $lastName,
+        string $queryZone,
         string $queryAreaCode,
         string $queryCity,
         string $queryId,
@@ -132,6 +138,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->includeAdherentsInCommittee = $includeAdherentsInCommittee;
         $this->includeHosts = $includeHosts;
         $this->includeSupervisors = $includeSupervisors;
+        $this->queryZone = $queryZone;
         $this->queryAreaCode = $queryAreaCode;
         $this->queryCity = $queryCity;
         $this->queryId = $queryId;
@@ -160,6 +167,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->includeSupervisors(),
             $message->getFilter()->getQueryFirstName(),
             $message->getFilter()->getQueryLastName(),
+            $message->getFilter()->getQueryZone(),
             $message->getFilter()->getQueryAreaCode(),
             $message->getFilter()->getQueryCity(),
             $message->getFilter()->getQueryId(),
@@ -192,6 +200,11 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function includeSupervisors(): bool
     {
         return $this->includeSupervisors;
+    }
+
+    public function getQueryZone(): ?string
+    {
+        return $this->queryZone;
     }
 
     public function getQueryAreaCode(): string
