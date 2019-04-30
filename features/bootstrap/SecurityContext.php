@@ -8,6 +8,7 @@ use AppBundle\Repository\AdministratorRepository;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
@@ -15,6 +16,13 @@ use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 class SecurityContext extends RawMinkContext
 {
     use KernelDictionary;
+
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
 
     /**
      * @When I am logged as :email
