@@ -42,7 +42,7 @@
             {% for actor in actors %}
                 {% set member = actor.adherent %}
                 {% set is_promotable_host = actor.promotableAdministrator %}
-                <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
+                <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
                     <td class="member-first-name">{{ member.firstName|capitalize }}</td>
                     <td class="member-last-name">
                         {{ not is_cp_administrator ? member.lastNameInitial|upper : member.lastName}}
