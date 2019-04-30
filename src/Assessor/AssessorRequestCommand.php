@@ -48,11 +48,12 @@ class AssessorRequestCommand
     private $firstName;
 
     /**
+     * @Assert\NotBlank(message="common.birth_name.not_blank", groups={"fill_personal_info"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
-     *     minMessage="assessor.birth_name.min_length",
-     *     maxMessage="assessor.birth_name.max_length",
+     *     minMessage="common.birth_name.min_length",
+     *     maxMessage="common.birth_name.max_length",
      *     groups={"fill_personal_info"}
      * )
      */
@@ -214,7 +215,7 @@ class AssessorRequestCommand
         return $this->birthName;
     }
 
-    public function setBirthName(?string $birthName): void
+    public function setBirthName(string $birthName): void
     {
         $this->birthName = $birthName;
     }

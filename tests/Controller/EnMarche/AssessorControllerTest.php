@@ -34,6 +34,7 @@ class AssessorControllerTest extends WebTestCase
                 'gender' => 'male',
                 'firstName' => 'Ernestino',
                 'lastName' => 'Bonsoirini',
+                'birthName' => 'Boujourini',
                 'address' => '39 rue du Welsh',
                 'postalCode' => '59290',
                 'city' => 'Wasquehal',
@@ -125,6 +126,32 @@ class AssessorControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'Votre demande a bien été prise en compte.');
         $this->assertCount(1, $this->getEmailRepository()->findMessages(AssessorRequestConfirmationMessage::class));
+    }
+
+    /**
+     * @dataProvider provideFormError
+     * @expectedException \InvalidArgumentException
+     */
+    public function testAssessorRequestFormErrors(array $testedValue)
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_REQUEST_PATH);
+
+        $this->client->submit($crawler->filter('form[name="assessor_request"]')->form([
+            'assessor_request' => [
+                $testedValue,
+            ],
+        ]));
+    }
+
+    public function provideFormError(): \Generator
+    {
+        yield 'Test wrong gender' => [['gender' => 'orc']];
+        yield 'Test wrong phone number' => ['phone' => ['country' => 'TO']];
+        yield 'Test wrong birthdate' => ['birthdate' => [
+            'year' => (new \DateTime())->format('Y'),
+            'month' => '01',
+            'day' => '01',
+        ]];
     }
 
     protected function setUp()
