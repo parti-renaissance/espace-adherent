@@ -329,6 +329,7 @@
             <div class="datagrid__pager">
                 {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
                 {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+                {% if last_page > 1 %}
                 <ul>
                     <li>
                         <div class="pager__go-to-page">
@@ -354,6 +355,7 @@
                         </a>
                     </li>
                 </ul>
+                {% endif %}
             </div>
         {% endblock %}
 
