@@ -13,6 +13,7 @@ export default class DataGrid extends React.Component {
             headerCheckboxChecked: false,
             page: 1,
             loading: false,
+            results: [],
         };
 
         this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
@@ -21,6 +22,9 @@ export default class DataGrid extends React.Component {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
 
+    componentWillMount() {
+        this.setState({ results: this._buildResultsCollection() });
+    }
     handleSearchInputChange(event) {
         const term = event.target.value;
 
@@ -102,15 +106,19 @@ export default class DataGrid extends React.Component {
     }
 
     render() {
-        const results = this._buildResultsCollection();
-        const totalCount = results.length;
+        // const results = this._buildResultsCollection();
+        const totalCount = this.state.results.length;
         const pagesCount = Math.max(1, Math.ceil(totalCount / this._perPage));
         const currentPage = Math.min(this.state.page, pagesCount);
 
+
+        console.log('columns', this.props.columns);
+        console.log('results', this.state.results);
+
         return (
             <div className="datagrid">
-                {/*
-                <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
+
+                {/* <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
                     <span className="datagrid__search__count">
                         {totalCount} résultat(s)
                     </span>
@@ -118,8 +126,8 @@ export default class DataGrid extends React.Component {
                            placeholder="Recherche ..."
                            className="form form__field"
                            onChange={this.handleSearchInputChange} />
-                </div>
-                */}
+                </div> */}
+
 
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
 
@@ -134,23 +142,26 @@ export default class DataGrid extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this._buildResultsList(this.props.columns, results, this.state.selected, currentPage)}
+                    {this._buildResultsList(this.props.columns, this.state.results, this.state.selected, currentPage)}
                     </tbody>
                 </table>
 
-                <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
-                    <ul>
-                        <li>
-                            <div className="pager__go-to-page">
-                                <span>Aller à la page</span>
-                                <input type="number" placeholder="5" className="pager__action" />
-                                <span>1 sur 19</span>
-                            </div>
+                {1 < pagesCount &&
+                    <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
+                        <ul>
+                            <li>
+                                <div className="pager__go-to-page">
+                                    <span>Aller à la page</span>
+                                    <input type="number" placeholder="5" className="pager__action" />
+                                    <span>{currentPage} sur {pagesCount}</span>
+                                </div>
 
-                        </li>
-                        {this._buildPagesList(pagesCount, currentPage, 'bottom')}
-                    </ul>
-                </div>
+                            </li>
+                            {this._buildPagesList(pagesCount, currentPage, 'bottom')}
+                        </ul>
+                    </div>
+                }
+
             </div>
         );
     }
@@ -196,6 +207,33 @@ export default class DataGrid extends React.Component {
         return pagesList;
     }
 
+    // Work in Progress
+    // _sortTable(column) {
+    //     const { type, key } = column;
+    //     // Sort with accent
+    //     if ('string' === type) {
+    //         console.log('c\'est une string');
+    //         if ('name' === key) {
+    //             console.log('colone name');
+
+    //             this.setState({
+    //                 results: this.state.results.sort((a, b) => `${b[key]}.label` - `${a[key]}.label`) });
+    //         } else {
+    //             this.setState({
+    //                 results: this.state.results.sort((a, b) => a[key].localeCompare(b[key])) });
+    //         }
+    //     }
+    //     // Transform to real date Type for sorting
+    //     else if ('date' === type) {
+    //         console.log('c\'est une date');
+    //         this.setState({
+    //             results: this.state.results.sort((a, b) => new Date(b[key]) - new Date(a[key])) });
+    //     } else {
+    //         console.log('c\'est un autre type');
+    //         this.setState({
+    //             results: this.state.results.sort((a, b) => b[key] - a[key]) });
+    //     }
+    // }
     _buildColumns(columns) {
         const columnsList = [];
 
@@ -208,6 +246,17 @@ export default class DataGrid extends React.Component {
                 </th>
             );
         }
+        // Work in Progress
+        // Object.keys(columns).forEach((i) => {
+        //     columnsList.push(
+        //         <th key={`column${columns[i].key}`}
+        //             style={columns[i].style || null}
+        //             className={columns[i].className || ''}
+        //             onClick={e => this._sortTable(columns[i])}>
+        //             {columns[i].name}
+        //         </th>
+        //     );
+        // });
 
         Object.keys(columns).forEach((i) => {
             columnsList.push(

@@ -1,7 +1,23 @@
 {% extends 'referent/_layout.html.twig' %}
 
+                   
+             
 {% block javascripts %}
     <script type="text/javascript">
+ {# const events = {{ managedEventsJson|raw }};
+            const suitableEvents = events.map(event => {
+                return {
+                    'beginAt': event.beginAt
+                    'category': event.category
+                    'id': event.id
+                    'label': event.name.label,
+                    'url': event.name.url
+                    'organizer': event.organizer
+                    'participants': event.participants
+                    'postalCode': event.postalCode
+                    'type': event.type
+                } 
+            }) #}
         Kernel.onLoad(function() {
             App.runManagedList(
                 [
@@ -10,27 +26,31 @@
                         name: 'Nom de l\'événement',
                         link: true,
                         targetBlank: true,
+                        type: 'string',
                     },
                     {
                         key: 'organizer',
                         name: 'Organisateur',
                         style: {
                             width: 150
-                        }
+                        },
+                        type: 'string',
                     },
                     {
                         key: 'postalCode',
                         name: 'Code postal',
                         style: {
                             width: 150
-                        }
+                        },
+                        type: 'string',
                     },
                     {
                         key: 'beginAt',
                         name: 'Date',
                         style: {
                             width: 150
-                        }
+                        },
+                        type: 'date',
                     },
                     {
                         key: 'participants',
@@ -38,10 +58,11 @@
                         className: 'datagrid__table__col--hide-mobile',
                         style: {
                             width: 100
-                        }
+                        },
+                        type: 'int',
                     }
                 ],
-                {{ managedEventsJson|raw }}
+                    {{ managedEventsJson|raw }}
             );
         });
     </script>
