@@ -8,6 +8,8 @@
     border-radius: 20px;
     line-height: normal;
     outline: 0;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
 
     &:hover {
         background-color: $blue--dark;
@@ -89,6 +91,7 @@
 
             th {
                 line-height: normal;
+                padding: 0;
                 padding-right: 20px;
             }
 
@@ -102,6 +105,11 @@
         tr {
             height: 68px;
             border-bottom: solid 1px $lines-grey;
+
+            &.host-member {
+                background-color: $specific-table-row;
+                border-color: $white;
+            }
 
             td {
                 padding: 16px 0;
@@ -173,6 +181,10 @@
         border: solid 1px $filter-field-border;
         background-color: #ffffff;
         outline: 0;
+        vertical-align: middle;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+        cursor: pointer;
     }
 
     input[type="checkbox"]:checked {

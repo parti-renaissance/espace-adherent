@@ -28,7 +28,7 @@
                     <th width="50px"><input type="checkbox" id="members-check-all" /></th>
                     <th width="150px">Prénom</th>
                     <th width="150px">Nom</th>
-                    <th width="75px">Age</th>
+                    <th width="75px">Âge</th>
                     <th width="100px">CP</th>
                     <th width="150px">Ville</th>
                     <th width="100px">Rôle</th>
@@ -45,7 +45,7 @@
                 {% set is_promotable_host = membership.promotableHost %}
                 {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
 
-                <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
+                <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
                     <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
                     <td class="member-first-name">{{ member.firstName|capitalize }}</td>
                     <td class="member-last-name">{{ member.lastName|capitalize }}</td>
