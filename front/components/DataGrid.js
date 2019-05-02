@@ -106,29 +106,12 @@ export default class DataGrid extends React.Component {
     }
 
     render() {
-        // const results = this._buildResultsCollection();
         const totalCount = this.state.results.length;
         const pagesCount = Math.max(1, Math.ceil(totalCount / this._perPage));
         const currentPage = Math.min(this.state.page, pagesCount);
 
-
-        console.log('columns', this.props.columns);
-        console.log('results', this.state.results);
-
         return (
             <div className="datagrid">
-
-                {/* <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
-                    <span className="datagrid__search__count">
-                        {totalCount} résultat(s)
-                    </span>
-                    <input type="text"
-                           placeholder="Recherche ..."
-                           className="form form__field"
-                           onChange={this.handleSearchInputChange} />
-                </div> */}
-
-
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
 
                 <table className={
@@ -161,11 +144,9 @@ export default class DataGrid extends React.Component {
                         </ul>
                     </div>
                 }
-
             </div>
         );
     }
-
     _buildPagesList(pagesCount, current, position) {
         const from = Math.max(1, current - 2);
         const to = Math.min(pagesCount, current + 2);
@@ -207,33 +188,6 @@ export default class DataGrid extends React.Component {
         return pagesList;
     }
 
-    // Work in Progress
-    // _sortTable(column) {
-    //     const { type, key } = column;
-    //     // Sort with accent
-    //     if ('string' === type) {
-    //         console.log('c\'est une string');
-    //         if ('name' === key) {
-    //             console.log('colone name');
-
-    //             this.setState({
-    //                 results: this.state.results.sort((a, b) => `${b[key]}.label` - `${a[key]}.label`) });
-    //         } else {
-    //             this.setState({
-    //                 results: this.state.results.sort((a, b) => a[key].localeCompare(b[key])) });
-    //         }
-    //     }
-    //     // Transform to real date Type for sorting
-    //     else if ('date' === type) {
-    //         console.log('c\'est une date');
-    //         this.setState({
-    //             results: this.state.results.sort((a, b) => new Date(b[key]) - new Date(a[key])) });
-    //     } else {
-    //         console.log('c\'est un autre type');
-    //         this.setState({
-    //             results: this.state.results.sort((a, b) => b[key] - a[key]) });
-    //     }
-    // }
     _buildColumns(columns) {
         const columnsList = [];
 
@@ -246,17 +200,6 @@ export default class DataGrid extends React.Component {
                 </th>
             );
         }
-        // Work in Progress
-        // Object.keys(columns).forEach((i) => {
-        //     columnsList.push(
-        //         <th key={`column${columns[i].key}`}
-        //             style={columns[i].style || null}
-        //             className={columns[i].className || ''}
-        //             onClick={e => this._sortTable(columns[i])}>
-        //             {columns[i].name}
-        //         </th>
-        //     );
-        // });
 
         Object.keys(columns).forEach((i) => {
             columnsList.push(
@@ -274,7 +217,6 @@ export default class DataGrid extends React.Component {
     _buildResultsList(columns, results, selected, currentPage) {
         const offset = (currentPage - 1) * this._perPage;
         const limit = offset + this._perPage;
-
         const resultsList = [];
 
         for (let i = offset; i < limit; i += 1) {

@@ -4,20 +4,6 @@
              
 {% block javascripts %}
     <script type="text/javascript">
- {# const events = {{ managedEventsJson|raw }};
-            const suitableEvents = events.map(event => {
-                return {
-                    'beginAt': event.beginAt
-                    'category': event.category
-                    'id': event.id
-                    'label': event.name.label,
-                    'url': event.name.url
-                    'organizer': event.organizer
-                    'participants': event.participants
-                    'postalCode': event.postalCode
-                    'type': event.type
-                } 
-            }) #}
         Kernel.onLoad(function() {
             App.runManagedList(
                 [
@@ -26,7 +12,6 @@
                         name: 'Nom de l\'événement',
                         link: true,
                         targetBlank: true,
-                        type: 'string',
                     },
                     {
                         key: 'organizer',
@@ -34,7 +19,6 @@
                         style: {
                             width: 150
                         },
-                        type: 'string',
                     },
                     {
                         key: 'postalCode',
@@ -42,7 +26,6 @@
                         style: {
                             width: 150
                         },
-                        type: 'string',
                     },
                     {
                         key: 'beginAt',
@@ -50,7 +33,6 @@
                         style: {
                             width: 150
                         },
-                        type: 'date',
                     },
                     {
                         key: 'participants',
@@ -59,7 +41,6 @@
                         style: {
                             width: 100
                         },
-                        type: 'int',
                     }
                 ],
                     {{ managedEventsJson|raw }}
