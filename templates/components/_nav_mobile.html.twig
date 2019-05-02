@@ -131,6 +131,11 @@
             </ul>
             <ul class="space--10-0">
                 <li>
+                    <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
+                </li>
+            </ul>
+            <ul class="b__nudge--bottom-small">
+                <li>
                     <a class="text--blue--dark" href="https://eu-renaissance.org/fr" rel="noopener noreferrer" target="_blank">
                         <strong>Élections Européennes</strong>
                     </a>
@@ -158,10 +163,6 @@
                 </li>
                 <li>
                     <a href="{{ path('donation_index') }}">Faire un don</a>
-                </li>
-                <br/>
-                <li>
-                    <a href="{{ path('articles_list', {category: 'tout'}) }}">Actualités</a>
                 </li>
                 {% if has_role_adherent %}
                     <li>
