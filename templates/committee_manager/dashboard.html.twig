@@ -48,6 +48,8 @@
             <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
             {% if committee.isApproved %}
                 <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+            {% else %}
+                <span class="text--small approval__status approval__status--pending">En attente de validation</span>
             {% endif %}
         </div>
     </div>

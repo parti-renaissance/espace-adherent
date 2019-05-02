@@ -586,7 +586,7 @@ class ReferentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $crawlerCheckbox = $crawler->filter('.l__wrapper .l__col .form__label');
+        $crawlerCheckbox = $crawler->filter('#referent_zone_filter_referentTag .form__label');
 
         self::assertCount(6, $crawlerCheckbox);
         self::assertSame('Département 13', $crawlerCheckbox->getNode(0)->nodeValue);
