@@ -13,6 +13,7 @@ export default class DataGrid extends React.Component {
             headerCheckboxChecked: false,
             page: 1,
             loading: false,
+            results: [],
         };
 
         this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
@@ -21,6 +22,9 @@ export default class DataGrid extends React.Component {
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
 
+    componentWillMount() {
+        this.setState({ results: this._buildResultsCollection() });
+    }
     handleSearchInputChange(event) {
         const term = event.target.value;
 
@@ -102,60 +106,47 @@ export default class DataGrid extends React.Component {
     }
 
     render() {
-        const results = this._buildResultsCollection();
-        const totalCount = results.length;
+        const totalCount = this.state.results.length;
         const pagesCount = Math.max(1, Math.ceil(totalCount / this._perPage));
         const currentPage = Math.min(this.state.page, pagesCount);
 
         return (
             <div className="datagrid">
-                {/*
-                <div className={`datagrid__search ${this.props.searchClassName || ''}`}>
-                    <span className="datagrid__search__count">
-                        {totalCount} résultat(s)
-                    </span>
-                    <input type="text"
-                           placeholder="Recherche ..."
-                           className="form form__field"
-                           onChange={this.handleSearchInputChange} />
-                </div>
-                */}
-
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
-                <div className="datagrid__table-manager-ctn">
-                    <table className={
-                        `datagrid__table-manager
-                        ${this.props.tableClassName || ''}
-                        ${this.state.loading ? 'datagrid__table--loading' : ''}`
-                    }>
-                        <thead>
-                        <tr>
-                            {this._buildColumns(this.props.columns)}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this._buildResultsList(this.props.columns, results, this.state.selected, currentPage)}
-                        </tbody>
-                    </table>
-                </div>
 
-                <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
-                    <ul>
-                        <li>
-                            <div className="pager__go-to-page">
-                                <span>Aller à la page</span>
-                                <input type="number" placeholder="5" className="pager__action" />
-                                <span>1 sur 19</span>
-                            </div>
+                <table className={
+                    `datagrid__table-manager
+                    ${this.props.tableClassName || ''}
+                    ${this.state.loading ? 'datagrid__table--loading' : ''}`
+                }>
+                    <thead>
+                    <tr>
+                        {this._buildColumns(this.props.columns)}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {this._buildResultsList(this.props.columns, this.state.results, this.state.selected, currentPage)}
+                    </tbody>
+                </table>
 
-                        </li>
-                        {this._buildPagesList(pagesCount, currentPage, 'bottom')}
-                    </ul>
-                </div>
+                {1 < pagesCount &&
+                    <div className={`datagrid__pager ${this.props.pagerClassName || ''}`}>
+                        <ul>
+                            <li>
+                                <div className="pager__go-to-page">
+                                    <span>Aller à la page</span>
+                                    <input type="number" placeholder="5" className="pager__action" />
+                                    <span>{currentPage} sur {pagesCount}</span>
+                                </div>
+
+                            </li>
+                            {this._buildPagesList(pagesCount, currentPage, 'bottom')}
+                        </ul>
+                    </div>
+                }
             </div>
         );
     }
-
     _buildPagesList(pagesCount, current, position) {
         const from = Math.max(1, current - 2);
         const to = Math.min(pagesCount, current + 2);
@@ -226,7 +217,6 @@ export default class DataGrid extends React.Component {
     _buildResultsList(columns, results, selected, currentPage) {
         const offset = (currentPage - 1) * this._perPage;
         const limit = offset + this._perPage;
-
         const resultsList = [];
 
         for (let i = offset; i < limit; i += 1) {

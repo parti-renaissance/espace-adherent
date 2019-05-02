@@ -1,5 +1,7 @@
 {% extends 'referent/_layout.html.twig' %}
 
+                   
+             
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
@@ -16,21 +18,21 @@
                         name: 'Organisateur',
                         style: {
                             width: 150
-                        }
+                        },
                     },
                     {
                         key: 'postalCode',
                         name: 'Code postal',
                         style: {
                             width: 150
-                        }
+                        },
                     },
                     {
                         key: 'beginAt',
                         name: 'Date',
                         style: {
                             width: 150
-                        }
+                        },
                     },
                     {
                         key: 'participants',
@@ -38,10 +40,10 @@
                         className: 'datagrid__table__col--hide-mobile',
                         style: {
                             width: 100
-                        }
+                        },
                     }
                 ],
-                {{ managedEventsJson|raw }}
+                    {{ managedEventsJson|raw }}
             );
         });
     </script>
