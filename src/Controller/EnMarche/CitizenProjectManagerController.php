@@ -58,6 +58,8 @@ class CitizenProjectManagerController extends Controller
 
     /**
      * @Route("/acteurs", name="app_citizen_project_list_actors", methods={"GET"})
+     *
+     * @Security("citizenProject.isApproved()")
      */
     public function listActorsAction(
         CitizenProject $citizenProject,

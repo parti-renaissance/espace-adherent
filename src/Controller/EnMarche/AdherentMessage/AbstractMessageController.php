@@ -47,12 +47,15 @@ abstract class AbstractMessageController extends Controller
         }
 
         return $this->renderTemplate('message/list.html.twig', [
-            'messages' => $repository->findAllByAuthor(
+            'messages' => $paginator = $repository->findAllByAuthor(
                 $adherent,
-                $status,
                 $this->getMessageType(),
+                $status,
                 $request->query->getInt('page', 1)
             ),
+            'total_message_count' => $status ?
+                $repository->countTotalMessage($adherent, $this->getMessageType()) :
+                $paginator->getTotalItems(),
             'message_filter_status' => $status,
         ]);
     }

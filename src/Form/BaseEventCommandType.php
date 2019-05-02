@@ -45,6 +45,7 @@ class BaseEventCommandType extends AbstractType
             ])
             ->add('capacity', IntegerType::class, [
                 'required' => false,
+                'attr' => ['min' => 1],
             ])
         ;
 

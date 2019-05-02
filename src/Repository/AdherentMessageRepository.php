@@ -30,17 +30,19 @@ class AdherentMessageRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return AdherentMessageInterface[]
+     * @return AdherentMessageInterface[]|PaginatorInterface
      */
     public function findAllByAuthor(
         Adherent $adherent,
+        string $type,
         string $status = null,
-        string $type = null,
         int $page = 1
     ): PaginatorInterface {
-        $queryBuilder = $this->createQueryBuilder('message')
-            ->where('message.author = :author')
-            ->setParameter('author', $adherent)
+        $queryBuilder = $this->createQueryBuilder('message');
+
+        $this
+            ->withAuthor($queryBuilder, $adherent)
+            ->withMessageType($queryBuilder, $type)
         ;
 
         if ($status) {
@@ -50,22 +52,15 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($type) {
-            $queryBuilder
-                ->andWhere('message INSTANCE OF :type')
-                ->setParameter('type', $type)
-            ;
-        }
-
         return $this->configurePaginator($queryBuilder, $page);
     }
 
     /**
-     * @return CommitteeAdherentMessage[]
+     * @return CommitteeAdherentMessage[]|PaginatorInterface
      */
     public function findAllCommitteeMessage(
         Adherent $adherent,
-        Committee $committee = null,
+        Committee $committee,
         string $status = null,
         int $page = 1
     ): PaginatorInterface {
@@ -74,25 +69,18 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $this
             ->withMessageType($queryBuilder, AdherentMessageTypeEnum::COMMITTEE)
             ->withAuthor($queryBuilder, $adherent)
+            ->withCommittee($queryBuilder, $committee)
         ;
 
         if ($status) {
             $this->withStatus($queryBuilder, $status);
         }
 
-        if ($committee) {
-            $queryBuilder
-                ->innerJoin(CommitteeFilter::class, 'filter', Join::WITH, 'message.filter = filter')
-                ->andWhere('filter.committee = :committee')
-                ->setParameter('committee', $committee)
-            ;
-        }
-
         return $this->configurePaginator($queryBuilder, $page);
     }
 
     /**
-     * @return CitizenProjectAdherentMessage[]
+     * @return CitizenProjectAdherentMessage[]|PaginatorInterface
      */
     public function findAllCitizenProjectMessage(
         Adherent $adherent,
@@ -105,19 +93,62 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $this
             ->withMessageType($queryBuilder, AdherentMessageTypeEnum::CITIZEN_PROJECT)
             ->withAuthor($queryBuilder, $adherent)
+            ->withCitizenProject($queryBuilder, $citizenProject)
         ;
 
         if ($status) {
             $this->withStatus($queryBuilder, $status);
         }
 
-        $queryBuilder
-            ->innerJoin(CitizenProjectFilter::class, 'filter', Join::WITH, 'message.filter = filter')
-            ->andWhere('filter.citizenProject = :citizen_project')
-            ->setParameter('citizen_project', $citizenProject)
+        return $this->configurePaginator($queryBuilder, $page);
+    }
+
+    public function countTotalMessage(Adherent $adherent, string $type): int
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('message')
+            ->select('COUNT(message.id)')
         ;
 
-        return $this->configurePaginator($queryBuilder, $page);
+        $this
+            ->withAuthor($queryBuilder, $adherent)
+            ->withMessageType($queryBuilder, $type)
+        ;
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    public function countTotalCitizenProjectMessage(Adherent $adherent, CitizenProject $citizenProject): int
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('message')
+            ->select('COUNT(message.id)')
+        ;
+
+        $this
+            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::CITIZEN_PROJECT)
+            ->withAuthor($queryBuilder, $adherent)
+            ->withCitizenProject($queryBuilder, $citizenProject)
+        ;
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    public function countTotalCommitteeMessage(Adherent $adherent, Committee $committee): int
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('message')
+            ->select('COUNT(message.id)')
+            ->groupBy('message.author')
+        ;
+
+        $this
+            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::COMMITTEE)
+            ->withAuthor($queryBuilder, $adherent)
+            ->withCommittee($queryBuilder, $committee)
+        ;
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
     private function withMessageType(QueryBuilder $queryBuilder, string $messageType, string $alias = 'message'): self
@@ -165,5 +196,30 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ->setFirstResult(($page - 1) * $limit)
             ->getQuery()
         ));
+    }
+
+    private function withCitizenProject(
+        QueryBuilder $queryBuilder,
+        CitizenProject $citizenProject,
+        string $alias = 'message'
+    ): self {
+        $queryBuilder
+            ->innerJoin(CitizenProjectFilter::class, 'filter', Join::WITH, "$alias.filter = filter")
+            ->andWhere('filter.citizenProject = :citizen_project')
+            ->setParameter('citizen_project', $citizenProject)
+        ;
+
+        return $this;
+    }
+
+    private function withCommittee(QueryBuilder $queryBuilder, Committee $committee, string $alias = 'message'): self
+    {
+        $queryBuilder
+            ->innerJoin(CommitteeFilter::class, 'filter', Join::WITH, "$alias.filter = filter")
+            ->andWhere('filter.committee = :committee')
+            ->setParameter('committee', $committee)
+        ;
+
+        return $this;
     }
 }

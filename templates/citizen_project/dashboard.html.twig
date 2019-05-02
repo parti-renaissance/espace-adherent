@@ -43,11 +43,13 @@
 {% endblock %}
 
 {% block citizen_project_block %}
-    <div class="pre-space__item-card">
+    <div class="pre-space__item-card {{ not citizen_project.isApproved() ? 'pre-space__item-card--muted' : '' }}">
         <p class="text--medium font-gillsans">{{ citizen_project.name }}</p>
         <div>
             <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}" class="btn btn--blue">Gérer</a>
-            <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membres</span>
+            {% if citizen_project.isApproved() %}
+                <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membres</span>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
