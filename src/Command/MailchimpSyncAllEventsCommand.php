@@ -2,10 +2,13 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\CitizenProjectMembership;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
@@ -16,9 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class MailchimpSyncAllMembershipsCommand extends Command
+class MailchimpSyncAllEventsCommand extends Command
 {
-    protected static $defaultName = 'mailchimp:sync:all-memberships';
+    protected static $defaultName = 'mailchimp:sync:all-events';
 
     private const COMMITTEE_TYPE = 'committee';
     private const CITIZEN_PROJECT_TYPE = 'citizen_project';
@@ -69,7 +72,7 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
 
-        if (false === $this->io->confirm(sprintf('Are you sure to sync %d adherents?', $total), false)) {
+        if (false === $this->io->confirm(sprintf('Are you sure to sync %d events?', $total), false)) {
             return 1;
         }
 
@@ -79,18 +82,8 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $offset = 0;
 
         do {
-            /** @var CommitteeMembership|CitizenProjectMembership $membership */
-            foreach ($paginator->getIterator() as $membership) {
-                switch ($type) {
-                    case self::COMMITTEE_TYPE: $object = $membership->getCommittee(); break;
-                    case self::CITIZEN_PROJECT_TYPE: $object = $membership->getCitizenProject(); break;
-                }
-
-                $this->bus->dispatch(new AddAdherentToStaticSegmentCommand(
-                    $membership->getAdherent()->getUuid(),
-                    $object->getUuid(),
-                    \get_class($object)
-                ));
+            foreach ($paginator->getIterator() as $object) {
+                $this->bus->dispatch(new CreateStaticSegmentCommand($object->getUuid(), \get_class($object)));
 
                 $this->io->progressAdvance();
                 ++$offset;
@@ -118,20 +111,20 @@ class MailchimpSyncAllMembershipsCommand extends Command
         switch ($type) {
             case self::COMMITTEE_TYPE:
                 return $this->entityManager
-                    ->getRepository(CommitteeMembership::class)
-                    ->createQueryBuilder('membership')
-                    ->addSelect('PARTIAL adherent.{id, uuid}')
-                    ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('membership.committee', 'committee')
+                    ->getRepository(Committee::class)
+                    ->createQueryBuilder('committee')
+                    ->select('PARTIAL committee.{id, uuid}')
+                    ->innerJoin(CommitteeMembership::class, 'membership', Join::WITH, 'membership.committee = committee')
+                    ->groupBy('committee')
                 ;
 
             case self::CITIZEN_PROJECT_TYPE:
                 return $this->entityManager
-                    ->getRepository(CitizenProjectMembership::class)
-                    ->createQueryBuilder('membership')
-                    ->addSelect('PARTIAL adherent.{id, uuid}')
-                    ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('membership.citizenProject', 'cp')
+                    ->getRepository(CitizenProject::class)
+                    ->createQueryBuilder('cp')
+                    ->select('PARTIAL cp.{id, uuid}')
+                    ->innerJoin(CitizenProjectMembership::class, 'membership', Join::WITH, 'membership.citizenProject = cp')
+                    ->groupBy('cp')
                 ;
         }
     }
