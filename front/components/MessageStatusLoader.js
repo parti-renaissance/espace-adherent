@@ -58,8 +58,8 @@ export default class MessageStatusLoader extends React.Component {
         if (this.state.recipientCount) {
             return <div>
                 <p className="text--medium-small">
-                    Vous allez envoyer un message à <
-                    span className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérents !
+                    Vous allez envoyer un message à <span
+                    className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérents !
                 </p>
                 <p>
                     <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
