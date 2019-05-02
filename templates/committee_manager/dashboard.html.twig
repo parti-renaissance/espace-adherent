@@ -49,6 +49,9 @@
             {% if committee.isApproved %}
                 <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
             {% endif %}
+            {% if not committee.isApproved %}
+                <span class="text--small approval__status approval__status--pending">En attente de validation</span>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -272,6 +272,34 @@
                 background-color: $pale-grey;
             }
         }
+
+        &--muted {
+            background-color: $white;
+            border: dashed 1px $lines-grey;
+            border-radius: 5px;
+            color: $granite-grey;
+
+            .approval__status {
+                margin-left: 16px;
+                display: inline-block;
+
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 10px;
+                    position: relative;
+                    top: -2px;
+                    margin-right: 7px;
+                }
+
+                &--pending {
+                    color: $status-orange;
+                    &::before { background-color: $status-orange; }
+                }
+            }
+        }
     }
 
     @media (min-width: $tablet) {

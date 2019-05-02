@@ -50,6 +50,9 @@
             {% if citizen_project.isApproved() %}
                 <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membres</span>
             {% endif %}
+            {% if not citizen_project.isApproved() %}
+                <span class="text--small approval__status approval__status--pending">En attente de validation</span>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
