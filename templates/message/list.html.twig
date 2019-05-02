@@ -7,9 +7,9 @@
             + Nouveau message
         </a>
 
-        {% if messages.count %}
+        {% if total_message_count %}
             <span class="datagrid__count">
-                <span>{{ messages.count }}</span> sur {{ messages.totalItems }} résultat(s)
+                <span>{{ messages.totalItems }}</span> sur {{ total_message_count }} résultat(s)
             </span>
         {% endif %}
     </div>

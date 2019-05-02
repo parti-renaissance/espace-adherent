@@ -48,9 +48,9 @@ class CitizenActionManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
-        $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
-        $this->client->click($crawler->selectLink('Créer une action citoyenne')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le projet →')->link());
+        $this->client->click($crawler->selectLink('+ Action citoyenne')->link());
 
         $this->assertSame('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/creer', $this->client->getRequest()->getPathInfo());
 
@@ -101,9 +101,9 @@ class CitizenActionManagerControllerTest extends WebTestCase
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
-        $this->assertSame(1, $crawler->selectLink('Créer une action citoyenne')->count());
 
-        $this->client->click($crawler->selectLink('Créer une action citoyenne')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le projet →')->link());
+        $this->client->click($crawler->selectLink('+ Action citoyenne')->link());
 
         $this->assertSame('/projets-citoyens/75008-le-projet-citoyen-a-paris-8/actions/creer', $this->client->getRequest()->getPathInfo());
 

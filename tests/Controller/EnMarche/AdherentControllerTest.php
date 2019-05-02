@@ -973,7 +973,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee-name')->text());
         $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee-description')->text());
 
-        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('04 78 45 78 98', $crawler->filter('#committee_phone_number')->attr('value'));

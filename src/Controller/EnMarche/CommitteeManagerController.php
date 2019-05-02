@@ -58,6 +58,8 @@ class CommitteeManagerController extends Controller
 
     /**
      * @Route("/evenements/ajouter", name="app_committee_manager_add_event", methods={"GET", "POST"})
+     *
+     * @Security("committee.isApproved()")
      */
     public function addEventAction(Request $request, Committee $committee, GeoCoder $geoCoder): Response
     {
@@ -88,6 +90,8 @@ class CommitteeManagerController extends Controller
 
     /**
      * @Route("/membres", name="app_committee_manager_list_members", methods={"GET"})
+     *
+     * @Security("committee.isApproved()")
      */
     public function listMembersAction(Committee $committee): Response
     {
@@ -102,6 +106,8 @@ class CommitteeManagerController extends Controller
 
     /**
      * @Route("/membres/export", name="app_committee_manager_export_members", methods={"POST"})
+     *
+     * @Security("committee.isApproved()")
      */
     public function exportMembersAction(
         Request $request,
@@ -142,6 +148,8 @@ class CommitteeManagerController extends Controller
 
     /**
      * @Route("/membres/contact", name="app_committee_contact_members", methods={"POST"})
+     *
+     * @Security("committee.isApproved()")
      */
     public function contactMembersAction(Request $request, Committee $committee): Response
     {

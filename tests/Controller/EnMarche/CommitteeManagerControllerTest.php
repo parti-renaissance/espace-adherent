@@ -168,7 +168,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Éditer le comité')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

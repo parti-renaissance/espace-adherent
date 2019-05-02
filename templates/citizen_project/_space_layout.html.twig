@@ -16,10 +16,7 @@
                     <div class="second-section">
                         <h1 class="page-title text--large b__nudge--bottom">{{ citizen_project.name }}</h1>
 
-                        <div class="direct-actions">
-                            <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
-                            <a class="btn btn--ghosting--blue" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
-                        </div>
+                        {{ block('direct_actions') }}
                     </div>
 
                     <nav class="manager-header__menu">
@@ -28,14 +25,16 @@
                                 <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug }) }}">Modifier mon projet</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
-                                <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
-                            </li>
-
-                            {% if is_canary_enabled() %}
-                                <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
-                                    <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
+                            {% if citizen_project.isApproved() %}
+                                <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
+                                    <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
                                 </li>
+
+                                {% if is_canary_enabled() %}
+                                    <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
+                                        <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
+                                    </li>
+                                {% endif %}
                             {% endif %}
 
                             <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' : '' }}">
@@ -50,19 +49,27 @@
                 {% block citizen_project_content %}{% endblock %}
             </div>
 
-            {% block manager_sticky_header %}
-                <div id="managerOnScroll" class="manager__fixed-bar">
-                    <div class="l__wrapper manager__fixed-bar__content">
-                        <p><span>{{ citizen_project.name }}</span></p>
-                        <div class="direct-actions">
-                            <a href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}" class="btn btn--blue">+ Nouveau message</a>
-                            <a href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}" class="btn btn--ghosting--blue">+ Action citoyenne</a>
-                        </div>
-                    </div>
+            <div id="managerOnScroll" class="manager__fixed-bar">
+                <div class="l__wrapper manager__fixed-bar__content">
+                    <p><span>{{ citizen_project.name }}</span></p>
+                    {{ block('direct_actions') }}
                 </div>
-            {% endblock %}
+            </div>
         </section>
     </main>
+{% endblock %}
+
+{% block direct_actions %}
+    {% if citizen_project.isApproved() %}
+        <div class="direct-actions">
+            {% if is_canary_enabled() %}
+                <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
+            {% endif %}
+            {% if can_create_citizen_action(citizen_project) %}
+                <a class="btn btn--ghosting--blue" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block final_javascripts %}

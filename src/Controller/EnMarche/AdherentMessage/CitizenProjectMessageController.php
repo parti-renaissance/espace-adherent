@@ -29,7 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ParamConverter("citizenProject", options={"mapping": {"citizen_project_slug": "slug"}})
  *
- * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject)")
+ * @Security("is_granted('ADMINISTRATE_CITIZEN_PROJECT', citizenProject) and citizenProject.isApproved()")
  */
 class CitizenProjectMessageController extends Controller
 {
@@ -55,12 +55,15 @@ class CitizenProjectMessageController extends Controller
         }
 
         return $this->renderTemplate('message/list.html.twig', $citizenProject, [
-            'messages' => $repository->findAllCitizenProjectMessage(
+            'messages' => $paginator = $repository->findAllCitizenProjectMessage(
                 $adherent,
                 $citizenProject,
                 $status,
                 $request->query->getInt('page', 1)
             ),
+            'total_message_count' => $status ?
+                $repository->countTotalCitizenProjectMessage($adherent, $citizenProject) :
+                $paginator->getTotalItems(),
             'message_filter_status' => $status,
         ]);
     }

@@ -42,11 +42,13 @@
 {% endblock %}
 
 {% block committee_block %}
-    <div class="pre-space__item-card">
+    <div class="pre-space__item-card {{ not committee.isApproved ? 'pre-space__item-card--muted' : '' }}">
         <p class="text--medium font-gillsans">{{ committee.name }}</p>
         <div>
             <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}" class="btn btn--blue">Gérer</a>
-            <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+            {% if committee.isApproved %}
+                <span class="b__nudge--left-small">{{ committee.membersCount }} membres</span>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

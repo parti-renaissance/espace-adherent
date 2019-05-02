@@ -179,21 +179,13 @@
 {% endblock %}
 
 {% block committee_content %}
-    {% if not committee.isApproved %}
-        <nav>
-            <div id="committee-host-nav" class="committee__host__nav">
-                <ul class="list__links list__links--default list__links--row list__links--row-left"></ul>
-                <ul class="list__links list__links--default list__links--row">
-                    <li>
-                        <a href="{{ path('app_committee_manager_edit', {'slug': committee.slug}) }}" class="icon--with-text">
-                            <i class="fa fa-sliders"></i>
-                            Éditer le comité
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+    <nav>
+        {% if is_host %}
+            {{ include('committee/_host_header.html.twig') }}
+        {% endif %}
+    </nav>
 
+    {% if not committee.isApproved %}
         <section>
             <div class="committee__waiting-for-approval">
                 Votre comité est en attente de validation par les équipes d'En Marche !
@@ -204,12 +196,6 @@
             </div>
         </section>
     {% else %}
-        <nav>
-            {% if is_host %}
-                {{ include('committee/_host_header.html.twig') }}
-            {% endif %}
-        </nav>
-
         <section class="committee__timeline" id="committee-timeline">
             <h2 class=" space--20-0 b__nudge--top-40">
                 Messages des animateurs

@@ -48,18 +48,10 @@
         <nav class="b__nudge--top b__nudge--bottom">
             <ul class="list__links list__links--margin-right">
                 <li>
-                    <a href="{{ path('app_citizen_project_manager_edit', { slug: citizen_project.slug }) }}"
-                       class="text--body link--newblue">
-                        {{ 'citizen_project.edit_project'|trans }}
+                    <a href="{{ path('app_citizen_project_manager_edit', {'slug': citizen_project.slug}) }}" class="link--newblue text--body">
+                        Gérer le projet →
                     </a>
                 </li>
-                {% if citizen_project.isApproved %}
-                    <li>
-                        <a href="{{ path('app_citizen_project_image_generator', {slug: citizen_project.slug}) }}" class="text--body link--newblue">
-                            {{ 'citizen_project.create_image'|trans }}
-                        </a>
-                    </li>
-                {% endif %}
             </ul>
         </nav>
     {% endif %}
@@ -77,9 +69,6 @@
             </div>
         </section>
     {% else %}
-        {% if can_create_citizen_action(citizen_project) %}
-            <a class=" newbtn--small btn--pink btn" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">{{ 'citizen_project.create_citizen_action'|trans }}</a>
-        {% endif %}
         <h2 class="space--20-0 b__nudge--top">{{ 'citizen_project.about'|trans }}</h2>
         <hr>
         <div class="text--body text--dark" id="citizen-project-problem-description">

@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ParamConverter("committee", options={"mapping": {"committee_slug": "slug"}})
  *
- * @Security("is_granted('HOST_COMMITTEE', committee)")
+ * @Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")
  */
 class CommitteeMessageController extends Controller
 {
@@ -56,12 +56,15 @@ class CommitteeMessageController extends Controller
         }
 
         return $this->renderTemplate('message/list.html.twig', $committee, [
-            'messages' => $repository->findAllCommitteeMessage(
+            'messages' => $paginator = $repository->findAllCommitteeMessage(
                 $adherent,
                 $committee,
                 $status,
                 $request->query->getInt('page', 1)
             ),
+            'total_message_count' => $status ?
+                $repository->countTotalCommitteeMessage($adherent, $committee) :
+                $paginator->getTotalItems(),
             'message_filter_status' => $status,
         ]);
     }
