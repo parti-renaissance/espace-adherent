@@ -3,24 +3,7 @@
 {% block messages_main_block %}
     <main>
         <section class="b__nudge--top-5 b__nudge--bottom-huge">
-            <header class="l__wrapper b__nudge--bottom-tiny">
-                <div class="pull-left">
-                    {% block messages_header_left_block %}{% endblock %}
-                </div>
-
-                <div class="pull-right">
-                    {% block messages_header_right_block %}{% endblock %}
-                </div>
-
-                <h2 class="text--center text--medium">
-                    {% block message_page_title %}Mes messages{% endblock %}
-                </h2>
-
-                <hr class="clearfix"/>
-            </header>
-            <div class="l__wrapper l__col">
-                {% block message_content %}{% endblock %}
-            </div>
+            {% block message_content %}{% endblock %}
         </section>
     </main>
 {% endblock %}

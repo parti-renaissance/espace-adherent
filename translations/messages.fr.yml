@@ -18,6 +18,9 @@ common.finish_at: Date de fin
 common.ordinal_number_feminine: '1ère|%count%ème'
 common.ordinal_number_masculine: '1er|%count%ème'
 common.optional: optionnel
+common.committees_count: "%count% comité|%count% comités"
+common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
+common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 pending: En attente
 approved: Approuvé
@@ -42,6 +45,7 @@ adherent.activity_position.employed: En activité
 adherent.activity_position.unemployed: En recherche d'emploi
 
 referent: référent
+coreferent: co-référent
 deputy: député
 committee_supervisor: animateur
 supervisor: animateur
@@ -264,6 +268,17 @@ referent.button.accept: J'ai lu et j'accepte
 referent.popup.title: Charte de bonne utilisation des outils numériques
 referent.popup.subtitle: à l’usage des référents
 referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
+referent.filter.interests: Choisissez des centres d'intérêt
+referent.adherent.all: Tous
+referent.adherent.subscribed: Abonné(e)
+referent.adherent.unsubscribed: Non-abonné(e)
+referent.status.email: Statut (e-mail)
+referent.managed_area: Zone gérée
+referent.checkbox.co_referent: Donner un accès à l'onglet <b>Adhérents</b>
+referent.coreferent_access: Accès adhérents
+referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <b>Adhérents</b> et sauvegarder la modification.
+referent.save: Enregistrer
+referent.adherent.can_be_coreferent: Cet adhérent est déjà co-référent d’un autre territoire
 
 #
 # J'écoute
@@ -386,7 +401,6 @@ interactive.form.submit_send: Envoyer
 # Citizen Project
 #
 citizen_project.administrators_count: "%count% porteur du projet|%count% porteurs du projet"
-citizen_project.members_count: "%count% membre|%count% membres"
 citizen_project.committees: Comité en soutien|Comités en soutien
 citizen_project.search.filter_radius_citizen_projects: "{-1} Tous les projets citoyens|[1,Inf[ Dans un rayon de %count% Km"
 citizen_project.edit_project: Modifier ce projet
@@ -516,6 +530,8 @@ adherent_message.deleted_successfully: 'Votre message a bien été supprimé.'
 adherent_message.filter_updated: 'Les filtres ont bien été sauvegardés.'
 adherent_message.campaign_sent_successfully: 'Votre message a bien été envoyé'
 adherent_message.campaign_sent_failure: "Votre message n'a pas été envoyé"
+adherent_message.test_campaign_sent_successfully: 'Votre test message a bien été envoyé.'
+adherent_message.test_campaign_sent_failure: "Votre test message n'a pas été envoyé."
 adherent_message.referent: Message référent
 adherent_message.deputy: Message député
 adherent_message.host: Message co-animateur

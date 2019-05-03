@@ -11,18 +11,13 @@
 {% endblock %}
 
 {% block referent_content %}
-    <a href="{{ path('app_referent_events') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
-        {{ include('components/caret--left.html.twig') }}
-        Retour à la liste
+    <a href="{{ path('app_referent_events') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+         ⟵ Annuler
     </a>
-
-    <h3>
-        Créer un événement
-    </h3>
-
-    <hr />
-
     <div class="l__wrapper--slim">
+        <h2 class="text--medium b__nudge--bottom-larger">
+            Créer un événement
+        </h2>
         {{ include('components/alert_european_elections.html.twig') }}
 
         {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
@@ -40,16 +35,16 @@
             {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de l'événement" } }) }}
         </div>
 
-        <div class="form__row" id="committee-event-beginat-field">
+        <div class="form__row form__date-and-time" id="committee-event-beginat-field">
             {{ form_errors(form.beginAt) }}
             {{ form_label(form.beginAt, 'Début') }}
-            {{ form_widget(form.beginAt, { attr: { class: 'event__begin_at', autocomplete: 'off' } }) }}
+            {{ form_widget(form.beginAt, { attr: { class: 'form__group event__begin_at', autocomplete: 'off' } }) }}
         </div>
 
-        <div class="form__row" id="committee-event-finishat-field">
+        <div class="form__row form__date-and-time" id="committee-event-finishat-field">
             {{ form_errors(form.finishAt) }}
             {{ form_label(form.finishAt, 'Fin') }}
-            {{ form_widget(form.finishAt, { attr: { class: 'event__finish_at', autocomplete: 'off' } }) }}
+            {{ form_widget(form.finishAt, { attr: { class: 'form__group event__finish_at', autocomplete: 'off' } }) }}
         </div>
 
         <div id="committee-event-address">
@@ -61,25 +56,27 @@
                 {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement" } }) }}
             </div>
 
-            <div class="event__address l__row l__row--h-stretch">
-                <div class="form__row committee_event__form__zip_code b__nudge--right-nano register__form--third" id="committee-event-address-zipcode-field">
+            <div class="form__group dual__fields">
+                <div class="form__row committee_event__form__zip_code" id="committee-event-address-zipcode-field">
                     {{ form_label(form.address.postalCode, 'Code postal') }}
                     {{ form_widget(form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
                 </div>
 
-                <div class="form__row committee_event__form__city b__nudge--right-nano register__form--third" id="committee-event-address-city-field">
+                <div class="form__row committee_event__form__city" id="committee-event-address-city-field">
                     {{ form_errors(form.address.city) }}
                     {{ form_label(form.address.cityName, 'Ville') }}
                     {{ form_widget(form.address.city, { attr: { class: 'committee_event__form__city'}}) }}
                     {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', placeholder: 'Ville' } }) }}
                 </div>
+            </div>
 
-                <div class="form__row committee_event__form__country register__form--third " id="committee-event-address-country-field">
+            <div class="form__group dual__fields">
+                <div class="form__row committee_event__form__country" id="committee-event-address-country-field">
                     {{ form_errors(form.address.country) }}
                     {{ form_label(form.address.country, 'Pays') }}
                     {{ form_widget(form.address.country, { attr: { class: 'form--full', placeholder: 'Choisissez le pays' } }) }}
                 </div>
-                <div class="form__row committee_event__form__timezone register__form--third"
+                <div class="form__row committee_event__form__timezone"
                      id="committee_event-address-timezone-field">
                     {{ form_errors(form.timeZone) }}
                     {{ form_label(form.timeZone, 'Fuseau horaire') }}
@@ -100,8 +97,8 @@
             {{ form_widget(form.capacity, { attr: { class: 'form--full committee_event__form__capacity', placeholder: 'Quel est le nombre maximum de participants à cet événement.' } }) }}
         </div>
 
-        <div class="form__row text--center b__nudge--top">
-            <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Créer cet événement</button>
+        <div class="form__row b__nudge--top-50">
+            <button type="submit" class="btn btn--blue btn--large-and-full">Créer cet événement</button>
         </div>
 
         {{ form_end(form) }}

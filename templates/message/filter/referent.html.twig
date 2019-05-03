@@ -1,15 +1,39 @@
-<div class="referent__filters__form">
-    {{ form_start(form) }}
+{% extends 'message/filter.html.twig' %}
 
-        {% if form.referentTag is defined %}
-            {{ include('message/filter/_referent_zone_filter_form.html.twig') }}
-        {% else %}
-            {{ include('message/filter/_referent_full_filter_form.html.twig') }}
-        {% endif %}
+{% block filter_content %}
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+            {% if form.referentTag is defined %}
+                {{ include('message/filter/_referent_zone_filter_form.html.twig') }}
+            {% else %}
+                {{ include('message/filter/_referent_full_filter_form.html.twig') }}
+            {% endif %}
 
-        <div class="text--center l__wrapper--500 b__nudge--top-40">
-            <button type="submit" class="btn btn--dual">Filtrer</button>
-            <button type="submit" name="reset" class="btn--as-link b__nudge--left-large text--body text--blue--new">Réinitialiser le filtre</button>
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                <button type="submit" name="reset" class="btn btn--no-border b__nudge--bottom-medium">Réinitialiser le filtre</button>
+            </div>
+            {{ form_end(form) }}
         </div>
-    {{ form_end(form) }}
-</div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            if ($('.multi_interests').length) {
+                $('.multi_interests').select2({placeholder: '{{ 'referent.filter.interests'|trans|e('js') }}'});
+            }
+        });
+    </script>
+{% endblock %}

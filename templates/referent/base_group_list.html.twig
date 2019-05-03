@@ -6,45 +6,37 @@
             App.runManagedList(
                 [
                     {
-                        key: 'id',
-                        name: 'ID',
-                        style: {
-                            width: 25
-                        }
-                    },
-                    {
                         key: 'name',
                         name: 'Nom',
-                        link: true
+                        link: true,
+                        targetBlank: true,
                     },
                     {
                         key: 'postalCode',
                         name: 'Code postal',
                         style: {
-                            width: 100
+                            width: 175
                         }
                     },
                     {
                         key: 'members',
-                        name: 'Suiveurs',
+                        name: 'Membres',
                         className: 'datagrid__table__col--hide-mobile',
                         style: {
-                            width: 50
+                            width: 100
                         }
                     }
                 ],
-                {{ managedCommitteesJson|raw }}
+                {{ managedGroupsJson|raw }}
             );
         });
     </script>
 {% endblock %}
 
 {% block referent_content %}
-    <h3>
-        Comités
-    </h3>
-
-    <hr />
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>{{ title }}</h3>
+    </div>
 
     <div id="datagrid"></div>
 {% endblock %}

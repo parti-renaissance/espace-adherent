@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon espace projet citoyen' %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge adherent-space">
+            <header class="manager-header b__nudge--bottom-large adherent-space-header">
+                <div class="l__wrapper">
+                    <div class="pre-space text--center">
+                        <h1 class="text--large">{{ block('page_title') }}</h1>
+                        <p class="pre-space__item-number text--medium-small">
+                            Vous gérez {{ 'common.citizen_projects_count'|transchoice(citizen_projects|length) }}
+                        </p>
+                    </div>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                <div class="l__row l__row--wrap pre-space__items-preview">
+                    {% for citizen_project in citizen_projects|slice(0, 6) %}
+                        {{ block('citizen_project_block') }}
+                    {% endfor %}
+
+                    <a href="{{ path('app_adherent_create_citizen_project') }}" class="pre-space__item-card iterate">
+                        <p class="text--medium-small text--blue--dark">+ Créer un projet citoyen</p>
+                    </a>
+                </div>
+
+                {% if citizen_projects|length > 6 %}
+                    <div class="b__nudge--top-40 l__row l__row--center">
+                        <a href="javascript:void(0);" class="btn btn--as-link show-more-link">Voir plus</a>
+                    </div>
+                    <div class="l__row l__row--wrap l__row--center hidden" id="citizen-projects-next-part">
+                        {% for citizen_project in citizen_projects|slice(6) %}
+                            {{ block('citizen_project_block') }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block citizen_project_block %}
+    <div class="pre-space__item-card {{ not citizen_project.isApproved() ? 'pre-space__item-card--muted' : '' }}">
+        <p class="text--medium font-gillsans">{{ citizen_project.name }}</p>
+        <div>
+            <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}" class="btn btn--blue">Gérer</a>
+            {% if citizen_project.isApproved() %}
+                <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membres</span>
+            {% else %}
+                <span class="text--small approval__status approval__status--pending">En attente de validation</span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        on(window, 'load', function() {
+            once(dom('.show-more-link'), 'click', function () {
+                hide(this);
+                removeClass(dom('#citizen-projects-next-part'), 'hidden');
+            });
+        });
+    </script>
+{% endblock %}

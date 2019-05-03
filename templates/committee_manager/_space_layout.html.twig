@@ -1,0 +1,76 @@
+{% extends 'committee_manager/_layout.html.twig' %}
+
+{% block banner '' %}
+
+{% block committee_space_header %}
+    <div class="l__wrapper">
+        <div class="first-section">
+            <div class="manager-information">
+                <a href="{{ path('app_committee_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous mes comités</a>
+            </div>
+        </div>
+        <div class="second-section">
+            <h1 class="page-title text--large b__nudge--bottom">
+                {{ committee.name }}
+            </h1>
+            {{ block('direct_actions') }}
+        </div>
+
+        <nav class="manager-header__menu">
+            <ul>
+                <li class="{{ is_active_route(app.request, 'app_committee_manager_edit') ? 'active' : '' }}">
+                    <a href="{{ path('app_committee_manager_edit', {slug: committee.slug }) }}">Modifier mon comité</a>
+                </li>
+
+                {% if committee.isApproved %}
+                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host']) ? 'active' : '' }}">
+                        <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}">Mes adhérents</a>
+                    </li>
+
+                    {% if is_canary_enabled() %}
+                        <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
+                            <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+
+    {% block manager_sticky_header %}
+        <div id="managerOnScroll" class="manager__fixed-bar">
+            <div class="l__wrapper manager__fixed-bar__content">
+                <p><span>{{ committee.name }}</span></p>
+                {{ block('direct_actions') }}
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
+        });
+    </script>
+{% endblock %}
+
+{% block direct_actions %}
+    {% if committee.isApproved %}
+        <div class="direct-actions">
+            {% if is_canary_enabled() %}
+                <a href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
+            {% endif %}
+            <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer&nbsp;un&nbsp;</span>événement</a>
+        </div>
+    {% endif %}
+{% endblock %}

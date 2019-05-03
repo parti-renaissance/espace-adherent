@@ -8,14 +8,14 @@
 
 {% block content %}
     <main class="committee">
-        <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col b__nudge--bottom-small">
-            <a href="{{ path('app_search_committees') }}" class="back-to-list icon--with-text text--summary">
+        <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
+            <a href="{{ path('app_search_committees') }}" class="back-to-list icon--with-text text--summary b__nudge--bottom b__nudge--top">
                 {{ include('components/caret--left.html.twig') }}
                 Retour à la liste des comités</a>
         </div>
 
         <header class="background--blue space--60-0">
-            <div class="l__wrapper--medium l__row l__row--h-stretch l__mobile--col">
+            <div class="l__wrapper l__row l__row--h-stretch l__mobile--col">
                 <div class="text--white committee__header__titles">
                     <div class="text--uppercase text--small b__nudge--bottom-tiny">
                         Comité local {% if is_host %}n°{{ committee.id }}{% endif %}

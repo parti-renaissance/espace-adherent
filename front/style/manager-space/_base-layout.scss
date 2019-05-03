@@ -1,0 +1,328 @@
+.manager-header {
+    background-color: $pale-grey;
+    margin-bottom: 68px;
+
+    .first-section {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        padding: 35px 0;
+
+        .manager-information {
+            margin-top: 20px;
+            p {
+                font-family: $font-roboto;
+                font-size: $text--size-small;
+                color: $silver-grey;
+                margin: 0;
+
+                span {
+                    color: $black;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .report {
+            @include text--uppercase;
+            font-size: 13px;
+            color: $silver-grey;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+    }
+
+    .second-section {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        h1.page-title {
+            margin-right: 30px;
+        }
+
+        .direct-actions {
+            font-size: 0;
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+
+            .btn {
+                flex-basis: 50%;
+
+                span {
+                    display: none;
+                }
+            }
+
+            .btn:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &__menu {
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            border-bottom: 1px solid $lines-grey;
+            padding-bottom: 15px;
+            @media (min-width: $tablet) {
+                padding-bottom: 0;
+            }
+
+            li {
+                display: inline-block;
+                margin: 0 15px -1px 0;
+                @media (min-width: $tablet) {
+                    margin: 10px 25px -1px 0;
+                }
+
+                &:first-child {
+                    margin-left: 0;
+                }
+
+                &:last-child {
+                    margin-right: 0;
+                }
+
+                & a {
+                    @include manager-menu-item;
+                    display: inline-block;
+                    padding: 5px 0 14px 0;
+                    border-bottom: 3px solid transparent;
+
+                    &:hover {
+                        color: $black;
+                        @media (min-width: $tablet) {
+                            border-bottom-color: $turquoise;
+                        }
+                    }
+                }
+
+                &:hover {
+                    & .toggle-menu {
+                        display: block;
+                    }
+                }
+
+                &.active a {
+                    color: $black;
+                    font-weight: bold;
+                    @media (min-width: $tablet) {
+                        border-bottom-color: $turquoise;
+                    }
+
+                }
+            }
+        }
+    }
+
+    // I know, it's a custom size... but goes great like this
+    @media (min-width: 1150px) {
+
+        &__menu {
+            ul {
+                li {
+                    &.menu-right {
+                        margin-left: auto;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (min-width: $mobile) {
+
+        .first-section {
+            flex-direction: row;
+
+            .manager-information {
+                margin: 0 20px 20px 0;
+            }
+        }
+
+        .second-section {
+
+            .direct-actions {
+                width: auto;
+
+                .btn {
+                    flex-basis: auto;
+
+                    span {
+                        display: inline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.manager__fixed-bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: -80px;
+    opacity: 0;
+    background-color: $white;
+    box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.15);
+    width: 100%;
+    height: 80px;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+
+    @media (min-width: $tablet) {
+        &.active {
+            top: 0;
+            opacity: 1;
+            position: fixed;
+
+        }
+    }
+
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        p {
+            font-size: 18px;
+            font-family: $font-roboto;
+            width: calc(100% - 500px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .direct-actions {
+            font-size: 0;
+
+            .btn {
+                margin-left: 10px;
+            }
+        }
+    }
+}
+
+// pre-space dashboard (committees and citizen-porjects)
+.manager-header {
+    .pre-space {
+        padding: 55px 0;
+        @media (min-width: $mobile) {
+            padding: 135px 0 55px 0;
+        }
+
+        &__item-number {
+            font-family: $font-roboto;
+            color: $silver-grey;
+            margin: 15px 0 0 0;
+        }
+    }
+}
+
+.pre-space {
+    &__items-preview {
+        width: 100%;
+        max-width: 1020px;
+        margin: 0 auto;
+
+    }
+    &__item-card {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 238px;
+        margin-bottom: 26px;
+        background-color: $pale-grey;
+        padding: 30px;
+
+        p {
+            margin: 0;
+        }
+
+        &.iterate {
+            background-color: $white;
+            border: dashed 1px $lines-grey;
+            border-radius: 5px;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            -webkit-transition: 0.3s;
+
+            &:hover {
+                border: solid 1px $pale-grey;
+                background-color: $pale-grey;
+            }
+        }
+
+        &--muted {
+            background-color: $white;
+            border: dashed 1px $lines-grey;
+            border-radius: 5px;
+            color: $granite-grey;
+
+            .approval__status {
+                margin-left: 16px;
+                display: inline-block;
+
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    width: 5px;
+                    height: 5px;
+                    border-radius: 10px;
+                    position: relative;
+                    top: -2px;
+                    margin-right: 7px;
+                }
+
+                &--pending {
+                    color: $status-orange;
+                    &::before { background-color: $status-orange; }
+                }
+            }
+        }
+    }
+
+    @media (min-width: $tablet) {
+
+        &__item-card {
+            width: 50%;
+            max-width: 484px;
+
+            &:nth-child(odd) {
+                margin-right: 26px;
+            }
+        }
+    }
+}
+
+// global components
+.tips-information {
+    max-width: 900px;
+    background-color: $warning-bkg;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 20px;
+    padding: 20px;
+    margin-bottom: 60px;
+    color: $warning-text;
+}

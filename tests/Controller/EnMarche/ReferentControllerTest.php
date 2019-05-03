@@ -53,12 +53,47 @@ class ReferentControllerTest extends WebTestCase
     /**
      * @dataProvider providePages
      */
+    public function testReferentBackendIsAccessibleAsCoReferent($path)
+    {
+        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
+        $this->client->request(Request::METHOD_GET, $path);
+
+        if ('/espace-referent/utilisateurs' === $path) {
+            $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        } else {
+            $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
+        }
+    }
+
+    /**
+     * @dataProvider providePages
+     */
     public function testReferentBackendIsAccessibleAsReferent($path)
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $this->client->request(Request::METHOD_GET, $path);
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
+    /**
+     * @dataProvider providePages
+     */
+    public function testChangeOfPageAccessInformationToReferentSpace($path)
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $adherent = $this->getAdherentRepository()->findOneByEmail('referent@en-marche-dev.fr');
+        $accessInformation = $this->getReferentSpaceAccessInformationRepository()->findByAdherent($adherent);
+
+        $this->assertNull($accessInformation);
+
+        $this->client->request(Request::METHOD_GET, $path);
+        $this->manager->clear();
+        $accessInformation = $this->getReferentSpaceAccessInformationRepository()->findByAdherent($adherent);
+
+        $this->assertNotNull($accessInformation);
+        $this->assertNotNull($accessInformation->getLastDate());
+        $this->assertNotNull($accessInformation->getPreviousDate());
     }
 
     public function testCreateEventFailed()
@@ -156,7 +191,7 @@ class ReferentControllerTest extends WebTestCase
         $data['institutional_event']['invitations'] = 'jean@exemple.fr;michel@exemple.fr;marcel@exemple.fr';
 
         $this->client->submit(
-            $this->client->getCrawler()->selectButton('Créer cet événement institutionnel')->form(), $data
+            $this->client->getCrawler()->selectButton('Créer cette réunion privée')->form(), $data
         );
 
         /** @var InstitutionalEvent $event */
@@ -185,7 +220,7 @@ class ReferentControllerTest extends WebTestCase
 
         // Submit the form with empty values
         $this->client->submit($this->client->getCrawler()
-            ->selectButton('Créer cet événement institutionnel')->form(), [])
+            ->selectButton('Créer cette réunion privée')->form(), [])
         ;
 
         $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
@@ -212,9 +247,12 @@ class ReferentControllerTest extends WebTestCase
         );
     }
 
-    public function testSearchUserToSendMail()
+    /**
+     * @dataProvider provideUsers
+     */
+    public function testSearchUserToSendMail($user)
     {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+        $this->authenticateAsAdherent($this->client, $user);
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
@@ -225,7 +263,7 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             'ac' => 77,
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
@@ -238,7 +276,7 @@ class ReferentControllerTest extends WebTestCase
             's' => 1,
             'city' => 'Melun',
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
@@ -247,7 +285,7 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             'ac' => 'FR',
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
@@ -256,7 +294,7 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             'ac' => 13,
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
@@ -265,7 +303,7 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             'ac' => 59,
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Gender
@@ -273,7 +311,7 @@ class ReferentControllerTest extends WebTestCase
         $data = [
             'g' => 'male',
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
@@ -281,7 +319,7 @@ class ReferentControllerTest extends WebTestCase
             'g' => 'female',
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Filtrer')->form();
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['s']->untick();
 
         $this->client->submit($form, $data);
@@ -294,7 +332,7 @@ class ReferentControllerTest extends WebTestCase
             'f' => 'Mich',
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Filtrer')->form();
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['s']->untick();
 
         $this->client->submit($form, $data);
@@ -308,11 +346,23 @@ class ReferentControllerTest extends WebTestCase
             'f' => '',
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Filtrer')->form();
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
         $form['s']->untick();
 
         $this->client->submit($form, $data);
         $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+
+        // Managed Area
+        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
+        $data = [
+            'qz' => '77',
+        ];
+
+        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
+        $form['s']->untick();
+
+        $this->client->submit($form, $data);
+        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testCancelSendMail()
@@ -326,14 +376,14 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             's' => 1,
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Contacter (3)')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains('http://'.$this->hosts['app'].'/espace-referent/utilisateurs/message', $this->client->getRequest()->getUri());
 
         $this->client->click($this->client->getCrawler()->selectLink('Annuler')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertEquals('http://'.$this->hosts['app'].'/espace-referent/utilisateurs', $this->client->getRequest()->getUri());
+        $this->assertContains('http://'.$this->hosts['app'].'/espace-referent/utilisateurs', $this->client->getRequest()->getUri());
     }
 
     public function testSendMailFailed()
@@ -347,8 +397,8 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             's' => 1,
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Contacter (3)')->link());
 
         $data = [];
         $this->client->submit($this->client->getCrawler()->selectButton('Envoyer le message')->form(), $data);
@@ -371,10 +421,10 @@ class ReferentControllerTest extends WebTestCase
             'h' => 1,
             's' => 1,
         ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
-        $this->client->click($this->client->getCrawler()->selectLink('Leur envoyer un message')->link());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        $this->client->click($this->client->getCrawler()->selectLink('Contacter (3)')->link());
         $this->assertContains('Referent Referent', $this->client->getCrawler()->filter('form')->html());
-        $this->assertContains('4 marcheur(s)', $this->client->getCrawler()->filter('form')->html());
+        $this->assertContains('3 marcheur(s)', $this->client->getCrawler()->filter('form')->html());
 
         $data = [];
         $data['referent_message']['subject'] = 'Event reminder';
@@ -431,9 +481,9 @@ class ReferentControllerTest extends WebTestCase
             'cp' => false,
         ];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('Contacter (1)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertContains('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
@@ -447,9 +497,9 @@ class ReferentControllerTest extends WebTestCase
             'aic' => false,
         ];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('Contacter (1)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
@@ -463,9 +513,9 @@ class ReferentControllerTest extends WebTestCase
             'aic' => false,
         ];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('4 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('Contacter (3)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
         $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
@@ -478,9 +528,9 @@ class ReferentControllerTest extends WebTestCase
             'aic' => false,
         ];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('3 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('Contacter (2)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
@@ -498,9 +548,9 @@ class ReferentControllerTest extends WebTestCase
             'aic' => true,
         ];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('Contacter (1)', $this->client->getCrawler()->filter('#send-message-btn')->text());
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
         $this->assertContains('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
@@ -514,9 +564,9 @@ class ReferentControllerTest extends WebTestCase
             'cp' => true,
         ];
 
-        $this->client->submit($this->client->getCrawler()->selectButton('Filtrer')->form(), $data);
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertContains('1 contact(s) trouvé(s)', $this->client->getCrawler()->filter('.referent__filters__count')->text());
+        $this->assertContains('Contacter (1)', $this->client->getCrawler()->filter('#send-message-btn')->text());
     }
 
     public function testReferentCanCreateAdherentMessageSuccessfully(): void
@@ -536,7 +586,7 @@ class ReferentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $crawlerCheckbox = $crawler->filter('.l__wrapper .l__col .form__label');
+        $crawlerCheckbox = $crawler->filter('#referent_zone_filter_referentTag .form__label');
 
         self::assertCount(6, $crawlerCheckbox);
         self::assertSame('Département 13', $crawlerCheckbox->getNode(0)->nodeValue);
@@ -564,8 +614,15 @@ class ReferentControllerTest extends WebTestCase
             ['/espace-referent/utilisateurs'],
             ['/espace-referent/evenements'],
             ['/espace-referent/comites'],
+            ['/espace-referent/projets-citoyens'],
             ['/espace-referent/evenements/creer'],
         ];
+    }
+
+    public function provideUsers(): iterable
+    {
+        yield ['referent@en-marche-dev.fr'];
+        yield ['benjyd@aol.com'];
     }
 
     /**

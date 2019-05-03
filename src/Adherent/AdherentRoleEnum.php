@@ -7,6 +7,7 @@ use MyCLabs\Enum\Enum;
 class AdherentRoleEnum extends Enum
 {
     public const REFERENT = 'referent';
+    public const COREFERENT = 'coreferent';
 
     public const DEPUTY = 'deputy';
 

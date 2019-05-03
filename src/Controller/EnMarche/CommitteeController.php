@@ -3,14 +3,11 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Committee\Feed\CommitteeMessage;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
-use AppBundle\Form\CommitteeFeedMessageType;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -28,7 +25,7 @@ class CommitteeController extends Controller
     use EntityControllerTrait;
 
     /**
-     * @Route(name="app_committee_show", methods={"GET", "POST"})
+     * @Route(name="app_committee_show", methods={"GET"})
      * @Security("is_granted('SHOW_COMMITTEE', committee)")
      */
     public function showAction(Request $request, Committee $committee): Response
@@ -37,25 +34,6 @@ class CommitteeController extends Controller
             && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
         ) {
             return $authenticate;
-        }
-
-        $form = null;
-        if ($this->isGranted(CommitteePermissions::HOST, $committee)) {
-            $message = new CommitteeMessage($this->getUser(), $committee);
-            $form = $this->createForm(CommitteeFeedMessageType::class, $message)
-                ->handleRequest($request)
-            ;
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->get('app.committee.feed_manager')->createMessage($message);
-                if ($message->isPublished()) {
-                    $this->addFlash('info', 'committee.message_published');
-                } else {
-                    $this->addFlash('info', 'committee.message_created');
-                }
-
-                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-            }
         }
 
         $committeeManager = $this->getCommitteeManager();
@@ -68,7 +46,6 @@ class CommitteeController extends Controller
             'committee_timeline' => $feeds,
             'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
-            'form' => $form ? $form->createView() : null,
         ]);
     }
 
@@ -95,16 +72,10 @@ class CommitteeController extends Controller
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $committeeManager = $this->getCommitteeManager();
-        $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
-
-        return $this->render('committee/show.html.twig', [
+        return $this->render('committee/timeline/edit.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'committee_timeline' => $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages')),
-            'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
-            'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
-            'form' => $form ? $form->createView() : null,
+            'committee_hosts' => $this->getCommitteeManager()->getCommitteeHosts($committee),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -146,7 +117,7 @@ class CommitteeController extends Controller
             $request->query->getInt('offset', 0)
         );
 
-        return $this->render('committee/timeline/feed.html.twig', [
+        return $this->render('committee/timeline/_feed.html.twig', [
             'committee' => $committee,
             'committee_timeline' => $timeline,
             'committee_timeline_forms' => $this->createTimelineDeleteForms($timeline),

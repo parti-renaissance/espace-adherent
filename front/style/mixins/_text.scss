@@ -166,6 +166,35 @@ $text--size-extra-large--big: 128px;
     letter-spacing: 1.5px;
 }
 
+// Personnal space mixins
+@mixin manager-menu-item {
+    font-family: $font-roboto;
+    font-weight: normal;
+    font-size: 17px;
+    color: $silver-grey;
+}
+
+@mixin manager-table-thead {
+    background-color: $pale-grey;
+    color: $silver-grey;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+@mixin filter-label-text {
+    font-family: $font-roboto;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: normal;
+}
+
+@mixin filter-field-text {
+    font-family: $font-roboto;
+    font-size: $text--size-small;
+    font-weight: normal;
+    line-height: normal;
+}
+
 .text {
     &--breakword {
         @include breakword;
@@ -609,4 +638,12 @@ $text--size-extra-large--big: 128px;
             }
         }
     }
+}
+
+.font-gillsans {
+    font-family: $font-gillsans;
+}
+
+.font-roboto {
+    font-family: $font-roboto;
 }

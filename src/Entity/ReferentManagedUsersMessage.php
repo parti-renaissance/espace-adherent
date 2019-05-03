@@ -36,6 +36,11 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     private $includeSupervisors;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $queryZone;
+
+    /**
      * @ORM\Column(type="text")
      */
     private $queryAreaCode;
@@ -53,7 +58,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $interests = [];
+    private $interests;
 
     /**
      * @ORM\Column(length=6, nullable=true)
@@ -73,17 +78,33 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $ageMinimum = 0;
+    private $ageMinimum;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $ageMaximum = 0;
+    private $ageMaximum;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $includeCP = false;
+    private $includeCP;
+
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $registeredFrom;
+
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $registeredTo;
 
     public function __construct(
         UuidInterface $uuid,
@@ -96,6 +117,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         bool $includeSupervisors,
         string $firstName,
         string $lastName,
+        string $queryZone,
         string $queryAreaCode,
         string $queryCity,
         string $queryId,
@@ -104,7 +126,9 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         int $ageMaximum,
         bool $includeCP,
         array $interests = [],
-        int $offset = 0
+        int $offset = 0,
+        \DateTimeInterface $registeredFrom = null,
+        \DateTimeInterface $registeredTo = null
     ) {
         $this->uuid = $uuid;
         $this->from = $from;
@@ -114,6 +138,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->includeAdherentsInCommittee = $includeAdherentsInCommittee;
         $this->includeHosts = $includeHosts;
         $this->includeSupervisors = $includeSupervisors;
+        $this->queryZone = $queryZone;
         $this->queryAreaCode = $queryAreaCode;
         $this->queryCity = $queryCity;
         $this->queryId = $queryId;
@@ -125,6 +150,8 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->ageMinimum = $ageMinimum;
         $this->ageMaximum = $ageMaximum;
         $this->includeCP = $includeCP;
+        $this->registeredFrom = $registeredFrom;
+        $this->registeredTo = $registeredTo;
     }
 
     public static function createFromMessage(ReferentMessage $message): self
@@ -140,6 +167,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->includeSupervisors(),
             $message->getFilter()->getQueryFirstName(),
             $message->getFilter()->getQueryLastName(),
+            $message->getFilter()->getQueryZone(),
             $message->getFilter()->getQueryAreaCode(),
             $message->getFilter()->getQueryCity(),
             $message->getFilter()->getQueryId(),
@@ -147,23 +175,11 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->getQueryAgeMinimum(),
             $message->getFilter()->getQueryAgeMaximum(),
             $message->getFilter()->includeCitizenProject(),
-            $message->getFilter()->getQueryInterests()
+            $message->getFilter()->getQueryInterests(),
+            0, // offset
+            $message->getFilter()->getQueryRegisteredFrom(),
+            $message->getFilter()->getQueryRegisteredTo()
         );
-    }
-
-    public function getFrom(): Adherent
-    {
-        return $this->from;
-    }
-
-    public function getSubject(): string
-    {
-        return $this->subject;
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
     }
 
     public function includeAdherentsNoCommittee(): bool
@@ -184,6 +200,11 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function includeSupervisors(): bool
     {
         return $this->includeSupervisors;
+    }
+
+    public function getQueryZone(): ?string
+    {
+        return $this->queryZone;
     }
 
     public function getQueryAreaCode(): string
@@ -264,5 +285,15 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function includeCitizenProject(): bool
     {
         return $this->includeCP;
+    }
+
+    public function getRegisteredFrom(): ?\DateTimeInterface
+    {
+        return $this->registeredFrom;
+    }
+
+    public function getRegisteredTo(): ?\DateTimeInterface
+    {
+        return $this->registeredTo;
     }
 }

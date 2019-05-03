@@ -1,3 +1,7 @@
-<p class="text--center">
-    Recherche dans la zone : {{ message.filter.referentTag.name }}
-</p>
+{% extends 'message/filter.html.twig' %}
+
+{% block filter_content %}
+    <p class="text--center" id="deputy-managed-areas">
+        Recherche dans la zone : {{ message.filter.referentTag.name }}
+    </p>
+{% endblock %}

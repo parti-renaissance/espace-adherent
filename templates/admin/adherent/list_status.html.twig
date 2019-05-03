@@ -6,6 +6,10 @@
             <span class="label label-primary" style="padding: 2px;">Référent</span><br/>
         {% endif %}
 
+        {% if object.isCoReferent %}
+            <span class="label label-primary" style="padding: 2px;">Co-Référent</span><br/>
+        {% endif %}
+
         {% if object.isCoordinatorCitizenProjectSector %}
             <span class="label label-primary" style="padding: 2px;">REC</span><br/>
         {% endif %}

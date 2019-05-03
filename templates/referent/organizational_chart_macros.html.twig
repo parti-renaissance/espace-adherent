@@ -12,23 +12,25 @@
 {% macro orga_chart_item(item, referent, editable, admin) %}
     {% import _self as oc %}
     <div>
-        <h{{ item.level }}>
+        <h3>
             {% if item.referentPersonLinks is defined %}
                 {% if editable or admin %}
                     <a href="{{ admin ? admin.generateObjectUrl('edit', item, admin.listFieldDescriptions['batch'].options.route.parameters) : path('app_referent_referent_person_link_edit', {id: item.id}) }}">
                 {% endif %}
-                        <span class="function">
-                            {{ item.label }}
-                        </span>
-                        <br />
-                        <span>
+                        <span class="name">
                             {% set ref_person_link = get_ref_person_link(item, referent) %}
                             {% if ref_person_link %}
                                 {{ ref_person_link.firstName }} {{ ref_person_link.lastName }}
                             {% else %}
-                                <span class="function--empty">Entrez le nom du responsable</span>
+                                <span class="name--empty">Nom du responsable</span>
                             {% endif %}
                         </span>
+                        <span class="function">
+                            {{ item.label }}
+                        </span>
+                        {% if ref_person_link and ref_person_link.isCoReferent %}
+                            <span class="referent-person-link">{{ 'referent.coreferent_access'|trans }}</span>
+                        {% endif %}
                 {% if editable %}
                     </a>
                 {% endif %}
@@ -39,7 +41,7 @@
             {% else %}
                 {{ item.label }}
             {% endif %}
-        </h{{ item.level }}>
+        </h3>
     </div>
     {% if item.children|length %}
         {{ oc.orga_chart_row(item.children, referent, editable, admin) }}

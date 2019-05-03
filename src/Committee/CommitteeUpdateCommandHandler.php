@@ -46,11 +46,7 @@ class CommitteeUpdateCommandHandler
         // Uploads an ID photo
         $this->photoManager->addPhotoFromCommand($command, $committee);
 
-        $committee->setSocialNetworks(
-            $command->facebookPageUrl,
-            $command->twitterNickname,
-            $command->googlePlusPageUrl
-        );
+        $committee->setSocialNetworks($command->facebookPageUrl, $command->twitterNickname);
 
         $this->referentTagManager->assignReferentLocalTags($committee);
 

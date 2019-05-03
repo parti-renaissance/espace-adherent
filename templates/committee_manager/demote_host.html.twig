@@ -1,0 +1,37 @@
+{% extends 'committee_manager/_layout.html.twig' %}
+
+{% block page_title 'Définir un animateur comme simple membre' %}
+
+{% block committee_content %}
+    <section class="b__nudge--top-5 b__nudge--bottom-huge">
+        <header class="l__wrapper b__nudge--bottom-tiny">
+            <h2 class="text--center text--medium font-gillsans">Définir un animateur comme simple membre</h2>
+            <hr/>
+        </header>
+        <div class="l__wrapper--600 center-block l__col">
+            <div class="text--body b__nudge--bottom-large">
+                Voulez-vous vraiment redéfinir <strong>{{ member.partialName }}</strong>
+                comme simple membre du comité <br/><strong>{{ committee.name }}</strong> ?
+            </div>
+
+            <div class="committee__members__nav">
+                <div>
+                    <form method="post">
+                        {{ form_widget(form) }}
+
+                        <button type="submit" id="members-promote-button" class="btn btn--primary b__nudge--right">
+                            Oui, définir comme simple membre
+                        </button>
+                        <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="btn">
+                            Non, annuler
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+
+

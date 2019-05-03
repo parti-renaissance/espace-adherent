@@ -1,196 +1,260 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            if ($('#referent_filter_interests').length) {
+                $('#referent_filter_interests').select2({placeholder: '{{ 'referent.filter.interests'|trans|e('js') }}'});
+            }
+        });
+    </script>
+{% endblock %}
+
 {% block referent_content %}
-    <h2 class="text--center">
-        Envoyer un message
-    </h2>
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Adhérents</h3>
+        {% if total_count %}
+            <span class="datagrid__count">
+                <span>{{ results_count }}</span> sur {{ total_count }} adhérents
+            </span>
+        {% endif %}
+    </div>
 
-    <hr class="clearfix"/>
-
-    <div class="referent__filters">
-        <div class="referent__filters__form">
+    <div class="manager__filters">
+        <div class="manager__filters__form">
             <form method="get" action="{{ path('app_referent_users') }}#send-message">
-                <div class="referent__filters__subtitle">
-                    Envoyer un message aux ...
-                </div>
-                <div class="l__row l__row--top l__mobile--col">
-                    <div class="l__col--grow-1 b__nudge--right">
-                        <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_adherents_no_committee"
-                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE', filter) }}"
-                                    {{ filter.includeAdherentsNoCommittee ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_adherents_no_committee">
-                                Adhérents ne faisant partie d'aucun comité
-                            </label>
-                        </div>
-                        <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
-                                   name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
-                                    {{ filter.includeAdherentsInCommittee ? 'checked="checked"' }} />
-                            <label for="parameter_include_adherents_in_committee">
-                                Adhérents faisant partie d'au moins un comité (hors animateurs)
-                            </label>
+                <h4 class="manager__filters__subtitle">Filtrer par</h4>
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            {% if managedArea.tags.count > 1 %}
+                                <div class="filter__row">
+                                    <label class="filter__label">{{ 'referent.managed_area'|trans }}</label>
+                                    <select class="filter__field" name="{{ constant('PARAMETER_QUERY_ZONE', filter) }}">
+                                        <option value="">{{ 'referent.adherent.all'|trans }}</option>
+                                        {% for tag in managedArea.tags %}
+                                            <option value="{{ tag.code }}" {{ filter.queryZone ? tag.code is same as(filter.queryZone) ? 'selected' : '' }}>{{ tag.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endif %}
+                            <div class="filter__row">
+                                <span class="filter__label">Rôles</span>
+                                <div class="form__checkbox">
+                                    <input type="checkbox" value="1" id="parameter_include_adherents_no_committee"
+                                           name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE', filter) }}"
+                                            {{ filter.includeAdherentsNoCommittee ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_include_adherents_no_committee">
+                                        Adhérent ne faisant partie d'aucun comité
+                                    </label>
+                                </div>
+
+                                <div class="form__checkbox">
+                                    <input type="checkbox" value="1" id="parameter_include_adherents_in_committee"
+                                           name="{{ constant('PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE', filter) }}"
+                                            {{ filter.includeAdherentsInCommittee ? 'checked="checked"' }} />
+                                    <label for="parameter_include_adherents_in_committee">
+                                        Adhérent faisant partie d'au moins un comité (hors animateur)
+                                    </label>
+                                </div>
+
+                                <div class="form__checkbox">
+                                    <input type="checkbox" value="1" id="parameter_include_supervisors"
+                                           name="{{ constant('PARAMETER_INCLUDE_SUPERVISORS', filter) }}"
+                                            {{ filter.includeSupervisors ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_include_supervisors">
+                                        Animateur de comité local
+                                    </label>
+                                </div>
+
+                                <div class="form__checkbox">
+                                    <input type="checkbox" value="1" id="parameter_include_hosts"
+                                           name="{{ constant('PARAMETER_INCLUDE_HOSTS', filter) }}"
+                                            {{ filter.includeHosts ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_include_hosts">
+                                        Co-animateur de comité local
+                                    </label>
+                                </div>
+
+                                <div class="form__checkbox">
+                                    <input type="checkbox" value="1" id="parameter_include_cp"
+                                           name="{{ constant('PARAMETER_INCLUDE_CP', filter) }}"
+                                            {{ filter.includeCitizenProject ? 'checked="checked"' : '' }} />
+                                    <label for="parameter_include_cp">
+                                        Porteur de projet citoyen
+                                    </label>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
 
-                    <div class="l__col--grow-1 b__nudge--right">
-                        <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_supervisors"
-                                   name="{{ constant('PARAMETER_INCLUDE_SUPERVISORS', filter) }}"
-                                    {{ filter.includeSupervisors ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_supervisors">
-                                Animateurs de comités locaux
-                            </label>
-                        </div>
-
-                        <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_hosts"
-                                   name="{{ constant('PARAMETER_INCLUDE_HOSTS', filter) }}"
-                                    {{ filter.includeHosts ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_hosts">
-                                Co-animateurs de comités locaux
-                            </label>
-                        </div>
-
-                        <div class="form__row form__checkbox">
-                            <input type="checkbox" value="1" id="parameter_include_cp"
-                                   name="{{ constant('PARAMETER_INCLUDE_CP', filter) }}"
-                                    {{ filter.includeCitizenProject ? 'checked="checked"' : '' }} />
-                            <label for="parameter_include_cp">
-                                Porteurs de projets citoyens
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="referent__filters__subtitle">
-                    Et filtrer par ...
-                </div>
-
-                <div class="referent__filters__search l__row l__row--v-stretch l__tablet--col">
-                    <div class="referent__filters__search__col">
-                        <legend class="label__header">Genre</legend>
-                        <div class="l__row">
-                            <div class="form__radio-button--tab">
-                                <input type="radio" value="" id="parameter_gender_all"
-                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                                        {{ 0 == filter.queryGender ? 'checked="checked"' : '' }} />
-                                <label for="parameter_gender_all">
-                                    Tous
-                                </label>
-                            </div>
-                            <div class="form__radio-button--tab">
-                                <input type="radio" value="female" id="parameter_gender_female"
-                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                                        {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
-                                <label for="parameter_gender_female">
-                                    Femme
-                                </label>
-                            </div>
-                            <div class="form__radio-button--tab">
-                                <input type="radio" value="male" id="parameter_gender_male"
-                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                                        {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
-                                <label for="parameter_gender_male">
-                                    Homme
-                                </label>
-                            </div>
-                            <div class="form__radio-button--tab">
-                                <input type="radio" value="other" id="parameter_gender_other"
-                                       name="{{ constant('PARAMETER_GENDER', filter) }}"
-                                        {{ filter.queryGender is same as ('other') ? 'checked="checked"' : '' }} />
-                                <label for="parameter_gender_other">
-                                    Autre
-                                </label>
-                            </div>
-                        </div>
-
-                        <legend class="label__header">Age</legend>
-                        <div class="l__row l__row--h-stretch">
-                            <label style="width: 45%">
-                                <input type="number"
-                                       name="{{ constant('PARAMETER_AGE_MIN', filter) }}"
-                                       value="{{ filter.queryAgeMinimum is same as(0) ? "" : filter.queryAgeMinimum }}"
-                                       class="form form__field form--full"
-                                       placeholder="18"/>
-                            </label>
-                            à
-                            <label style="width: 45%">
-                                <input type="number"
-                                       name="{{ constant('PARAMETER_AGE_MAX', filter) }}"
-                                       value="{{ filter.queryAgeMaximum is same as(0) ? "" : filter.queryAgeMaximum }}"
-                                       class="form form__field form--full"
-                                       placeholder="99"/>
-                            </label>
-                        </div>
-
-                        <legend class="label__header">Nom</legend>
-                        <div class="l__row">
-                            <input type="text"
-                                   name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
-                                   value="{{ filter.queryLastName }}"
-                                   class="form form__field form--full"
-                                   placeholder="Saisissez un nom"/>
-                        </div>
-
-                        <legend class="label__header">Prénom</legend>
-                        <div class="l__row">
-                            <input type="text"
-                                   name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
-                                   value="{{ filter.queryFirstName }}"
-                                   class="form form__field form--full"
-                                   placeholder="Saisissez un prénom"/>
-                        </div>
-                    </div>
-
-                    <div class="referent__filters__search__col">
-                        <legend class="label__header">Ville</legend>
-                        <div class="l__row">
-                            <input type="text"
-                                   name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
-                                   value="{{ filter.queryCity }}"
-                                   class="form form__field form--full"
-                                   placeholder="Saisissez une ville"/>
-                        </div>
-
-                        <legend class="label__header">Code postal, département ou pays</legend>
-                        <div class="l__row referent__filters__search__col__area-code">
-                            <input type="text"
-                                   name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
-                                   value="{{ filter.queryAreaCode }}"
-                                   class="form form__field form--full"
-                                   placeholder="Saisissez-en un ou plusieurs"/><br/>
-                        </div>
-                        <legend class="text--gray text--small">
-                            Exemple: "59400, 18, CH"
-                        </legend>
-
-                        <legend class="label__header label__header__interest">Centres d'intérêt</legend>
-                        <div class="referent__filters__search__col__interest">
-                            <div class="form l__row l__row--wrap">
-                                {% for key, value in adherent_interests %}
-                                    <div class="form__checkbox form__checkbox--col">
-                                        <input type="checkbox" id="referent_pin_interests_{{ loop.index0 }}" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" value="{{ key }}" {{ key in filter.queryInterests ? 'checked' }}>
-                                        <label class="form form__label" for="referent_pin_interests_{{ loop.index0 }}">{{ value }}</label>
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Genre</label>
+                                <div class="filter__radio__tabs inputs--4">
+                                    <div class="filter__radio__tab">
+                                        <input type="radio" value="" id="parameter_gender_all"
+                                               name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                                {{ 0 == filter.queryGender ? 'checked="checked"' : '' }} />
+                                        <label for="parameter_gender_all">
+                                            Tous
+                                        </label>
                                     </div>
-                                {% endfor %}
+                                    <div class="filter__radio__tab">
+                                        <input type="radio" value="female" id="parameter_gender_female"
+                                               name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                                {{ filter.queryGender is same as('female') ? 'checked="checked"' : '' }} />
+                                        <label for="parameter_gender_female">
+                                            Femme
+                                        </label>
+                                    </div>
+                                    <div class="filter__radio__tab">
+                                        <input type="radio" value="male" id="parameter_gender_male"
+                                               name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                                {{ filter.queryGender is same as ('male') ? 'checked="checked"' : '' }} />
+                                        <label for="parameter_gender_male">
+                                            Homme
+                                        </label>
+                                    </div>
+                                    <div class="filter__radio__tab">
+                                        <input type="radio" value="other" id="parameter_gender_other"
+                                               name="{{ constant('PARAMETER_GENDER', filter) }}"
+                                                {{ filter.queryGender is same as ('other') ? 'checked="checked"' : '' }} />
+                                        <label for="parameter_gender_other">
+                                            Autre
+                                        </label>
+                                    </div>
+                                </div>
+
+
                             </div>
-                            <legend class="text--gray text--small">
-                                Exemple : Si vous cochez 2 intérêts, vous filtrerez les adhérents qui suivent au moins ces 2 intérêts
-                            </legend>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Âge</label>
+                                <div class="filter__multi">
+                                    <label style="width: 45%">
+                                        <input type="number"
+                                               name="{{ constant('PARAMETER_AGE_MIN', filter) }}"
+                                               value="{{ filter.queryAgeMinimum is same as(0) ? "" : filter.queryAgeMinimum }}"
+                                               class="filter__field"
+                                               placeholder="18"/>
+                                    </label>
+                                    à
+                                    <label style="width: 45%">
+                                        <input type="number"
+                                               name="{{ constant('PARAMETER_AGE_MAX', filter) }}"
+                                               value="{{ filter.queryAgeMaximum is same as(0) ? "" : filter.queryAgeMaximum }}"
+                                               class="filter__field"
+                                               placeholder="99"/>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Date d'adhésion</label>
+                                <div class="filter__multi">
+                                    <label style="width: 45%">
+                                        <input
+                                            type="date"
+                                            name="{{ constant('PARAMETER_REGISTERED_FROM', filter) }}"
+                                            value="{{ filter.queryRegisteredFrom ? filter.queryRegisteredFrom|date('Y-m-d') : "" }}"
+                                            class="filter__field"
+                                        />
+                                    </label>
+                                    à
+                                    <label style="width: 45%">
+                                        <input
+                                            type="date"
+                                            name="{{ constant('PARAMETER_REGISTERED_TO', filter) }}"
+                                            value="{{ filter.queryRegisteredTo ? filter.queryRegisteredTo|date('Y-m-d') : "" }}"
+                                            class="filter__field"
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">{{ 'referent.status.email'|trans }}</label>
+                                <select class="filter__field" name="{{ constant('PARAMETER_EMAIL_SUBSCRIPTION', filter) }}">
+                                    <option value="">{{ 'referent.adherent.all'|trans }}</option>
+                                    <option value="1" {{ filter.onlyEmailSubscribers is same as(true) ? 'selected' }}>{{ 'referent.adherent.subscribed'|trans }}</option>
+                                    <option value="0" {{ filter.onlyEmailSubscribers is same as(false) ? 'selected' }}>{{ 'referent.adherent.unsubscribed'|trans }}</option>
+                                </select>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Centres d'intéret</label>
+                                <select id="referent_filter_interests" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" class="filter__field" multiple="multiple">
+                                    {% for key, value in adherent_interests %}
+                                        <option value="{{ key }}" {{ key in filter.queryInterests ? 'selected' }}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Nom</label>
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_LAST_NAME', filter) }}"
+                                       value="{{ filter.queryLastName }}"
+                                       class="filter__field"
+                                       placeholder="Saisissez un nom"/>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Prénom</label>
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_FIRST_NAME', filter) }}"
+                                       value="{{ filter.queryFirstName }}"
+                                       class="filter__field"
+                                       placeholder="Saisissez un prénom"/>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Ville</label>
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
+                                       value="{{ filter.queryCity }}"
+                                       class="filter__field"
+                                       placeholder="Saisissez une ville"/>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Code postal, département ou pays</label>
+                                <input type="text"
+                                       name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
+                                       value="{{ filter.queryAreaCode }}"
+                                       class="filter__field"
+                                       placeholder="Exemple : '59400, 18, CH' "/>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="referent__filters__buttons">
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">
+                        Appliquer
+                    </button>
                     {% if has_filter %}
-                        <a href="{{ path('app_referent_users') }}" class="btn btn--no-border">
-                            Réinitialiser le filtre
+                        <a href="{{ path('app_referent_users') }}" class="btn btn--no-border b__nudge--bottom-medium">
+                            Réinitialiser les filtres
                         </a>
                     {% endif %}
-                    <button type="submit" class="btn btn--blue b__nudge--bottom-tiny">
-                        Filtrer pour envoyer un message
-                    </button>
                 </div>
 
                 <input type="hidden" name="{{ constant('PARAMETER_TOKEN', filter) }}" value="{{ filter.token }}" />
@@ -199,81 +263,35 @@
         </div>
     </div>
 
-    {% if has_filter %}
-        <div class="referent__filters__count">
-            <div class="text--body text--medium-small">{{ results_count }} contact(s) trouvé(s)</div>
-
-            <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn btn--primary b__nudge--top-10">
-                Leur envoyer un message
+    {% if has_filter and is_granted('ROLE_REFERENT') %}
+        <div class="b__nudge--bottom-large">
+            <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn-type-table" id="send-message-btn">
+                Contacter ({{ results_subscription_count }})
             </a>
         </div>
     {% endif %}
 
-    <div class="text--center">
-        {% block pager %}
-            {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
-            {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
-
-            {% if filter.offset > 0 %}
-                <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset(0) }}" class="btn btn--small">
-                    Première
-                </a>
-                <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="btn btn--small">
-                    Précédente
-                </a>
-            {% endif %}
-
-            <span class="btn btn--small btn--no-border">
-                    Page {{ current_page }} / {{ last_page }}
-                </span>
-
-            {% if filter.offset + constant('PER_PAGE', filter) < results_count %}
-                <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="btn btn--small">
-                    Suivante
-                </a>
-                <a href="{{ path('app_referent_users') ~ filter.queryStringForOffset((last_page - 1) * constant('PER_PAGE', filter)) }}" class="btn btn--small">
-                    Dernière
-                </a>
-            {% endif %}
-        {% endblock %}
-    </div>
-
     <div class="datagrid">
         <div class="b__nudge--bottom-larger">
-            <table class="datagrid__table">
+            <table class="datagrid__table-manager">
                 <thead>
                 <tr>
-                    <th style="width: 100px;">Prénom</th>
-                    <th style="width: 100px;">Nom</th>
+                    <th style="width: 100px;">Identité</th>
+                    <th style="width: 100px;">Rôle(s)</th>
                     <th style="width: 100px;">Téléphone</th>
-                    <th style="width: 100px;">Ville</th>
-                    <th style="width: 120px;" class="">Projets citoyens</th>
-                    <th style="width: 100px;" class="datagrid__table__col--left">Informations</th>
-                    <th style="width: 120px;" class="datagrid__table__col--left datagrid__table__col--hide-mobile">Comités</th>
-                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion</th>
+                    <th style="width: 100px;">Commune</th>
+                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion le</th>
+                    <th style="width: 100px;">{{ 'referent.status.email'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for user in results %}
                     <tr class="referent__item referent__item--{{ user.styleType }}">
-                        <td>{{ user.firstName }}</td>
-                        <td>{{ user.lastName }}</td>
-                        <td>{{ user.phone ? user.phone|phone_number_format : '~' }}</td>
-                        <td>{{ user.postalCode }} <br/> {{ user.city }}, {{ user.country }}</td>
-                        <td class="datagrid__table__col--left">
-                            <ul>
-                                {% for slug, name in user.citizenProjectsOrganizer %}
-                                    <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}"><strong>{{ name }}</strong></a></li>
-                                {% endfor %}
-
-                                {% for slug, name in user.citizenProjects %}
-                                    <li><a href="{{ path('app_citizen_project_show', {'slug': slug}) }}">{{ name }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                        <td class="datagrid__table__col--left">
-                            <small class="referent__item__metadata">
-                                {{ user.age ? user.age ~ ' ans' : '~'}},
+                        <td class="adherent-identity">
+                            <div class="adherent-name">
+                                {{ user.firstName }} {{ user.lastName }}
+                            </div>
+                            <div class="adherent-caracs">
                                 {% if user.gender %}
                                     {% if 'male' == user.gender %}
                                         {{ 'common.gender.man'|trans }}
@@ -282,47 +300,35 @@
                                     {% endif %}
                                 {% else %}
                                     ~
-                                {% endif %}
-                            </small>
-                            <br />
-                            <small>
-                                {% set isBasicAdherent = true %}
-                                {%- if user.citizenProjectsOrganizer -%}
-                                    {% set isBasicAdherent = false %}
-                                    Porteur du projet<br />
-                                {% endif %}
-                                {%- if user.isCommitteeSupervisor -%}
-                                    {% set isBasicAdherent = false %}
-                                    Animateur local<br />
-                                {% endif %}
-                                {%- if user.isCommitteeHost -%}
-                                    {% set isBasicAdherent = false %}
-                                    Co-animateur local<br />
-                                {% endif %}
-                                {%- if isBasicAdherent -%}
-                                    Adhérent
-                                {% endif %}
-                            </small>
-                            <br />
-                            <small class="text--italic">
-                                {% set interets = [] %}
-
-                                {% for interest in user.interests if adherent_interests[interest] is defined %}
-                                    {% set interets = interets|merge([adherent_interests[interest]]) %}
-                                {% endfor %}
-
-                                {{ interets|join(', ') }}
-                            </small>
+                                {% endif %},
+                                {{ user.age ? user.age ~ ' ans' : '~'}}
+                            </div>
                         </td>
-                        <td class="datagrid__table__col--left datagrid__table__col--hide-mobile">
-                            {% if user.committees %}
-                                {{ user.committees|e|join('<br />')|raw }}
-                            {% else %}
-                                ~
+                        <td>
+                            {% set isBasicAdherent = true %}
+                            {%- if user.citizenProjectsOrganizer -%}
+                                {% set isBasicAdherent = false %}
+                                Porteur du projet<br />
+                            {% endif %}
+                            {%- if user.isCommitteeSupervisor -%}
+                                {% set isBasicAdherent = false %}
+                                Animateur local<br />
+                            {% endif %}
+                            {%- if user.isCommitteeHost -%}
+                                {% set isBasicAdherent = false %}
+                                Co-animateur local<br />
+                            {% endif %}
+                            {%- if isBasicAdherent -%}
+                                Adhérent
                             {% endif %}
                         </td>
+                        <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+                        <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}
+                        </td>
+                        <td class="status status__{{ user.isMailSubscriber ? '1' : '2' }}">
+                            <span></span>{{ (user.isMailSubscriber ? 'referent.adherent.subscribed' : 'referent.adherent.unsubscribed')|trans }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -330,10 +336,43 @@
             </table>
         </div>
 
-        <hr />
+        {% block pager %}
+            <div class="datagrid__pager">
+                {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
+                {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
+                {% if last_page > 1 %}
+                <ul>
+                    <li>
+                        <div class="pager__go-to-page">
+                            <span>Aller à la page</span>
+                            <input type="number" placeholder="5" class="pager__action" />
+                            <span>Page {{ current_page }} sur {{ last_page }}</span>
+                        </div>
+                    </li>
 
-        <div class="text--center">
+                    <li>
+                        <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="pager__action switch">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                              <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
+                            </svg>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="pager__action switch">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
+                              <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        {% endblock %}
+
+        <!-- <div class="text--center">
             {{ block('pager') }}
-        </div>
+        </div> -->
+
     </div>
 {% endblock %}

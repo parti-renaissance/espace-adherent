@@ -209,6 +209,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $managedArea;
 
     /**
+     * Defines to which referent team the adherent belongs.
+     *
+     * @var ReferentTeamMember|null
+     *
+     * @ORM\OneToOne(targetEntity="ReferentTeamMember", mappedBy="member", cascade={"all"}, orphanRemoval=true)
+     */
+    private $referentTeamMember;
+
+    /**
      * @var CoordinatorManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
@@ -507,6 +516,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
+        }
+
+        if ($this->isCoReferent()) {
+            $roles[] = 'ROLE_COREFERENT';
         }
 
         if ($this->isDeputy()) {
@@ -952,6 +965,29 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedArea = $managedArea;
     }
 
+    public function getReferentTeamMember(): ?ReferentTeamMember
+    {
+        return $this->referentTeamMember;
+    }
+
+    public function setReferentTeamMember(?ReferentTeamMember $referentTeam): void
+    {
+        if ($referentTeam) {
+            $referentTeam->setMember($this);
+        }
+        $this->referentTeamMember = $referentTeam;
+    }
+
+    public function getReferentOfReferentTeam(): ?Adherent
+    {
+        return $this->referentTeamMember ? $this->referentTeamMember->getReferent() : null;
+    }
+
+    public function getMemberOfReferentTeam(): ?Adherent
+    {
+        return $this->referentTeamMember ? $this->referentTeamMember->getMember() : null;
+    }
+
     /**
      * @JMS\VirtualProperty
      * @JMS\SerializedName("managedAreaTagCodes"),
@@ -1028,6 +1064,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->managedArea instanceof ReferentManagedArea
             && !$this->managedArea->getTags()->isEmpty();
+    }
+
+    public function isCoReferent(): bool
+    {
+        return $this->referentTeamMember instanceof ReferentTeamMember;
     }
 
     public function revokeReferent(): void

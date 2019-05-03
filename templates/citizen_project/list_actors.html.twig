@@ -1,4 +1,4 @@
-{% extends 'citizen_project/_layout.html.twig' %}
+{% extends 'citizen_project/_space_layout.html.twig' %}
 
 {% block page_title "Acteurs du projet citoyen #{citizen_project.name}" %}
 {% block meta_description "Découvrez les #{citizen_project.membersCount} acteurs de #{citizen_project.name}, une action créée dans le cadre des projets citoyens de La République En Marche ! et portée à #{citizen_project.cityName}." %}
@@ -17,77 +17,54 @@
 {% block citizen_project_title %}Acteurs de {{ parent() }}{% endblock %}
 
 {% block citizen_project_content %}
-    <div class="l__wrapper l__row l__row--top l__row--h-stretch l__tablet--col">
-        <div class="committee__main l__wrapper--main l__wrapper--main-left">
-            <a href="{{ path('app_citizen_project_show', {slug: citizen_project.slug}) }}"
-               class="back-to-list icon--with-text text--summary space--20-0">
-                {{ include('components/caret--left.html.twig') }}
-                Retour au projet citoyen
-            </a>
-            <header class="space--30-0">
-                <h2 class="b__nudge--bottom-small text--medium">Liste des membres</h2>
-            </header>
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Liste des membres</h3>
+    </div>
 
-            {% if is_cp_administrator %}
-                <div class="committee__members__nav">
-                    <div>
-                        <form method="post" action="{{ path('app_citizen_project_contact_actors', {slug: citizen_project.slug}) }}">
-                            <input type="hidden" name="token" value="{{ csrf_token('citizen_project.contact_actors') }}" id="members-contact-token" />
-                            <input type="hidden" name="contacts" value="" id="members-contact-selection" />
-                            <button id="members-contact-button" class="btn b__nudge--right" disabled="disabled">Contacter</button>
-                        </form>
-                    </div>
-                </div>
-            {% endif %}
-
-            <table class="committee__members__list" cellpadding="10">
-                <tr>
+    <table class="datagrid__table-manager">
+        <thead>
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                {% if is_cp_administrator %}
+                    <th>Age</th>
+                    <th>CP</th>
+                    <th>Ville</th>
+                {% endif %}
+                    <th>Rôle</th>
+                {% if is_cp_administrator %}
+                    <th>Adhérent depuis le</th>
+                    <th>A rejoint le projet le</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for actor in actors %}
+                {% set member = actor.adherent %}
+                {% set is_promotable_host = actor.promotableAdministrator %}
+                <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
+                    <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+                    <td class="member-last-name">
+                        {{ not is_cp_administrator ? member.lastNameInitial|upper : member.lastName}}
+                    </td>
                     {% if is_cp_administrator %}
-                        <th><input type="checkbox" id="members-check-all" /></th>
+                        <td class="member-age">{{ member.age }}</td>
+                        <td class="member-postal-code">{{ member.postalCode }}</td>
+                        <td class="member-city-name">{{ member.cityName }}</td>
                     {% endif %}
-                    <th>Prénom</th>
-                    <th>Nom</th>
+                        <td>
+                            {% if not is_promotable_host %}
+                                Porteur du projet
+                            {% else %}
+                                Membre
+                            {% endif %}
+                        </td>
                     {% if is_cp_administrator %}
-                        <th>Age</th>
-                        <th>CP</th>
-                        <th>Ville</th>
-                    {% endif %}
-                        <th>Rôle</th>
-                    {% if is_cp_administrator %}
-                        <th>Adhésion</th>
+                        <td>{{ actor.adherent.registeredAt|date('d/m/Y') }}</td>
+                        <td class="member-subscription-date">{{ actor.subscriptionDate|date('d/m/Y') }}</td>
                     {% endif %}
                 </tr>
-                {% for actor in actors %}
-                    {% set member = actor.adherent %}
-                    {% set is_promotable_host = actor.promotableAdministrator %}
-                    <tr{{ not is_promotable_host ? ' class="committee__members__list__host"' : '' }}>
-                        {% if is_cp_administrator %}
-                            <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
-                        {% endif %}
-                        <td class="member-first-name">{{ member.firstName|capitalize }}</td>
-                        <td class="member-last-name">
-                            {{ not is_cp_administrator ? member.lastNameInitial|upper : member.lastName}}
-                        </td>
-                        {% if is_cp_administrator %}
-                            <td class="member-age">{{ member.age }}</td>
-                            <td class="member-postal-code">{{ member.postalCode }}</td>
-                            <td class="member-city-name">{{ member.cityName }}</td>
-                        {% endif %}
-                            <td>
-                                {% if not is_promotable_host %}
-                                    Porteur du projet
-                                {% else %}
-                                    Membre
-                                {% endif %}
-                            </td>
-                        {% if is_cp_administrator %}
-                            <td class="member-subscription-date">
-                                {{- actor.subscriptionDate|date('d/m/Y') -}}
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

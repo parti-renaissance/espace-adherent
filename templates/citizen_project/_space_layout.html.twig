@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% set is_cp_administrator = is_citizen_project_administrator(citizen_project) %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge adherent-space">
+            <header class="manager-header b__nudge--bottom-large adherent-space-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <a href="{{ path('app_citizen_project_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous mes projets citoyens</a>
+                        </div>
+                    </div>
+
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">{{ citizen_project.name }}</h1>
+
+                        {{ block('direct_actions') }}
+                    </div>
+
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_citizen_project_manager_edit') ? 'active' : '' }}">
+                                <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug }) }}">Modifier mon projet</a>
+                            </li>
+
+                            {% if citizen_project.isApproved() %}
+                                <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
+                                    <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
+                                </li>
+
+                                {% if is_canary_enabled() %}
+                                    <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
+                                        <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+
+                            <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' : '' }}">
+                                <a href="{{ path('app_citizen_project_image_generator', {slug: citizen_project.slug}) }}">Images de promotion</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block citizen_project_content %}{% endblock %}
+            </div>
+
+            <div id="managerOnScroll" class="manager__fixed-bar">
+                <div class="l__wrapper manager__fixed-bar__content">
+                    <p><span>{{ citizen_project.name }}</span></p>
+                    {{ block('direct_actions') }}
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block direct_actions %}
+    {% if citizen_project.isApproved() %}
+        <div class="direct-actions">
+            {% if is_canary_enabled() %}
+                <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
+            {% endif %}
+            {% if can_create_citizen_action(citizen_project) %}
+                <a class="btn btn--ghosting--blue" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
+        });
+    </script>
+{% endblock %}

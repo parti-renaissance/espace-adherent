@@ -1,10 +1,10 @@
-<div class="referent__filters__subtitle text--center">
-    Filtrer par zones gérées
-</div>
+<h4 class="manager__filters__subtitle">Filtrer par zones gérées</h4>
 
-<div class="l__wrapper--slim b__nudge--bottom-huge l__col l__col--center">
-    {{ form_errors(form.referentTag) }}
-    <div class="l__row">
-        {{ form_widget(form.referentTag, {attr: {class: 'form--full'}}) }}
+<div class="manager__filters__row">
+    <div class="manager__filters__section">
+        {{ form_errors(form.referentTag) }}
+        <div class="filter__row">
+            {{ form_widget(form.referentTag, {attr: {class: 'form--full'}}) }}
+        </div>
     </div>
 </div>

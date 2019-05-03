@@ -4,11 +4,8 @@
     <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
 {% endblock %}
 
-{% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
+{% block final_javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
     <script src="{{ asset('js/jquery.collection.js') }}"></script>
 
     <script type="text/javascript">
