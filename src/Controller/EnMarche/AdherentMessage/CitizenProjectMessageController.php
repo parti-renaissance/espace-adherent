@@ -6,7 +6,6 @@ use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
@@ -33,8 +32,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CitizenProjectMessageController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(name="list", methods={"GET"})
      *
@@ -46,8 +43,6 @@ class CitizenProjectMessageController extends Controller
         AdherentMessageRepository $repository,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
@@ -79,8 +74,6 @@ class CitizenProjectMessageController extends Controller
         ObjectManager $manager,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         $form = $this
             ->createForm(AdherentMessageType::class)
             ->handleRequest($request)
@@ -123,8 +116,6 @@ class CitizenProjectMessageController extends Controller
         ObjectManager $manager,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has already been sent.');
         }
@@ -166,8 +157,6 @@ class CitizenProjectMessageController extends Controller
         CitizenProjectAdherentMessage $message,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has already been sent.');
         }
@@ -184,8 +173,6 @@ class CitizenProjectMessageController extends Controller
         CitizenProjectAdherentMessage $message,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
@@ -203,8 +190,6 @@ class CitizenProjectMessageController extends Controller
         Manager $manager,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         return new Response($manager->getCampaignContent($message));
     }
 
@@ -218,8 +203,6 @@ class CitizenProjectMessageController extends Controller
         ObjectManager $manager,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         $manager->remove($message);
         $manager->flush();
 
@@ -239,8 +222,6 @@ class CitizenProjectMessageController extends Controller
         ObjectManager $entityManager,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not ready to send yet.');
         }
@@ -275,8 +256,6 @@ class CitizenProjectMessageController extends Controller
         Manager $manager,
         CitizenProject $citizenProject
     ): Response {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');
         }

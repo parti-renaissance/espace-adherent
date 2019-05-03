@@ -74,11 +74,9 @@
                                 <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
                             </li>
 
-                            {% if is_canary_enabled() %}
-                                <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
-                                    <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
-                                </li>
-                            {% endif %}
+                            <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
+                                <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
+                            </li>
 
                             <li class="{{ is_active_route(app.request, 'app_referent_institutional_events*') ? 'active' : '' }}">
                                 <a href="{{ path('app_referent_institutional_events') }}">Mes réunions privées</a>

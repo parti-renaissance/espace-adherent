@@ -27,11 +27,9 @@
                         <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}">Mes adhérents</a>
                     </li>
 
-                    {% if is_canary_enabled() %}
-                        <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
-                            <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
-                        </li>
-                    {% endif %}
+                    <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
+                        <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
+                    </li>
                 {% endif %}
             </ul>
         </nav>
@@ -67,9 +65,7 @@
 {% block direct_actions %}
     {% if committee.isApproved %}
         <div class="direct-actions">
-            {% if is_canary_enabled() %}
-                <a href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-            {% endif %}
+            <a href="{{ path('app_message_committee_create', {committee_slug: committee.slug}) }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
             <a href="{{ path('app_committee_manager_add_event', {slug: committee.slug}) }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer&nbsp;un&nbsp;</span>événement</a>
         </div>
     {% endif %}
