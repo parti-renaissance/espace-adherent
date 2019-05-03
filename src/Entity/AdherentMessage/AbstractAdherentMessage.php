@@ -222,7 +222,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     public function resetFilter(): void
     {
-        $this->filter = null;
+        $this->recipientCount = $this->filter = null;
     }
 
     public function getRecipientCount(): ?int

@@ -142,7 +142,6 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $queryBuilder = $this
             ->createQueryBuilder('message')
             ->select('COUNT(message.id)')
-            ->groupBy('message.author')
         ;
 
         $this
