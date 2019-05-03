@@ -8,7 +8,6 @@ use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\Command\CreateDefaultMessageFilterCommand;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
 use AppBundle\Form\AdherentMessage\AdherentMessageType;
@@ -26,8 +25,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractMessageController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(name="list", methods={"GET"})
      *
@@ -38,8 +35,6 @@ abstract class AbstractMessageController extends Controller
         UserInterface $adherent,
         AdherentMessageRepository $repository
     ): Response {
-        $this->disableInProduction();
-
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
@@ -71,8 +66,6 @@ abstract class AbstractMessageController extends Controller
         ObjectManager $manager,
         MessageBusInterface $bus
     ): Response {
-        $this->disableInProduction();
-
         $form = $this
             ->createForm(AdherentMessageType::class)
             ->handleRequest($request)
@@ -109,8 +102,6 @@ abstract class AbstractMessageController extends Controller
         AbstractAdherentMessage $message,
         ObjectManager $manager
     ): Response {
-        $this->disableInProduction();
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }
@@ -144,8 +135,6 @@ abstract class AbstractMessageController extends Controller
      */
     public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
@@ -160,8 +149,6 @@ abstract class AbstractMessageController extends Controller
      */
     public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
-        $this->disableInProduction();
-
         $manager->remove($message);
         $manager->flush();
 
@@ -177,8 +164,6 @@ abstract class AbstractMessageController extends Controller
      */
     public function getMessageTemplateAction(AbstractAdherentMessage $message, Manager $manager): Response
     {
-        $this->disableInProduction();
-
         return new Response($manager->getCampaignContent($message));
     }
 
@@ -193,8 +178,6 @@ abstract class AbstractMessageController extends Controller
         FilterFormFactory $formFactory,
         ObjectManager $manager
     ): Response {
-        $this->disableInProduction();
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }
@@ -243,8 +226,6 @@ abstract class AbstractMessageController extends Controller
         Manager $manager,
         ObjectManager $entityManager
     ): Response {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to send.');
         }
@@ -276,8 +257,6 @@ abstract class AbstractMessageController extends Controller
      */
     public function sendTestMessageAction(AbstractAdherentMessage $message, Manager $manager): Response
     {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');
         }

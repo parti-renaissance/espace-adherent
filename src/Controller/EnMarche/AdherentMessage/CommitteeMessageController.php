@@ -6,7 +6,6 @@ use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
@@ -34,8 +33,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class CommitteeMessageController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(name="list", methods={"GET"})
      *
@@ -47,8 +44,6 @@ class CommitteeMessageController extends Controller
         AdherentMessageRepository $repository,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         $status = $request->query->get('status');
 
         if ($status && !AdherentMessageStatusEnum::isValid($status)) {
@@ -80,8 +75,6 @@ class CommitteeMessageController extends Controller
         ObjectManager $manager,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         $form = $this
             ->createForm(CommitteeAdherentMessageType::class)
             ->handleRequest($request)
@@ -127,8 +120,6 @@ class CommitteeMessageController extends Controller
         ObjectManager $manager,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has already been sent.');
         }
@@ -171,8 +162,6 @@ class CommitteeMessageController extends Controller
      */
     public function filterMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
-        $this->disableInProduction();
-
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has already been sent.');
         }
@@ -187,8 +176,6 @@ class CommitteeMessageController extends Controller
      */
     public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
@@ -206,8 +193,6 @@ class CommitteeMessageController extends Controller
         Manager $manager,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         return new Response($manager->getCampaignContent($message));
     }
 
@@ -221,8 +206,6 @@ class CommitteeMessageController extends Controller
         ObjectManager $manager,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         $manager->remove($message);
         $manager->flush();
 
@@ -242,8 +225,6 @@ class CommitteeMessageController extends Controller
         ObjectManager $entityManager,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not ready to send yet.');
         }
@@ -287,8 +268,6 @@ class CommitteeMessageController extends Controller
         Manager $manager,
         Committee $committee
     ): Response {
-        $this->disableInProduction();
-
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');
         }

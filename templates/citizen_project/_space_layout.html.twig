@@ -30,11 +30,9 @@
                                     <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
                                 </li>
 
-                                {% if is_canary_enabled() %}
-                                    <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
-                                        <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
-                                    </li>
-                                {% endif %}
+                                <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
+                                    <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
+                                </li>
                             {% endif %}
 
                             <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' : '' }}">
@@ -62,9 +60,7 @@
 {% block direct_actions %}
     {% if citizen_project.isApproved() %}
         <div class="direct-actions">
-            {% if is_canary_enabled() %}
-                <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
-            {% endif %}
+            <a class="btn btn--blue" href="{{ path('app_message_citizen_project_create', {citizen_project_slug: citizen_project.slug}) }}">+ Nouveau message</a>
             {% if can_create_citizen_action(citizen_project) %}
                 <a class="btn btn--ghosting--blue" href="{{ path('app_citizen_action_manager_create', {project_slug: citizen_project.slug}) }}">+ Action citoyenne</a>
             {% endif %}
