@@ -34,7 +34,7 @@ class AbstractMessageControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         self::assertSame(
-            'Filtrer par zones gérées',
+            'Filtrer par',
             trim($crawler->filter('h4.manager__filters__subtitle')->text())
         );
     }

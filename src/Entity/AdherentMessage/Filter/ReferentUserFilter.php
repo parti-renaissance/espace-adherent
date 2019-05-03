@@ -230,4 +230,9 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
     {
         return $this->referentTag;
     }
+
+    public function setReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTag = $referentTag;
+    }
 }

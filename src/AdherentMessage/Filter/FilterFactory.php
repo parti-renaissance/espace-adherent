@@ -32,7 +32,7 @@ abstract class FilterFactory
 
         $tags = $managedArea->getTags();
 
-        return $tags->count() > 1 ? new AdherentZoneFilter() : new ReferentUserFilter($tags->first());
+        return new ReferentUserFilter($tags->first());
     }
 
     private static function createDeputyFilter(Adherent $user): AdherentMessageFilterInterface

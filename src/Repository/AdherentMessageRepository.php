@@ -43,6 +43,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $this
             ->withAuthor($queryBuilder, $adherent)
             ->withMessageType($queryBuilder, $type)
+            ->orderByDate($queryBuilder)
         ;
 
         if ($status) {
@@ -70,6 +71,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ->withMessageType($queryBuilder, AdherentMessageTypeEnum::COMMITTEE)
             ->withAuthor($queryBuilder, $adherent)
             ->withCommittee($queryBuilder, $committee)
+            ->orderByDate($queryBuilder)
         ;
 
         if ($status) {
@@ -94,6 +96,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ->withMessageType($queryBuilder, AdherentMessageTypeEnum::CITIZEN_PROJECT)
             ->withAuthor($queryBuilder, $adherent)
             ->withCitizenProject($queryBuilder, $citizenProject)
+            ->orderByDate($queryBuilder)
         ;
 
         if ($status) {
@@ -219,6 +222,13 @@ class AdherentMessageRepository extends ServiceEntityRepository
             ->andWhere('filter.committee = :committee')
             ->setParameter('committee', $committee)
         ;
+
+        return $this;
+    }
+
+    private function orderByDate(QueryBuilder $queryBuilder, string $alias = 'message', string $order = 'DESC'): self
+    {
+        $queryBuilder->orderBy("$alias.createdAt", $order);
 
         return $this;
     }
