@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -388,6 +389,11 @@ class AssessorRequest
     public function setGender(string $gender): void
     {
         $this->gender = $gender;
+    }
+
+    public function getGenderName(): ?string
+    {
+        return array_search($this->gender, Genders::CHOICES);
     }
 
     public function getLastName(): ?string

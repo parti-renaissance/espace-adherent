@@ -30,6 +30,31 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         ;
     }
 
+    /**
+     * @return AssessorRequest[]
+     */
+    public function findAllProcessedManagedRequests(Adherent $manager): array
+    {
+        if (!$manager->isAssessorManager()) {
+            throw new \InvalidArgumentException('Adherent must be an assessor manager.');
+        }
+
+        $qb = $this->createQueryBuilder(self::ALIAS);
+
+        self::addAndWhereManagedBy($qb, $manager);
+
+        return $qb
+            ->addSelect('vp')
+            ->leftJoin(self::ALIAS.'.votePlace', 'vp')
+            ->andWhere(self::ALIAS.'.processed = true')
+            ->andWhere(self::ALIAS.'.enabled = true')
+            ->addOrderBy('vp.country', 'DESC')
+            ->addOrderBy('vp.code', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function findMatchingRequests(Adherent $manager, AssessorRequestFilters $filters): array
     {
         if (!$manager->isAssessorManager()) {
@@ -40,7 +65,7 @@ class AssessorRequestRepository extends AbstractAssessorRepository
 
         $filters->apply($qb, self::ALIAS);
 
-        self::addAndWhereManagedBy($qb, $manager, self::ALIAS);
+        self::addAndWhereManagedBy($qb, $manager);
 
         $requests = $qb->getQuery()->getResult();
 

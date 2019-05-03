@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Assessor\AssessorManager;
+use AppBundle\Assessor\AssessorRequestExporter;
 use AppBundle\Assessor\Filter\AssessorRequestFilters;
 use AppBundle\Assessor\Filter\VotePlaceFilters;
 use AppBundle\Entity\ActionEnum;
@@ -10,7 +11,9 @@ use AppBundle\Entity\AssessorRequest;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exception\AssessorException;
 use AppBundle\Form\ConfirmActionType;
+use AppBundle\Repository\AssessorRequestRepository;
 use AppBundle\Repository\VotePlaceRepository;
+use AppBundle\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -234,5 +237,33 @@ class AssessorManagerController extends Controller
         return $this->render('assessor_manager/_requests_list.html.twig', [
             'votePlaces' => $votePlaces,
         ]);
+    }
+
+    /**
+     * @Route(
+     *     "/vote-places/export",
+     *     name="app_assessor_manager_vote_places_export",
+     *     methods={"GET"}
+     * )
+     */
+    public function votePlacesExportAction(
+        AssessorRequestRepository $repository,
+        AssessorRequestExporter $exporter
+    ): Response {
+        return new Response(
+            $exporter->export(
+                $repository->findAllProcessedManagedRequests($this->getUser())
+            ),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => sprintf(
+                    "attachment;filename='%s.%s'",
+                    AssessorRequestExporter::FILE_NAME,
+                    XlsxEncoder::FORMAT
+                ),
+                'Cache-Control' => 'max-age=0',
+            ]
+        );
     }
 }
