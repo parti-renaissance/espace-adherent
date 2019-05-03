@@ -48,7 +48,7 @@
                 <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
                     <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
                     <td class="member-first-name">{{ member.firstName|capitalize }}</td>
-                    <td class="member-last-name">{{ member.lastName|capitalize }}</td>
+                    <td class="member-last-name">{{ member.lastNameInitial }}</td>
                     <td class="member-age">{{ member.age }}</td>
                     <td class="member-postal-code">{{ member.postalCode }}</td>
                     <td class="member-city-name">{{ member.cityName }}</td>
