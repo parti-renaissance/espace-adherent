@@ -18,7 +18,6 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
 use AppBundle\Form\Jecoute\SurveyFormType;
-use AppBundle\Form\PotentialCoReferentsType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
@@ -548,32 +547,16 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/mon-equipe", name="app_referent_organizational_chart", methods={"GET|POST"})
+     * @Route("/mon-equipe", name="app_referent_organizational_chart", methods={"GET"})
      * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
      */
     public function organizationalChartAction(
-        Request $request,
         OrganizationalChartItemRepository $organizationalChartItemRepository,
-        ReferentRepository $referentRepository,
-        ObjectManager $manager
-    ) {
-        $referent = $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress());
-
-        $form = $this
-            ->createForm(PotentialCoReferentsType::class, [
-                'referentPersonLinks' => $referent->getReferentPersonLinksWithExistingAdherent(),
-            ])
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->flush();
-        }
-
+        ReferentRepository $referentRepository
+    ): Response {
         return $this->render('referent/organizational_chart.html.twig', [
-            'form' => $form->createView(),
             'organization_chart_items' => $organizationalChartItemRepository->getRootNodes(),
-            'referent' => $referent,
+            'referent' => $referentRepository->findOneByEmailAndSelectPersonOrgaChart($this->getUser()->getEmailAddress()),
         ]);
     }
 

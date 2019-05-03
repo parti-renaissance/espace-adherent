@@ -14,7 +14,7 @@
             {{ form_row(form_referent_person_link.email, { attr: { placeholder: "Indiquez ici son adresse mail d’adhérent" } }) }}
             {% if form_referent_person_link.email.vars.disabled %}
                 <div class="text--small text--gray b__nudge--bottom">
-                    {{ 'referent.email.unchangeable'|trans }}
+                    {{ 'referent.email.unchangeable'|trans|raw }}
                 </div>
             {% endif %}
             {{ form_row(form_referent_person_link.phone) }}

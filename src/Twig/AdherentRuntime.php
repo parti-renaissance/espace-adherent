@@ -38,7 +38,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isCoReferent()) {
-            return $adherent->isFemale() ? 'Co-Référente 🥇' : 'Co-Référent 🥇';
+            return 'Équipe du référent 🥈';
         }
 
         if ($adherent->isDeputy()) {
