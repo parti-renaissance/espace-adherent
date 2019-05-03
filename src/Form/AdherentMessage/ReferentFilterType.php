@@ -5,6 +5,7 @@ namespace AppBundle\Form\AdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MemberInterestsChoiceType;
+use AppBundle\Form\MyReferentTagChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -33,6 +34,7 @@ class ReferentFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
+            ->add('referentTag', MyReferentTagChoiceType::class)
         ;
     }
 

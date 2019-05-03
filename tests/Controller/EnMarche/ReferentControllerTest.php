@@ -586,19 +586,19 @@ class ReferentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $crawlerCheckbox = $crawler->filter('#referent_zone_filter_referentTag .form__label');
+        $crawlerOptions = $crawler->filter('#referent_filter_referentTag option');
 
-        self::assertCount(6, $crawlerCheckbox);
-        self::assertSame('Département 13', $crawlerCheckbox->getNode(0)->nodeValue);
-        self::assertSame('Département 76', $crawlerCheckbox->getNode(1)->nodeValue);
-        self::assertSame('Département 77', $crawlerCheckbox->getNode(2)->nodeValue);
-        self::assertSame('Département 92', $crawlerCheckbox->getNode(3)->nodeValue);
-        self::assertSame('Espagne', $crawlerCheckbox->getNode(4)->nodeValue);
-        self::assertSame('Suisse', $crawlerCheckbox->getNode(5)->nodeValue);
+        self::assertCount(6, $crawlerOptions);
+        self::assertSame('Département 13', $crawlerOptions->getNode(0)->nodeValue);
+        self::assertSame('Département 76', $crawlerOptions->getNode(1)->nodeValue);
+        self::assertSame('Département 77', $crawlerOptions->getNode(2)->nodeValue);
+        self::assertSame('Département 92', $crawlerOptions->getNode(3)->nodeValue);
+        self::assertSame('Espagne', $crawlerOptions->getNode(4)->nodeValue);
+        self::assertSame('Suisse', $crawlerOptions->getNode(5)->nodeValue);
 
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
-                'referent_zone_filter' => [
+                'referent_filter' => [
                     'referentTag' => 13,
                 ],
             ])
