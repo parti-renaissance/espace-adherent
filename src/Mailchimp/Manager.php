@@ -12,6 +12,7 @@ use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Manager implements LoggerAwareInterface
 {
@@ -25,11 +26,16 @@ class Manager implements LoggerAwareInterface
 
     private $driver;
     private $requestBuildersLocator;
+    private $eventDispatcher;
 
-    public function __construct(Driver $driver, ContainerInterface $requestBuildersLocator)
-    {
+    public function __construct(
+        Driver $driver,
+        ContainerInterface $requestBuildersLocator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->driver = $driver;
         $this->requestBuildersLocator = $requestBuildersLocator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -76,6 +82,8 @@ class Manager implements LoggerAwareInterface
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
         $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($message);
+
+        $this->eventDispatcher->dispatch(Events::CAMPAIGN_PRE_EDIT, new RequestEvent($message, $editCampaignRequest));
 
         // When ExternalId does not exist, then it is Campaign creation
         if (!$campaignId = $message->getExternalId()) {

@@ -63,6 +63,11 @@ class EditCampaignRequest implements RequestInterface
         return $this;
     }
 
+    public function hasReplyTo(): bool
+    {
+        return !empty($this->replyTo);
+    }
+
     public function isEmptySegmentConditions(): bool
     {
         return empty($this->segmentOptions['conditions']);
