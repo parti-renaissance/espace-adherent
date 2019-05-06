@@ -67,7 +67,7 @@ class ProcurationControllerTest extends WebTestCase
         );
         $this->assertSame(
             'Vous avez des questions concernant les modalités du vote par procuration ? Cliquez ici !',
-            trim($crawler->filter('.procuration > div > p#procuration_faq')->text())
+            trim($crawler->filter('.procuration .l__wrapper p#procuration_faq')->text())
         );
 
         $this->assertCount(1, $crawler->filter('.procuration__content a:contains("Je me porte mandataire")'));
