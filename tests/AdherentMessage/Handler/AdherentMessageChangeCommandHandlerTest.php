@@ -19,6 +19,8 @@ use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder;
+use AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
+use AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder;
 use AppBundle\Mailchimp\Driver;
@@ -30,6 +32,8 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdherentMessageChangeCommandHandlerTest extends TestCase
@@ -56,9 +60,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'settings' => [
                         'folder_id' => '3',
                         'template_id' => 3,
-                        'subject_line' => 'Subject',
+                        'subject_line' => '[Comité] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'FromName',
+                        'reply_to' => 'adherent@mail.com',
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
@@ -114,9 +118,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'settings' => [
                         'folder_id' => '1',
                         'template_id' => 1,
-                        'subject_line' => 'Subject',
+                        'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'FromName',
+                        'reply_to' => 'adherent@mail.com',
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
@@ -171,9 +175,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'settings' => [
                         'folder_id' => '2',
                         'template_id' => 2,
-                        'subject_line' => 'Subject',
+                        'subject_line' => '[Député] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'FromName',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
@@ -221,6 +225,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             '__toString' => 'Full Name',
             'getFullName' => 'Full Name',
             'getFirstName' => 'First Name',
+            'getEmailAddress' => 'adherent@mail.com',
             'getManagedDistrict' => $this->createConfiguredMock(District::class, ['__toString' => 'District1']),
         ]);
 
@@ -283,9 +288,22 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         return new AdherentMessageChangeCommandHandler(
             $this->createRepositoryMock($message),
-            new Manager(new Driver($this->clientMock, 'test'), $this->creatRequestBuildersLocator()),
+            new Manager(
+                new Driver($this->clientMock, 'test'),
+                $this->creatRequestBuildersLocator(),
+                $this->createEventDispatcher()
+            ),
             $this->createMock(ObjectManager::class)
         );
+    }
+
+    private function createEventDispatcher(): EventDispatcherInterface
+    {
+        $eventDispatcher = new EventDispatcher();
+        $eventDispatcher->addSubscriber(new SetCampaignReplyToSubscriber());
+        $eventDispatcher->addSubscriber(new UpdateCampaignSubjectSubscriber());
+
+        return $eventDispatcher;
     }
 }
 

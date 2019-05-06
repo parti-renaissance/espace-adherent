@@ -9,7 +9,6 @@ class CampaignRequestBuilder
 {
     private $objectIdMapping;
     private $listId;
-    private $replyEmailAddress;
     private $fromName;
     private $segmentConditionsBuilder;
 
@@ -17,13 +16,11 @@ class CampaignRequestBuilder
         MailchimpObjectIdMapping $objectIdMapping,
         SegmentConditionsBuilder $segmentConditionsBuilder,
         string $listId,
-        string $replyEmailAddress,
         string $fromName
     ) {
         $this->objectIdMapping = $objectIdMapping;
         $this->segmentConditionsBuilder = $segmentConditionsBuilder;
         $this->listId = $listId;
-        $this->replyEmailAddress = $replyEmailAddress;
         $this->fromName = $fromName;
     }
 
@@ -36,7 +33,7 @@ class CampaignRequestBuilder
             ->setTitle(sprintf('%s - %s', $message->getAuthor(), (new \DateTime())->format('d/m/Y')))
             ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($message) : [])
             ->setFromName($message->getFromName() ?? $this->fromName)
-            ->setReplyTo($message->getReplyTo() ?? $this->replyEmailAddress)
+            ->setReplyTo($message->getReplyTo())
         ;
     }
 }
