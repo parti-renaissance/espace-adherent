@@ -141,7 +141,7 @@ class VotePlace
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return $this->getLabel();
     }
 
     public function getId(): int
@@ -157,6 +157,11 @@ class VotePlace
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getLabel(): string
+    {
+        return (string) !empty($this->name) ? $this->name : $this->code;
     }
 
     public function getAddress(): string

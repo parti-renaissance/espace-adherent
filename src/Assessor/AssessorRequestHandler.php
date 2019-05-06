@@ -2,7 +2,7 @@
 
 namespace AppBundle\Assessor;
 
-use AppBundle\Repository\VotePlaceRepository;
+use AppBundle\VotePlace\VotePlaceManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;
@@ -13,20 +13,20 @@ final class AssessorRequestHandler
 
     private $stateMachine;
     private $manager;
-    private $votePlaceRepository;
+    private $votePlaceManager;
     private $assessorRequestFactory;
     private $session;
 
     public function __construct(
         StateMachine $stateMachine,
         EntityManagerInterface $manager,
-        VotePlaceRepository $votePlaceRepository,
+        VotePlaceManager $votePlaceManager,
         AssessorRequestFactory $assessorRequestFactory,
         SessionInterface $session
     ) {
         $this->stateMachine = $stateMachine;
         $this->manager = $manager;
-        $this->votePlaceRepository = $votePlaceRepository;
+        $this->votePlaceManager = $votePlaceManager;
         $this->assessorRequestFactory = $assessorRequestFactory;
         $this->session = $session;
     }
@@ -96,9 +96,7 @@ final class AssessorRequestHandler
     public function getVotePlaceWishesLabels(AssessorRequestCommand $assessorRequestCommand): ?array
     {
         if ($this->stateMachine->can($assessorRequestCommand, AssessorRequestEnum::TRANSITION_VALID_SUMMARY)) {
-            return $this->votePlaceRepository->findVotePlaceNameByIds(
-                $assessorRequestCommand->getVotePlaceWishes()
-            );
+            return $this->votePlaceManager->getVotePlacesLabelsByIds($assessorRequestCommand->getVotePlaceWishes());
         }
 
         return null;

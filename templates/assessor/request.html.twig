@@ -56,10 +56,10 @@
                     const votePlaceWishesSelect = $('.select-vote-place-wishes');
                     const votePlaces = [];
 
-                    $.each(data, function (value, key) {
+                    $.each(data, function (id, label) {
                         votePlaces.push({
-                            id: key,
-                            text: value,
+                            id: id,
+                            text: label,
                         });
                     });
 

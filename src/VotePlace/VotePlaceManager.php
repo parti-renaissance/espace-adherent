@@ -40,11 +40,16 @@ class VotePlaceManager
         return $this->formatVotePlaceWishes($this->repository->findByCountry($country));
     }
 
+    public function getVotePlacesLabelsByIds(array $votePlacesIds): array
+    {
+        return $this->formatVotePlaceWishes($this->repository->findAllByIds($votePlacesIds));
+    }
+
     private function formatVotePlaceWishes(array $votePlaces): array
     {
         /** @var VotePlace $votePlace */
         foreach ($votePlaces as $votePlace) {
-            $choices[$votePlace->getName()] = $votePlace->getId();
+            $choices[$votePlace->getId()] = $votePlace->getLabel();
         }
 
         return $choices ?? [];
