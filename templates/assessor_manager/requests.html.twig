@@ -23,13 +23,21 @@
             {% endif %}
         </div>
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large assessor_requests_total_count">
+        <div class="text--body text--center assessor_requests_total_count b__nudge--top-10">
             {% if constant('PROCESSED', filters) == filters.status %}
                 {{ 'assessor.processed.choices'|transchoice(total_count) }}
             {% else %}
                 {{ 'assessor.unprocessed.choices'|transchoice(total_count) }}
             {% endif %}
         </div>
+        {% if constant('UNPROCESSED', filters) == filters.status %}
+            <div class="text-body text--left b__nudge--top-10 b__nudge--bottom-small">
+                Vous pouvez assigner un assesseur à n'importe quel bureau de vote du département (ou du pays dans le cas des FDE).<br/>
+                Néanmoins, veuillez tenir compte du fait que les bureaux de vote souhaités sont listés dans l'ordre des
+                préférences du demandeur.<br/>
+                Veuillez également tenir compte du souhait du demandeur d'être titulaire ou suppléant.
+            </div>
+        {% endif %}
     {% endif %}
 
     {% if requests|length %}
