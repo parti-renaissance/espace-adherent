@@ -21,6 +21,11 @@
                 <p class="text--center">
                     Zones gérées : {{ app.user.assessorManagedAreaCodesAsString }}
                 </p>
+                <div class="form__row text--center">
+                    <a id="vote-places-export" href="{{ path('app_assessor_manager_vote_places_export') }}" class="btn btn--blue btn--small">
+                        Exporter les bureaux de vote traités
+                    </a>
+                </div>
             </header>
 
             <div class="l__wrapper assessor-manager__content">

@@ -5,6 +5,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 use AppBundle\Assessor\Filter\AssessorRequestFilters;
 use AppBundle\Assessor\Filter\VotePlaceFilters;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -573,5 +574,83 @@ class AssessorManagerControllerTest extends WebTestCase
 
         $this->assertCount(1, $message);
         $this->assertRegExp("/^$regexp\$/", trim($message->text()));
+    }
+
+    public function testAssessorRequestExport()
+    {
+        $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
+
+        $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_VOTE_PLACE_PATH);
+        $this->isSuccessful($this->client->getResponse());
+
+        $this->assertSame('Exporter les bureaux de vote traités', trim($crawler->filter('#vote-places-export')->text()));
+        $this->client->click($crawler->selectLink('Exporter les bureaux de vote traités')->link());
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $lines = $this->transformToArray($this->client->getResponse()->getContent());
+
+        $this->assertArraySubset(
+            [
+                'Ville du bureau de vote',
+                'Nom du bureau vote',
+                'Adresse du bureau de vote',
+                'Pays du bureau de vote',
+                'Fonction',
+                'Genre',
+                'Nom',
+                'Nom de naissance',
+                'Prénom',
+                'Date de naissance',
+                'Lieu de naissance',
+                'Adresse',
+                'Code postal',
+                'Ville',
+                "BV d'inscription sur les listes",
+                "Ville du BV d'inscription sur les listes",
+                'Adresse email',
+                'Téléphone',
+            ],
+            $lines[0]
+        );
+
+        $this->assertArraySubset(
+            [
+                'Saint-Denis',
+                'Ecole Maternelle La Source',
+                '15, Rue Auguste Blanqui',
+                'France',
+                'Titulaire',
+                'Masculin',
+                'Luc',
+                'Luc',
+                'Ratif',
+                '04/02/1992',
+                'Paris',
+                '70 Rue Saint-Martin',
+                '93008',
+                'Paris',
+                '93008_0005',
+                'Bobigny',
+                'luc.ratif@example.fr',
+                '+33 6 12 34 56 78',
+            ],
+            $lines[2]
+        );
+
+        $this->assertCount(4, $lines);
+    }
+
+    private function transformToArray(string $encodedData): array
+    {
+        $tmpHandle = \tmpfile();
+        fwrite($tmpHandle, $encodedData);
+        $metaDatas = stream_get_meta_data($tmpHandle);
+        $tmpFilename = $metaDatas['uri'];
+
+        $reader = new Xlsx();
+        $spreadsheet = $reader->load($tmpFilename);
+        $array = $spreadsheet->getActiveSheet()->toArray();
+
+        return $array;
     }
 }

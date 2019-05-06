@@ -139,7 +139,7 @@ class CommitteeManagerController extends Controller
                         'registered_at' => "Date d'adhesion",
                     ],
                 ]
-            ), 200, [
+            ), Response::HTTP_OK, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition' => 'attachment;filename="membres-du-comite.xlsx"',
             'Cache-Control' => 'max-age=0',
