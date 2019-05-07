@@ -19,7 +19,7 @@ class ReferentPersonLinkRepository extends ServiceEntityRepository
     public function findOrCreateByOrgaItemAndReferent(
         PersonOrganizationalChartItem $organizationalChartItem,
         Referent $referent
-    ): ?ReferentPersonLink {
+    ): ReferentPersonLink {
         return $this->createQueryBuilder('referent_person_link')
             ->where('referent_person_link.referent = :referent')
             ->andWhere('referent_person_link.personOrganizationalChartItem = :personOrganizationalChartItem')

@@ -4,13 +4,14 @@ namespace AppBundle\Entity\ReferentOrganizationalChart;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Referent;
-use AppBundle\Validator\CanBeCoReferent;
+use AppBundle\Validator\ValidAdherentCoReferent;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\PersonLinkAdherentAttachListener"})
+ *
+ * @ValidAdherentCoReferent
  */
 class ReferentPersonLink
 {
@@ -87,8 +88,6 @@ class ReferentPersonLink
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @CanBeCoReferent
      */
     private $isCoReferent = false;
 

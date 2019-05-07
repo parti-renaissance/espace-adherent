@@ -83,7 +83,7 @@
                             </li>
 
                             {% if is_granted('IS_ROOT_REFERENT') %}
-                                <li class="{{ is_active_route(app.request, 'app_referent_organizational_chart') ? 'active' : '' }}">
+                                <li class="{{ is_active_route(app.request, ['app_referent_organizational_chart', 'app_referent_referent_person_link_edit']) ? 'active' : '' }}">
                                     <a href="{{ path('app_referent_organizational_chart') }}">Mon équipe</a>
                                 </li>
                             {% endif %}
