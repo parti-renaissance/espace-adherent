@@ -139,15 +139,14 @@ class VotePlaceRepository extends AbstractAssessorRepository
         ;
     }
 
-    public function findVotePlaceNameByIds(array $ids): array
+    public function findAllByIds(array $ids): array
     {
         return $this
             ->createQueryBuilder('votePlace')
-            ->select('votePlace.name')
             ->where('votePlace.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
          ;
     }
 }

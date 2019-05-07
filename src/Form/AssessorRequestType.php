@@ -148,9 +148,9 @@ class AssessorRequestType extends AbstractType
             $formEvent->getForm()
                 ->add('votePlaceWishes', ChoiceType::class, [
                     'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode) {
-                        return $this->votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
+                        return array_flip($this->votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
                             $assessorCountry, $assessorPostalCode
-                        );
+                        ));
                     }),
                     'multiple' => true,
                 ])
@@ -161,7 +161,7 @@ class AssessorRequestType extends AbstractType
             $formEvent->getForm()
                 ->add('assessorCity', ChoiceType::class, [
                     'choice_loader' => new CallbackChoiceLoader(function () use ($assessorPostalCode) {
-                        return $this->formatCitiesByPostalCode($assessorPostalCode);
+                        return array_flip($this->formatCitiesByPostalCode($assessorPostalCode));
                     }),
                 ])
             ;
