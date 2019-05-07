@@ -225,7 +225,7 @@ class AssessorRequestCommand
         return $this->birthdate;
     }
 
-    public function setBirthdate(\DateTime $birthdate): void
+    public function setBirthdate(?\DateTime $birthdate): void
     {
         $this->birthdate = $birthdate;
     }
@@ -305,7 +305,7 @@ class AssessorRequestCommand
         return $this->phone;
     }
 
-    public function setPhone(PhoneNumber $phone): void
+    public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
     }
@@ -335,7 +335,7 @@ class AssessorRequestCommand
         return $this->assessorCountry;
     }
 
-    public function setAssessorCountry(string $assessorCountry): void
+    public function setAssessorCountry(?string $assessorCountry): void
     {
         $this->assessorCountry = $assessorCountry;
     }

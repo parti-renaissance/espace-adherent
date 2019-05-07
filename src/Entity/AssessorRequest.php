@@ -416,7 +416,7 @@ class AssessorRequest
         $this->firstName = $firstName;
     }
 
-    public function getBirthName(): string
+    public function getBirthName(): ?string
     {
         return $this->birthName;
     }
