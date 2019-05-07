@@ -54,6 +54,8 @@ class LoadOrganizationalChartItemData extends Fixture
                                                         'phone' => '',
                                                         'postalAddress' => '39 rue de Crimée, Marseille',
                                                         'referent' => 'referent3',
+                                                        'isCoReferent' => true,
+                                                        'adherent' => 'adherent-6',
                                                     ],
                                                 ],
                                             ],
@@ -106,6 +108,8 @@ class LoadOrganizationalChartItemData extends Fixture
                                         'phone' => '06 23 45 67 89',
                                         'postalAddress' => '13 boulevard des Italiens, Paris',
                                         'referent' => 'referent3',
+                                        'isCoReferent' => true,
+                                        'adherent' => 'adherent-4',
                                     ],
                                 ],
                                 'resp_digital' => [
@@ -176,6 +180,11 @@ class LoadOrganizationalChartItemData extends Fixture
             /** @var PersonOrganizationalChartItem $orgaChartItem */
             $referentPersonLink = new ReferentPersonLink($orgaChartItem, $this->getReference($refItems['referent']));
             unset($refItems['referent']);
+            if (isset($refItems['adherent'])) {
+                $referentPersonLink->setAdherent($this->getReference($refItems['adherent']));
+                unset($refItems['adherent']);
+            }
+
             foreach ($refItems as $key => $value) {
                 $referentPersonLink->{'set'.ucfirst($key)}($value);
             }
@@ -193,6 +202,7 @@ class LoadOrganizationalChartItemData extends Fixture
     {
         return [
             LoadReferentData::class,
+            LoadAdherentData::class,
         ];
     }
 }

@@ -12,7 +12,6 @@ use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
@@ -29,6 +28,7 @@ use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
+use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Referent\SurveyExporter;
@@ -561,39 +561,44 @@ class ReferentController extends Controller
     }
 
     /**
-     * @Route("/mon-equipe/{id}", name="app_referent_referent_person_link_edit")
+     * @Route("/mon-equipe/{id}", name="app_referent_referent_person_link_edit", methods={"GET", "POST"})
      * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
      */
     public function editReferentPersonLink(
         Request $request,
         ReferentPersonLinkRepository $referentPersonLinkRepository,
         ReferentRepository $referentRepository,
-        PersonOrganizationalChartItem $personOrganizationalChartItem
+        PersonOrganizationalChartItem $personOrganizationalChartItem,
+        OrganizationalChartManager $manager
     ) {
-        $form = $this->createForm(
-            ReferentPersonLinkType::class,
-            $referentPersonLinkRepository->findOrCreateByOrgaItemAndReferent(
-                $personOrganizationalChartItem,
-                $referentRepository->findOneByEmail($this->getUser()->getEmailAddress())
-            )
+        $personLink = $referentPersonLinkRepository->findOrCreateByOrgaItemAndReferent(
+            $personOrganizationalChartItem,
+            $referentRepository->findOneByEmail($this->getUser()->getEmailAddress())
         );
-        $form->handleRequest($request);
+
+        if ($request->request->has('delete')) {
+            $manager->delete($personLink);
+
+            $this->addFlash('info', 'Organigramme mis à jour.');
+
+            return $this->redirectToRoute('app_referent_organizational_chart');
+        }
+
+        $form = $this
+            ->createForm(ReferentPersonLinkType::class, $personLink)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ReferentPersonLink $referentPersonLink */
-            $referentPersonLink = $form->getData();
-            $em = $this->getDoctrine()->getManager();
+            $manager->save($personLink);
 
-            $em->persist($referentPersonLink);
-            $em->flush();
-
-            $this->addFlash('success', 'Organigramme mis à jour.');
+            $this->addFlash('info', 'Organigramme mis à jour.');
 
             return $this->redirectToRoute('app_referent_organizational_chart');
         }
 
         return $this->render('referent/edit_referent_person_link.html.twig', [
-            'form_referent_person_link' => $form->createView(),
+            'form' => $form->createView(),
             'person_organizational_chart_item' => $personOrganizationalChartItem,
         ]);
     }

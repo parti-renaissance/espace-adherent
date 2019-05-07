@@ -33,7 +33,6 @@ Feature: Make sure we can see and interact with organizational chart
 
     When I follow "Nom du responsable Responsable logistique"
     Then I should see "Edition de Responsable logistique"
-    And I should see 0 "#referent_person_link_isCoReferent" elements
     When I fill in the following:
       | Nom             | Jean                     |
       | Prénom          | Dupoint                  |
@@ -65,13 +64,11 @@ Feature: Make sure we can see and interact with organizational chart
       | LoadOrganizationalChartItemData |
     And I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
-    And I should not see "Accès adhérents"
 
     When I follow "Carl Mirabeau Responsable digital"
     And I check "referent_person_link_isCoReferent"
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
-    And I should see "Accès adhérents"
 
     When I follow "Carl Mirabeau Responsable digital"
     Then the "referent_person_link_isCoReferent" checkbox should be checked
@@ -79,7 +76,6 @@ Feature: Make sure we can see and interact with organizational chart
     When I uncheck "referent_person_link_isCoReferent"
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
-    And I should not see "Accès adhérents"
 
     When I follow "Carl Mirabeau Responsable digital"
     Then the "referent_person_link_isCoReferent" checkbox should be unchecked

@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Entity\ReferentTeamMember;
 use Doctrine\Common\EventSubscriber;
@@ -22,24 +23,63 @@ class ManageReferentTeamMembersListener implements EventSubscriber
     {
         $manager = $args->getEntityManager();
         $uow = $manager->getUnitOfWork();
-        foreach ($uow->getScheduledEntityUpdates() as $keyEntity => $personLink) {
+        $currentReferent = $this->security->getUser();
+
+        if (!$currentReferent instanceof Adherent) {
+            return;
+        }
+
+        foreach ($uow->getScheduledEntityInsertions() as $personLink) {
             if ($personLink instanceof ReferentPersonLink) {
-                $changeSet = $uow->getEntityChangeSet($personLink);
-
-                if (!isset($changeSet['isCoReferent'])) {
-                    return;
-                }
-
-                if (!$adherent = $personLink->getAdherent()) {
-                    return;
-                }
-
                 if ($personLink->isCoReferent()) {
-                    $adherent->setReferentTeamMember($member = new ReferentTeamMember($this->security->getUser()));
+                    $personLink->getAdherent()->setReferentTeamMember($member = new ReferentTeamMember($currentReferent));
                     $manager->persist($member);
                     $uow->computeChangeSets();
                 } else {
-                    $manager->remove($adherent->getReferentTeamMember());
+                    $personLink->setAdherent(null);
+                }
+            }
+        }
+
+        foreach ($uow->getScheduledEntityDeletions() as $personLink) {
+            if (
+                $personLink instanceof ReferentPersonLink
+                && ($adherent = $personLink->getAdherent())
+                && $member = $adherent->getReferentTeamMember()
+            ) {
+                $manager->remove($member);
+            }
+        }
+
+        foreach ($uow->getScheduledEntityUpdates() as $personLink) {
+            if ($personLink instanceof ReferentPersonLink) {
+                $changeSet = $uow->getEntityChangeSet($personLink);
+
+                if (isset($changeSet['adherent'])) {
+                    $adherent = $changeSet['adherent'][0];
+                    if ($adherent instanceof Adherent && $member = $adherent->getReferentTeamMember()) {
+                        $manager->remove($member);
+                    }
+
+                    $adherent = $changeSet['adherent'][1];
+                    if (($adherent instanceof Adherent) && !isset($changeSet['isCoReferent']) && $personLink->isCoReferent()) {
+                        $adherent->setReferentTeamMember($member = new ReferentTeamMember($currentReferent));
+                        $manager->persist($member);
+                        $uow->computeChangeSets();
+                    }
+                }
+
+                if (isset($changeSet['isCoReferent'])) {
+                    if ($personLink->isCoReferent()) {
+                        $personLink->getAdherent()->setReferentTeamMember($member = new ReferentTeamMember($currentReferent));
+                        $manager->persist($member);
+                        $uow->computeChangeSets();
+                    } else {
+                        if ($member = $personLink->getAdherent()->getReferentTeamMember()) {
+                            $manager->remove($member);
+                        }
+                        $personLink->setAdherent(null);
+                    }
                 }
             }
         }

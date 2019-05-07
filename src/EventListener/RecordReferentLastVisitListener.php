@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ReferentSpaceAccessInformation;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -9,23 +10,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 
 class RecordReferentLastVisitListener implements EventSubscriberInterface
 {
     private $security;
-    private $authorizationChecker;
     private $manager;
     private $repository;
 
-    public function __construct(
-        Security $security,
-        AuthorizationCheckerInterface $authorizationChecker,
-        ObjectManager $manager
-    ) {
+    public function __construct(Security $security, ObjectManager $manager)
+    {
         $this->security = $security;
-        $this->authorizationChecker = $authorizationChecker;
         $this->manager = $manager;
         $this->repository = $this->manager->getRepository(ReferentSpaceAccessInformation::class);
     }
@@ -51,13 +46,15 @@ class RecordReferentLastVisitListener implements EventSubscriberInterface
             return;
         }
 
-        // Stop if no logged in user
-        if (!$referent = $this->security->getUser()) {
+        // Stop if Response != 200
+        if (Response::HTTP_OK !== $event->getResponse()->getStatusCode()) {
             return;
         }
 
-        // Stop if Response != 200
-        if (Response::HTTP_OK !== $event->getResponse()->getStatusCode()) {
+        $referent = $this->security->getUser();
+
+        // Stop if no logged in user
+        if (!$referent instanceof Adherent) {
             return;
         }
 

@@ -63,6 +63,7 @@
             </call>
         </service>
         <service id="AppBundle\Validator\UniqueTurnkeyProjectPinnedValidator" />
+        <service id="AppBundle\Validator\ValidAdherentCoReferentValidator" />
 
         <!-- Biography -->
         <service id="AppBundle\Biography\BiographyManager" />
@@ -208,7 +209,6 @@
         <service id="AppBundle\Referent\ManagedCommitteesExporter" />
         <service id="AppBundle\Referent\ManagedCitizenProjectsExporter" />
         <service id="AppBundle\Referent\ManagedEventsExporter" />
-        <service id="AppBundle\Validator\CanBeCoReferentValidator" />
         <service id="AppBundle\Form\ReferentPersonLinkType" />
         <service id="AppBundle\Form\ReferentPersonLinkForCoReferentType" />
 
