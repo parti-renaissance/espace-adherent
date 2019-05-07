@@ -20,20 +20,12 @@ class SetCampaignReplyToSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if ($request->hasReplyTo()) {
-            return;
-        }
-
-        $message = $event->getMessage();
-
-        switch ($message->getType()) {
+        switch ($event->getMessage()->getType()) {
             case AdherentMessageTypeEnum::DEPUTY:
                 $request->setReplyTo('ne-pas-repondre@en-marche.fr');
                 break;
-            case AdherentMessageTypeEnum::COMMITTEE:
-            case AdherentMessageTypeEnum::REFERENT:
             case AdherentMessageTypeEnum::CITIZEN_PROJECT:
-                $request->setReplyTo($message->getAuthor()->getEmailAddress());
+                $request->setReplyTo('projetscitoyens@en-marche.fr');
                 break;
             default:
                 $request->setReplyTo('jemarche@en-marche.fr');

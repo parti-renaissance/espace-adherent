@@ -30,6 +30,8 @@ class DeputyController extends Controller
      */
     public function usersSendMessageAction(Request $request, AdherentRepository $adherentRepository): Response
     {
+        $this->disableInProduction();
+
         $currentUser = $this->getUser();
 
         $message = DeputyMessage::create($this->getUser());

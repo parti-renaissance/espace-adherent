@@ -62,7 +62,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 3,
                         'subject_line' => '[Comité] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'adherent@mail.com',
+                        'reply_to' => 'jemarche@en-marche.fr',
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
@@ -91,8 +91,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'id' => 3,
                         'sections' => [
                             'content' => 'Content',
-                            'committee_name' => 'Committee name',
-                            'committee_link' => '<a class="mcnButton" title="VOIR LE COMITÉ" href="https://committee_url" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#2BBAFF;">VOIR LE COMITÉ</a>',
+                            'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité" style="text-align:center;font-size:16px;color:#000;font-family:roboto,helvetica neue,helvetica,arial,sans-serif">Committee name</a>',
+                            'reply_to_link' => '<a class="mcnButton" title="RÉPONDRE" href="mailto:adherent@mail.com" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#2BBAFF;">RÉPONDRE</a>',
                         ],
                     ],
                 ]]]
@@ -120,7 +120,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 1,
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'adherent@mail.com',
+                        'reply_to' => 'jemarche@en-marche.fr',
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
@@ -150,6 +150,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
+                            'reply_to_link' => '<a class="mcnButton" title="RÉPONDRE" href="mailto:adherent@mail.com" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#FF6955;mso-line-height-rule:exactly;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;display:block;">RÉPONDRE</a>',
                         ],
                     ],
                 ]]]

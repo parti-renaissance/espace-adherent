@@ -26,14 +26,18 @@ class CitizenProjectMessageSectionBuilder implements ContentSectionBuilderInterf
         }
 
         $request
-            ->addSection('citizen_project_name', StringCleaner::htmlspecialchars($citizenProject->getName()))
             ->addSection('citizen_project_link', sprintf(
-                '<a class="mcnButton" title="VOIR LE PROJET CITOYEN" href="%s" target="_blank" style="font-weight: normal;letter-spacing: normal;line-height: 100%%;text-align: center;text-decoration: none;color: #FFDA00;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%%;-webkit-text-size-adjust: 100%%;display: block;">VOIR LE PROJET CITOYEN</a>',
+                '<a target="_blank" href="%s" title="Voir le projet citoyen" style="text-align:center;font-size:16px;color:#000;font-family:roboto,helvetica neue,helvetica,arial,sans-serif">%s</a>',
                 $this->urlGenerator->generate(
                     'app_citizen_project_show',
                     ['slug' => $citizenProject->getSlug()],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                ),
+                StringCleaner::htmlspecialchars($citizenProject->getName())
+            ))
+            ->addSection('reply_to_link', sprintf(
+                '<a class="mcnButton" title="RÉPONDRE" href="mailto:%s" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%%;text-align:center;text-decoration:none;color:#FFDA00;mso-line-height-rule:exactly;-ms-text-size-adjust:100%%;-webkit-text-size-adjust:100%%;display:block;">RÉPONDRE</a>',
+                $message->getAuthor()->getEmailAddress()
             ))
         ;
     }

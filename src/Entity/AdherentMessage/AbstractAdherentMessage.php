@@ -240,11 +240,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->author ? $this->author->getFullName() : null;
     }
 
-    public function getReplyTo(): ?string
-    {
-        return null;
-    }
-
     public function getSentAt(): ?\DateTimeInterface
     {
         return $this->sentAt;

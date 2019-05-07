@@ -34,7 +34,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_message_citizen_project_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_CITIZEN_PROJECT_ADMINISTRATOR,
 
         // Deputy Space
-        'app_deputy_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
         'app_message_deputy_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
     ];
 

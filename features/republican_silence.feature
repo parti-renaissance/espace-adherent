@@ -43,8 +43,6 @@ Feature:
 
   Scenario: As deputy of 75001 I cannot communicate with adherents from my deputy space.
     Given I am logged as "deputy@en-marche-dev.fr"
-    When I go to "/espace-depute/utilisateurs/message"
-    Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
     When I go to "/espace-depute/messagerie"
     Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
 
