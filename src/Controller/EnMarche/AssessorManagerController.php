@@ -258,7 +258,7 @@ class AssessorManagerController extends Controller
             [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'Content-Disposition' => sprintf(
-                    "attachment;filename='%s.%s'",
+                    'attachment;filename=%s.%s',
                     AssessorRequestExporter::FILE_NAME,
                     XlsxEncoder::FORMAT
                 ),
