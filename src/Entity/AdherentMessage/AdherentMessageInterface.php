@@ -29,8 +29,6 @@ interface AdherentMessageInterface extends AuthoredInterface, AdherentMessageSyn
 
     public function getFromName(): ?string;
 
-    public function getReplyTo(): ?string;
-
     public function hasReadOnlyFilter(): bool;
 
     public function setLabel(string $label): void;

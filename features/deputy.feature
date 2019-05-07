@@ -15,7 +15,7 @@ Feature:
     And I should be on "/connexion"
     Examples:
       | uri                                   |
-      | /espace-depute/utilisateurs/message   |
+      | /espace-depute/messagerie             |
       | /espace-depute/evenements             |
       | /espace-depute/comites                |
 
@@ -25,7 +25,7 @@ Feature:
     Then the response status code should be 403
     Examples:
       | uri                                   |
-      | /espace-depute/utilisateurs/message   |
+      | /espace-depute/messagerie             |
       | /espace-depute/evenements             |
       | /espace-depute/comites                |
 
@@ -35,7 +35,7 @@ Feature:
     Then the response status code should be 200
     Examples:
       | uri                                   |
-      | /espace-depute/utilisateurs/message   |
+      | /espace-depute/messagerie             |
       | /espace-depute/evenements             |
       | /espace-depute/comites                |
 

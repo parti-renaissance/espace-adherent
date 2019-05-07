@@ -33,7 +33,6 @@ class CampaignRequestBuilder
             ->setTitle(sprintf('%s - %s', $message->getAuthor(), (new \DateTime())->format('d/m/Y')))
             ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($message) : [])
             ->setFromName($message->getFromName() ?? $this->fromName)
-            ->setReplyTo($message->getReplyTo())
         ;
     }
 }
