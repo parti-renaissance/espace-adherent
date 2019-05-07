@@ -7,9 +7,11 @@ use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
@@ -48,6 +50,8 @@ class SegmentConditionsBuilder
             $conditions[] = $this->buildReferentZoneCondition($filter->getReferentTag());
         } elseif ($filter instanceof CommitteeFilter) {
             $conditions[] = $this->buildCommitteeFilterCondition($filter->getCommittee());
+        } elseif ($filter instanceof CitizenProjectFilter) {
+            $conditions[] = $this->buildCitizenProjectFilterCondition($filter->getCitizenProject());
         }
 
         return [
@@ -217,6 +221,21 @@ class SegmentConditionsBuilder
         }
 
         return $this->buildStaticSegmentCondition($committee->getMailchimpId());
+    }
+
+    private function buildCitizenProjectFilterCondition(?CitizenProject $citizenProject): array
+    {
+        if (!$citizenProject) {
+            throw new InvalidFilterException('[AdherentMessage] Citizen project should not be empty');
+        }
+
+        if (!$citizenProject->getMailchimpId()) {
+            throw new StaticSegmentIdMissingException(
+                sprintf('[AdherentMessage] Citizen project "%s" does not have mailchimp ID', $citizenProject->getUuidAsString())
+            );
+        }
+
+        return $this->buildStaticSegmentCondition($citizenProject->getMailchimpId());
     }
 
     private function buildStaticSegmentCondition(int $externalId): array
