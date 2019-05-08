@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class ManagedArea
 {
     /**
+     * @var int|null
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -23,9 +25,7 @@ abstract class ManagedArea
      */
     private $codes;
 
-    protected $adherent;
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -35,7 +35,7 @@ abstract class ManagedArea
         return $this->codes;
     }
 
-    public function setCodes(array $codes)
+    public function setCodes(array $codes): void
     {
         $this->codes = $codes;
     }
@@ -45,18 +45,8 @@ abstract class ManagedArea
         return implode(', ', $this->codes);
     }
 
-    public function setCodesAsString(?string $codes)
+    public function setCodesAsString(?string $codes): void
     {
         $this->codes = $codes ? array_map('trim', explode(',', $codes)) : [];
-    }
-
-    public function getAdherent(): ?Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent(Adherent $adherent = null)
-    {
-        $this->adherent = $adherent;
     }
 }

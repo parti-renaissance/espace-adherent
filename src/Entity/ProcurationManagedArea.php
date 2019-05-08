@@ -13,9 +13,4 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProcurationManagedArea extends ManagedArea
 {
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="procurationManagedArea")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    protected $adherent;
 }
