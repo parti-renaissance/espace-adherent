@@ -88,6 +88,11 @@
                             <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
                         </li>
                     {% endif %}
+                    {% if app.user.isAssessorManager %}
+                        <li>
+                            <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <ul>
                     <li>
