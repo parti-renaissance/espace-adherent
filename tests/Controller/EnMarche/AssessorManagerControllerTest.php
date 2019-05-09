@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Assessor\Filter\AssessorRequestFilters;
 use AppBundle\Assessor\Filter\VotePlaceFilters;
+use AppBundle\Mailer\Message\AssessorRequestAssociateMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
@@ -81,6 +82,8 @@ class AssessorManagerControllerTest extends WebTestCase
 
         // Requests list
         $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_MANAGER_REQUEST_PATH);
+
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(AssessorRequestAssociateMessage::class));
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -166,6 +169,8 @@ class AssessorManagerControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         $this->assertSame('Demande associée à Restaurant Scolaire - Rue H. Lefebvre', trim($crawler->filter('.assessor-manager__request__col-right h4')->text()));
+
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(AssessorRequestAssociateMessage::class));
 
         // Deassociate
         $linkNode = $crawler->filter('#request-deassociate');
