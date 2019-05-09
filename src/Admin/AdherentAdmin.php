@@ -13,7 +13,7 @@ use AppBundle\Entity\SubscriptionType;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
-use AppBundle\Form\EventListener\ReferentManagedAreaListener;
+use AppBundle\Form\EventListener\RevokeManagedAreaSubscriber;
 use AppBundle\Form\GenderType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
 use AppBundle\Intl\UnitedNationsBundle;
@@ -338,7 +338,7 @@ class AdherentAdmin extends AbstractAdmin
         ;
 
         $formMapper->getFormBuilder()
-            ->addEventSubscriber(new ReferentManagedAreaListener())
+            ->addEventSubscriber(new RevokeManagedAreaSubscriber())
         ;
     }
 

@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class ReferentManagedAreaListener implements EventSubscriberInterface
+class RevokeManagedAreaSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
@@ -24,9 +24,19 @@ class ReferentManagedAreaListener implements EventSubscriberInterface
         }
 
         $managedArea = $adherent->getManagedArea();
+        $assessorManagedArea = $adherent->getAssessorManagedArea();
+        $procurationManagedArea = $adherent->getProcurationManagedArea();
 
         if ($managedArea && $managedArea->getTags()->isEmpty()) {
             $adherent->revokeReferent();
+        }
+
+        if ($assessorManagedArea && empty($assessorManagedArea->getCodes())) {
+            $adherent->revokeAssessorManager();
+        }
+
+        if ($procurationManagedArea && empty($procurationManagedArea->getCodes())) {
+            $adherent->revokeProcurationManager();
         }
     }
 }

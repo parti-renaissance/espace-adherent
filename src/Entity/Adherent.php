@@ -1076,6 +1076,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedArea = null;
     }
 
+    public function revokeAssessorManager(): void
+    {
+        $this->assessorManagedArea = null;
+    }
+
+    public function revokeProcurationManager(): void
+    {
+        $this->procurationManagedArea = null;
+    }
+
     public function getManagedAreaMarkerLatitude(): ?string
     {
         if (!$this->managedArea) {
