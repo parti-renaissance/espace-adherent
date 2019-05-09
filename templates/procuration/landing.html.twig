@@ -11,48 +11,50 @@
                      data-sd="{{ static_asset('procuration_2.jpg', { w: 300, q: 20 }) }}"
                      data-hd="{{ static_asset('procuration_2.jpg', { w: 2000, q: 70 }) }}">
                 <div class="l__wrapper l__row space--30-0">
-                    <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">En Marche !</a>
+                    <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">EM!</a>
                 </div>
                 <div class="procuration__header--inner l__wrapper--slim">
                     {% if next_election %}
                         {{ next_election.introduction|raw }}
                     {% else %}
-                        No coming election, TODO.
+                        Pas d'élection en approche.
                     {% endif %}
                 </div>
             </section>
 
-            {% include 'procuration/_faq.html.twig' %}
+            <div class="l__wrapper">
+                {% include 'procuration/_faq.html.twig' %}
 
-            <section class="procuration__content l__wrapper--500 l__col space--60-0 text--center">
-                {% if next_election %}
-                    <div class="b__nudge--bottom-60">
-                        <h2 class="text--medium text--bold b__nudge--bottom-small">
-                            Je suis présent(e) le 26 mai.
-                        </h2>
-                        <div class="b__nudge--bottom text--summary">
-                            Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
+                <section class="procuration__content l__wrapper--500 l__col space--60-0 text--center">
+                    {% if next_election %}
+                        <div class="b__nudge--bottom-60">
+                            <h2 class="text--medium text--bold b__nudge--bottom-small">
+                                Je suis présent(e) le 26 mai.
+                            </h2>
+                            <div class="b__nudge--bottom text--summary">
+                                Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
+                            </div>
+                            <a href="{{ path('app_procuration_choose_election', { action: constant('AppBundle\\Procuration\\ElectionContext::ACTION_PROPOSAL') }) }}" class="btn btn--primary">
+                                Je me porte mandataire
+                            </a>
                         </div>
-                        <a href="{{ path('app_procuration_choose_election', { action: constant('AppBundle\\Procuration\\ElectionContext::ACTION_PROPOSAL') }) }}" class="btn btn--primary">
-                            Je me porte mandataire
-                        </a>
-                    </div>
-                    <div>
-                        <h2 class="text--medium text--bold b__nudge--bottom-small">
-                            Je ne suis pas présent(e) le 26 mai.
-                        </h2>
-                        <div class="b__nudge--bottom text--summary">
-                            Un(e) habitant(e) de ma ville va voter en mon nom.
-                        </div>
+                        <div>
+                            <h2 class="text--medium text--bold b__nudge--bottom-small">
+                                Je ne suis pas présent(e) le 26 mai.
+                            </h2>
+                            <div class="b__nudge--bottom text--summary">
+                                Un(e) habitant(e) de ma ville va voter en mon nom.
+                            </div>
 
-                        <a href="{{ path('app_procuration_choose_election', { action: constant('AppBundle\\Procuration\\ElectionContext::ACTION_REQUEST') }) }}" class="btn btn--blue">
-                            Je donne procuration
-                        </a>
-                    </div>
-                {% else %}
-                    No coming election, TODO.
-                {% endif %}
-            </section>
+                            <a href="{{ path('app_procuration_choose_election', { action: constant('AppBundle\\Procuration\\ElectionContext::ACTION_REQUEST') }) }}" class="btn btn--blue">
+                                Je donne procuration
+                            </a>
+                        </div>
+                    {% else %}
+                        Pas d'élection en approche.
+                    {% endif %}
+                </section>
+            </div>
         </div>
     </main>
 {% endblock %}

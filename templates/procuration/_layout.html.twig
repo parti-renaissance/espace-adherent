@@ -16,7 +16,7 @@
                      data-sd="{{ static_asset('procuration.jpg', { w: 300, q: 20 }) }}"
                      data-hd="{{ static_asset('procuration.jpg', { w: 2000, q: 70 }) }}">
                     <div class="l__wrapper l__row space--30-0">
-                        <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">En Marche !</a>
+                        <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">EM!</a>
                     </div>
                     <div class="procuration__header--inner l__wrapper--slim">
                         <h1 class="text--larger">
@@ -29,7 +29,7 @@
                         {% endblock %}
                     </div>
             </section>
-            <section>
+            <section class="l__wrapper">
                 {% include 'procuration/_faq.html.twig' %}
 
                 {% block procuration_content %}{% endblock %}
