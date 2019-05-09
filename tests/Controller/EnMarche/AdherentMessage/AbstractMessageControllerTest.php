@@ -65,7 +65,6 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->assertSame(sprintf('/espace-referent/messagerie/%s/modifier', $uuid), $buttons->eq(0)->attr('href'));
         $this->assertSame(sprintf('/espace-referent/messagerie/%s/filtrer', $uuid), $buttons->eq(1)->attr('href'));
         $this->assertSame(sprintf('/espace-referent/messagerie/%s/tester', $uuid), $buttons->eq(2)->attr('href'));
-
     }
 
     protected function setUp()
