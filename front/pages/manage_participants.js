@@ -3,18 +3,22 @@
  */
 export default() => {
     const allCheckboxes = dom('#members-check-all');
-    const selectionCheckboxes = findAll(document, 'input[name="members[]"]');
     const contactButton = dom('#members-contact-button');
     const contactSelection = dom('#members-contact-selection');
     const exportButton = dom('#members-export-button');
     const exportSelection = dom('#members-export-selection');
     const printButton = dom('#members-print-button');
     const printSelection = dom('#members-print-selection');
+    const table = dom('.datagrid__table-manager');
+
+    function getMemberCheckboxes() {
+        return findAll(document, 'input[name="members[]"]');
+    }
 
     function getSelectedMembers() {
         const members = [];
 
-        selectionCheckboxes.forEach((element) => {
+        getMemberCheckboxes().forEach((element) => {
             if (element.checked) {
                 members.push(element.value);
             }
@@ -32,13 +36,13 @@ export default() => {
 
     // Toggle each 'selection' checkbox
     function toggleCheckboxes(value) {
-        selectionCheckboxes.forEach((element) => {
+        getMemberCheckboxes().forEach((element) => {
             element.checked = !!value;
         });
     }
 
     // Bind the 'select all' checkbox
-    const bindAllCheckboxes = (event) => {
+    const bindAllCheckboxes = () => {
         toggleCheckboxes(allCheckboxes.checked);
         toggleButtons(allCheckboxes.checked);
     };
@@ -46,7 +50,7 @@ export default() => {
     on(allCheckboxes, 'change', bindAllCheckboxes);
     allCheckboxes.dispatchEvent(new Event('change'));
 
-    const toggle = (event) => {
+    const toggle = () => {
         let all = true;
 
         // Default behaviour
@@ -62,7 +66,7 @@ export default() => {
             }
         };
 
-        selectionCheckboxes.forEach(toggleAllButtons);
+        getMemberCheckboxes().forEach(toggleAllButtons);
 
         // When all selection checkbox are checked, also check the 'select all' checkbox
         if (all) {
@@ -71,12 +75,12 @@ export default() => {
     };
 
     // Bind each 'selection' checkbox
-    selectionCheckboxes.forEach((element) => {
+    getMemberCheckboxes().forEach((element) => {
         on(element, 'change', toggle);
         allCheckboxes.dispatchEvent(new Event('change'));
     });
 
-    const exportMembers = (event) => {
+    const exportMembers = () => {
         exportSelection.value = JSON.stringify(getSelectedMembers());
     };
 
@@ -86,7 +90,7 @@ export default() => {
         exportButton.dispatchEvent(new Event('click'));
     }
 
-    const contactMembers = (event) => {
+    const contactMembers = () => {
         contactSelection.value = JSON.stringify(getSelectedMembers());
     };
 
@@ -96,9 +100,16 @@ export default() => {
         contactButton.dispatchEvent(new Event('click'));
     }
 
-    const printMembers = (event) => {
+    const printMembers = () => {
         printSelection.value = JSON.stringify(getSelectedMembers());
     };
+
+    on(table, 'table_update', () => {
+        getMemberCheckboxes().forEach((element) => {
+            off(element, 'change', toggle);
+            on(element, 'change', toggle);
+        });
+    });
 
     // Bind the print button (build a Json list of members to print)
     if (null != printButton) {

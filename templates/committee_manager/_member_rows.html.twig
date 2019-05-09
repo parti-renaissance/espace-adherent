@@ -1,0 +1,48 @@
+{% spaceless %}
+    {% for membership in members %}
+        {% set member = membership.adherent %}
+        {% set is_promotable_host = membership.promotableHost %}
+        {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
+
+        <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
+            <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
+            <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+            <td class="member-last-name">{{ member.lastNameInitial }}</td>
+            <td class="member-age">{{ member.age }}</td>
+            <td class="member-postal-code">{{ member.postalCode }}</td>
+            <td class="member-city-name">{{ member.cityName }}</td>
+            <td>
+                {% if not is_promotable_host %}
+                    {% if member.female %}
+                        {{ is_demotable_host ? 'Co-animatrice' : 'Animatrice' }}
+                    {% else %}
+                        {{ is_demotable_host ? 'Co-animateur' : 'Animateur' }}
+                    {% endif %}
+                {% else %}
+                    Membre
+                {% endif %}
+            </td>
+
+            <td>{{ member.registeredAt|date('d/m/Y') }}</td>
+            <td class="member-subscription-date">{{ membership.subscriptionDate|date('d/m/Y') }}</td>
+
+            {% if is_supervisor %}
+                <td>
+                    {% if is_promotable_host %}
+                        <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                           title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
+                           class="promote-host-link text--blue--dark link--no-decor">
+                            Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
+                        </a>
+                    {% elseif is_demotable_host %}
+                        <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                           title="Définir membre"
+                           class="demote-host-link text--blue--dark link--no-decor">
+                            Définir membre
+                        </a>
+                    {% endif %}
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+{% endspaceless %}

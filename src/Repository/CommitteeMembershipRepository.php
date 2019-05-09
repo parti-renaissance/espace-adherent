@@ -11,6 +11,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -319,6 +320,18 @@ SQL
                 ->addSelect('a')
                 ->getQuery()
                 ->getResult()
+        );
+    }
+
+    public function getCommitteeMembershipsPaginator(Committee $committee, int $page = 1, int $limit = 50): Paginator
+    {
+        return new Paginator(
+            $this
+                ->createCommitteeMembershipsQueryBuilder($committee)
+                ->addSelect('a')
+                ->setMaxResults($limit)
+                ->setFirstResult(($offset = ($page - 1) * $limit) < 0 ? 0 : $offset)
+                ->getQuery()
         );
     }
 
