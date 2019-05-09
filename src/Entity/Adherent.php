@@ -234,14 +234,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var ProcurationManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ProcurationManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $procurationManagedArea;
 
     /**
      * @var AssessorManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AssessorManagedArea", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AssessorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
     private $assessorManagedArea;
 
@@ -1122,7 +1122,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         if (!$this->procurationManagedArea) {
             $this->procurationManagedArea = new ProcurationManagedArea();
-            $this->procurationManagedArea->setAdherent($this);
         }
 
         $this->procurationManagedArea->setCodesAsString($codes);
@@ -1141,7 +1140,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         if (!$this->assessorManagedArea) {
             $this->assessorManagedArea = new AssessorManagedArea();
-            $this->assessorManagedArea->setAdherent($this);
         }
 
         $this->assessorManagedArea->setCodesAsString($codes);

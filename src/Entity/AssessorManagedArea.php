@@ -13,9 +13,4 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AssessorManagedArea extends ManagedArea
 {
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="assessorManagedArea")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    protected $adherent;
 }
