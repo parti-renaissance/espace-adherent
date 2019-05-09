@@ -27,7 +27,7 @@
 
                             {% if citizen_project.isApproved() %}
                                 <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
-                                    <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Les membres</a>
+                                    <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Adhérents</a>
                                 </li>
 
                                 <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">

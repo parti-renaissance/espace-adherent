@@ -516,7 +516,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Les adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
         $this->assertSame('Jacques', $crawler->filter('.member-first-name')->eq(0)->text());
@@ -541,7 +541,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Les adhérents')->link());
 
         $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
         $crawler = $this->client->click($crawler->filter('.promote-host-link')->link());
@@ -560,7 +560,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Les adhérents')->link());
 
         $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
     }
@@ -572,7 +572,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('Mes adhérents')->link());
+        $crawler = $this->client->click($crawler->selectLink('Les adhérents')->link());
 
         $token = $crawler->filter('#members-export-token')->attr('value');
         $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');

@@ -32,7 +32,13 @@
     </a>
     {% block message_form %}
         <div class="l__wrapper--slim">
-            <h3 class="text--medium text--center b__nudge--bottom-larger">Rédiger mon message (1/2)</h3>
+            <div class="form__title b__nudge--bottom-larger">
+                <h3 class="text--medium  text--center">Rédiger mon message</h3>
+                <div class="form__step">
+                    <span class="active">1</span>
+                    / 2
+                </div>
+            </div>
             <div>
                 {{ form_start(form) }}
                 {{ form_errors(form) }}
@@ -40,6 +46,7 @@
                     {{ form_label(form.label, 'Label') }}
                     {{ form_errors(form.label) }}
                     {{ form_widget(form.label, {attr: {class: 'form--full', placeholder: 'Donnez un label à votre message'}}) }}
+                    <span class="form__legend text--small">Un label n'est visible que par vous et vous permet de retrouver plus facilement un message</span>
                 </div>
 
                 <div class="form__row">

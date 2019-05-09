@@ -95,7 +95,10 @@
                     </td>
                 </tr>
             {% else %}
-                <tr><td colspan="6" class="text--center">Vous n'avez aucun message</td></tr>
+                <tr><td colspan="6" class="text--center">
+                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                    Vous n'avez aucun message
+                </td></tr>
             {% endfor %}
         </tbody>
     </table>
