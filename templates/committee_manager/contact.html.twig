@@ -1,4 +1,4 @@
-{% extends 'committee/_layout.html.twig' %}
+{% extends 'committee_manager/_space_layout.html.twig' %}
 
 {% block page_title 'Contacter des membres de mon comité' %}
 
@@ -16,10 +16,10 @@
 
 {% block committee_content %}
     <main>
-        <section class="l__wrapper--medium space--30-0">
+        <section class="l__wrapper--medium">
             <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="back-to-list icon--with-text">
-                {{ include('components/caret--left.html.twig') }}
-                Retour à la liste</a>
+                ⟵ Retour à la liste
+            </a>
 
             <header class="space--30-0">
                 <h1 class="b__nudge--bottom-small text--medium">

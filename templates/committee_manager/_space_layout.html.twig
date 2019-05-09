@@ -23,7 +23,7 @@
                 </li>
 
                 {% if committee.isApproved %}
-                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host']) ? 'active' : '' }}">
+                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host', 'app_committee_contact_members']) ? 'active' : '' }}">
                         <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}">Mes adhérents</a>
                     </li>
 
