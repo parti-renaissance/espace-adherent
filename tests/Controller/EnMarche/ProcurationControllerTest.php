@@ -39,11 +39,11 @@ class ProcurationControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertSame(
-            'No coming election, TODO.',
+            'Pas d\'élection en approche.',
             trim($crawler->filter('.procuration__header--inner')->text())
         );
         $this->assertSame(
-            'No coming election, TODO.',
+            'Pas d\'élection en approche.',
             trim($crawler->filter('.procuration__content')->text())
         );
     }
