@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Event\EventCommand;
@@ -93,10 +94,8 @@ class CommitteeManagerController extends Controller
      *
      * @Security("committee.isApproved()")
      */
-    public function listMembersAction(Committee $committee): Response
+    public function listMembersAction(Committee $committee, CommitteeManager $committeeManager): Response
     {
-        $committeeManager = $this->get('app.committee.manager');
-
         return $this->render('committee_manager/list_members.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
@@ -187,7 +186,7 @@ class CommitteeManagerController extends Controller
             ]);
         }
 
-        return $this->render('committee/contact.html.twig', [
+        return $this->render('committee_manager/contact.html.twig', [
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'contacts' => GroupUtils::getUuidsFromAdherents($adherents),
