@@ -10,21 +10,25 @@ use AppBundle\Entity\VotePlace;
 use AppBundle\Repository\AssessorRequestRepository;
 use AppBundle\Repository\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AssessorManager
 {
     private $assessorRequestRepository;
     private $votePlaceRepository;
     private $manager;
+    private $dispatcher;
 
     public function __construct(
         AssessorRequestRepository $assessorRequestRepository,
         VotePlaceRepository $votePlaceRepository,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->assessorRequestRepository = $assessorRequestRepository;
         $this->votePlaceRepository = $votePlaceRepository;
         $this->manager = $manager;
+        $this->dispatcher = $dispatcher;
     }
 
     public function processAssessorRequest(AssessorRequest $assessorRequest, VotePlace $votePlace = null): void
@@ -32,6 +36,11 @@ class AssessorManager
         $assessorRequest->process($votePlace);
 
         $this->manager->flush();
+
+        $this->dispatcher->dispatch(
+            AssessorRequestEnum::REQUEST_ASSOCIATED,
+            new AssessorRequestEvent($assessorRequest)
+        );
     }
 
     public function unprocessAssessorRequest(AssessorRequest $assessorRequest): void

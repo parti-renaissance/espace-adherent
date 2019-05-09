@@ -34,4 +34,5 @@ class AssessorRequestEnum extends Enum
 
     // Events
     public const REQUEST_SENT = 'workflow.assessor_request.enter.request_sent';
+    public const REQUEST_ASSOCIATED = 'assessor_request.associated';
 }
