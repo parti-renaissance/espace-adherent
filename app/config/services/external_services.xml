@@ -8,7 +8,7 @@
         <service id="app.recaptcha.api_client" class="AppBundle\Recaptcha\RecaptchaApiClient" public="false">
             <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
             <argument type="collection">
-                <argument key="timeout">2.0</argument>
+                <argument key="timeout">5.0</argument>
                 <argument key="environment">%kernel.environment%</argument>
             </argument>
             <argument type="service" id="request_stack"/>
