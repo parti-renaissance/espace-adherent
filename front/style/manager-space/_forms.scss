@@ -194,3 +194,19 @@
         }
     }
 }
+
+.form__title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .form__step {
+        color: $neutral-grey;
+        font-size: 18px;
+
+        .active {
+            color: $black;
+            font-size: 20px;
+        }
+    }
+}

@@ -274,7 +274,7 @@ referent.adherent.subscribed: Abonné(e)
 referent.adherent.unsubscribed: Non-abonné(e)
 referent.status.email: Statut (e-mail)
 referent.managed_area: Zone gérée
-referent.checkbox.co_referent: Donner un accès à l'onglet <b>Adhérents</b>
+referent.checkbox.co_referent: Donner un accès à l'onglet "Adhérents"
 referent.coreferent_access: Accès adhérents
 referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <b>Adhérents</b> et sauvegarder la modification.
 referent.save: Enregistrer
@@ -526,11 +526,11 @@ payment.message.card_absent: Votre carte bancaire semble ne pas être reconnue p
 adherent_message.created_successfully: 'Votre message a bien été créé.'
 adherent_message.updated_successfully: 'Votre message a bien été mis à jour.'
 adherent_message.deleted_successfully: 'Votre message a bien été supprimé.'
-adherent_message.filter_updated: 'Les filtres ont bien été sauvegardés.'
+adherent_message.filter_updated: 'Les filtres ont bien été appliqués.'
 adherent_message.campaign_sent_successfully: 'Votre message a bien été envoyé'
 adherent_message.campaign_sent_failure: "Votre message n'a pas été envoyé"
-adherent_message.test_campaign_sent_successfully: 'Votre test message a bien été envoyé.'
-adherent_message.test_campaign_sent_failure: "Votre test message n'a pas été envoyé."
+adherent_message.test_campaign_sent_successfully: 'Votre message test a bien été envoyé.'
+adherent_message.test_campaign_sent_failure: "Votre message test n'a pas été envoyé."
 adherent_message.referent: Message référent
 adherent_message.deputy: Message député
 adherent_message.host: Message co-animateur

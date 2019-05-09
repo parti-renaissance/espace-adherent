@@ -56,7 +56,7 @@ Feature: Make sure we can see and interact with organizational chart
 
     When I follow "Michel VASSEUR Responsable Financier"
     Then I should see 1 "#referent_person_link_isCoReferent" element
-    And I should see "Donner un accès à l'onglet Adhérents"
+    And I should see "Donner un accès à l'onglet \"Adhérents\""
 
   Scenario: As a root referent I can transform a member to co-referent
     Given the following fixtures are loaded:
@@ -79,4 +79,3 @@ Feature: Make sure we can see and interact with organizational chart
 
     When I follow "Carl Mirabeau Responsable digital"
     Then the "referent_person_link_isCoReferent" checkbox should be unchecked
-

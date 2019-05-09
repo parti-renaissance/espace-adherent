@@ -57,11 +57,14 @@ class AbstractMessageControllerTest extends WebTestCase
 
         $buttons = $crawler->filter('div.text--center a.btn--ghosting--blue');
 
-        $this->assertSame(2, $buttons->count());
-        $this->assertSame('Modifier les filtres', $buttons->eq(0)->text());
-        $this->assertSame('M\'envoyer un e-mail test', $buttons->eq(1)->text());
-        $this->assertSame(sprintf('/espace-referent/messagerie/%s/filtrer', $uuid), $buttons->eq(0)->attr('href'));
-        $this->assertSame(sprintf('/espace-referent/messagerie/%s/tester', $uuid), $buttons->eq(1)->attr('href'));
+        $this->assertSame(3, $buttons->count());
+        $this->assertSame('Editer le message', $buttons->eq(0)->text());
+        $this->assertSame('Modifier les filtres', $buttons->eq(1)->text());
+        $this->assertSame('M\'envoyer un e-mail test', $buttons->eq(2)->text());
+
+        $this->assertSame(sprintf('/espace-referent/messagerie/%s/modifier', $uuid), $buttons->eq(0)->attr('href'));
+        $this->assertSame(sprintf('/espace-referent/messagerie/%s/filtrer', $uuid), $buttons->eq(1)->attr('href'));
+        $this->assertSame(sprintf('/espace-referent/messagerie/%s/tester', $uuid), $buttons->eq(2)->attr('href'));
     }
 
     protected function setUp()
