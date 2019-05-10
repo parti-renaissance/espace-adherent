@@ -16,12 +16,12 @@ Feature:
     When I fill in the following:
       | app_procuration_proposal[voteCountry] | FR |
     Then I should see 1 "#app_procuration_proposal_proxiesCount div.hidden" element
-    And I should see "Attention, vous ne pouvez être mandataire que pour deux procurations dont une seule maximum établie en France."
+    And I should see "Attention, vous ne pouvez être mandataire que pour deux procurations dont une seule maximum établie en France selon l'article L.73 du Code électoral."
 
     When I fill in the following:
       | app_procuration_proposal[voteCountry] | ES |
     Then I should see 0 "#app_procuration_proposal_proxiesCount div.hidden" element
-    And I should see "Attention, vous ne pouvez être mandataire que pour trois procurations dont une seule maximum établie en France."
+    And I should see "Attention, vous ne pouvez être mandataire que pour trois procurations dont une seule maximum établie en France selon l'article L.73 du Code électoral."
 
     When I fill in the following:
       | app_procuration_proposal[country] | FR |

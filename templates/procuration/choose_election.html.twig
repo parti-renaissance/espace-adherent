@@ -16,7 +16,7 @@
                             Un de nos volontaires peut porter votre voix
                         </h2>
                         <p>
-                            Si vous n’avez pas de proche de confiance qui pourrait voter pour vous dans votre commune, nous pouvons trouver quelqu’un qui portera votre voix. Remplissez simplement le formulaire. Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours. Effectuez donc votre démarche rapidement !
+                            Si vous n'avez pas de proche de confiance qui pourrait voter pour vous dans votre commune, nous pouvons trouver quelqu’un qui portera votre voix. Remplissez simplement le formulaire. Attention, la procuration doit ensuite parvenir à votre bureau de vote, ce qui prend plusieurs jours. Effectuez donc votre démarche rapidement !
                         </p>
                     {% else %}
                         <h2 class="text--medium b__nudge--bottom">
@@ -41,10 +41,5 @@
             </div>
 
         {{ form_end(elections_form) }}
-
-        <div class="text--gray">
-            {{ include('procuration/legal.html.twig', { elections: elections_form.vars.elections|join(', ') }, with_context=false) }}
-        </div>
-
     </section>
 {% endblock %}
