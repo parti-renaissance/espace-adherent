@@ -274,9 +274,9 @@ referent.adherent.subscribed: Abonné(e)
 referent.adherent.unsubscribed: Non-abonné(e)
 referent.status.email: Statut (e-mail)
 referent.managed_area: Zone gérée
-referent.checkbox.co_referent: Donner un accès à l'onglet "Adhérents"
+referent.checkbox.co_referent: Donner un accès à l'onglet <i>Adhérents</i>
 referent.coreferent_access: Accès adhérents
-referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <b>Adhérents</b> et sauvegarder la modification.
+referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <i>Adhérents</i> et sauvegarder la modification.
 referent.save: Enregistrer
 
 #

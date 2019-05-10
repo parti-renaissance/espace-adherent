@@ -16,24 +16,20 @@
 
 {% block committee_content %}
     <main>
-        <section class="l__wrapper--medium">
-            <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="back-to-list icon--with-text">
-                ⟵ Retour à la liste
-            </a>
-
-            <header class="space--30-0">
-                <h1 class="b__nudge--bottom-small text--medium">
-                    Contacter des membres de mon comité
-                </h1>
-            </header>
-
+        <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+            ⟵ Retour à la liste
+        </a>
+        <section class="l__wrapper--slim">
+            <h1 class="text--medium b__nudge--bottom-large">
+                Contacter des membres de mon comité
+            </h1>
             {% if contacts is empty %}
                 <div class="error">Vous n'avez pas selectionné de membre destinataire de ce message, il ne pourra donc pas être envoyé.</div>
             {% else %}
-                <div class="text--body">{{ 'Votre message sera envoyé par e-mail à %s de votre comité.'|format('committee.members_count'|transchoice(contacts|length)) }}</div>
+                <div class="text--body">Votre message sera envoyé par e-mail à <span class="text--bold text--blue--dark">{{ '%s'|format('committee.members_count'|transchoice(contacts|length)) }}</span> de votre comité.</div>
             {% endif %}
 
-            <div class="text--body b__nudge--bottom-small">
+            <div class="text--body b__nudge--bottom-large">
                 Vous serez systématiquement mis(e) en copie des messages que vous envoyez.
             </div>
 
@@ -53,9 +49,9 @@
                     {{ form_widget(form.message, { attr: { class: 'form--full form__field--textarea-300' } }) }}
                 </div>
 
-                {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
+                {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue btn--large-and-full b__nudge--top' } }) }}
 
-                <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="btn">
+                <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
                     Annuler
                 </a>
             {{ form_end(form) }}
