@@ -8,7 +8,7 @@ use Symfony\Component\Intl\Intl;
 
 final class AssessorRequestAssociateMessage extends Message
 {
-    public static function createFromAssessorRequest(AssessorRequest $assessorRequest): self
+    public static function create(AssessorRequest $assessorRequest, string $officeName): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -18,7 +18,7 @@ final class AssessorRequestAssociateMessage extends Message
             '',
             [
                 'firstname' => $assessorRequest->getFirstName(),
-                'assessor_function' => $assessorRequest->getOffice(),
+                'assessor_function' => $officeName,
                 'polling_station_name' => $assessorRequest->getVotePlace()->getLabel(),
                 'polling_station_number' => $assessorRequest->getVotePlace()->getCode(),
                 'polling_station_city_name' => $assessorRequest->getVotePlace()->getCity(),

@@ -6,15 +6,18 @@ use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\AssessorRequestAssociateMessage;
 use AppBundle\Mailer\Message\AssessorRequestConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class AssessorRequestNotifier implements EventSubscriberInterface
 {
     private $mailer;
+    private $translator;
 
-    public function __construct(MailerService $mailer)
+    public function __construct(MailerService $mailer, TranslatorInterface $translator)
     {
         $this->mailer = $mailer;
+        $this->translator = $translator;
     }
 
     public function onRequestSent(Event $event)
@@ -32,7 +35,10 @@ class AssessorRequestNotifier implements EventSubscriberInterface
     public function onRequestAssociated(AssessorRequestEvent $event)
     {
         $this->mailer->sendMessage(
-           AssessorRequestAssociateMessage::createFromAssessorRequest($event->getAssessorRequest())
+           AssessorRequestAssociateMessage::create(
+               $event->getAssessorRequest(),
+               $this->translator->trans($event->getAssessorRequest()->getOfficeName())
+           )
         );
     }
 
