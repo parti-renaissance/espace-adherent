@@ -5,7 +5,6 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
-use AppBundle\Committee\CommitteeManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Event\EventCommand;
@@ -13,6 +12,7 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\CommitteeCommandType;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
+use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Serializer\XlsxEncoder;
 use AppBundle\Utils\GroupUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -32,6 +33,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class CommitteeManagerController extends Controller
 {
+    public const MAX_MEMBER_PER_PAGE = 50;
+
     /**
      * @Route("/editer", name="app_committee_manager_edit", methods={"GET", "POST"})
      */
@@ -94,13 +97,40 @@ class CommitteeManagerController extends Controller
      *
      * @Security("committee.isApproved()")
      */
-    public function listMembersAction(Committee $committee, CommitteeManager $committeeManager): Response
+    public function listMembersAction(Committee $committee, CommitteeMembershipRepository $repository): Response
     {
         return $this->render('committee_manager/list_members.html.twig', [
             'committee' => $committee,
-            'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
-            'members' => $committeeManager->getCommitteeMemberships($committee),
+            'committee_hosts' => $repository->findHostMembers($committee),
+            'members' => $repository->getCommitteeMembershipsPaginator($committee, 1, self::MAX_MEMBER_PER_PAGE),
         ]);
+    }
+
+    /**
+     * @Route(
+     *     "/membres/{page}",
+     *     condition="request.isXmlHttpRequest()",
+     *     requirements={"page": "\d+"},
+     *     name="app_committee_manager_members_segment",
+     *     methods={"GET"}
+     * )
+     *
+     * @Security("committee.isApproved()")
+     */
+    public function getMembersSegmentAction(
+        int $page,
+        UserInterface $adherent,
+        Committee $committee,
+        CommitteeMembershipRepository $repository
+    ): Response {
+        return $this->render(
+            'committee_manager/_member_rows.html.twig',
+            [
+                'committee' => $committee,
+                'members' => $repository->getCommitteeMembershipsPaginator($committee, $page, self::MAX_MEMBER_PER_PAGE),
+                'is_supervisor' => $adherent->isSupervisor(),
+            ]
+        );
     }
 
     /**
