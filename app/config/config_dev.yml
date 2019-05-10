@@ -57,5 +57,6 @@ monolog:
 api_platform:
     enable_entrypoint: true
 
-doctrine_stats:
-    query_backtrace: true
+doctrine:
+    dbal:
+        profiling_collect_backtrace: true
