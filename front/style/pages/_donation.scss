@@ -356,7 +356,7 @@
         .montant {
             margin-bottom: 20px;
             text-align: left;
-            @include text--default;
+            @include text--small-plus;
         }
 
         &__amount {
