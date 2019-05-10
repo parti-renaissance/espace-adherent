@@ -165,7 +165,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'is',
-                'field' => 'FIRST_NAME',
+                'field' => 'MERGE1',
                 'value' => $filter->getFirstName(),
             ];
         }
@@ -174,7 +174,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'is',
-                'field' => 'LAST_NAME',
+                'field' => 'MERGE2',
                 'value' => $filter->getLastName(),
             ];
         }
