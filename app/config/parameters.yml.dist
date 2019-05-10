@@ -40,7 +40,7 @@ parameters:
     env(FACEBOOK_APP_ID):       'app_id'
     env(FACEBOOK_APP_SECRET):   'app_secret'
 
-    env(WATERMARKS_PATH):       '%kernel.root_dir%/../web/watermarks'
+    env(WATERMARKS_PATH):       '%kernel.project_dir%/../web/watermarks'
 
     env(ALGOLIA_APP_ID):        ~
     env(ALGOLIA_FRONT_API_KEY): ~

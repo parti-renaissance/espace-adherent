@@ -1,0 +1,10 @@
+parameters:
+    messenger.middleware:
+        - { id: AppBundle\Messenger\RecorderMiddleware }
+        - { id: send_message }
+        - { id: handle_message }
+
+services:
+    AppBundle\Messenger\MessageRecorder\MessageRecorderInterface:
+        alias: AppBundle\Messenger\MessageRecorder\MessageRecorder
+        public: true
