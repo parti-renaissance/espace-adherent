@@ -75,10 +75,10 @@ final class AssessorRequestHandler
 
     public function back(): void
     {
-        $assessorRequest = $this->session->get(self::SESSION_KEY);
-
-        $this->stateMachine->apply($assessorRequest, $this->getBackTransition($assessorRequest));
-        $this->save($assessorRequest);
+        if ($assessorRequest = $this->session->get(self::SESSION_KEY)) {
+            $this->stateMachine->apply($assessorRequest, $this->getBackTransition($assessorRequest));
+            $this->save($assessorRequest);
+        }
     }
 
     public function getCurrentTransition(AssessorRequestCommand $assessorRequestCommand): string
