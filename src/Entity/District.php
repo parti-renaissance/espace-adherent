@@ -39,7 +39,7 @@ class District
      *
      * @ORM\Column(type="simple_array")
      */
-    private $countries = [];
+    private $countries;
 
     /**
      * @var string
@@ -76,11 +76,6 @@ class District
      * @ORM\JoinColumn(nullable=false)
      */
     private $geoData;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="managedDistrict")
-     */
-    private $adherent;
 
     /**
      * @var ReferentTag|null
@@ -160,16 +155,6 @@ class District
     public function getGeoData(): GeoData
     {
         return $this->geoData;
-    }
-
-    public function getAdherent(): ?Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent(?Adherent $adherent)
-    {
-        $this->adherent = $adherent;
     }
 
     public function getReferentTag(): ?ReferentTag

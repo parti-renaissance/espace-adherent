@@ -3,25 +3,23 @@
 namespace AppBundle\Entity\BoardMember;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="board_member")
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
  */
 class BoardMember
 {
-    const AREA_FRANCE_METROPOLITAN = 'metropolitan';
-    const AREA_OVERSEAS_FRANCE = 'overseas';
-    const AREA_ABROAD = 'abroad';
+    public const AREA_FRANCE_METROPOLITAN = 'metropolitan';
+    public const AREA_OVERSEAS_FRANCE = 'overseas';
+    public const AREA_ABROAD = 'abroad';
 
-    const AREAS_CHOICES = [
+    public const AREAS_CHOICES = [
         'board_member.area.metropolitan' => self::AREA_FRANCE_METROPOLITAN,
         'board_member.area.overseas' => self::AREA_OVERSEAS_FRANCE,
         'board_member.area.abroad' => self::AREA_ABROAD,
@@ -33,12 +31,6 @@ class BoardMember
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="boardMember")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private $adherent;
 
     /**
      * @var string
@@ -106,22 +98,12 @@ class BoardMember
         return $this->id;
     }
 
-    public function getAdherent(): ?Adherent
-    {
-        return $this->adherent;
-    }
-
-    public function setAdherent(Adherent $adherent = null)
-    {
-        $this->adherent = $adherent;
-    }
-
     public function getArea(): string
     {
         return $this->area;
     }
 
-    public function setArea(string $area)
+    public function setArea(string $area): void
     {
         $this->area = $area;
     }
@@ -176,7 +158,7 @@ class BoardMember
         return $this->savedMembers;
     }
 
-    public function setSavedMembers(ArrayCollection $savedMembers)
+    public function setSavedMembers(ArrayCollection $savedMembers): void
     {
         $this->savedMembers = $savedMembers;
     }
@@ -198,10 +180,5 @@ class BoardMember
     public function hasSavedBoardMember(self $boardMember): bool
     {
         return $this->savedMembers->contains($boardMember);
-    }
-
-    public function revoke(): void
-    {
-        $this->adherent = null;
     }
 }

@@ -213,7 +213,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @var ReferentTeamMember|null
      *
-     * @ORM\OneToOne(targetEntity="ReferentTeamMember", mappedBy="member", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTeamMember", cascade={"all"}, orphanRemoval=true)
      */
     private $referentTeamMember;
 
@@ -248,7 +248,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var BoardMember|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", cascade={"all"}, orphanRemoval=true)
      */
     private $boardMember;
 
@@ -281,7 +281,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var District|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\District", mappedBy="adherent", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\District", cascade={"persist"})
      */
     private $managedDistrict;
 
@@ -972,20 +972,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setReferentTeamMember(?ReferentTeamMember $referentTeam): void
     {
-        if ($referentTeam) {
-            $referentTeam->setMember($this);
-        }
         $this->referentTeamMember = $referentTeam;
     }
 
     public function getReferentOfReferentTeam(): ?Adherent
     {
         return $this->referentTeamMember ? $this->referentTeamMember->getReferent() : null;
-    }
-
-    public function getMemberOfReferentTeam(): ?Adherent
-    {
-        return $this->referentTeamMember ? $this->referentTeamMember->getMember() : null;
     }
 
     /**
@@ -1032,7 +1024,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         if (!$this->boardMember) {
             $this->boardMember = new BoardMember();
-            $this->boardMember->setAdherent($this);
         }
 
         $this->boardMember->setArea($area);
@@ -1047,11 +1038,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function revokeBoardMember(): void
     {
-        if (!$this->boardMember) {
-            return;
-        }
-
-        $this->boardMember->revoke();
         $this->boardMember = null;
     }
 
@@ -1407,18 +1393,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setManagedDistrict(?District $district): void
     {
-        if ($district && $district->getAdherent() && !$this->equals($district->getAdherent())) {
-            throw new \InvalidArgumentException('District is already managed by another deputy.');
-        }
-
-        if ($this->managedDistrict) {
-            $this->managedDistrict->setAdherent(null);
-        }
-
         $this->managedDistrict = $district;
-        if ($district) {
-            $this->managedDistrict->setAdherent($this);
-        }
     }
 
     public function isDeputy(): bool

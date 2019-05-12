@@ -11,6 +11,7 @@ use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Form\ActivityPositionType;
+use AppBundle\Form\Admin\AvailableDistrictAutocompleteType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
 use AppBundle\Form\EventListener\RevokeManagedAreaSubscriber;
@@ -322,10 +323,9 @@ class AdherentAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
-                ->add('managedDistrict', 'sonata_type_model', [
+                ->add('managedDistrict', AvailableDistrictAutocompleteType::class, [
                     'label' => 'Circonscription député',
                     'by_reference' => false,
-                    'btn_add' => false,
                     'required' => false,
                 ])
             ->end()

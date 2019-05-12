@@ -121,7 +121,6 @@ class BindDeputiesToDistrictsCommand extends Command
                 $this->hasErrors = true;
                 continue;
             }
-            $district->setAdherent($adherent);
             $this->em->persist($district);
         }
 
