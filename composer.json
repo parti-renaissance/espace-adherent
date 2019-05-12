@@ -21,7 +21,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "ext-amqp": "*",
         "ext-json": "*",
         "ext-openssl": "*",
@@ -36,7 +36,7 @@
         "cakephp/chronos": "^1.1",
         "cocur/slugify": "^2.5",
         "creof/doctrine2-spatial": "^1.2",
-        "csa/guzzle-bundle": "^2.0",
+        "csa/guzzle-bundle": "^3.1",
         "danhunsaker/flysystem-redis": "^1.0",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",

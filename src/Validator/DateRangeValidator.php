@@ -33,8 +33,6 @@ class DateRangeValidator extends ConstraintValidator
             }
         }
 
-        $interval = \DateInterval::createFromDateString($constraint->interval);
-
         $startDate = $this->propertyAccessor->getValue($value, $constraint->startDateField);
         $endDate = $this->propertyAccessor->getValue($value, $constraint->endDateField);
 
@@ -45,6 +43,8 @@ class DateRangeValidator extends ConstraintValidator
         if (!$endDate instanceof \DateTimeInterface) {
             throw new ConstraintDefinitionException('The start date field should be of type DateTime');
         }
+
+        $interval = \DateInterval::createFromDateString($constraint->interval);
 
         if (($maxEndDate = (clone $startDate)->add($interval)) < $endDate) {
             $this
