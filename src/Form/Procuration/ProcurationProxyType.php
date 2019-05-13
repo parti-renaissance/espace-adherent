@@ -65,7 +65,6 @@ class ProcurationProxyType extends AbstractProcurationType
                 'required' => false,
             ])
             ->add('conditions', CheckboxType::class, [
-                'required' => false,
                 'mapped' => false,
                 'constraints' => new IsTrue([
                     'message' => 'procuration.proposal_conditions.required',
