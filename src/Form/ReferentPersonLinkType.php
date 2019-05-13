@@ -56,10 +56,6 @@ class ReferentPersonLinkType extends AbstractType
                     return $value;
                 }
 
-                if (!$value->isCoReferent()) {
-                    return $value;
-                }
-
                 $value->setAdherent($this->adherentRepository->findOneByEmail($value->getEmail()));
 
                 return $value;
