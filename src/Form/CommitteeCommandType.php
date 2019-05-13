@@ -24,9 +24,7 @@ class CommitteeCommandType extends AbstractType
                 'format_title_case' => true,
                 'disabled' => $committee ? $committee->isNameLocked() : false,
             ])
-            ->add('description', TextareaType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('description', TextareaType::class)
             ->add('address', AddressType::class, [
                 'disable_fields' => $committee ? $committee->isApproved() : false,
             ])

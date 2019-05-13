@@ -28,7 +28,6 @@ class BaseEventCommandType extends AbstractType
                 'class' => $options['event_category_class'],
             ])
             ->add('description', PurifiedTextareaType::class, [
-                'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
             ])
             ->add('address', AddressType::class)

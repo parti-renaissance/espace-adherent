@@ -20,9 +20,7 @@ class CitizenActionCommandType extends AbstractType
     {
         $builder
             ->remove('capacity')
-            ->add('description', TextareaType::class, [
-                'filter_emojis' => true,
-            ])
+            ->add('description', TextareaType::class)
         ;
     }
 

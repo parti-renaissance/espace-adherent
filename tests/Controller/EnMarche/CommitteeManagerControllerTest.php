@@ -275,7 +275,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
             'committee_event' => [
                 'name' => " ♻ débat sur l'agriculture écologique ♻ ",
-                'description' => " ♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻ ",
+                'description' => "Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique.",
                 'category' => $eventCategory,
                 'address' => [
                     'address' => '6 rue Neyret',
@@ -355,7 +355,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Créer cet événement')->form([
             'committee_event' => [
                 'name' => " ♻ débat sur l'agriculture écologique à Singapore",
-                'description' => " ♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻ ",
+                'description' => "Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique.",
                 'category' => $eventCategory,
                 'address' => [
                     'address' => '6 rue Neyret',
