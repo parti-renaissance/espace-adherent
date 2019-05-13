@@ -6,23 +6,23 @@ use AppBundle\Repository\EventRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements RedirectToInterface
 {
     private $provider;
     private $eventRepository;
-    private $router;
+    private $urlMatcher;
     private $patternUuid;
 
     public function __construct(
         RedirectionsProvider $provider,
-        RouterInterface $router,
+        UrlMatcherInterface $urlMatcher,
         EventRepository $eventRepository,
         string $patternUuid
     ) {
         $this->provider = $provider;
-        $this->router = $router;
+        $this->urlMatcher = $urlMatcher;
         $this->eventRepository = $eventRepository;
         $this->patternUuid = $patternUuid;
     }
@@ -44,7 +44,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
 
             // Handles the redirect status code
             try {
-                $routeParams = $this->router->match($requestUri);
+                $routeParams = $this->urlMatcher->match($requestUri);
             } catch (\Throwable $e) {
                 $routeParams = false;
             }

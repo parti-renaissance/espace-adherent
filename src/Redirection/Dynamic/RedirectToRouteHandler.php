@@ -8,12 +8,12 @@ use AppBundle\Repository\OrderArticleRepository;
 use AppBundle\Repository\ProposalRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInterface
 {
     private $provider;
-    private $router;
+    private $urlGenerator;
     private $eventRepository;
     private $articleRepository;
     private $proposalRepository;
@@ -21,14 +21,14 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
 
     public function __construct(
         RedirectionsProvider $provider,
-        RouterInterface $router,
+        UrlGeneratorInterface $urlGenerator,
         EventRepository $eventRepository,
         ArticleRepository $articleRepository,
         ProposalRepository $proposalRepository,
         OrderArticleRepository $orderArticleRepository
     ) {
         $this->provider = $provider;
-        $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
         $this->eventRepository = $eventRepository;
         $this->articleRepository = $articleRepository;
         $this->proposalRepository = $proposalRepository;
@@ -51,7 +51,7 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
                     continue;
                 }
 
-                $urlToRedirect = $this->router->generate($route, [
+                $urlToRedirect = $this->urlGenerator->generate($route, [
                     'categorySlug' => $article->getCategory()->getSlug(),
                     'articleSlug' => $article->getSlug(),
                 ]);
@@ -64,7 +64,7 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
                     continue;
                 }
 
-                $urlToRedirect = $this->router->generate($route, [
+                $urlToRedirect = $this->urlGenerator->generate($route, [
                     'categorySlug' => $article->getCategory()->getSlug(),
                     'articleSlug' => $article->getSlug(),
                 ]);
@@ -77,7 +77,7 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
                     continue;
                 }
 
-                $urlToRedirect = $this->router->generate($route, [
+                $urlToRedirect = $this->urlGenerator->generate($route, [
                     'slug' => $proposal->getSlug(),
                 ]);
             }
@@ -89,7 +89,7 @@ class RedirectToRouteHandler extends AbstractRedirectTo implements RedirectToInt
                     continue;
                 }
 
-                $urlToRedirect = $this->router->generate($route, [
+                $urlToRedirect = $this->urlGenerator->generate($route, [
                     'slug' => $orderArticle->getSlug(),
                 ]);
             }
