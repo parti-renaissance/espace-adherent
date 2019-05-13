@@ -71,7 +71,7 @@ class AssessorRequestCommand
 
     /**
      * @Assert\NotBlank(message="common.birthcity.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=15, groups={"fill_personal_info"})
+     * @Assert\Length(max=50, groups={"fill_personal_info"})
      */
     private $birthCity;
 
@@ -89,13 +89,13 @@ class AssessorRequestCommand
 
     /**
      * @Assert\NotBlank(message="common.city_name.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=15, groups={"fill_personal_info"})
+     * @Assert\Length(max=50, groups={"fill_personal_info"})
      */
     private $city;
 
     /**
      * @Assert\NotBlank(message="assessor.vote_city.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=15, groups={"fill_personal_info"})
+     * @Assert\Length(max=50, groups={"fill_personal_info"})
      */
     private $voteCity;
 
@@ -124,7 +124,7 @@ class AssessorRequestCommand
      *     message="assessor.assessor_city.not_blank",
      *     groups={"fill_assessor_info"}
      * )
-     * @Assert\Length(max=255, groups={"fill_assessor_info"})
+     * @Assert\Length(max=50, groups={"fill_assessor_info"})
      */
     private $assessorCity;
 

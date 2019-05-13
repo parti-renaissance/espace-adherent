@@ -97,10 +97,10 @@ class AssessorRequest
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="common.birthcity.not_blank")
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=50)
      */
     private $birthCity;
 
@@ -126,20 +126,20 @@ class AssessorRequest
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="common.city_name.not_blank")
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=50)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column
+     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="assessor.vote_city.not_blank")
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=50)
      */
     private $voteCity;
 
@@ -177,7 +177,7 @@ class AssessorRequest
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(length=50, nullable=true)
      *
      * @Assert\Expression(
      *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
@@ -185,7 +185,7 @@ class AssessorRequest
      *     groups={"fill_assessor_info"}
      * )
      * @Assert\NotBlank(message="assessor.assessor_city.not_blank")
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=50)
      */
     private $assessorCity;
 
