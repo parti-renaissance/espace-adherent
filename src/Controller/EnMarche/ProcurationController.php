@@ -121,7 +121,7 @@ class ProcurationController extends Controller
             return $this->redirectToRoute('app_procuration_request', ['step' => ProcurationRequest::getNextStepUri($step)]);
         }
 
-        return $this->render(sprintf('procuration/%s.html.twig', ProcurationRequest::getStepForUri($step)), [
+        return $this->render(sprintf('procuration/request/%s.html.twig', ProcurationRequest::getStepForUri($step)), [
             'procuration_form' => $form->createView(),
         ]);
     }
@@ -131,7 +131,7 @@ class ProcurationController extends Controller
      */
     public function requestThanksAction(): Response
     {
-        return $this->render('procuration/thanks.html.twig');
+        return $this->render('procuration/request/thanks.html.twig');
     }
 
     /**
@@ -182,7 +182,7 @@ class ProcurationController extends Controller
             ]);
         }
 
-        return $this->render('procuration/proposal.html.twig', [
+        return $this->render('procuration/proxy/proposal.html.twig', [
             'procuration_form' => $form->createView(),
         ]);
     }
@@ -192,7 +192,7 @@ class ProcurationController extends Controller
      */
     public function proposalThanksAction(Request $request): Response
     {
-        return $this->render('procuration/proposal_thanks.html.twig', [
+        return $this->render('procuration/proxy/thanks.html.twig', [
             'uuid' => $request->query->get('uuid'),
         ]);
     }
@@ -206,7 +206,7 @@ class ProcurationController extends Controller
             throw $this->createNotFoundException('Invalid token.');
         }
 
-        return $this->render('procuration/my_request.html.twig', [
+        return $this->render('procuration/request/my_request.html.twig', [
             'request' => $request,
             'proxy' => $request->getFoundProxy(),
         ]);
