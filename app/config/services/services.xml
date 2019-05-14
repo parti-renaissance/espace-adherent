@@ -7,6 +7,7 @@
         <defaults autowire="true" autoconfigure="true" public="false">
             <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
             <bind key="$environment">%kernel.environment%</bind>
+            <bind key="$mailchimpWebhookKey">%env(MAILCHIMP_WEBHOOK_KEY)%</bind>
         </defaults>
 
         <!-- History -->
