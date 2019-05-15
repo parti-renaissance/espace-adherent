@@ -21,6 +21,11 @@ final class AnonymousFollowerSession
     // The subject uri that the anonymous tried to reached before authentication (i.e following a committee)
     private const SESSION_KEY = 'app.anonymous_follower.callback_path';
 
+    private const VALID_INTENTION_URLS = [
+        '/connexion',
+        '/adhesion',
+    ];
+
     private $session;
 
     public function __construct(SessionInterface $session)
@@ -34,9 +39,15 @@ final class AnonymousFollowerSession
             return null;
         }
 
+        $intentionUrl = $request->query->get(self::AUTHENTICATION_INTENTION);
+
+        if (!$this->isValidIntention($intentionUrl)) {
+            return null;
+        }
+
         $this->session->set(self::SESSION_KEY, $this->buildIntentionUrl($request));
 
-        return new RedirectResponse($request->query->get(self::AUTHENTICATION_INTENTION));
+        return new RedirectResponse($intentionUrl);
     }
 
     public function isStarted(): bool
@@ -74,5 +85,10 @@ final class AnonymousFollowerSession
         unset($vars[self::AUTHENTICATION_INTENTION]);
 
         return $request->getPathInfo().($vars ? '?'.\http_build_query($vars) : '');
+    }
+
+    private function isValidIntention(string $intentionUrl): bool
+    {
+        return \in_array($intentionUrl, self::VALID_INTENTION_URLS);
     }
 }
