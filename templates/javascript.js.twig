@@ -56,8 +56,7 @@ CKEDITOR.on('dialogDefinition', function(ev) {
         dialogDefinition.getContents('info').get('linkDisplayText').label = "Entrez ici le nom d'affichage de votre lien ou document.";
     }
 
-    if ( dialogName == 'image' ) {
-        dialogDefinition.removeContents('Upload');
+    if (dialogName == 'image') {
         dialogDefinition.removeContents('advanced');
     }
 });
