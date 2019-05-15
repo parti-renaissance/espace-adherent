@@ -1542,4 +1542,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->postAddress->getCityName();
     }
+
+    public function isAdherentMessageRedactor(): bool
+    {
+        return $this->isReferent()
+            || $this->isDeputy()
+            || $this->isHost()
+            || $this->isSupervisor()
+            || $this->isCitizenProjectAdministrator()
+        ;
+    }
 }

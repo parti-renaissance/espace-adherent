@@ -30,6 +30,7 @@ class UserDocument
     public const TYPE_EVENT = 'event';
     public const TYPE_REFERENT = 'referent';
     public const TYPE_IDEA_ANSWER = 'idea_answer';
+    public const TYPE_ADHERENT_MESSAGE = 'adherent_message';
 
     public const ALL_TYPES = [
         self::TYPE_COMMITTEE_CONTACT,
@@ -37,6 +38,7 @@ class UserDocument
         self::TYPE_EVENT,
         self::TYPE_REFERENT,
         self::TYPE_IDEA_ANSWER,
+        self::TYPE_ADHERENT_MESSAGE,
     ];
 
     /**
