@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/mailchimp/webhook/{key}", name="app_mailchimp_webhook", methods={"POST"})
+ * @Route("/mailchimp/webhook/{key}", name="app_mailchimp_webhook", methods={"GET", "POST"})
  */
 class MailchimpWebhookController extends Controller
 {
@@ -24,14 +24,14 @@ class MailchimpWebhookController extends Controller
 
     public function __invoke(string $key, Request $request, WebhookHandler $handler, LoggerInterface $logger): Response
     {
-        $data = $request->request->all();
+        $logger->error('[Mailchimp Webhook] debug to remove', ['request_content' => $request->getContent(), 'request_data' => $request->request->all()]);
 
         if ($key === $this->mailchimpWebhookKey) {
-            if (EventTypeEnum::isValid($request->request->get('type'))) {
-                $handler($data['type'], $data['data'] ?? []);
+            if ($request->isMethod(Request::METHOD_POST) && EventTypeEnum::isValid($type = $request->request->get('type'))) {
+                $handler($type, (array) $request->request->get('data', []));
             }
         } else {
-            $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key), ['request_data' => $data, 'request' => $request]);
+            $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));
         }
 
         return new Response('OK');
