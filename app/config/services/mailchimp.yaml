@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+        bind:
+            $listId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
+
+    AppBundle\Mailchimp\Webhook\Handler\:
+        resource: ../../../src/Mailchimp/Webhook/Handler/
+
+    _instanceof:
+        AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
+            tags: [app.mailchimp.webhook_handler]
+
+    AppBundle\Mailchimp\Webhook\WebhookHandler:
+        arguments: [!tagged app.mailchimp.webhook_handler]
