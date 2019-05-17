@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche\AdherentMessage;
 
 use AppBundle\AdherentMessage\AdherentMessageFactory;
+use AppBundle\AdherentMessage\AdherentMessageManager;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
@@ -72,8 +73,8 @@ class CommitteeMessageController extends Controller
     public function createMessageAction(
         Request $request,
         UserInterface $adherent,
-        ObjectManager $manager,
-        Committee $committee
+        Committee $committee,
+        AdherentMessageManager $manager
     ): Response {
         $form = $this
             ->createForm(CommitteeAdherentMessageType::class)
@@ -88,8 +89,7 @@ class CommitteeMessageController extends Controller
             );
             $message->setFilter(new CommitteeFilter($committee));
 
-            $manager->persist($message);
-            $manager->flush();
+            $manager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
 
@@ -193,7 +193,7 @@ class CommitteeMessageController extends Controller
         Manager $manager,
         Committee $committee
     ): Response {
-        return new Response($manager->getCampaignContent($message));
+        return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
     }
 
     /**

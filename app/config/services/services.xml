@@ -568,9 +568,8 @@
         <service id="AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler">
             <tag name="messenger.message_handler" />
         </service>
-        <service id="AppBundle\AdherentMessage\Handler\CreateDefaultMessageFilterHandler">
-            <tag name="messenger.message_handler" />
-        </service>
+        <service id="AppBundle\AdherentMessage\Listener\CreateDefaultMessageFilterSubscriber" />
+        <service id="AppBundle\AdherentMessage\AdherentMessageManager" />
 
         <service id="AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommandHandler">
             <tag name="messenger.message_handler" />

@@ -586,7 +586,7 @@ class ReferentControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $crawlerOptions = $crawler->filter('#referent_filter_referentTag option');
+        $crawlerOptions = $crawler->filter('#referent_filter_referentTags option');
 
         self::assertCount(6, $crawlerOptions);
         self::assertSame('Département 13', $crawlerOptions->getNode(0)->nodeValue);
@@ -599,7 +599,7 @@ class ReferentControllerTest extends WebTestCase
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
                 'referent_filter' => [
-                    'referentTag' => 13,
+                    'referentTags' => 13,
                 ],
             ])
         );

@@ -48,10 +48,10 @@ export default class MessageStatusLoader extends React.Component {
     }
 
     renderLoader() {
-        return <p className="space--30-0">
+        return <div className="space--30-0">
             <div className="spin-loader"></div>
             Chargement de vos adhérents
-        </p>;
+        </div>;
     }
 
     renderActionBlock() {

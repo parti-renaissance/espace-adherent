@@ -6,6 +6,7 @@ use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Command\AdherentMessageDeleteCommand;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -35,7 +36,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof AdherentMessageInterface && $object->getExternalId()) {
+        if ($object instanceof MailchimpCampaign && $object->getExternalId()) {
             $this->bus->dispatch(new AdherentMessageDeleteCommand($object->getExternalId()));
         }
     }
@@ -53,18 +54,12 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         $object = $event->getObject();
 
-        if (
-            (
-                $object instanceof AdherentMessageFilterInterface
-                && array_keys($event->getEntityChangeSet()) !== ['synchronized']
-            )
-            ||
-            (
-                $object instanceof AdherentMessageInterface
-                && array_intersect(array_keys($event->getEntityChangeSet()), ['content', 'subject', 'filter'])
-            )
-        ) {
+        if ($object instanceof AdherentMessageFilterInterface && array_keys($event->getEntityChangeSet()) !== ['synchronized']) {
             $object->setSynchronized(false);
+        } elseif ($object instanceof AdherentMessageInterface && array_intersect(array_keys($event->getEntityChangeSet()), ['content', 'subject', 'filter'])) {
+            foreach ($object->getMailchimpCampaigns() as $campaign) {
+                $campaign->setSynchronized(false);
+            }
         }
     }
 

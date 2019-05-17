@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
@@ -66,27 +67,28 @@ class Manager implements LoggerAwareInterface
         }
     }
 
-    public function getCampaignContent(AdherentMessageInterface $message): string
+    public function getCampaignContent(MailchimpCampaign $campaign): string
     {
-        if (!$message->getExternalId()) {
+        if (!$campaign->getExternalId()) {
             throw new InvalidCampaignIdException(
-                sprintf('Message "%s" does not have a valid campaign id', $message->getUuid())
+                sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid())
             );
         }
 
-        return $this->driver->getCampaignContent($message->getExternalId());
+        return $this->driver->getCampaignContent($campaign->getExternalId());
     }
 
-    public function editCampaign(AdherentMessageInterface $message): bool
+    public function editCampaign(MailchimpCampaign $campaign): bool
     {
+        $message = $campaign->getMessage();
         $requestBuilder = $this->requestBuildersLocator->get(CampaignRequestBuilder::class);
 
-        $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($message);
+        $editCampaignRequest = $requestBuilder->createEditCampaignRequestFromMessage($campaign);
 
         $this->eventDispatcher->dispatch(Events::CAMPAIGN_PRE_EDIT, new RequestEvent($message, $editCampaignRequest));
 
         // When ExternalId does not exist, then it is Campaign creation
-        if (!$campaignId = $message->getExternalId()) {
+        if (!$campaignId = $campaign->getExternalId()) {
             $campaignData = $this->driver->createCampaign($editCampaignRequest);
 
             if (empty($campaignData['id'])) {
@@ -95,28 +97,28 @@ class Manager implements LoggerAwareInterface
                 );
             }
 
-            $message->setExternalId($campaignData['id']);
+            $campaign->setExternalId($campaignData['id']);
         } else {
             $campaignData = $this->driver->updateCampaign($campaignId, $editCampaignRequest);
         }
 
         if (isset($campaignData['recipients']['recipient_count'])) {
-            $message->setRecipientCount($campaignData['recipients']['recipient_count']);
+            $campaign->setRecipientCount($campaignData['recipients']['recipient_count']);
         }
 
         return true;
     }
 
-    public function editCampaignContent(AdherentMessageInterface $message): bool
+    public function editCampaignContent(MailchimpCampaign $campaign): bool
     {
-        $this->checkMessageExternalId($message);
+        $this->checkMessageExternalId($campaign);
 
         /** @var CampaignContentRequestBuilder $requestBuilder */
         $contentRequestBuilder = $this->requestBuildersLocator->get(CampaignContentRequestBuilder::class);
 
         if (!$this->driver->editCampaignContent(
-            $message->getExternalId(),
-            $contentRequestBuilder->createContentRequest($message)
+            $campaign->getExternalId(),
+            $contentRequestBuilder->createContentRequest($message = $campaign->getMessage())
         )) {
             $this->logger->warning(
                 sprintf('Campaign content of "%s" message has not been modified', $message->getUuid()->toString())
@@ -137,16 +139,30 @@ class Manager implements LoggerAwareInterface
 
     public function sendCampaign(AdherentMessageInterface $message): bool
     {
-        $this->checkMessageExternalId($message);
+        foreach ($message->getMailchimpCampaigns() as $campaign) {
+            $this->checkMessageExternalId($campaign);
+        }
 
-        return $this->driver->sendCampaign($message->getExternalId());
+        $globalStatus = false;
+
+        foreach ($message->getMailchimpCampaigns() as $campaign) {
+            $success = $this->driver->sendCampaign($campaign->getExternalId());
+
+            $globalStatus |= $success;
+
+            $success ? $campaign->markAsSent() : $campaign->markAsError($this->driver->getLastError());
+        }
+
+        return $globalStatus;
     }
 
     public function sendTestCampaign(AdherentMessageInterface $message, array $emails): bool
     {
-        $this->checkMessageExternalId($message);
+        $campaign = current($message->getMailchimpCampaigns());
 
-        return $this->driver->sendTestCampaign($message->getExternalId(), $emails);
+        $this->checkMessageExternalId($campaign);
+
+        return $this->driver->sendTestCampaign($campaign->getExternalId(), $emails);
     }
 
     public function createStaticSegment(string $name): ?int
@@ -169,11 +185,11 @@ class Manager implements LoggerAwareInterface
         $this->driver->deleteMember($mail);
     }
 
-    private function checkMessageExternalId(AdherentMessageInterface $message): void
+    private function checkMessageExternalId(MailchimpCampaign $campaign): void
     {
-        if (!$message->getExternalId()) {
+        if (!$campaign->getExternalId()) {
             throw new InvalidCampaignIdException(
-                sprintf('Message "%s" does not have a valid campaign id', $message->getUuid()->toString())
+                sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toString())
             );
         }
     }

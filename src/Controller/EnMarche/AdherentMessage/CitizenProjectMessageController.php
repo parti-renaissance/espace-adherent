@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche\AdherentMessage;
 
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
+use AppBundle\AdherentMessage\AdherentMessageManager;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
@@ -71,8 +72,8 @@ class CitizenProjectMessageController extends Controller
     public function createMessageAction(
         Request $request,
         UserInterface $adherent,
-        ObjectManager $manager,
-        CitizenProject $citizenProject
+        CitizenProject $citizenProject,
+        AdherentMessageManager $manager
     ): Response {
         $form = $this
             ->createForm(AdherentMessageType::class)
@@ -83,9 +84,7 @@ class CitizenProjectMessageController extends Controller
             $message = AdherentMessageFactory::create($adherent, $form->getData(), AdherentMessageTypeEnum::CITIZEN_PROJECT);
             $message->setFilter(new CitizenProjectFilter($citizenProject));
 
-            $manager->persist($message);
-
-            $manager->flush();
+            $manager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
 
@@ -190,7 +189,7 @@ class CitizenProjectMessageController extends Controller
         Manager $manager,
         CitizenProject $citizenProject
     ): Response {
-        return new Response($manager->getCampaignContent($message));
+        return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
     }
 
     /**

@@ -6,12 +6,20 @@ services:
         bind:
             $listId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
 
+    _instanceof:
+        AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
+            tags: ['app.mailchimp.webhook_handler']
+        AppBundle\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
+            tags: ['app.mailchimp.campaign.handler']
+
     AppBundle\Mailchimp\Webhook\Handler\:
         resource: ../../../src/Mailchimp/Webhook/Handler/
 
-    _instanceof:
-        AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
-            tags: [app.mailchimp.webhook_handler]
+    AppBundle\AdherentMessage\MailchimpCampaign\:
+        resource: ../../../src/AdherentMessage/MailchimpCampaign/
 
     AppBundle\Mailchimp\Webhook\WebhookHandler:
-        arguments: [!tagged app.mailchimp.webhook_handler]
+        arguments: [!tagged 'app.mailchimp.webhook_handler']
+
+    AppBundle\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
+        arguments: [!tagged 'app.mailchimp.campaign.handler']

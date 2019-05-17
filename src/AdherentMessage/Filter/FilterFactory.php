@@ -30,9 +30,7 @@ abstract class FilterFactory
             throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
         }
 
-        $tags = $managedArea->getTags();
-
-        return new ReferentUserFilter($tags->first());
+        return new ReferentUserFilter($managedArea->getTags()->toArray());
     }
 
     private static function createDeputyFilter(Adherent $user): AdherentMessageFilterInterface

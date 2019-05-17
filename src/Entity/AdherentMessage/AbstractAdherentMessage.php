@@ -9,6 +9,8 @@ use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EntityIdentityTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
@@ -77,27 +79,11 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
-     */
-    private $externalId;
-
-    /**
-     * @var string
-     *
      * @ORM\Column
      *
      * @Groups({"message_read"})
      */
     private $status = AdherentMessageStatusEnum::DRAFT;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"message_read"})
-     */
-    private $synchronized = false;
 
     /**
      * @var AdherentMessageFilterInterface|null
@@ -113,30 +99,39 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     private $filter;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
-     *
-     * @Groups({"message_read"})
-     */
-    private $recipientCount;
-
-    /**
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $sentAt;
 
+    /**
+     * @var MailchimpCampaign[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\AdherentMessage\MailchimpCampaign",
+     *     mappedBy="message",
+     *     cascade={"all"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $mailchimpCampaigns;
+
     public function __construct(UuidInterface $uuid, Adherent $author)
     {
         $this->uuid = $uuid;
         $this->author = $author;
+        $this->mailchimpCampaigns = new ArrayCollection();
     }
 
     public static function createFromAdherent(Adherent $adherent): self
     {
         return new static(Uuid::uuid4(), $adherent);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getAuthor(): ?Adherent
@@ -159,11 +154,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->content;
     }
 
-    public function getExternalId(): ?string
-    {
-        return $this->externalId;
-    }
-
     public function setLabel(string $label): void
     {
         $this->label = $label;
@@ -177,11 +167,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function setContent(string $content): void
     {
         $this->content = $content;
-    }
-
-    public function setExternalId(string $externalId): void
-    {
-        $this->externalId = $externalId;
     }
 
     public function getStatus(): string
@@ -200,14 +185,22 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return AdherentMessageStatusEnum::SENT_SUCCESSFULLY === $this->status;
     }
 
-    public function setSynchronized(bool $value): void
-    {
-        $this->synchronized = $value;
-    }
-
+    /**
+     * @Groups({"message_read"})
+     */
     public function isSynchronized(): bool
     {
-        return $this->synchronized && (null === $this->filter || $this->filter->isSynchronized());
+        if ($this->mailchimpCampaigns->isEmpty()) {
+            return false;
+        }
+
+        $status = true;
+
+        foreach ($this->mailchimpCampaigns as $campaign) {
+            $status &= $campaign->isSynchronized();
+        }
+
+        return $status;
     }
 
     public function getFilter(): ?AdherentMessageFilterInterface
@@ -222,17 +215,26 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     public function resetFilter(): void
     {
-        $this->recipientCount = $this->filter = null;
+        $this->filter = null;
+
+        $this->mailchimpCampaigns->forAll(static function (int $key, MailchimpCampaign $campaign) {
+            $campaign->reset();
+        });
+
+        dump($this->mailchimpCampaigns->toArray());
     }
 
+    /**
+     * @Groups({"message_read"})
+     */
     public function getRecipientCount(): ?int
     {
-        return $this->recipientCount;
-    }
-
-    public function setRecipientCount(?int $recipientCount): void
-    {
-        $this->recipientCount = $recipientCount;
+        return array_sum($this->mailchimpCampaigns
+            ->map(static function (MailchimpCampaign $campaign) {
+                return $campaign->getRecipientCount();
+            })
+            ->toArray()
+        );
     }
 
     public function getFromName(): ?string
@@ -265,5 +267,26 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function hasReadOnlyFilter(): bool
     {
         return false;
+    }
+
+    public function getMailchimpCampaigns(): array
+    {
+        return $this->mailchimpCampaigns->toArray();
+    }
+
+    public function addMailchimpCampaign(MailchimpCampaign $campaign): void
+    {
+        if (!$this->mailchimpCampaigns->contains($campaign)) {
+            $this->mailchimpCampaigns->add($campaign);
+        }
+    }
+
+    public function setMailchimpCampaigns(array $campaigns): void
+    {
+        $this->mailchimpCampaigns->clear();
+
+        foreach ($campaigns as $campaign) {
+            $this->addMailchimpCampaign($campaign);
+        }
     }
 }

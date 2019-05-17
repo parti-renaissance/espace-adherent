@@ -2,7 +2,7 @@
 
 namespace AppBundle\Mailchimp\Campaign;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
 
 class CampaignRequestBuilder
@@ -24,15 +24,25 @@ class CampaignRequestBuilder
         $this->fromName = $fromName;
     }
 
-    public function createEditCampaignRequestFromMessage(AdherentMessageInterface $message): EditCampaignRequest
+    public function createEditCampaignRequestFromMessage(MailchimpCampaign $campaign): EditCampaignRequest
     {
+        $message = $campaign->getMessage();
+
         return (new EditCampaignRequest($this->listId))
             ->setFolderId($this->objectIdMapping->getFolderIdByType($message->getType()))
             ->setTemplateId($this->objectIdMapping->getTemplateIdByType($message->getType()))
             ->setSubject($message->getSubject())
-            ->setTitle(sprintf('%s - %s', $message->getAuthor(), (new \DateTime())->format('d/m/Y')))
-            ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($message) : [])
+            ->setTitle($this->createCampaignLabel($campaign))
+            ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($campaign) : [])
             ->setFromName($message->getFromName() ?? $this->fromName)
         ;
+    }
+
+    private function createCampaignLabel(MailchimpCampaign $campaign): string
+    {
+        return implode(' - ', array_merge([
+            $campaign->getMessage()->getAuthor()->getFullName(),
+            (new \DateTime())->format('d/m/Y'),
+        ], ($label = $campaign->getLabel()) ? [$label] : []));
     }
 }

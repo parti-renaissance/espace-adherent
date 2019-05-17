@@ -3,6 +3,8 @@
 namespace AppBundle\Entity\AdherentMessage\Filter;
 
 use AppBundle\Entity\ReferentTag;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -95,15 +97,19 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
     private $interests = [];
 
     /**
-     * @var ReferentTag
+     * @var ReferentTag[]|Collection
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
      */
-    private $referentTag;
+    private $referentTags;
 
-    public function __construct(ReferentTag $referentTag)
+    public function __construct(array $referentTags)
     {
-        $this->referentTag = $referentTag;
+        $this->referentTags = new ArrayCollection();
+
+        foreach ($referentTags as $tag) {
+            $this->addReferentTag($tag);
+        }
     }
 
     public function includeAdherentsNoCommittee(): bool
@@ -226,13 +232,23 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
         $this->interests = $interests;
     }
 
-    public function getReferentTag(): ReferentTag
+    /**
+     * @return ReferentTag[]
+     */
+    public function getReferentTags(): array
     {
-        return $this->referentTag;
+        return $this->referentTags->toArray();
     }
 
-    public function setReferentTag(ReferentTag $referentTag): void
+    public function addReferentTag(ReferentTag $referentTag): void
     {
-        $this->referentTag = $referentTag;
+        if (!$this->referentTags->contains($referentTag)) {
+            $this->referentTags->add($referentTag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTags->removeElement($referentTag);
     }
 }
