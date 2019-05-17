@@ -193,7 +193,7 @@
                             </div>
 
                             <div class="filter__row">
-                                <label class="filter__label">Centres d'intéret</label>
+                                <label class="filter__label">Centres d'intérêt</label>
                                 <select id="referent_filter_interests" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" class="filter__field" multiple="multiple">
                                     {% for key, value in adherent_interests %}
                                         <option value="{{ key }}" {{ key in filter.queryInterests ? 'selected' }}>{{ value }}</option>
@@ -307,7 +307,7 @@
                             {% set isBasicAdherent = true %}
                             {%- if user.citizenProjectsOrganizer -%}
                                 {% set isBasicAdherent = false %}
-                                Porteur du projet<br />
+                                Porteur de projet<br />
                             {% endif %}
                             {%- if user.isCommitteeSupervisor -%}
                                 {% set isBasicAdherent = false %}
