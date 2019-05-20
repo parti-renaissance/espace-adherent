@@ -24,7 +24,7 @@ class EmailUpdateHandler implements WebhookHandlerInterface
 
     public function handle(array $data): void
     {
-        if ($data['list_id'] !== $this->listId) {
+        if (!isset($data['list_id']) || $data['list_id'] !== $this->listId) {
             return;
         }
 

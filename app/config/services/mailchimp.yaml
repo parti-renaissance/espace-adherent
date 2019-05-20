@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $listId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
+            $interests: '%adherent_interests%'
 
     _instanceof:
         AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface:

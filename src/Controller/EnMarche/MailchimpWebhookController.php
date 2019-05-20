@@ -24,8 +24,6 @@ class MailchimpWebhookController extends Controller
 
     public function __invoke(string $key, Request $request, WebhookHandler $handler, LoggerInterface $logger): Response
     {
-        $logger->error('[Mailchimp Webhook] debug to remove', ['request_content' => $request->getContent(), 'request_data' => $request->request->all()]);
-
         if ($key === $this->mailchimpWebhookKey) {
             if ($request->isMethod(Request::METHOD_POST) && EventTypeEnum::isValid($type = $request->request->get('type'))) {
                 $handler($type, (array) $request->request->get('data', []));
