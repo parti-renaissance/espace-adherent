@@ -17,8 +17,8 @@
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
                         <div class="filter__row">
-                            <label class="filter__label">Zone gérée</label>
-                            {{ form_widget(form.referentTag, {attr: {class: 'filter__field'}}) }}
+                            <label class="filter__label">Zones gérées</label>
+                            {{ form_widget(form.referentTags, {attr: {class: 'filter__field multi_select2'}}) }}
                         </div>
 
                         <div class="filter__row">
@@ -54,7 +54,7 @@
 
                         <div class="filter__row">
                             <label class="filter__label">Centres d'intéret</label>
-                            {{ form_widget(form.interests, {attr: {class: 'filter__field multi_interests'}}) }}
+                            {{ form_widget(form.interests, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'referent.filter.interests'|trans}}) }}
                         </div>
                     </div>
                 </div>
@@ -80,9 +80,11 @@
             </div>
 
             <div class="manager__filters__actions b__nudge--top">
-                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                {% if message.filter %}
                     <button type="submit" name="reset" class="btn btn--no-border b__nudge--bottom-medium">Réinitialiser le filtre</button>
-                </div>
+                {% endif %}
+            </div>
             {{ form_end(form) }}
         </div>
     </div>
@@ -100,9 +102,9 @@
     <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            if ($('.multi_interests').length) {
-                $('.multi_interests').select2({placeholder: '{{ 'referent.filter.interests'|trans|e('js') }}'});
-            }
+            $('.multi_select2').each(function () {
+                $(this).select2({placeholder: this.dataset.placeholder || ''});
+            });
         });
     </script>
 {% endblock %}

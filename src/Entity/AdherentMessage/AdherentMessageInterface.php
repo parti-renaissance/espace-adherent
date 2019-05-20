@@ -2,18 +2,13 @@
 
 namespace AppBundle\Entity\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AuthoredInterface;
 use Ramsey\Uuid\UuidInterface;
 
-interface AdherentMessageInterface extends AuthoredInterface, AdherentMessageSynchronizedObjectInterface
+interface AdherentMessageInterface extends AuthoredInterface
 {
     public function getLabel(): ?string;
-
-    public function setExternalId(string $id): void;
-
-    public function setRecipientCount(?int $recipientCount): void;
 
     public function getUuid(): UuidInterface;
 
@@ -44,4 +39,17 @@ interface AdherentMessageInterface extends AuthoredInterface, AdherentMessageSyn
     public function getRecipientCount(): ?int;
 
     public function getSentAt(): ?\DateTimeInterface;
+
+    public function getId(): ?int;
+
+    public function isSynchronized(): bool;
+
+    /** @return MailchimpCampaign[] */
+    public function getMailchimpCampaigns(): array;
+
+    public function addMailchimpCampaign(MailchimpCampaign $campaign): void;
+
+    public function setMailchimpCampaigns(array $campaigns): void;
+
+    public function resetFilter(): void;
 }

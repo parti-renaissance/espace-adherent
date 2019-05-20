@@ -1,10 +1,11 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Command;
+namespace AppBundle\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use Symfony\Component\EventDispatcher\Event;
 
-class CreateDefaultMessageFilterCommand
+class MessageEvent extends Event
 {
     private $message;
 

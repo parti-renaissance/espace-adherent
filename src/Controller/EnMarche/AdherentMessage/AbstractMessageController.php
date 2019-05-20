@@ -4,8 +4,8 @@ namespace AppBundle\Controller\EnMarche\AdherentMessage;
 
 use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\AdherentMessageFactory;
+use AppBundle\AdherentMessage\AdherentMessageManager;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\Command\CreateDefaultMessageFilterCommand;
 use AppBundle\AdherentMessage\Filter\FilterFactory;
 use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Entity\Adherent;
@@ -19,7 +19,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -63,8 +62,7 @@ abstract class AbstractMessageController extends Controller
     public function createMessageAction(
         Request $request,
         UserInterface $adherent,
-        ObjectManager $manager,
-        MessageBusInterface $bus
+        AdherentMessageManager $messageManager
     ): Response {
         $form = $this
             ->createForm(AdherentMessageType::class)
@@ -74,11 +72,7 @@ abstract class AbstractMessageController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $message = AdherentMessageFactory::create($adherent, $form->getData(), $this->getMessageType());
 
-            $manager->persist($message);
-
-            $bus->dispatch(new CreateDefaultMessageFilterCommand($message));
-
-            $manager->flush();
+            $messageManager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
 
@@ -164,7 +158,7 @@ abstract class AbstractMessageController extends Controller
      */
     public function getMessageTemplateAction(AbstractAdherentMessage $message, Manager $manager): Response
     {
-        return new Response($manager->getCampaignContent($message));
+        return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
     }
 
     /**
@@ -176,7 +170,7 @@ abstract class AbstractMessageController extends Controller
         Request $request,
         AbstractAdherentMessage $message,
         FilterFormFactory $formFactory,
-        ObjectManager $manager
+        AdherentMessageManager $manager
     ): Response {
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
@@ -188,8 +182,7 @@ abstract class AbstractMessageController extends Controller
 
         // Reset Filter object
         if ($request->request->has('reset') && $message->getFilter()) {
-            $message->resetFilter();
-            $manager->flush();
+            $manager->updateFilter($message, null);
 
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
@@ -202,8 +195,7 @@ abstract class AbstractMessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message->setFilter($form->getData());
-            $manager->flush();
+            $manager->updateFilter($message, $form->getData());
 
             $this->addFlash('info', 'adherent_message.filter_updated');
 

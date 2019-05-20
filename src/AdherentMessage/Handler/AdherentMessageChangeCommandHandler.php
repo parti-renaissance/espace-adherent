@@ -40,17 +40,19 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        if ($this->mailchimpManager->editCampaign($message)) {
-            if ($filter = $message->getFilter()) {
-                $filter->setSynchronized(true);
-            }
+        foreach ($message->getMailchimpCampaigns() as $mailchimpCampaign) {
+            if ($this->mailchimpManager->editCampaign($mailchimpCampaign)) {
+                if ($filter = $message->getFilter()) {
+                    $filter->setSynchronized(true);
+                }
 
-            // Persists Mailchimp campaign ID on creation (first API call)
-            $this->entityManager->flush();
-
-            if ($this->mailchimpManager->editCampaignContent($message)) {
-                $message->setSynchronized(true);
+                // Persists Mailchimp campaign ID on creation (first API call)
                 $this->entityManager->flush();
+
+                if ($this->mailchimpManager->editCampaignContent($mailchimpCampaign)) {
+                    $mailchimpCampaign->setSynchronized(true);
+                    $this->entityManager->flush();
+                }
             }
         }
 

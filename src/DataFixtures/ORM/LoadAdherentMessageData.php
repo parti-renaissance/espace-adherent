@@ -11,6 +11,7 @@ use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,21 +24,6 @@ class LoadAdherentMessageData extends Fixture
         $faker = Factory::create('FR_fr');
 
         foreach ($this->getMessageClasses() as $class) {
-            /** @var AdherentMessageInterface $messageCompleted */
-            $messageCompleted = $class::createFromAdherent($this->getAuthor($class));
-            $messageCompleted->setContent($faker->randomHtml());
-            $className = substr(strrchr($class, '\\'), 1);
-            $messageCompleted->setSubject("Synchronized $className message with externalId");
-            $messageCompleted->setLabel($faker->sentence(2));
-            $messageCompleted->setExternalId('123abc');
-            $messageCompleted->setSynchronized(true);
-
-            if ($filter = $this->getFilter($class)) {
-                $messageCompleted->setFilter($filter);
-            }
-
-            $manager->persist($messageCompleted);
-
             for ($i = 1; $i <= 100; ++$i) {
                 /** @var AdherentMessageInterface $message */
                 $message = $class::createFromAdherent($this->getAuthor($class));
@@ -49,9 +35,13 @@ class LoadAdherentMessageData extends Fixture
                 if ($filter = $this->getFilter($class)) {
                     $message->setFilter($filter);
                 }
+                $message->addMailchimpCampaign(new MailchimpCampaign($message));
+                $message->getMailchimpCampaigns()[0]->setSynchronized(true);
 
                 $manager->persist($message);
             }
+            $message->markAsSent();
+
             $manager->flush();
         }
     }

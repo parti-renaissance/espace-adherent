@@ -10,6 +10,7 @@ use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -38,14 +39,16 @@ class SegmentConditionsBuilder
         $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
     }
 
-    public function build(AdherentMessageInterface $message): array
+    public function build(MailchimpCampaign $campaign): array
     {
+        $message = $campaign->getMessage();
+
         $conditions[] = $this->buildSubscriptionTypeCondition($message);
 
         $filter = $message->getFilter();
 
         if ($filter instanceof ReferentUserFilter) {
-            $conditions = array_merge($conditions, $this->buildReferentConditions($filter));
+            $conditions = array_merge($conditions, $this->buildReferentConditions($filter, $campaign));
         } elseif ($filter instanceof AdherentZoneFilter) {
             $conditions[] = $this->buildReferentZoneCondition($filter->getReferentTag());
         } elseif ($filter instanceof CommitteeFilter) {
@@ -96,7 +99,7 @@ class SegmentConditionsBuilder
         ];
     }
 
-    private function buildReferentConditions(ReferentUserFilter $filter): array
+    private function buildReferentConditions(ReferentUserFilter $filter, MailchimpCampaign $campaign): array
     {
         $conditions = [];
 
@@ -192,7 +195,14 @@ class SegmentConditionsBuilder
             $conditions[] = $this->buildInterestCondition($filter->getInterests(), $this->memberInterestInterestGroupId);
         }
 
-        $conditions[] = $this->buildReferentZoneCondition($filter->getReferentTag());
+        if (!$campaign->getStaticSegmentId()) {
+            throw new StaticSegmentIdMissingException(sprintf(
+                '[ReferentMessage] Referent message (%s) does not have a Mailchimp Static segment ID',
+                $campaign->getMessage()->getUuid()->toString()
+            ));
+        }
+
+        $conditions[] = $this->buildStaticSegmentCondition($campaign->getStaticSegmentId());
 
         return $conditions;
     }

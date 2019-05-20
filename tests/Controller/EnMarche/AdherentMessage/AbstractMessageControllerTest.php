@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche\AdherentMessage;
 
 use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
-use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
+use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 use Tests\AppBundle\MessengerTestTrait;
@@ -44,8 +44,8 @@ class AbstractMessageControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $referentMessage = $this->client->getContainer()->get('doctrine')->getManager()
-            ->getRepository(AbstractAdherentMessage::class)
-            ->findOneBy(['subject' => 'Synchronized ReferentAdherentMessage message with externalId'])
+            ->getRepository(ReferentAdherentMessage::class)
+            ->findOneBy(['status' => 'draft'])
         ;
 
         $uuid = $referentMessage->getUuid()->toString();

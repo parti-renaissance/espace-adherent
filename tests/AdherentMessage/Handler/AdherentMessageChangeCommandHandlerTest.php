@@ -4,12 +4,15 @@ namespace Tests\AppBundle\AdherentMessage\Handler;
 
 use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
+use AppBundle\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\District;
@@ -106,11 +109,18 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     public function testReferentMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(ReferentAdherentMessage::class);
-        $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')));
-        $tag->setExternalId(123);
+
+        $message->setFilter($filter = new ReferentUserFilter([
+            $tag1 = new ReferentTag('Tag1', 'code1'),
+            $tag2 = new ReferentTag('Tag2', 'code2'),
+        ]));
+        $tag1->setExternalId(123);
+        $tag2->setExternalId(456);
+
+        (new ReferentMailchimpCampaignHandler())->handle($message);
 
         $this->clientMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(4))
             ->method('request')
             ->withConsecutive(
                 ['POST', '/3.0/campaigns', ['json' => [
@@ -119,7 +129,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '1',
                         'template_id' => 1,
                         'subject_line' => '[Référent] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'title' => 'Full Name - '.date('d/m/Y').' - code1',
                         'reply_to' => 'jemarche@en-marche.fr',
                         'from_name' => 'Full Name',
                     ],
@@ -132,7 +142,13 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontainsall',
                                     'field' => 'interests-C',
-                                    'value' => [],
+                                    'value' => [1],
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3, 4, 5, 6],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -144,7 +160,54 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         ],
                     ],
                 ]]],
-                ['PUT', '/3.0/campaigns/123/content', ['json' => [
+                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                    'template' => [
+                        'id' => 1,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a class="mcnButton" title="RÉPONDRE" href="mailto:adherent@mail.com" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#FF6955;mso-line-height-rule:exactly;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;display:block;">RÉPONDRE</a>',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '1',
+                        'template_id' => 1,
+                        'subject_line' => '[Référent] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - code2',
+                        'reply_to' => 'jemarche@en-marche.fr',
+                        'from_name' => 'Full Name',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'listId',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [1],
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3, 4, 5, 6],
+                                ],
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 456,
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
                     'template' => [
                         'id' => 1,
                         'sections' => [
@@ -155,7 +218,12 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ],
                 ]]]
             )
-            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+            ->willReturn(
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id2']))
+            )
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -237,9 +305,11 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
 
     private function preparedMessage(string $messageClass): AdherentMessageInterface
     {
+        /** @var AdherentMessageInterface $message */
         $message = new $messageClass(Uuid::uuid4(), $this->adherentDummy);
         $message->setSubject('Subject');
         $message->setContent('Content');
+        $message->addMailchimpCampaign(new MailchimpCampaign($message));
 
         return $message;
     }
@@ -259,10 +329,17 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'committee' => 3,
                     'citizen_project' => 4,
                 ]),
-                new SegmentConditionsBuilder([], 'A', 'B', 'C'),
+                new SegmentConditionsBuilder(
+                    [
+                        'subscribed_emails_referents' => 1,
+                        'CITIZEN_PROJECT_HOST' => 2,
+                        'COMMITTEE_SUPERVISOR' => 3,
+                        'COMMITTEE_HOST' => 4,
+                        'COMMITTEE_FOLLOWER' => 5,
+                        'COMMITTEE_NO_FOLLOWER' => 6,
+                    ], 'A', 'B', 'C'),
                 'listId',
-                'FromName',
-                'FromEmail'
+                'FromName'
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder($mailchimpMapping, $this->createSectionRequestBuildersLocator()),
         ]);

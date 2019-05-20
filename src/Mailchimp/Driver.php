@@ -18,6 +18,8 @@ class Driver implements LoggerAwareInterface
 
     private $client;
     private $listId;
+    /** @var ResponseInterface|null */
+    private $lastResponse;
 
     public function __construct(ClientInterface $client, string $listId)
     {
@@ -136,7 +138,7 @@ class Driver implements LoggerAwareInterface
     private function send(string $method, string $uri, array $body = []): ?ResponseInterface
     {
         try {
-            return $this->client->request(
+            return $this->lastResponse = $this->client->request(
                 $method,
                 '/3.0/'.ltrim($uri, '/'),
                 ($body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : [])
@@ -147,7 +149,7 @@ class Driver implements LoggerAwareInterface
                 ($response = $e->getResponse()) ? $response->getBody() : 'Unknown'
             ), ['exception' => $e]);
 
-            return $response;
+            return $this->lastResponse = $response;
         }
     }
 
@@ -159,5 +161,14 @@ class Driver implements LoggerAwareInterface
     private function toArray(ResponseInterface $response): array
     {
         return \GuzzleHttp\json_decode((string) $response->getBody(), true);
+    }
+
+    public function getLastError(): ?string
+    {
+        if ($this->lastResponse && ($data = $this->toArray($this->lastResponse)) && isset($data['detail'])) {
+            return $data['detail'];
+        }
+
+        return null;
     }
 }
