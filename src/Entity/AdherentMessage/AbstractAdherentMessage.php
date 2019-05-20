@@ -220,8 +220,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->mailchimpCampaigns->forAll(static function (int $key, MailchimpCampaign $campaign) {
             $campaign->reset();
         });
-
-        dump($this->mailchimpCampaigns->toArray());
     }
 
     /**
