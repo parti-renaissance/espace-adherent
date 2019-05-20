@@ -66,6 +66,15 @@ final class Version20190515143812 extends AbstractMigration
         );
 
         $this->addSql('ALTER TABLE adherent_messages DROP synchronized, DROP recipient_count, DROP external_id');
+
+        $this->addSql(
+            'UPDATE mailchimp_campaign AS c
+            INNER JOIN adherent_messages AS m ON m.id = c.message_id
+            INNER JOIN adherent_message_filters AS f ON f.id = m.filter_id
+            INNER JOIN referent_user_filter_referent_tag AS t ON t.referent_user_filter_id = f.id
+            INNER JOIN referent_tags AS tag ON tag.id = t.referent_tag_id
+            SET c.label = tag.code, c.static_segment_id = tag.external_id'
+        );
     }
 
     public function down(Schema $schema): void
