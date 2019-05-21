@@ -185,6 +185,13 @@ class Manager implements LoggerAwareInterface
         $this->driver->deleteMember($mail);
     }
 
+    public function getReportData(MailchimpCampaign $campaign): array
+    {
+        $this->checkMessageExternalId($campaign);
+
+        return $this->driver->getReportData($campaign->getExternalId());
+    }
+
     private function checkMessageExternalId(MailchimpCampaign $campaign): void
     {
         if (!$campaign->getExternalId()) {
