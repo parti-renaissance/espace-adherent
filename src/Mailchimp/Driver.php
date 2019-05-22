@@ -128,6 +128,22 @@ class Driver implements LoggerAwareInterface
         return $this->sendRequest('DELETE', sprintf('/lists/%s/members/%s', $this->listId, md5(strtolower($mail))));
     }
 
+    public function getReportData(string $campaignId): array
+    {
+        $response = $this->send('GET', sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
+
+        return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
+    }
+
+    public function getLastError(): ?string
+    {
+        if ($this->lastResponse && ($data = $this->toArray($this->lastResponse)) && isset($data['detail'])) {
+            return $data['detail'];
+        }
+
+        return null;
+    }
+
     private function sendRequest(string $method, string $uri, array $body = []): bool
     {
         $response = $this->send($method, $uri, $body);
@@ -161,14 +177,5 @@ class Driver implements LoggerAwareInterface
     private function toArray(ResponseInterface $response): array
     {
         return \GuzzleHttp\json_decode((string) $response->getBody(), true);
-    }
-
-    public function getLastError(): ?string
-    {
-        if ($this->lastResponse && ($data = $this->toArray($this->lastResponse)) && isset($data['detail'])) {
-            return $data['detail'];
-        }
-
-        return null;
     }
 }

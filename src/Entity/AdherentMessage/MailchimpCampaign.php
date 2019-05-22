@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 {
-    private const STATUS_SENT = 'sent';
-    private const STATUS_ERROR = 'error';
-    private const STATUS_DRAFT = 'draft';
+    public const STATUS_SENT = 'sent';
+    public const STATUS_ERROR = 'error';
+    public const STATUS_DRAFT = 'draft';
 
     /**
      * @var int|null
@@ -22,6 +22,13 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      * @ORM\GeneratedValue
      */
     protected $id;
+
+    /**
+     * @var MailchimpCampaignReport|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AdherentMessage\MailchimpCampaignReport", cascade={"all"})
+     */
+    private $report;
 
     /**
      * @var string
@@ -168,5 +175,15 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     public function reset(): void
     {
         $this->recipientCount = $this->label = $this->staticSegmentId = null;
+    }
+
+    public function getReport(): ?MailchimpCampaignReport
+    {
+        return $this->report;
+    }
+
+    public function setReport(?MailchimpCampaignReport $report): void
+    {
+        $this->report = $report;
     }
 }
