@@ -28,11 +28,16 @@ class StatisticsAggregator
         }
 
         if ($data['sent']) {
-            $data['open_rate'] = $data['opens'] * 100.00 / $data['sent'];
-            $data['click_rate'] = $data['clicks'] * 100.00 / $data['sent'];
-            $data['unsubscribe_rate'] = $data['unsubscribe'] * 100.00 / $data['sent'];
+            $data['open_rate'] = self::calculateRate($data['opens'], $data['sent']);
+            $data['click_rate'] = self::calculateRate($data['clicks'], $data['sent']);
+            $data['unsubscribe_rate'] = self::calculateRate($data['unsubscribe'], $data['sent']);
         }
 
         return $data;
+    }
+
+    private static function calculateRate(int $part, int $total, int $precision = 1): float
+    {
+        return round($part * 100.00 / $total, $precision, \PHP_ROUND_HALF_UP);
     }
 }
