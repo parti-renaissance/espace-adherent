@@ -267,6 +267,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return false;
     }
 
+    /** @return MailchimpCampaign[] */
     public function getMailchimpCampaigns(): array
     {
         return $this->mailchimpCampaigns->toArray();

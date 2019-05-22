@@ -246,6 +246,12 @@ class App {
             module.default(queryString, totalCount, perPage, this.get('api'));
         });
     }
+
+    runMessageList(buttonClass) {
+        System.import('pages/message_list').catch((error) => { throw error; }).then((module) => {
+            module.default(buttonClass, this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

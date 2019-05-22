@@ -4,10 +4,6 @@
 
 {% set route_params = route_params|default({})|merge({uuid: message.uuid}) %}
 
-{% block messages_header_left_block %}
-    <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}" class="link--blue link--no-decor">← Retour</a>
-{% endblock %}
-
 {% block message_content %}
     <div class="form__title b__nudge--bottom-larger">
         <h3 class="text--medium  text--center">Prévisualiser mon message</h3>
@@ -18,7 +14,7 @@
     </div>
 
     <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"
-            src="{{ path("app_message_#{message_type}_content", route_params) }}"
+            src="{{ path("app_message_common_content", {uuid: message.uuid}) }}"
     ></iframe>
     <div class="l__wrapper--slim b__nudge--top-40 text--center">
         {% if not message.isSent %}

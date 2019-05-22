@@ -85,7 +85,13 @@
                                     </a>
                                 {% endif %}
 
-                                {% if not message.isSent %}
+                                {% if message.isSent %}
+                                    <a class="text--blue--dark link--no-decor adherent-message-statistics-button"
+                                       href="javascript:void(0);"
+                                       data-uuid="{{ message.uuid }}"
+                                       data-subject="{{ message.subject }}"
+                                    >Statistiques</a>
+                                {% else %}
                                     <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Filtrer</a>
                                 {% endif %}
 
@@ -141,4 +147,14 @@
             </ul>
         </div>
     {% endif %}
+
+    <div id="modal-wrapper"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runMessageList('adherent-message-statistics-button');
+        });
+    </script>
 {% endblock %}

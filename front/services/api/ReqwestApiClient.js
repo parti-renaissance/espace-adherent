@@ -232,4 +232,11 @@ export default class ReqwestApiClient {
             type: 'html'
         });
     }
+
+    getMessageStatistics(uuid, callback) {
+        this._createRequest(callback, {
+            url: '/adherent-message/' + uuid + '/statistics',
+            type: 'json',
+        })
+    }
 }

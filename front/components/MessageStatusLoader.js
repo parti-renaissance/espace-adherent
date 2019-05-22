@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Loader from './Loader';
 
 const MAX_API_CALLS = 100;
 
@@ -47,13 +48,6 @@ export default class MessageStatusLoader extends React.Component {
         );
     }
 
-    renderLoader() {
-        return <div className="space--30-0">
-            <div className="spin-loader"></div>
-            Chargement de vos adhérents
-        </div>;
-    }
-
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
@@ -95,7 +89,7 @@ export default class MessageStatusLoader extends React.Component {
 
         return (
             <div>
-                {!this.state.synchronized ? this.renderLoader() : this.renderActionBlock()}
+                {!this.state.synchronized ? <Loader title="Chargement de vos adhérents" /> : this.renderActionBlock()}
             </div>
         );
     }

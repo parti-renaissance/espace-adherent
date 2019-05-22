@@ -526,6 +526,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_DEPUTY';
         }
 
+        if ($this->isAdherentMessageRedactor()) {
+            $roles[] = 'ROLE_MESSAGE_REDACTOR';
+        }
+
         if ($this->isCoordinator()) {
             $roles[] = 'ROLE_COORDINATOR';
         }
