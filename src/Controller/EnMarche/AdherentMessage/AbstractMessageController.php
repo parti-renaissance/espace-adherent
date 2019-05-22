@@ -152,16 +152,6 @@ abstract class AbstractMessageController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/content", name="content", methods={"GET"})
-     *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
-     */
-    public function getMessageTemplateAction(AbstractAdherentMessage $message, Manager $manager): Response
-    {
-        return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
-    }
-
-    /**
      * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")

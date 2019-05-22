@@ -184,19 +184,6 @@ class CommitteeMessageController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/content", name="content", methods={"GET"})
-     *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
-     */
-    public function getMessageTemplateAction(
-        CommitteeAdherentMessage $message,
-        Manager $manager,
-        Committee $committee
-    ): Response {
-        return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
-    }
-
-    /**
      * @Route("/{uuid}/supprimer", name="delete", methods={"GET"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")

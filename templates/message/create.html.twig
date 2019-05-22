@@ -6,14 +6,6 @@
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
 {% endblock %}
 
-{% block messages_header_left_block %}
-    <a href="{{ path("app_message_#{message_type}_list", route_params|default({})) }}">← Retour</a>
-{% endblock %}
-
-{% block messages_header_right_block %}
-    <span class="text--bold text--black">1</span> / 2
-{% endblock %}
-
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
 

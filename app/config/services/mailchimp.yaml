@@ -24,3 +24,5 @@ services:
 
     AppBundle\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
         arguments: [!tagged 'app.mailchimp.campaign.handler']
+
+    AppBundle\AdherentMessage\StatisticsAggregator: ~
