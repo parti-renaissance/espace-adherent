@@ -17,9 +17,11 @@
         border: 1px solid #888;
         width: 80%;
         position: relative;
+        border-radius: 3px;
     }
 
     .close {
+        cursor: pointer;
         position: absolute;
         right: 15px;
         top: 15px;
