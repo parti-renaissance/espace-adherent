@@ -5,11 +5,20 @@
     z-index: 20;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     overflow: auto;
-    background-color: rgba(0,0,0,0.6);
     padding: 15px;
+
+    .modal-background {
+        position: fixed;
+        box-sizing: border-box;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.6);
+    }
 
     .modal-content {
         box-sizing: border-box;

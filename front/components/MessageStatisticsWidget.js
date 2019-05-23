@@ -117,6 +117,7 @@ export default class MessageStatisticsWidget extends React.Component {
 
         return (
             <div className="em-modal" style={{ display: this.state.display ? 'block' : 'none' }}>
+                <div className="modal-background" onClick={this._hideModal}></div>
                 <div className="modal-content">
                     <span className="close" onClick={this._hideModal}/>
                     {this.state.dataLoaded ? this.renderStatsBlock() : this.renderLoader()}
