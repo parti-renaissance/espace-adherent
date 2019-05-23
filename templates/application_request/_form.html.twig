@@ -1,0 +1,131 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div>
+        <h4>Qui êtes-vous ?</h4>
+    
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                {{ form_label(form.lastName, 'Nom', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+            <div class="register__form--mid">
+                {{ form_label(form.firstName, 'Prénom', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+        </div>
+    
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                {{ form_label(form.emailAddress, 'E-mail', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail' } }) }}
+                {{ form_errors(form.emailAddress) }}
+            </div>
+    
+            <div class="register__form--mid">
+                {{ form_label(form.phone, 'Téléphone', { label_attr: { class: 'text--gray' } }) }}
+                <div class="l__row l__row--top l__row--h-stretch">
+                    {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
+                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                </div>
+                {{ form_errors(form.phone) }}
+            </div>
+        </div>
+    
+        <div class="form__row">
+            <div class="address-autocomplete"></div>
+            <p class="text--smallest text--muted text--left" id="address-autocomplete-help-message">
+                Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+            </p>
+        </div>
+    
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                {{ form_label(form.address, 'Adresse', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.address, { attr: { placeholder: 'Votre adresse' } }) }}
+                {{ form_errors(form.address) }}
+            </div>
+        </div>
+    
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                {{ form_label(form.postalCode, 'Code postal', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
+                {{ form_errors(form.postalCode) }}
+            </div>
+            <div class="register__form--mid">
+                {{ form_label(form.city, 'Ville', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.city) }}
+                {{ form_errors(form.city) }}
+            </div>
+        </div>
+    
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--mid">
+                {{ form_label(form.country, 'Pays', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.country) }}
+                {{ form_errors(form.country) }}
+            </div>
+        </div>
+    
+    
+        <h4>Vos experiences et expertises</h4>
+
+        {% block curriculum_block '' %}
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--full">
+                {{ form_label(form.profession, 'Quelle est votre profession ?', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.profession, { attr: { placeholder: 'Votre profession' } }) }}
+                {{ form_errors(form.profession) }}
+            </div>
+        </div>
+
+        {% block skills_block '' %}
+
+        {% block experience_block '' %}
+
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--full">
+                {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection', { label_attr: { class: 'text--gray' } }) }}
+                {{ form_widget(form.favoriteThemes) }}
+                {{ form_errors(form.favoriteThemes) }}
+            </div>
+        </div>
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--full">
+                {{ form_label(form.customFavoriteTheme, 'Autre', { label_attr: { class: 'text--gray' } }) }}
+                <div>
+                    {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entre une ou plusieurs thématiques' } }) }}
+                    {{ form_errors(form.customFavoriteTheme) }}
+                </div>
+            </div>
+        </div>
+
+        {% block themes_block '' %}
+
+        {% block associative_commitment_block '' %}
+
+        {% block project_block '' %}
+
+        {% block chart_block '' %}
+
+    </div>
+    
+    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+    {% if recaptcha_public_key is not empty %}
+        <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+    {% elseif app.debug %}
+        <input type="hidden" name="g-recaptcha-response" value="fake" />
+    {% endif %}
+    
+    <div class="text--center b__nudge--top-large">
+        <button type="submit" class="btn btn--blue">
+            Valider
+        </button>
+    </div>
+    
+    {{ form_rest(form) }}
+{{ form_end(form) }}
