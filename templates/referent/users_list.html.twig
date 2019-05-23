@@ -23,7 +23,7 @@
         <h3>Adhérents</h3>
         {% if total_count %}
             <span class="datagrid__count">
-                <span>{{ results_count }}</span> sur {{ total_count }} adhérents
+                <span>{{ results.totalItems }}</span> sur {{ total_count }} adhérents
             </span>
         {% endif %}
     </div>
@@ -264,7 +264,7 @@
 
     {% if has_filter and is_granted('ROLE_REFERENT') %}
         <div class="b__nudge--bottom-large">
-            <a href="{{ path('app_referent_users_message') ~ filter }}" class="btn-type-table" id="send-message-btn">
+            <a href="{{ path('app_referent_users_message', filter.toArray) }}" class="btn-type-table" id="send-message-btn">
                 Contacter ({{ results_subscription_count }})
             </a>
         </div>
@@ -335,43 +335,12 @@
             </table>
         </div>
 
-        {% block pager %}
-            <div class="datagrid__pager">
-                {% set current_page = (filter.offset / constant('PER_PAGE', filter))|round(0, 'ceil') + 1 %}
-                {% set last_page = (results_count / constant('PER_PAGE', filter))|round(0, 'ceil') %}
-                {% if last_page > 1 %}
-                <ul>
-                    <li>
-                        <div class="pager__go-to-page">
-                            <span>Aller à la page</span>
-                            <input type="number" placeholder="5" class="pager__action" />
-                            <span>Page {{ current_page }} sur {{ last_page }}</span>
-                        </div>
-                    </li>
-
-                    <li>
-                        <a href="{{ path('app_referent_users') ~ filter.previousPageQueryString }}" class="pager__action switch">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
-                              <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
-                            </svg>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ path('app_referent_users') ~ filter.nextPageQueryString }}" class="pager__action switch">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
-                              <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
-        {% endblock %}
-
-        <!-- <div class="text--center">
-            {{ block('pager') }}
-        </div> -->
-
+        {% if results.count %}
+            {% include 'components/_modern_pagination.html.twig' with {
+                current_page: results.currentPage,
+                total_pages: results.lastPage,
+                pagination_route_params: filter.toArray
+            } %}
+        {% endif %}
     </div>
 {% endblock %}

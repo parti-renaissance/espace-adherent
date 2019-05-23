@@ -40,9 +40,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
             '2.34567'
         );
 
-        $results = $this->referentManagedUserRepository->search($referent)->getQuery()->getResult();
-
-        $this->assertCount(3, $results);
+        $this->assertCount(3, $this->referentManagedUserRepository->search($referent));
     }
 
     public function testSearchWithoutEmailSubscribers()
@@ -60,9 +58,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         $filter = $this->createMock(ManagedUsersFilter::class);
         $filter->expects($this->any())->method('onlyEmailSubscribers')->willReturn(false);
 
-        $results = $this->referentManagedUserRepository->search($referent, $filter)->getQuery()->getResult();
-
-        $this->assertCount(1, $results);
+        $this->assertCount(1, $this->referentManagedUserRepository->search($referent, $filter));
     }
 
     /**
@@ -83,9 +79,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         $filter = $this->createMock(ManagedUsersFilter::class);
         $filter->expects($this->any())->method('onlyEmailSubscribers')->willReturn($onlyEmailSubscribers);
 
-        $results = $this->referentManagedUserRepository->search($referent, $filter, true)->getQuery()->getResult();
-
-        $this->assertCount($count, $results);
+        $this->assertCount($count, $this->referentManagedUserRepository->search($referent, $filter, true));
     }
 
     public function providesOnlyEmailSubscribers(): \Generator

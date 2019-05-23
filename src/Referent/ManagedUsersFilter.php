@@ -135,14 +135,9 @@ class ManagedUsersFilter
         return $this;
     }
 
-    public function __toString()
+    public function toArray(): array
     {
-        return $this->getQueryStringForOffset($this->offset);
-    }
-
-    public function getQueryStringForOffset(int $offset): string
-    {
-        return '?'.http_build_query([
+        return [
             self::PARAMETER_QUERY_ZONE => $this->queryZone,
             self::PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE => $this->includeAdherentsNoCommittee ? '1' : '0',
             self::PARAMETER_INCLUDE_ADHERENTS_IN_COMMITTEE => $this->includeAdherentsInCommittee ? '1' : '0',
@@ -151,7 +146,6 @@ class ManagedUsersFilter
             self::PARAMETER_QUERY_AREA_CODE => $this->queryAreaCode ?: '',
             self::PARAMETER_QUERY_CITY => $this->queryCity ?: '',
             self::PARAMETER_QUERY_ID => $this->queryId ?: '',
-            self::PARAMETER_OFFSET => $offset,
             self::PARAMETER_TOKEN => $this->token,
             self::PARAMETER_GENDER => $this->queryGender,
             self::PARAMETER_LAST_NAME => $this->queryLastName,
@@ -163,19 +157,7 @@ class ManagedUsersFilter
             self::PARAMETER_EMAIL_SUBSCRIPTION => null === $this->onlyEmailSubscribers ? null : ($this->onlyEmailSubscribers ? '1' : '0'),
             self::PARAMETER_REGISTERED_FROM => $this->queryRegisteredFrom ? $this->queryRegisteredFrom->format('Y-m-d') : null,
             self::PARAMETER_REGISTERED_TO => $this->queryRegisteredTo ? $this->queryRegisteredTo->format('Y-m-d') : null,
-        ]);
-    }
-
-    public function getPreviousPageQueryString(): string
-    {
-        $previousOffset = $this->offset - self::PER_PAGE;
-
-        return $this->getQueryStringForOffset($previousOffset >= 0 ? $previousOffset : 0);
-    }
-
-    public function getNextPageQueryString(): string
-    {
-        return $this->getQueryStringForOffset($this->offset + self::PER_PAGE);
+        ];
     }
 
     public function getQueryZone(): ?string
