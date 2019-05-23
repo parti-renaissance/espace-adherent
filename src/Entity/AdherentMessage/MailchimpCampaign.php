@@ -86,6 +86,13 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
      */
     private $detail;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $city;
+
     public function __construct(AdherentMessageInterface $message)
     {
         $this->message = $message;
@@ -185,5 +192,20 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     public function setReport(?MailchimpCampaignReport $report): void
     {
         $this->report = $report;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function resetFilter(): void
+    {
+        $this->staticSegmentId = $this->city = null;
     }
 }
