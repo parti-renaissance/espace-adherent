@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Bénévoles - Appel à candidature' %}
+{% block meta_description "Soyez bénévole pour la meilleure plateforme du monde" %}
+{% block canonical_url url('app_application_request_volunteer') %}
+
+{% block open_graph_image (homepage_url ~ static_asset('procuration-sharer_2.jpg', { q: 70 }))|raw %}
+
+{% block banner '' %}
+{% block header '' %}
+{% block footer '' %}
+
+{% block content %}
+    <main class="procuration">
+        <section class="procuration__header--outer l__row l__row--h-stretch list__links--nav progressive-background text--center text--white"
+                 data-sd="{{ static_asset('procuration.jpg', { w: 300, q: 20 }) }}"
+                 data-hd="{{ static_asset('procuration.jpg', { w: 2000, q: 70 }) }}">
+            <div class="l__wrapper l__row space--30-0">
+                <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--white">EM!</a>
+            </div>
+            <div class="procuration__header--inner l__wrapper--slim">
+                <h1 class="text--larger">
+                    Élections municipales
+                </h1>
+                <h1 class="text--large b__nudge--top-10 l__hide--on-mobile">
+                    Je participe à la campagne LaREM de ma ville en tant que colistier ou bénévole
+                </h1>
+            </div>
+        </section>
+
+        <section class="procuration__content l__wrapper  l__row--top l__row--h-stretch-around l__tablet--col space--60-0">
+            Je postule en tant que
+            <a href="">Colistier</a>
+            |
+            <a href="">Bénévole</a>
+        </section>
+
+        <section class="procuration__content l__wrapper l__row l__row--top l__row--h-stretch-around l__tablet--col space--60-0">
+            <div class="procuration__banner__form procuration__banner__form--large">
+                {% block form_body '' %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
