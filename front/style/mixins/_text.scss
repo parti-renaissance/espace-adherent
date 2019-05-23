@@ -2,6 +2,7 @@ $text--size-xs: 9px;
 $text--size-smallest: 12px;
 $text--size-small: 14px;
 $text--size-default: 16px;
+$text--size-default-large: 18px;
 $text--size-medium--small: 20px;
 $text--size-medium: 24px;
 $text--size-medium--large: 28px;
@@ -39,6 +40,11 @@ $text--size-extra-large--big: 128px;
 @mixin text--default {
     font-size: $text--size-default;
     line-height: 24px;
+}
+
+@mixin text--default-large {
+    font-size: $text--size-default-large;
+    line-height: normal;
 }
 
 @mixin text--medium-small {
@@ -171,6 +177,19 @@ $text--size-extra-large--big: 128px;
     letter-spacing: 1.5px;
 }
 
+// Data
+@mixin data-label {
+    text-transform: uppercase;
+    color: $silver-grey;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+@mixin data-value {
+    color: $black;
+    font-size: 22px;
+}
+
 // Personnal space mixins
 @mixin manager-menu-item {
     font-family: $font-roboto;
@@ -219,6 +238,10 @@ $text--size-extra-large--big: 128px;
 
     &--small {
         @include text--small;
+    }
+
+    &--default-large {
+        @include text--default-large;
     }
 
     &--medium-small {
@@ -429,6 +452,14 @@ $text--size-extra-large--big: 128px;
 
     &--shadow {
         text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    &--data-label {
+        @include data-label;
+    }
+
+    &--data-value {
+        @include data-value;
     }
 }
 

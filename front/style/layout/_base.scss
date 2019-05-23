@@ -201,7 +201,7 @@ table {
 
     &:hover {
         & .action-dropdown-menu {
-            z-index: 9999999;
+            z-index: 10;
             display: block;
         }
     }

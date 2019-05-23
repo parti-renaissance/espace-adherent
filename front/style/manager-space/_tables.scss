@@ -114,6 +114,7 @@
             td {
                 padding: 16px 0;
                 line-height: normal;
+                padding-right: 20px;
 
                 &.adherent-identity {
                     .adherent-name {
@@ -154,7 +155,7 @@
                     }
                 }
 
-                a {
+                a:not(.row-action) {
                     color: $blue--dark;
                     border-color: $blue--dark;
 
