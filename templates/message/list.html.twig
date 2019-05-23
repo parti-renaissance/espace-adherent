@@ -52,7 +52,7 @@
                     <td class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
                         <span></span>{{ message.status|trans }}
                     </td>
-                    <td>{{ message.label }}</td>
+                    <td width="100">{{ message.label }}</td>
                     <td>{{ message.subject }}</td>
                     <td>
                         {% if message.isSent %}
@@ -71,13 +71,23 @@
                             <div class="action-dropdown-menu">
                                 {% set message_route_params = route_params|default({})|merge({uuid: message.uuid}) %}
                                 {% if not message.isSent %}
-                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_update", message_route_params) }}">Modifier</a>
+                                    <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_update", message_route_params) }}">Modifier</a>
+                                {% endif %}
+
+                                {% if message.isSent %}
+                                    <a class="row-action text--blue--dark link--no-decor adherent-message-statistics-button"
+                                       href="javascript:void(0);"
+                                       data-uuid="{{ message.uuid }}"
+                                       data-subject="{{ message.subject }}"
+                                    >Statistiques</a>
+                                {% else %}
+                                    <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Filtrer</a>
                                 {% endif %}
 
                                 {% if message.isSynchronized %}
-                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_preview", message_route_params) }}">Visualiser</a>
+                                    <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_preview", message_route_params) }}">Visualiser</a>
                                 {% else %}
-                                    <a class="btn--disabled" href="javascript:void(0);">
+                                    <a class="row-action btn--disabled" href="javascript:void(0);">
                                         Visualiser<br/>
                                         <span class="text--smallest">
                                             (en cours de préparation ...)
@@ -85,17 +95,7 @@
                                     </a>
                                 {% endif %}
 
-                                {% if message.isSent %}
-                                    <a class="text--blue--dark link--no-decor adherent-message-statistics-button"
-                                       href="javascript:void(0);"
-                                       data-uuid="{{ message.uuid }}"
-                                       data-subject="{{ message.subject }}"
-                                    >Statistiques</a>
-                                {% else %}
-                                    <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Filtrer</a>
-                                {% endif %}
-
-                                <a class="text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_delete", message_route_params) }}">Supprimer</a>
+                                <a class="row-action text--dark link--no-decor" href="{{ path("app_message_#{message_type}_delete", message_route_params) }}">Supprimer</a>
                             </div>
                         </div>
                     </td>

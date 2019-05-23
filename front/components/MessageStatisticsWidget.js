@@ -56,38 +56,38 @@ export default class MessageStatisticsWidget extends React.Component {
 
     renderStatsBlock() {
         return (
-            <div className="font-roboto space--30">
-                <div><strong>Statistiques de l'e-mail:</strong></div>
+            <div className="font-roboto">
+                <div className="text--bold text--default-large">Statistiques de l'e-mail :</div>
                 <div className="b__nudge--top-15 b__nudge--bottom-large text--dark">Objet : {this.state.subject}</div>
 
                 <div className="l__row">
                     <div className="l__col l__col--half">
-                        <div className="text--uppercase text--small text--silver-gray">Envoyé à</div>
-                        <div>
-                            <span className="text--medium-small">{this.state.sent}</span>
+                        <div className="text--data-label">Envoyé à</div>
+                        <div className="b__nudge--top-10">
+                            <span className="text--data-value">{this.state.sent}</span>
                             <span className="text--dark"> contact(s)</span>
                         </div>
                     </div>
                     <div className="l__col l__col--half">
-                        <div className="text--uppercase text--small text--silver-gray">Taux d’ouverture</div>
-                        <div>
-                            <span className="text--medium-small">{this.state.openRate}%</span>
+                        <div className="text--data-label">Taux d’ouverture</div>
+                        <div className="b__nudge--top-10">
+                            <span className="text--data-value">{this.state.openRate}%</span>
                             <span className="text--dark"> ({this.state.opens})</span>
                         </div>
                     </div>
                 </div>
                 <div className="l__row b__nudge--top-large">
                     <div className="l__col l__col--half">
-                        <div className="text--uppercase text--small text--silver-gray">Taux de clique</div>
-                        <div>
-                            <span className="text--medium-small">{this.state.clickRate}%</span>
+                        <div className="text--data-label">Taux de clic</div>
+                        <div className="b__nudge--top-10">
+                            <span className="text--data-value">{this.state.clickRate}%</span>
                             <span className="text--dark"> ({this.state.clicks})</span>
                         </div>
                     </div>
                     <div className="l__col l__col--half">
-                        <div className="text--uppercase text--small text--silver-gray">Taux de désabonnement</div>
-                        <div>
-                            <span className="text--medium-small">{this.state.unsubscribeRate}%</span>
+                        <div className="text--data-label">Taux de désabonnement</div>
+                        <div className="b__nudge--top-10">
+                            <span className="text--data-value">{this.state.unsubscribeRate}%</span>
                             <span className="text--dark"> ({this.state.unsubscribe})</span>
                         </div>
                     </div>
@@ -117,7 +117,8 @@ export default class MessageStatisticsWidget extends React.Component {
 
         return (
             <div className="em-modal" style={{ display: this.state.display ? 'block' : 'none' }}>
-                <div className="modal-content" style={{ width: '700px' }}>
+                <div className="modal-background" onClick={this._hideModal}></div>
+                <div className="modal-content">
                     <span className="close" onClick={this._hideModal}/>
                     {this.state.dataLoaded ? this.renderStatsBlock() : this.renderLoader()}
                 </div>
