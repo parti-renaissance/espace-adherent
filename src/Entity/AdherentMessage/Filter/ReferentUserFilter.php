@@ -251,4 +251,9 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
     {
         $this->referentTags->removeElement($referentTag);
     }
+
+    public function getCityAsArray(): array
+    {
+        return $this->city ? array_map('trim', explode(',', $this->city)) : [];
+    }
 }

@@ -182,12 +182,12 @@ class SegmentConditionsBuilder
             ];
         }
 
-        if ($filter->getCity()) {
+        if ($campaign->getCity()) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
                 'field' => 'CITY',
-                'value' => $filter->getCity(),
+                'value' => $campaign->getCity(),
             ];
         }
 
