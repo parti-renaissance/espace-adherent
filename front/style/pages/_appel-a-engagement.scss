@@ -49,7 +49,6 @@
 
             h2 {
                 font-weight: normal;
-                opacity: 0.5;
                 font-size: 18px;
             }
 
@@ -94,6 +93,8 @@
         }
 
         .role-picker {
+            margin-top: 100px;
+            
             &__btns {
                 display: flex;
                 flex-direction: row;
