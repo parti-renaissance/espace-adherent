@@ -121,6 +121,24 @@ Feature:
       "status": "ok"
     }
     """
+    And I should have 1 email "DataSurveyAnsweredMessage" for "ernestino@bonsoirini.fr" with payload:
+    """
+    {
+      "FromEmail":"contact@en-marche.fr",
+      "FromName":"En Marche !",
+      "Subject":"",
+      "MJ-TemplateID":"665490",
+      "MJ-TemplateLanguage":true,
+      "Recipients": [
+          {
+            "Email":"ernestino@bonsoirini.fr",
+            "Vars": {
+              "first_name":"Ernestino"
+            }
+         }
+      ]
+    }
+    """
 
   Scenario: As a logged-in user I can not reply to a survey that was no created by my referent(s)
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"

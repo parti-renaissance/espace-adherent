@@ -2,9 +2,10 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Form\Jecoute\DataSurveyFormType;
+use AppBundle\Jecoute\DataSurveyAnswerHandler;
 use AppBundle\Repository\Jecoute\LocalSurveyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -30,6 +31,7 @@ class JecouteSurveyController extends Controller
         Serializer $serializer,
         UserInterface $user
     ): Response {
+        /** @var Adherent $user */
         return new JsonResponse(
             $serializer->serialize(
                 $localSurveyRepository->findAllByAdherent($user),
@@ -45,8 +47,11 @@ class JecouteSurveyController extends Controller
     /**
      * @Route("/survey/reply", name="api_survey_reply", methods={"POST"})
      */
-    public function surveyReplyAction(Request $request, ObjectManager $manager): JsonResponse
-    {
+    public function surveyReplyAction(
+        Request $request,
+        DataSurveyAnswerHandler $dataSurveyHandler,
+        UserInterface $user
+    ): JsonResponse {
         $form = $this->createForm(DataSurveyFormType::class, null, [
             'csrf_protection' => false,
         ]);
@@ -63,11 +68,8 @@ class JecouteSurveyController extends Controller
             );
         }
 
-        $dataSurvey = $form->getData();
-        $dataSurvey->setAuthor($this->getUser());
-
-        $manager->persist($dataSurvey);
-        $manager->flush();
+        /** @var Adherent $user */
+        $dataSurveyHandler->handle($form->getData(), $user);
 
         return new JsonResponse(['status' => 'ok'], JsonResponse::HTTP_CREATED);
     }
