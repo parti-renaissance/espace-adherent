@@ -2,10 +2,11 @@ import EventEmitter from 'events';
 import GooglePlaceAutocomplete from './GooglePlaceAutocomplete';
 
 export default class AutocompletedAddressForm extends EventEmitter {
-    constructor(autocompleteWrapper, addressBlock, addressObject, withHelpMessage = true) {
+    constructor(autocompleteWrapper, addressBlock, helpMessageBlock, addressObject, withHelpMessage = true) {
         super();
         this._autocompleteWrapper = autocompleteWrapper;
         this._addressBlock = addressBlock;
+        this._helpMessageBlock = helpMessageBlock
         this._address = addressObject;
         this._withHelpMessage = withHelpMessage;
     }
@@ -39,7 +40,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
     }
 
     addHelpMessage(autocomplete) {
-        const autocompleteHelpMessage = find(document, '#address-autocomplete-help-message');
+        const autocompleteHelpMessage = this._helpMessageBlock;
 
         autocomplete.once('no_result', () => show(autocompleteHelpMessage));
 

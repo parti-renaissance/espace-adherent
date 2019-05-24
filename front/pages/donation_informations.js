@@ -8,6 +8,7 @@ export default (formType) => {
     (new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
+        dom('#address-autocomplete-help-message'),
         new AddressObject(
             dom('#app_donation_address'),
             dom('#app_donation_postalCode'),
