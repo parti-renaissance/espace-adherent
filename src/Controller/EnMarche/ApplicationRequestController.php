@@ -5,8 +5,8 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\ApplicationRequest\ApplicationRequestHandler;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Form\ApplicationRequest\RunningMateType;
-use AppBundle\Form\ApplicationRequest\VolunteerType;
+use AppBundle\Form\ApplicationRequest\RunningMateRequestType;
+use AppBundle\Form\ApplicationRequest\VolunteerRequestType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,10 +22,10 @@ class ApplicationRequestController extends Controller
      */
     public function requestAction(Request $request, ApplicationRequestHandler $handler): Response
     {
-        $volunteerForm = $this->createForm(VolunteerType::class, new VolunteerRequest())
+        $volunteerForm = $this->createForm(VolunteerRequestType::class, new VolunteerRequest())
             ->handleRequest($request);
 
-        $runningMateForm = $this->createForm(RunningMateType::class, new RunningMateRequest())
+        $runningMateForm = $this->createForm(RunningMateRequestType::class, new RunningMateRequest())
             ->handleRequest($request);
 
         if ($volunteerForm->isSubmitted() && $volunteerForm->isValid()) {

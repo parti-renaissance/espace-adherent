@@ -1,6 +1,25 @@
 {% extends 'application_request/_layout.html.twig' %}
 
-{% form_theme volunteer_form 'procuration/_election_rounds_form.html.twig' %}
+{% block javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    {% import 'javascript.js.twig' as js %}
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runApplicationRequest(
+                '{{ volunteer_form.vars.form_type_class|e('js') }}',
+                '{{ running_mate_form.vars.form_type_class|e('js') }}'
+            );
+            {{ js.address(volunteer_form.address) }}
+            {{ js.address(running_mate_form.address) }}
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
 
 {% block form_body %}
 
