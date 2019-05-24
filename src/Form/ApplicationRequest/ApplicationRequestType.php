@@ -3,6 +3,7 @@
 namespace AppBundle\Form\ApplicationRequest;
 
 use AppBundle\Entity\ApplicationRequest\Theme;
+use AppBundle\Form\AddressType;
 use AppBundle\Form\UnitedNationsCountryType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -28,10 +29,9 @@ class ApplicationRequestType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
-            ->add('address', TextType::class)
-            ->add('postalCode', TextType::class)
-            ->add('city', TextType::class)
-            ->add('country', UnitedNationsCountryType::class)
+            ->add('address', AddressType::class, [
+                'mapped' => false,
+            ])
             ->add('profession', TextType::class)
             ->add('favoriteThemes', EntityType::class, [
                 'class' => Theme::class,
