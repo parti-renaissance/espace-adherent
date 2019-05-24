@@ -25,6 +25,7 @@ export default (volunteerFormType, runningMateFormType) => {
     const volunteerAutocompleteAddressForm = new AutocompletedAddressForm(
         dom('form[name="volunteer_request"] .address-autocomplete'),
         dom('form[name="volunteer_request"] .address-block'),
+        dom('form[name="volunteer_request"] .address-autocomplete-help-message'),
         volunteerAddress
     );
 
@@ -66,6 +67,7 @@ export default (volunteerFormType, runningMateFormType) => {
     const runningMateAutocompleteAddressForm = new AutocompletedAddressForm(
         dom('form[name="running_mate_request"] .address-autocomplete'),
         dom('form[name="running_mate_request"] .address-block'),
+        dom('form[name="running_mate_request"] .address-autocomplete-help-message'),
         runningMateAddress
     );
 
