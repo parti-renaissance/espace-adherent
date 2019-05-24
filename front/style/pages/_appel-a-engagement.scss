@@ -1,8 +1,30 @@
+@mixin picker-btn {
+    display: block;
+    width: calc(50% - 8px);
+    border-radius: 3px;
+    border: 1px solid $gray--light;
+    font-size: 20px;
+    color: $gray--dark;
+    text-align: center;
+    padding: 18px 0;
+    line-height: 22px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    font-family: $font-roboto;
+
+    &:hover {
+        transition: all 0.2s ease-in-out;
+        -webkit-transition: all 0.2s ease-in-out;
+    }
+}
+
 .appel-a-engagement {
 
     .page-header {
         display: block;
         position: relative;
+        overflow: hidden;
         background-color: $blue--extra-light;
         width: 100%;
 
@@ -61,6 +83,45 @@
                 &:nth-child(1) { background-color: $red--nation; }
                 &:nth-child(2) { background-color: $white; }
                 &:nth-child(3) { background-color: $blue--nation; }
+            }
+        }
+    }
+
+    .page-content {
+
+        .page-intro {
+            margin-bottom: 60px;
+        }
+
+        .role-picker {
+            &__btns {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                .pick-btn {
+                    @include picker-btn;
+
+                    &.selected {
+                        font-weight: bold;
+                    }
+
+                    &__running-mate {
+                        &:hover,
+                        &.selected {
+                            color: $blue--nation;
+                            border-color: $blue--nation;
+                        }
+                    }
+
+                    &__volunteer {
+                        &:hover,
+                        &.selected {
+                            color: $red--nation;
+                            border-color: $red--nation;
+                        }
+                    }
+                }
             }
         }
     }
