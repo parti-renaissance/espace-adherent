@@ -19,6 +19,7 @@ class LoadApplicationRequestThemeData extends Fixture
         'application-theme-08' => 'Environnement',
         'application-theme-09' => 'Enseignement',
         'application-theme-10' => 'Santé publique',
+        'application-theme-11' => 'Autre',
     ];
 
     public function load(ObjectManager $manager)

@@ -246,6 +246,12 @@ class App {
             module.default(queryString, totalCount, perPage, this.get('api'));
         });
     }
+
+    runApplicationRequest(volunteerFormType, runningMateFormType) {
+        System.import('pages/application_request').catch((error) => { throw error; }).then((module) => {
+            module.default(volunteerFormType, runningMateFormType);
+        });
+    }
 }
 
 window.App = new App();

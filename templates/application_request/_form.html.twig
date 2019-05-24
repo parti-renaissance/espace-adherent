@@ -40,33 +40,36 @@
                 Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
             </p>
         </div>
-    
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--mid">
-                {{ form_label(form.address, 'Adresse', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.address, { attr: { placeholder: 'Votre adresse' } }) }}
-                {{ form_errors(form.address) }}
+
+        <div class="address-block">
+            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                <div class="register__form--mid">
+                    {{ form_label(form.address.address, 'Adresse', { label_attr: { class: 'text--gray' } }) }}
+                    {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse' } }) }}
+                    {{ form_errors(form.address.address) }}
+                </div>
             </div>
-        </div>
-    
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--mid">
-                {{ form_label(form.postalCode, 'Code postal', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
-                {{ form_errors(form.postalCode) }}
+
+            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                <div class="register__form--mid">
+                    {{ form_label(form.address.postalCode, 'Code postal', { label_attr: { class: 'text--gray' } }) }}
+                    {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
+                    {{ form_errors(form.address.postalCode) }}
+                </div>
+                <div class="register__form--mid">
+                    {{ form_label(form.address.cityName, 'Ville', { label_attr: { class: 'text--gray' } }) }}
+                    {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
+                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
+                    {{ form_errors(form.address.city) }}
+                    {{ form_errors(form.address.cityName) }}
+                </div>
             </div>
-            <div class="register__form--mid">
-                {{ form_label(form.city, 'Ville', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.city) }}
-                {{ form_errors(form.city) }}
-            </div>
-        </div>
-    
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--mid">
-                {{ form_label(form.country, 'Pays', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.country) }}
-                {{ form_errors(form.country) }}
+
+            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                <div class="l__row l__row--h-stretch register__form--mid">
+                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays' } }) }}
+                    {{ form_errors(form.address.country) }}
+                </div>
             </div>
         </div>
     

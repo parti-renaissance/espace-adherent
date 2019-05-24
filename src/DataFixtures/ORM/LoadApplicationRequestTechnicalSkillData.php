@@ -16,6 +16,7 @@ class LoadApplicationRequestTechnicalSkillData extends Fixture
         'application-skill-05' => 'Graphisme',
         'application-skill-06' => 'Mobilisation',
         'application-skill-07' => 'Conformité et juridique',
+        'application-skill-08' => 'Autre',
     ];
 
     public function load(ObjectManager $manager)
