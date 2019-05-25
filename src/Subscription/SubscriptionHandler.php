@@ -5,6 +5,7 @@ namespace AppBundle\Subscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\SubscriptionType;
+use AppBundle\History\EmailSubscriptionHistoryHandler;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SubscriptionHandler
@@ -20,10 +21,13 @@ class SubscriptionHandler
     private $adherentRepository;
     private $subscriptionTypeRepository;
     private $newsletterSubscriptionRepository;
+    private $subscriptionHistoryHandler;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, EmailSubscriptionHistoryHandler $subscriptionHistoryHandler)
     {
         $this->em = $em;
+        $this->subscriptionHistoryHandler = $subscriptionHistoryHandler;
+
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
         $this->subscriptionTypeRepository = $this->em->getRepository(SubscriptionType::class);
         $this->newsletterSubscriptionRepository = $this->em->getRepository(NewsletterSubscription::class);
@@ -57,6 +61,15 @@ class SubscriptionHandler
         $this->em->flush();
     }
 
+    public function unsubscribeAllMails(Adherent $adherent): void
+    {
+        $this->subscriptionHistoryHandler->handleUnsubscriptions($adherent);
+
+        $adherent->setSubscriptionTypes([]);
+
+        $this->em->flush();
+    }
+
     public function addDefaultTypesToAdherent(
         Adherent $adherent,
         bool $allowEmailNotifications,
@@ -78,5 +91,14 @@ class SubscriptionHandler
         }
 
         return SubscriptionTypeEnum::USER_TYPES;
+    }
+
+    public function handleUpdateSubscription(Adherent $adherent, array $newSubscriptionCodes): void
+    {
+        $oldSubscriptionTypes = $adherent->getSubscriptionTypes();
+
+        $this->subscriptionTypeRepository->addToAdherent($adherent, $newSubscriptionCodes);
+
+        $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldSubscriptionTypes);
     }
 }
