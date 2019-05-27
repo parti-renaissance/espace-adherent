@@ -87,3 +87,24 @@ export default (volunteerFormType, runningMateFormType) => {
 
     formValidator(runningMateFormType, runningMateForm);
 };
+
+$(document).ready(function(){
+
+    $('#volunteer-form').hide();
+    $('#js-rolePicker .pick-btn').click(function(){
+        var $this = $(this);
+        $this.addClass('selected');
+        $this.siblings().removeClass('selected');
+
+        if ($this.attr('id') == 'js-RunningMate') {
+            $('#volunteer-form').fadeOut();
+            $('#running-mate-form').fadeIn();
+        }
+
+        if ($this.attr('id') === 'js-Volunteer') {
+            $('#running-mate-form').fadeOut();
+            $('#volunteer-form').fadeIn();
+        }
+    });
+    
+});
