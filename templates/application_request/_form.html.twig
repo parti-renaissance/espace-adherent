@@ -34,13 +34,6 @@
                 </div>
             </div>
 
-            <div class="em-form__group">
-                <div class="address-autocomplete"></div>
-                <p class="em-form__legend">
-                    Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
-                </p>
-            </div>
-
             <div class="address-block">
                 <div class="">
                     <div class="em-form__group">
@@ -70,6 +63,13 @@
                     {{ form_widget(form.address.country, { attr: { placeholder: 'Pays', class: 'em-form__field' } }) }}
                     {{ form_errors(form.address.country) }}
                 </div>
+            </div>
+
+            <div class="em-form__group">
+                <div class="address-autocomplete"></div>
+                <p class="em-form__legend">
+                    Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+                </p>
             </div>
         </div>
 
