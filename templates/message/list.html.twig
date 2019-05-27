@@ -110,42 +110,11 @@
     </table>
 
     {% if messages.count %}
-        {% set current_page = messages.currentPage %}
-        {% set total_pages = messages.lastPage %}
-        {% set pagination_route_name = app.request.attributes.get('_route') %}
-        {% set pagination_route_params = route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {}) %}
-
-        <div class="datagrid__pager">
-            <ul>
-                <li>
-                    <form method="get" class="pager__go-to-page">
-                        <span>Aller à la page </span>
-                        {% if message_filter_status %}
-                            <input type="hidden" name="status" value="{{ message_filter_status }}" />
-                        {% endif %}
-                        <input type="number" max="{{ total_pages }}" name="page" class="pager__action" value="{{ current_page }}"/>
-                        <input type="submit" class="btn btn--blue" value="OK" />
-                        <span class="b__nudge--left-large">{{ current_page }} sur {{ total_pages }}</span>
-                    </form>
-
-                </li>
-                <li>
-                    <a href="{{ current_page > 1 ? path(pagination_route_name, pagination_route_params|merge({ page: current_page - 1 })) : 'javascript:void(0);' }}" class="pager__action switch">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
-                            <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
-                        </svg>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ current_page < total_pages ? path(pagination_route_name, pagination_route_params|merge({ page: current_page + 1 })) : 'javascript:void(0);' }}" class="pager__action switch">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
-                            <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
-                        </svg>
-                    </a>
-                </li>
-            </ul>
-        </div>
+        {% include 'components/_modern_pagination.html.twig' with {
+            current_page: messages.currentPage,
+            total_pages: messages.lastPage,
+            pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})
+        } %}
     {% endif %}
 
     <div id="modal-wrapper"></div>

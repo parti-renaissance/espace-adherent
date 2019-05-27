@@ -78,10 +78,15 @@ class ReferentController extends Controller
 
         /** @var Adherent $referent */
         $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
-        $results = $repository->search($referent, $filter->hasToken() ? $filter : null);
+        $results = $repository->search(
+            $referent,
+            $filter->hasToken() ? $filter : null,
+            false,
+            $request->query->getInt('page', 1)
+        );
 
         if ($filter->hasToken() && true !== $filter->onlyEmailSubscribers()) {
-            $resultsSubscriptionCount = $repository->search($referent, $filter, true)->count();
+            $resultsSubscriptionCount = $repository->search($referent, $filter, true)->getTotalItems();
         }
 
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
@@ -90,10 +95,9 @@ class ReferentController extends Controller
             'managedArea' => $referent->getManagedArea(),
             'filter' => $filter,
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
-            'results_count' => $results->count(),
-            'results_subscription_count' => $resultsSubscriptionCount ?? $results->count(),
+            'results_subscription_count' => $resultsSubscriptionCount ?? $results->getTotalItems(),
             'total_count' => $repository->countAdherentInReferentZone($referent),
-            'results' => $results->getQuery()->getResult(),
+            'results' => $results,
         ]);
     }
 
@@ -120,7 +124,7 @@ class ReferentController extends Controller
             $this->get(ReferentMessageNotifier::class)->sendMessage($message);
             $this->addFlash('info', 'referent.message.success');
 
-            return $this->redirect($this->generateUrl('app_referent_users').$filter);
+            return $this->redirectToRoute('app_referent_users', $filter->toArray());
         }
 
         $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
@@ -128,7 +132,7 @@ class ReferentController extends Controller
 
         return $this->render('referent/users_message.html.twig', [
             'filter' => $filter,
-            'results_count' => $results->count(),
+            'results_count' => $results->getTotalItems(),
             'message' => $message,
             'form' => $form->createView(),
         ]);

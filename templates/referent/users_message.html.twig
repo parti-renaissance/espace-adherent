@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block referent_content %}
-    <a href="{{ path('app_referent_users') ~ filter }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+    <a href="{{ path('app_referent_users', filter.toArray) }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
          ⟵ Annuler
     </a>
 
@@ -58,7 +58,7 @@
             <button class="btn btn--blue btn--large-and-full b__nudge--top-50" type="submit">
                 Envoyer le message
             </button>
-            <a href="{{ path('app_referent_users') ~ filter }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+            <a href="{{ path('app_referent_users', filter.toArray) }}" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
                 Annuler
             </a>
 

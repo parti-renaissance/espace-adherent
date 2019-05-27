@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository\Projection;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Referent\ManagedUsersFilter;
@@ -26,16 +28,19 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
     public function search(
         Adherent $referent,
         ManagedUsersFilter $filter = null,
-        bool $onlyEmailSubscribers = false
-    ): Paginator {
-        return new Paginator($this
+        bool $onlyEmailSubscribers = false,
+        int $page = 1
+    ): PaginatorInterface {
+        $page = $page < 1 ? 1 : $page;
+
+        return new ApiPaginator(new Paginator($this
             ->createFilterQueryBuilder($referent, $filter, $onlyEmailSubscribers)
-            ->setFirstResult($filter ? $filter->getOffset() : 0)
+            ->setFirstResult(($page - 1) * ManagedUsersFilter::PER_PAGE)
             ->setMaxResults(ManagedUsersFilter::PER_PAGE)
             ->getQuery()
             ->useResultCache(true)
             ->setResultCacheLifetime(1800)
-        );
+        ));
     }
 
     public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
