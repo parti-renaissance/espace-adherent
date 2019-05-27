@@ -98,12 +98,16 @@ $(document).ready(function(){
 
         if ($this.attr('id') == 'js-RunningMate') {
             $('#volunteer-form').fadeOut();
-            $('#running-mate-form').fadeIn();
+            setTimeout(function(){
+                $('#running-mate-form').fadeIn();
+            }, 400);
         }
 
         if ($this.attr('id') === 'js-Volunteer') {
             $('#running-mate-form').fadeOut();
-            $('#volunteer-form').fadeIn();
+            setTimeout(function(){
+                $('#volunteer-form').fadeIn();
+            }, 400);
         }
     });
 

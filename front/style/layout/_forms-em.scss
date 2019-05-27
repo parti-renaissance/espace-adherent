@@ -148,16 +148,27 @@
     }
 
     &__row {
-        margin-bottom: 35px;
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
+        flex-direction: column;
+        flex-wrap: wrap;
+
+        @media (min-width: $mobile) {
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+        }
 
         .em-form__group {
             flex-basis: 0;
-            margin-right: 15px;
-            &:last-child { margin-right: 0; }
-            margin-bottom: 0;
+            margin-right: 0;
+
+            @media (min-width: $mobile) {
+                margin-right: 15px;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
         }
 
         .em-form__width {
