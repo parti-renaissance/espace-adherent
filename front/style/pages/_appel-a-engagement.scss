@@ -87,6 +87,7 @@
     }
 
     .page-content {
+        padding-bottom: 200px;
 
         .page-intro {
             margin-bottom: 60px;
@@ -94,7 +95,7 @@
 
         .role-picker {
             margin-top: 100px;
-            
+
             &__btns {
                 display: flex;
                 flex-direction: row;
@@ -128,3 +129,5 @@
     }
 
 }
+
+#volunteer-form { display: none; }

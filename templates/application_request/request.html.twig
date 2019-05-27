@@ -27,65 +27,58 @@
         {% embed 'application_request/_form.html.twig' with { form: volunteer_form } %}
 
             {% block skills_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.technicalSkills) }}
-                        {{ form_errors(form.technicalSkills) }}
-                    </div>
-                </div>
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.customTechnicalSkills, 'Autre', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.customTechnicalSkills) }}
-                            {{ form_errors(form.customTechnicalSkills) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.technicalSkills) }}
+                    {% for column in form.technicalSkills|batch(4) %}
+                            <div class="checkb-col">
+                                {% for skill in column %}
+                                    {{ form_row(skill) }}
+                                {% endfor %}
+                            </div>
+                    {% endfor %}
+                    {{ form_errors(form.technicalSkills) }}
                 </div>
 
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.isPreviousCampaignMember, 'Avez-vous déjà participé à une campagne ?', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.isPreviousCampaignMember) }}
-                        {{ form_errors(form.isPreviousCampaignMember) }}
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.customTechnicalSkills, 'Autre', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.customTechnicalSkills, { attr: { class: 'em-form__field' } }) }}
+                    {{ form_errors(form.customTechnicalSkills) }}
                 </div>
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.previousCampaignDetails, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.previousCampaignDetails) }}
-                        </div>
-                    </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.isPreviousCampaignMember, 'Avez-vous déjà participé à une campagne ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.isPreviousCampaignMember) }}
+                    {{ form_errors(form.isPreviousCampaignMember) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.previousCampaignDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.previousCampaignDetails) }}
                 </div>
             {% endblock %}
 
             {% block associative_commitment_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.shareAssociativeCommitment, 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.shareAssociativeCommitment) }}
-                        {{ form_errors(form.shareAssociativeCommitment) }}
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.shareAssociativeCommitment, 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.shareAssociativeCommitment) }}
+                    {{ form_errors(form.shareAssociativeCommitment) }}
                 </div>
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.associativeCommitmentDetails, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.associativeCommitmentDetails) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.associativeCommitmentDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.associativeCommitmentDetails) }}
                 </div>
             {% endblock %}
 
             {% block chart_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
+                <div class="em-form__group">
+                    <div class="form__checkbox">
                         {% set LREMValuesLabel %}
-                            Je certifie sur l'honneur adhérer à la <a href="{{ path('homepage') }}">Charte des Valeurs</a> de la République En Marche.
+                            <span class="label-with-link">
+                                Je certifie sur l'honneur adhérer à la <a href="{{ path('homepage') }}" class="text--blue--dark">Charte des Valeurs</a> de la République En Marche.
+                            </span>
                         {% endset %}
                         {{ form_widget(form.agreeToLREMValues) }}
                         <label for="{{ form.agreeToLREMValues.vars.id }}">{{ LREMValuesLabel|raw }}</label>
@@ -102,108 +95,81 @@
         {% embed 'application_request/_form.html.twig' with { form: running_mate_form } %}
 
             {% block curriculum_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.curriculum, 'Téléchargez votre CV', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.curriculum) }}
-                        {{ form_errors(form.curriculum) }}
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.curriculum, 'Téléchargez votre CV', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.curriculum) }}
+                    {{ form_errors(form.curriculum) }}
                 </div>
             {% endblock %}
 
             {% block experience_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.isLocalAssociationMember, 'Etes vous enagé dans une/des association(s) locales ?', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.isLocalAssociationMember) }}
-                        {{ form_errors(form.isLocalAssociationMember) }}
-                    </div>
-                </div>
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.localAssociationDomain, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.localAssociationDomain) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.isLocalAssociationMember, 'Etes vous enagé dans une/des association(s) locales ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.isLocalAssociationMember) }}
+                    {{ form_errors(form.isLocalAssociationMember) }}
                 </div>
 
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.isPoliticalActivist) }}
-                        {{ form_errors(form.isPoliticalActivist) }}
-                    </div>
-                </div>
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.politicalActivistDetails, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.politicalActivistDetails) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.localAssociationDomain, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.localAssociationDomain) }}
                 </div>
 
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?', { label_attr: { class: 'text--gray' } }) }}
-                        {{ form_widget(form.isPreviousElectedOfficial) }}
-                        {{ form_errors(form.isPreviousElectedOfficial) }}
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.isPoliticalActivist) }}
+                    {{ form_errors(form.isPoliticalActivist) }}
                 </div>
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.previousElectedOfficialDetails) }}
-                        </div>
-                    </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.politicalActivistDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.politicalActivistDetails) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.isPreviousElectedOfficial) }}
+                    {{ form_errors(form.isPreviousElectedOfficial) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.previousElectedOfficialDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>
             {% endblock %}
 
             {% block themes_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.favoriteThemeDetails) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.favoriteThemeDetails) }}
                 </div>
             {% endblock %}
 
             {% block project_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.projectDetails, 'Quel projet pour votre communce souhaiteriez vous contribuer à porter ?', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.projectDetails, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.projectDetails) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.projectDetails, 'Quel projet pour votre communce souhaiteriez vous contribuer à porter ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.projectDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.projectDetails) }}
                 </div>
 
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
-                        {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?', { label_attr: { class: 'text--gray' } }) }}
-                        <div>
-                            {{ form_widget(form.professionalAssets, { attr: { placeholder: 'Détaillez...' } }) }}
-                            {{ form_errors(form.professionalAssets) }}
-                        </div>
-                    </div>
+                <div class="em-form__group">
+                    {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.professionalAssets, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.professionalAssets) }}
                 </div>
             {% endblock %}
 
             {% block chart_block %}
-                <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                    <div class="register__form--full">
+                <div class="em-form__group">
+                    <div class="form__checkbox">
                         {% set LREMValuesLabel %}
-                            Je certifie sur l'honneur adhérer à la <a href="{{ path('homepage') }}">Charte des Valeurs</a> de la République En Marche
-                            et m'engage à respecter les 10 points de la <a href="{{ path('homepage') }}">Charte de l'élu local</a> LaREM.
+                            <span class="label-with-link">
+                                Je certifie sur l'honneur adhérer à la <a href="{{ path('homepage') }}" class="text--blue--dark">Charte des Valeurs</a> de la République En Marche
+                                et m'engage à respecter les 10 points de la <a href="{{ path('homepage') }}" class="text--blue--dark">Charte de l'élu local</a> LaREM.
+                            </span>
                         {% endset %}
                         {{ form_widget(form.agreeToLREMValues) }}
                         <label for="{{ form.agreeToLREMValues.vars.id }}">{{ LREMValuesLabel|raw }}</label>
