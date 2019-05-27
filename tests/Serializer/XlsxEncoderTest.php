@@ -141,13 +141,12 @@ class XlsxEncoderTest extends TestCase
     {
         $tmpHandle = \tmpfile();
         fwrite($tmpHandle, $encodedData);
-        $metaDatas = stream_get_meta_data($tmpHandle);
-        $tmpFilename = $metaDatas['uri'];
+        $metaData = stream_get_meta_data($tmpHandle);
+        $tmpFilename = $metaData['uri'];
 
         $reader = new Xlsx();
         $spreadsheet = $reader->load($tmpFilename);
-        $array = $spreadsheet->getActiveSheet()->toArray();
 
-        return $array;
+        return $spreadsheet->getActiveSheet()->toArray();
     }
 }

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Loader from './Loader';
+import numberFormat from '../utils/number';
 
 const MAX_API_CALLS = 100;
 
@@ -52,13 +53,16 @@ export default class MessageStatusLoader extends React.Component {
         if (this.state.recipientCount) {
             return <div>
                 <p className="text--medium-small">
-                    Vous allez envoyer un message à <span
-                    className="text--bold text--blue--dark">{this.state.recipientCount}</span> adhérents !
+                    Vous allez envoyer un message à
+                    <span className="text--bold text--blue--dark">
+                        {numberFormat(this.state.recipientCount)}
+                    </span>
+                    adhérent{1 < this.state.recipientCount ? 's' : ''} !
                 </p>
                 <p>
                     <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
                     <a
-                        href="./visualiser"
+                        href="./visualiser?f"
                         className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
                     >
                         Prévisualiser avant envoi

@@ -19,7 +19,7 @@
                 {% endfor %}
                 <input type="number" max="{{ total_pages }}" name="page" class="pager__action" value="{{ current_page }}"/>
                 <input type="submit" class="btn btn--blue" value="OK" />
-                <span class="b__nudge--left-large">{{ current_page }} sur {{ total_pages }}</span>
+                <span class="b__nudge--left-large">{{ current_page|number_format(0, ',', ' ') }} sur {{ total_pages|number_format(0, ',', ' ') }}</span>
             </form>
         </li>
         <li>

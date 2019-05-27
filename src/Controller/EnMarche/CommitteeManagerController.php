@@ -7,6 +7,7 @@ use AppBundle\Committee\CommitteeCommand;
 use AppBundle\Committee\CommitteeContactMembersCommand;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\CommitteeCommandType;
@@ -150,22 +151,28 @@ class CommitteeManagerController extends Controller
         $committeeManager = $this->get('app.committee.manager');
 
         $uuids = GroupUtils::getUuidsFromJson($request->request->get('exports', ''));
-        $adherents = GroupUtils::removeUnknownAdherents($uuids, $committeeManager->getCommitteeMembers($committee));
+
+        $memberships = $committeeManager->getCommitteeMemberships($committee)->filter(
+            static function (CommitteeMembership $membership) use ($uuids) {
+                return \in_array($membership->getAdherentUuid(), $uuids);
+            }
+        );
 
         return new Response(
             $serializer->serialize(
-                $adherents,
+                $memberships,
                 XlsxEncoder::FORMAT,
                 [
                     'groups' => ['export'],
                     DateTimeNormalizer::FORMAT_KEY => 'd/m/Y',
                     XlsxEncoder::HEADERS_KEY => [
-                        'first_name' => 'Prénom',
-                        'last_name_initial' => 'Nom',
-                        'age' => 'Age',
-                        'postal_code' => 'Code postal',
-                        'city_name' => 'Ville',
-                        'registered_at' => "Date d'adhesion",
+                        'adherent.first_name' => 'Prénom',
+                        'adherent.last_name_initial' => 'Nom',
+                        'adherent.age' => 'Age',
+                        'adherent.postal_code' => 'Code postal',
+                        'adherent.city_name' => 'Ville',
+                        'adherent.registered_at' => "Date d'adhesion",
+                        'subscriptionDate' => 'A rejoint le comité le',
                     ],
                 ]
             ), Response::HTTP_OK, [

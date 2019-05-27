@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * This entity represents a committee membership.
@@ -47,6 +48,8 @@ class CommitteeMembership
      *
      * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"export"})
      */
     private $adherent;
 
@@ -208,6 +211,9 @@ class CommitteeMembership
         return $this->isHostMember();
     }
 
+    /**
+     * @Groups({"export"})
+     */
     public function getSubscriptionDate(): \DateTimeImmutable
     {
         return new \DateTimeImmutable($this->joinedAt->format(\DATE_RFC822), $this->joinedAt->getTimezone());

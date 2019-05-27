@@ -9,7 +9,7 @@
 
         {% if total_message_count %}
             <span class="datagrid__count">
-                <span>{{ messages.totalItems }}</span> sur {{ total_message_count }} résultat(s)
+                <span>{{ messages.totalItems|number_format(0, ',', ' ') }}</span> sur {{ total_message_count|number_format(0, ',', ' ') }} résultat{{ total_message_count > 1 ? 's' : '' }}
             </span>
         {% endif %}
     </div>
