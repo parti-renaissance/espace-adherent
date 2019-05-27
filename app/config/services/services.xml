@@ -219,6 +219,9 @@
         <service id="AppBundle\Form\Jecoute\SurveyFormType" />
         <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
         <service id="AppBundle\Validator\DataSurveyAnswerTypeChoiceValidator" />
+        <service id="AppBundle\Jecoute\DataSurveyNotifier">
+            <argument type="service" id="app.mailer.transactional"/>
+        </service>
 
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />
