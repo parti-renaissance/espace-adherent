@@ -34,7 +34,6 @@
 
         <section class="page-content">
             <div class="l__wrapper--600">
-
                 <div class="page-intro font-roboto b__nudge--top-40 text--justify">
                     <p class="text--bold text--medium-small">
                         Bonjour et, avant toute chose, bravo pour avoir passé le pas et vous engager pour agir au sein de votre commune !
@@ -59,9 +58,9 @@
 
                 <div class="text--center role-picker">
                     <h3 class="text--medium b__nudge--bottom-larger">Je postule en tant que :</h3>
-                    <div class="role-picker__btns">
-                        <div class="pick-btn pick-btn__running-mate">Colistier</div>
-                        <div class="pick-btn pick-btn__volunteer">Bénévole</div>
+                    <div class="role-picker__btns" id="js-rolePicker">
+                        <div class="pick-btn pick-btn__running-mate selected" id="js-RunningMate">Colistier</div>
+                        <div class="pick-btn pick-btn__volunteer" id="js-Volunteer">Bénévole</div>
                     </div>
                 </div>
 
@@ -69,14 +68,13 @@
                 </br>
                 </br>
                 </br>
-
-            </div>
-        </section>
-
-        <section class="l__wrapper--600">
-            <div class="">
                 {% block form_body '' %}
             </div>
         </section>
     </main>
+
+    {% block javascripts %}
+        <script src="{{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}"></script>
+    {% endblock %}
+
 {% endblock %}

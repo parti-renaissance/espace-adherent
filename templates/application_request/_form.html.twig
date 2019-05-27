@@ -1,110 +1,109 @@
 {{ form_start(form, { attr: { class: 'em-form' } }) }}
     {{ form_errors(form) }}
 
-    <div>
-        <h4 class="text--medium b__nudge--bottom-larger">Qui êtes-vous ?</h4>
+        <div class="em-form__section">
+            <h4 class="text--medium b__nudge--bottom-larger">Qui êtes-vous ?</h4>
 
-        <div class="">
+            <div class="em-form__row">
+                <div class="em-form__group em-form__width--1">
+                    {{ form_label(form.lastName, 'Nom', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom', class: 'em-form__field' } }) }}
+                    {{ form_errors(form.lastName) }}
+                </div>
+                <div class="em-form__group em-form__width--1">
+                    {{ form_label(form.firstName, 'Prénom', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom', class: 'em-form__field' } }) }}
+                    {{ form_errors(form.firstName) }}
+                </div>
+            </div>
+
             <div class="em-form__group">
-                {{ form_label(form.lastName, 'Nom', { label_attr: { class: 'form__label' } }) }}
-                {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom', class: 'form__field' } }) }}
-                {{ form_errors(form.lastName) }}
-            </div>
-            <div class="register__form--mid">
-                {{ form_label(form.firstName, 'Prénom', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom', class: 'form__field' } }) }}
-                {{ form_errors(form.firstName) }}
-            </div>
-        </div>
-
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--mid">
-                {{ form_label(form.emailAddress, 'E-mail', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail' } }) }}
+                {{ form_label(form.emailAddress, 'E-mail', { label_attr: { class: 'em-form__label' } }) }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail', class: 'em-form__field' } }) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
 
-            <div class="register__form--mid">
-                {{ form_label(form.phone, 'Téléphone', { label_attr: { class: 'text--gray' } }) }}
-                <div class="l__row l__row--top l__row--h-stretch">
-                    {{ form_widget(form.phone.country, { attr: { class: 'membership_request__form__phone' } }) }}
-                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+            <div class="em-form__row">
+                <div class="em-form__group em-form__width--1">
+                    {{ form_label(form.phone, 'Téléphone', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.phone.country, { attr: { class: 'em-form__field' } }) }}
                 </div>
-                {{ form_errors(form.phone) }}
-            </div>
-        </div>
-
-        <div class="form__row">
-            <div class="address-autocomplete"></div>
-            <p class="text--smallest text--muted text--left address-autocomplete-help-message">
-                Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
-            </p>
-        </div>
-
-        <div class="address-block">
-            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                <div class="register__form--mid">
-                    {{ form_label(form.address.address, 'Adresse', { label_attr: { class: 'text--gray' } }) }}
-                    {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse' } }) }}
-                    {{ form_errors(form.address.address) }}
+                <div class="em-form__group em-form__width--1">
+                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone', class: 'em-form__field' } }) }}
+                    {{ form_errors(form.phone) }}
                 </div>
             </div>
 
-            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                <div class="register__form--mid">
-                    {{ form_label(form.address.postalCode, 'Code postal', { label_attr: { class: 'text--gray' } }) }}
-                    {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
-                    {{ form_errors(form.address.postalCode) }}
-                </div>
-                <div class="register__form--mid">
-                    {{ form_label(form.address.cityName, 'Ville', { label_attr: { class: 'text--gray' } }) }}
-                    {{ form_widget(form.address.city, { 'attr': { 'class': 'register__form__city'} }) }}
-                    {{ form_widget(form.address.cityName, { 'attr': { 'class': 'register__form__city_name', 'placeholder': 'Ville' } }) }}
-                    {{ form_errors(form.address.city) }}
-                    {{ form_errors(form.address.cityName) }}
-                </div>
+            <div class="em-form__group">
+                <div class="em-form__group address-autocomplete"></div>
+                <p class="em-form__legend">
+                    Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+                </p>
             </div>
 
-            <div class="">
+            <div class="address-block">
+                <div class="">
+                    <div class="em-form__group">
+                        {{ form_label(form.address.address, 'Adresse', { label_attr: { class: 'em-form__label' } }) }}
+                        {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse', class: 'em-form__field' } }) }}
+                        {{ form_errors(form.address.address) }}
+                    </div>
+                </div>
+
+                <div class="em-form__row">
+                    <div class="em-form__group em-form__width--1">
+                        {{ form_label(form.address.postalCode, 'Code postal', { label_attr: { class: 'em-form__label' } }) }}
+                        {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal', class: 'em-form__field' } }) }}
+                        {{ form_errors(form.address.postalCode) }}
+                    </div>
+                    <div class="em-form__group em-form__width--2">
+                        {{ form_label(form.address.cityName, 'Ville', { label_attr: { class: 'em-form__label' } }) }}
+                        {{ form_widget(form.address.city, { attr: { class: 'em-form__field register__form__city'} }) }}
+                        {{ form_widget(form.address.cityName, { attr: { class: 'em-form__field register__form__city_name ', 'placeholder': 'Ville' } }) }}
+                        {{ form_errors(form.address.city) }}
+                        {{ form_errors(form.address.cityName) }}
+                    </div>
+                </div>
+
                 <div class="em-form__group">
-                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays', class: 'form__field' } }) }}
+                    {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays', class: 'em-form__field' } }) }}
                     {{ form_errors(form.address.country) }}
                 </div>
             </div>
         </div>
 
-
         <h4 class="text--medium b__nudge--bottom-larger">Vos experiences et expertises</h4>
 
         {% block curriculum_block '' %}
 
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--full">
-                {{ form_label(form.profession, 'Quelle est votre profession ?', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.profession, { attr: { placeholder: 'Votre profession' } }) }}
-                {{ form_errors(form.profession) }}
-            </div>
+        <div class="em-form__group">
+            {{ form_label(form.profession, 'Quelle est votre profession ?', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_widget(form.profession, { attr: { class: 'em-form__field', placeholder: 'Votre profession' } }) }}
+            {{ form_errors(form.profession) }}
         </div>
 
         {% block skills_block '' %}
 
         {% block experience_block '' %}
 
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--full">
-                {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection', { label_attr: { class: 'text--gray' } }) }}
-                {{ form_widget(form.favoriteThemes) }}
-                {{ form_errors(form.favoriteThemes) }}
-            </div>
-        </div>
-        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-            <div class="register__form--full">
-                {{ form_label(form.customFavoriteTheme, 'Autre', { label_attr: { class: 'text--gray' } }) }}
-                <div>
-                    {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entre une ou plusieurs thématiques' } }) }}
-                    {{ form_errors(form.customFavoriteTheme) }}
+        <div class="em-form__group">
+            {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_widget(form.favoriteThemes) }}
+            {% for column in form.favoriteThemes|batch(6) %}
+                <div class="cb-col">
+                    {% for skill in column %}
+                        {{ form_row(skill) }}
+                    {% endfor %}
                 </div>
-            </div>
+            {% endfor %}
+            {{ form_errors(form.favoriteThemes) }}
+        </div>
+
+        <div class="em-form__group">
+            {{ form_label(form.customFavoriteTheme, 'Autre', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_widget(form.customFavoriteTheme, { attr: { class: 'em-form__field', placeholder: 'Entre une ou plusieurs thématiques' } }) }}
+            {{ form_errors(form.customFavoriteTheme) }}
         </div>
 
         {% block themes_block '' %}
@@ -115,20 +114,40 @@
 
         {% block chart_block '' %}
 
-    </div>
+        <div class="em-form__group">
+            <p class="em-form__cgu">
+                NB : ces données sont récoltées par LaREM et seront transmises aux équipes départementales et candidats investis par LarEM ou tête de file
+                LaREM dans les villes où nous soutiendrions un autre candidat d’une autre formation politique ou issu de la société civile.<br /><br />
 
-    <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
-    {% if recaptcha_public_key is not empty %}
-        <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
-    {% elseif app.debug %}
-        <input type="hidden" name="g-recaptcha-response" value="fake" />
-    {% endif %}
+                « Les informations et les champs marqués d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM
+                de traiter votre candidature. »<br /><br />
 
-    <div class="text--center b__nudge--top-large">
-        <button type="submit" class="btn btn--blue">
+                Les données recueillies sur ce formulaire sont traitées par LaREM et les équipes locales de campagne afin de gérer les informations relatives
+                aux candidatures des colistiers et bénévoles pour les élections municipales de 2020 en vertu de l’article 9.2 a) du RGPD, et permettront aux
+                équipes locales de campagne et LaREM de vous contacter dans ce cadre.<br /><br />
+
+                Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant,
+                ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également du droit de retirer votre
+                consentement à tout moment et de la faculté de donner des directives sur le sort de vos données après votre décès.<br /><br />
+
+                Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse électronique suivante :
+                mes-donnees@en-marche.fr. Pour toute information concernant la protection de vos données, vous pouvez consulter la Politique de protection des
+                données de LaREM et/ou contacter notre DPO à l’adresse dpo@en-marche.fr »
+            </p>
+        </div>
+
+
+
+        <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
+        {% if recaptcha_public_key is not empty %}
+            <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>
+        {% elseif app.debug %}
+            <input type="hidden" name="g-recaptcha-response" value="fake" />
+        {% endif %}
+
+        <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top-large">
             Valider
         </button>
-    </div>
 
     {{ form_rest(form) }}
 {{ form_end(form) }}
