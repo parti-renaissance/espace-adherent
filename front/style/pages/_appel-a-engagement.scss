@@ -108,6 +108,10 @@
                         font-weight: bold;
                     }
 
+                    &.fade {
+                        opacity: 0.5;
+                    }
+
                     &__running-mate {
                         &:hover,
                         &.selected {

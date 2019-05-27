@@ -96,8 +96,11 @@
 
             {% block curriculum_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.curriculum, 'Téléchargez votre CV', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.curriculum) }}
+                    <div class="em-form__label">Téléchargez votre CV</div>
+                    <div class="em-form__file">
+                        {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
+                        {{ form_widget(form.curriculum, { attr: { class: 'em-form__file--area' } }) }}
+                    </div>
                     {{ form_errors(form.curriculum) }}
                 </div>
             {% endblock %}

@@ -93,6 +93,43 @@
         textarea.em-form__field { @include em-form-textarea; }
         select.em-form__field { @include em-form-select; }
 
+        .em-form__file {
+            position: relative;
+            height: 140px;
+            border: dashed 1px $lines-grey;
+            width: 100%;
+
+            input[type='file'] {
+                position: absolute;
+                z-index: -1;
+                opacity: 0;
+                transition: border 0.2s;
+                -webkit-transition: border 0.2s;
+            }
+
+            &--area {
+
+            }
+
+            &--label {
+                position: absolute;
+                font-size: 16px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                -webkit-transform: translate(-50%, -50%);
+                transition: border 0.2s;
+                -webkit-transition: border 0.2s;
+                cursor: pointer;
+
+                &:hover {
+                    color: rgba(0, 0, 0, 0.4);
+                }
+            }
+
+
+        }
+
         .em-form__label { @include em-form-label; }
         .em-form__legend { @include em-form-legend; }
         .em-form__cgu {

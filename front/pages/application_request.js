@@ -106,5 +106,12 @@ $(document).ready(function(){
             $('#volunteer-form').fadeIn();
         }
     });
-    
+
+    $('#js-rolePicker .pick-btn').hover(
+        function() {
+            $(this).siblings().addClass('fade');
+        }, function() {
+        $(this).siblings().removeClass('fade');
+    });
+
 });
