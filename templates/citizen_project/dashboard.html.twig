@@ -48,7 +48,7 @@
         <div>
             <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug}) }}" class="btn btn--blue">Gérer</a>
             {% if citizen_project.isApproved() %}
-                <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membres</span>
+                <span class="b__nudge--left-small">{{ citizen_project.membersCount }} membre{{ citizen_project.membersCount > 1 ? 's' : '' }}</span>
             {% else %}
                 <span class="text--small approval__status approval__status--pending">En attente de validation</span>
             {% endif %}

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Loader from './Loader';
+import numberFormat from '../utils/number';
 
 export default class MessageStatisticsWidget extends React.Component {
     constructor(props) {
@@ -64,15 +65,15 @@ export default class MessageStatisticsWidget extends React.Component {
                     <div className="l__col l__col--half">
                         <div className="text--data-label">Envoyé à</div>
                         <div className="b__nudge--top-10">
-                            <span className="text--data-value">{this.state.sent}</span>
-                            <span className="text--dark"> contact(s)</span>
+                            <span className="text--data-value">{numberFormat(this.state.sent)}</span>
+                            <span className="text--dark"> contact{1 < this.state.sent ? 's' : ''}</span>
                         </div>
                     </div>
                     <div className="l__col l__col--half">
                         <div className="text--data-label">Taux d’ouverture</div>
                         <div className="b__nudge--top-10">
                             <span className="text--data-value">{this.state.openRate}%</span>
-                            <span className="text--dark"> ({this.state.opens})</span>
+                            <span className="text--dark"> ({numberFormat(this.state.opens)})</span>
                         </div>
                     </div>
                 </div>
@@ -81,14 +82,14 @@ export default class MessageStatisticsWidget extends React.Component {
                         <div className="text--data-label">Taux de clic</div>
                         <div className="b__nudge--top-10">
                             <span className="text--data-value">{this.state.clickRate}%</span>
-                            <span className="text--dark"> ({this.state.clicks})</span>
+                            <span className="text--dark"> ({numberFormat(this.state.clicks)})</span>
                         </div>
                     </div>
                     <div className="l__col l__col--half">
                         <div className="text--data-label">Taux de désabonnement</div>
                         <div className="b__nudge--top-10">
                             <span className="text--data-value">{this.state.unsubscribeRate}%</span>
-                            <span className="text--dark"> ({this.state.unsubscribe})</span>
+                            <span className="text--dark"> ({numberFormat(this.state.unsubscribe)})</span>
                         </div>
                     </div>
                 </div>

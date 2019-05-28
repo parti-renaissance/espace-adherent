@@ -23,7 +23,7 @@
         <h3>Adhérents</h3>
         {% if total_count %}
             <span class="datagrid__count">
-                <span>{{ results.totalItems }}</span> sur {{ total_count }} adhérents
+                <span>{{ results.totalItems|number_format(0, ',', ' ') }}</span> sur {{ total_count|number_format(0, ',', ' ') }} adhérent{{ total_count > 1 ? 's' : '' }}
             </span>
         {% endif %}
     </div>
@@ -262,10 +262,10 @@
         </div>
     </div>
 
-    {% if has_filter and is_granted('ROLE_REFERENT') %}
+    {% if has_filter and is_granted('ROLE_REFERENT') and results_subscription_count %}
         <div class="b__nudge--bottom-large">
             <a href="{{ path('app_referent_users_message', filter.toArray) }}" class="btn-type-table" id="send-message-btn">
-                Contacter ({{ results_subscription_count }})
+                Contacter ({{ results_subscription_count|number_format(0, ',', ' ') }})
             </a>
         </div>
     {% endif %}
@@ -274,14 +274,14 @@
         <div class="b__nudge--bottom-larger">
             <table class="datagrid__table-manager">
                 <thead>
-                <tr>
-                    <th style="width: 100px;">Identité</th>
-                    <th style="width: 100px;">Rôle(s)</th>
-                    <th style="width: 100px;">Téléphone</th>
-                    <th style="width: 100px;">Commune</th>
-                    <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion le</th>
-                    <th style="width: 100px;">{{ 'referent.status.email'|trans }}</th>
-                </tr>
+                    <tr>
+                        <th style="width: 100px;">Identité</th>
+                        <th style="width: 100px;">Rôle(s)</th>
+                        <th style="width: 100px;">Téléphone</th>
+                        <th style="width: 100px;">Commune</th>
+                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion le</th>
+                        <th style="width: 100px;">{{ 'referent.status.email'|trans }}</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for user in results %}
@@ -328,6 +328,13 @@
                         </td>
                         <td class="status status__{{ user.isMailSubscriber ? '1' : '2' }}">
                             <span></span>{{ (user.isMailSubscriber ? 'referent.adherent.subscribed' : 'referent.adherent.unsubscribed')|trans }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                            Aucun résultat
                         </td>
                     </tr>
                 {% endfor %}

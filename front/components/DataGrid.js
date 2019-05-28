@@ -135,7 +135,14 @@ export default class DataGrid extends React.Component {
                             <li>
                                 <div className="pager__go-to-page">
                                     <span>Aller à la page</span>
-                                    <input type="number" placeholder="5" className="pager__action" />
+                                    <input
+                                        min="1"
+                                        max={pagesCount}
+                                        type="number"
+                                        placeholder="5"
+                                        className="pager__action"
+                                        onChange={event => this.handlePagerClick(event.target.value)}
+                                    />
                                     <span>{currentPage} sur {pagesCount}</span>
                                 </div>
 
