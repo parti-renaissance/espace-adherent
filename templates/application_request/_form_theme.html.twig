@@ -53,7 +53,14 @@
 
 {%- block textarea_widget -%}
     {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
-    {{ parent() }}
+
+    {% if with_character_count %}
+        <div class="em-form__field--ctn">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
 {%- endblock textarea_widget -%}
 
 {%- block choice_widget_collapsed -%}
