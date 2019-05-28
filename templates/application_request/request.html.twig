@@ -114,7 +114,7 @@
 
             {% block experience_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.isLocalAssociationMember, 'Etes vous enagé dans une/des association(s) locales ?') }}
+                    {{ form_label(form.isLocalAssociationMember, 'Êtes-vous engagé dans une/des association(s) locale(s) ?') }}
                     {{ form_widget(form.isLocalAssociationMember) }}
                     {{ form_errors(form.isLocalAssociationMember) }}
                 </div>
@@ -159,7 +159,6 @@
             {% block themes_block %}
                 <div class="em-form__group">
                     {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?') }}
-                    {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>

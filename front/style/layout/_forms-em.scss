@@ -57,7 +57,6 @@
 
 @mixin em-form-legend {
     color: $neutral-grey;
-    display: block;
     font-family: $font-roboto;
     margin: 0;
     margin-top: 5px;
@@ -96,6 +95,42 @@
     pointer-events: none;
 }
 
+@mixin em-form-checkbox {
+    input[type='checkbox'] {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+
+        &:checked + label:before {
+            border-color: $blue--dark;
+            background: $blue--dark;
+            content: $checkbox__mark;
+        }
+    }
+}
+
+@mixin em-form-radio {
+    input[type='radio'] {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+
+        &:checked + label:before {
+            box-sizing: border-box;
+            border: 8px solid $blue--dark;
+            background: $white;
+            content: '';
+
+        }
+    }
+
+    label {
+        &:before {
+            border-radius: 50px;
+        }
+    }
+}
+
 .em-form {
 
     &__section { padding-bottom: 30px; }
@@ -116,9 +151,10 @@
         .em-form__label { @include em-form-label; }
         .em-form__legend { @include em-form-legend; }
 
-        .em-form__chars-count { @include em-form-chars-count; }
+        .character-count { @include em-form-chars-count; }
 
         .em-form__file {
+            font-family: $font-roboto;
             position: relative;
             height: 140px;
             border: dashed 1px $lines-grey;
@@ -199,23 +235,13 @@
         }
     }
 
-    .form__checkbox {
+    //Checkbox & radio base preset
+    .form__checkbox,
+    .form__radio {
         display: block;
         position: relative;
         margin-top: 10px;
         margin-bottom: 20px;
-
-        input[type='checkbox'] {
-            position: absolute;
-            z-index: -1;
-            opacity: 0;
-
-            &:checked + label:before {
-                border-color: $blue--dark;
-                background: $blue--dark;
-                content: $checkbox__mark;
-            }
-        }
 
         label {
             display: inline-block;
@@ -258,4 +284,15 @@
             }
         }
     }
+
+    // Checkbox style
+    .form__checkbox {
+        @include em-form-checkbox;
+    }
+
+    // Radio style
+    .form__radio {
+        @include em-form-radio;
+    }
+
 }
