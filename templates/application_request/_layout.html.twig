@@ -72,9 +72,8 @@
             </div>
         </section>
     </main>
+{% endblock %}
 
-    {% block javascripts %}
-        <script src="{{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}"></script>
-    {% endblock %}
-
+{% block head_javascripts %}
+    <script src="{{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}"></script>
 {% endblock %}

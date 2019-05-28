@@ -27,6 +27,8 @@ class RunningMateRequestType extends AbstractType
             ])
             ->add('localAssociationDomain', TextareaType::class, [
                 'required' => false,
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
             ])
             ->add('isPoliticalActivist', ChoiceType::class, [
                 'choices' => [
@@ -38,6 +40,8 @@ class RunningMateRequestType extends AbstractType
             ])
             ->add('politicalActivistDetails', TextareaType::class, [
                 'required' => false,
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
             ])
             ->add('isPreviousElectedOfficial', ChoiceType::class, [
                 'choices' => [
@@ -49,10 +53,21 @@ class RunningMateRequestType extends AbstractType
             ])
             ->add('previousElectedOfficialDetails', TextareaType::class, [
                 'required' => false,
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
             ])
-            ->add('favoriteThemeDetails', TextareaType::class)
-            ->add('projectDetails', TextareaType::class)
-            ->add('professionalAssets', TextareaType::class)
+            ->add('favoriteThemeDetails', TextareaType::class, [
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
+            ])
+            ->add('projectDetails', TextareaType::class, [
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
+            ])
+            ->add('professionalAssets', TextareaType::class, [
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
+            ])
             ->add('agreeToDataUse', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
