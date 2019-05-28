@@ -3,7 +3,6 @@
 namespace AppBundle\Mailchimp\Webhook\Handler;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\MailchimpSubscriptionLabelMapping;
 use AppBundle\Mailchimp\Webhook\EventTypeEnum;
 use AppBundle\Subscription\SubscriptionHandler;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -90,17 +89,12 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
             return;
         }
 
-        if ('' === $data['groups']) {
-            $this->subscriptionHandler->unsubscribeAllMails($adherent);
+        $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
+            $adherent->getEmailsSubscriptions(),
+            '' === $data['groups'] ? [] : explode(', ', $data['groups'])
+        );
 
-            return;
-        }
-
-        $newSubscriptionCodes = array_map(static function (string $label) {
-            return MailchimpSubscriptionLabelMapping::getSubscriptionTypeCode($label);
-        }, explode(', ', $data['groups']));
-
-        $this->subscriptionHandler->handleUpdateSubscription($adherent, $newSubscriptionCodes);
+        $this->subscriptionHandler->handleUpdateSubscription($adherent, $newSubscriptionTypes);
     }
 
     private function findGroupById(array $groups, string $uniqueIdToMatch): array

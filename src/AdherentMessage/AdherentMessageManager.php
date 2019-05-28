@@ -31,11 +31,7 @@ class AdherentMessageManager
 
     public function updateFilter(AdherentMessageInterface $message, ?AdherentMessageFilterInterface $filter): void
     {
-        if (null === $filter) {
-            $message->resetFilter();
-        } else {
-            $message->setFilter($filter);
-        }
+        $message->setFilter($filter);
 
         $this->eventDispatcher->dispatch(Events::MESSAGE_FILTER_PRE_EDIT, new MessageEvent($message));
 

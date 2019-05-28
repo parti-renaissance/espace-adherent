@@ -7,6 +7,7 @@ use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
@@ -27,14 +28,9 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
 
     public function __invoke(AdherentMessageChangeCommand $command): void
     {
-        /** @var AdherentMessageInterface $message */
-        $message = $this->repository->findOneByUuid($command->getUuid()->toString());
-
-        if (!$message) {
+        if (!$message = $this->getMessage($command->getUuid())) {
             return;
         }
-
-        $this->entityManager->refresh($message);
 
         if ($message->isSynchronized()) {
             return;
@@ -57,5 +53,23 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
         }
 
         $this->entityManager->clear();
+    }
+
+    private function getMessage(UuidInterface $uuid): ?AdherentMessageInterface
+    {
+        /** @var AdherentMessageInterface $message */
+        $message = $this->repository->findOneByUuid($uuid->toString());
+
+        if (!$message) {
+            return null;
+        }
+
+        $this->entityManager->refresh($message);
+
+        foreach ($message->getMailchimpCampaigns() as $campaign) {
+            $this->entityManager->refresh($campaign);
+        }
+
+        return $message;
     }
 }

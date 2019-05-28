@@ -23,4 +23,9 @@ final class MailchimpSubscriptionLabelMapping
 
         return static::$mapping[$label];
     }
+
+    public static function getMapping(): array
+    {
+        return static::$mapping;
+    }
 }

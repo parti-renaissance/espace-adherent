@@ -17,7 +17,12 @@ class UnsubscribeHandler extends AbstractAdherentHandler
     public function handle(array $data): void
     {
         if ($adherent = $this->getAdherent($data['email'])) {
-            $this->subscriptionHandler->unsubscribeAllMails($adherent);
+            $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
+                $adherent->getEmailsSubscriptions(),
+                []
+            );
+
+            $this->subscriptionHandler->handleUpdateSubscription($adherent, $newSubscriptionTypes);
         }
     }
 

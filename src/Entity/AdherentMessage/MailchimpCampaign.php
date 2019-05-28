@@ -181,6 +181,8 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 
     public function reset(): void
     {
+        $this->synchronized = false;
+
         $this->recipientCount = $this->label = $this->staticSegmentId = null;
     }
 
