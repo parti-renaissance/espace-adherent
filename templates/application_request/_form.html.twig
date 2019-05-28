@@ -1,3 +1,5 @@
+{% form_theme form 'application_request/_form_theme.html.twig' %}
+
 {{ form_start(form, { attr: { class: 'em-form' } }) }}
     {{ form_errors(form) }}
 
@@ -89,7 +91,6 @@
 
         <div class="em-form__group">
             {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection', { label_attr: { class: 'em-form__label' } }) }}
-            {{ form_widget(form.favoriteThemes) }}
             {% for column in form.favoriteThemes|batch(6) %}
                 <div class="cb-col">
                     {% for skill in column %}
