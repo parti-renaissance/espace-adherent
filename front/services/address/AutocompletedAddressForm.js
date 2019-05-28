@@ -20,7 +20,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
         // Show the autocomplete when the address fields are not filled
         if (!this._address.isFilled()) {
 
-            const autocomplete = new GooglePlaceAutocomplete(this._autocompleteWrapper, this._address, 'form form--full form__field');
+            const autocomplete = new GooglePlaceAutocomplete(this._autocompleteWrapper, this._address, 'form form--full form__field em-form__field');
 
             autocomplete.build();
 
