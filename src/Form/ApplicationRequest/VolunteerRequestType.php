@@ -28,11 +28,11 @@ class VolunteerRequestType extends AbstractType
                         ->orderBy('s.name', 'ASC')
                     ;
                 },
-                'group_by' => function(TechnicalSkill $technicalSkill) {
+                'group_by' => function (TechnicalSkill $technicalSkill) {
                     if ('Autre' !== $technicalSkill->getName()) {
-                        return "Compétences";
+                        return 'Compétences';
                     } else {
-                        return "Autre";
+                        return 'Autre';
                     }
                 },
             ])

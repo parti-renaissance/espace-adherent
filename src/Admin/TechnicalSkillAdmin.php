@@ -37,5 +37,4 @@ class TechnicalSkillAdmin extends AbstractAdmin
             ])
         ;
     }
-
 }
