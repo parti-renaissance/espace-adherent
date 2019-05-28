@@ -27,7 +27,7 @@
 
             <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
-                    {{ form_label(form.phone, 'Téléphone') }}
+                    {{ form_label(form.phone.number, 'Téléphone') }}
                     {{ form_widget(form.phone.country) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
@@ -108,7 +108,7 @@
         </div>
 
         <div class="em-form__group">
-            {{ form_label(form.customFavoriteTheme, 'Autre') }}
+            {{ form_label(form.customFavoriteTheme, 'Autre(s)') }}
             {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entre une ou plusieurs thématiques' } }) }}
             {{ form_errors(form.customFavoriteTheme) }}
         </div>
