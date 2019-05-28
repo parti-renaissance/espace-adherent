@@ -1,7 +1,7 @@
 {% extends 'application_request/_layout.html.twig' %}
 
 {% block javascripts %}
-    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    {{ parent() }}
     <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
     {% import 'javascript.js.twig' as js %}
@@ -56,7 +56,7 @@
                     {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.previousCampaignDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.previousCampaignDetails) }}
                 </div>
@@ -72,7 +72,7 @@
                     {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.associativeCommitmentDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.associativeCommitmentDetails) }}
                 </div>
@@ -123,7 +123,7 @@
                     {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.localAssociationDomain, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.localAssociationDomain) }}
                 </div>
@@ -138,7 +138,7 @@
                     {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.politicalActivistDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.politicalActivistDetails) }}
                 </div>
@@ -153,7 +153,7 @@
                     {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.previousElectedOfficialDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>
@@ -165,7 +165,7 @@
                     {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.favoriteThemeDetails) }}
                 </div>
@@ -173,10 +173,10 @@
 
             {% block project_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.projectDetails, 'Quel projet pour votre communce souhaiteriez vous contribuer à porter ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.projectDetails, 'Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.projectDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.projectDetails) }}
                 </div>
@@ -185,7 +185,7 @@
                     {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?', { label_attr: { class: 'em-form__label' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.professionalAssets, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
-                        <span class="em-form__chars-count">0 / 2 000</span>
+                        <span class="em-form__chars-count">2 000</span>
                     </div>
                     {{ form_errors(form.professionalAssets) }}
                 </div>

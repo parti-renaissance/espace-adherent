@@ -31,14 +31,18 @@
         .header-content {
             position: relative;
             max-width: 790px;
-            padding-bottom: 60px;
+            padding-bottom: 40px;
 
             @media (min-width: $mobile) {
                 padding-bottom: 150px;
             }
 
             h1 {
-                padding: 0 35px;
+                padding: 0;
+
+                @media (min-width: $mobile) {
+                    padding: 0 35px;
+                }
 
                 .hightlight__blue--nation {
                     color: $white;
@@ -140,6 +144,14 @@
                             border-color: $red--nation;
                         }
                     }
+                }
+            }
+        }
+
+        #running-mate-form {
+            .em-form__label {
+                .em-form__required {
+                    color: $blue--nation;
                 }
             }
         }
