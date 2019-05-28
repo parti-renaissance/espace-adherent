@@ -28,7 +28,7 @@
             <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
                     {{ form_label(form.phone, 'Téléphone') }}
-                    {{ form_widget(form.phone.country, { attr: { class: 'em-form__field' } }) }}
+                    {{ form_widget(form.phone.country) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
                     {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}

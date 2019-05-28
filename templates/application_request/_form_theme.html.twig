@@ -55,3 +55,8 @@
     {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
     {{ parent() }}
 {%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {{ parent() }}
+{% endblock %}
