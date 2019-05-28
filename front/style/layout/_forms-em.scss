@@ -6,6 +6,10 @@
     line-height: normal;
     color: $black;
     margin-bottom: 10px;
+
+    .em-form__required {
+        color: $red--nation;
+    }
 }
 
 @mixin em-form-field {
@@ -75,6 +79,8 @@
     min-height: 200px;
     padding-top: 16px;
     padding-bottom: 16px;
+    padding-right: 60px;
+    line-height: 24px;
     color: $dark;
 }
 
