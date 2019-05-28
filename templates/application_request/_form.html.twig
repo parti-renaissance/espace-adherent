@@ -9,19 +9,19 @@
             <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
                     {{ form_label(form.lastName, 'Nom') }}
-                    {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom', class: 'em-form__field' } }) }}
+                    {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}
                     {{ form_errors(form.lastName) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
                     {{ form_label(form.firstName, 'Prénom') }}
-                    {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom', class: 'em-form__field' } }) }}
+                    {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom' } }) }}
                     {{ form_errors(form.firstName) }}
                 </div>
             </div>
 
             <div class="em-form__group">
                 {{ form_label(form.emailAddress, 'E-mail') }}
-                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail', class: 'em-form__field' } }) }}
+                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail' } }) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
 
@@ -31,7 +31,7 @@
                     {{ form_widget(form.phone.country, { attr: { class: 'em-form__field' } }) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
-                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone', class: 'em-form__field' } }) }}
+                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
                     {{ form_errors(form.phone) }}
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 <div class="">
                     <div class="em-form__group">
                         {{ form_label(form.address.address, 'Adresse') }}
-                        {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse', class: 'em-form__field' } }) }}
+                        {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse' } }) }}
                         {{ form_errors(form.address.address) }}
                     </div>
                 </div>
@@ -48,13 +48,13 @@
                 <div class="em-form__row">
                     <div class="em-form__group em-form__width--1">
                         {{ form_label(form.address.postalCode, 'Code postal') }}
-                        {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal', class: 'em-form__field' } }) }}
+                        {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal' } }) }}
                         {{ form_errors(form.address.postalCode) }}
                     </div>
                     <div class="em-form__group em-form__width--2">
                         {{ form_label(form.address.cityName, 'Ville') }}
-                        {{ form_widget(form.address.city, { attr: { class: 'em-form__field register__form__city'} }) }}
-                        {{ form_widget(form.address.cityName, { attr: { class: 'em-form__field register__form__city_name ', 'placeholder': 'Ville' } }) }}
+                        {{ form_widget(form.address.city, { attr: { class: 'register__form__city'} }) }}
+                        {{ form_widget(form.address.cityName, { attr: { class: 'register__form__city_name ', 'placeholder': 'Ville' } }) }}
                         {{ form_errors(form.address.city) }}
                         {{ form_errors(form.address.cityName) }}
                     </div>
@@ -62,14 +62,14 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.address.country, 'Pays') }}
-                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays', class: 'em-form__field' } }) }}
+                    {{ form_widget(form.address.country, { attr: { placeholder: 'Pays' } }) }}
                     {{ form_errors(form.address.country) }}
                 </div>
             </div>
 
             <div class="em-form__group">
                 <div class="address-autocomplete"></div>
-                <p class="em-form__legend">
+                <p class="em-form__legend address-autocomplete-help-message">
                     Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
                 </p>
             </div>
@@ -81,7 +81,7 @@
 
         <div class="em-form__group">
             {{ form_label(form.profession, 'Quelle est votre profession ?') }}
-            {{ form_widget(form.profession, { attr: { class: 'em-form__field', placeholder: 'Votre profession' } }) }}
+            {{ form_widget(form.profession, { attr: { placeholder: 'Votre profession' } }) }}
             {{ form_errors(form.profession) }}
         </div>
 
@@ -103,7 +103,7 @@
 
         <div class="em-form__group">
             {{ form_label(form.customFavoriteTheme, 'Autre') }}
-            {{ form_widget(form.customFavoriteTheme, { attr: { class: 'em-form__field', placeholder: 'Entre une ou plusieurs thématiques' } }) }}
+            {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entre une ou plusieurs thématiques' } }) }}
             {{ form_errors(form.customFavoriteTheme) }}
         </div>
 
