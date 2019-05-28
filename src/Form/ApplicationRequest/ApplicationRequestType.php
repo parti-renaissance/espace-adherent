@@ -5,6 +5,7 @@ namespace AppBundle\Form\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
 use AppBundle\Form\UnitedNationsCountryType;
+use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -37,6 +38,19 @@ class ApplicationRequestType extends AbstractType
                 'class' => Theme::class,
                 'multiple' => true,
                 'expanded' => true,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er
+                        ->createQueryBuilder('t')
+                        ->orderBy('t.name', 'ASC')
+                    ;
+                },
+                'group_by' => function(Theme $theme) {
+                    if ('Autre' !== $theme->getName()) {
+                        return "Thèmes";
+                    } else {
+                        return "Autre";
+                    }
+                },
             ])
             ->add('customFavoriteTheme', TextType::class, [
                 'required' => false,

@@ -28,7 +28,6 @@
             {% block skills_block %}
                 <div class="em-form__group">
                     {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?') }}
-                    {{ form_widget(form.technicalSkills) }}
                     {% for column in form.technicalSkills|batch(4) %}
                             <div class="checkb-col">
                                 {% for skill in column %}
