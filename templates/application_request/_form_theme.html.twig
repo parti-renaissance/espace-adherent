@@ -13,6 +13,11 @@
         {% if not compound -%}
             {% set label_attr = label_attr|merge({'for': id}) %}
         {%- endif -%}
+        {% if 'file' in form.vars.block_prefixes %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' em-form__file--label')|trim}) %}
+        {% elseif 'radio' not in form.vars.block_prefixes and 'checkbox' not in form.vars.block_prefixes %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' em-form__label')|trim}) %}
+        {% endif %}
         {% if required -%}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
         {%- endif -%}
@@ -32,7 +37,7 @@
         {%- else -%}
             {{- label|trans({}, translation_domain) -}}
         {%- endif -%}
-        {% if label is not same as(false) and required and 'radio' not in form.vars.block_prefixes %}
+        {% if required and 'radio' not in form.vars.block_prefixes and 'file' not in form.vars.block_prefixes %}
             <span class="em-form__required">*</span>
         {% endif %}
         </{{ element|default('label') }}>
