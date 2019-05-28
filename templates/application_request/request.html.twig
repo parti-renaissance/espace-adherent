@@ -45,28 +45,28 @@
                     {{ form_errors(form.customTechnicalSkills) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group em-form__radio--inline">
                     {{ form_label(form.isPreviousCampaignMember, 'Avez-vous déjà participé à une campagne ?') }}
                     {{ form_widget(form.isPreviousCampaignMember) }}
                     {{ form_errors(form.isPreviousCampaignMember) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez') }}
-                    {{ form_widget(form.previousCampaignDetails, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_label(form.previousCampaignDetails, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.previousCampaignDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.previousCampaignDetails) }}
                 </div>
             {% endblock %}
 
             {% block associative_commitment_block %}
-                <div class="em-form__group">
+                <div class="em-form__group em-form__radio--inline">
                     {{ form_label(form.shareAssociativeCommitment, 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?') }}
                     {{ form_widget(form.shareAssociativeCommitment) }}
                     {{ form_errors(form.shareAssociativeCommitment) }}
                 </div>
                 <div class="em-form__group">
-                    {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez') }}
-                    {{ form_widget(form.associativeCommitmentDetails, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_label(form.associativeCommitmentDetails, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.associativeCommitmentDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.associativeCommitmentDetails) }}
                 </div>
             {% endblock %}
@@ -109,39 +109,39 @@
             {% endblock %}
 
             {% block experience_block %}
-                <div class="em-form__group">
+                <div class="em-form__group em-form__radio--inline">
                     {{ form_label(form.isLocalAssociationMember, 'Êtes-vous engagé dans une/des association(s) locale(s) ?') }}
                     {{ form_widget(form.isLocalAssociationMember) }}
                     {{ form_errors(form.isLocalAssociationMember) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?') }}
-                    {{ form_widget(form.localAssociationDomain, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_label(form.localAssociationDomain, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.localAssociationDomain, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.localAssociationDomain) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group em-form__radio--inline">
                     {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?') }}
                     {{ form_widget(form.isPoliticalActivist) }}
                     {{ form_errors(form.isPoliticalActivist) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?') }}
-                    {{ form_widget(form.politicalActivistDetails, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_label(form.politicalActivistDetails, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.politicalActivistDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.politicalActivistDetails) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group em-form__radio--inline">
                     {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?') }}
                     {{ form_widget(form.isPreviousElectedOfficial) }}
                     {{ form_errors(form.isPreviousElectedOfficial) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?') }}
-                    {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez') }}
+                    {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>
             {% endblock %}
