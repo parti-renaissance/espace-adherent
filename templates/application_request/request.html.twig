@@ -54,7 +54,10 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.previousCampaignDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.previousCampaignDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.previousCampaignDetails) }}
                 </div>
             {% endblock %}
@@ -67,7 +70,10 @@
                 </div>
                 <div class="em-form__group">
                     {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.associativeCommitmentDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.associativeCommitmentDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.associativeCommitmentDetails) }}
                 </div>
             {% endblock %}
@@ -101,6 +107,7 @@
                         {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
                         {{ form_widget(form.curriculum, { attr: { class: 'em-form__file--area' } }) }}
                     </div>
+                    <div class="em-form__legend">Formats acceptés : pdf, doc, xl — Taille max. : 5Mo.</div>
                     {{ form_errors(form.curriculum) }}
                 </div>
             {% endblock %}
@@ -114,7 +121,10 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.localAssociationDomain, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.localAssociationDomain, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.localAssociationDomain) }}
                 </div>
 
@@ -126,7 +136,10 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.politicalActivistDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.politicalActivistDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.politicalActivistDetails) }}
                 </div>
 
@@ -138,7 +151,10 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.previousElectedOfficialDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.previousElectedOfficialDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>
             {% endblock %}
@@ -147,6 +163,10 @@
                 <div class="em-form__group">
                     {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?', { label_attr: { class: 'em-form__label' } }) }}
                     {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.favoriteThemeDetails) }}
                 </div>
             {% endblock %}
@@ -154,13 +174,19 @@
             {% block project_block %}
                 <div class="em-form__group">
                     {{ form_label(form.projectDetails, 'Quel projet pour votre communce souhaiteriez vous contribuer à porter ?', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.projectDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.projectDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.projectDetails) }}
                 </div>
 
                 <div class="em-form__group">
                     {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?', { label_attr: { class: 'em-form__label' } }) }}
-                    {{ form_widget(form.professionalAssets, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.professionalAssets, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        <span class="em-form__chars-count">0 / 2 000</span>
+                    </div>
                     {{ form_errors(form.professionalAssets) }}
                 </div>
             {% endblock %}

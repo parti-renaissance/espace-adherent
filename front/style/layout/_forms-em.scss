@@ -10,6 +10,7 @@
 
 @mixin em-form-field {
     display: block;
+    box-sizing: border-box;
     font-family: $font-roboto;
     width: 100%;
     font-size: 16px;
@@ -71,9 +72,22 @@
 @mixin em-form-textarea {
     min-width: 100%;
     max-width: 100%;
-    min-height: 150px;
+    min-height: 200px;
     padding-top: 16px;
     padding-bottom: 16px;
+    color: $dark;
+}
+
+@mixin em-form-chars-count {
+    position: absolute;
+    right: 1px;
+    bottom: 1px;
+    color: $neutral-grey;
+    line-height: 19px;
+    font-family: $font-roboto;
+    font-size: 13px;
+    padding: 15px;
+    pointer-events: none;
 }
 
 .em-form {
@@ -92,6 +106,11 @@
         .em-form__field { @include em-form-field;}
         textarea.em-form__field { @include em-form-textarea; }
         select.em-form__field { @include em-form-select; }
+
+        .em-form__label { @include em-form-label; }
+        .em-form__legend { @include em-form-legend; }
+
+        .em-form__chars-count { @include em-form-chars-count; }
 
         .em-form__file {
             position: relative;
@@ -126,12 +145,8 @@
                     color: rgba(0, 0, 0, 0.4);
                 }
             }
-
-
         }
 
-        .em-form__label { @include em-form-label; }
-        .em-form__legend { @include em-form-legend; }
         .em-form__cgu {
             color: $neutral-grey;
             display: block;
