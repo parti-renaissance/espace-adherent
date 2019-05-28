@@ -53,7 +53,7 @@ export default class MessageStatusLoader extends React.Component {
         if (this.state.recipientCount) {
             return <div>
                 <p className="text--medium-small">
-                    Vous allez envoyer un message à
+                    Vous allez envoyer un message à&nbsp;
                     <span className="text--bold text--blue--dark">
                         {numberFormat(this.state.recipientCount)}
                     </span>

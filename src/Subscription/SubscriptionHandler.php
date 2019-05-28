@@ -61,15 +61,6 @@ class SubscriptionHandler
         $this->em->flush();
     }
 
-    public function unsubscribeAllMails(Adherent $adherent): void
-    {
-        $this->subscriptionHistoryHandler->handleUnsubscriptions($adherent);
-
-        $adherent->setSubscriptionTypes([]);
-
-        $this->em->flush();
-    }
-
     public function addDefaultTypesToAdherent(
         Adherent $adherent,
         bool $allowEmailNotifications,

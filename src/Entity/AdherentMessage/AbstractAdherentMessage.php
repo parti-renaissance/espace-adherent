@@ -208,15 +208,15 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->filter;
     }
 
-    public function setFilter(AdherentMessageFilterInterface $filter): void
+    public function setFilter(?AdherentMessageFilterInterface $filter): void
     {
+        $this->resetFilter();
+
         $this->filter = $filter;
     }
 
     public function resetFilter(): void
     {
-        $this->filter = null;
-
         $this->mailchimpCampaigns->forAll(static function (int $key, MailchimpCampaign $campaign) {
             $campaign->reset();
         });
