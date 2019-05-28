@@ -8,26 +8,26 @@
 
             <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
-                    {{ form_label(form.lastName, 'Nom', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.lastName, 'Nom') }}
                     {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom', class: 'em-form__field' } }) }}
                     {{ form_errors(form.lastName) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
-                    {{ form_label(form.firstName, 'Prénom', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.firstName, 'Prénom') }}
                     {{ form_widget(form.firstName, { attr: { placeholder: 'Votre prénom', class: 'em-form__field' } }) }}
                     {{ form_errors(form.firstName) }}
                 </div>
             </div>
 
             <div class="em-form__group">
-                {{ form_label(form.emailAddress, 'E-mail', { label_attr: { class: 'em-form__label' } }) }}
+                {{ form_label(form.emailAddress, 'E-mail') }}
                 {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail', class: 'em-form__field' } }) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
 
             <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
-                    {{ form_label(form.phone, 'Téléphone', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.phone, 'Téléphone') }}
                     {{ form_widget(form.phone.country, { attr: { class: 'em-form__field' } }) }}
                 </div>
                 <div class="em-form__group em-form__width--1">
@@ -39,7 +39,7 @@
             <div class="address-block">
                 <div class="">
                     <div class="em-form__group">
-                        {{ form_label(form.address.address, 'Adresse', { label_attr: { class: 'em-form__label' } }) }}
+                        {{ form_label(form.address.address, 'Adresse') }}
                         {{ form_widget(form.address.address, { attr: { placeholder: 'Votre adresse', class: 'em-form__field' } }) }}
                         {{ form_errors(form.address.address) }}
                     </div>
@@ -47,12 +47,12 @@
 
                 <div class="em-form__row">
                     <div class="em-form__group em-form__width--1">
-                        {{ form_label(form.address.postalCode, 'Code postal', { label_attr: { class: 'em-form__label' } }) }}
+                        {{ form_label(form.address.postalCode, 'Code postal') }}
                         {{ form_widget(form.address.postalCode, { attr: { placeholder: 'Votre code postal', class: 'em-form__field' } }) }}
                         {{ form_errors(form.address.postalCode) }}
                     </div>
                     <div class="em-form__group em-form__width--2">
-                        {{ form_label(form.address.cityName, 'Ville', { label_attr: { class: 'em-form__label' } }) }}
+                        {{ form_label(form.address.cityName, 'Ville') }}
                         {{ form_widget(form.address.city, { attr: { class: 'em-form__field register__form__city'} }) }}
                         {{ form_widget(form.address.cityName, { attr: { class: 'em-form__field register__form__city_name ', 'placeholder': 'Ville' } }) }}
                         {{ form_errors(form.address.city) }}
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.address.country, 'Pays', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.address.country, 'Pays') }}
                     {{ form_widget(form.address.country, { attr: { placeholder: 'Pays', class: 'em-form__field' } }) }}
                     {{ form_errors(form.address.country) }}
                 </div>
@@ -80,7 +80,7 @@
         {% block curriculum_block '' %}
 
         <div class="em-form__group">
-            {{ form_label(form.profession, 'Quelle est votre profession ?', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.profession, 'Quelle est votre profession ?') }}
             {{ form_widget(form.profession, { attr: { class: 'em-form__field', placeholder: 'Votre profession' } }) }}
             {{ form_errors(form.profession) }}
         </div>
@@ -90,7 +90,7 @@
         {% block experience_block '' %}
 
         <div class="em-form__group">
-            {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection') }}
             {% for column in form.favoriteThemes|batch(6) %}
                 <div class="cb-col">
                     {% for skill in column %}
@@ -102,7 +102,7 @@
         </div>
 
         <div class="em-form__group">
-            {{ form_label(form.customFavoriteTheme, 'Autre', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.customFavoriteTheme, 'Autre') }}
             {{ form_widget(form.customFavoriteTheme, { attr: { class: 'em-form__field', placeholder: 'Entre une ou plusieurs thématiques' } }) }}
             {{ form_errors(form.customFavoriteTheme) }}
         </div>

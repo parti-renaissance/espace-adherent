@@ -27,7 +27,7 @@
 
             {% block skills_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?') }}
                     {{ form_widget(form.technicalSkills) }}
                     {% for column in form.technicalSkills|batch(4) %}
                             <div class="checkb-col">
@@ -40,19 +40,19 @@
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.customTechnicalSkills, 'Autre', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.customTechnicalSkills, 'Autre') }}
                     {{ form_widget(form.customTechnicalSkills, { attr: { class: 'em-form__field' } }) }}
                     {{ form_errors(form.customTechnicalSkills) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.isPreviousCampaignMember, 'Avez-vous déjà participé à une campagne ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.isPreviousCampaignMember, 'Avez-vous déjà participé à une campagne ?') }}
                     {{ form_widget(form.isPreviousCampaignMember) }}
                     {{ form_errors(form.isPreviousCampaignMember) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.previousCampaignDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
@@ -62,12 +62,12 @@
 
             {% block associative_commitment_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.shareAssociativeCommitment, 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.shareAssociativeCommitment, 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?') }}
                     {{ form_widget(form.shareAssociativeCommitment) }}
                     {{ form_errors(form.shareAssociativeCommitment) }}
                 </div>
                 <div class="em-form__group">
-                    {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.associativeCommitmentDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
@@ -99,9 +99,12 @@
 
             {% block curriculum_block %}
                 <div class="em-form__group">
-                    <div class="em-form__label">Téléchargez votre CV</div>
+                    <div class="em-form__label">
+                        Téléchargez votre CV
+                        <span class="em-form__required">*</span>
+                    </div>
                     <div class="em-form__file">
-                        {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'em-form__file--label text--blue--dark' } }) }}
+                        {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'text--blue--dark' } }) }}
                         {{ form_widget(form.curriculum, { attr: { class: 'em-form__file--area' } }) }}
                     </div>
                     <div class="em-form__legend">Formats acceptés : pdf, doc, xl — Taille max. : 5Mo.</div>
@@ -111,13 +114,13 @@
 
             {% block experience_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.isLocalAssociationMember, 'Etes vous enagé dans une/des association(s) locales ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.isLocalAssociationMember, 'Etes vous enagé dans une/des association(s) locales ?') }}
                     {{ form_widget(form.isLocalAssociationMember) }}
                     {{ form_errors(form.isLocalAssociationMember) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.localAssociationDomain, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
@@ -125,13 +128,13 @@
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?') }}
                     {{ form_widget(form.isPoliticalActivist) }}
                     {{ form_errors(form.isPoliticalActivist) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.politicalActivistDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
@@ -139,13 +142,13 @@
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?') }}
                     {{ form_widget(form.isPreviousElectedOfficial) }}
                     {{ form_errors(form.isPreviousElectedOfficial) }}
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.previousElectedOfficialDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
@@ -155,7 +158,7 @@
 
             {% block themes_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?') }}
                     {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
@@ -166,7 +169,7 @@
 
             {% block project_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.projectDetails, 'Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.projectDetails, 'Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.projectDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
@@ -174,7 +177,7 @@
                 </div>
 
                 <div class="em-form__group">
-                    {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?', { label_attr: { class: 'em-form__label' } }) }}
+                    {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?') }}
                     <div class="em-form__field--ctn">
                         {{ form_widget(form.professionalAssets, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
                     </div>
