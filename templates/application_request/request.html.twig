@@ -28,13 +28,15 @@
             {% block skills_block %}
                 <div class="em-form__group">
                     {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?') }}
-                    {% for column in form.technicalSkills|batch(4) %}
-                            <div class="checkb-col">
-                                {% for skill in column %}
-                                    {{ form_row(skill) }}
-                                {% endfor %}
-                            </div>
-                    {% endfor %}
+                    <div class="checkb-cols">
+                        {% for column in form.technicalSkills|batch(4) %}
+                                <div class="checkb-cols__col">
+                                    {% for skill in column %}
+                                        {{ form_row(skill) }}
+                                    {% endfor %}
+                                </div>
+                        {% endfor %}
+                    </div>
                     {{ form_errors(form.technicalSkills) }}
                 </div>
 
