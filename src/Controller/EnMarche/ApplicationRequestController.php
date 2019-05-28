@@ -23,10 +23,12 @@ class ApplicationRequestController extends Controller
     public function requestAction(Request $request, ApplicationRequestHandler $handler): Response
     {
         $volunteerForm = $this->createForm(VolunteerRequestType::class, new VolunteerRequest())
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         $runningMateForm = $this->createForm(RunningMateRequestType::class, new RunningMateRequest())
-            ->handleRequest($request);
+            ->handleRequest($request)
+        ;
 
         if ($volunteerForm->isSubmitted() && $volunteerForm->isValid()) {
             $handler->handleVolunteerRequest($volunteerForm->getData());

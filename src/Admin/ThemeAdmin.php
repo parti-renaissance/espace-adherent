@@ -37,5 +37,4 @@ class ThemeAdmin extends AbstractAdmin
             ])
         ;
     }
-
 }
