@@ -43,3 +43,15 @@
         </{{ element|default('label') }}>
     {%- endif -%}
 {%- endblock form_label -%}
+
+{%- block form_widget_simple -%}
+    {% if 'file' not in form.vars.block_prefixes %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {% endif %}
+    {{ parent() }}
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {{ parent() }}
+{%- endblock textarea_widget -%}

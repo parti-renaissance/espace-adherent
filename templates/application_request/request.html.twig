@@ -41,7 +41,7 @@
 
                 <div class="em-form__group">
                     {{ form_label(form.customTechnicalSkills, 'Autre') }}
-                    {{ form_widget(form.customTechnicalSkills, { attr: { class: 'em-form__field' } }) }}
+                    {{ form_widget(form.customTechnicalSkills) }}
                     {{ form_errors(form.customTechnicalSkills) }}
                 </div>
 
@@ -54,7 +54,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.previousCampaignDetails, 'Si oui, détaillez') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.previousCampaignDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.previousCampaignDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.previousCampaignDetails) }}
                 </div>
@@ -69,7 +69,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.associativeCommitmentDetails, 'Si oui, détaillez') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.associativeCommitmentDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.associativeCommitmentDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.associativeCommitmentDetails) }}
                 </div>
@@ -122,7 +122,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.localAssociationDomain, 'Si oui, quels domaines ?') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.localAssociationDomain, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.localAssociationDomain, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.localAssociationDomain) }}
                 </div>
@@ -136,7 +136,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.politicalActivistDetails, 'Si oui, quels domaines ?') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.politicalActivistDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.politicalActivistDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.politicalActivistDetails) }}
                 </div>
@@ -150,7 +150,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.previousElectedOfficialDetails, 'Si oui, precisez ?') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.previousElectedOfficialDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>
@@ -159,9 +159,9 @@
             {% block themes_block %}
                 <div class="em-form__group">
                     {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?') }}
-                    {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                    {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.favoriteThemeDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.favoriteThemeDetails) }}
                 </div>
@@ -171,7 +171,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.projectDetails, 'Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.projectDetails, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.projectDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.projectDetails) }}
                 </div>
@@ -179,7 +179,7 @@
                 <div class="em-form__group">
                     {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?') }}
                     <div class="em-form__field--ctn">
-                        {{ form_widget(form.professionalAssets, { attr: { class: 'em-form__field', placeholder: 'Détaillez...' } }) }}
+                        {{ form_widget(form.professionalAssets, { attr: { placeholder: 'Détaillez...' } }) }}
                     </div>
                     {{ form_errors(form.professionalAssets) }}
                 </div>
