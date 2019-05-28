@@ -991,5 +991,13 @@
             <argument />
         </service>
 
+        <service id="app.admin.theme" class="AppBundle\Admin\ThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Thématiques" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\Theme</argument>
+            <argument />
+        </service>
+
     </services>
 </container>
