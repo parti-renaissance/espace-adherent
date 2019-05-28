@@ -31,7 +31,11 @@
         .header-content {
             position: relative;
             max-width: 790px;
-            padding-bottom: 150px;
+            padding-bottom: 60px;
+
+            @media (min-width: $mobile) {
+                padding-bottom: 150px;
+            }
 
             h1 {
                 padding: 0 35px;
@@ -53,13 +57,17 @@
             }
 
             .fake-container {
-                display: block;
+                display: none;
                 position: absolute;
                 width: 100%;
                 height: 70px;
                 bottom: 0;
                 background-color: $white;
                 border-radius: 3px 3px 0 0;
+
+                @media (min-width: $mobile) {
+                    display: block;
+                }
             }
         }
 
@@ -91,6 +99,11 @@
 
         .page-intro {
             margin-bottom: 60px;
+
+            p:first-child {
+                font-size: 18px;
+                margin-bottom: 30px;
+            }
         }
 
         .role-picker {

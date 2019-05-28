@@ -212,6 +212,7 @@
         }
 
         label {
+            display: inline-block;
             cursor: pointer;
             font-size: 16px;
             line-height: 22px;
@@ -233,7 +234,7 @@
                 align-items: center;
                 justify-content: center;
                 position: absolute;
-                top: 0;
+                top: 1px;
                 left: 0;
             }
 
