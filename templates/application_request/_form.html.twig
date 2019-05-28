@@ -95,13 +95,15 @@
 
         <div class="em-form__group">
             {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection') }}
-            {% for column in form.favoriteThemes|batch(6) %}
-                <div class="cb-col">
-                    {% for skill in column %}
-                        {{ form_row(skill) }}
-                    {% endfor %}
-                </div>
-            {% endfor %}
+            <div class="checkb-cols">
+                {% for column in form.favoriteThemes|batch(6) %}
+                    <div class="checkb-cols__col">
+                        {% for skill in column %}
+                            {{ form_row(skill) }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
             {{ form_errors(form.favoriteThemes) }}
         </div>
 
