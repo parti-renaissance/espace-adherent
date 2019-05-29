@@ -65,7 +65,7 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
             return;
         }
 
-        $interestLabels = explode(', ', $data['groups']);
+        $interestLabels = array_map('html_entity_decode', explode(', ', $data['groups']));
 
         foreach ($interestLabels as $label) {
             if (!\in_array($label, $this->interests, true)) {
