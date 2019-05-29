@@ -147,6 +147,8 @@ abstract class ApplicationRequest
      */
     protected $customFavoriteTheme;
 
+    private $isAdherent = false;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -273,5 +275,20 @@ abstract class ApplicationRequest
     public function setCustomFavoriteTheme(?string $customFavoriteTheme): void
     {
         $this->customFavoriteTheme = $customFavoriteTheme;
+    }
+
+    public function isAdherent(): bool
+    {
+        return $this->isAdherent;
+    }
+
+    public function setIsAdherent(bool $isAdherent): void
+    {
+        $this->isAdherent = $isAdherent;
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 }
