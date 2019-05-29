@@ -67,3 +67,13 @@
     {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
     {{ parent() }}
 {% endblock %}
+
+{% block _running_mate_request_favoriteCities_entry_row %}
+    {% spaceless %}
+        <div class="summary-favorite-city">
+            <span class="favorite-city-remove">X</span>
+            <span class="favorite-city-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}

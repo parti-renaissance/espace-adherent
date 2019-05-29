@@ -4,6 +4,13 @@
     {{ form_errors(form) }}
 
         <div class="em-form__section">
+            <div class="em-form__group">
+                {{ form_errors(form.favoriteCities) }}
+                {{ form_label(form.favoriteCities_search, 'Villes') }}
+                {{ form_widget(form.favoriteCities_search, { attr: { placeholder: 'Rechercher une ville' } }) }}
+                {{ form_widget(form.favoriteCities) }}
+            </div>
+
             <h4 class="text--medium b__nudge--bottom-larger">Qui êtes-vous ?</h4>
 
             <div class="em-form__row">
