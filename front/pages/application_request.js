@@ -109,7 +109,7 @@ export default (volunteerFormType, runningMateFormType) => {
 				fileValue = e.target.value.split('\\').pop();
 
 			if(fileValue)
-				$label.html('Modifier'),
+				$label.html('Modifier la pièce jointe'),
                 $fileName.html(fileValue);
 			else
 				$label.html(labelVal),
