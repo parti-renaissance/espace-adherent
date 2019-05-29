@@ -101,8 +101,9 @@
                         <span class="em-form__required">*</span>
                     </div>
                     <div class="em-form__file">
-                        {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'text--blue--dark' } }) }}
                         {{ form_widget(form.curriculum, { attr: { class: 'em-form__file--area' } }) }}
+                        {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'text--blue--dark' } }) }}
+                        <span class="em-form__file--name">Aucun fichier sélectionné</span>
                     </div>
                     <div class="em-form__legend">Formats acceptés : pdf, doc, xl — Taille max. : 5Mo.</div>
                     {{ form_errors(form.curriculum) }}
