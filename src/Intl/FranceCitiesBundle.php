@@ -71,12 +71,12 @@ class FranceCitiesBundle
                 ];
 
                 if (\count($list) >= 10) {
-                    break(2);
+                    break 2;
                 }
             }
         }
 
-        usort($list, function(array $city1, array $city2) {
+        usort($list, function (array $city1, array $city2) {
             return $city1['insee_code'] < $city2['insee_code'] ? -1 : 1;
         });
 

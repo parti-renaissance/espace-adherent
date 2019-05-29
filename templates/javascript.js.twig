@@ -328,14 +328,6 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-
-
-
-
-
-
-
-
 {% macro applicationFavoriteCities(idFavoriteCitiesListField, idFavoriteCitiesSearchField, urlSearch, disabledFavoriteCitiesEnterIds) %}
 $(document).ready(function() {
     var favoriteCitiesList = $('{{ idFavoriteCitiesListField|raw }}');
@@ -432,21 +424,6 @@ $(document).ready(function() {
     removeFavoriteCity();
 });
 {% endmacro %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {% macro toggleDisplayingElement(checkboxSelector, elementSelector, checkboxNotSelectedSelector = null) %}
     const checkbox = dom('{{ checkboxSelector|raw }}');
