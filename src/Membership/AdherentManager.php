@@ -48,4 +48,11 @@ class AdherentManager
 
         return $countByMonth;
     }
+
+    public function isAdherent(string $email): bool
+    {
+        return $this->repository
+            ->isAdherent($email)
+        ;
+    }
 }

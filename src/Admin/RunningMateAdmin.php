@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
+use AppBundle\Repository\AdherentRepository;
 use League\Flysystem\Filesystem;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -22,21 +23,14 @@ class RunningMateAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
     private $storage;
-    private $manager;
-
-    public function __construct($code, $class, $baseControllerName, Filesystem $storage, IsAdherentManager $manager)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-        $this->storage = $storage;
-        $this->manager = $manager;
-    }
+    private $repository;
 
     public function getDatagrid()
     {
         static $datagrid = null;
 
         if (null === $datagrid) {
-            $datagrid = new IsAdherentDatagrid(parent::getDatagrid(), $this->manager);
+            $datagrid = new IsAdherentDatagrid(parent::getDatagrid(), $this->repository);
         }
 
         return $datagrid;
@@ -107,34 +101,31 @@ class RunningMateAdmin extends AbstractAdmin
             ->add('favoriteThemes', EntityType::class, [
                 'label' => 'Thèmes favoris',
                 'class' => Theme::class,
-                'multiple' => true
+                'multiple' => true,
             ])
             ->add('favoriteThemeDetails', null, [
                 'label' => 'Thèmes favoris détails',
             ])
-//            ->add('favoriteCities', null, [
-//                'label' => 'Ville(s) choisie(s)',
-//            ])
             ->add('curriculum', FileType::class, [
                 'label' => 'CV',
             ])
             ->add('isLocalAssociationMember', BooleanType::class, [
-                'label' => 'Membre de l\'association locale ?',
+                'label' => "Membre de l'association locale ?",
             ])
             ->add('localAssociationDomain', null, [
-                'label' => 'Domaine de l\'association locale'
+                'label' => "Domaine de l'association locale",
             ])
             ->add('isPoliticalActivist', BooleanType::class, [
                 'label' => 'Activiste politique ?',
             ])
             ->add('politicalActivistDetails', null, [
-                'label' => 'Activiste politique détails'
+                'label' => 'Activiste politique détails',
             ])
             ->add('isPreviousElectedOfficial', BooleanType::class, [
-                'label' => 'est l\'élu précédent ?',
+                'label' => "Est l'élu précédent ?",
             ])
             ->add('previousElectedOfficialDetails', null, [
-                'label' => 'Elu précédent détails'
+                'label' => 'Elu précédent détails',
             ])
             ->add('projectDetails', null, [
                 'label' => 'Détails du projet',
@@ -176,4 +167,16 @@ class RunningMateAdmin extends AbstractAdmin
         }
     }
 
+    public function setStorage(Filesystem $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
+     * @required
+     */
+    public function setAdherentRepository(AdherentRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 }

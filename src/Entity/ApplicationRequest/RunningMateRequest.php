@@ -122,6 +122,11 @@ class RunningMateRequest extends ApplicationRequest
         ;
     }
 
+    public function setCurriculumName(string $curriculumName): void
+    {
+        $this->curriculumName = $curriculumName;
+    }
+
     public function isLocalAssociationMember(): ?bool
     {
         return $this->isLocalAssociationMember;
@@ -214,6 +219,6 @@ class RunningMateRequest extends ApplicationRequest
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'curriculum', $this->curriculumName);
+        return sprintf('%s/%s', 'files/curriculum', $this->curriculumName);
     }
 }

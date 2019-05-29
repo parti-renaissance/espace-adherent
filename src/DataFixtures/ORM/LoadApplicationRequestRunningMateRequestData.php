@@ -6,7 +6,6 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadApplicationRequestRunningMateRequestData extends Fixture
 {
@@ -26,12 +25,10 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $runningMateRequest->setCity('New York City');
             $runningMateRequest->setCountry('US');
             $runningMateRequest->setAddress('890 Fifth Avenue, Manhattan');
-            $runningMateRequest->setPhone($phoneUtil->parse('06-06-06-06-06', "FR"));
+            $runningMateRequest->setPhone($phoneUtil->parse('06-06-06-06-06', 'FR'));
             $runningMateRequest->setProfession('Scientist');
 
-            $file = new UploadedFile(__DIR__.'/../running-mate-request/cv.pdf', 'cv.pdf', 'application/pdf');
-            $runningMateRequest->setCurriculumNameFromUploadedFile($file);
-            copy(__DIR__.'/../running-mate-request/cv.pdf', sprintf('%s/%s', __DIR__.'/../../../app/data', $runningMateRequest->getPathWithDirectory()));
+            $runningMateRequest->setCurriculumName('cv.pdf');
 
             $runningMateRequest->addFavoriteTheme($this->getReference('application-theme-06'));
             $runningMateRequest->addFavoriteTheme($this->getReference('application-theme-08'));
@@ -56,7 +53,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
     public function getDependencies()
     {
         return [
-            LoadApplicationRequestThemeData::class
+            LoadApplicationRequestThemeData::class,
         ];
     }
 }

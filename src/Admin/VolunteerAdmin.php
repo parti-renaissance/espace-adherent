@@ -2,9 +2,10 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
 use AppBundle\Entity\ApplicationRequest\Theme;
-use League\Flysystem\Filesystem;
+use AppBundle\Repository\AdherentRepository;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -12,30 +13,21 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class RunningMateAdmin extends AbstractAdmin
+class VolunteerAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
-    private $storage;
-    private $manager;
-
-    public function __construct($code, $class, $baseControllerName, Filesystem $storage, RunningMateManager $manager)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-        $this->storage = $storage;
-        $this->manager = $manager;
-    }
+    private $repository;
 
     public function getDatagrid()
     {
         static $datagrid = null;
 
         if (null === $datagrid) {
-            $datagrid = new RunningMateDatagrid(parent::getDatagrid(), $this->manager);
+            $datagrid = new IsAdherentDatagrid(parent::getDatagrid(), $this->repository);
         }
 
         return $datagrid;
@@ -55,10 +47,6 @@ class RunningMateAdmin extends AbstractAdmin
             ])
             ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
-            ])
-            ->add('curriculum', null, [
-                'label' => 'CV',
-                'template' => 'admin/running_mate/show_curriculum.html.twig',
             ])
             ->add('isAdherent', 'boolean', [
                 'label' => 'Adherent',
@@ -96,8 +84,9 @@ class RunningMateAdmin extends AbstractAdmin
             ->add('country', CountryType::class, [
                 'label' => 'Pays',
             ])
-            ->add('phone', null, [
+            ->add('phone', PhoneNumberType::class, [
                 'label' => 'Téléphone',
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
             ->add('profession', null, [
                 'label' => 'Profession',
@@ -105,40 +94,30 @@ class RunningMateAdmin extends AbstractAdmin
             ->add('favoriteThemes', EntityType::class, [
                 'label' => 'Thèmes favoris',
                 'class' => Theme::class,
-                'multiple' => true
+                'multiple' => true,
             ])
-            ->add('favoriteThemeDetails', null, [
-                'label' => 'Thèmes favoris détails',
+            ->add('customFavoriteTheme', null, [
+                'label' => 'Thèmes favoris personnalisé',
             ])
-//            ->add('favoriteCities', null, [
-//                'label' => 'Ville(s) choisie(s)',
-//            ])
-            ->add('curriculum', FileType::class, [
-                'label' => 'CV',
+            ->add('technicalSkills', EntityType::class, [
+                'label' => 'Compétences techniques',
+                'class' => TechnicalSkill::class,
+                'multiple' => true,
             ])
-            ->add('isLocalAssociationMember', BooleanType::class, [
-                'label' => 'Membre de l\'association locale ?',
+            ->add('customTechnicalSkills', null, [
+                'label' => 'Compétences techniques personnalisées',
             ])
-            ->add('localAssociationDomain', null, [
-                'label' => 'Domaine de l\'association locale'
+            ->add('isPreviousCampaignMember', BooleanType::class, [
+                'label' => "Fait partie d'une précédente campagne ?",
             ])
-            ->add('isPoliticalActivist', BooleanType::class, [
-                'label' => 'Activiste politique ?',
+            ->add('previousCampaignDetails', null, [
+                'label' => 'Détails de la précédente campagne',
             ])
-            ->add('politicalActivistDetails', null, [
-                'label' => 'Activiste politique détails'
+            ->add('shareAssociativeCommitment', BooleanType::class, [
+                'label' => "Partage l'engagement associatif ?",
             ])
-            ->add('isPreviousElectedOfficial', BooleanType::class, [
-                'label' => 'est l\'élu précédent ?',
-            ])
-            ->add('previousElectedOfficialDetails', null, [
-                'label' => 'Elu précédent détails'
-            ])
-            ->add('projectDetails', null, [
-                'label' => 'Détails du projet',
-            ])
-            ->add('professionalAssets', null, [
-                'label' => 'Actifs professionnels',
+            ->add('associativeCommitmentDetails', BooleanType::class, [
+                'label' => "Détails de l'engagement associatif",
             ])
         ;
     }
@@ -151,27 +130,10 @@ class RunningMateAdmin extends AbstractAdmin
     }
 
     /**
-     * @param RunningMateRequest $runningMateRequest
+     * @required
      */
-    public function prePersist($runningMateRequest)
+    public function setAdherentRepository(AdherentRepository $repository)
     {
-        parent::prePersist($runningMateRequest);
-
-        $runningMateRequest->setCurriculumNameFromUploadedFile($runningMateRequest->getCurriculum());
-        $this->storage->put($runningMateRequest->getPathWithDirectory(), file_get_contents($runningMateRequest->getCurriculum()->getPathname()));
+        $this->repository = $repository;
     }
-
-    /**
-     * @param RunningMateRequest $runningMateRequest
-     */
-    public function preUpdate($runningMateRequest)
-    {
-        parent::preUpdate($runningMateRequest);
-
-        if ($runningMateRequest->getCurriculum()) {
-            $runningMateRequest->setCurriculumNameFromUploadedFile($runningMateRequest->getCurriculum());
-            $this->storage->put($runningMateRequest->getPathWithDirectory(), file_get_contents($runningMateRequest->getCurriculum()->getPathname()));
-        }
-    }
-
 }

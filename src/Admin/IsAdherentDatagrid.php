@@ -2,24 +2,21 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Committee\CommitteeManager;
+use AppBundle\Repository\AdherentRepository;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class IsAdherentDatagrid extends DatagridDecorator
 {
-    private $manager;
+    private $repository;
 
-    public function __construct(DatagridInterface $decorated, IsAdherentManager $manager)
+    public function __construct(DatagridInterface $decorated, AdherentRepository $repository)
     {
         parent::__construct($decorated);
 
-        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getResults()
+    public function getResults(): ?array
     {
         static $results = null;
 
@@ -27,7 +24,7 @@ class IsAdherentDatagrid extends DatagridDecorator
             $results = $this->decorated->getResults();
 
             foreach ($results as $result) {
-                $result->isAdherent = $this->manager->isAdherent($result->getEmailAddress());
+                $result->isAdherent = $this->repository->isAdherent($result->getEmailAddress());
             }
         }
 
