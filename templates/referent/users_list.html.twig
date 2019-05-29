@@ -275,11 +275,26 @@
             <table class="datagrid__table-manager">
                 <thead>
                     <tr>
-                        <th style="width: 100px;">Identité</th>
+                        {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
+                        <th style="width: 100px;">
+                            <a
+                                href="{{ path('app_referent_users', filter.toArray|merge({sort: 'lastName', order: order})) }}"
+                                class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
+                            >
+                                Identité
+                            </a>
+                        </th>
                         <th style="width: 100px;">Rôle(s)</th>
                         <th style="width: 100px;">Téléphone</th>
                         <th style="width: 100px;">Commune</th>
-                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion le</th>
+                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
+                            <a
+                                href="{{ path('app_referent_users', filter.toArray|merge({sort: 'registeredAt', order: order})) }}"
+                                class="sort-link sort-link--order-{{ filter.sort == 'registeredAt' ? filter.order : 'a' }}"
+                            >
+                                Adhésion le
+                            </a>
+                        </th>
                         <th style="width: 100px;">{{ 'referent.status.email'|trans }}</th>
                     </tr>
                 </thead>

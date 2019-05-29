@@ -91,8 +91,36 @@
 
             th {
                 line-height: normal;
-                padding: 0;
-                padding-right: 20px;
+                padding: 0 20px 0 0;
+
+                & a {
+                    color: $silver-grey;
+
+                    &.sort-link {
+                        border: 0 none;
+                        position: relative;
+
+                        &:after {
+                            content: ' ';
+                            margin-left: 6px;
+                            margin-top: 2px;
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            border-style: solid;
+                        }
+
+                        &.sort-link--order-d:after {
+                            border-width: 0 7.5px 10px 7.5px;
+                            border-color: transparent transparent $silver-grey transparent;
+                        }
+
+                        &.sort-link--order-a:after {
+                            border-width: 10px 7.5px 0 7.5px;
+                            border-color: $silver-grey transparent transparent transparent;
+                        }
+                    }
+                }
             }
 
             th:first-child { padding-left: 20px; }
