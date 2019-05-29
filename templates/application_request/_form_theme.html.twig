@@ -68,7 +68,7 @@
     {{ parent() }}
 {% endblock %}
 
-{% block _running_mate_request_favoriteCities_entry_row %}
+{% block _favorite_city_entry_row %}
     {% spaceless %}
         <div class="summary-favorite-city">
             <span class="favorite-city-remove">X</span>
@@ -76,4 +76,12 @@
             <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
         </div>
     {% endspaceless %}
+{% endblock %}
+
+{% block _running_mate_request_favoriteCities_entry_row %}
+    {{ block('_favorite_city_entry_row') }}
+{% endblock %}
+
+{% block _volunteer_request_favoriteCities_entry_row %}
+    {{ block('_favorite_city_entry_row') }}
 {% endblock %}
