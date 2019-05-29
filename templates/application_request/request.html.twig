@@ -15,6 +15,16 @@
             );
             {{ js.address(volunteer_form.address) }}
             {{ js.address(running_mate_form.address) }}
+
+            {{
+                js.applicationFavoriteCities(
+                    '#running_mate_request_favoriteCities',
+                    '#running_mate_request_favoriteCities_search',
+                    path('api_city_autocomplete'),
+                    '#running_mate_request_favoriteCities_search'
+                )
+            }}
+
         });
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>

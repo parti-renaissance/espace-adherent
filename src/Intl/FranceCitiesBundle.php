@@ -54,18 +54,19 @@ class FranceCitiesBundle
 
     public static function searchCities(string $search): array
     {
+        $search = \mb_strtolower($search);
         $list = [];
 
         foreach (self::$cities as $postalCode => $cities) {
-            foreach ($cities as $code => $cityName) {
-                if (!preg_match("/^$search/", $cityName)) {
+            foreach ($cities as $inseeCode => $cityName) {
+                if (!preg_match("/^$search/", \mb_strtolower($cityName))) {
                     continue;
                 }
 
-                $code = str_pad($code, 5, '0', \STR_PAD_LEFT);
+                $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
-                $list[$code] = [
-                    'postal_code' => $code,
+                $list[$inseeCode] = [
+                    'insee_code' => $inseeCode,
                     'name' => $cityName,
                 ];
 
@@ -76,7 +77,7 @@ class FranceCitiesBundle
         }
 
         usort($list, function(array $city1, array $city2) {
-            return $city1['postal_code'] < $city2['postal_code'] ? -1 : 1;
+            return $city1['insee_code'] < $city2['insee_code'] ? -1 : 1;
         });
 
         return $list;
