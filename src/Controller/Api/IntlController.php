@@ -25,4 +25,12 @@ class IntlController extends Controller
     {
         return new JsonResponse(VoteOfficeBundle::getVoteOfficies($countryCode));
     }
+
+    /**
+     * @Route("/city/{search}", name="api_city_autocomplete", methods={"GET"})
+     */
+    public function cityAutocompleteAction(string $search): JsonResponse
+    {
+        return new JsonResponse(FranceCitiesBundle::searchCities($search));
+    }
 }

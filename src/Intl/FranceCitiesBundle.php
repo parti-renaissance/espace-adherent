@@ -52,6 +52,36 @@ class FranceCitiesBundle
         return 'FR';
     }
 
+    public static function searchCities(string $search): array
+    {
+        $list = [];
+
+        foreach (self::$cities as $postalCode => $cities) {
+            foreach ($cities as $code => $cityName) {
+                if (!preg_match("/^$search/", $cityName)) {
+                    continue;
+                }
+
+                $code = str_pad($code, 5, '0', \STR_PAD_LEFT);
+
+                $list[$code] = [
+                    'postal_code' => $code,
+                    'name' => $cityName,
+                ];
+
+                if (\count($list) >= 10) {
+                    break(2);
+                }
+            }
+        }
+
+        usort($list, function(array $city1, array $city2) {
+            return $city1['postal_code'] < $city2['postal_code'] ? -1 : 1;
+        });
+
+        return $list;
+    }
+
     public static $countries = [
         '98000' => 'MC', // Monaco
         '971' => 'GP', // Guadeloupe
