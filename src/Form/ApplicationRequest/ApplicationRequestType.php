@@ -21,7 +21,7 @@ class ApplicationRequestType extends AbstractType
     {
         $builder
             ->add('favoriteCities', CollectionType::class, [
-                'required' => false,
+                'required' => true,
                 'entry_type' => TextType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
