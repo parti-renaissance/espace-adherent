@@ -374,7 +374,7 @@ $(document).ready(function() {
                 $.get("{{ urlSearch|raw }}?search=" + term, function(data) {
                     var array = $.map(data, function(m) {
                         return {
-                            label: m.name + ' (' + m.insee_code + ')',
+                            label: `${m.name} (${m.insee_code})`,
                             value: m.insee_code
                         };
                     });
@@ -423,6 +423,39 @@ $(document).ready(function() {
 
     removeFavoriteCity();
 });
+{% endmacro %}
+
+{% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector) %}
+    var elementToToggle = $('{{ elementToToggleSelector|raw }}');
+
+    elementToToggle.hide();
+
+    $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
+        var selectedValue = $(this).val();
+
+        if ('1' === selectedValue) {
+           elementToToggle.show();
+        } else {
+            elementToToggle.hide();
+            elementToToggle.find('textarea').val('').keyup();
+        }
+    });
+{% endmacro %}
+
+{% macro toggleDisplayFromChoice(choiceSelector, elementToToggleSelector, valueToShow) %}
+    $('{{ elementToToggleSelector|raw }}').hide();
+
+    $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
+        var selectedValue = $(this).val();
+        var elementToToggle = $('{{ elementToToggleSelector|raw }}');
+
+        if (valueToShow === selectedValue) {
+            elementToToggle.show();
+        } else {
+            elementToToggle.hide();
+            elementToToggle.find('textarea, input').val('').keyup();
+        }
+    });
 {% endmacro %}
 
 {% macro toggleDisplayingElement(checkboxSelector, elementSelector, checkboxNotSelectedSelector = null) %}
