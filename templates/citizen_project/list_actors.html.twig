@@ -31,6 +31,7 @@
                     <th>CP</th>
                     <th>Ville</th>
                 {% endif %}
+                    <th>Statut</th>
                     <th>Rôle</th>
                 {% if is_cp_administrator %}
                     <th>Adhérent depuis le</th>
@@ -43,22 +44,26 @@
                 {% set member = actor.adherent %}
                 {% set is_promotable_host = actor.promotableAdministrator %}
                 <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
-                    <td class="member-first-name">{{ member.firstName|capitalize }}</td>
+                    <td class="member-first-name">{{ member.firstName|default('~')|capitalize }}</td>
                     <td class="member-last-name">
                         {{ not is_cp_administrator ? member.lastNameInitial|upper : member.lastName}}
                     </td>
                     {% if is_cp_administrator %}
-                        <td class="member-age">{{ member.age }}</td>
-                        <td class="member-postal-code">{{ member.postalCode }}</td>
-                        <td class="member-city-name">{{ member.cityName }}</td>
+                        <td class="member-age">{{ member.age|default('~') }}</td>
+                        <td class="member-postal-code">{{ member.postalCode|default('~') }}</td>
+                        <td class="member-city-name">{{ member.cityName|default('~') }}</td>
                     {% endif %}
-                        <td>
-                            {% if not is_promotable_host %}
-                                Porteur de projet
-                            {% else %}
-                                Membre
-                            {% endif %}
-                        </td>
+                    <td class="status status__{{ member.hasCitizenProjectHostEmailSubscription ? '1' : '2' }}">
+                        <span></span>
+                        {{ member.hasCitizenProjectHostEmailSubscription ? 'Abonné(e)' : 'Non-abonné(e)' }}
+                    </td>
+                    <td>
+                        {% if not is_promotable_host %}
+                            Porteur de projet
+                        {% else %}
+                            Membre
+                        {% endif %}
+                    </td>
                     {% if is_cp_administrator %}
                         <td>{{ actor.adherent.registeredAt|date('d/m/Y') }}</td>
                         <td class="member-subscription-date">{{ actor.subscriptionDate|date('d/m/Y') }}</td>
