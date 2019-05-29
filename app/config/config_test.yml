@@ -39,25 +39,6 @@ parameters:
     app_host: "test.%env(APP_HOST)%"
     amp_host: "test.%env(AMP_HOST)%"
     legislatives_host: "test.legislatives.%app_host%"
-    adherent_interests:
-        agriculture: Agriculture
-        culture: Culture
-        economie: Économie
-        education: Éducation
-        egalite: Egalité F / H
-        emploi: Emploi
-        environement: Environnement
-        europe: Europe
-        international: International
-        institution: Vie publique & institutions
-        jeunesse: Jeunesse
-        justice: Justice
-        numerique: Numérique
-        sante: Santé
-        securite: Sécurité
-        territoire: Territoire
-        social: Affaires sociales
-        sport: Sport
     adherent_unregistration_reasons:
         emails: Je reçois trop d'e-mails
         soutien: J'avais uniquement adhéré pour soutenir la candidature d'Emmanuel Macron
