@@ -25,6 +25,14 @@
                 )
             }}
 
+            {{
+                js.applicationFavoriteCities(
+                    '#volunteer_request_favoriteCities',
+                    '#volunteer_request_favoriteCities_search',
+                    path('api_city_autocomplete'),
+                    '#volunteer_request_favoriteCities_search'
+                )
+            }}
         });
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
