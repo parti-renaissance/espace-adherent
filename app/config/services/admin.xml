@@ -999,5 +999,20 @@
             <argument />
         </service>
 
+        <!-- RunningMate manager-->
+        <service id="AppBundle\Admin\IsAdherentManager">
+            <argument type="service" id="doctrine"/>
+        </service>
+
+        <service id="app.admin.runningmate" class="AppBundle\Admin\RunningMateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\RunningMateRequest</argument>
+            <argument />
+            <argument type="service" id="app.storage" />
+            <argument type="service" id="AppBundle\Admin\IsAdherentManager" />
+        </service>
+
     </services>
 </container>

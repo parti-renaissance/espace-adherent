@@ -31,11 +31,19 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $volunteerRequest->addTechnicalSkill($this->getReference('application-skill-04'));
         $volunteerRequest->addTechnicalSkill($this->getReference('application-skill-08'));
 
-        $volunteerRequest->setCustomTechnicalSkills("I'am a man with a super robot suit.");
+        $volunteerRequest->setCustomTechnicalSkills("I'm a man with a cool robot suit.");
         $volunteerRequest->setIsPreviousCampaignMember(false);
         $volunteerRequest->setShareAssociativeCommitment(false);
 
         $manager->persist($volunteerRequest);
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            LoadApplicationRequestThemeData::class,
+            LoadApplicationRequestTechnicalSkillData::class,
+        ];
     }
 }

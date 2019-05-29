@@ -211,4 +211,9 @@ class RunningMateRequest extends ApplicationRequest
     {
         $this->professionalAssets = $professionalAssets;
     }
+
+    public function getPathWithDirectory(): string
+    {
+        return sprintf('%s/%s', 'curriculum', $this->curriculumName);
+    }
 }
