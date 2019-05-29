@@ -14,7 +14,7 @@ Feature:
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/jecoute/questionnaires-locaux"
     And I should see "Questionnaires locaux"
-    And I should see "Questionnaire numéro 1"
+    And I wait until I see "Questionnaire numéro 1"
     And I should not see "Un deuxième questionnaire"
 
     Given I click the "survey-edit-0" element

@@ -33,6 +33,8 @@ class ManagedUsersFilter
     public const PARAMETER_EMAIL_SUBSCRIPTION = 'es';
     public const PARAMETER_REGISTERED_FROM = 'rf';
     public const PARAMETER_REGISTERED_TO = 'rt';
+    public const PARAMETER_SORT = 'sort';
+    public const PARAMETER_ORDER = 'order';
 
     protected $includeAdherentsNoCommittee = true;
     protected $includeAdherentsInCommittee = true;
@@ -70,6 +72,8 @@ class ManagedUsersFilter
     private $queryRegisteredFrom;
     private $queryRegisteredTo;
     private $token;
+    private $sort = 'registeredAt';
+    private $order = 'd';
 
     public static function createFromMessage(ReferentManagedUsersMessage $message): self
     {
@@ -131,6 +135,8 @@ class ManagedUsersFilter
 
         $this->queryRegisteredFrom = ($date = $query->get(self::PARAMETER_REGISTERED_FROM)) ? new \DateTime($date) : null;
         $this->queryRegisteredTo = ($date = $query->get(self::PARAMETER_REGISTERED_TO)) ? new \DateTime($date) : null;
+        $this->sort = $request->query->get(self::PARAMETER_SORT);
+        $this->order = $request->query->get(self::PARAMETER_ORDER);
 
         return $this;
     }
@@ -298,5 +304,15 @@ class ManagedUsersFilter
     public function getQueryRegisteredTo(): ?\DateTimeInterface
     {
         return $this->queryRegisteredTo;
+    }
+
+    public function getOrder(): ?string
+    {
+        return $this->order;
+    }
+
+    public function getSort(): ?string
+    {
+        return $this->sort;
     }
 }
