@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e11e1caf45934d83edf9bccebf57e0d",
+    "content-hash": "631e6d4e7bf3edd10316f09b76bbe578",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -1051,7 +1051,7 @@
                 }
             ],
             "description": "A Flysystem adapter for storing files in Redis",
-            "time": "2015-10-26T02:54:19+00:00"
+            "time": "2015-10-26T02:54:19+01:00"
         },
         {
             "name": "dasprid/enum",
@@ -1577,16 +1577,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "1.11.0",
+            "version": "1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "6e15d2d9a8f90c0f9b5664b0db92686ff14fcd7d"
+                "reference": "09a38417339dc93849d051b914aae3947eb231a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/6e15d2d9a8f90c0f9b5664b0db92686ff14fcd7d",
-                "reference": "6e15d2d9a8f90c0f9b5664b0db92686ff14fcd7d",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/09a38417339dc93849d051b914aae3947eb231a7",
+                "reference": "09a38417339dc93849d051b914aae3947eb231a7",
                 "shasum": ""
             },
             "require": {
@@ -1662,7 +1662,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2019-05-10T13:27:28+00:00"
+            "time": "2019-05-13T14:30:38+00:00"
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
@@ -3313,7 +3313,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20T17:10:46+00:00"
+            "time": "2017-03-20T17:10:46+01:00"
         },
         {
             "name": "h4cc/wkhtmltoimage-amd64",
@@ -3775,7 +3775,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2016-12-05T10:18:33+00:00"
+            "time": "2016-12-05T10:18:33+01:00"
         },
         {
             "name": "jms/parser-lib",
@@ -4710,7 +4710,7 @@
                 }
             ],
             "description": "An adapter decorator to enable meta-data caching.",
-            "time": "2017-03-20T09:59:34+00:00"
+            "time": "2017-03-20T09:59:34+01:00"
         },
         {
             "name": "league/flysystem-memory",
@@ -5092,7 +5092,7 @@
                 "paybox",
                 "payment"
             ],
-            "time": "2016-10-12T11:12:48+00:00"
+            "time": "2016-10-12T11:12:48+02:00"
         },
         {
             "name": "lullabot/amp",
@@ -7414,7 +7414,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2017-02-15T03:06:08+00:00"
+            "time": "2017-02-15T03:06:08+01:00"
         },
         {
             "name": "sabre/event",
@@ -7738,7 +7738,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2016-10-09T22:57:52+00:00"
+            "time": "2016-10-09T22:57:52+02:00"
         },
         {
             "name": "scheb/two-factor-bundle",
@@ -14705,7 +14705,6 @@
                 "mock",
                 "xunit"
             ],
-            "abandoned": true,
             "time": "2018-05-29T13:50:43+00:00"
         },
         {

@@ -329,6 +329,8 @@ SQL
             $this
                 ->createCommitteeMembershipsQueryBuilder($committee)
                 ->addSelect('a')
+                ->addSelect('st')
+                ->leftJoin('a.subscriptionTypes', 'st')
                 ->setMaxResults($limit)
                 ->setFirstResult(($offset = ($page - 1) * $limit) < 0 ? 0 : $offset)
                 ->getQuery()

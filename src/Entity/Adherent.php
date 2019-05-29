@@ -1384,6 +1384,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL);
     }
 
+    public function hasCitizenProjectHostEmailSubscription(): bool
+    {
+        return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);
+    }
+
     public function getCoordinatorCitizenProjectArea(): ?CoordinatorManagedArea
     {
         return $this->coordinatorCitizenProjectArea;

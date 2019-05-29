@@ -278,6 +278,8 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         $query = $this
             ->createCitizenProjectMembershipsQueryBuilder($citizenProject)
             ->addSelect('a')
+            ->addSelect('st')
+            ->leftJoin('a.subscriptionTypes', 'st')
             ->getQuery()
         ;
 
