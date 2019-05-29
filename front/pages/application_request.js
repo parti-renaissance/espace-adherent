@@ -88,6 +88,39 @@ export default (volunteerFormType, runningMateFormType) => {
     formValidator(runningMateFormType, runningMateForm);
 };
 
+// Display uploaded file name
+'use strict';
+
+;(function($, window, document, undefined)
+{
+	$('.em-form__file--area').each( function()
+	{
+		var $input	 = $(this),
+			$label	 = $input.siblings('.em-form__file--label'),
+            labelVal = $label.html(),
+            $fileName   = $input.siblings('.em-form__file--name'),
+            $fileDefault   = $fileName.html();
+
+		$input.on('change', function(e)
+		{
+			var fileValue = '';
+
+			if( this.files && this.files.length > 1)
+				fileValue = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length);
+			else if(e.target.value)
+				fileValue = e.target.value.split('\\').pop();
+
+			if(fileValue)
+				$label.html('Modifier'),
+                $fileName.html(fileValue);
+			else
+				$label.html(labelVal),
+                $fileName.html(fileDefault);
+		});
+	});
+})( jQuery, window, document );
+
+// Form swaper
 $(document).ready(function(){
 
     $('#volunteer-form').hide();
