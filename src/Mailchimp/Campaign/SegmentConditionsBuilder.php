@@ -18,6 +18,7 @@ use AppBundle\Entity\ReferentTag;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 use AppBundle\Mailchimp\Manager;
+use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 
 class SegmentConditionsBuilder
@@ -139,7 +140,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'is',
-                'field' => 'GENDER',
+                'field' => MemberRequest::MERGE_FIELD_GENDER,
                 'value' => $filter->getGender(),
             ];
         }
@@ -150,7 +151,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'DateMerge',
                 'op' => 'less',
-                'field' => 'BIRTHDATE',
+                'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
                 'value' => $now->modify(sprintf('-%d years', $minAge))->format('Y-m-d'),
             ];
         }
@@ -159,7 +160,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'DateMerge',
                 'op' => 'greater',
-                'field' => 'BIRTHDATE',
+                'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
                 'value' => $now->modify(sprintf('-%d years', $maxAge))->format('Y-m-d'),
             ];
         }
@@ -168,7 +169,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'is',
-                'field' => 'MERGE1',
+                'field' => MemberRequest::MERGE_FIELD_FIRST_NAME,
                 'value' => $filter->getFirstName(),
             ];
         }
@@ -177,7 +178,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'is',
-                'field' => 'MERGE2',
+                'field' => MemberRequest::MERGE_FIELD_LAST_NAME,
                 'value' => $filter->getLastName(),
             ];
         }
@@ -186,7 +187,7 @@ class SegmentConditionsBuilder
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'contains',
-                'field' => 'CITY',
+                'field' => MemberRequest::MERGE_FIELD_CITY,
                 'value' => $campaign->getCity(),
             ];
         }
