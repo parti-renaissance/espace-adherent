@@ -93,16 +93,14 @@ export default (volunteerFormType, runningMateFormType) => {
 
 ;(function($, window, document, undefined)
 {
-	$('.em-form__file--area').each( function()
-	{
+    $('.em-form__file--area').each(function() {
 		var $input	 = $(this),
 			$label	 = $input.siblings('.em-form__file--label'),
             labelVal = $label.html(),
             $fileName   = $input.siblings('.em-form__file--name'),
             $fileDefault   = $fileName.html();
 
-		$input.on('change', function(e)
-		{
+		$input.on('change', function(e) {
 			var fileValue = '';
 
 			if( this.files && this.files.length > 1)
@@ -116,8 +114,8 @@ export default (volunteerFormType, runningMateFormType) => {
 			else
 				$label.html(labelVal),
                 $fileName.html(fileDefault);
-		});
-	});
+    	});
+    });
 })( jQuery, window, document );
 
 // Form swaper
