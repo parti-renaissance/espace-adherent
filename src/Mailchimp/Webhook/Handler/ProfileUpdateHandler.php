@@ -50,7 +50,7 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
 
     public function support(string $type): bool
     {
-        return \in_array($type, [EventTypeEnum::UPDATE_PROFILE, EventTypeEnum::SUBSCRIBE], true);
+        return EventTypeEnum::UPDATE_PROFILE === $type;
     }
 
     private function updateInterests(Adherent $adherent, array $data): void

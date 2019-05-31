@@ -396,6 +396,24 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $canaryTester = false;
 
+    /**
+     * Mailchimp unsubscribed status
+     *
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $emailUnsubscribed = false;
+
+    /**
+     * Mailchimp unsubscribed date
+     *
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $emailUnsubscribedAt;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1550,6 +1568,20 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
+    }
+
+    public function isEmailUnsubscribed(): bool
+    {
+        return $this->emailUnsubscribed;
+    }
+
+    public function setEmailUnsubscribed(bool $value): void
+    {
+        if ($value) {
+            $this->emailUnsubscribedAt = new \DateTime();
+        }
+
+        $this->emailUnsubscribed = $value;
     }
 
     public function isAdherentMessageRedactor(): bool

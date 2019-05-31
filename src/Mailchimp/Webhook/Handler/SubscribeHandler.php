@@ -4,8 +4,9 @@ namespace AppBundle\Mailchimp\Webhook\Handler;
 
 use AppBundle\Mailchimp\Webhook\EventTypeEnum;
 use AppBundle\Subscription\SubscriptionHandler;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 
-class UnsubscribeHandler extends AbstractAdherentHandler
+class SubscribeHandler extends AbstractAdherentHandler
 {
     private $subscriptionHandler;
 
@@ -17,11 +18,11 @@ class UnsubscribeHandler extends AbstractAdherentHandler
     public function handle(array $data): void
     {
         if ($adherent = $this->getAdherent($data['email'])) {
-            $adherent->setEmailUnsubscribed(true);
+            $adherent->setEmailUnsubscribed(false);
 
             $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
                 $adherent->getEmailsSubscriptions(),
-                []
+                SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES
             );
 
             $this->subscriptionHandler->handleUpdateSubscription($adherent, $newSubscriptionTypes);
@@ -30,6 +31,6 @@ class UnsubscribeHandler extends AbstractAdherentHandler
 
     public function support(string $type): bool
     {
-        return EventTypeEnum::UNSUBSCRIBE === $type;
+        return EventTypeEnum::SUBSCRIBE === $type;
     }
 }
