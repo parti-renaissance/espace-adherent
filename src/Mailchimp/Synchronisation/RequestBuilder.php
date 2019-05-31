@@ -15,16 +15,19 @@ class RequestBuilder
     private $gender;
     private $firstName;
     private $lastName;
+    /** @var \DateTimeInterface */
     private $birthDay;
     private $city;
     private $zipCode;
+    private $countryName;
+    private $adhesionDate;
 
     private $interests = [];
 
     private $activeTags = [];
     private $inactiveTags = [];
 
-    private $mailchimpInterestIds = [];
+    private $mailchimpInterestIds;
 
     public function __construct(array $mailchimpInterestIds = [])
     {
@@ -41,6 +44,8 @@ class RequestBuilder
             ->setBirthDay($adherent->getBirthdate())
             ->setZipCode($adherent->getPostalCode())
             ->setCity($adherent->getCityName())
+            ->setCountryName($adherent->getCountryName())
+            ->setAdhesionDate($adherent->getRegisteredAt())
             ->setInterests($this->buildInterestArray($adherent))
             ->setActiveTags($adherent->getReferentTagCodes())
         ;
@@ -74,7 +79,7 @@ class RequestBuilder
         return $this;
     }
 
-    public function setBirthDay(?\DateTime $birthDay): self
+    public function setBirthDay(?\DateTimeInterface $birthDay): self
     {
         $this->birthDay = $birthDay;
 
@@ -91,6 +96,20 @@ class RequestBuilder
     public function setZipCode(?string $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function setCountryName(?string $countryName): self
+    {
+        $this->countryName = $countryName;
+
+        return $this;
+    }
+
+    public function setAdhesionDate(?\DateTimeInterface $adhesionDate): self
+    {
+        $this->adhesionDate = $adhesionDate;
 
         return $this;
     }
@@ -146,7 +165,7 @@ class RequestBuilder
         }
 
         foreach ($this->activeTags as $tagName) {
-            $request->addTag($tagName, true);
+            $request->addTag($tagName);
         }
 
         return $request;
@@ -180,8 +199,12 @@ class RequestBuilder
             $mergeFields[MemberRequest::MERGE_FIELD_ZIP_CODE] = $this->zipCode;
         }
 
-        if ($this->activeTags) {
-            $mergeFields[MemberRequest::MERGE_FIELD_TAGS] = implode(',', $this->activeTags);
+        if ($this->countryName) {
+            $mergeFields[MemberRequest::MERGE_FIELD_COUNTRY] = $this->countryName;
+        }
+
+        if ($this->adhesionDate) {
+            $mergeFields[MemberRequest::MERGE_FIELD_ADHESION_DATE] = $this->adhesionDate->format('Y-m-d');
         }
 
         return $mergeFields;
@@ -214,7 +237,7 @@ class RequestBuilder
                     $this->mailchimpInterestIds,
                     array_flip(
                         array_map(
-                            function (SubscriptionType $type) { return $type->getCode(); },
+                            static function (SubscriptionType $type) { return $type->getCode(); },
                             $adherent->getSubscriptionTypes()
                         )
                     )

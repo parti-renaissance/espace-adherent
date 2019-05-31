@@ -105,7 +105,12 @@ parameters:
             "deputy_email": "21",
             "subscribed_emails_local_host": "22",
             "subscribed_emails_referents": "23",
-            "citizen_project_host_email": "24"
+            "citizen_project_host_email": "24",
+            "COMMITTEE_FOLLOWER": "25",
+            "COMMITTEE_NO_FOLLOWER": "26",
+            "COMMITTEE_SUPERVISOR": "27",
+            "COMMITTEE_HOST": "28",
+            "CITIZEN_PROJECT_HOST": "29"
         }
     env(MAILCHIMP_CAMPAIGN_FOLDER_IDS): '{}'
     env(MAILCHIMP_TEMPLATE_IDS): '{}'

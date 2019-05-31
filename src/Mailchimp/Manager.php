@@ -54,16 +54,10 @@ class Manager implements LoggerAwareInterface
         );
 
         if ($result) {
-            $this->logger->info(sprintf('Mailchimp member "%s" has been edited', $adherent->getUuidAsString()));
-
             // Active/Inactive member's tags
-            $result = $this->driver->updateMemberTags(
+            $this->driver->updateMemberTags(
                 $requestBuilder->createMemberTagsRequest($adherent->getEmailAddress(), $message->getRemovedTags())
             );
-
-            if ($result) {
-                $this->logger->info(sprintf('Mailchimp member "%s" tags have been updated', $adherent->getUuidAsString()));
-            }
         }
     }
 
