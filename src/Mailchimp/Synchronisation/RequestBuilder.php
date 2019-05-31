@@ -143,7 +143,7 @@ class RequestBuilder
             $request->setEmailAddress($this->email);
         }
 
-        if (!$adherent->isEnabled()) {
+        if (!$adherent->isEnabled() || $adherent->isEmailUnsubscribed()) {
             $request->setUnsubscriptionRequest();
         }
 
