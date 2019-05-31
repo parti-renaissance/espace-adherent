@@ -2,10 +2,10 @@
 
 namespace AppBundle\AdherentMessage\Command;
 
-use AppBundle\Messenger\Message\AsyncMessageInterface;
+use AppBundle\Mailchimp\SynchronizeMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class CreateStaticSegmentCommand implements AsyncMessageInterface
+class CreateStaticSegmentCommand implements SynchronizeMessageInterface
 {
     private $uuid;
     private $entityClass;

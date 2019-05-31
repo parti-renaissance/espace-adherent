@@ -2,10 +2,10 @@
 
 namespace AppBundle\AdherentMessage\Command;
 
-use AppBundle\Messenger\Message\AsyncMessageInterface;
+use AppBundle\Mailchimp\CampaignMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class AdherentMessageChangeCommand implements AsyncMessageInterface
+class AdherentMessageChangeCommand implements CampaignMessageInterface
 {
     private $uuid;
 

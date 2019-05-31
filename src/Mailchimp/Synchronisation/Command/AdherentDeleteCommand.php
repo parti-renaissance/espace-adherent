@@ -2,9 +2,9 @@
 
 namespace AppBundle\Mailchimp\Synchronisation\Command;
 
-use AppBundle\Messenger\Message\AsyncMessageInterface;
+use AppBundle\Mailchimp\SynchronizeMessageInterface;
 
-class AdherentDeleteCommand implements AsyncMessageInterface
+class AdherentDeleteCommand implements SynchronizeMessageInterface
 {
     private $email;
 
