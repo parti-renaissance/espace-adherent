@@ -22,8 +22,6 @@
         <div id="committee-event-form" class="committee__event__create">
             <h3 class="text--body text--normal">Vous créez un événement au sein du comité <strong>{{ committee.name }}</strong>.</h3>
 
-            {{ include('components/alert_european_elections.html.twig') }}
-
             {{ form_start(form, { attr: { class: 'b__nudge--top-40', autocomplete: 'off' } }) }}
             {{ form_errors(form) }}
 
