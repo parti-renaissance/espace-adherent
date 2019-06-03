@@ -28,6 +28,7 @@ use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
+use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
@@ -44,6 +45,8 @@ use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
+use AppBundle\Repository\RunningMateRequestRepository;
+use AppBundle\Repository\VolunteerRequestRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -604,6 +607,50 @@ class ReferentController extends Controller
         return $this->render('referent/edit_referent_person_link.html.twig', [
             'form' => $form->createView(),
             'person_organizational_chart_item' => $personOrganizationalChartItem,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers",
+     *     name="app_referent_municipal_running_mate_request",
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalRunningMateRequestAction(
+        RunningMateRequestRepository $runningMateRequestRepository,
+        MunicipalExporter $municipalExporter
+    ): Response {
+        $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
+
+        return $this->render('referent/municipal/running_mate_request.html.twig', [
+            'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
+                $runningMateRequestRepository->findForReferent($referent)
+            ),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole",
+     *     name="app_referent_municipal_volunteer_request",
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalVolunteerAction(
+        VolunteerRequestRepository $volunteerRequestRepository,
+        MunicipalExporter $municipalExporter
+    ): Response {
+        $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
+
+        return $this->render('referent/municipal/volunteer_request.html.twig', [
+            'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
+                $volunteerRequestRepository->findForReferent($referent)
+            ),
         ]);
     }
 }

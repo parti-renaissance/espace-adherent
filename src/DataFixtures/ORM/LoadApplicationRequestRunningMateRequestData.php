@@ -13,7 +13,9 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        foreach (self::EMAILS as $email) {
+        $i = 0;
+        while ( $i < 4 ) {
+            $email = self::EMAILS[$i%2];
             $runningMateRequest = new RunningMateRequest();
 
             $phoneUtil = PhoneNumberUtil::getInstance();
@@ -44,7 +46,10 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $runningMateRequest->setProjectDetails('');
             $runningMateRequest->setProfessionalAssets('');
 
+            $runningMateRequest->addReferentTag($this->getReference(sprintf('referent_tag_%s', (bool)($i % 2) ? '75' : '62')));
+
             $manager->persist($runningMateRequest);
+            ++$i;
         }
 
         $manager->flush();

@@ -3,7 +3,9 @@
 namespace AppBundle\Entity\ApplicationRequest;
 
 use AppBundle\Entity\EntityIdentityTrait;
+use AppBundle\Entity\EntityReferentTagTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\ReferentTaggableEntity;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,9 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class ApplicationRequest
+abstract class ApplicationRequest implements ReferentTaggableEntity
 {
     use EntityIdentityTrait;
+    use EntityReferentTagTrait;
     use EntityTimestampableTrait;
 
     /**
@@ -153,6 +156,7 @@ abstract class ApplicationRequest
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->favoriteThemes = new ArrayCollection();
+        $this->referentTags = new ArrayCollection();
     }
 
     public function getFirstName(): ?string

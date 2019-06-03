@@ -95,4 +95,16 @@ class FeatureContext extends RawMinkContext
 
         $field->click();
     }
+
+    /**
+     * @Then I accept terms of use
+     */
+    public function acceptTermsOfUse()
+    {
+        $modalElement = 'body > div.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable > div.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix > div > button';
+        $termsOfUseModal = $this->getSession()->getPage()->find('css', $modalElement);
+        if (null !== $termsOfUseModal) {
+            $termsOfUseModal->click();
+        }
+    }
 }
