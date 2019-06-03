@@ -20,7 +20,7 @@ class IsAdherentAdminExtension extends AbstractAdminExtension
                 Adherent::class,
                 'adherent',
                 Join::WITH,
-                sprintf('adherent.emailAddress = %s.emailAddress', $query->getRootAliases()[0])
+                sprintf('adherent.emailAddress = %s.emailAddress AND adherent.adherent = 1', $query->getRootAliases()[0])
             )
         ;
     }
