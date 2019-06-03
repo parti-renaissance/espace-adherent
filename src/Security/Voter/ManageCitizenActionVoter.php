@@ -16,9 +16,6 @@ class ManageCitizenActionVoter extends AbstractAdherentVoter
         $this->projectMembershipRepository = $projectMembershipRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return \in_array($attribute, CitizenActionPermissions::MANAGE, true)

@@ -12,9 +12,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UnitedNationsCountryValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint)
     {
         if (null === $value || '' === $value) {

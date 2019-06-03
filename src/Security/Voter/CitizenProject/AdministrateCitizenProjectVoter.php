@@ -9,9 +9,6 @@ use AppBundle\Security\Voter\AbstractAdherentVoter;
 
 class AdministrateCitizenProjectVoter extends AbstractAdherentVoter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return CitizenProjectPermissions::ADMINISTRATE === $attribute && $subject instanceof CitizenProject;

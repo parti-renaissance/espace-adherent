@@ -23,9 +23,6 @@ class ReferentAreaTransformer implements DataTransformerInterface
         $this->em = $em;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($arrayReferentArea)
     {
         $newArray = [];
@@ -42,9 +39,6 @@ class ReferentAreaTransformer implements DataTransformerInterface
         return implode(', ', $newArray);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($strAreasCodes)
     {
         $newArray = [];

@@ -11,9 +11,6 @@ abstract class ManagedUsersMessageRepository extends ServiceEntityRepository
         findOneByUuid as findOneByValidUuid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByUuid(string $uuid): ?ManagedUsersMessage
     {
         return $this->findOneByValidUuid($uuid);

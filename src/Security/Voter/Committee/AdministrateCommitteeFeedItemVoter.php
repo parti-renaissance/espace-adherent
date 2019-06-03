@@ -9,9 +9,6 @@ use AppBundle\Security\Voter\AbstractAdherentVoter;
 
 class AdministrateCommitteeFeedItemVoter extends AbstractAdherentVoter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return CommitteePermissions::ADMIN_FEED === $attribute

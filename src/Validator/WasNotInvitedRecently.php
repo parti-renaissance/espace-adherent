@@ -21,9 +21,6 @@ class WasNotInvitedRecently extends Constraint
     public $emailField = 'email';
     public $since = '24 hours';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

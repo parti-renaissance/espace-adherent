@@ -12,9 +12,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ShowGroupVoter extends AbstractAdherentVoter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $group)
     {
         return CitizenProjectPermissions::SHOW === $attribute && $group instanceof CitizenProject

@@ -156,9 +156,6 @@ class ClientAdmin extends AbstractAdmin
         $this->clientManager = $clientManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureBatchActions($actions)
     {
         return [];

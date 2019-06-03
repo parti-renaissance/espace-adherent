@@ -20,9 +20,6 @@ class AttendEventVoter extends AbstractAdherentVoter
         $this->registrationRepository = $registrationRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return $subject instanceof Event && \in_array($attribute, EventPermissions::ATTEND, true)
@@ -30,9 +27,6 @@ class AttendEventVoter extends AbstractAdherentVoter
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         if ((EventPermissions::REGISTER === $attribute || CitizenActionPermissions::REGISTER === $attribute)

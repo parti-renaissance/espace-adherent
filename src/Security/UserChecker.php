@@ -18,16 +18,10 @@ class UserChecker implements UserCheckerInterface
         $this->router = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkPreAuth(UserInterface $user)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkPostAuth(UserInterface $user)
     {
         /** @var Adherent $user */

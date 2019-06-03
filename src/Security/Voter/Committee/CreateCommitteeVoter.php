@@ -17,9 +17,6 @@ class CreateCommitteeVoter extends AbstractAdherentVoter
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return CommitteePermissions::CREATE === $attribute && null === $subject;

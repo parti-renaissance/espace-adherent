@@ -11,9 +11,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class MergeableCommitteesValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
     public function validate($committeeMergeCommand, Constraint $constraint)
     {
         if (!$committeeMergeCommand instanceof CommitteeMergeCommand) {

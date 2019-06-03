@@ -29,9 +29,6 @@ class AccountNotValidatedException extends AccountStatusException
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize()
     {
         return serialize([
@@ -40,9 +37,6 @@ class AccountNotValidatedException extends AccountStatusException
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unserialize($str)
     {
         [$this->redirect, $parentData] = unserialize($str);

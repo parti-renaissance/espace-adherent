@@ -8,9 +8,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 abstract class AbstractAdherentVoter extends Voter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $adherent = $token->getUser();

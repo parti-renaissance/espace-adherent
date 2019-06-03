@@ -22,25 +22,16 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
         $this->authorizationCodeRepository = $authorizationCodeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewAuthCode()
     {
         return new InMemoryAuthorizationCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCode)
     {
         $this->store($this->persistentTokenFactory->createAuthorizationCode($authCode));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function revokeAuthCode($codeId)
     {
         if (!$token = $this->findAuthorizationCode($codeId)) {
@@ -51,9 +42,6 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
         $this->store($token);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isAuthCodeRevoked($codeId)
     {
         if (!$token = $this->findAuthorizationCode($codeId)) {

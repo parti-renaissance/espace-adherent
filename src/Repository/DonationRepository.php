@@ -18,9 +18,6 @@ class DonationRepository extends ServiceEntityRepository
         parent::__construct($registry, Donation::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByUuid(string $uuid): ?Donation
     {
         return $this->findOneByValidUuid($uuid);

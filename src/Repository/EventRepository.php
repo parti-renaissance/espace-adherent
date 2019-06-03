@@ -98,9 +98,6 @@ class EventRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByUuid(string $uuid): ?BaseEvent
     {
         return $this->findOneByValidUuid($uuid);
