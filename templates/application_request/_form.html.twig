@@ -4,11 +4,13 @@
     {{ form_errors(form) }}
 
         <div class="em-form__section">
-            <div class="em-form__group">
+            <div class="em-form__group em-form__type-and-select">
                 {{ form_errors(form.favoriteCities) }}
                 {{ form_label(form.favoriteCities, 'Villes') }}
                 {{ form_widget(form.favoriteCities_search, { attr: { placeholder: 'Rechercher une ville' } }) }}
-                {{ form_widget(form.favoriteCities) }}
+                <div class="type-and-select__tags">
+                    {{ form_widget(form.favoriteCities) }}
+                </div>
             </div>
 
             <h4 class="text--medium b__nudge--bottom-larger">Qui êtes-vous ?</h4>
