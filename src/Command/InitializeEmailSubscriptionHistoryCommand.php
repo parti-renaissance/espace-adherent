@@ -78,7 +78,7 @@ SQL;
             }
 
             /** @var Adherent $adherent */
-            foreach ($adherent->getEmailsSubscriptions() as $subscription) {
+            foreach ($adherent->getSubscriptionTypeCodes() as $subscription) {
                 $connection->executeQuery(
                     $historyQuery,
                     [

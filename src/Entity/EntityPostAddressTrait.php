@@ -32,7 +32,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @JMS\Groups({"user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
+     * @JMS\Groups({"adherent_change_diff", "user_profile", "public", "committee_read", "event_read", "citizen_action_read"})
      * @JMS\VirtualProperty
      */
     public function getCountry(): ?string
