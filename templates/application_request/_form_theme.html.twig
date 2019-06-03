@@ -70,9 +70,11 @@
 
 {% block _favorite_city_entry_row %}
     {% spaceless %}
-        <div class="summary-favorite-city">
-            <span class="favorite-city-remove">X</span>
-            <span class="favorite-city-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
+        <div class="type-and-select__item summary-favorite-city">
+            <span class="type-and-select__item--value favorite-city-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
+            <span class="type-and-select__item--remove favorite-city-remove">
+                <img src="{{ asset('/images/icons/icn_remove-item.svg') }}" />
+            </span>
             <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
         </div>
     {% endspaceless %}
