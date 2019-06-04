@@ -20,7 +20,7 @@ class UnsubscribeHandler extends AbstractAdherentHandler
             $adherent->setEmailUnsubscribed(true);
 
             $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
-                $adherent->getEmailsSubscriptions(),
+                $adherent->getSubscriptionTypeCodes(),
                 []
             );
 

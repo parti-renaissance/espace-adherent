@@ -482,7 +482,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("uuid"),
+     * @JMS\SerializedName("uuid")
      * @JMS\Groups({"user_profile", "public"})
      */
     public function getUuidAsString(): string
@@ -492,7 +492,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("subscriptionExternalIds"),
+     * @JMS\SerializedName("subscriptionExternalIds")
      * @JMS\Groups({"public"})
      */
     public function getSubscriptionExternalIds(): array
@@ -504,7 +504,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("elected"),
+     * @JMS\SerializedName("elected")
      * @JMS\Groups({"user_profile"})
      */
     public function isElected(): bool
@@ -514,7 +514,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("larem"),
+     * @JMS\SerializedName("larem")
      * @JMS\Groups({"user_profile"})
      */
     public function isLaREM(): bool
@@ -742,9 +742,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->password = $newPassword;
     }
 
-    public function getEmailsSubscriptions(): array
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"adherent_change_diff"})
+     * @JMS\SerializedName("subscriptionTypeCodes")
+     */
+    public function getSubscriptionTypeCodes(): array
     {
-        return array_values(array_map(function (SubscriptionType $type) {
+        return array_values(array_map(static function (SubscriptionType $type) {
             return $type->getCode();
         }, $this->subscriptionTypes->toArray()));
     }
@@ -1012,7 +1017,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @JMS\VirtualProperty
-     * @JMS\SerializedName("managedAreaTagCodes"),
+     * @JMS\SerializedName("managedAreaTagCodes")
      * @JMS\Groups({"referent"})
      *
      * @return string[]
@@ -1592,5 +1597,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isSupervisor()
             || $this->isCitizenProjectAdministrator()
         ;
+    }
+
+    public function __clone()
+    {
+        $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
     }
 }

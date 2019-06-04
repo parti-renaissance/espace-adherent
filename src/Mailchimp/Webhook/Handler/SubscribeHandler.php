@@ -21,7 +21,7 @@ class SubscribeHandler extends AbstractAdherentHandler
             $adherent->setEmailUnsubscribed(false);
 
             $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
-                $adherent->getEmailsSubscriptions(),
+                $adherent->getSubscriptionTypeCodes(),
                 SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES
             );
 

@@ -90,7 +90,7 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
         }
 
         $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
-            $adherent->getEmailsSubscriptions(),
+            $adherent->getSubscriptionTypeCodes(),
             '' === $data['groups'] ? [] : explode(', ', $data['groups'])
         );
 

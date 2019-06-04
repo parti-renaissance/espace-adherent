@@ -482,7 +482,7 @@ class AdherentControllerTest extends WebTestCase
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-        $this->assertNotEmpty($adherent->getEmailsSubscriptions());
+        $this->assertNotEmpty($adherent->getSubscriptionTypeCodes());
         $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
