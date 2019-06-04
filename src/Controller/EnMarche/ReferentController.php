@@ -4,6 +4,8 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Jecoute\LocalSurvey;
@@ -624,7 +626,7 @@ class ReferentController extends Controller
         MunicipalExporter $municipalExporter,
         UserInterface $referent
     ): Response {
-        return $this->render('referent/municipal/running_mate_request.html.twig', [
+        return $this->render('referent/municipal/running_mate/list.html.twig', [
             'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
                 $runningMateRequestRepository->findForReferent($referent)
             ),
@@ -645,10 +647,48 @@ class ReferentController extends Controller
         MunicipalExporter $municipalExporter,
         UserInterface $referent
     ): Response {
-        return $this->render('referent/municipal/volunteer_request.html.twig', [
+        return $this->render('referent/municipal/volunteer/list.html.twig', [
             'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
                 $volunteerRequestRepository->findForReferent($referent)
             ),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers/{uuid}/detail",
+     *     name="app_referent_municipal_running_mate_request_detail",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalRunningMateDetailAction(RunningMateRequest $runningMateRequest): Response
+    {
+        return $this->render('referent/municipal/running_mate/detail.html.twig', [
+            'runningMateRequest' => $runningMateRequest,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole/{uuid}/detail",
+     *     name="app_referent_municipal_volunteer_request_detail",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalVolunteerDetailAction(VolunteerRequest $volunteerRequest): Response
+    {
+        return $this->render('referent/municipal/volunteer/detail.html.twig', [
+            'volunteerRequest' => $volunteerRequest,
         ]);
     }
 }

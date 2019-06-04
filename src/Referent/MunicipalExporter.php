@@ -31,7 +31,7 @@ class MunicipalExporter
         $data = [];
 
         /** @var RunningMateRequest $runningMate */
-        foreach ($runningMates as $runningMate) {
+        foreach ($runningMates as $i => $runningMate) {
             $data[] = [
                 'lastName' => $runningMate->getLastName(),
                 'firstName' => $runningMate->getFirstName(),
@@ -47,6 +47,12 @@ class MunicipalExporter
                     ]),
                 ],
                 'isAdherent' => $runningMate->isAdherent() ? 'Oui' : 'Non',
+                'detailLink' => [
+                    'label' => "<span id='application-detail-$i' class='btn btn--default'>Voir le détail</span>",
+                    'url' => $this->urlGenerator->generate('app_referent_municipal_running_mate_request_detail', [
+                        'uuid' => $runningMate->getUuid(),
+                    ]),
+                ],
             ];
         }
 
@@ -61,7 +67,7 @@ class MunicipalExporter
         $data = [];
 
         /** @var VolunteerRequest $volunteer */
-        foreach ($volunteers as $volunteer) {
+        foreach ($volunteers as $i => $volunteer) {
             $data[] = [
                 'lastName' => $volunteer->getLastName(),
                 'firstName' => $volunteer->getFirstName(),
@@ -70,6 +76,12 @@ class MunicipalExporter
                     : '',
                 'favoriteCities' => $volunteer->getFavoriteCities(),
                 'isAdherent' => $volunteer->isAdherent() ? 'Oui' : 'Non',
+                'detailLink' => [
+                    'label' => "<span id='application-detail-$i' class='btn btn--default'>Voir le détail</span>",
+                    'url' => $this->urlGenerator->generate('app_referent_municipal_volunteer_request_detail', [
+                        'uuid' => $volunteer->getUuid(),
+                    ]),
+                ],
             ];
         }
 
