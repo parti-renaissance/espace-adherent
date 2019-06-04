@@ -26,7 +26,7 @@ class MailchimpWebhookController extends Controller
     {
         if ($key === $this->mailchimpWebhookKey) {
             if ($request->isMethod(Request::METHOD_POST) && EventTypeEnum::isValid($type = $request->request->get('type'))) {
-                $handler($type, (array) $request->request->get('data', []));
+                $handler->handle($type, (array) $request->request->get('data', []));
             }
         } else {
             $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));

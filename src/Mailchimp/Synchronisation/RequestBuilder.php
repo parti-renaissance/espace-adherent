@@ -5,6 +5,7 @@ namespace AppBundle\Mailchimp\Synchronisation;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\SubscriptionType;
+use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
@@ -26,12 +27,11 @@ class RequestBuilder
 
     private $activeTags = [];
     private $inactiveTags = [];
+    private $mailchimpObjectIdMapping;
 
-    private $mailchimpInterestIds;
-
-    public function __construct(array $mailchimpInterestIds = [])
+    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
     {
-        $this->mailchimpInterestIds = $mailchimpInterestIds;
+        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
     public function updateFromAdherent(Adherent $adherent): self
@@ -214,12 +214,12 @@ class RequestBuilder
     {
         return array_replace(
             // By default all interests are disabled (`false` value) for a member
-            array_fill_keys($this->mailchimpInterestIds, false),
+            array_fill_keys($ids = $this->mailchimpObjectIdMapping->getInterestIds(), false),
 
             // Activate adherent's interests
             array_fill_keys(
                 array_intersect_key(
-                    $this->mailchimpInterestIds,
+                    $ids,
                     array_flip($adherent->getInterests())
                 ),
                 true
@@ -234,7 +234,7 @@ class RequestBuilder
              */
             array_fill_keys(
                 array_intersect_key(
-                    $this->mailchimpInterestIds,
+                    $ids,
                     array_flip(
                         array_map(
                             static function (SubscriptionType $type) { return $type->getCode(); },
@@ -248,7 +248,7 @@ class RequestBuilder
             // Activate Member group interest
             array_fill_keys(
                 array_intersect_key(
-                    $this->mailchimpInterestIds,
+                    $ids,
                     array_filter([
                         Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR => !($memberships = $adherent->getMemberships())->getCommitteeSupervisorMemberships()->isEmpty(),
                         Manager::INTEREST_KEY_COMMITTEE_HOST => !$memberships->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
