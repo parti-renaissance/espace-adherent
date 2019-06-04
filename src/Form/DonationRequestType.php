@@ -57,9 +57,6 @@ class DonationRequestType extends AbstractType
         $this->adherentRepository = $adherentRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -162,9 +159,6 @@ class DonationRequestType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
@@ -177,9 +171,6 @@ class DonationRequestType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'app_donation';

@@ -21,9 +21,6 @@ class Address extends Constraint
     public $frenchCityMessage = 'Cette ville n\'est pas une ville française valide.';
     public $notAssociatedMessage = 'Ce code postal ne correspond pas à cette ville.';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

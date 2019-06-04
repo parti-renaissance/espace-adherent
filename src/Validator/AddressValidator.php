@@ -13,9 +13,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AddressValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
     public function validate($address, Constraint $constraint)
     {
         if (!$constraint instanceof Address) {

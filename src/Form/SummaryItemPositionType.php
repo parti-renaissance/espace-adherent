@@ -66,9 +66,6 @@ class SummaryItemPositionType extends AbstractType implements DataMapperInterfac
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapDataToForms($data, $forms)
     {
         $forms = iterator_to_array($forms);
@@ -76,9 +73,6 @@ class SummaryItemPositionType extends AbstractType implements DataMapperInterfac
         $forms['entry']->setData($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapFormsToData($forms, &$data)
     {
         $forms = iterator_to_array($forms);

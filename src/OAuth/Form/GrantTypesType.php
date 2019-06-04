@@ -19,9 +19,6 @@ class GrantTypesType extends AbstractType implements DataTransformerInterface
         $builder->addModelTransformer($this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         if (!$value) {
@@ -37,9 +34,6 @@ class GrantTypesType extends AbstractType implements DataTransformerInterface
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         return array_keys($value, true, true);

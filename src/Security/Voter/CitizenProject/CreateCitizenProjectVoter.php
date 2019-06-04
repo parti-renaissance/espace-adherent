@@ -17,9 +17,6 @@ class CreateCitizenProjectVoter extends AbstractAdherentVoter
         $this->projectRepository = $projectRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return CitizenProjectPermissions::CREATE === $attribute && null === $subject;

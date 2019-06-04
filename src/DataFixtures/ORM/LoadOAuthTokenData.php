@@ -135,9 +135,6 @@ class LoadOAuthTokenData extends AbstractFixture implements DependentFixtureInte
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDependencies()
     {
         return [

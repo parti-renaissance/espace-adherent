@@ -16,17 +16,11 @@ class CommitteeToIdTransformer implements DataTransformerInterface
         $this->committeeRepository = $committeeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($committee)
     {
         return $committee instanceof Committee ? $committee->getId() : null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($committeeId)
     {
         $committee = $this->committeeRepository->findOneBy(['id' => $committeeId]);

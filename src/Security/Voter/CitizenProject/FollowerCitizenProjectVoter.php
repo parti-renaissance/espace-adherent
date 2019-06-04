@@ -9,9 +9,6 @@ use AppBundle\Security\Voter\AbstractAdherentVoter;
 
 class FollowerCitizenProjectVoter extends AbstractAdherentVoter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $subject)
     {
         return $subject instanceof CitizenProject

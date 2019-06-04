@@ -59,9 +59,6 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->findOneBy(['canonicalName' => $canonicalName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByUuid(string $uuid): ?Committee
     {
         return $this->findOneByValidUuid($uuid);

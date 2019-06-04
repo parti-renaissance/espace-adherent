@@ -17,9 +17,6 @@ class FacebookProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, FacebookProfile::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByUuid(?string $uuid): ?FacebookProfile
     {
         return $this->findOneByValidUuid($uuid);

@@ -12,17 +12,11 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class NullToStringTransformer implements DataTransformerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         return $value; // no-op
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         if (null === $value) {

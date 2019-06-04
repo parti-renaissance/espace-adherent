@@ -17,9 +17,6 @@ class EmailRepository extends ServiceEntityRepository
         parent::__construct($registry, Email::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByUuid(string $uuid): ?Email
     {
         return $this->findOneByValidUuid($uuid);

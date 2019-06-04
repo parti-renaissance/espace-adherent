@@ -22,17 +22,11 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
         $this->refreshTokenRepository = $refreshTokenRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewRefreshToken()
     {
         return new InMemoryRefreshToken();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshToken)
     {
         $this->store($this->persistentTokenFactory->createRefreshToken($refreshToken));

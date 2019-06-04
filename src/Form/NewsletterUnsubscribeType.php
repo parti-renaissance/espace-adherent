@@ -8,17 +8,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class NewsletterUnsubscribeType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', EmailType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'app_newsletter_unsubscribe';

@@ -150,8 +150,6 @@ class TurnkeyProjectAdmin extends AbstractAdmin
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws \RuntimeException
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -183,8 +181,6 @@ class TurnkeyProjectAdmin extends AbstractAdmin
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws \RuntimeException
      */
     protected function configureListFields(ListMapper $listMapper)

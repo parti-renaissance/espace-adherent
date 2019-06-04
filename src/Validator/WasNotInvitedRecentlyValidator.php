@@ -21,9 +21,6 @@ class WasNotInvitedRecentlyValidator extends ConstraintValidator
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint)
     {
         if (null === $value || !$constraint instanceof WasNotInvitedRecently) {

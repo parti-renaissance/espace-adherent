@@ -26,9 +26,6 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
         $this->key = $key;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(Coordinates $coordinates, ?string $size = null)
     {
         $id = self::CACHE_KEY_PREFIX.md5($coordinates->getLatitude().'-'.$coordinates->getLongitude().'_'.$size);

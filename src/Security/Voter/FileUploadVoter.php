@@ -8,9 +8,6 @@ use AppBundle\Entity\UserDocument;
 
 class FileUploadVoter extends AbstractAdherentVoter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $type)
     {
         return DocumentPermissions::FILE_UPLOAD === $attribute;

@@ -29,9 +29,6 @@ class ArticleFeedGenerator extends AbstractFeedGenerator
         $this->markdownParser = $commonMarkConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildFeed($data): FeedInterface
     {
         if (!\is_array($data) && !$data instanceof \Traversable) {

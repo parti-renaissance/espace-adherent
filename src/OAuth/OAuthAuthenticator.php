@@ -35,9 +35,6 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         $this->adherentRepository = $adherentRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function start(Request $request, AuthenticationException $authException = null)
     {
         $data = [
@@ -51,9 +48,6 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         return new JsonResponse($data, 401);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCredentials(Request $request)
     {
         $psrRequest = $this->diactorosFactory->createRequest($request);
@@ -72,9 +66,6 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $roles = array_map(
@@ -99,32 +90,20 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         return $this->start($request, $exception);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsRememberMe()
     {
         return false;

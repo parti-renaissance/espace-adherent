@@ -36,9 +36,6 @@ class ProcurationRequestType extends AbstractProcurationType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         switch ($options['step_uri']) {
@@ -105,9 +102,6 @@ class ProcurationRequestType extends AbstractProcurationType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'app_procuration_request';

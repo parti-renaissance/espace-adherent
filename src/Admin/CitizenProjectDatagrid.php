@@ -18,9 +18,6 @@ class CitizenProjectDatagrid extends DatagridDecorator
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResults()
     {
         if (!$this->cachedResults) {

@@ -23,25 +23,16 @@ class RemoteUrlGenerator implements UrlGeneratorInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setContext(RequestContext $context)
     {
         $this->generator->setContext($context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContext()
     {
         return $this->generator->getContext();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
         return $this->generator->generate($name, $parameters, $referenceType);

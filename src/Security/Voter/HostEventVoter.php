@@ -8,9 +8,6 @@ use AppBundle\Event\EventPermissions;
 
 class HostEventVoter extends AbstractAdherentVoter
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function supports($attribute, $event)
     {
         return EventPermissions::HOST === $attribute && $event instanceof Event;

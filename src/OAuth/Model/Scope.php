@@ -28,17 +28,11 @@ final class Scope extends Enum implements ScopeEntityInterface
         return (string) $this->getIdentifier();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function jsonSerialize()
     {
         return $this->getIdentifier();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier()
     {
         return $this->getValue();
