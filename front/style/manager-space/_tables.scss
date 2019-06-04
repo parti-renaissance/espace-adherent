@@ -103,21 +103,27 @@
                         &:after {
                             content: ' ';
                             margin-left: 6px;
-                            margin-top: 2px;
+                            margin-top: 4px;
                             position: absolute;
                             width: 0;
                             height: 0;
                             border-style: solid;
+                            opacity: 0.5;
+                            transition: opacity 0.2s ease;
                         }
 
                         &.sort-link--order-d:after {
-                            border-width: 0 7.5px 10px 7.5px;
+                            border-width: 0 5px 6px 5px;
                             border-color: transparent transparent $silver-grey transparent;
                         }
 
                         &.sort-link--order-a:after {
-                            border-width: 10px 7.5px 0 7.5px;
+                            border-width: 6px 5px 0 5px;
                             border-color: $silver-grey transparent transparent transparent;
+                        }
+
+                        &:hover:after {
+                            opacity: 1;
                         }
                     }
                 }
