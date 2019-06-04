@@ -3,9 +3,9 @@
 {% block referent_content %}
     <div class="referent__menu-list-event">
         <div class="menu-items">
-            <h3><a href="{{ path('app_referent_municipal_running_mate_request') }}">Candidats colistiers</a></h3>
+            <h3>Candidats colistiers</h3>
             <span class="separator">|</span>
-            <h3>Candidats volontaires</h3>
+            <h3><a href="{{ path('app_referent_municipal_volunteer_request') }}">Candidats volontaires</a></h3>
         </div>
     </div>
 
@@ -34,11 +34,23 @@
                         name: 'Ville(s) choisie(s)',
                     },
                     {
+                        key: 'cvLink',
+                        name: 'Lien vers CV',
+                        link: true,
+                        targetBlank: true,
+                    },
+                    {
                         key: 'isAdherent',
                         name: 'Adhérent (oui/non)',
                     },
+                    {
+                        key: 'detailLink',
+                        name: 'Voir le détail',
+                        link: true,
+                        targetBlank: false,
+                    },
                 ],
-                {{ volunteerListJson|raw }}
+                {{ runningMateListJson|raw }}
             );
         });
     </script>
