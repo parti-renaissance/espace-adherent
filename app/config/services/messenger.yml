@@ -53,7 +53,7 @@ services:
         arguments:
             $dsn: '%env(RABBITMQ_DSN)%'
             $options:
-                exchange: { type: topic }
+                exchange: { name: 'messenger-topic', type: topic }
                 queue: { name: 'mailchimp_sync', routing_key: 'mailchimp.sync' }
 
     messenger.transport.mailchimp_campaign:
@@ -64,7 +64,7 @@ services:
         arguments:
             $dsn: '%env(RABBITMQ_DSN)%'
             $options:
-                exchange: { type: topic }
+                exchange: { name: 'messenger-topic', type: topic }
                 queue: { name: 'mailchimp_campaign', routing_key: 'mailchimp.campaign' }
 
     # Senders Locator witch defines a mapping [MessageClass => [alias: service]]
