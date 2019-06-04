@@ -25,7 +25,8 @@ Feature:
     When I press "Enregistrer le questionnaire"
     And I should see "Le questionnaire a bien été mis à jour"
 
-    Given I click the "survey-stats-0" element
+    Given I wait until I see "Questionnaire numéro 1 modifié"
+    And I click the "survey-stats-0" element
     Then I should see "Statistiques : Questionnaire numéro 1"
     And I should see "Est-ce une question à choix multiple ?"
     And I should see "66,67 %"

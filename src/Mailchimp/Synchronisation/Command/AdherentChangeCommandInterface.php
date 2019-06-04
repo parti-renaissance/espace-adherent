@@ -2,10 +2,10 @@
 
 namespace AppBundle\Mailchimp\Synchronisation\Command;
 
-use AppBundle\Messenger\Message\AsyncMessageInterface;
+use AppBundle\Mailchimp\SynchronizeMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-interface AdherentChangeCommandInterface extends AsyncMessageInterface
+interface AdherentChangeCommandInterface extends SynchronizeMessageInterface
 {
     public function getUuid(): UuidInterface;
 

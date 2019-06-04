@@ -2,9 +2,9 @@
 
 namespace AppBundle\AdherentMessage\Command;
 
-use AppBundle\Messenger\Message\AsyncMessageInterface;
+use AppBundle\Mailchimp\CampaignMessageInterface;
 
-class AdherentMessageDeleteCommand implements AsyncMessageInterface
+class AdherentMessageDeleteCommand implements CampaignMessageInterface
 {
     private $campaignId;
 

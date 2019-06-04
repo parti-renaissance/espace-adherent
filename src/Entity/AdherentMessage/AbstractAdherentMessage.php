@@ -203,6 +203,13 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $status;
     }
 
+    public function setSynchronized(bool $value): void
+    {
+        $this->mailchimpCampaigns->forAll(static function (int $key, MailchimpCampaign $campaign) use ($value) {
+            $campaign->setSynchronized($value);
+        });
+    }
+
     public function getFilter(): ?AdherentMessageFilterInterface
     {
         return $this->filter;

@@ -45,21 +45,35 @@ services:
             $debug: '%kernel.debug%'
 
     # Transport AMQP
-    messenger.transport.amqp:
+    messenger.transport.mailchimp_sync:
         class: Symfony\Component\Messenger\Transport\TransportInterface
         factory: 'Symfony\Component\Messenger\Transport\TransportFactory:createTransport'
         tags:
-            - { name: messenger.receiver, alias: amqp }
+            - { name: messenger.receiver, alias: mailchimp_sync }
         arguments:
             $dsn: '%env(RABBITMQ_DSN)%'
-            $options: []
+            $options:
+                exchange: { type: topic }
+                queue: { name: 'mailchimp_sync', routing_key: 'mailchimp.sync' }
+
+    messenger.transport.mailchimp_campaign:
+        class: Symfony\Component\Messenger\Transport\TransportInterface
+        factory: 'Symfony\Component\Messenger\Transport\TransportFactory:createTransport'
+        tags:
+            - { name: messenger.receiver, alias: mailchimp_campaign }
+        arguments:
+            $dsn: '%env(RABBITMQ_DSN)%'
+            $options:
+                exchange: { type: topic }
+                queue: { name: 'mailchimp_campaign', routing_key: 'mailchimp.campaign' }
 
     # Senders Locator witch defines a mapping [MessageClass => [alias: service]]
     messenger.transport.senders_locator:
         class: Symfony\Component\Messenger\Transport\Sender\SendersLocator
         arguments:
             $senders:
-                AppBundle\Messenger\Message\AsyncMessageInterface: { amqp: '@messenger.transport.amqp' }
+                AppBundle\Mailchimp\CampaignMessageInterface: { mailchimp_campaign: '@messenger.transport.mailchimp_campaign' }
+                AppBundle\Mailchimp\SynchronizeMessageInterface: { mailchimp_sync: '@messenger.transport.mailchimp_sync' }
 
     Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface: '@messenger.transport.senders_locator'
 

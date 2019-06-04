@@ -9,7 +9,7 @@ use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -26,7 +26,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
     {
         return [
             Events::postPersist,
-            Events::preUpdate,
+            Events::onFlush,
             Events::postUpdate,
             Events::postRemove,
         ];
@@ -50,19 +50,6 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         }
     }
 
-    public function preUpdate(PreUpdateEventArgs $event): void
-    {
-        $object = $event->getObject();
-
-        if ($object instanceof AdherentMessageFilterInterface && array_keys($event->getEntityChangeSet()) !== ['synchronized']) {
-            $object->setSynchronized(false);
-        } elseif ($object instanceof AdherentMessageInterface && array_intersect(array_keys($event->getEntityChangeSet()), ['content', 'subject', 'filter'])) {
-            foreach ($object->getMailchimpCampaigns() as $campaign) {
-                $campaign->setSynchronized(false);
-            }
-        }
-    }
-
     public function postUpdate(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
@@ -71,6 +58,33 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
             $this->dispatchMessage($object);
         } elseif ($object instanceof AdherentMessageFilterInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object->getMessage());
+        }
+    }
+
+    public function onFlush(OnFlushEventArgs $args): void
+    {
+        $em = $args->getEntityManager();
+        $uow = $em->getUnitOfWork();
+        $needRecompute = false;
+
+        foreach ($uow->getScheduledEntityUpdates() as $object) {
+            if (!$object instanceof AdherentMessageFilterInterface && !$object instanceof AdherentMessageInterface) {
+                continue;
+            }
+
+            $changeSet = array_keys($uow->getEntityChangeSet($object));
+
+            if (
+                ($object instanceof AdherentMessageFilterInterface && $changeSet !== ['synchronized'])
+                || ($object instanceof AdherentMessageInterface && array_intersect($changeSet, ['content', 'subject', 'filter']))
+            ) {
+                $needRecompute = true;
+                $object->setSynchronized(false);
+            }
+        }
+
+        if ($needRecompute) {
+            $uow->computeChangeSets();
         }
     }
 
