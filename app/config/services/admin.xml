@@ -1000,10 +1000,6 @@
         </service>
 
         <!-- RunningMate manager-->
-        <service id="AppBundle\Admin\IsAdherentManager">
-            <argument type="service" id="doctrine"/>
-        </service>
-
         <service id="app.admin.runningmate" class="AppBundle\Admin\RunningMateAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Municipales" />
 
@@ -1013,6 +1009,10 @@
             <call method="setStorage">
                 <argument type="service" id="app.storage" />
             </call>
+            <call method="setTemplate">
+                <argument>outer_list_rows_list</argument>
+                <argument>admin/application_request/list_outer_rows_list.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.volunteer" class="AppBundle\Admin\VolunteerAdmin">
@@ -1021,7 +1021,15 @@
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\VolunteerRequest</argument>
             <argument />
+            <call method="setTemplate">
+                <argument>outer_list_rows_list</argument>
+                <argument>admin/application_request/list_outer_rows_list.html.twig</argument>
+            </call>
         </service>
 
+        <service id="app.admin.is_adherent_extension" class="AppBundle\Admin\Extension\IsAdherentAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.volunteer" />
+            <tag name="sonata.admin.extension" target="app.admin.runningmate" />
+        </service>
     </services>
 </container>

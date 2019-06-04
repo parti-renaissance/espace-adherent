@@ -4,7 +4,6 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
 use AppBundle\Entity\ApplicationRequest\Theme;
-use AppBundle\Repository\AdherentRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -20,18 +19,6 @@ class VolunteerAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
-    private $repository;
-
-    public function getDatagrid()
-    {
-        static $datagrid = null;
-
-        if (null === $datagrid) {
-            $datagrid = new IsAdherentDatagrid(parent::getDatagrid(), $this->repository);
-        }
-
-        return $datagrid;
-    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -127,13 +114,5 @@ class VolunteerAdmin extends AbstractAdmin
         $collection
             ->remove('create')
         ;
-    }
-
-    /**
-     * @required
-     */
-    public function setAdherentRepository(AdherentRepository $repository)
-    {
-        $this->repository = $repository;
     }
 }

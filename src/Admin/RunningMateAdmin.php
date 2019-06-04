@@ -4,7 +4,6 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
-use AppBundle\Repository\AdherentRepository;
 use League\Flysystem\Filesystem;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -23,18 +22,6 @@ class RunningMateAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
     private $storage;
-    private $repository;
-
-    public function getDatagrid()
-    {
-        static $datagrid = null;
-
-        if (null === $datagrid) {
-            $datagrid = new IsAdherentDatagrid(parent::getDatagrid(), $this->repository);
-        }
-
-        return $datagrid;
-    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -167,16 +154,8 @@ class RunningMateAdmin extends AbstractAdmin
         }
     }
 
-    public function setStorage(Filesystem $storage)
+    public function setStorage(Filesystem $storage): void
     {
         $this->storage = $storage;
-    }
-
-    /**
-     * @required
-     */
-    public function setAdherentRepository(AdherentRepository $repository)
-    {
-        $this->repository = $repository;
     }
 }
