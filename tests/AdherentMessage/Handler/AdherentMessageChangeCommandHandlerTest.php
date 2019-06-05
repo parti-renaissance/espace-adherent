@@ -318,18 +318,19 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         return new SimpleContainer([
             CampaignRequestBuilder::class => new CampaignRequestBuilder(
-                $mailchimpMapping = new MailchimpObjectIdMapping([
-                    'referent' => 1,
-                    'deputy' => 2,
-                    'committee' => 3,
-                    'citizen_project' => 4,
-                ], [
-                    'referent' => 1,
-                    'deputy' => 2,
-                    'committee' => 3,
-                    'citizen_project' => 4,
-                ]),
-                new SegmentConditionsBuilder(
+                $mailchimpMapping = new MailchimpObjectIdMapping(
+                    [
+                        'referent' => 1,
+                        'deputy' => 2,
+                        'committee' => 3,
+                        'citizen_project' => 4,
+                    ],
+                    [
+                        'referent' => 1,
+                        'deputy' => 2,
+                        'committee' => 3,
+                        'citizen_project' => 4,
+                    ],
                     [
                         'subscribed_emails_referents' => 1,
                         'CITIZEN_PROJECT_HOST' => 2,
@@ -337,7 +338,12 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'COMMITTEE_HOST' => 4,
                         'COMMITTEE_FOLLOWER' => 5,
                         'COMMITTEE_NO_FOLLOWER' => 6,
-                    ], 'A', 'B', 'C'),
+                    ],
+                    'A',
+                    'B',
+                    'C'
+                ),
+                new SegmentConditionsBuilder($mailchimpMapping),
                 'listId',
                 'FromName'
             ),

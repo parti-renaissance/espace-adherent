@@ -23,21 +23,11 @@ use AppBundle\Subscription\SubscriptionTypeEnum;
 
 class SegmentConditionsBuilder
 {
-    private $interestIds;
-    private $memberGroupInterestGroupId;
-    private $memberInterestInterestGroupId;
-    private $subscriptionTypeInterestGroupId;
+    private $mailchimpObjectIdMapping;
 
-    public function __construct(
-        array $interestIds,
-        string $memberGroupInterestGroupId,
-        string $memberInterestInterestGroupId,
-        string $subscriptionTypeInterestGroupId
-    ) {
-        $this->interestIds = $interestIds;
-        $this->memberGroupInterestGroupId = $memberGroupInterestGroupId;
-        $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
-        $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
+    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
+    {
+        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
     public function build(MailchimpCampaign $campaign): array
@@ -85,7 +75,7 @@ class SegmentConditionsBuilder
                 throw new \InvalidArgumentException(sprintf('Message type %s does not match any subscription type', $messageClass));
         }
 
-        return $this->buildInterestCondition($interestKeys, $this->subscriptionTypeInterestGroupId, $matchAll);
+        return $this->buildInterestCondition($interestKeys, $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId(), $matchAll);
     }
 
     private function buildInterestCondition(array $interestKeys, string $groupId, bool $matchAll = true): array
@@ -95,7 +85,7 @@ class SegmentConditionsBuilder
             'op' => $matchAll ? 'interestcontainsall' : 'interestcontains',
             'field' => sprintf('interests-%s', $groupId),
             'value' => array_values(
-                array_intersect_key($this->interestIds, array_fill_keys($interestKeys, true))
+                array_intersect_key($this->mailchimpObjectIdMapping->getInterestIds(), array_fill_keys($interestKeys, true))
             ),
         ];
     }
@@ -133,7 +123,7 @@ class SegmentConditionsBuilder
                 $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER;
             }
 
-            $conditions[] = $this->buildInterestCondition($interestKeys, $this->memberGroupInterestGroupId, false);
+            $conditions[] = $this->buildInterestCondition($interestKeys, $this->mailchimpObjectIdMapping->getMemberGroupInterestGroupId(), false);
         }
 
         if ($filter->getGender()) {
@@ -193,7 +183,7 @@ class SegmentConditionsBuilder
         }
 
         if ($filter->getInterests()) {
-            $conditions[] = $this->buildInterestCondition($filter->getInterests(), $this->memberInterestInterestGroupId);
+            $conditions[] = $this->buildInterestCondition($filter->getInterests(), $this->mailchimpObjectIdMapping->getMemberInterestInterestGroupId());
         }
 
         if (!$campaign->getStaticSegmentId()) {

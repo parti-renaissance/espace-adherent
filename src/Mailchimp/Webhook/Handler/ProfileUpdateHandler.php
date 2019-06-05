@@ -3,6 +3,7 @@
 namespace AppBundle\Mailchimp\Webhook\Handler;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Webhook\EventTypeEnum;
 use AppBundle\Subscription\SubscriptionHandler;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,23 +17,20 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
 
     private $interests;
     private $manager;
-    private $memberInterestInterestGroupId;
-    private $subscriptionTypeInterestGroupId;
     private $subscriptionHandler;
+    private $mailchimpObjectIdMapping;
 
     public function __construct(
         ObjectManager $manager,
         SubscriptionHandler $subscriptionHandler,
+        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         array $interests,
-        string $memberInterestInterestGroupId,
-        string $subscriptionTypeInterestGroupId,
         LoggerInterface $logger
     ) {
         $this->manager = $manager;
         $this->subscriptionHandler = $subscriptionHandler;
         $this->interests = $interests;
-        $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
-        $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
+        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
         $this->logger = $logger;
     }
 
@@ -43,8 +41,8 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
 
             $groups = $mergeFields['GROUPINGS'] ?? [];
 
-            $this->updateSubscriptions($adherent, $this->findGroupById($groups, $this->subscriptionTypeInterestGroupId));
-            $this->updateInterests($adherent, $this->findGroupById($groups, $this->memberInterestInterestGroupId));
+            $this->updateSubscriptions($adherent, $this->findGroupById($groups, $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId()));
+            $this->updateInterests($adherent, $this->findGroupById($groups, $this->mailchimpObjectIdMapping->getMemberInterestInterestGroupId()));
         }
     }
 

@@ -4,10 +4,7 @@ services:
         autowire: true
         public: false
         bind:
-            $listId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $interests: '%adherent_interests%'
-            $memberInterestInterestGroupId: '%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%'
-            $subscriptionTypeInterestGroupId: '%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%'
 
     _instanceof:
         AppBundle\Mailchimp\Webhook\Handler\WebhookHandlerInterface:
