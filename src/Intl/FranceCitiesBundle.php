@@ -66,6 +66,7 @@ class FranceCitiesBundle
                 $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
                 $list[$inseeCode] = [
+                    'postal_code' => $postalCode,
                     'insee_code' => $inseeCode,
                     'name' => $cityName,
                 ];

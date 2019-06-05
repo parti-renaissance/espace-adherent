@@ -84,16 +84,14 @@ export default (volunteerFormType, runningMateFormType) => {
     runningMateZipCodeField.dispatchEvent(new Event('input'));
 
     $('.em-form__file--area').bind('change', function() {
-        var selectedFileName = $(this).val();
-        var $fileName = $(this).siblings('.em-form__file--name');
-        var $label = $(this).siblings('.em-form__file--label');
+        var $input = $(this);
+        var selectedFileName = $input.val();
+        var $fileName = $input.siblings('.em-form__file--name');
+        var $label = $input.siblings('.em-form__file--label');
 
-        if (selectedFileName.length > 0) {
+        if (0 < $input.length && 0 < selectedFileName.length) {
             $fileName.html(selectedFileName.split('\\').pop());
             $label.html('Modifier la pièce jointe');
-        } else {
-            $fileName.html('Aucun fichier sélectionné');
-            $label.html('Ajouter une pièce jointe');
         }
     });
 
