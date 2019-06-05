@@ -43,8 +43,6 @@ export default (volunteerFormType, runningMateFormType) => {
 
     volunteerZipCodeField.dispatchEvent(new Event('input'));
 
-    formValidator(volunteerFormType, volunteerForm);
-
 
     /**
      * Running mate request form
@@ -85,70 +83,48 @@ export default (volunteerFormType, runningMateFormType) => {
 
     runningMateZipCodeField.dispatchEvent(new Event('input'));
 
-    formValidator(runningMateFormType, runningMateForm);
+    $('.em-form__file--area').bind('change', function() {
+        var selectedFileName = $(this).val();
+        var $fileName = $(this).siblings('.em-form__file--name');
+        var $label = $(this).siblings('.em-form__file--label');
 
-    // Display uploaded file name
-    (function($, window, document, undefined)
-    {
-        $('.em-form__file--area').each(function() {
-            var $input	 = $(this),
-                $label	 = $input.siblings('.em-form__file--label'),
-                labelVal = $label.html(),
-                $fileName   = $input.siblings('.em-form__file--name'),
-                $fileDefault   = $fileName.html();
-
-            $input.on('change', function(e) {
-                var fileValue = '';
-
-                if (this.files && this.files.length > 1) {
-                    fileValue = (this.getAttribute('data-multiple-caption') || '')
-                        .replace('{count}', this.files.length);
-                } else if(e.target.value) {
-                    fileValue = e.target.value.split('\\').pop();
-                }
-
-                if (fileValue) {
-                    $label.html('Modifier la pièce jointe');
-                    $fileName.html(fileValue);
-                } else {
-                    $label.html(labelVal);
-                    $fileName.html(fileDefault);
-                }
-            });
-        });
-    })( jQuery, window, document );
-
-    // Form swaper
-    $(document).ready(function(){
-        $('#volunteer-form').hide();
-        $('#js-rolePicker .pick-btn').click(function(){
-            var $this = $(this);
-            $this.addClass('selected');
-            $this.siblings().removeClass('selected');
-
-            if ($this.attr('id') === 'js-RunningMate') {
-                $('#volunteer-form').fadeOut();
-                setTimeout(function(){
-                    $('#running-mate-form').fadeIn();
-                }, 400);
-            }
-
-            if ($this.attr('id') === 'js-Volunteer') {
-                $('#running-mate-form').fadeOut();
-                setTimeout(function(){
-                    $('#volunteer-form').fadeIn();
-                }, 400);
-            }
-        });
-
-        $('#js-rolePicker .pick-btn').hover(
-            function() {
-                $(this).siblings().addClass('fade');
-            },
-            function() {
-                $(this).siblings().removeClass('fade');
-            }
-        );
+        if (selectedFileName.length > 0) {
+            $fileName.html(selectedFileName.split('\\').pop());
+            $label.html('Modifier la pièce jointe');
+        } else {
+            $fileName.html('Aucun fichier sélectionné');
+            $label.html('Ajouter une pièce jointe');
+        }
     });
 
+    // Form swaper
+    $('#volunteer-form').hide();
+    $('#js-rolePicker .pick-btn').click(function(){
+        var $this = $(this);
+        $this.addClass('selected');
+        $this.siblings().removeClass('selected');
+
+        if ($this.attr('id') === 'js-RunningMate') {
+            $('#volunteer-form').fadeOut();
+            setTimeout(function(){
+                $('#running-mate-form').fadeIn();
+            }, 400);
+        }
+
+        if ($this.attr('id') === 'js-Volunteer') {
+            $('#running-mate-form').fadeOut();
+            setTimeout(function(){
+                $('#volunteer-form').fadeIn();
+            }, 400);
+        }
+    });
+
+    $('#js-rolePicker .pick-btn').hover(
+        function() {
+            $(this).siblings().addClass('fade');
+        },
+        function() {
+            $(this).siblings().removeClass('fade');
+        }
+    );
 };

@@ -13,28 +13,63 @@
                 '{{ volunteer_form.vars.form_type_class|e('js') }}',
                 '{{ running_mate_form.vars.form_type_class|e('js') }}'
             );
+            {{ js.applicationFavoriteCities(
+                '#volunteer_request_favoriteCities',
+                '#volunteer_request_favoriteCities_search',
+                path('api_city_autocomplete'),
+                '#volunteer_request_favoriteCities_search',
+                10
+            ) }}
             {{ js.address(volunteer_form.address) }}
+            {{ js.toggleDisplayFromCheckbox(
+                '#volunteer-form .application_request_technicalSkills',
+                '#volunteer-form .application_request_customTechnicalSkill',
+                'Autre(s)'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#volunteer_request_isPreviousCampaignMember',
+                '#volunteer_request_previousCampaignDetails_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromCheckbox(
+                '#volunteer-form .application_request_favoriteThemes',
+                '#volunteer-form .application_request_customFavoriteTheme',
+                'Autre(s)'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#volunteer_request_shareAssociativeCommitment',
+                '#volunteer_request_associativeCommitmentDetails_container',
+                'Oui'
+            ) }}
+
+            {{ js.applicationFavoriteCities(
+                '#running_mate_request_favoriteCities',
+                '#running_mate_request_favoriteCities_search',
+                path('api_city_autocomplete'),
+                '#running_mate_request_favoriteCities_search',
+                2
+            ) }}
             {{ js.address(running_mate_form.address) }}
-
-            {{
-                js.applicationFavoriteCities(
-                    '#running_mate_request_favoriteCities',
-                    '#running_mate_request_favoriteCities_search',
-                    path('api_city_autocomplete'),
-                    '#running_mate_request_favoriteCities_search'
-                )
-            }}
-
-            {{
-                js.applicationFavoriteCities(
-                    '#volunteer_request_favoriteCities',
-                    '#volunteer_request_favoriteCities_search',
-                    path('api_city_autocomplete'),
-                    '#volunteer_request_favoriteCities_search'
-                )
-            }}
-
-            {{ js.toggleDisplayFromRadio('#running_mate_request_isLocalAssociationMember', '#running_mate_request_localAssociationDomain_container') }}
+            {{ js.toggleDisplayFromRadio(
+                '#running_mate_request_isLocalAssociationMember',
+                '#running_mate_request_localAssociationDomain_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#running_mate_request_isPoliticalActivist',
+                '#running_mate_request_politicalActivistDetails_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#running_mate_request_isPreviousElectedOfficial',
+                '#running_mate_request_previousElectedOfficialDetails_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromCheckbox(
+                '#running-mate-form .application_request_favoriteThemes',
+                '#running-mate-form .application_request_customFavoriteTheme',
+                'Autre(s)'
+            ) }}
         });
     </script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
@@ -45,8 +80,14 @@
     <div id="volunteer-form">
         {% embed 'application_request/_form.html.twig' with { form: volunteer_form } %}
 
+            {% block favorite_cities_help %}
+                <div class="em-form__help">
+                    Veuillez sélectionner au maximum 10 villes.
+                </div>
+            {% endblock %}
+
             {% block skills_block %}
-                <div class="em-form__group">
+                <div class="em-form__group application_request_technicalSkills">
                     {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?') }}
                     <div class="checkb-cols">
                         {% for column in form.technicalSkills|batch(4) %}
@@ -60,7 +101,7 @@
                     {{ form_errors(form.technicalSkills) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group application_request_customTechnicalSkill">
                     {{ form_label(form.customTechnicalSkills, 'Autre(s)') }}
                     {{ form_widget(form.customTechnicalSkills) }}
                     {{ form_errors(form.customTechnicalSkills) }}
@@ -72,7 +113,7 @@
                     {{ form_errors(form.isPreviousCampaignMember) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group" id="volunteer_request_previousCampaignDetails_container">
                     {{ form_label(form.previousCampaignDetails, 'Si oui, n\'hésitez pas à préciser') }}
                     {{ form_widget(form.previousCampaignDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.previousCampaignDetails) }}
@@ -85,7 +126,7 @@
                     {{ form_widget(form.shareAssociativeCommitment) }}
                     {{ form_errors(form.shareAssociativeCommitment) }}
                 </div>
-                <div class="em-form__group">
+                <div class="em-form__group" id="volunteer_request_associativeCommitmentDetails_container">
                     {{ form_label(form.associativeCommitmentDetails, 'Si oui, n\'hésitez pas à préciser') }}
                     {{ form_widget(form.associativeCommitmentDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.associativeCommitmentDetails) }}
@@ -113,6 +154,12 @@
 
     <div id="running-mate-form">
         {% embed 'application_request/_form.html.twig' with { form: running_mate_form } %}
+
+            {% block favorite_cities_help %}
+                <div class="em-form__help">
+                    Veuillez sélectionner au maximum 2 villes.
+                </div>
+            {% endblock %}
 
             {% block curriculum_block %}
                 <div class="em-form__group">
@@ -149,7 +196,7 @@
                     {{ form_errors(form.isPoliticalActivist) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group" id="running_mate_request_politicalActivistDetails_container">
                     {{ form_label(form.politicalActivistDetails, 'Si oui, n\'hésitez pas à préciser') }}
                     {{ form_widget(form.politicalActivistDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.politicalActivistDetails) }}
@@ -161,7 +208,7 @@
                     {{ form_errors(form.isPreviousElectedOfficial) }}
                 </div>
 
-                <div class="em-form__group">
+                <div class="em-form__group" id="running_mate_request_previousElectedOfficialDetails_container">
                     {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez') }}
                     {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.previousElectedOfficialDetails) }}

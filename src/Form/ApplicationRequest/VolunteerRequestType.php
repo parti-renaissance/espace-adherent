@@ -29,7 +29,7 @@ class VolunteerRequestType extends AbstractType
                     ;
                 },
                 'group_by' => function (TechnicalSkill $technicalSkill) {
-                    if ('Autre' !== $technicalSkill->getName()) {
+                    if ('Autre(s)' !== $technicalSkill->getName()) {
                         return 'Compétences';
                     } else {
                         return 'Autre';
@@ -48,7 +48,8 @@ class VolunteerRequestType extends AbstractType
                 'multiple' => false,
             ])
             ->add('previousCampaignDetails', TextareaType::class, [
-                'required' => false,
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
             ])
             ->add('shareAssociativeCommitment', ChoiceType::class, [
                 'choices' => [
@@ -60,6 +61,8 @@ class VolunteerRequestType extends AbstractType
             ])
             ->add('associativeCommitmentDetails', TextareaType::class, [
                 'required' => false,
+                'with_character_count' => true,
+                'attr' => ['maxlength' => 2000],
             ])
         ;
     }
