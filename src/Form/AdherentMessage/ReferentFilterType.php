@@ -8,6 +8,7 @@ use AppBundle\Form\MemberInterestsChoiceType;
 use AppBundle\Form\MyReferentTagChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,6 +35,8 @@ class ReferentFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
+            ->add('registeredSince', DateType::class, ['widget' => 'single_text', 'html5' => true])
+            ->add('registeredUntil', DateType::class, ['widget' => 'single_text', 'html5' => true])
         ;
 
         if (false === $options['single_zone']) {

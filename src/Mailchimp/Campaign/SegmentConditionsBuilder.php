@@ -142,7 +142,7 @@ class SegmentConditionsBuilder
                 'condition_type' => 'DateMerge',
                 'op' => 'less',
                 'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $minAge))->format('Y-m-d'),
+                'value' => $now->modify(sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
@@ -151,7 +151,25 @@ class SegmentConditionsBuilder
                 'condition_type' => 'DateMerge',
                 'op' => 'greater',
                 'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $maxAge))->format('Y-m-d'),
+                'value' => $now->modify(sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
+            ];
+        }
+
+        if ($registeredSince = $filter->getRegisteredSince()) {
+            $conditions[] = [
+                'condition_type' => 'DateMerge',
+                'op' => 'greater',
+                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
+                'value' => $registeredSince->format(MemberRequest::DATE_FORMAT),
+            ];
+        }
+
+        if ($registeredUntil = $filter->getRegisteredUntil()) {
+            $conditions[] = [
+                'condition_type' => 'DateMerge',
+                'op' => 'less',
+                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
+                'value' => $registeredUntil->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
