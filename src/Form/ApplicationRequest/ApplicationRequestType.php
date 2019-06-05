@@ -57,7 +57,7 @@ class ApplicationRequestType extends AbstractType
                     ;
                 },
                 'group_by' => function (Theme $theme) {
-                    if ('Autre' !== $theme->getName()) {
+                    if ('Autre(s)' !== $theme->getName()) {
                         return 'Thèmes';
                     } else {
                         return 'Autre';

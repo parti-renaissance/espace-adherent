@@ -5,9 +5,10 @@
 
         <div class="em-form__section">
             <div class="em-form__group em-form__type-and-select">
-                {{ form_errors(form.favoriteCities) }}
                 {{ form_label(form.favoriteCities, 'Villes') }}
                 {{ form_widget(form.favoriteCities_search, { attr: { placeholder: 'Rechercher une ville' } }) }}
+                {% block favorite_cities_help '' %}
+                {{ form_errors(form.favoriteCities) }}
                 <div class="type-and-select__tags">
                     {{ form_widget(form.favoriteCities) }}
                 </div>
@@ -102,7 +103,7 @@
 
         {% block experience_block '' %}
 
-        <div class="em-form__group">
+        <div class="em-form__group application_request_favoriteThemes">
             {{ form_label(form.favoriteThemes, 'Vos thématique(s) de prédilection') }}
             <div class="checkb-cols">
                 {% for column in form.favoriteThemes|batch(6) %}
@@ -116,7 +117,7 @@
             {{ form_errors(form.favoriteThemes) }}
         </div>
 
-        <div class="em-form__group">
+        <div class="em-form__group application_request_customFavoriteTheme">
             {{ form_label(form.customFavoriteTheme, 'Autre(s)') }}
             {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entre une ou plusieurs thématiques' } }) }}
             {{ form_errors(form.customFavoriteTheme) }}

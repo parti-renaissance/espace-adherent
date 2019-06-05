@@ -328,15 +328,24 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro applicationFavoriteCities(idFavoriteCitiesListField, idFavoriteCitiesSearchField, urlSearch, disabledFavoriteCitiesEnterIds) %}
+{% macro applicationFavoriteCities(idFavoriteCitiesListField, idFavoriteCitiesSearchField, urlSearch, disabledFavoriteCitiesEnterIds, maxCity) %}
 $(document).ready(function() {
+    var maxCity = {{ maxCity }};
     var favoriteCitiesList = $('{{ idFavoriteCitiesListField|raw }}');
+    var favoriteCitiesSelectedCount = 0;
+
     var removeFavoriteCity = function () {
         var btn = $('.favorite-city-remove');
 
         btn.unbind('click');
         btn.click(function () {
             $(this).parent().remove();
+            favoriteCitiesSelectedCount--;
+
+            if (favoriteCitiesSelectedCount < maxCity) {
+                $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', false);
+            }
+
         });
     };
 
@@ -344,23 +353,30 @@ $(document).ready(function() {
         var favoriteCity = item.value,
             label = item.label;
 
-        if (favoriteCity.length > 0) {
-            var favoriteCityCount = 0;
-            $('.summary-favorite-city > input[type=hidden]').each(function () {
-                favoriteCityCount = Math.max(this.id.replace(/[^0-9]/g, ''), favoriteCityCount);
-            });
-            favoriteCityCount++;
+        if (favoriteCity.length === 0) {
+            return;
+        }
 
-            var newFavoriteCityWidget = favoriteCitiesList.attr('data-prototype'),
-                favoriteCityWidgetId = '#'+favoriteCitiesList.attr('id')+'_'+favoriteCityCount;
-            newFavoriteCityWidget = newFavoriteCityWidget.replace(/__name__/g, favoriteCityCount);
+        favoriteCitiesSelectedCount++;
+        var favoriteCityCount = 0;
+        $('.summary-favorite-city > input[type=hidden]').each(function () {
+            favoriteCityCount = Math.max(this.id.replace(/[^0-9]/g, ''), favoriteCityCount);
+        });
+        favoriteCityCount++;
 
-            $(newFavoriteCityWidget).appendTo(favoriteCitiesList);
-            $(favoriteCityWidgetId).val(favoriteCity);
-            $(favoriteCityWidgetId).parent().find('.favorite-city-value').text(' ' + label);
+        var newFavoriteCityWidget = favoriteCitiesList.attr('data-prototype'),
+            favoriteCityWidgetId = '#'+favoriteCitiesList.attr('id')+'_'+favoriteCityCount;
+        newFavoriteCityWidget = newFavoriteCityWidget.replace(/__name__/g, favoriteCityCount);
 
-            $('{{ idFavoriteCitiesSearchField|raw }}').val('');
-            removeFavoriteCity();
+        $(newFavoriteCityWidget).appendTo(favoriteCitiesList);
+        $(favoriteCityWidgetId).val(favoriteCity);
+        $(favoriteCityWidgetId).parent().find('.favorite-city-value').text(' ' + label);
+
+        $('{{ idFavoriteCitiesSearchField|raw }}').val('');
+        removeFavoriteCity();
+
+        if (favoriteCitiesSelectedCount === maxCity) {
+            $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', true);
         }
     };
 
@@ -425,15 +441,14 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector) %}
-    var elementToToggle = $('{{ elementToToggleSelector|raw }}');
-
-    elementToToggle.hide();
+{% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector, labelToShow) %}
+    $('{{ elementToToggleSelector|raw }}').hide();
 
     $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
-        var selectedValue = $(this).val();
+        var selectedLabel = $(this).parent().find('label').text().trim();
+        var elementToToggle = $('{{ elementToToggleSelector|raw }}');
 
-        if ('1' === selectedValue) {
+        if ('{{ labelToShow }}' === selectedLabel) {
            elementToToggle.show();
         } else {
             elementToToggle.hide();
@@ -442,14 +457,18 @@ $(document).ready(function() {
     });
 {% endmacro %}
 
-{% macro toggleDisplayFromChoice(choiceSelector, elementToToggleSelector, valueToShow) %}
+{% macro toggleDisplayFromCheckbox(choiceSelector, elementToToggleSelector, labelToShow) %}
     $('{{ elementToToggleSelector|raw }}').hide();
 
-    $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
-        var selectedValue = $(this).val();
+    $('{{ choiceSelector|raw }}  input[type="checkbox"]').click(function() {
+        var selectedLabel = $(this).parent().find('label').text().trim();
         var elementToToggle = $('{{ elementToToggleSelector|raw }}');
 
-        if (valueToShow === selectedValue) {
+        if ('{{ labelToShow }}' !== selectedLabel) {
+            return;
+        }
+
+        if (true === $(this).is(":checked")) {
             elementToToggle.show();
         } else {
             elementToToggle.hide();
