@@ -29,11 +29,7 @@ class RunningMateRequest extends ApplicationRequest
      *     maxSize="5M",
      *     mimeTypes={
      *         "application/pdf",
-     *         "application/x-pdf",
-     *         "application/vnd.ms-powerpoint",
-     *         "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-     *         "application/msword",
-     *         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     *         "application/x-pdf"
      *     },
      * )
      */

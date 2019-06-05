@@ -5,7 +5,7 @@
 
         <div class="em-form__section">
             <div class="em-form__group em-form__type-and-select">
-                {{ form_label(form.favoriteCities, 'Villes') }}
+                {{ form_label(form.favoriteCities_search, 'Villes', { required: true }) }}
                 {{ form_widget(form.favoriteCities_search, { attr: { placeholder: 'Rechercher une ville' } }) }}
                 {% block favorite_cities_help '' %}
                 {{ form_errors(form.favoriteCities) }}

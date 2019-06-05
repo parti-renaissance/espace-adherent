@@ -155,6 +155,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->phone = new PhoneNumber();
+        $this->phone->setCountryCode(33);
         $this->favoriteThemes = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
     }
