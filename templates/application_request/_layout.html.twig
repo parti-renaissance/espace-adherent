@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Bénévoles - Appel à candidature' %}
+{% block meta_description "Soyez bénévole pour la meilleure plateforme du monde" %}
+{% block canonical_url url('app_application_request_request') %}
+
+{% block open_graph_image (homepage_url ~ static_asset('procuration-sharer_2.jpg', { q: 70 }))|raw %}
+
+{% block banner '' %}
+{% block header '' %}
+{% block footer '' %}
+
+{% block content %}
+    <main class="appel-a-engagement">
+        <section class="page-header">
+            <div class="l__wrapper l__row space--40-0">
+                <a href="{{ path('homepage') }}" class="text--logo link--no-decor text--black">EM!</a>
+            </div>
+            <div class="l__wrapper text--center header-content b__nudge--top">
+                <h2 class="text--uppercase text--gray b__nudge--bottom">
+                    Élections municipales
+                </h2>
+                {% block header_content '' %}
+                <span class="fake-container"></span>
+            </div>
+            <div class="national-scarf">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+
+        <section class="page-content">
+            <div class="l__wrapper--600">
+                {% block form_body '' %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+{% endblock %}

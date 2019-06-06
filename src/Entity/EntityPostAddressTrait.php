@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 trait EntityPostAddressTrait
 {
     /**
-     * @ORM\Embedded(class="PostAddress", columnPrefix="address_")
+     * @ORM\Embedded(class="AppBundle\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
      */

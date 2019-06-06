@@ -4,6 +4,8 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\Jecoute\LocalSurvey;
@@ -28,6 +30,7 @@ use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
+use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
@@ -44,6 +47,8 @@ use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
+use AppBundle\Repository\RunningMateRequestRepository;
+use AppBundle\Repository\VolunteerRequestRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -604,6 +609,86 @@ class ReferentController extends Controller
         return $this->render('referent/edit_referent_person_link.html.twig', [
             'form' => $form->createView(),
             'person_organizational_chart_item' => $personOrganizationalChartItem,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers",
+     *     name="app_referent_municipal_running_mate_request",
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalRunningMateRequestAction(
+        RunningMateRequestRepository $runningMateRequestRepository,
+        MunicipalExporter $municipalExporter,
+        UserInterface $referent
+    ): Response {
+        return $this->render('referent/municipal/running_mate/list.html.twig', [
+            'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
+                $runningMateRequestRepository->findForReferent($referent)
+            ),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole",
+     *     name="app_referent_municipal_volunteer_request",
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalVolunteerAction(
+        VolunteerRequestRepository $volunteerRequestRepository,
+        MunicipalExporter $municipalExporter,
+        UserInterface $referent
+    ): Response {
+        return $this->render('referent/municipal/volunteer/list.html.twig', [
+            'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
+                $volunteerRequestRepository->findForReferent($referent)
+            ),
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers/{uuid}/detail",
+     *     name="app_referent_municipal_running_mate_request_detail",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalRunningMateDetailAction(RunningMateRequest $runningMateRequest): Response
+    {
+        return $this->render('referent/municipal/running_mate/detail.html.twig', [
+            'runningMateRequest' => $runningMateRequest,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole/{uuid}/detail",
+     *     name="app_referent_municipal_volunteer_request_detail",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalVolunteerDetailAction(VolunteerRequest $volunteerRequest): Response
+    {
+        return $this->render('referent/municipal/volunteer/detail.html.twig', [
+            'volunteerRequest' => $volunteerRequest,
         ]);
     }
 }

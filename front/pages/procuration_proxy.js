@@ -13,7 +13,8 @@ export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelecto
             dom('#app_procuration_proposal_cityName'),
             null,
             dom('#app_procuration_proposal_country')
-        )
+        ),
+        dom('#address-autocomplete-help-message')
     );
 
     autocompleteAddressForm.once('changed', () => {

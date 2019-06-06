@@ -1,0 +1,89 @@
+{% extends 'form_theme.html.twig' %}
+
+{%- block radio_row -%}
+    <div class="form__radio">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+    </div>
+{%- endblock -%}
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        {% if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {% if 'file' in form.vars.block_prefixes %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' em-form__file--label')|trim}) %}
+        {% elseif 'radio' not in form.vars.block_prefixes and 'checkbox' not in form.vars.block_prefixes %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' em-form__label')|trim}) %}
+        {% endif %}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {%- endif -%}
+        {% if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
+        {%- if translation_domain is same as(false) -%}
+            {{- label -}}
+        {%- else -%}
+            {{- label|trans({}, translation_domain) -}}
+        {%- endif -%}
+        {% if required and 'radio' not in form.vars.block_prefixes and 'file' not in form.vars.block_prefixes %}
+            <span class="em-form__required">*</span>
+        {% endif %}
+        </{{ element|default('label') }}>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block form_widget_simple -%}
+    {% if 'file' not in form.vars.block_prefixes %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {% endif %}
+    {{ parent() }}
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
+
+    {% if with_character_count %}
+        <div class="em-form__field--ctn">
+            {{ parent() }}
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' em-form__field')|trim}) %}
+    {{ parent() }}
+{% endblock %}
+
+{% block _favorite_city_entry_row %}
+    {% spaceless %}
+        <div class="type-and-select__item summary-favorite-city">
+            <span class="type-and-select__item--value favorite-city-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
+            <span class="type-and-select__item--remove favorite-city-remove">
+                <img src="{{ asset('/images/icons/icn_remove-item.svg') }}" />
+            </span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _running_mate_request_favoriteCities_entry_row %}
+    {{ block('_favorite_city_entry_row') }}
+{% endblock %}
+
+{% block _volunteer_request_favoriteCities_entry_row %}
+    {{ block('_favorite_city_entry_row') }}
+{% endblock %}

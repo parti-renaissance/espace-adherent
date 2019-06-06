@@ -14,6 +14,7 @@ export default (formType) => {
             dom('#app_donation_cityName'),
             null,
             dom('#app_donation_country')
-        )
+        ),
+        dom('#address-autocomplete-help-message')
     )).buildWidget();
 };

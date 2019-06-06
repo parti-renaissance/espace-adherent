@@ -321,7 +321,7 @@ $text--size-extra-large--big: 128px;
 
     &--on-blue-night {
         color: $white;
-        background: $blue--night;
+        background: $blue--nation;
         padding: 0 5px;
     }
 
@@ -471,7 +471,12 @@ $text--size-extra-large--big: 128px;
     &--blue--dark {
         color: $blue--dark;
     }
+
+    &--no--decor {
+        border-bottom: 0;
+    }
 }
+
 
 .tag {
     @include text--uppercase;
@@ -686,4 +691,24 @@ $text--size-extra-large--big: 128px;
 
 .font-roboto {
     font-family: $font-roboto;
+}
+
+.information__modal {
+    font-family: $font-roboto;
+    padding: 25px;
+    font-size: 15px;
+    line-height: 20px;
+    border-radius: 3px;
+
+    &.inf-modl {
+        &--pale-yellow {
+            color: $inf-modl--text-yellow;
+            background-color: $inf-modl--bkg-yellow;
+        }
+
+        &--pale-blue {
+            color: $inf-modl--text-blue;
+            background-color: $inf-modl--bkg-blue;
+        }
+    }
 }

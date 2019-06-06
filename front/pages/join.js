@@ -32,7 +32,8 @@ export default (formType) => {
     const autocompleteAddressForm = new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
-        address
+        address,
+        dom('#address-autocomplete-help-message')
     );
 
     autocompleteAddressForm.once('changed', () => {

@@ -976,5 +976,60 @@
         <service id="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
             <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
         </service>
+
+        <!--
+        ######################################################
+        # Municipales
+        ######################################################
+         -->
+
+        <service id="app.admin.technicalskill" class="AppBundle\Admin\TechnicalSkillAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Compétences techniques" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\TechnicalSkill</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.theme" class="AppBundle\Admin\ThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Thématiques" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\Theme</argument>
+            <argument />
+        </service>
+
+        <!-- RunningMate manager-->
+        <service id="app.admin.runningmate" class="AppBundle\Admin\RunningMateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\RunningMateRequest</argument>
+            <argument />
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+            <call method="setTemplate">
+                <argument>outer_list_rows_list</argument>
+                <argument>admin/application_request/list_outer_rows_list.html.twig</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.volunteer" class="AppBundle\Admin\VolunteerAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures bénévoles" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\VolunteerRequest</argument>
+            <argument />
+            <call method="setTemplate">
+                <argument>outer_list_rows_list</argument>
+                <argument>admin/application_request/list_outer_rows_list.html.twig</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.is_adherent_extension" class="AppBundle\Admin\Extension\IsAdherentAdminExtension">
+            <tag name="sonata.admin.extension" target="app.admin.volunteer" />
+            <tag name="sonata.admin.extension" target="app.admin.runningmate" />
+        </service>
     </services>
 </container>

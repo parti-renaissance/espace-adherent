@@ -1,0 +1,310 @@
+{% extends 'application_request/_layout.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runApplicationRequest(
+                '{{ volunteer_form.vars.form_type_class|e('js') }}',
+                '{{ running_mate_form.vars.form_type_class|e('js') }}'
+            );
+            {{ js.applicationFavoriteCities(
+                '#volunteer_request_favoriteCities',
+                '#volunteer_request_favoriteCities_search',
+                path('api_city_autocomplete'),
+                '#volunteer_request_favoriteCities_search',
+                10
+            ) }}
+            {{ js.address(volunteer_form.address) }}
+            {{ js.toggleDisplayFromCheckbox(
+                '#volunteer-form .application_request_technicalSkills',
+                '#volunteer-form .application_request_customTechnicalSkill',
+                'Autre(s)'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#volunteer_request_isPreviousCampaignMember',
+                '#volunteer_request_previousCampaignDetails_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromCheckbox(
+                '#volunteer-form .application_request_favoriteThemes',
+                '#volunteer-form .application_request_customFavoriteTheme',
+                'Autre(s)'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#volunteer_request_shareAssociativeCommitment',
+                '#volunteer_request_associativeCommitmentDetails_container',
+                'Oui'
+            ) }}
+
+            {{ js.applicationFavoriteCities(
+                '#running_mate_request_favoriteCities',
+                '#running_mate_request_favoriteCities_search',
+                path('api_city_autocomplete'),
+                '#running_mate_request_favoriteCities_search',
+                2
+            ) }}
+            {{ js.address(running_mate_form.address) }}
+            {{ js.toggleDisplayFromRadio(
+                '#running_mate_request_isLocalAssociationMember',
+                '#running_mate_request_localAssociationDomain_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#running_mate_request_isPoliticalActivist',
+                '#running_mate_request_politicalActivistDetails_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromRadio(
+                '#running_mate_request_isPreviousElectedOfficial',
+                '#running_mate_request_previousElectedOfficialDetails_container',
+                'Oui'
+            ) }}
+            {{ js.toggleDisplayFromCheckbox(
+                '#running-mate-form .application_request_favoriteThemes',
+                '#running-mate-form .application_request_customFavoriteTheme',
+                'Autre(s)'
+            ) }}
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{% block header_content %}
+    <h1 class="text--large">
+        Je participe à la campagne LaREM de ma ville en tant que <span class="hightlight__blue--nation">colistier</span> ou <span class="hightlight__red--nation">bénévole</span>
+    </h1>
+{% endblock %}
+
+{% block form_body %}
+
+    <div class="page-intro font-roboto b__nudge--top-40 text--justify">
+        <p class="text--bold">
+            Bonjour et, avant toute chose, bravo pour avoir passé le pas et vous engager pour agir au sein de votre commune !
+        </p>
+        <p class="text--dark">
+            Dans le cadre du scrutin municipal de 2020, La République En Marche donnera la possibilité à chaque citoyen de devenir acteur de la vie publique locale.
+            Que vous souhaitiez prendre part à une liste ou être membre actif de la campagne, nous vous mettrons en relation avec nos équipes locales.
+        </p>
+        <p class="text--dark">
+            Ensemble, construisons un projet en faveur de nos territoires, un projet inspiré par les attentes de chacun et porté par des acteurs engagés ! Tous engagés !
+        </p>
+    </div>
+
+    <div class="information__modal inf-modl--pale-blue b__nudge--bottom">
+        Il n’est pas nécessaire d’être adhérent à LaREM pour remplir ce formulaire. LaREM souhaite encourager tout citoyen,
+        même non adhérent d’un mouvement politique à prendre part à l’action publique.
+    </div>
+
+    <div class="information__modal inf-modl--pale-yellow">
+        Ce formulaire n’engage pas une présence sur une liste municipale ou une implication automatique dans une campagne locale.
+    </div>
+
+    <div class="text--center role-picker">
+        <h3 class="text--medium b__nudge--bottom-larger">Je postule en tant que :</h3>
+        <div class="role-picker__btns" id="js-rolePicker">
+            <div class="pick-btn pick-btn__running-mate selected" id="js-RunningMate">Colistier</div>
+            <div class="pick-btn pick-btn__volunteer" id="js-Volunteer">Bénévole</div>
+        </div>
+    </div>
+
+    <div id="volunteer-form">
+        {% embed 'application_request/_form.html.twig' with { form: volunteer_form } %}
+
+            {% block favorite_cities_help %}
+                <div class="em-form__legend">
+                    Veuillez sélectionner au maximum 10 villes.
+                </div>
+            {% endblock %}
+
+            {% block skills_block %}
+                <div class="em-form__group application_request_technicalSkills">
+                    {{ form_label(form.technicalSkills, 'Disposez-vous de compétences techniques spécifiques ?') }}
+                    <div class="checkb-cols">
+                        {% for column in form.technicalSkills|batch(4) %}
+                                <div class="checkb-cols__col">
+                                    {% for skill in column %}
+                                        {{ form_row(skill) }}
+                                    {% endfor %}
+                                </div>
+                        {% endfor %}
+                    </div>
+                    {{ form_errors(form.technicalSkills) }}
+                </div>
+
+                <div class="em-form__group application_request_customTechnicalSkill">
+                    {{ form_label(form.customTechnicalSkills, 'Autre(s)') }}
+                    {{ form_widget(form.customTechnicalSkills) }}
+                    {{ form_errors(form.customTechnicalSkills) }}
+                </div>
+
+                <div class="em-form__group em-form__radio--inline">
+                    {{ form_label(form.isPreviousCampaignMember, 'Avez-vous déjà participé à une campagne ?') }}
+                    {{ form_widget(form.isPreviousCampaignMember) }}
+                    {{ form_errors(form.isPreviousCampaignMember) }}
+                </div>
+
+                <div class="em-form__group" id="volunteer_request_previousCampaignDetails_container">
+                    {{ form_label(form.previousCampaignDetails, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.previousCampaignDetails, { attr: { placeholder: 'Précisez...' } }) }}
+                    {{ form_errors(form.previousCampaignDetails) }}
+                </div>
+            {% endblock %}
+
+            {% block associative_commitment_block %}
+                <div class="em-form__group em-form__radio--inline">
+                    {{ form_label(form.shareAssociativeCommitment, 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?') }}
+                    {{ form_widget(form.shareAssociativeCommitment) }}
+                    {{ form_errors(form.shareAssociativeCommitment) }}
+                </div>
+                <div class="em-form__group" id="volunteer_request_associativeCommitmentDetails_container">
+                    {{ form_label(form.associativeCommitmentDetails, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.associativeCommitmentDetails, { attr: { placeholder: 'Précisez...' } }) }}
+                    {{ form_errors(form.associativeCommitmentDetails) }}
+                </div>
+            {% endblock %}
+
+            {% block chart_block %}
+                <div class="em-form__group">
+                    <div class="form__checkbox">
+                        {% set LREMValuesLabel %}
+                            <span class="label-with-link">
+                                Je certifie sur l'honneur adhérer à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM-charte-des-valeurs.pdf" class="text--blue--dark" target="_blank">Charte des Valeurs</a> de la République En Marche.
+                            </span>
+                        {% endset %}
+                        {{ form_widget(form.agreeToLREMValues) }}
+                        <label for="{{ form.agreeToLREMValues.vars.id }}">{{ LREMValuesLabel|raw }}</label>
+                        {{ form_errors(form.agreeToLREMValues) }}
+                    </div>
+                </div>
+            {% endblock %}
+
+        {% endembed %}
+    </div>
+
+
+    <div id="running-mate-form">
+        {% embed 'application_request/_form.html.twig' with { form: running_mate_form } %}
+
+            {% block favorite_cities_help %}
+                <div class="em-form__legend">
+                    Veuillez sélectionner au maximum 2 villes.
+                </div>
+            {% endblock %}
+
+            {% block curriculum_block %}
+                <div class="em-form__group">
+                    <div class="em-form__label">
+                        Téléchargez votre CV
+                        <span class="em-form__required">*</span>
+                    </div>
+                    <div class="em-form__file">
+                        {{ form_widget(form.curriculum, { attr: { class: 'em-form__file--area' } }) }}
+                        {{ form_label(form.curriculum, 'Ajouter une pièce jointe', { label_attr: { class: 'text--blue--dark' } }) }}
+                        <span class="em-form__file--name">Aucun fichier sélectionné</span>
+                    </div>
+                    <div class="em-form__legend">Format de fichier accepté : pdf — Taille max. : 5Mo</div>
+                    {{ form_errors(form.curriculum) }}
+                </div>
+            {% endblock %}
+
+            {% block experience_block %}
+                <div class="em-form__group em-form__radio--inline">
+                    {{ form_label(form.isLocalAssociationMember, 'Êtes-vous engagé dans une/des association(s) locale(s) ?') }}
+                    {{ form_widget(form.isLocalAssociationMember) }}
+                    {{ form_errors(form.isLocalAssociationMember) }}
+                </div>
+
+                <div class="em-form__group" id="running_mate_request_localAssociationDomain_container">
+                    {{ form_label(form.localAssociationDomain, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.localAssociationDomain, { attr: { placeholder: 'Précisez...' } }) }}
+                    {{ form_errors(form.localAssociationDomain) }}
+                </div>
+
+                <div class="em-form__group em-form__radio--inline">
+                    {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?') }}
+                    {{ form_widget(form.isPoliticalActivist) }}
+                    {{ form_errors(form.isPoliticalActivist) }}
+                </div>
+
+                <div class="em-form__group" id="running_mate_request_politicalActivistDetails_container">
+                    {{ form_label(form.politicalActivistDetails, 'Si oui, n\'hésitez pas à préciser') }}
+                    {{ form_widget(form.politicalActivistDetails, { attr: { placeholder: 'Précisez...' } }) }}
+                    {{ form_errors(form.politicalActivistDetails) }}
+                </div>
+
+                <div class="em-form__group em-form__radio--inline">
+                    {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?') }}
+                    {{ form_widget(form.isPreviousElectedOfficial) }}
+                    {{ form_errors(form.isPreviousElectedOfficial) }}
+                </div>
+
+                <div class="em-form__group" id="running_mate_request_previousElectedOfficialDetails_container">
+                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez', { required: true}) }}
+                    {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Précisez...' } }) }}
+                    {{ form_errors(form.previousElectedOfficialDetails) }}
+                </div>
+            {% endblock %}
+
+            {% block themes_block %}
+                <div class="em-form__group">
+                    {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?') }}
+                    {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.favoriteThemeDetails) }}
+                </div>
+            {% endblock %}
+
+            {% block project_block %}
+                <div class="em-form__group">
+                    {{ form_label(form.projectDetails, 'Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?') }}
+                    <div class="em-form__field--ctn">
+                        {{ form_widget(form.projectDetails, { attr: { placeholder: 'Détaillez...' } }) }}
+                    </div>
+                    {{ form_errors(form.projectDetails) }}
+                </div>
+
+                <div class="em-form__group">
+                    {{ form_label(form.professionalAssets, 'Quel sont les atouts de votre parcours professionnel ?') }}
+                    {{ form_widget(form.professionalAssets, { attr: { placeholder: 'Détaillez...' } }) }}
+                    {{ form_errors(form.professionalAssets) }}
+                </div>
+            {% endblock %}
+
+            {% block chart_block %}
+                <div class="em-form__group em-form__group--cgu">
+                    <div class="form__checkbox">
+                        {% set LREMValuesLabel %}
+                            <span class="label-with-link">
+                                Je certifie sur l'honneur adhérer à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM-charte-des-valeurs.pdf" class="text--blue--dark" target="_blank">Charte des Valeurs</a> de la République En Marche
+                                et m'engage à respecter les 10 points de la <a href="{{ path('homepage') }}" class="text--blue--dark" target="_blank">Charte de l'élu local</a> LaREM.
+                            </span>
+                        {% endset %}
+                        {{ form_widget(form.agreeToLREMValues) }}
+                        <label for="{{ form.agreeToLREMValues.vars.id }}">{{ LREMValuesLabel|raw }}</label>
+                        {{ form_errors(form.agreeToLREMValues) }}
+                    </div>
+                </div>
+
+                <div class="em-form__group em-form__group--cgu">
+                    <div class="form__checkbox">
+                        {% set agreeToDataUseLabel %}
+                            <span class="label-with-link">
+                                Je consens au traitement de mes données par LaREM et les équipes locales de campagne
+                                pour les élections municipales de 2020 et j’accepte d’être recontacté(e) dans ce cadre.
+                            </span>
+                        {% endset %}
+                        {{ form_widget(form.agreeToDataUse) }}
+                        <label for="{{ form.agreeToDataUse.vars.id }}">{{ agreeToDataUseLabel|raw }}</label>
+                        {{ form_errors(form.agreeToDataUse) }}
+                    </div>
+                </div>
+            {% endblock %}
+
+        {% endembed %}
+    </div>
+{% endblock %}

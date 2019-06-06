@@ -328,6 +328,155 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
+{% macro applicationFavoriteCities(idFavoriteCitiesListField, idFavoriteCitiesSearchField, urlSearch, disabledFavoriteCitiesEnterIds, maxCity) %}
+$(document).ready(function() {
+    var maxCity = {{ maxCity }};
+    var favoriteCitiesList = $('{{ idFavoriteCitiesListField|raw }}');
+    var favoriteCitiesSelectedCount = 0;
+
+    var removeFavoriteCity = function () {
+        var btn = $('.favorite-city-remove');
+
+        btn.unbind('click');
+        btn.click(function () {
+            $(this).parent().remove();
+            favoriteCitiesSelectedCount--;
+
+            if (favoriteCitiesSelectedCount < maxCity) {
+                $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', false);
+            }
+
+        });
+    };
+
+    var addFavoriteCity = function (item) {
+        var favoriteCity = item.value,
+            label = item.label;
+
+        if (favoriteCity.length === 0) {
+            return;
+        }
+
+        favoriteCitiesSelectedCount++;
+        var favoriteCityCount = 0;
+        $('.summary-favorite-city > input[type=hidden]').each(function () {
+            favoriteCityCount = Math.max(this.id.replace(/[^0-9]/g, ''), favoriteCityCount);
+        });
+        favoriteCityCount++;
+
+        var newFavoriteCityWidget = favoriteCitiesList.attr('data-prototype'),
+            favoriteCityWidgetId = '#'+favoriteCitiesList.attr('id')+'_'+favoriteCityCount;
+        newFavoriteCityWidget = newFavoriteCityWidget.replace(/__name__/g, favoriteCityCount);
+
+        $(newFavoriteCityWidget).appendTo(favoriteCitiesList);
+        $(favoriteCityWidgetId).val(favoriteCity);
+        $(favoriteCityWidgetId).parent().find('.favorite-city-value').text(' ' + label);
+
+        $('{{ idFavoriteCitiesSearchField|raw }}').val('');
+        removeFavoriteCity();
+
+        if (favoriteCitiesSelectedCount === maxCity) {
+            $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', true);
+        }
+    };
+
+    var input = $('{{ idFavoriteCitiesSearchField|raw }}');
+
+    // Add favorite city autocomplete
+    input.autocomplete({
+        source: function(request, response) {
+            var term = request.term.trim();
+            if (term.length > 0) {
+                $.get("{{ urlSearch|raw }}?search=" + term, function(data) {
+                    var array = $.map(data, function(m) {
+                        return {
+                            label: `${m.name} (${m.postal_code})`,
+                            value: m.insee_code
+                        };
+                    });
+                    response(array);
+                });
+            } else {
+                response([]);
+            }
+        },
+        minLength: 1,
+        messages: {
+            noResults: '',
+            results: function () {
+            },
+        },
+        select: function (e, ui) {
+            addFavoriteCity(ui.item);
+
+            return false;
+        },
+        change: function (ev, ui) {
+            if (!ui.item) {
+                input.val('');
+            }
+
+            return false;
+        }
+    });
+
+    // Add favorite city by pressing Enter
+    input.keyup(function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            e.preventDefault();
+            addFavoriteCity($(this));
+        }
+    });
+
+    // Prevent submitting form by pressing enter
+    var disabledElementsEnter = $('{{ disabledFavoriteCitiesEnterIds|e('js') }}');
+    disabledElementsEnter.keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    removeFavoriteCity();
+});
+{% endmacro %}
+
+{% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector, labelToShow) %}
+    $('{{ elementToToggleSelector|raw }}').hide();
+
+    $('{{ choiceSelector|raw }} input[type="radio"]').change(function(){
+        var selectedLabel = $(this).parent().find('label').text().trim();
+        var elementToToggle = $('{{ elementToToggleSelector|raw }}');
+
+        if ('{{ labelToShow }}' === selectedLabel) {
+           elementToToggle.show();
+        } else {
+            elementToToggle.hide();
+            elementToToggle.find('textarea, input').val('').keyup();
+        }
+    }).change();
+{% endmacro %}
+
+{% macro toggleDisplayFromCheckbox(choiceSelector, elementToToggleSelector, labelToShow) %}
+    $('{{ elementToToggleSelector|raw }}').hide();
+
+    $('{{ choiceSelector|raw }}  input[type="checkbox"]').change(function() {
+        var selectedLabel = $(this).parent().find('label').text().trim();
+        var elementToToggle = $('{{ elementToToggleSelector|raw }}');
+
+        if ('{{ labelToShow }}' !== selectedLabel) {
+            return;
+        }
+
+        if (true === $(this).is(":checked")) {
+            elementToToggle.show();
+        } else {
+            elementToToggle.hide();
+            elementToToggle.find('textarea, input').val('').keyup();
+        }
+    }).change();
+{% endmacro %}
+
 {% macro toggleDisplayingElement(checkboxSelector, elementSelector, checkboxNotSelectedSelector = null) %}
     const checkbox = dom('{{ checkboxSelector|raw }}');
     const element = dom('{{ elementSelector|raw }}');

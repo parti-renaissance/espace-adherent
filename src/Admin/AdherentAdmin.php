@@ -685,7 +685,7 @@ class AdherentAdmin extends AbstractAdmin
             'Téléphone' => 'phone',
             'Inscrit(e) le' => 'registeredAt',
             'Sexe' => 'gender',
-            'Addresse' => 'postAddress.address',
+            'Adresse' => 'postAddress.address',
             'Code postal' => 'postAddress.postalCode',
             'Ville' => 'postAddress.cityName',
             'Pays' => 'postAddress.country',
