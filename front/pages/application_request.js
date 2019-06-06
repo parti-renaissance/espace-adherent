@@ -1,5 +1,3 @@
-import validateEmail from '../validator/emailValidator';
-import formValidator from '../validator/formValidator';
 import AutocompletedAddressForm from '../services/address/AutocompletedAddressForm';
 import AddressObject from '../services/address/AddressObject';
 
@@ -83,11 +81,11 @@ export default (volunteerFormType, runningMateFormType) => {
 
     runningMateZipCodeField.dispatchEvent(new Event('input'));
 
-    $('.em-form__file--area').bind('change', function() {
-        var $input = $(this);
-        var selectedFileName = $input.val();
-        var $fileName = $input.siblings('.em-form__file--name');
-        var $label = $input.siblings('.em-form__file--label');
+    $('.em-form__file--area').bind('change', () => {
+        const $input = $(this);
+        const selectedFileName = $input.val();
+        const $fileName = $input.siblings('.em-form__file--name');
+        const $label = $input.siblings('.em-form__file--label');
 
         if (0 < $input.length && 0 < selectedFileName.length) {
             $fileName.html(selectedFileName.split('\\').pop());
@@ -97,31 +95,31 @@ export default (volunteerFormType, runningMateFormType) => {
 
     // Form swaper
     $('#volunteer-form').hide();
-    $('#js-rolePicker .pick-btn').click(function(){
-        var $this = $(this);
+    $('#js-rolePicker .pick-btn').click(() => {
+        const $this = $(this);
         $this.addClass('selected');
         $this.siblings().removeClass('selected');
 
-        if ($this.attr('id') === 'js-RunningMate') {
+        if ('js-RunningMate' === $this.attr('id')) {
             $('#volunteer-form').fadeOut();
-            setTimeout(function(){
+            setTimeout(() => {
                 $('#running-mate-form').fadeIn();
             }, 400);
         }
 
-        if ($this.attr('id') === 'js-Volunteer') {
+        if ('js-Volunteer' === $this.attr('id')) {
             $('#running-mate-form').fadeOut();
-            setTimeout(function(){
+            setTimeout(() => {
                 $('#volunteer-form').fadeIn();
             }, 400);
         }
     });
 
     $('#js-rolePicker .pick-btn').hover(
-        function() {
+        () => {
             $(this).siblings().addClass('fade');
         },
-        function() {
+        () => {
             $(this).siblings().removeClass('fade');
         }
     );

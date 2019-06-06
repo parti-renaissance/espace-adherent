@@ -17,7 +17,8 @@
     "es6": true,
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "jquery": true
   },
   "globals": {
     "dom": true,
