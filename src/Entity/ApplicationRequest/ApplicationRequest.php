@@ -133,6 +133,9 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @var string|null
      *
      * @ORM\Column
+     *
+     * @Assert\NotBlank(message="application_request.profession.required")
+     * @Assert\Length(max=255, maxMessage="application_request.profession.max_length")
      */
     protected $profession;
 
@@ -140,6 +143,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @var Theme[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\Theme")
+     *
+     * @Assert\Count(min=1, minMessage="application_request.favorite_themes.min")
      */
     protected $favoriteThemes;
 
@@ -155,10 +160,11 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
-        $this->phone = new PhoneNumber();
-        $this->phone->setCountryCode(33);
         $this->favoriteThemes = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
+
+        $this->phone = new PhoneNumber();
+        $this->phone->setCountryCode(33);
     }
 
     public function getFirstName(): ?string

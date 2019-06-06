@@ -45,7 +45,7 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $localAssociationDomain;
 
@@ -59,7 +59,7 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $politicalActivistDetails;
 
@@ -73,7 +73,7 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $previousElectedOfficialDetails;
 
@@ -106,16 +106,6 @@ class RunningMateRequest extends ApplicationRequest
     public function setCurriculum(?UploadedFile $curriculum): void
     {
         $this->curriculum = $curriculum;
-    }
-
-    public function setCurriculumNameFromUploadedFile(?UploadedFile $curriculum): void
-    {
-        $this->curriculumName = null === $curriculum ? null :
-            sprintf('%s.%s',
-                md5(sprintf('%s@%s', $this->getUuid(), $curriculum->getClientOriginalName())),
-                $curriculum->getClientOriginalExtension()
-            )
-        ;
     }
 
     public function setCurriculumName(string $curriculumName): void
@@ -215,6 +205,14 @@ class RunningMateRequest extends ApplicationRequest
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/curriculum', $this->curriculumName);
+        return sprintf('%s/%s', 'files/application_requests/curriculum', $this->curriculumName);
+    }
+
+    public function setCurriculumNameFromUploadedFile(UploadedFile $curriculum): void
+    {
+        $this->curriculumName = sprintf('%s.%s',
+            md5(sprintf('%s@%s', $this->getUuid(), $curriculum->getClientOriginalName())),
+            $curriculum->getClientOriginalExtension()
+        );
     }
 }
