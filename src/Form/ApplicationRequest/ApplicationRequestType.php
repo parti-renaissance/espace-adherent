@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\ApplicationRequest;
 
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
 use Doctrine\ORM\EntityRepository;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationRequestType extends AbstractType
@@ -72,6 +75,18 @@ class ApplicationRequestType extends AbstractType
                 'required' => true,
             ])
         ;
+
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /** @var ApplicationRequest $data */
+            $data = $event->getData();
+
+            $addressForm = $event->getForm()->get('address');
+
+            $data->setAddress($addressForm->get('address')->getData());
+            $data->setPostalCode($addressForm->get('postalCode')->getData());
+            $data->setCity($addressForm->get('cityName')->getData());
+            $data->setCountry($addressForm->get('country')->getData());
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
