@@ -5,6 +5,7 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use libphonenumber\PhoneNumberUtil;
 
 class LoadApplicationRequestVolunteerRequestData extends Fixture
 {
@@ -12,6 +13,8 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $phoneUtil = PhoneNumberUtil::getInstance();
+
         $i = 0;
         while ($i < 4) {
             $email = self::EMAILS[$i % 2];
@@ -26,6 +29,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
             $volunteerRequest->setCountry('US');
             $volunteerRequest->setAddress('10880 Malibu Point');
             $volunteerRequest->setProfession('Scientist & Engineer');
+            $volunteerRequest->setPhone($phoneUtil->parse('06-06-06-06-06', 'FR'));
 
             $volunteerRequest->addFavoriteTheme($this->getReference('application-theme-06'));
             $volunteerRequest->addFavoriteTheme($this->getReference('application-theme-08'));
