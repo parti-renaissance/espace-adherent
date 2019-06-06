@@ -81,8 +81,8 @@ export default (volunteerFormType, runningMateFormType) => {
 
     runningMateZipCodeField.dispatchEvent(new Event('input'));
 
-    $('.em-form__file--area').bind('change', () => {
-        const $input = $(this);
+    $('.em-form__file--area').bind('change', (event) => {
+        const $input = $(event.currentTarget);
         const selectedFileName = $input.val();
         const $fileName = $input.siblings('.em-form__file--name');
         const $label = $input.siblings('.em-form__file--label');
@@ -93,34 +93,27 @@ export default (volunteerFormType, runningMateFormType) => {
         }
     });
 
-    // Form swaper
+    // Form swapper
     $('#volunteer-form').hide();
-    $('#js-rolePicker .pick-btn').click(() => {
-        const $this = $(this);
+
+    $('#js-rolePicker .pick-btn').click((event) => {
+        const $this = $(event.currentTarget);
         $this.addClass('selected');
         $this.siblings().removeClass('selected');
 
         if ('js-RunningMate' === $this.attr('id')) {
-            $('#volunteer-form').fadeOut();
-            setTimeout(() => {
+            $('#volunteer-form').fadeOut(400, () => {
                 $('#running-mate-form').fadeIn();
-            }, 400);
+            });
         }
 
         if ('js-Volunteer' === $this.attr('id')) {
-            $('#running-mate-form').fadeOut();
-            setTimeout(() => {
+            $('#running-mate-form').fadeOut(400, () => {
                 $('#volunteer-form').fadeIn();
-            }, 400);
+            });
         }
-    });
-
-    $('#js-rolePicker .pick-btn').hover(
-        () => {
-            $(this).siblings().addClass('fade');
-        },
-        () => {
-            $(this).siblings().removeClass('fade');
-        }
+    }).hover(
+        (event) => $(event.currentTarget).siblings().addClass('fade'),
+        (event) => $(event.currentTarget).siblings().removeClass('fade')
     );
 };
