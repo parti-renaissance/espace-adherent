@@ -64,7 +64,7 @@
                     <div class="em-form__group em-form__width--2">
                         {{ form_label(form.address.cityName, 'Ville') }}
                         {{ form_widget(form.address.city, { attr: { class: 'register__form__city'} }) }}
-                        {{ form_widget(form.address.cityName, { attr: { class: 'register__form__city_name ', 'placeholder': 'Ville' } }) }}
+                        {{ form_widget(form.address.cityName, { attr: { class: 'register__form__city_name ', placeholder: 'Ville' } }) }}
                         {{ form_errors(form.address.city) }}
                         {{ form_errors(form.address.cityName) }}
                     </div>
@@ -80,7 +80,7 @@
             <div class="em-form__group">
                 <div class="address-autocomplete">
                     <label class="em-form__label required">
-                        Addresse <span class="em-form__required">*</span>
+                        Adresse <span class="em-form__required">*</span>
                     </label>
                 </div>
                 <p class="em-form__legend address-autocomplete-help-message visually-hidden">

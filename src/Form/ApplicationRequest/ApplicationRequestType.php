@@ -5,6 +5,7 @@ namespace AppBundle\Form\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
+use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -84,8 +85,11 @@ class ApplicationRequestType extends AbstractType
 
             $data->setAddress($addressForm->get('address')->getData());
             $data->setPostalCode($addressForm->get('postalCode')->getData());
-            $data->setCity($addressForm->get('cityName')->getData());
+            $data->setCity($cityCode = $addressForm->get('city')->getData());
             $data->setCountry($addressForm->get('country')->getData());
+
+            [$postalCode, $inseeCode] = explode('-', $cityCode);
+            $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
         });
     }
 

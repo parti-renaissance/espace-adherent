@@ -26,6 +26,7 @@ class RunningMateRequestType extends AbstractType
                 'multiple' => false,
             ])
             ->add('localAssociationDomain', TextareaType::class, [
+                'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
             ])
@@ -38,6 +39,7 @@ class RunningMateRequestType extends AbstractType
                 'multiple' => false,
             ])
             ->add('politicalActivistDetails', TextareaType::class, [
+                'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
             ])
@@ -50,6 +52,7 @@ class RunningMateRequestType extends AbstractType
                 'multiple' => false,
             ])
             ->add('previousElectedOfficialDetails', TextareaType::class, [
+                'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
             ])

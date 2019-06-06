@@ -48,6 +48,7 @@ class VolunteerRequestType extends AbstractType
                 'multiple' => false,
             ])
             ->add('previousCampaignDetails', TextareaType::class, [
+                'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 2000],
             ])

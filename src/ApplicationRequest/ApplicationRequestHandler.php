@@ -46,7 +46,6 @@ class ApplicationRequestHandler
         $runningMateRequest->setCurriculumNameFromUploadedFile($runningMateRequest->getCurriculum());
         $path = $runningMateRequest->getPathWithDirectory();
 
-        // Uploads the file : creates or updates if exists
         $this->storage->put($path, file_get_contents($runningMateRequest->getCurriculum()->getPathname()));
     }
 }

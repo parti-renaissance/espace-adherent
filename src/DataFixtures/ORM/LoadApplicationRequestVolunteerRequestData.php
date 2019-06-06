@@ -22,7 +22,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
             $volunteerRequest->setFavoriteCities(['Malibu', 'New-York']);
             $volunteerRequest->setEmailAddress($email);
             $volunteerRequest->setPostalCode('90265');
-            $volunteerRequest->setCity('Malibu');
+            $volunteerRequest->setCityName('Malibu');
             $volunteerRequest->setCountry('US');
             $volunteerRequest->setAddress('10880 Malibu Point');
             $volunteerRequest->setProfession('Scientist & Engineer');

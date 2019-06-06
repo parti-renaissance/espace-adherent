@@ -245,7 +245,7 @@
                 </div>
 
                 <div class="em-form__group" id="running_mate_request_previousElectedOfficialDetails_container">
-                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez') }}
+                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez', { required: true}) }}
                     {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>
