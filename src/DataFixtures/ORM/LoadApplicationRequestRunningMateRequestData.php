@@ -24,7 +24,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $runningMateRequest->setFavoriteCities(['New York']);
             $runningMateRequest->setEmailAddress($email);
             $runningMateRequest->setPostalCode('10001');
-            $runningMateRequest->setCity('New York City');
+            $runningMateRequest->setCityName('New York City');
             $runningMateRequest->setCountry('US');
             $runningMateRequest->setAddress('890 Fifth Avenue, Manhattan');
             $runningMateRequest->setPhone($phoneUtil->parse('06-06-06-06-06', 'FR'));

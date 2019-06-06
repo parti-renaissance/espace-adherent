@@ -100,6 +100,18 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     protected $postalCode;
 
     /**
+     * The address city code (postal code + INSEE code).
+     *
+     * @var string|null
+     *
+     * @ORM\Column(length=20, nullable=true)
+     *
+     * @Assert\NotBlank(message="common.city_name.not_blank")
+     * @Assert\Length(max=20)
+     */
+    protected $city;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(length=50)
@@ -107,7 +119,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @Assert\NotBlank(message="common.city_name.not_blank")
      * @Assert\Length(max=50)
      */
-    protected $city;
+    protected $cityName;
 
     /**
      * @var string
@@ -235,6 +247,16 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     public function setCity(?string $city): void
     {
         $this->city = $city;
+    }
+
+    public function getCityName(): ?string
+    {
+        return $this->cityName;
+    }
+
+    public function setCityName(?string $cityName): void
+    {
+        $this->cityName = $cityName;
     }
 
     public function getCountry(): string

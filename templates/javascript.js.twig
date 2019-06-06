@@ -444,7 +444,7 @@ $(document).ready(function() {
 {% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector, labelToShow) %}
     $('{{ elementToToggleSelector|raw }}').hide();
 
-    $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
+    $('{{ choiceSelector|raw }} input[type="radio"]').change(function(){
         var selectedLabel = $(this).parent().find('label').text().trim();
         var elementToToggle = $('{{ elementToToggleSelector|raw }}');
 
@@ -452,15 +452,15 @@ $(document).ready(function() {
            elementToToggle.show();
         } else {
             elementToToggle.hide();
-            elementToToggle.find('textarea').val('').keyup();
+            elementToToggle.find('textarea, input').val('').keyup();
         }
-    });
+    }).change();
 {% endmacro %}
 
 {% macro toggleDisplayFromCheckbox(choiceSelector, elementToToggleSelector, labelToShow) %}
     $('{{ elementToToggleSelector|raw }}').hide();
 
-    $('{{ choiceSelector|raw }}  input[type="checkbox"]').click(function() {
+    $('{{ choiceSelector|raw }}  input[type="checkbox"]').change(function() {
         var selectedLabel = $(this).parent().find('label').text().trim();
         var elementToToggle = $('{{ elementToToggleSelector|raw }}');
 
@@ -474,7 +474,7 @@ $(document).ready(function() {
             elementToToggle.hide();
             elementToToggle.find('textarea, input').val('').keyup();
         }
-    });
+    }).change();
 {% endmacro %}
 
 {% macro toggleDisplayingElement(checkboxSelector, elementSelector, checkboxNotSelectedSelector = null) %}
