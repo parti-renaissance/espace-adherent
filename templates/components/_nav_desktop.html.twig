@@ -207,7 +207,7 @@
         <a href="{{ path('donation_index') }}" class="btn btn--pink">Donner</a>
     </div>
 </nav>
-{% if is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST') or is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT') or is_granted('ROLE_DEPUTY') or is_granted('ROLE_BOARD_MEMBER') or is_granted('ROLE_COORDINATOR') or is_granted('ROLE_PROCURATION_MANAGER') or is_granted('ROLE_LEGISLATIVE_CANDIDATE') or is_granted('ROLE_ASSESSOR_MANAGER') %}
+{% if is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST') or is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT') or is_granted('ROLE_DEPUTY') or is_granted('ROLE_BOARD_MEMBER') or is_granted('ROLE_COORDINATOR') or is_granted('ROLE_PROCURATION_MANAGER') or is_granted('ROLE_LEGISLATIVE_CANDIDATE') or is_granted('ROLE_ASSESSOR_MANAGER') or is_granted('ROLE_MUNICIPAL_CHIEF') %}
 <div class="background--darker space--10-0 l__hide--on-small-laptop">
     <ul class="l__wrapper list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
         {% if app.user.isSupervisor or app.user.isHost %}
@@ -261,6 +261,11 @@
         {% if app.user.isAssessorManager %}
             <li>
                 <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
+            </li>
+        {% endif %}
+        {% if app.user.isMunicipalChief %}
+            <li>
+                <a href="{{ path('app_municipalchief_index') }}">Espace chef municipal</a>
             </li>
         {% endif %}
     </ul>

@@ -29,4 +29,6 @@ class AdherentRoleEnum extends Enum
     public const LAREM = 'gq_ideas';
 
     public const ELECTED = 'elected';
+
+    public const MUNICIPAL_CHIEF = 'Chef municipal';
 }
