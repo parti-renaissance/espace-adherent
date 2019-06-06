@@ -7,14 +7,14 @@ export default (countryFieldSelector, postalCodeFieldSelector, stateFieldSelecto
     const autocompleteAddressForm = new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
-        dom('#address-autocomplete-help-message'),
         new AddressObject(
             dom('#app_procuration_request_address'),
             dom('#app_procuration_request_postalCode'),
             dom('#app_procuration_request_cityName'),
             null,
             dom('#app_procuration_request_country')
-        )
+        ),
+        dom('#address-autocomplete-help-message')
     );
 
     autocompleteAddressForm.once('changed', () => {

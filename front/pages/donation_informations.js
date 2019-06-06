@@ -8,13 +8,13 @@ export default (formType) => {
     (new AutocompletedAddressForm(
         dom('.address-autocomplete'),
         dom('.address-block'),
-        dom('#address-autocomplete-help-message'),
         new AddressObject(
             dom('#app_donation_address'),
             dom('#app_donation_postalCode'),
             dom('#app_donation_cityName'),
             null,
             dom('#app_donation_country')
-        )
+        ),
+        dom('#address-autocomplete-help-message')
     )).buildWidget();
 };
