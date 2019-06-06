@@ -113,6 +113,13 @@
                 }
             }
 
+            .space--0-50 {
+                padding: 0;
+                @media (min-width: $mobile) {
+                    padding: 0 50px;
+                }
+            }
+
             .icn_success {
                 display: block;
                 margin: 0 auto 40px auto;
