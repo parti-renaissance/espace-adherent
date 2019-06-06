@@ -35,7 +35,7 @@ Feature:
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
 
   @javascript
-  Scenario: I can see running mate request for the zones I manage
+  Scenario: I can see running mate requests for the zones I manage
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-colistiers"
     And I wait 2 seconds
@@ -49,7 +49,7 @@ Feature:
     And I should see "Oui"
 
   @javascript
-  Scenario: I can see running mate request for the zones I manage
+  Scenario: I can see volunteer requests for the zones I manage
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-benevole"
     And I wait 2 seconds

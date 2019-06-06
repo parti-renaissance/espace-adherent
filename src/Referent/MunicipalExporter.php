@@ -14,11 +14,13 @@ class MunicipalExporter
 {
     private $urlGenerator;
     private $adherentRepository;
+    private $phoneUtils;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, AdherentRepository $adherentRepository)
     {
         $this->urlGenerator = $urlGenerator;
         $this->adherentRepository = $adherentRepository;
+        $this->phoneUtils = PhoneNumberUtil::getInstance();
     }
 
     /**
@@ -27,14 +29,15 @@ class MunicipalExporter
     public function exportRunningMateAsJson(array $runningMates): string
     {
         $data = [];
-        $phoneUtils = PhoneNumberUtil::getInstance();
 
         /** @var RunningMateRequest $runningMate */
         foreach ($runningMates as $runningMate) {
             $data[] = [
                 'lastName' => $runningMate->getLastName(),
                 'firstName' => $runningMate->getFirstName(),
-                'phone' => $runningMate->getPhone() instanceof PhoneNumber ? $phoneUtils->format($runningMate->getPhone(), PhoneNumberFormat::INTERNATIONAL) : '',
+                'phone' => $runningMate->getPhone() instanceof PhoneNumber
+                    ? $this->phoneUtils->format($runningMate->getPhone(), PhoneNumberFormat::INTERNATIONAL)
+                    : '',
                 'favoriteCities' => $runningMate->getFavoriteCities(),
                 'cvLink' => [
                     'label' => 'Télécharger le CV',
@@ -62,7 +65,9 @@ class MunicipalExporter
             $data[] = [
                 'lastName' => $volunteer->getLastName(),
                 'firstName' => $volunteer->getFirstName(),
-                'phone' => $volunteer->getPhone(),
+                'phone' => $volunteer->getPhone() instanceof PhoneNumber
+                    ? $this->phoneUtils->format($volunteer->getPhone(), PhoneNumberFormat::INTERNATIONAL)
+                    : '',
                 'favoriteCities' => $volunteer->getFavoriteCities(),
                 'isAdherent' => $volunteer->isAdherent() ? 'Oui' : 'Non',
             ];

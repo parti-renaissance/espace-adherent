@@ -13,12 +13,13 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $phoneUtil = PhoneNumberUtil::getInstance();
+
         $i = 0;
         while ($i < 4) {
             $email = self::EMAILS[$i % 2];
             $runningMateRequest = new RunningMateRequest();
 
-            $phoneUtil = PhoneNumberUtil::getInstance();
             $runningMateRequest->setFirstName('Bruce');
             $runningMateRequest->setLastName('Banner');
             $runningMateRequest->setFavoriteCities(['New York']);
