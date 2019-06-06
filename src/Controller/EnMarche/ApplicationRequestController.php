@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApplicationRequestController extends Controller
 {
     /**
-     * @Route(name="volunteer", methods={"GET", "POST"})
+     * @Route(name="request", methods={"GET", "POST"})
      */
     public function requestAction(Request $request, ApplicationRequestHandler $handler): Response
     {

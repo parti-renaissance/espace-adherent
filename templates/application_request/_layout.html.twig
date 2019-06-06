@@ -2,7 +2,7 @@
 
 {% block page_title 'Bénévoles - Appel à candidature' %}
 {% block meta_description "Soyez bénévole pour la meilleure plateforme du monde" %}
-{% block canonical_url url('app_application_request_volunteer') %}
+{% block canonical_url url('app_application_request_request') %}
 
 {% block open_graph_image (homepage_url ~ static_asset('procuration-sharer_2.jpg', { q: 70 }))|raw %}
 
@@ -20,9 +20,7 @@
                 <h2 class="text--uppercase text--gray b__nudge--bottom">
                     Élections municipales
                 </h2>
-                <h1 class="text--large">
-                    Je participe à la campagne LaREM de ma ville en tant que <span class="hightlight__blue--nation">colistier</span> ou <span class="hightlight__red--nation">bénévole</span>
-                </h1>
+                {% block header_content '' %}
                 <span class="fake-container"></span>
             </div>
             <div class="national-scarf">
@@ -34,40 +32,6 @@
 
         <section class="page-content">
             <div class="l__wrapper--600">
-                <div class="page-intro font-roboto b__nudge--top-40 text--justify">
-                    <p class="text--bold">
-                        Bonjour et, avant toute chose, bravo pour avoir passé le pas et vous engager pour agir au sein de votre commune !
-                    </p>
-                    <p class="text--dark">
-                        Dans le cadre du scrutin municipal de 2020, La République En Marche donnera la possibilité à chaque citoyen de devenir acteur de la vie publique locale.
-                        Que vous souhaitiez prendre part à une liste ou être membre actif de la campagne, nous vous mettrons en relation avec nos équipes locales.
-                    </p>
-                    <p class="text--dark">
-                        Ensemble, construisons un projet en faveur de nos territoires, un projet inspiré par les attentes de chacun et porté par des acteurs engagés ! Tous engagés !
-                    </p>
-                </div>
-
-                <div class="information__modal inf-modl--pale-blue b__nudge--bottom">
-                    Il n’est pas nécessaire d’être adhérent à LaREM pour remplir ce formulaire. LaREM souhaite encourager tout citoyen,
-                    même non adhérent d’un mouvement politique à prendre part à l’action publique.
-                </div>
-
-                <div class="information__modal inf-modl--pale-yellow">
-                    Ce formulaire n’engage pas une présence sur une liste municipale ou une implication automatique dans une campagne locale.
-                </div>
-
-                <div class="text--center role-picker">
-                    <h3 class="text--medium b__nudge--bottom-larger">Je postule en tant que :</h3>
-                    <div class="role-picker__btns" id="js-rolePicker">
-                        <div class="pick-btn pick-btn__running-mate selected" id="js-RunningMate">Colistier</div>
-                        <div class="pick-btn pick-btn__volunteer" id="js-Volunteer">Bénévole</div>
-                    </div>
-                </div>
-
-                </br>
-                </br>
-                </br>
-                </br>
                 {% block form_body '' %}
             </div>
         </section>

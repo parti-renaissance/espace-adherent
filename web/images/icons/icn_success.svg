@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+  <defs>
+    <circle id="icn_success-a" cx="30" cy="30" r="30"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <mask id="icn_success-b" fill="#fff">
+      <use xlink:href="#icn_success-a"/>
+    </mask>
+    <circle cx="30" cy="30" r="29.5" stroke="#46D5C7"/>
+    <path fill="#46D5C7" d="M25.191343,66.6018743 C40.351311,65.096701 52.191343,52.3060443 52.191343,36.75 C52.191343,21.1939557 40.351311,8.40329902 25.191343,6.89812573 C26.1780617,6.80015833 27.1788448,6.75 28.191343,6.75 C44.7598854,6.75 58.191343,20.1814575 58.191343,36.75 C58.191343,53.3185425 44.7598854,66.75 28.191343,66.75 C27.1788448,66.75 26.1780617,66.6998417 25.191343,66.6018743 Z" mask="url(#icn_success-b)" opacity=".274" transform="rotate(30 41.691 36.75)"/>
+    <polyline stroke="#46D5C7" stroke-linecap="square" points="47.025 31.985 16.025 31.985 16.025 16.985 16.025 16.985" mask="url(#icn_success-b)" transform="rotate(-45 31.525 24.485)"/>
+  </g>
+</svg>
