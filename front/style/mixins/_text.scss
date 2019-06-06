@@ -471,7 +471,12 @@ $text--size-extra-large--big: 128px;
     &--blue--dark {
         color: $blue--dark;
     }
+
+    &--no--decor {
+        border-bottom: 0;
+    }
 }
+
 
 .tag {
     @include text--uppercase;

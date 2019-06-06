@@ -104,14 +104,23 @@
         .page-intro {
             margin-bottom: 60px;
 
-            p:first-child {
+            p {
                 font-size: 18px;
                 margin-bottom: 30px;
+
+                a {
+                    text-decoration: none;
+                }
+            }
+
+            .icn_success {
+                display: block;
+                margin: 0 auto 40px auto;
             }
         }
 
         .role-picker {
-            margin-top: 100px;
+            margin: 100px 0 65px 0;
 
             &__btns {
                 display: flex;

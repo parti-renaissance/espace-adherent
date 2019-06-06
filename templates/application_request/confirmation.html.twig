@@ -1,7 +1,22 @@
 {% extends 'application_request/_layout.html.twig' %}
 
+
+{% block header_content %}
+    <h1 class="text--large">
+        Merci pour votre engagement
+    </h1>
+{% endblock %}
+
+
 {% block form_body %}
-
-    Merci beaucoup à tous.
-
+    <div class="page-intro font-roboto b__nudge--top-40 text--center">
+        <img class="icn_success" src="{{ asset('images/icons/icn_success.svg') }}" />
+        <p class="space--0-50 text--dark">
+            Nous allons passer en revue votre candidature et vous tiendrons informé.
+            Si vous avez des questions, contactez-nous
+            <br><br>
+            Pour postuler sous une autre forme, cliquez <a class="text--blue--dark link--no--decor" href="{{ path('app_application_request_request') }}">ici</a>
+        </p>
+        <a href="{{ path('homepage') }}" class="form btn btn--blue">Retour à la page d'accueil</a>
+    </div>
 {% endblock %}
