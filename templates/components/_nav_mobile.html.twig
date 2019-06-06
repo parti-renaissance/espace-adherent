@@ -93,6 +93,11 @@
                             <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
                         </li>
                     {% endif %}
+                    {% if app.user.isMunicipalChief %}
+                        <li>
+                            <a href="{{ path('app_municipalchief_index') }}">Espace chef municipal</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <ul>
                     <li>
