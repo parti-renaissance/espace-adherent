@@ -58,6 +58,7 @@ assessor_manager: responsable assesseur
 assessors_manager: Responsable assesseurs
 user: utilisateur
 citizen_project_holder: porteur de projet
+municipal_chief: Chef municipal
 
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !

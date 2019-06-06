@@ -37,6 +37,24 @@ class FranceCitiesBundle
     }
 
     /**
+     * Returns the cities indexed by INSEE code.
+     */
+    public static function getCityByInseeCode(): array
+    {
+        static $citiesByInsee = [];
+
+        if (empty($citiesByInsee)) {
+            foreach (self::$cities as $cityByPostalCode) {
+                foreach ($cityByPostalCode as $inseeCode => $city) {
+                    $citiesByInsee[$inseeCode] = $city;
+                }
+            }
+        }
+
+        return $citiesByInsee;
+    }
+
+    /**
      * Returns the country ISO code for the given french postal code (FR by default).
      *
      * @return string
@@ -89,6 +107,27 @@ class FranceCitiesBundle
         });
 
         return $list;
+    }
+
+    /**
+     * Returns the city for the given INSEE code or null if the city was not found.
+     */
+    public static function searchCityByInseeCode(string $inseeCode): ?string
+    {
+        $citiesByInsee = self::getCityByInseeCode();
+
+        return $citiesByInsee[$inseeCode] ?? null;
+    }
+
+    /**
+     * Returns the a list of city for a given list of INSEE code.
+     */
+    public static function searchCitiesByInseeCodes(array $inseeCodes): array
+    {
+        return array_intersect_key(
+            self::getCityByInseeCode(),
+            array_flip($inseeCodes)
+        );
     }
 
     private static function canonicalizeCityName(string $cityName): string
