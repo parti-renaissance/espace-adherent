@@ -113,7 +113,7 @@ export default (volunteerFormType, runningMateFormType) => {
             });
         }
     }).hover(
-        (event) => $(event.currentTarget).siblings().addClass('fade'),
-        (event) => $(event.currentTarget).siblings().removeClass('fade')
+        event => $(event.currentTarget).siblings().addClass('fade'),
+        event => $(event.currentTarget).siblings().removeClass('fade')
     );
 };
