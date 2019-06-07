@@ -19,7 +19,6 @@ class ManagedUsersFilter
     public const PARAMETER_INCLUDE_HOSTS = 'h';
     public const PARAMETER_INCLUDE_SUPERVISORS = 's';
     public const PARAMETER_QUERY_AREA_CODE = 'ac';
-    public const PARAMETER_QUERY_CITY = 'city';
     public const PARAMETER_QUERY_ID = 'id';
     public const PARAMETER_OFFSET = 'o';
     public const PARAMETER_TOKEN = 't';
@@ -47,11 +46,6 @@ class ManagedUsersFilter
      * @Assert\NotNull
      */
     protected $queryAreaCode = '';
-
-    /**
-     * @Assert\NotNull
-     */
-    protected $queryCity = '';
 
     /**
      * @Assert\NotNull
@@ -84,7 +78,6 @@ class ManagedUsersFilter
         $filter->includeHosts = $message->includeHosts();
         $filter->includeSupervisors = $message->includeSupervisors();
         $filter->queryAreaCode = $message->getQueryAreaCode();
-        $filter->queryCity = $message->getQueryCity();
         $filter->queryId = $message->getQueryId();
         $filter->offset = $message->getOffset();
         $filter->queryInterests = $message->getInterests();
@@ -116,7 +109,6 @@ class ManagedUsersFilter
         $this->includeHosts = $query->getBoolean(self::PARAMETER_INCLUDE_HOSTS);
         $this->includeSupervisors = $query->getBoolean(self::PARAMETER_INCLUDE_SUPERVISORS);
         $this->queryAreaCode = trim($query->get(self::PARAMETER_QUERY_AREA_CODE, ''));
-        $this->queryCity = trim($query->get(self::PARAMETER_QUERY_CITY, ''));
         $this->queryId = trim($query->get(self::PARAMETER_QUERY_ID, ''));
         $this->offset = $query->getInt(self::PARAMETER_OFFSET);
         $this->token = $query->get(self::PARAMETER_TOKEN, '');
@@ -150,7 +142,6 @@ class ManagedUsersFilter
             self::PARAMETER_INCLUDE_HOSTS => $this->includeHosts ? '1' : '0',
             self::PARAMETER_INCLUDE_SUPERVISORS => $this->includeSupervisors ? '1' : '0',
             self::PARAMETER_QUERY_AREA_CODE => $this->queryAreaCode ?: '',
-            self::PARAMETER_QUERY_CITY => $this->queryCity ?: '',
             self::PARAMETER_QUERY_ID => $this->queryId ?: '',
             self::PARAMETER_TOKEN => $this->token,
             self::PARAMETER_GENDER => $this->queryGender,
@@ -174,11 +165,6 @@ class ManagedUsersFilter
     public function getQueryAreaCode(): string
     {
         return $this->queryAreaCode;
-    }
-
-    public function getQueryCity(): string
-    {
-        return $this->queryCity;
     }
 
     public function getQueryId(): string

@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReferentFilterType extends AbstractType
@@ -36,6 +38,12 @@ class ReferentFilterType extends AbstractType
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
             ->add('referentTags', MyReferentTagChoiceType::class, ['multiple' => true])
         ;
+
+        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) {
+            if (1 === \count($event->getData()->getReferentTags())) {
+                $event->getForm()->remove('referentTags');
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

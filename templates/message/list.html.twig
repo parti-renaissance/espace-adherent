@@ -81,7 +81,7 @@
                                        data-subject="{{ message.subject }}"
                                     >Statistiques</a>
                                 {% else %}
-                                    <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", message_route_params) }}">Filtrer</a>
+                                    <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_filter", message_route_params|merge({l: true})) }}">Filtrer</a>
                                 {% endif %}
 
                                 {% if message.isSynchronized %}

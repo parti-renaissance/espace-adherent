@@ -274,7 +274,7 @@ class ReferentControllerTest extends WebTestCase
             'aic' => 1,
             'h' => 1,
             's' => 1,
-            'city' => 'Melun',
+            'ac' => 'Melun',
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
         $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
@@ -286,7 +286,7 @@ class ReferentControllerTest extends WebTestCase
             'ac' => 'FR',
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
             'anc' => 1,
@@ -459,7 +459,6 @@ class ReferentControllerTest extends WebTestCase
         $this->assertTrue($message->includeHosts());
         $this->assertTrue($message->includeSupervisors());
         $this->assertEmpty($message->getQueryAreaCode());
-        $this->assertEmpty($message->getQueryCity());
         $this->assertEmpty($message->getQueryId());
         $this->assertSame(0, $message->getOffset());
     }
