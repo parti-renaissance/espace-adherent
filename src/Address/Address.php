@@ -43,7 +43,7 @@ class Address implements AddressInterface, GeocodableInterface
     private $cityName;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "Registration", "Update"})
+     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"Default", "Registration", "Update"})
      */
     private $country;
@@ -52,11 +52,6 @@ class Address implements AddressInterface, GeocodableInterface
      * @Assert\Length(max=255)
      */
     private $region;
-
-    public function __construct()
-    {
-        $this->country = self::FRANCE;
-    }
 
     public function getAddress(): ?string
     {
@@ -117,12 +112,12 @@ class Address implements AddressInterface, GeocodableInterface
         $this->cityName = $cityName;
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function setCountry(string $country): void
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }

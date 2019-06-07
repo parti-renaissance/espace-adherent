@@ -31,6 +31,7 @@ common.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 common.birthcity.not_blank: Vous devez spécifier votre lieu de naissance.
 
 common.country.invalid: Ce pays n'est pas valide.
+common.country.not_blank: Veuillez sélectionner un pays.
 
 common.nationality.invalid: Cette nationalité n'est pas valide.
 

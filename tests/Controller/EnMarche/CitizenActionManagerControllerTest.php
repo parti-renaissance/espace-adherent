@@ -56,7 +56,7 @@ class CitizenActionManagerControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon action citoyenne')->form());
 
-        $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#citizen-action-name-field > .form__errors > li')->text()
@@ -74,12 +74,17 @@ class CitizenActionManagerControllerTest extends WebTestCase
             $this->client->getCrawler()->filter('#citizen-action-address-address-field > .form__errors > li')->text()
         );
 
+        $this->assertSame(
+            'Veuillez sélectionner un pays.',
+            $this->client->getCrawler()->filter('#citizen-action-address-country-field > .form__errors > li')->text()
+        );
+
         $data = [];
         $data['citizen_action']['name'] = 'n';
         $data['citizen_action']['description'] = 'a';
         $this->client->submit($this->client->getCrawler()->selectButton('Je crée mon action citoyenne')->form(), $data);
 
-        $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
         $this->assertSame(
             'Vous devez saisir au moins 5 caractères.',
             $this->client->getCrawler()->filter('#citizen-action-name-field > .form__errors > li')->text()

@@ -105,7 +105,7 @@ class ReferentControllerTest extends WebTestCase
         $data = [];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
-        $this->assertSame(4, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#committee-event-name-field > .form__errors > li')->text());
@@ -115,6 +115,8 @@ class ReferentControllerTest extends WebTestCase
             $this->client->getCrawler()->filter('#committee-event-address-address-field > .form__errors > li')->text());
         $this->assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.',
             $this->client->getCrawler()->filter('#committee-event-address > .form__errors > li')->text());
+        $this->assertSame('Veuillez sélectionner un pays.',
+            $this->client->getCrawler()->filter('#committee-event-address-country-field > .form__errors > li')->text());
     }
 
     public function testCreateEventSuccessful()
@@ -223,7 +225,7 @@ class ReferentControllerTest extends WebTestCase
             ->selectButton('Créer cette réunion privée')->form(), [])
         ;
 
-        $this->assertSame(5, $this->client->getCrawler()->filter('.form__errors')->count());
+        $this->assertSame(6, $this->client->getCrawler()->filter('.form__errors')->count());
 
         $this->assertSame('Cette valeur ne doit pas être vide.',
             $this->client->getCrawler()->filter('#institutional_event-name-field > .form__errors > li')->text()
@@ -236,6 +238,10 @@ class ReferentControllerTest extends WebTestCase
         $this->assertSame("L'adresse est obligatoire.",
             $this->client->getCrawler()->filter(
                 '#institutional_event-address-address-field > .form__errors > li')->text()
+        );
+
+        $this->assertSame('Veuillez sélectionner un pays.',
+            $this->client->getCrawler()->filter('#institutional_event-address-country-field > .form__errors > li')->text()
         );
 
         $this->assertSame('Vous devez saisir au moins une adresse email.',
