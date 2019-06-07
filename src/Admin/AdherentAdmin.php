@@ -7,12 +7,15 @@ use AppBundle\Admin\Filter\ReferentTagAutocompleteFilter;
 use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentTag;
+use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\BoardMember\Role;
 use AppBundle\Entity\CitizenProjectMembership;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
+use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\RevokeManagedAreaSubscriber;
 use AppBundle\Form\GenderType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
@@ -189,6 +192,18 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Circonscription député',
                 ])
             ->end()
+            ->with('Membre du Conseil', ['class' => 'col-md-6'])
+                ->add('isBoardMember', 'boolean', [
+                    'label' => 'Est membre du Conseil ?',
+                ])
+                ->add('boardMember.area', null, [
+                    'label' => 'Région',
+                ])
+                ->add('boardMember.roles', null, [
+                    'label' => 'Rôles',
+                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
+                ])
+            ->end()
             ->with('Coordinateur', ['class' => 'col-md-3'])
                 ->add('isCoordinator', 'boolean', [
                     'label' => 'Est coordinateur ?',
@@ -329,6 +344,23 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
+            ->with('Membre du Conseil', ['class' => 'col-md-6'])
+                ->add('boardMemberArea', ChoiceType::class, [
+                    'label' => 'Région',
+                    'choices' => BoardMember::AREAS_CHOICES,
+                    'required' => false,
+                    'mapped' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+                ])
+                ->add('boardMemberRoles', 'sonata_type_model', [
+                    'expanded' => true,
+                    'multiple' => true,
+                    'btn_add' => false,
+                    'class' => Role::class,
+                    'mapped' => false,
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
+                ])
+            ->end()
             ->with('Zone expérimentale 🚧', [
                 'class' => 'col-md-6',
                 'box_class' => 'box box-warning',
@@ -338,6 +370,7 @@ class AdherentAdmin extends AbstractAdmin
         ;
 
         $formMapper->getFormBuilder()
+            ->addEventSubscriber(new BoardMemberListener())
             ->addEventSubscriber(new RevokeManagedAreaSubscriber())
         ;
     }
