@@ -125,7 +125,7 @@ class Driver implements LoggerAwareInterface
 
     public function deleteMember(string $mail): bool
     {
-        return $this->sendRequest('DELETE', sprintf('/lists/%s/members/%s/actions/delete-permanent', $this->listId, md5(strtolower($mail))));
+        return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $this->listId, md5(strtolower($mail))));
     }
 
     public function getReportData(string $campaignId): array
