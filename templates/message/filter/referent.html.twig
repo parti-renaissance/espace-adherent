@@ -16,10 +16,12 @@
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
-                        <div class="filter__row">
-                            <label class="filter__label">Zones gérées</label>
-                            {{ form_widget(form.referentTags, {attr: {class: 'filter__field multi_select2'}}) }}
-                        </div>
+                        {% if form.referentTags is defined %}
+                            <div class="filter__row">
+                                <label class="filter__label">Zones gérées</label>
+                                {{ form_widget(form.referentTags, {attr: {class: 'filter__field multi_select2'}}) }}
+                            </div>
+                        {% endif %}
 
                         <div class="filter__row">
                             <label class="filter__label">Rôles</label>
@@ -73,7 +75,7 @@
 
                         <div class="filter__row">
                             <label class="filter__label">Ville ou code postal</label>
-                            {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Saisissez une ville'}}) }}
+                            {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
                         </div>
                     </div>
                 </div>

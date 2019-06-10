@@ -119,8 +119,8 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
                 }
 
                 if (\is_string($areaCode)) {
-                    $areaCodeExpression->add('u.country LIKE :countryCode_'.$key);
-                    $qb->setParameter('countryCode_'.$key, $areaCode.'%');
+                    $areaCodeExpression->add('u.country = :countryOrCity_'.$key.' OR u.city = :countryOrCity_'.$key);
+                    $qb->setParameter('countryOrCity_'.$key, $areaCode);
                 }
             }
 
@@ -174,18 +174,6 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
                 ->andWhere('u.createdAt <= :registeredTo')
                 ->setParameter('registeredTo', $queryRegisteredTo->format('Y-m-d 23:59:59'))
             ;
-        }
-
-        if ($queryCity = $filter->getQueryCity()) {
-            $queryCity = array_map('trim', explode(',', $queryCity));
-
-            $cityExpression = $qb->expr()->orX();
-            foreach ($queryCity as $key => $city) {
-                $cityExpression->add('u.city LIKE :city_'.$key);
-                $qb->setParameter('city_'.$key, $city.'%');
-            }
-
-            $qb->andWhere($cityExpression);
         }
 
         foreach (array_values($filter->getQueryInterests()) as $key => $interest) {

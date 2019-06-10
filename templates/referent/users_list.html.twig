@@ -224,21 +224,12 @@
                             </div>
 
                             <div class="filter__row">
-                                <label class="filter__label">Ville</label>
-                                <input type="text"
-                                       name="{{ constant('PARAMETER_QUERY_CITY', filter) }}"
-                                       value="{{ filter.queryCity }}"
-                                       class="filter__field"
-                                       placeholder="Saisissez une ville"/>
-                            </div>
-
-                            <div class="filter__row">
-                                <label class="filter__label">Code postal, département ou pays</label>
+                                <label class="filter__label">Ville, code postal, département ou pays</label>
                                 <input type="text"
                                        name="{{ constant('PARAMETER_QUERY_AREA_CODE', filter) }}"
                                        value="{{ filter.queryAreaCode }}"
                                        class="filter__field"
-                                       placeholder="Exemple : '59400, 18, CH' "/>
+                                       placeholder="Exemple : 59300, Valenciennes, Tourcoing"/>
                             </div>
                         </div>
                     </div>

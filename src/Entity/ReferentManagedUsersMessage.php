@@ -48,11 +48,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     /**
      * @ORM\Column(type="text")
      */
-    private $queryCity;
-
-    /**
-     * @ORM\Column(type="text")
-     */
     private $queryId;
 
     /**
@@ -119,7 +114,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         string $lastName,
         string $queryZone,
         string $queryAreaCode,
-        string $queryCity,
         string $queryId,
         string $gender,
         int $ageMinimum,
@@ -140,7 +134,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->includeSupervisors = $includeSupervisors;
         $this->queryZone = $queryZone;
         $this->queryAreaCode = $queryAreaCode;
-        $this->queryCity = $queryCity;
         $this->queryId = $queryId;
         $this->offset = $offset;
         $this->interests = $interests;
@@ -169,7 +162,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
             $message->getFilter()->getQueryLastName(),
             $message->getFilter()->getQueryZone(),
             $message->getFilter()->getQueryAreaCode(),
-            $message->getFilter()->getQueryCity(),
             $message->getFilter()->getQueryId(),
             $message->getFilter()->getQueryGender(),
             $message->getFilter()->getQueryAgeMinimum(),
@@ -210,11 +202,6 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
     public function getQueryAreaCode(): string
     {
         return $this->queryAreaCode;
-    }
-
-    public function getQueryCity(): string
-    {
-        return $this->queryCity;
     }
 
     public function getQueryId(): string

@@ -3,7 +3,18 @@
 {% block message_page_title 'Filtrer pour envoyer' %}
 
 {% block message_content %}
+    {% if app.request.query.has('l') %}
+        {% set back_url = path("app_message_#{message_type}_list", route_params|default({})) %}
+    {% else %}
+        {% set back_url = path("app_message_#{message_type}_update", route_params|default({})|merge({uuid: message.uuid})) %}
+    {% endif %}
+
+    <a href="{{ back_url }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+        ⟵ Retour
+    </a>
+
     {% block filter_content '' %}
+
     <div id="message-actions-block" class="l__wrapper--slim b__nudge--top-40 text--center"></div>
 {% endblock %}
 

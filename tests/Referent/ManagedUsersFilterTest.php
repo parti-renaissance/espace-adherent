@@ -23,7 +23,6 @@ class ManagedUsersFilterTest extends TestCase
         $this->assertSame($expected['includeSupervisors'], $filter->includeSupervisors());
         $this->assertSame($expected['queryZone'], $filter->getQueryZone());
         $this->assertSame($expected['queryAreaCode'], $filter->getQueryAreaCode());
-        $this->assertSame($expected['queryCity'], $filter->getQueryCity());
         $this->assertSame($expected['queryId'], $filter->getQueryId());
         $this->assertSame($expected['offset'], $filter->getOffset());
         $this->assertSame($expected['token'], $filter->getToken());
@@ -51,7 +50,6 @@ class ManagedUsersFilterTest extends TestCase
                     'lastname',
                     '06',
                     '06330',
-                    '',
                     '1234',
                     'male',
                     30,
@@ -66,7 +64,6 @@ class ManagedUsersFilterTest extends TestCase
                     'includeSupervisors' => false,
                     'queryZone' => '06',
                     'queryAreaCode' => '06330',
-                    'queryCity' => '',
                     'queryId' => '1234',
                     'offset' => 0,
                     'token' => null,
