@@ -1,0 +1,12 @@
+{% extends 'municipal_chief/_layout.html.twig' %}
+
+{% block municipal_chief_content %}
+    <a href="{{ path('app_municipalchief_municipal_volunteerrequest') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste des candidats volontaires
+    </a>
+
+    <hr />
+
+    {{ include('referent/municipal/volunteer/_detail.html.twig') }}
+{% endblock %}

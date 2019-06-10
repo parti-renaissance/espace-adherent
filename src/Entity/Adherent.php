@@ -1622,6 +1622,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->municipalChiefManagedArea;
     }
 
+    public function setMunicipalChiefManagedAreaFromArray(array $municipalChiefManagedAreas): void
+    {
+        $municipalChiefManagedArea = new MunicipalChiefManagedArea();
+        $municipalChiefManagedArea->setCodes($municipalChiefManagedAreas);
+
+        $this->municipalChiefManagedArea = $municipalChiefManagedArea;
+    }
+
     public function setMunicipalChiefManagedArea(MunicipalChiefManagedArea $municipalChiefManagedArea = null): void
     {
         $this->municipalChiefManagedArea = $municipalChiefManagedArea;

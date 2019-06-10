@@ -633,7 +633,8 @@ class ReferentController extends Controller
 
         return $this->render('referent/municipal/running_mate/list.html.twig', [
             'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
-                $runningMateRequestRepository->findForReferent($referent)
+                $runningMateRequestRepository->findForReferent($referent),
+                'app_referent_municipal_running_mate_request_detail'
             ),
         ]);
     }
@@ -656,7 +657,8 @@ class ReferentController extends Controller
 
         return $this->render('referent/municipal/volunteer/list.html.twig', [
             'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
-                $volunteerRequestRepository->findForReferent($referent)
+                $volunteerRequestRepository->findForReferent($referent),
+                'app_referent_municipal_volunteer_request_detail'
             ),
         ]);
     }

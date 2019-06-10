@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Mon espace chef municipal' %}
-{% block canonical_url url('app_municipalchief_index') %}
+{% block canonical_url url('app_municipalchief_municipal_runningmaterequest') %}
 
 {% block banner '' %}
 
@@ -29,8 +29,8 @@
 
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_municipalchief_index*') ? 'active' : '' }}">
-                                <a href="{{ path('app_municipalchief_index') }}">Mon espace</a>
+                            <li class="{{ is_active_route(app.request, 'app_municipalchief_municipal_runningmaterequest*') ? 'active' : '' }}">
+                                <a href="{{ path('app_municipalchief_municipal_runningmaterequest') }}">Municipale</a>
                             </li></ul>
                     </nav>
 
