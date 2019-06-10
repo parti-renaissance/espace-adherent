@@ -11,6 +11,7 @@ use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
 use AppBundle\Exception\AdherentTokenException;
 use AppBundle\Geocoder\GeoPointInterface;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\MembershipInterface;
 use AppBundle\Membership\MembershipRequest;
@@ -31,6 +32,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ApiResource(
@@ -1621,6 +1623,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->municipalChiefManagedArea;
     }
 
+    public function setMunicipalChiefManagedAreaFromArray(array $municipalChiefManagedAreas): void
+    {
+        $municipalChiefManagedArea = new MunicipalChiefManagedArea();
+        $municipalChiefManagedArea->setCodes($municipalChiefManagedAreas);
+
+        $this->municipalChiefManagedArea = $municipalChiefManagedArea;
+    }
+
     public function setMunicipalChiefManagedArea(MunicipalChiefManagedArea $municipalChiefManagedArea = null): void
     {
         $this->municipalChiefManagedArea = $municipalChiefManagedArea;
@@ -1652,5 +1662,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __clone()
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if (!empty(array_diff($this->municipalChiefManagedArea->getCodes(), array_keys(FranceCitiesBundle::getCityByInseeCode())))) {
+            $context
+                ->buildViolation("Au moins une des valeurs saisies est invalide.")
+                ->atPath('municipalChiefManagedAreaCodesAsString')
+                ->addViolation()
+            ;
+        }
     }
 }

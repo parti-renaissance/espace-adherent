@@ -43,4 +43,35 @@ class VolunteerRequestRepository extends ServiceEntityRepository
 
         return $data;
     }
+
+    public function findForMunicipalChief(Adherent $municipalChief): array
+    {
+        if (!$municipalChief->isMunicipalChief()) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('v')
+            ->addSelect('CASE WHEN a.id IS NOT NULL THEN 1 ELSE 0 END AS isAdherent')
+            ->leftJoin(Adherent::class, 'a', Join::WITH, 'a.emailAddress = v.emailAddress AND a.adherent = 1')
+            ->addOrderBy('v.lastName', 'ASC')
+            ->addOrderBy('v.firstName', 'ASC')
+        ;
+
+        foreach ($municipalChief->getMunicipalChiefManagedArea()->getCodes() as $key => $code) {
+            $qb
+                ->orWhere("FIND_IN_SET(:codes_$key, v.favoriteCities) > 0")
+                ->setParameter("codes_$key", $code)
+            ;
+        }
+
+        $data = [];
+        foreach ($qb->getQuery()->getResult() as $result) {
+            /** @var VolunteerRequest $volunteerRequest */
+            $volunteerRequest = $result[0];
+            $volunteerRequest->setIsAdherent($result['isAdherent']);
+            $data[] = $volunteerRequest;
+        }
+
+        return $data;
+    }
 }

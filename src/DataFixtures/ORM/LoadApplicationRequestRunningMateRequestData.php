@@ -15,14 +15,43 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
 
+        $municipal1 = $this->getReference('municipal-chief-1');
+        $municipal2 = $this->getReference('municipal-chief-2');
+        $municipal3 = $this->getReference('municipal-chief-3');
         $i = 0;
         while ($i < 4) {
             $email = self::EMAILS[$i % 2];
             $runningMateRequest = new RunningMateRequest();
 
+            switch ($i) {
+                case 0:
+                    $favoriteCities = [
+                        $municipal1->municipalChiefManagedArea()->getCodes()[0],
+                        $municipal2->municipalChiefManagedArea()->getCodes()[1],
+                    ];
+                    break;
+                case 1:
+                    $favoriteCities = [
+                        $municipal2->municipalChiefManagedArea()->getCodes()[0],
+                        $municipal3->municipalChiefManagedArea()->getCodes()[1],
+                    ];
+                    break;
+                case 2:
+                    $favoriteCities = [
+                        $municipal1->municipalChiefManagedArea()->getCodes()[2],
+                        $municipal3->municipalChiefManagedArea()->getCodes()[0],
+                    ];
+                    break;
+                default:
+                    $favoriteCities = [
+                        $municipal1->municipalChiefManagedArea()->getCodes()[2],
+                    ];
+                    break;
+            }
+
+            $runningMateRequest->setFavoriteCities($favoriteCities);
             $runningMateRequest->setFirstName('Bruce');
             $runningMateRequest->setLastName('Banner');
-            $runningMateRequest->setFavoriteCities(['New York']);
             $runningMateRequest->setEmailAddress($email);
             $runningMateRequest->setPostalCode('10001');
             $runningMateRequest->setCityName('New York City');
@@ -59,6 +88,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
     public function getDependencies()
     {
         return [
+            LoadAdherentData::class,
             LoadApplicationRequestThemeData::class,
         ];
     }

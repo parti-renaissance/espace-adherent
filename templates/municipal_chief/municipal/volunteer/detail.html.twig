@@ -1,0 +1,34 @@
+{% extends 'municipal_chief/_layout.html.twig' %}
+
+{% block municipal_chief_content %}
+    <a href="{{ path('app_municipalchief_municipal_volunteerrequest') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste des candidats volontaires
+    </a>
+
+    <hr />
+
+    <div class="l__wrapper--slim">
+        <strong>Nom :</strong> {{ volunteerRequest.lastName }}<br>
+        <strong>Prénom :</strong> {{ volunteerRequest.firstName }}<br>
+        <strong>Téléphone :</strong> {{ volunteerRequest.phone ? volunteerRequest.phone|phone_number_format : '' }}<br>
+        <strong>Profession :</strong> {{ volunteerRequest.profession }}<br>
+        <strong>Thèmes favoris :</strong>
+        <ul>
+        {% for favoriteTheme in volunteerRequest.favoriteThemes %}
+            <li>{{ favoriteTheme.name }}</li>
+        {% endfor %}
+        </ul><br>
+        <strong>Thèmes favoris personnalisés :</strong><blockquote>{{ volunteerRequest.customFavoriteTheme }}</blockquote><br>
+        <strong>Compétences techniques :</strong>
+        <ul>
+        {% for technicalSkill in volunteerRequest.technicalSkills %}
+            <li>{{ technicalSkill.name }}</li>
+        {% endfor %}
+        </ul><br>
+        <strong>Fait partie d'une précédente campagne ?</strong> {{ volunteerRequest.isPreviousCampaignMember ? 'Oui' : 'Non' }}<br>
+        <strong>Domaine de l'association locale :</strong><blockquote>{{ volunteerRequest.previousCampaignDetails }}</blockquote><br>
+        <strong>Partage l'engagement associatif ?</strong> {{ volunteerRequest.shareAssociativeCommitment ? 'Oui' : 'Non' }}<br>
+        <strong>Détail de l'engagement associatif :</strong><blockquote>{{ volunteerRequest.associativeCommitmentDetails }}</blockquote><br>
+    </div>
+{% endblock %}

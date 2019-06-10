@@ -5,6 +5,7 @@ namespace AppBundle\Form\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
+use AppBundle\Form\DataTransformer\StringToArrayTransformer;
 use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -95,6 +96,11 @@ class ApplicationRequestType extends AbstractType
             [$postalCode, $inseeCode] = explode('-', $cityCode);
             $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
         });
+
+        $builder
+            ->get('favoriteCities')
+            ->addModelTransformer(new StringToArrayTransformer())
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
