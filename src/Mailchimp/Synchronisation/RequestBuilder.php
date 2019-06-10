@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp\Synchronisation;
 
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Manager;
@@ -23,11 +24,12 @@ class RequestBuilder
     private $countryName;
     private $adhesionDate;
 
-    private $interests = [];
+    private $interests;
 
     private $activeTags = [];
     private $inactiveTags = [];
     private $mailchimpObjectIdMapping;
+    private $isSubscribeRequest = true;
 
     public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
     {
@@ -48,6 +50,16 @@ class RequestBuilder
             ->setAdhesionDate($adherent->getRegisteredAt())
             ->setInterests($this->buildInterestArray($adherent))
             ->setActiveTags($adherent->getReferentTagCodes())
+            ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
+        ;
+    }
+
+    public function updateFromNewsletterSubscription(NewsletterSubscription $newsletter): self
+    {
+        return $this
+            ->setEmail($newsletter->getEmail())
+            ->setZipCode($newsletter->getPostalCode())
+            ->setCountryName($newsletter->getCountryName())
         ;
     }
 
@@ -135,7 +147,14 @@ class RequestBuilder
         return $this;
     }
 
-    public function buildMemberRequest(string $memberIdentifier, Adherent $adherent): MemberRequest
+    public function setIsSubscribeRequest(bool $isSubscribeRequest): self
+    {
+        $this->isSubscribeRequest = $isSubscribeRequest;
+
+        return $this;
+    }
+
+    public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
 
@@ -143,7 +162,7 @@ class RequestBuilder
             $request->setEmailAddress($this->email);
         }
 
-        if (!$adherent->isEnabled() || $adherent->isEmailUnsubscribed()) {
+        if (false === $this->isSubscribeRequest) {
             $request->setUnsubscriptionRequest();
         }
 

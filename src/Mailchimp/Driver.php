@@ -30,11 +30,11 @@ class Driver implements LoggerAwareInterface
     /**
      * Create or update a member
      */
-    public function editMember(MemberRequest $request): bool
+    public function editMember(MemberRequest $request, string $listId): bool
     {
         return $this->sendRequest(
             'PUT',
-            sprintf('/lists/%s/members/%s', $this->listId, md5($request->getMemberIdentifier())),
+            sprintf('/lists/%s/members/%s', $listId, md5($request->getMemberIdentifier())),
             $request->toArray()
         );
     }
@@ -123,9 +123,9 @@ class Driver implements LoggerAwareInterface
         );
     }
 
-    public function deleteMember(string $mail): bool
+    public function deleteMember(string $mail, string $listId): bool
     {
-        return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $this->listId, md5(strtolower($mail))));
+        return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, md5(strtolower($mail))));
     }
 
     public function getReportData(string $campaignId): array

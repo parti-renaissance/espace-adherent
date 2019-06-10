@@ -550,39 +550,14 @@
             <argument type="service" key="$sectionBuildersLocator" id="app.mailchimp.content_section_builders_locator" />
         </service>
 
-        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler">
-            <tag name="messenger.message_handler" />
-            <tag name="monolog.logger" channel="mailchimp_sync"/>
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-        </service>
-
-        <service id="AppBundle\Mailchimp\Synchronisation\Handler\AdherentDeleteCommandHandler">
-            <tag name="messenger.message_handler" />
-        </service>
-
-        <service id="AppBundle\AdherentMessage\Handler\CreateStaticSegmentCommandHandler">
-            <tag name="messenger.message_handler" />
-        </service>
-
-        <service id="AppBundle\Mailchimp\Synchronisation\Handler\UpdateCommitteeStaticSegmentHandler">
-            <tag name="messenger.message_handler" />
-        </service>
-
-        <service id="AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler">
-            <tag name="messenger.message_handler" />
-        </service>
         <service id="AppBundle\AdherentMessage\Listener\CreateDefaultMessageFilterSubscriber" />
         <service id="AppBundle\AdherentMessage\AdherentMessageManager" />
-
-        <service id="AppBundle\AdherentMessage\Handler\AdherentMessageDeleteCommandHandler">
-            <tag name="messenger.message_handler" />
-        </service>
 
         <service id="AppBundle\AdherentMessage\Filter\FilterFormFactory" />
 
         <service id="AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping">
+            <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
             <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
@@ -634,6 +609,12 @@
             </call>
         </service>
         <service id="AppBundle\Filter\OrTextSearchFilter" />
+
+        <service id="AppBundle\Newsletter\Listener\MailchimpSyncSubscriber" />
+
+        <service id="AppBundle\Newsletter\Listener\SendWelcomeMailSubscriber">
+            <argument type="service" id="app.mailer.transactional" />
+        </service>
 
         <!-- Command -->
         <service id="AppBundle\Command\ImportAssessorsCommand" />

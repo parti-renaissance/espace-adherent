@@ -3,38 +3,39 @@
 namespace AppBundle\Newsletter;
 
 use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class NewsletterSubscriptionHandler
 {
     private $manager;
-    private $mailer;
+    private $eventDispatcher;
 
-    public function __construct(EntityManager $manager, MailerService $mailer)
+    public function __construct(EntityManager $manager, EventDispatcherInterface $eventDispatcher)
     {
         $this->manager = $manager;
-        $this->mailer = $mailer;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function subscribe(NewsletterSubscription $subscription)
+    public function subscribe(NewsletterSubscription $subscription): void
     {
         $subscription = $this->recoverSoftDeletedSubscription($subscription);
 
         $this->manager->persist($subscription);
         $this->manager->flush();
 
-        $this->mailer->sendMessage(NewsletterSubscriptionMessage::createFromSubscription($subscription));
+        $this->eventDispatcher->dispatch(Events::SUBSCRIBE, new NewsletterEvent($subscription));
     }
 
-    public function unsubscribe(?string $email)
+    public function unsubscribe(?string $email): void
     {
         $subscription = $this->findSubscriptionByEmail($email);
 
         if ($subscription) {
             $this->manager->remove($subscription);
             $this->manager->flush();
+
+            $this->eventDispatcher->dispatch(Events::UNSUBSCRIBE, new NewsletterEvent($subscription));
         }
     }
 

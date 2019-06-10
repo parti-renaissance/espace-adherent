@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -116,5 +117,10 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
     public function setCountry(?string $country): void
     {
         $this->country = $country;
+    }
+
+    public function getCountryName(): ?string
+    {
+        return $this->country ? Intl::getRegionBundle()->getCountryName($this->country) : null;
     }
 }

@@ -53,12 +53,17 @@ class MemberRequest implements MemberRequestInterface
 
     public function toArray(): array
     {
-        return [
+        $data = [
             'email_address' => $this->emailAddress ?? $this->memberIdentifier,
             'email_type' => $this->emailType,
             'status' => $this->status,
             'merge_fields' => $this->mergeFields,
-            'interests' => $this->interests,
         ];
+
+        if ($this->interests) {
+            $data['interests'] = $this->interests;
+        }
+
+        return $data;
     }
 }

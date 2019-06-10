@@ -8,7 +8,7 @@
 
         <service id="app.newsletter_subscription.handler" class="AppBundle\Newsletter\NewsletterSubscriptionHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="app.mailer.transactional" />
+            <argument type="service" id="event_dispatcher" />
         </service>
 
         <service id="app.newsletter_invitation.handler" class="AppBundle\Newsletter\NewsletterInvitationHandler">

@@ -5,8 +5,10 @@ namespace AppBundle\Mailchimp;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
+use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
@@ -28,15 +30,18 @@ class Manager implements LoggerAwareInterface
     private $driver;
     private $requestBuildersLocator;
     private $eventDispatcher;
+    private $mailchimpObjectIdMapping;
 
     public function __construct(
         Driver $driver,
         ContainerInterface $requestBuildersLocator,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        MailchimpObjectIdMapping $mailchimpObjectIdMapping
     ) {
         $this->driver = $driver;
         $this->requestBuildersLocator = $requestBuildersLocator;
         $this->eventDispatcher = $eventDispatcher;
+        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
     /**
@@ -50,7 +55,8 @@ class Manager implements LoggerAwareInterface
         ;
 
         $result = $this->driver->editMember(
-            $requestBuilder->buildMemberRequest($message->getEmailAddress(), $adherent)
+            $requestBuilder->buildMemberRequest($message->getEmailAddress()),
+            $this->mailchimpObjectIdMapping->getMainListId()
         );
 
         if ($result) {
@@ -59,6 +65,17 @@ class Manager implements LoggerAwareInterface
                 $requestBuilder->createMemberTagsRequest($adherent->getEmailAddress(), $message->getRemovedTags())
             );
         }
+    }
+
+    public function editNewsletterMember(NewsletterSubscription $newsletter): bool
+    {
+        return $this->driver->editMember(
+            $this->requestBuildersLocator
+                ->get(RequestBuilder::class)
+                ->updateFromNewsletterSubscription($newsletter)
+                ->buildMemberRequest($newsletter->getEmail()),
+            $this->mailchimpObjectIdMapping->getNewsletterListId()
+        );
     }
 
     public function getCampaignContent(MailchimpCampaign $campaign): string
@@ -176,7 +193,12 @@ class Manager implements LoggerAwareInterface
 
     public function deleteMember(string $mail): void
     {
-        $this->driver->deleteMember($mail);
+        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getMainListId());
+    }
+
+    public function deleteNewsletterMember(string $mail): void
+    {
+        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getNewsletterListId());
     }
 
     public function getReportData(MailchimpCampaign $campaign): array
