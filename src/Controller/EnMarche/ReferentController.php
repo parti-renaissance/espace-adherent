@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
@@ -65,6 +66,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ReferentController extends Controller
 {
+    use CanaryControllerTrait;
+
     public const TOKEN_ID = 'referent_managed_users';
 
     /**
@@ -626,6 +629,8 @@ class ReferentController extends Controller
         MunicipalExporter $municipalExporter,
         UserInterface $referent
     ): Response {
+        $this->disableInProduction();
+
         return $this->render('referent/municipal/running_mate/list.html.twig', [
             'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
                 $runningMateRequestRepository->findForReferent($referent)
@@ -647,6 +652,8 @@ class ReferentController extends Controller
         MunicipalExporter $municipalExporter,
         UserInterface $referent
     ): Response {
+        $this->disableInProduction();
+
         return $this->render('referent/municipal/volunteer/list.html.twig', [
             'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
                 $volunteerRequestRepository->findForReferent($referent)
@@ -668,6 +675,8 @@ class ReferentController extends Controller
      */
     public function municipalRunningMateDetailAction(RunningMateRequest $runningMateRequest): Response
     {
+        $this->disableInProduction();
+
         return $this->render('referent/municipal/running_mate/detail.html.twig', [
             'runningMateRequest' => $runningMateRequest,
         ]);
@@ -687,6 +696,8 @@ class ReferentController extends Controller
      */
     public function municipalVolunteerDetailAction(VolunteerRequest $volunteerRequest): Response
     {
+        $this->disableInProduction();
+
         return $this->render('referent/municipal/volunteer/detail.html.twig', [
             'volunteerRequest' => $volunteerRequest,
         ]);

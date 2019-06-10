@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\ApplicationRequest\ApplicationRequestHandler;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Form\ApplicationRequest\RunningMateRequestType;
@@ -17,11 +18,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ApplicationRequestController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route(name="request", methods={"GET", "POST"})
      */
     public function requestAction(Request $request, ApplicationRequestHandler $handler): Response
     {
+        $this->disableInProduction();
+
         $volunteerForm = $this->createForm(VolunteerRequestType::class, new VolunteerRequest())
             ->handleRequest($request)
         ;
@@ -53,6 +58,8 @@ class ApplicationRequestController extends Controller
      */
     public function confirmAction(): Response
     {
+        $this->disableInProduction();
+
         return $this->render('application_request/confirmation.html.twig');
     }
 }
