@@ -6,7 +6,7 @@ App.createAddressSelector(
     '{{ address.cityName.vars.id }}',
     '{{ address.cityName.vars.required }}',
     {% if address.region is defined  -%}
-        '{{ address.region.vars.id}}'
+        '{{ address.region.vars.id }}'
     {%- else -%}
         null
     {%- endif %},

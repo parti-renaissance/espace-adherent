@@ -20,7 +20,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
     createAutocomplete() {
         this.createInputElement();
 
-        this._autocomplete = new google.maps.places.Autocomplete(this._input, {types: ['address']});
+        this._autocomplete = new google.maps.places.Autocomplete(this._input, { types: ['address'] });
         this._autocomplete.setFields(['address_components']);
 
         // Avoid form submit action when `Enter` (13) key is pressed in autocomplete select
@@ -29,7 +29,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
                 event.preventDefault();
             }
         });
-    };
+    }
 
     attachEvents() {
         this._autocomplete.addListener('place_changed', () => this.placeChangeHandle());
@@ -121,7 +121,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
             if (this._state.country.short_name !== 'FR') {
                 this._address.setRegion(
                     this._state.administrative_area_level_1 && this._state.administrative_area_level_1.long_name || ''
-                )
+                );
             }
         } else if (!this._address.getCountry()) {
             this._address.setCountry('FR');
@@ -164,7 +164,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
 
         observerHack.observe(this._input, {
             attributes: true,
-            attributeFilter: ['autocomplete']
+            attributeFilter: ['autocomplete'],
         });
     }
 

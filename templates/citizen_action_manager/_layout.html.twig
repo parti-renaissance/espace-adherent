@@ -80,6 +80,7 @@
                     <div class="citizen_action__address l__row l__row--h-stretch l__mobile--col">
                         <div class="form__row citizen_action__form__zip_code register__form--third"
                              id="citizen-action-address-zipcode-field">
+                            {{ form_errors(citizen_action_form.address.postalCode) }}
                             {{ form_label(citizen_action_form.address.postalCode, 'Code postal', { label_attr : { class: 'text--bold' }}) }}
                             {{ form_widget(citizen_action_form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
                         </div>
@@ -87,6 +88,7 @@
                         <div class="form__row citizen_action__form__city register__form--third"
                              id="citizen-action-address-city-field">
                             {{ form_errors(citizen_action_form.address.city) }}
+                            {{ form_errors(citizen_action_form.address.cityName) }}
                             {{ form_label(citizen_action_form.address.cityName, 'Ville', { label_attr: { class: 'text--bold' } }) }}
                             {{ form_widget(citizen_action_form.address.city, { attr: { class: 'citizen_action__form__city'} }) }}
                             {{ form_widget(citizen_action_form.address.cityName, { attr: { class: 'form--full citizen_action__form__city_name', placeholder: 'Ville' } }) }}

@@ -29,6 +29,8 @@ class AddressType extends AbstractType
             ])
             ->add('country', UnitedNationsCountryType::class, [
                 'disabled' => $options['disable_fields'],
+                'placeholder' => 'Sélectionner un pays',
+                'preferred_choices' => ['FR'],
             ])
         ;
         if ($options['set_address_region']) {
