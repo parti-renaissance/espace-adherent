@@ -11,7 +11,7 @@
     <header class="space--40-0">
         <div class="l__wrapper--slim text--center">
             <h1 class="text--large text--inline text--on-white">
-                {{ page.title }}
+                <span class="text--blue--new">{{ app.user.firstname }}</span>, {{ page.title }}
             </h1>
         </div>
     </header>
@@ -24,16 +24,15 @@
 
     <div class="l__wrapper--slim espace-formation__cases">
         <ol>
-            {% for axe in axes %}
+            {% for keyAxe, axe in axes %}
             <li>
-                <a href="{{ path('app_formation_axe', { 'slug': axe.slug }) }}"
-                   class="link--no-decor">
-                    <h1 class="text--medium">{{ axe.title }}</h1>
-                    <div class="button">
-                           {{ include('components/chevron--right.html.twig') }}
-                    </div>
-                </a>
+                <h2 class="text--medium-small" style="padding:80px 0 0 30px;">{{ axe.title }}</h2>
             </li>
+                {% for keyArticle, article in axe.articles %}
+                    <a href="{{ path('app_formation_article', { 'slug': article.slug }) }}">
+                        <strong>M{{ keyAxe+1 }}.{{ keyArticle }} -</strong> {{ article.title }}
+                    </a>
+                {% endfor %}
             {% endfor %}
         </ol>
     </div>

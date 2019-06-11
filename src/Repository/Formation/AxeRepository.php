@@ -12,4 +12,17 @@ class AxeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Axe::class);
     }
+
+    /**
+     * @return Axe[]
+     */
+    public function findAllWithArticles(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('articles')
+            ->leftJoin('a.articles', 'articles')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

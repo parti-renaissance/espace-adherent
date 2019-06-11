@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Formation\Article;
-use AppBundle\Entity\Formation\Axe;
 use AppBundle\Entity\Page;
 use AppBundle\Repository\Formation\AxeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -13,46 +12,36 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-formation")
+ * @Route("/espace-formation", name="app_formation_")
  * @Security("is_granted('ROLE_HOST')")
  */
 class FormationController extends Controller
 {
     /**
-     * @Route(name="app_formation_intro", methods="GET")
-     * @Entity("page", expr="repository.findOneBySlug('espace-formation-intro')")
-     */
-    public function intro(Page $page): Response
-    {
-        return $this->render('formation/intro.html.twig', [
-            'page' => $page,
-        ]);
-    }
-
-    /**
-     * @Route("/mon-parcours", name="app_formation_home", methods="GET")
+     * @Route(name="home", methods="GET")
      * @Entity("page", expr="repository.findOneBySlug('espace-formation')")
      */
     public function home(Page $page, AxeRepository $axeRepository): Response
     {
         return $this->render('formation/home.html.twig', [
             'page' => $page,
-            'axes' => $axeRepository->findAll(),
+            'axes' => $axeRepository->findAllWithArticles(),
         ]);
     }
 
     /**
-     * @Route("/axe/{slug}", name="app_formation_axe", methods="GET")
+     * @Route("/faq", name="faq", methods="GET")
+     * @Entity("page", expr="repository.findOneBySlug('espace-formation/faq')")
      */
-    public function axe(Axe $axe): Response
+    public function faq(Page $page): Response
     {
-        return $this->render('formation/axe.html.twig', [
-            'axe' => $axe,
+        return $this->render('formation/faq.html.twig', [
+            'page' => $page,
         ]);
     }
 
     /**
-     * @Route("/article/{slug}", name="app_formation_article", methods="GET")
+     * @Route("/article/{slug}", name="article", methods="GET")
      */
     public function article(Article $article): Response
     {
