@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Intl\FranceCitiesBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,11 +16,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class MunicipalChiefController extends AbstractController
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/", name="app_municipalchief_index")
      */
     public function indexAction(UserInterface $municipalChief): Response
     {
+        $this->disableInProduction();
+
         return $this->render('municipal_chief/index.html.twig', [
             'managedCities' => FranceCitiesBundle::searchCitiesByInseeCodes(
                 $municipalChief->getMunicipalChiefManagedArea()->getCodes()

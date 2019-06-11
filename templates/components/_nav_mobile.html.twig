@@ -93,7 +93,7 @@
                             <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
                         </li>
                     {% endif %}
-                    {% if app.user.isMunicipalChief %}
+                    {% if app.user.isMunicipalChief and is_canary_enabled() %}
                         <li>
                             <a href="{{ path('app_municipalchief_index') }}">Espace chef municipal</a>
                         </li>
