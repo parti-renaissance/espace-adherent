@@ -119,7 +119,7 @@
 
         <div class="em-form__group application_request_customFavoriteTheme">
             {{ form_label(form.customFavoriteTheme, 'Autre(s)') }}
-            {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entre une ou plusieurs thématiques' } }) }}
+            {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entrez une ou plusieurs thématiques' } }) }}
             {{ form_errors(form.customFavoriteTheme) }}
         </div>
 
@@ -130,6 +130,20 @@
         {% block project_block '' %}
 
         {% block chart_block '' %}
+
+        <div class="em-form__group em-form__group--cgu">
+            <div class="form__checkbox">
+                {% set agreeToDataUseLabel %}
+                    <span class="label-with-link">
+                        Je consens au traitement de mes données par LaREM et les équipes locales de campagne
+                        pour les élections municipales de 2020 et j’accepte d’être recontacté(e) dans ce cadre.
+                    </span>
+                {% endset %}
+                {{ form_widget(form.agreeToDataUse) }}
+                <label for="{{ form.agreeToDataUse.vars.id }}">{{ agreeToDataUseLabel|raw }}</label>
+                {{ form_errors(form.agreeToDataUse) }}
+            </div>
+        </div>
 
         <div class="em-form__group">
             <p class="em-form__cgu b__nudge--top">

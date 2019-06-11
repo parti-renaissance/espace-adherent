@@ -54,18 +54,21 @@ class FranceCitiesBundle
 
     public static function searchCities(string $search): array
     {
-        $search = \mb_strtolower($search);
+        $search = self::canonicalizeCityName($search);
+
         $list = [];
 
         foreach (self::$cities as $postalCode => $cities) {
             foreach ($cities as $inseeCode => $cityName) {
-                if (!preg_match("/^$search/", \mb_strtolower($cityName))) {
+                $canonicalCityName = self::canonicalizeCityName($cityName);
+
+                if (0 !== strpos($canonicalCityName, $search)) {
                     continue;
                 }
 
                 $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
-                $list[$inseeCode] = [
+                $list[] = [
                     'postal_code' => $postalCode,
                     'insee_code' => $inseeCode,
                     'name' => $cityName,
@@ -78,10 +81,17 @@ class FranceCitiesBundle
         }
 
         usort($list, function (array $city1, array $city2) {
-            return $city1['insee_code'] < $city2['insee_code'] ? -1 : 1;
+            return $city1['postal_code'] < $city2['postal_code'] ? -1 : 1;
         });
 
         return $list;
+    }
+
+    private static function canonicalizeCityName(string $cityName): string
+    {
+        $cityName = iconv('UTF-8', 'ASCII//TRANSLIT', $cityName);
+
+        return \mb_strtolower(str_replace('-', ' ', trim($cityName)));
     }
 
     public static $countries = [
