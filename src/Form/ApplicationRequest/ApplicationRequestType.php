@@ -75,6 +75,10 @@ class ApplicationRequestType extends AbstractType
                 'mapped' => false,
                 'required' => true,
             ])
+            ->add('agreeToDataUse', CheckboxType::class, [
+                'mapped' => false,
+                'required' => true,
+            ])
         ;
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {

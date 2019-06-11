@@ -18,7 +18,7 @@
                 '#volunteer_request_favoriteCities_search',
                 path('api_city_autocomplete'),
                 '#volunteer_request_favoriteCities_search',
-                10
+                5
             ) }}
             {{ js.address(volunteer_form.address) }}
             {{ js.toggleDisplayFromCheckbox(
@@ -118,7 +118,7 @@
 
             {% block favorite_cities_help %}
                 <div class="em-form__legend">
-                    Veuillez sélectionner au maximum 10 villes.
+                    Veuillez sélectionner au maximum 5 villes.
                 </div>
             {% endblock %}
 
@@ -287,20 +287,6 @@
                         {{ form_widget(form.agreeToLREMValues) }}
                         <label for="{{ form.agreeToLREMValues.vars.id }}">{{ LREMValuesLabel|raw }}</label>
                         {{ form_errors(form.agreeToLREMValues) }}
-                    </div>
-                </div>
-
-                <div class="em-form__group em-form__group--cgu">
-                    <div class="form__checkbox">
-                        {% set agreeToDataUseLabel %}
-                            <span class="label-with-link">
-                                Je consens au traitement de mes données par LaREM et les équipes locales de campagne
-                                pour les élections municipales de 2020 et j’accepte d’être recontacté(e) dans ce cadre.
-                            </span>
-                        {% endset %}
-                        {{ form_widget(form.agreeToDataUse) }}
-                        <label for="{{ form.agreeToDataUse.vars.id }}">{{ agreeToDataUseLabel|raw }}</label>
-                        {{ form_errors(form.agreeToDataUse) }}
                     </div>
                 </div>
             {% endblock %}
