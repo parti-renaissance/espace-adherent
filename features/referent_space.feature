@@ -44,7 +44,8 @@ Feature:
     And I should see "Banner"
     And I should see "Bruce"
     And I should see "+33 6 06 06 06 06"
-    And I should see "New York"
+    And I should see "Mons-en-Baroeul, Camphin-en-Pévèle"
+    And I should see "Seclin"
     And I should see "Télécharger le CV"
     And I should see "Oui"
 
@@ -69,7 +70,8 @@ Feature:
     And I wait 10 seconds until I see NOM
     And I should see "Stark"
     And I should see "Tony"
-    And I should see "Malibu,New-York"
+    And I should see "Mons-en-Baroeul, Camphin-en-Pévèle"
+    And I should see "Seclin"
     And I should see "Oui"
 
     When I click the "application-detail-0" element
