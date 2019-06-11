@@ -68,7 +68,11 @@ class FranceCitiesBundle
 
                 $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
 
-                $list[] = [
+                if (\array_key_exists($inseeCode, $list)) {
+                    continue;
+                }
+
+                $list[$inseeCode] = [
                     'postal_code' => $postalCode,
                     'insee_code' => $inseeCode,
                     'name' => $cityName,
