@@ -10,6 +10,7 @@ use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
+use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ReferentTeamMember;
 use AppBundle\Membership\ActivityPositions;
@@ -57,6 +58,10 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const COMMITTEE_8_UUID = '93b72179-7d27-40c4-948c-5188aaf264b6';
     public const COMMITTEE_9_UUID = '62ea97e7-6662-427b-b90a-23429136d0dd';
     public const COMMITTEE_10_UUID = '79638242-5101-11e7-b114-b2f933d5fe66';
+
+    public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
+    public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
+    public const MUNICIPAL_CHIEF_3_UUID = '991e29ff-0333-4a30-a228-067ac5bbe6a9';
 
     public const DEFAULT_PASSWORD = 'secret!12345';
 
@@ -521,6 +526,61 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
+        // municipal chief
+        $municipalChief1 = $adherentFactory->createFromArray([
+            'uuid' => self::MUNICIPAL_CHIEF_1_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'municipal-chief@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Municipal',
+            'last_name' => 'Chef',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1992-07-28',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2019-06-10 09:19:00',
+        ]);
+        $municipalChiefArea1 = new MunicipalChiefManagedArea();
+        $municipalChiefArea1->setCodes(['59350', '62637', '59560']);
+        $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);
+        $this->addReference('municipal-chief-1', $municipalChief1);
+
+        $municipalChief2 = $adherentFactory->createFromArray([
+            'uuid' => self::MUNICIPAL_CHIEF_2_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'municipal-chief-2@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Municipal',
+            'last_name' => 'Chef',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1982-08-27',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2019-06-10 09:19:00',
+        ]);
+        $municipalChiefArea2 = new MunicipalChiefManagedArea();
+        $municipalChiefArea2->setCodes(['59124', '59123']);
+        $municipalChief2->setMunicipalChiefManagedArea($municipalChiefArea2);
+        $this->addReference('municipal-chief-2', $municipalChief2);
+
+        $municipalChief3 = $adherentFactory->createFromArray([
+            'uuid' => self::MUNICIPAL_CHIEF_3_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'municipal-chief-3@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Municipal',
+            'last_name' => 'Chef',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1982-08-27',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2019-06-10 09:19:00',
+        ]);
+        $municipalChiefArea3 = new MunicipalChiefManagedArea();
+        $municipalChiefArea3->setCodes(['59411', '59410']);
+        $municipalChief3->setMunicipalChiefManagedArea($municipalChiefArea3);
+        $this->addReference('municipal-chief-3', $municipalChief3);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -544,6 +604,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key20 = AdherentActivationToken::generate($deputy_75_1);
         $key21 = AdherentActivationToken::generate($deputy_ch_li);
         $key22 = AdherentActivationToken::generate($adherent16);
+        $key23 = AdherentActivationToken::generate($municipalChief1);
+        $key24 = AdherentActivationToken::generate($municipalChief2);
+        $key25 = AdherentActivationToken::generate($municipalChief3);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -567,6 +630,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
         $deputy_ch_li->activate($key21, '2017-06-26 12:14:51');
+        $municipalChief1->activate($key23, '2019-06-10 09:19:00');
+        $municipalChief2->activate($key24, '2019-06-10 09:19:00');
+        $municipalChief3->activate($key25, '2019-06-10 09:19:00');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -721,6 +787,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($coordinatorCP);
         $manager->persist($deputy_75_1);
         $manager->persist($deputy_ch_li);
+        $manager->persist($municipalChief1);
+        $manager->persist($municipalChief2);
+        $manager->persist($municipalChief3);
 
         // For Organizational chart: adherent which is co-referent in the referent@en-marche-dev.fr team
         $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
@@ -748,6 +817,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($key19);
         $manager->persist($key20);
         $manager->persist($key22);
+        $manager->persist($key23);
+        $manager->persist($key24);
+        $manager->persist($key25);
 
         $manager->persist($resetPasswordToken);
 

@@ -1,0 +1,12 @@
+{% extends 'municipal_chief/_layout.html.twig' %}
+
+{% block municipal_chief_content %}
+    <a href="{{ path('app_municipal_chief_municipal_running_mate_request') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste des candidats colistiers
+    </a>
+
+    <hr />
+
+    {{ include('application_request/municipal/_running_mate_detail.html.twig') }}
+{% endblock %}

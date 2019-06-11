@@ -58,7 +58,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     /**
      * @var array
      *
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="simple_array")
      *
      * @Assert\Count(
      *     min=1,
