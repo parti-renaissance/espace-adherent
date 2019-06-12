@@ -44,6 +44,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     private $adherentDummy;
     private $commandDummy;
     private $clientMock;
+    /** @var MailchimpObjectIdMapping */
+    private $mailchimpMapping;
 
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
@@ -318,7 +320,9 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         return new SimpleContainer([
             CampaignRequestBuilder::class => new CampaignRequestBuilder(
-                $mailchimpMapping = new MailchimpObjectIdMapping(
+                $this->mailchimpMapping = new MailchimpObjectIdMapping(
+                    'main_list_id',
+                    'newsletter_list_id',
                     [
                         'referent' => 1,
                         'deputy' => 2,
@@ -343,11 +347,14 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'B',
                     'C'
                 ),
-                new SegmentConditionsBuilder($mailchimpMapping),
+                new SegmentConditionsBuilder($this->mailchimpMapping),
                 'listId',
                 'FromName'
             ),
-            CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder($mailchimpMapping, $this->createSectionRequestBuildersLocator()),
+            CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
+                $this->mailchimpMapping,
+                $this->createSectionRequestBuildersLocator()
+            ),
         ]);
     }
 
@@ -375,7 +382,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             new Manager(
                 new Driver($this->clientMock, 'test'),
                 $this->creatRequestBuildersLocator(),
-                $this->createEventDispatcher()
+                $this->createEventDispatcher(),
+                $this->mailchimpMapping
             ),
             $this->createMock(ObjectManager::class)
         );

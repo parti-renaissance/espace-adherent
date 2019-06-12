@@ -11,6 +11,8 @@ services:
             tags: ['app.mailchimp.webhook_handler']
         AppBundle\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
             tags: ['app.mailchimp.campaign.handler']
+        Symfony\Component\Messenger\Handler\MessageHandlerInterface:
+            tags: ['messenger.message_handler']
 
     AppBundle\Mailchimp\Webhook\Handler\:
         resource: ../../../src/Mailchimp/Webhook/Handler/
@@ -25,3 +27,15 @@ services:
         arguments: [!tagged 'app.mailchimp.campaign.handler']
 
     AppBundle\AdherentMessage\StatisticsAggregator: ~
+
+    AppBundle\Mailchimp\Synchronisation\Handler\:
+        resource: ../../../src/Mailchimp/Synchronisation/Handler/
+
+    AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
+        tags:
+            - { name: 'monolog.logger', channel: 'mailchimp_sync' }
+        calls:
+            - ['setLogger', ['@logger']]
+
+    AppBundle\AdherentMessage\Handler\:
+        resource: ../../../src/AdherentMessage/Handler/

@@ -4,6 +4,8 @@ namespace AppBundle\Mailchimp\Campaign;
 
 class MailchimpObjectIdMapping
 {
+    private $mainListId;
+    private $newsletterListId;
     private $folderIds;
     private $templateIds;
     private $interestIds;
@@ -12,6 +14,8 @@ class MailchimpObjectIdMapping
     private $subscriptionTypeInterestGroupId;
 
     public function __construct(
+        string $mainListId,
+        string $newsletterListId,
         array $folderIds,
         array $templateIds,
         array $interestIds,
@@ -19,6 +23,8 @@ class MailchimpObjectIdMapping
         string $memberInterestInterestGroupId,
         string $subscriptionTypeInterestGroupId
     ) {
+        $this->mainListId = $mainListId;
+        $this->newsletterListId = $newsletterListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
@@ -55,5 +61,15 @@ class MailchimpObjectIdMapping
     public function getSubscriptionTypeInterestGroupId(): string
     {
         return $this->subscriptionTypeInterestGroupId;
+    }
+
+    public function getMainListId(): string
+    {
+        return $this->mainListId;
+    }
+
+    public function getNewsletterListId(): string
+    {
+        return $this->newsletterListId;
     }
 }

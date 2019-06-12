@@ -7,11 +7,12 @@ use AppBundle\Mailchimp\Manager;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class AdherentChangeCommandHandler implements MessageHandlerInterface
+class AdherentChangeCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
