@@ -5,6 +5,8 @@ namespace AppBundle\Entity\Formation;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityMediaInterface;
 use AppBundle\Entity\EntityMediaTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -79,6 +81,26 @@ class Article implements EntityMediaInterface
      */
     private $axe;
 
+    /**
+     * @var Collection|File[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\Formation\File",
+     *     cascade={"persist", "remove"},
+     *     mappedBy="article",
+     *     orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"id": "ASC"})
+     *
+     * @Assert\Valid
+     */
+    private $files;
+
+    public function __construct()
+    {
+        $this->files = new ArrayCollection();
+    }
+
     public function __toString()
     {
         return (string) $this->title;
@@ -132,5 +154,26 @@ class Article implements EntityMediaInterface
     public function setAxe(Axe $axe): void
     {
         $this->axe = $axe;
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): void
+    {
+        if (!$this->files->contains($file)) {
+            $file->setArticle($this);
+            $this->files->add($file);
+        }
+    }
+
+    public function removeFile(File $file): void
+    {
+        $this->files->removeElement($file);
     }
 }

@@ -2,11 +2,14 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Formation\File;
+use AppBundle\Form\Admin\BaseFileType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\AdminType;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -49,6 +52,19 @@ class FormationArticleAdmin extends AbstractAdmin
                     'required' => false,
                     'filter_emojis' => true,
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
+                ])
+            ->end()
+            ->with('Fichiers attachés', ['class' => 'col-md-12'])
+                ->add('files', CollectionType::class, [
+                    'label' => false,
+                    'entry_type' => BaseFileType::class,
+                    'entry_options' => [
+                        'data_class' => File::class,
+                    ],
+                    'required' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
                 ])
             ->end()
         ;
