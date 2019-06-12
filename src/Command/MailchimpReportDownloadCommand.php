@@ -10,6 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -41,7 +42,11 @@ class MailchimpReportDownloadCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Download Mailchimp campaigns reports');
+        $this
+            ->setDescription('Download Mailchimp campaigns reports')
+            ->addOption('recent-only', null, InputOption::VALUE_NONE, 'Download campaign reports for only recent messages')
+            ->addOption('recent-interval', null, InputOption::VALUE_REQUIRED, 'Duration of recent interval in day (default: 14 days)', 14)
+        ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -51,7 +56,13 @@ class MailchimpReportDownloadCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $paginator = $this->createPaginator();
+        $from = null;
+
+        if ($recentOnly = $input->getOption('recent-only')) {
+            $from = (new \DateTime())->modify(sprintf('-%d days', (int) $input->getOption('recent-interval')));
+        }
+
+        $paginator = $this->createPaginator($from);
 
         $this->io->progressStart($total = $paginator->count());
         $offset = 0;
@@ -67,22 +78,30 @@ class MailchimpReportDownloadCommand extends Command
             $this->entityManager->clear();
 
             $paginator->getQuery()->setFirstResult($offset);
-        } while ($offset < $total);
+        } while (0 !== $offset && $offset < $total);
 
         $this->io->progressFinish();
     }
 
-    private function createPaginator(): Paginator
+    private function createPaginator(?\DateTimeInterface $from): Paginator
     {
-        return new Paginator(
-            $this->repository
-                ->createQueryBuilder('mc')
-                ->addSelect('report')
-                ->leftJoin('mc.report', 'report')
-                ->where('mc.status = :status')
-                ->setParameter('status', MailchimpCampaign::STATUS_SENT)
-                ->setMaxResults(1000)
-        );
+        $qb = $this->repository
+            ->createQueryBuilder('mc')
+            ->addSelect('report')
+            ->leftJoin('mc.report', 'report')
+            ->where('mc.status = :status')
+            ->setParameter('status', MailchimpCampaign::STATUS_SENT)
+            ->setMaxResults(1)
+        ;
+
+        if ($from) {
+            $qb
+                ->andWhere('mc.updatedAt >= :from')
+                ->setParameter('from', $from)
+            ;
+        }
+
+        return new Paginator($qb);
     }
 
     private function updateReport(MailchimpCampaign $campaign): void
