@@ -1,0 +1,19 @@
+<nav>
+    <ul class="list__links list__links--row list__links--no-decor list__links--nav">
+        <li>
+            <a href="{{ path('app_formation_home') }}" class="{{ is_active_route(app.request, 'app_formation_home') ? 'active' }}">
+                Mon parcours
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('app_formation_faq') }}" class="{{ is_active_route(app.request, 'app_formation_faq') ? 'active' }}">
+                Foire aux questions
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                Faire le QCM
+            </a>
+        </li>
+    </ul>
+</nav>

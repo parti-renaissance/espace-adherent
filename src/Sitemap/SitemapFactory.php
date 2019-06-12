@@ -33,7 +33,7 @@ class SitemapFactory
     private const TYPE_MAIN = 'main';
     private const SKIP_PAGES = [
         'espace-formation',
-        'espace-formation-intro',
+        'espace-formation/faq',
     ];
 
     private $manager;

@@ -17,20 +17,7 @@
 {% block content %}
     <main class="content espace-formation">
         <section class="espace-formation__article">
-            <nav class="space--20-0 text--body">
-                <div class="l__wrapper">
-                    <a href="{{ path('app_formation_axe', { 'slug': article.axe.slug }) }}">
-                        Ma formation
-                    </a>
-                    {{ include('components/chevron--right.html.twig') }}
-                    <a href="{{ path('app_formation_axe', { 'slug': article.axe.slug }) }}">
-                        Axe : <span>{{ article.axe.title }}</span>
-                    </a>
-                    {{ include('components/chevron--right.html.twig') }}
-                    <div>{{ article.title }}</div>
-                </div>
-            </nav>
-
+            {{ include('formation/_navbar.html.twig') }}
             <article class="l__wrapper--slim">
                 {{ article.content|markdown }}
             </article>
