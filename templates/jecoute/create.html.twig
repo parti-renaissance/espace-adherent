@@ -1,4 +1,4 @@
-{% extends 'referent/_layout.html.twig' %}
+{% extends 'jecoute/_layout.html.twig' %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
@@ -134,11 +134,10 @@
     </script>
 {% endblock %}
 
-{% block referent_content %}
+{% block jecoute_content %}
 
-    {% form_theme form with ['jquery.collection.html.twig','referent/_form_theme.html.twig'] %}
-
-    <a href="{{ path('app_referent_jecoute_local_surveys_list') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+    {% form_theme form with ['jquery.collection.html.twig','jecoute/_form_theme.html.twig'] %}
+    <a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
         {{ include('components/caret--left.html.twig') }}
         Retour à la liste des questionnaires locaux
     </a>
@@ -149,11 +148,11 @@
 
     <div class="jecoute-survey l__wrapper--slim">
         {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
-        {{ include('referent/surveys/_form.html.twig') }}
+        {{ include('jecoute/_form.html.twig') }}
         {{ form_end(form) }}
     </div>
 
-    {% include ('referent/surveys/suggested_questions_dialog.html.twig') with {
+    {% include ('jecoute/suggested_questions_dialog.html.twig') with {
         'suggestedQuestions': suggestedQuestions
     } %}
 

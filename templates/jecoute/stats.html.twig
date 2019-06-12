@@ -1,4 +1,4 @@
-{% extends 'referent/_layout.html.twig' %}
+{% extends 'jecoute/_layout.html.twig' %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
@@ -42,7 +42,7 @@
             });
 
             $('.data-answers-open-popin').click(function() {
-                let url = "{{ path('app_referent_jecoute_survey_stats_answers_list', { uuid: 'questionUuid' }) }}";
+                let url = "{{ path("app_jecoute_#{space_name}_survey_stats_answers_list", { uuid: 'questionUuid' }) }}";
 
                 $.ajax({
                     url: url.replace('questionUuid', $(this).attr('data-question-uuid'))
@@ -56,18 +56,18 @@
     </script>
 {% endblock %}
 
-{% block referent_content %}
+{% block jecoute_content %}
     {% if data.survey.isNational %}
-        <a href="{{ path('app_referent_jecoute_national_surveys_list') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        <a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
             {{ include('components/caret--left.html.twig') }} Retour à la liste des questionnaires nationaux
         </a>
     {% else %}
-        <a href="{{ path('app_referent_jecoute_local_surveys_list') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        <a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
             {{ include('components/caret--left.html.twig') }} Retour à la liste des questionnaires locaux
         </a>
     {% endif %}
     <div class="b__nudge--top-10 b__nudge--bottom-small">
-        <a href="{{ path('app_referent_jecoute_survey_stats_download', {'uuid': data.survey.uuid}) }}" class="btn btn--blue--soft" style="float: right;">télécharger au format csv</a>
+        <a href="{{ path("app_jecoute_#{space_name}_survey_stats_download", {'uuid': data.survey.uuid}) }}" class="btn btn--blue--soft" style="float: right;">télécharger au format csv</a>
         <h3>Statistiques : {{ data.survey.name }}</h3>
     </div>
     <hr />
@@ -93,7 +93,7 @@
                             {% endfor %}
                         {% else %}
                             <div class="b__nudge--top-10 b__nudge--bottom-small text--center">
-                                <a data-question-uuid="{{ question.uuid }}" class="data-answers-open-popin btn btn--blue--soft">
+                                <a data-question-uuid="{{ question.uuid }}" data-space-name="{{ space_name }}" class="data-answers-open-popin btn btn--blue--soft">
                                     Voir les {{ question.stats.totalAnswered }} réponses
                                 </a>
                             </div>
@@ -108,6 +108,6 @@
         {% endfor %}
     </div>
 
-    {% include ('referent/surveys/data_answers_dialog.html.twig') %}
+    {% include ('jecoute/data_answers_dialog.html.twig') %}
 
 {% endblock %}

@@ -327,6 +327,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $adherent14->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent14->addReferentTag($this->getReference('referent_tag_ch'));
+        $adherent14->setJecouteManagedAreaCodesAsString('CH');
         $this->addReference('adherent-14', $adherent14);
 
         // Non activated, enabled adherent

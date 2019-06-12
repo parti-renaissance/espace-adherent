@@ -54,8 +54,6 @@ class LocalSurveyRepository extends ServiceEntityRepository
      */
     public function findAllByAuthor(Adherent $author): array
     {
-        $this->checkReferent($author);
-
         return $this
             ->createQueryBuilder('survey')
             ->addSelect('questions')

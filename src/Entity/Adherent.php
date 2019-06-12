@@ -253,6 +253,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $boardMember;
 
     /**
+     * @var JecouteManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\JecouteManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $jecouteManagedArea;
+
+    /**
      * @var CommitteeMembership[]|Collection
      *
      * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent", cascade={"remove"})
@@ -584,6 +591,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ASSESSOR_MANAGER';
         }
 
+        if ($this->isJecouteManager()) {
+            $roles[] = 'ROLE_JECOUTE_MANAGER';
+        }
+
         if ($this->legislativeCandidate) {
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
@@ -633,6 +644,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCoordinator()
             || $this->isProcurationManager()
             || $this->isAssessorManager()
+            || $this->isJecouteManager()
             || $this->isHost()
             || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
@@ -1126,6 +1138,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->procurationManagedArea = null;
     }
 
+    public function revokeJecouteManager(): void
+    {
+        $this->jecouteManagedArea = null;
+    }
+
     public function getManagedAreaMarkerLatitude(): ?string
     {
         if (!$this->managedArea) {
@@ -1208,6 +1225,34 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isCoordinatorCommitteeSector(): bool
     {
         return $this->coordinatorCommitteeArea && $this->coordinatorCommitteeArea->getCodes();
+    }
+
+    public function getJecouteManagedAreaCodesAsString(): ?string
+    {
+        if (!$this->jecouteManagedArea) {
+            return '';
+        }
+
+        return $this->jecouteManagedArea->getCodesAsString();
+    }
+
+    public function getJecouteManagedArea(): ?JecouteManagedArea
+    {
+        return $this->jecouteManagedArea;
+    }
+
+    public function setJecouteManagedAreaCodesAsString(string $codes = null): void
+    {
+        if (!$this->jecouteManagedArea) {
+            $this->jecouteManagedArea = new JecouteManagedArea();
+        }
+
+        $this->jecouteManagedArea->setCodesAsString($codes);
+    }
+
+    public function isJecouteManager(): bool
+    {
+        return $this->jecouteManagedArea instanceof JecouteManagedArea && !empty($this->jecouteManagedArea->getCodes());
     }
 
     public function getMemberships(): CommitteeMembershipCollection

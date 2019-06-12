@@ -1,4 +1,4 @@
-{% extends 'referent/_layout.html.twig' %}
+{% extends 'jecoute/_layout.html.twig' %}
 
 {% block javascripts %}
     <script type="text/javascript">
@@ -25,13 +25,26 @@
                         name: 'Nombre de questions',
                     },
                     {
-                        key: 'stats',
-                        name: "Statistiques",
+                        key: 'city',
+                        name: 'Ville',
+                    },
+                    {
+                        key: 'author',
+                        name: 'Créateur',
+                    },
+                    {
+                        key: 'edit',
+                        name: "Edition",
                         link: true,
                     },
                     {
-                        key: 'show',
-                        name: "Afficher",
+                        key: 'duplicate',
+                        name: "Duplication",
+                        link: true,
+                    },
+                    {
+                        key: 'stats',
+                        name: "Statistiques",
                         link: true,
                     },
                     {
@@ -45,16 +58,17 @@
     </script>
 {% endblock %}
 
-{% block referent_content %}
+{% block jecoute_content %}
     <div class="referent__menu-list-event">
         <div class="menu-items">
-            <h3><a href="{{ path('app_referent_jecoute_local_surveys_list') }}">Questionnaires locaux</a></h3>
+            <h3>Questionnaires locaux</h3>
             <span class="separator">|</span>
-            <h3>Questionnaires nationaux</h3>
+            <h3><a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}">Questionnaires nationaux</a></h3>
         </div>
+        <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-type-table">
+            Créer un questionnaire local
+        </a>
     </div>
-
-    <hr />
 
     <div id="datagrid"></div>
 {% endblock %}
