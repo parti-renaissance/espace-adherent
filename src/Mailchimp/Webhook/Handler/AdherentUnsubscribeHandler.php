@@ -5,7 +5,7 @@ namespace AppBundle\Mailchimp\Webhook\Handler;
 use AppBundle\Mailchimp\Webhook\EventTypeEnum;
 use AppBundle\Subscription\SubscriptionHandler;
 
-class UnsubscribeHandler extends AbstractAdherentHandler
+class AdherentUnsubscribeHandler extends AbstractAdherentHandler
 {
     private $subscriptionHandler;
 
@@ -28,8 +28,8 @@ class UnsubscribeHandler extends AbstractAdherentHandler
         }
     }
 
-    public function support(string $type): bool
+    public function support(string $type, string $listId): bool
     {
-        return EventTypeEnum::UNSUBSCRIBE === $type;
+        return EventTypeEnum::UNSUBSCRIBE === $type && parent::support($type, $listId);
     }
 }

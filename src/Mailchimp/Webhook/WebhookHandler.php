@@ -16,10 +16,10 @@ class WebhookHandler
         $this->handlers = $handlers;
     }
 
-    public function handle(string $type, array $data): void
+    public function handle(string $type, string $listId, array $data): void
     {
         foreach ($this->handlers as $handler) {
-            if ($handler->support($type)) {
+            if ($handler->support($type, $listId)) {
                 $handler->handle($data);
 
                 return;

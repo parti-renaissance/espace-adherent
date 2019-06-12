@@ -25,8 +25,14 @@ class MailchimpWebhookController extends Controller
     public function __invoke(string $key, Request $request, WebhookHandler $handler, LoggerInterface $logger): Response
     {
         if ($key === $this->mailchimpWebhookKey) {
-            if ($request->isMethod(Request::METHOD_POST) && EventTypeEnum::isValid($type = $request->request->get('type'))) {
-                $handler->handle($type, (array) $request->request->get('data', []));
+            $data = (array) $request->request->get('data', []);
+
+            $listId = $data['list_id'] ?? null;
+
+            if (null === $listId) {
+                $logger->error('[Mailchimp Webhook] list id is not found', ['request' => $request->request->all()]);
+            } elseif ($request->isMethod(Request::METHOD_POST) && EventTypeEnum::isValid($type = $request->request->get('type'))) {
+                $handler->handle($type, $listId, $data);
             }
         } else {
             $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));
