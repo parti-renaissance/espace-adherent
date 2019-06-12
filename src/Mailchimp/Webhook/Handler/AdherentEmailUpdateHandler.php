@@ -5,7 +5,7 @@ namespace AppBundle\Mailchimp\Webhook\Handler;
 use AppBundle\Mailchimp\Webhook\EventTypeEnum;
 use AppBundle\Membership\AdherentChangeEmailHandler;
 
-class EmailUpdateHandler extends AbstractAdherentHandler
+class AdherentEmailUpdateHandler extends AbstractAdherentHandler
 {
     private $adherentChangeEmailHandler;
 
@@ -21,8 +21,8 @@ class EmailUpdateHandler extends AbstractAdherentHandler
         }
     }
 
-    public function support(string $type): bool
+    public function support(string $type, string $listId): bool
     {
-        return EventTypeEnum::UPDATE_EMAIL === $type;
+        return EventTypeEnum::UPDATE_EMAIL === $type && parent::support($type, $listId);
     }
 }

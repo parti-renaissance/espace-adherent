@@ -22,10 +22,15 @@ class UpdateAdherentCommandHandler implements MessageHandlerInterface
     public function __invoke(UpdateAdherentCommand $command): void
     {
         if ($command->isUnsubscribe()) {
-            $this->webhookHandler->handle(EventTypeEnum::UNSUBSCRIBE, ['email' => $command->getMail()]);
+            $this->webhookHandler->handle(
+                EventTypeEnum::UNSUBSCRIBE,
+                $this->mailchimpObjectIdMapping->getMainListId(),
+                ['email' => $command->getMail()]
+            );
         } else {
             $this->webhookHandler->handle(
                 EventTypeEnum::UPDATE_PROFILE,
+                $this->mailchimpObjectIdMapping->getMainListId(),
                 [
                     'email' => $command->getMail(),
                     'merges' => [

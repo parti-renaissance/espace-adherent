@@ -3,7 +3,6 @@
 namespace AppBundle\Mailchimp\Webhook\Handler;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Webhook\EventTypeEnum;
 use AppBundle\Subscription\SubscriptionHandler;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,26 +10,23 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
-class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwareInterface
+class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     private $interests;
     private $manager;
     private $subscriptionHandler;
-    private $mailchimpObjectIdMapping;
 
     public function __construct(
         ObjectManager $manager,
         SubscriptionHandler $subscriptionHandler,
-        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         array $interests,
         LoggerInterface $logger
     ) {
         $this->manager = $manager;
         $this->subscriptionHandler = $subscriptionHandler;
         $this->interests = $interests;
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
         $this->logger = $logger;
     }
 
@@ -46,9 +42,9 @@ class ProfileUpdateHandler extends AbstractAdherentHandler implements LoggerAwar
         }
     }
 
-    public function support(string $type): bool
+    public function support(string $type, string $listId): bool
     {
-        return EventTypeEnum::UPDATE_PROFILE === $type;
+        return EventTypeEnum::UPDATE_PROFILE === $type && parent::support($type, $listId);
     }
 
     private function updateInterests(Adherent $adherent, array $data): void

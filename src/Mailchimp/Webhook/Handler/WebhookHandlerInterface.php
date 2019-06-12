@@ -6,5 +6,5 @@ interface WebhookHandlerInterface
 {
     public function handle(array $data): void;
 
-    public function support(string $type): bool;
+    public function support(string $type, string $listId): bool;
 }
