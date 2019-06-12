@@ -2,16 +2,14 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Mailchimp\Webhook\WebhookHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use AppBundle\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class MailchimpUpdateAdherentCommand extends Command
 {
@@ -19,18 +17,11 @@ class MailchimpUpdateAdherentCommand extends Command
 
     /** @var SymfonyStyle */
     private $io;
-    private $manager;
-    private $webhookHandler;
-    private $mailchimpObjectIdMapping;
+    private $bus;
 
-    public function __construct(
-        ObjectManager $manager,
-        WebhookHandler $webhookHandler,
-        MailchimpObjectIdMapping $mailchimpObjectIdMapping
-    ) {
-        $this->manager = $manager;
-        $this->webhookHandler = $webhookHandler;
-        $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
+    public function __construct(MessageBusInterface $bus)
+    {
+        $this->bus = $bus;
 
         parent::__construct();
     }
@@ -41,8 +32,8 @@ class MailchimpUpdateAdherentCommand extends Command
             ->addArgument('file', InputArgument::REQUIRED, 'CSV file path')
             ->addOption('unsubscribe', null, InputOption::VALUE_NONE, 'Update only unsubscribed adherents')
             ->addOption('email-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of email column in CSV', 0)
-            ->addOption('email-pref-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of email preferences column in CSV', 10)
-            ->addOption('interest-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of interest column in CSV', 11)
+            ->addOption('email-pref-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of email preferences column in CSV', 9)
+            ->addOption('interest-col-index', null, InputOption::VALUE_OPTIONAL, 'Index of interest column in CSV', 10)
             ->setDescription('Update adherents from Mailchimp exported data (CSV)')
         ;
     }
@@ -70,38 +61,20 @@ class MailchimpUpdateAdherentCommand extends Command
 
         $this->validateHeaders($header, $emailColIndex, $emailPrefColIndex, $interestColIndex);
 
-        $count = 0;
+        $this->io->progressStart();
 
         while ($row = fgetcsv($file)) {
-            ++$count;
+            $this->bus->dispatch(new UpdateAdherentCommand(
+                $row[$emailColIndex],
+                $row[$emailPrefColIndex],
+                $row[$interestColIndex],
+                $unsubscribeProcess
+            ));
 
-            if ($unsubscribeProcess) {
-                $this->webhookHandler->handle(EventTypeEnum::UNSUBSCRIBE, ['email' => $row[$emailColIndex]]);
-            } else {
-                $this->webhookHandler->handle(
-                    EventTypeEnum::UPDATE_PROFILE,
-                    [
-                        'email' => $row[$emailColIndex],
-                        'merges' => [
-                            'GROUPINGS' => [
-                                [
-                                    'unique_id' => $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId(),
-                                    'groups' => $row[$emailPrefColIndex],
-                                ],
-                                [
-                                    'unique_id' => $this->mailchimpObjectIdMapping->getMemberInterestInterestGroupId(),
-                                    'groups' => $row[$interestColIndex],
-                                ],
-                            ],
-                        ],
-                    ]
-                );
-            }
-
-            if (0 === $count % 1000) {
-                $this->manager->clear();
-            }
+            $this->io->progressAdvance();
         }
+
+        $this->io->progressFinish();
     }
 
     private function validateHeaders(
