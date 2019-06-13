@@ -36,6 +36,10 @@ class AddNewsletterMemberCommandHandler implements MessageHandlerInterface
 
         $this->entityManager->refresh($newsletter);
 
+        if ($newsletter->isDeleted()) {
+            return;
+        }
+
         $this->manager->editNewsletterMember($newsletter);
 
         $this->entityManager->clear();
