@@ -62,6 +62,7 @@
     margin-top: 5px;
     padding-bottom: 10px;
     font-size: 14px;
+    line-height: normal;
 }
 
 @mixin em-form-select {
@@ -259,7 +260,6 @@
             line-height: normal;
 
             a {
-                color: $black;
                 border: none;
             }
         }
@@ -279,6 +279,13 @@
 
             &__col {
                 flex-grow: 1;
+                flex-basis: 100%;
+
+                @media (min-width: $mobile) {
+                    flex-basis: calc(50% - 10px);
+                    margin-right: 10px;
+                }
+
 
                 .form__checkbox {
                     &:last-child {
