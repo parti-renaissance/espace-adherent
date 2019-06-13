@@ -25,7 +25,7 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var UploadedFile|null
      *
-     * @Assert\Image(
+     * @Assert\File(
      *     maxSize="5M",
      *     mimeTypes={
      *         "application/pdf",
