@@ -12,8 +12,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\FormEvents;
 
 class RunningMateAdmin extends AbstractAdmin
 {
@@ -97,8 +99,8 @@ class RunningMateAdmin extends AbstractAdmin
             ->add('favoriteThemeDetails', null, [
                 'label' => 'Thèmes favoris détails',
             ])
-            ->add('curriculum', FileType::class, [
-                'label' => 'CV',
+            ->add('removeCurriculum', CheckboxType::class, [
+                'label' => 'Supprimer le CV ?',
                 'required' => false,
             ])
             ->add('isLocalAssociationMember', BooleanType::class, [
@@ -142,10 +144,9 @@ class RunningMateAdmin extends AbstractAdmin
     {
         parent::preUpdate($runningMateRequest);
 
-        if ($runningMateRequest->getCurriculum()) {
+        if ($runningMateRequest->getRemoveCurriculum()) {
             $this->storage->delete($runningMateRequest->getPathWithDirectory());
-            $runningMateRequest->setCurriculumNameFromUploadedFile($runningMateRequest->getCurriculum());
-            $this->storage->put($runningMateRequest->getPathWithDirectory(), file_get_contents($runningMateRequest->getCurriculum()->getPathname()));
+            $runningMateRequest->removeCurriculumName();
         }
     }
 
@@ -164,5 +165,15 @@ class RunningMateAdmin extends AbstractAdmin
     public function setStorage(Filesystem $storage): void
     {
         $this->storage = $storage;
+    }
+
+    public function removeCurriculumIfNeeded(FormEvent $event): void
+    {
+        $form = $event->getForm();
+
+        if (null === $this->getSubject()->getCity() &&
+            SurveyFormType::CITY_CHOICE === $form->get('concernedAreaChoice')->getData()) {
+            $form->get('city')->addError(new FormError($this->trans('survey.city.required')));
+        }
     }
 }

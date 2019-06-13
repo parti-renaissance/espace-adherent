@@ -18,7 +18,7 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $curriculumName;
 
@@ -35,6 +35,8 @@ class RunningMateRequest extends ApplicationRequest
      * )
      */
     private $curriculum;
+
+    private $removeCurriculum = false;
 
     /**
      * @var bool
@@ -104,6 +106,11 @@ class RunningMateRequest extends ApplicationRequest
         return $this->curriculum;
     }
 
+    public function removeCurriculumName(): void
+    {
+        $this->curriculumName = null;
+    }
+
     public function setCurriculum(?UploadedFile $curriculum): void
     {
         $this->curriculum = $curriculum;
@@ -112,6 +119,16 @@ class RunningMateRequest extends ApplicationRequest
     public function setCurriculumName(string $curriculumName): void
     {
         $this->curriculumName = $curriculumName;
+    }
+
+    public function getRemoveCurriculum(): bool
+    {
+        return $this->removeCurriculum;
+    }
+
+    public function setRemoveCurriculum(bool $removeCurriculum): void
+    {
+        $this->removeCurriculum = $removeCurriculum;
     }
 
     public function isLocalAssociationMember(): ?bool
