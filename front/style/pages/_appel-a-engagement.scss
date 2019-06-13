@@ -101,33 +101,21 @@
     .page-content {
         padding-bottom: 200px;
 
-        .page-intro {
-            margin-bottom: 60px;
+        .page-confirmation {
+            margin-top: 30px;
 
-            p {
-                font-size: 18px;
-                margin-bottom: 30px;
-
-                a {
-                    text-decoration: none;
-                }
-            }
-
-            .space--0-50 {
-                padding: 0;
-                @media (min-width: $mobile) {
-                    padding: 0 50px;
-                }
+            @media (min-width: $mobile) {
+                margin-top: 0;
             }
 
             .icn_success {
                 display: block;
-                margin: 0 auto 40px auto;
+                margin: 0 auto;
             }
         }
 
         .role-picker {
-            margin: 100px 0 65px 0;
+            margin: 80px 0 65px 0;
 
             &__btns {
                 display: flex;
