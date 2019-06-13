@@ -160,7 +160,8 @@ abstract class AbstractMessageController extends Controller
         Request $request,
         AbstractAdherentMessage $message,
         FilterFormFactory $formFactory,
-        AdherentMessageManager $manager
+        AdherentMessageManager $manager,
+        UserInterface $adherent
     ): Response {
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
@@ -177,10 +178,10 @@ abstract class AbstractMessageController extends Controller
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
 
-        $data = $message->getFilter() ?? FilterFactory::create($this->getUser(), $message->getType());
+        $data = $message->getFilter() ?? FilterFactory::create($adherent, $message->getType());
 
         $form = $formFactory
-            ->createForm($message->getType(), $data)
+            ->createForm($message->getType(), $data, $adherent)
             ->handleRequest($request)
         ;
 

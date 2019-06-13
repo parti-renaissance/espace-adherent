@@ -11,8 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReferentFilterType extends AbstractType
@@ -36,20 +34,21 @@ class ReferentFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
-            ->add('referentTags', MyReferentTagChoiceType::class, ['multiple' => true])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) {
-            if (1 === \count($event->getData()->getReferentTags())) {
-                $event->getForm()->remove('referentTags');
-            }
-        });
+        if (false === $options['single_zone']) {
+            $builder->add('referentTags', MyReferentTagChoiceType::class, ['multiple' => true]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => ReferentUserFilter::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => ReferentUserFilter::class,
+                'single_zone' => false,
+            ])
+            ->setAllowedTypes('single_zone', ['bool'])
+        ;
     }
 }
