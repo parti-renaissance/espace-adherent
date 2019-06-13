@@ -31,6 +31,7 @@ class RunningMateRequest extends ApplicationRequest
      *         "application/pdf",
      *         "application/x-pdf"
      *     },
+     *     groups={"application_request"}
      * )
      */
     private $curriculum;

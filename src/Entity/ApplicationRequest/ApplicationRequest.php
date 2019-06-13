@@ -30,12 +30,13 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="application_request.first_name.not_blank")
+     * @Assert\NotBlank(message="application_request.first_name.not_blank", groups={"application_request"})
      * @Assert\Length(
      *     min=2,
      *     max=100,
      *     minMessage="application_request.first_name.min_length",
-     *     maxMessage="application_request.first_name.max_length"
+     *     maxMessage="application_request.first_name.max_length",
+     *     groups={"application_request"}
      * )
      */
     protected $firstName;
@@ -45,12 +46,13 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="application_request.last_name.not_blank")
+     * @Assert\NotBlank(message="application_request.last_name.not_blank", groups={"application_request"})
      * @Assert\Length(
      *     min=2,
      *     max=50,
      *     minMessage="application_request.last_name.min_length",
-     *     maxMessage="application_request.last_name.max_length"
+     *     maxMessage="application_request.last_name.max_length",
+     *     groups={"application_request"}
      * )
      */
     protected $lastName;
@@ -64,7 +66,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *     min=1,
      *     max=2,
      *     minMessage="application_request.favorite_cities.min_length",
-     *     maxMessage="application_request.favorite_cities.max_length"
+     *     maxMessage="application_request.favorite_cities.max_length",
+     *     groups={"application_request"}
      * )
      */
     protected $favoriteCities = [];
@@ -74,9 +77,9 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="application_request.email_address.not_blank")
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     * @Assert\NotBlank(message="application_request.email_address.not_blank", groups={"application_request"})
+     * @Assert\Email(message="common.email.invalid", groups={"application_request"})
+     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"application_request"})
      */
     protected $emailAddress;
 
@@ -85,8 +88,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=150)
      *
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
+     * @Assert\NotBlank(message="common.address.required", groups={"application_request"})
+     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"application_request"})
      */
     protected $address;
 
@@ -106,8 +109,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=20, nullable=true)
      *
-     * @Assert\NotBlank(message="common.city_name.not_blank")
-     * @Assert\Length(max=20)
+     * @Assert\NotBlank(message="common.city_name.not_blank", groups={"application_request"})
+     * @Assert\Length(max=20, groups={"application_request"})
      */
     protected $city;
 
@@ -116,8 +119,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=50)
      *
-     * @Assert\NotBlank(message="common.city_name.not_blank")
-     * @Assert\Length(max=50)
+     * @Assert\NotBlank(message="common.city_name.not_blank", groups={"application_request"})
+     * @Assert\Length(max=50, groups={"application_request"})
      */
     protected $cityName;
 
@@ -126,8 +129,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=2)
      *
-     * @Assert\NotBlank
-     * @AssertUnitedNationsCountry(message="common.country.invalid")
+     * @Assert\NotBlank(groups={"application_request"})
+     * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"application_request"})
      */
     protected $country = 'FR';
 
@@ -136,8 +139,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Assert\NotBlank(message="common.phone_number.required")
-     * @AssertPhoneNumber(defaultRegion="FR")
+     * @Assert\NotBlank(message="common.phone_number.required", groups={"application_request"})
+     * @AssertPhoneNumber(defaultRegion="FR", groups={"application_request"})
      */
     protected $phone;
 
@@ -146,8 +149,8 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="application_request.profession.required")
-     * @Assert\Length(max=255, maxMessage="application_request.profession.max_length")
+     * @Assert\NotBlank(message="application_request.profession.required", groups={"application_request"})
+     * @Assert\Length(max=255, maxMessage="application_request.profession.max_length", groups={"application_request"})
      */
     protected $profession;
 
@@ -156,7 +159,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\Theme")
      *
-     * @Assert\Count(min=1, minMessage="application_request.favorite_themes.min")
+     * @Assert\Count(min=1, minMessage="application_request.favorite_themes.min", groups={"application_request"})
      */
     protected $favoriteThemes;
 

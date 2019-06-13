@@ -34,6 +34,7 @@ class VolunteerAdmin extends AbstractAdmin
             ])
             ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
+                'template' => 'admin/application_requests/_favorite_cities.html.twig',
             ])
             ->add('isAdherent', 'boolean', [
                 'label' => 'Adhérent',

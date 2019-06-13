@@ -37,6 +37,7 @@ class RunningMateAdmin extends AbstractAdmin
             ])
             ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
+                'template' => 'admin/application_request/_favorite_cities.html.twig',
             ])
             ->add('curriculum', null, [
                 'label' => 'CV',
@@ -73,6 +74,9 @@ class RunningMateAdmin extends AbstractAdmin
                 'label' => 'Code postal',
             ])
             ->add('city', null, [
+                'label' => 'Code INSEE',
+            ])
+            ->add('cityName', null, [
                 'label' => 'Ville',
             ])
             ->add('country', CountryType::class, [

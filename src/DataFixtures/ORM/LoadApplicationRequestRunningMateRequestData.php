@@ -22,7 +22,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
 
             $runningMateRequest->setFirstName('Bruce');
             $runningMateRequest->setLastName('Banner');
-            $runningMateRequest->setFavoriteCities(['New York']);
+            $runningMateRequest->setFavoriteCities(['50391']);
             $runningMateRequest->setEmailAddress($email);
             $runningMateRequest->setPostalCode('10001');
             $runningMateRequest->setCityName('New York City');

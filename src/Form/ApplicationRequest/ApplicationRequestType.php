@@ -90,6 +90,7 @@ class ApplicationRequestType extends AbstractType
             $data->setAddress($addressForm->get('address')->getData());
             $data->setPostalCode($addressForm->get('postalCode')->getData());
             $data->setCity($cityCode = $addressForm->get('city')->getData());
+            $data->setCityName($addressForm->get('cityName')->getData());
             $data->setCountry($addressForm->get('country')->getData());
 
             [$postalCode, $inseeCode] = explode('-', $cityCode);

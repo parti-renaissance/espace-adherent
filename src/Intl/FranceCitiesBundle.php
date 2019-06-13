@@ -130,6 +130,26 @@ class FranceCitiesBundle
         );
     }
 
+    /**
+     * Returns the city for the given INSEE code or null if the city was not found.
+     */
+    public static function getCityNameFromInseeCode(string $inseeCode): ?string
+    {
+        foreach (self::$cities as $postalCode => $cities) {
+            if (\array_key_exists($inseeCode, $cities)) {
+                return $cities[$inseeCode];
+            }
+
+            $inseeCode = ltrim($inseeCode, '0');
+
+            if (\array_key_exists($inseeCode, $cities)) {
+                return $cities[$inseeCode];
+            }
+        }
+
+        return null;
+    }
+
     private static function canonicalizeCityName(string $cityName): string
     {
         $cityName = iconv('UTF-8', 'ASCII//TRANSLIT', $cityName);
