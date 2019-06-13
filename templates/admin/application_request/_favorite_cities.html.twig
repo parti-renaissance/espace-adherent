@@ -1,5 +1,0 @@
-{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
-
-{% block field %}
-    {{ object.favoriteCities|map(code => get_city_name_from_insee_code(code))|join(', ') }}
-{% endblock %}

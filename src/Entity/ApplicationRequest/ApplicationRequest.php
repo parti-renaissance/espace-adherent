@@ -6,6 +6,7 @@ use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityReferentTagTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
 use AppBundle\Entity\ReferentTaggableEntity;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -169,11 +170,19 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
 
     private $isAdherent = false;
 
+    /**
+     * @var ApplicationRequestTag[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\ApplicationRequestTag")
+     */
+    protected $tags;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->favoriteThemes = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
+        $this->tags = new ArrayCollection();
 
         $this->phone = new PhoneNumber();
         $this->phone->setCountryCode(33);
@@ -207,6 +216,11 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     public function getFavoriteCities(): array
     {
         return $this->favoriteCities;
+    }
+
+    public function getFavoriteCitiesNames(): array
+    {
+        return FranceCitiesBundle::searchCitiesByInseeCodes($this->getFavoriteCities());
     }
 
     public function setFavoriteCities(array $favoriteCities): void
@@ -329,5 +343,22 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     public function __toString(): string
     {
         return $this->firstName.' '.$this->lastName;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(ApplicationRequestTag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+    }
+
+    public function removeTag(ApplicationRequestTag $tag): void
+    {
+        $this->tags->removeElement($tag);
     }
 }

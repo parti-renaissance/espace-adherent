@@ -4,7 +4,6 @@ namespace AppBundle\Referent;
 
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Repository\AdherentRepository;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
@@ -39,7 +38,7 @@ class MunicipalExporter
                 'phone' => $runningMate->getPhone() instanceof PhoneNumber
                     ? $this->phoneUtils->format($runningMate->getPhone(), PhoneNumberFormat::INTERNATIONAL)
                     : '',
-                'favoriteCities' => implode(', ', FranceCitiesBundle::searchCitiesByInseeCodes($runningMate->getFavoriteCities())),
+                'favoriteCities' => implode(', ', $runningMate->getFavoriteCitiesNames()),
                 'cvLink' => [
                     'label' => 'Télécharger le CV',
                     'url' => $this->urlGenerator->generate('asset_url', [
@@ -75,7 +74,7 @@ class MunicipalExporter
                 'phone' => $volunteer->getPhone() instanceof PhoneNumber
                     ? $this->phoneUtils->format($volunteer->getPhone(), PhoneNumberFormat::INTERNATIONAL)
                     : '',
-                'favoriteCities' => implode(', ', FranceCitiesBundle::searchCitiesByInseeCodes($volunteer->getFavoriteCities())),
+                'favoriteCities' => implode(', ', $volunteer->getFavoriteCitiesNames()),
                 'isAdherent' => $volunteer->isAdherent() ? 'Oui' : 'Non',
                 'detailLink' => [
                     'label' => "<span id='application-detail-$i' class='btn btn--default'>Voir le détail</span>",

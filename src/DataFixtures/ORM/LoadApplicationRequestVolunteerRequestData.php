@@ -55,6 +55,8 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
 
             $volunteerRequest->addFavoriteTheme($this->getReference('application-theme-06'));
             $volunteerRequest->addFavoriteTheme($this->getReference('application-theme-08'));
+            $volunteerRequest->addTag($this->getReference('application-request-tag-'.rand(1, 3)));
+            $volunteerRequest->addTag($this->getReference('application-request-tag-'.rand(2, 4)));
             $volunteerRequest->setCustomFavoriteTheme('Thanos destruction');
 
             $volunteerRequest->addTechnicalSkill($this->getReference('application-skill-01'));
