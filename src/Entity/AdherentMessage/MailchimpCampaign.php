@@ -4,12 +4,15 @@ namespace AppBundle\Entity\AdherentMessage;
 
 use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity
  */
 class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 {
+    use TimestampableEntity;
+
     public const STATUS_SENT = 'sent';
     public const STATUS_ERROR = 'error';
     public const STATUS_DRAFT = 'draft';
