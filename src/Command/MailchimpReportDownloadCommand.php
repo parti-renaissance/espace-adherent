@@ -91,7 +91,7 @@ class MailchimpReportDownloadCommand extends Command
             ->leftJoin('mc.report', 'report')
             ->where('mc.status = :status')
             ->setParameter('status', MailchimpCampaign::STATUS_SENT)
-            ->setMaxResults(1)
+            ->setMaxResults(500)
         ;
 
         if ($from) {
