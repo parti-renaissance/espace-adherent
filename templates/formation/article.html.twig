@@ -20,6 +20,18 @@
             {{ include('formation/_navbar.html.twig') }}
             <article class="l__wrapper--slim">
                 {{ article.content|markdown }}
+
+                {% if article.files|length > 0 %}
+                    <h2>Contenus du module</h2>
+                    <ul>
+                        {% for file in article.files %}
+                            <li>
+                                <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
+                                   target="_blank">{{ file.title }}</a> (pdf)
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </article>
         </section>
     </main>
