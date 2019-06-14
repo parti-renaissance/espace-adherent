@@ -58,73 +58,80 @@ class RunningMateAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('emailAddress', null, [
-                'label' => 'E-mail',
-            ])
-            ->add('address', null, [
-                'label' => 'Adresse',
-            ])
-            ->add('postalCode', null, [
-                'label' => 'Code postal',
-            ])
-            ->add('city', null, [
-                'label' => 'Code INSEE',
-            ])
-            ->add('cityName', null, [
-                'label' => 'Ville',
-            ])
-            ->add('country', CountryType::class, [
-                'label' => 'Pays',
-            ])
-            ->add('phone', PhoneNumberType::class, [
-                'label' => 'Téléphone',
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-            ])
-            ->add('profession', null, [
-                'label' => 'Profession',
-            ])
-            ->add('favoriteThemes', EntityType::class, [
-                'label' => 'Thèmes favoris',
-                'class' => Theme::class,
-                'multiple' => true,
-            ])
-            ->add('favoriteThemeDetails', null, [
-                'label' => 'Thèmes favoris détails',
-            ])
-            ->add('removeCurriculum', CheckboxType::class, [
-                'label' => 'Supprimer le CV ?',
-                'required' => false,
-            ])
-            ->add('isLocalAssociationMember', BooleanType::class, [
-                'label' => "Membre de l'association locale ?",
-            ])
-            ->add('localAssociationDomain', null, [
-                'label' => "Domaine de l'association locale",
-            ])
-            ->add('isPoliticalActivist', BooleanType::class, [
-                'label' => 'Activiste politique ?',
-            ])
-            ->add('politicalActivistDetails', null, [
-                'label' => 'Activiste politique détails',
-            ])
-            ->add('isPreviousElectedOfficial', BooleanType::class, [
-                'label' => "Est l'élu précédent ?",
-            ])
-            ->add('previousElectedOfficialDetails', null, [
-                'label' => 'Elu précédent détails',
-            ])
-            ->add('projectDetails', null, [
-                'label' => 'Détails du projet',
-            ])
-            ->add('professionalAssets', null, [
-                'label' => 'Actifs professionnels',
-            ])
+            ->with('Informations personnelles')
+                ->add('lastName', null, [
+                    'label' => 'Nom',
+                ])
+                ->add('firstName', null, [
+                    'label' => 'Prénom',
+                ])
+                ->add('emailAddress', null, [
+                    'label' => 'E-mail',
+                ])
+                ->add('address', null, [
+                    'label' => 'Adresse',
+                ])
+                ->add('postalCode', null, [
+                    'label' => 'Code postal',
+                ])
+                ->add('city', null, [
+                    'label' => 'Code INSEE',
+                ])
+                ->add('cityName', null, [
+                    'label' => 'Ville',
+                ])
+                ->add('country', CountryType::class, [
+                    'label' => 'Pays',
+                ])
+                ->add('phone', PhoneNumberType::class, [
+                    'label' => 'Téléphone',
+                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                ])
+            ->end()
+            ->with('Candidature')
+                ->add('profession', null, [
+                    'label' => 'Quelle est votre profession ?',
+                ])
+                ->add('favoriteThemes', EntityType::class, [
+                    'label' => 'Vos thématique(s) de prédilection',
+                    'class' => Theme::class,
+                    'multiple' => true,
+                ])
+                ->add('customFavoriteTheme', null, [
+                    'label' => 'Autre(s) thématique(s) de prédilection',
+                ])
+                ->add('favoriteThemeDetails', null, [
+                    'label' => 'Pourquoi avez vous choisi cette thématique ?',
+                ])
+                ->add('removeCurriculum', CheckboxType::class, [
+                    'label' => 'Supprimer le CV ?',
+                    'required' => false,
+                ])
+                ->add('isLocalAssociationMember', BooleanType::class, [
+                    'label' => 'Êtes-vous engagé dans une/des association(s) locale(s) ?',
+                ])
+                ->add('localAssociationDomain', null, [
+                    'label' => 'Si oui, n\'hésitez pas à préciser',
+                ])
+                ->add('isPoliticalActivist', BooleanType::class, [
+                    'label' => 'Avez vous déjà eu un engagement militant ?',
+                ])
+                ->add('politicalActivistDetails', null, [
+                    'label' => 'Si oui, n\'hésitez pas à préciser',
+                ])
+                ->add('isPreviousElectedOfficial', BooleanType::class, [
+                    'label' => 'Avez vous déjà exercé un mandat ?',
+                ])
+                ->add('previousElectedOfficialDetails', null, [
+                    'label' => 'Si oui, précisez',
+                ])
+                ->add('projectDetails', null, [
+                    'label' => 'Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?',
+                ])
+                ->add('professionalAssets', null, [
+                    'label' => 'Quel sont les atouts de votre parcours professionnel ?',
+                ])
+            ->end()
         ;
     }
 
