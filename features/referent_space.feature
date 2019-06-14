@@ -44,7 +44,7 @@ Feature:
     And I should see "Banner"
     And I should see "Bruce"
     And I should see "+33 6 06 06 06 06"
-    And I should see "New York"
+    And I should see "50391"
     And I should see "Télécharger le CV"
     And I should see "Oui"
 
@@ -61,7 +61,7 @@ Feature:
     And I should see "Actifs professionnels :"
 
   @javascript
-  Scenario: I can see running mate request for the zones I manage and I can see the detail
+  Scenario: I can see volunteer request for the zones I manage and I can see the detail
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-benevole"
     And I wait 10 seconds until I see "J'ai lu et j'accepte"
@@ -69,7 +69,7 @@ Feature:
     And I wait 10 seconds until I see NOM
     And I should see "Stark"
     And I should see "Tony"
-    And I should see "Malibu,New-York"
+    And I should see "50391,06088"
     And I should see "Oui"
 
     When I click the "application-detail-0" element

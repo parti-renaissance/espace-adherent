@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TechnicalSkillAdmin extends AbstractAdmin
@@ -19,6 +20,9 @@ class TechnicalSkillAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('display', null, [
+                'label' => 'Affiché ?',
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -35,6 +39,17 @@ class TechnicalSkillAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('display', CheckboxType::class, [
+                'label' => 'Affiché ?',
+                'required' => false,
+            ])
+        ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+            ->remove('delete')
         ;
     }
 }

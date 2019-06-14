@@ -34,6 +34,7 @@ class VolunteerAdmin extends AbstractAdmin
             ])
             ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
+                'template' => 'admin/application_request/_favorite_cities.html.twig',
             ])
             ->add('isAdherent', 'boolean', [
                 'label' => 'Adhérent',
@@ -50,62 +51,66 @@ class VolunteerAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('emailAddress', null, [
-                'label' => 'E-mail',
-            ])
-            ->add('address', null, [
-                'label' => 'Adresse',
-            ])
-            ->add('postalCode', null, [
-                'label' => 'Code postal',
-            ])
-            ->add('city', null, [
-                'label' => 'Ville',
-            ])
-            ->add('country', CountryType::class, [
-                'label' => 'Pays',
-            ])
-            ->add('phone', PhoneNumberType::class, [
-                'label' => 'Téléphone',
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-            ])
-            ->add('profession', null, [
-                'label' => 'Profession',
-            ])
-            ->add('favoriteThemes', EntityType::class, [
-                'label' => 'Thèmes favoris',
-                'class' => Theme::class,
-                'multiple' => true,
-            ])
-            ->add('customFavoriteTheme', null, [
-                'label' => 'Thèmes favoris personnalisés',
-            ])
-            ->add('technicalSkills', EntityType::class, [
-                'label' => 'Compétences techniques',
-                'class' => TechnicalSkill::class,
-                'multiple' => true,
-            ])
-            ->add('customTechnicalSkills', null, [
-                'label' => 'Compétences techniques personnalisées',
-            ])
-            ->add('isPreviousCampaignMember', BooleanType::class, [
-                'label' => "Fait partie d'une précédente campagne ?",
-            ])
-            ->add('previousCampaignDetails', null, [
-                'label' => 'Détails de la précédente campagne',
-            ])
-            ->add('shareAssociativeCommitment', BooleanType::class, [
-                'label' => "Partage l'engagement associatif ?",
-            ])
-            ->add('associativeCommitmentDetails', null, [
-                'label' => "Détails de l'engagement associatif",
-            ])
+            ->with('Informations personnelles')
+                ->add('lastName', null, [
+                    'label' => 'Nom',
+                ])
+                ->add('firstName', null, [
+                    'label' => 'Prénom',
+                ])
+                ->add('emailAddress', null, [
+                    'label' => 'E-mail',
+                ])
+                ->add('address', null, [
+                    'label' => 'Adresse',
+                ])
+                ->add('postalCode', null, [
+                    'label' => 'Code postal',
+                ])
+                ->add('city', null, [
+                    'label' => 'Ville',
+                ])
+                ->add('country', CountryType::class, [
+                    'label' => 'Pays',
+                ])
+                ->add('phone', PhoneNumberType::class, [
+                    'label' => 'Téléphone',
+                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                ])
+            ->end()
+            ->with('Candidature')
+                ->add('profession', null, [
+                    'label' => 'Quelle est votre profession ?',
+                ])
+                ->add('favoriteThemes', EntityType::class, [
+                    'label' => 'Vos thématique(s) de prédilection',
+                    'class' => Theme::class,
+                    'multiple' => true,
+                ])
+                ->add('customFavoriteTheme', null, [
+                    'label' => 'Autre(s) thématique(s) de prédilection',
+                ])
+                ->add('technicalSkills', EntityType::class, [
+                    'label' => 'Disposez-vous de compétences techniques spécifiques ?',
+                    'class' => TechnicalSkill::class,
+                    'multiple' => true,
+                ])
+                ->add('customTechnicalSkills', null, [
+                    'label' => 'Autres compétences techniques',
+                ])
+                ->add('isPreviousCampaignMember', BooleanType::class, [
+                    'label' => 'Avez-vous déjà participé à une campagne ?',
+                ])
+                ->add('previousCampaignDetails', null, [
+                    'label' => 'Si oui, n\'hésitez pas à préciser',
+                ])
+                ->add('shareAssociativeCommitment', BooleanType::class, [
+                    'label' => 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?',
+                ])
+                ->add('associativeCommitmentDetails', null, [
+                    'label' => 'Si oui, n\'hésitez pas à préciser',
+                ])
+            ->end()
         ;
     }
 

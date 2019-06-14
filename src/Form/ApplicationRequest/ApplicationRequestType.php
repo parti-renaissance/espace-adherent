@@ -6,7 +6,7 @@ use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
 use AppBundle\Intl\FranceCitiesBundle;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Repository\ApplicationRequest\ThemeRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationRequestType extends AbstractType
 {
@@ -54,11 +53,8 @@ class ApplicationRequestType extends AbstractType
                 'class' => Theme::class,
                 'multiple' => true,
                 'expanded' => true,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('t')
-                        ->orderBy('t.name', 'ASC')
-                    ;
+                'query_builder' => function (ThemeRepository $themeRepository) {
+                    return $themeRepository->createDisplayabledQueryBuilder();
                 },
                 'group_by' => function (Theme $theme) {
                     if ('Autre(s)' !== $theme->getName()) {
@@ -90,15 +86,11 @@ class ApplicationRequestType extends AbstractType
             $data->setAddress($addressForm->get('address')->getData());
             $data->setPostalCode($addressForm->get('postalCode')->getData());
             $data->setCity($cityCode = $addressForm->get('city')->getData());
+            $data->setCityName($addressForm->get('cityName')->getData());
             $data->setCountry($addressForm->get('country')->getData());
 
             [$postalCode, $inseeCode] = explode('-', $cityCode);
             $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
         });
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefault('validation_groups', ['application_request']);
     }
 }

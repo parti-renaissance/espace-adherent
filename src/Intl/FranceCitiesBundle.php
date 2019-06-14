@@ -110,16 +110,6 @@ class FranceCitiesBundle
     }
 
     /**
-     * Returns the city for the given INSEE code or null if the city was not found.
-     */
-    public static function searchCityByInseeCode(string $inseeCode): ?string
-    {
-        $citiesByInsee = self::getCityByInseeCode();
-
-        return $citiesByInsee[$inseeCode] ?? null;
-    }
-
-    /**
      * Returns the a list of city for a given list of INSEE code.
      */
     public static function searchCitiesByInseeCodes(array $inseeCodes): array
@@ -128,6 +118,26 @@ class FranceCitiesBundle
             self::getCityByInseeCode(),
             array_flip($inseeCodes)
         );
+    }
+
+    /**
+     * Returns the city for the given INSEE code or null if the city was not found.
+     */
+    public static function getCityNameFromInseeCode(string $inseeCode): ?string
+    {
+        foreach (self::$cities as $postalCode => $cities) {
+            if (\array_key_exists($inseeCode, $cities)) {
+                return $cities[$inseeCode];
+            }
+
+            $inseeCode = ltrim($inseeCode, '0');
+
+            if (\array_key_exists($inseeCode, $cities)) {
+                return $cities[$inseeCode];
+            }
+        }
+
+        return null;
     }
 
     private static function canonicalizeCityName(string $cityName): string

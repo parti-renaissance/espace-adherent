@@ -18,22 +18,24 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $curriculumName;
 
     /**
      * @var UploadedFile|null
      *
-     * @Assert\Image(
+     * @Assert\File(
      *     maxSize="5M",
      *     mimeTypes={
      *         "application/pdf",
      *         "application/x-pdf"
-     *     },
+     *     }
      * )
      */
     private $curriculum;
+
+    private $removeCurriculum = false;
 
     /**
      * @var bool
@@ -103,6 +105,11 @@ class RunningMateRequest extends ApplicationRequest
         return $this->curriculum;
     }
 
+    public function removeCurriculumName(): void
+    {
+        $this->curriculumName = null;
+    }
+
     public function setCurriculum(?UploadedFile $curriculum): void
     {
         $this->curriculum = $curriculum;
@@ -111,6 +118,16 @@ class RunningMateRequest extends ApplicationRequest
     public function setCurriculumName(string $curriculumName): void
     {
         $this->curriculumName = $curriculumName;
+    }
+
+    public function getRemoveCurriculum(): bool
+    {
+        return $this->removeCurriculum;
+    }
+
+    public function setRemoveCurriculum(bool $removeCurriculum): void
+    {
+        $this->removeCurriculum = $removeCurriculum;
     }
 
     public function isLocalAssociationMember(): ?bool
