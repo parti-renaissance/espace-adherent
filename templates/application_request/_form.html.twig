@@ -6,7 +6,7 @@
         <div class="em-form__section">
             <div class="em-form__group em-form__type-and-select">
                 {{ form_label(form.favoriteCities_search, 'Villes', { required: true }) }}
-                {{ form_widget(form.favoriteCities_search, { attr: { placeholder: 'Rechercher une ville' } }) }}
+                {{ form_widget(form.favoriteCities_search, { attr: { autocomplete: 'off', placeholder: 'Rechercher une ville' } }) }}
                 {% block favorite_cities_help '' %}
                 {{ form_errors(form.favoriteCities) }}
                 <div class="type-and-select__tags">
@@ -32,6 +32,7 @@
             <div class="em-form__group">
                 {{ form_label(form.emailAddress, 'E-mail') }}
                 {{ form_widget(form.emailAddress, { attr: { placeholder: 'Votre adresse e-mail' } }) }}
+                <div class="em-form__legend">Si vous êtes adhérent(e), indiquez-le ici avec l'adresse e-mail de votre compte En Marche.</div>
                 {{ form_errors(form.emailAddress) }}
             </div>
 
@@ -162,7 +163,7 @@
                 consentement à tout moment et de la faculté de donner des directives sur le sort de vos données après votre décès.<br /><br />
 
                 Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse électronique suivante :
-                mes-donnees@en-marche.fr. Pour toute information concernant la protection de vos données, vous pouvez consulter la <a href="/" target="_blank">Politique de protection des
+                mes-donnees@en-marche.fr. Pour toute information concernant la protection de vos données, vous pouvez consulter la <a href="https://en-marche.fr/politique-protection-donnees" target="_blank" class="text--blue--dark">Politique de protection des
                 données</a> de LaREM et/ou contacter notre DPO à l’adresse dpo@en-marche.fr.
             </p>
         </div>

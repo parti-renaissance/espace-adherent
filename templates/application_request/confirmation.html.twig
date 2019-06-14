@@ -3,17 +3,18 @@
 
 {% block header_content %}
     <h1 class="text--large">
-        Merci pour votre engagement
+        Merci pour votre candidature !
     </h1>
 {% endblock %}
 
 
 {% block form_body %}
-    <div class="page-confirmation font-roboto text--center">
+    <div class="page-confirmation font-roboto text--center l__wrapper--500">
         <img class="icn_success" src="{{ asset('images/icons/icn_success.svg') }}" />
         <p class="text--dark b__nudge--top-large b__nudge--bottom-large">
-            Nous allons passer en revue votre candidature et vous tiendrons informé.<br>
-            Si vous avez des questions, contactez-nous.
+            Nous reviendrons vers vous sous 2 semaines environ, pour vous proposer plusieurs pistes d'engagement.
+            <br><br>
+            Si vous avez une question, n'hésitez pas à nous contacter.
             <br><br>
             Pour postuler sous une autre forme, cliquez <a class="text--blue--dark link--no--decor" href="{{ path('app_application_request_request') }}">ici</a>.
         </p>
