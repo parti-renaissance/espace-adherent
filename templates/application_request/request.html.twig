@@ -77,29 +77,25 @@
 
 {% block header_content %}
     <h1 class="text--large">
-        Je participe à la campagne LaREM de ma ville en tant que <span class="hightlight__blue--nation">colistier</span> ou <span class="hightlight__red--nation">bénévole</span>
+        La République c'est vous ! Engagez-vous pour votre commune !
     </h1>
 {% endblock %}
 
 {% block form_body %}
 
     <div class="page-intro b__nudge--top-40 b__nudge--bottom-larger">
-        <h3 class="text--medium b__nudge--bottom-larger">
-            Bonjour et, avant toute chose, bravo pour avoir passé le pas et vous engager pour agir au sein de votre commune !
-        </h3>
         <p class="text--dark font-roboto">
             Dans le cadre du scrutin municipal de 2020, La République En Marche donnera la possibilité à chaque citoyen de devenir acteur de la vie publique locale.
             Que vous souhaitiez prendre part à une liste ou être membre actif de la campagne, nous vous mettrons en relation avec nos équipes locales.
             <br><br>
             Ensemble, construisons un projet en faveur de nos territoires, un projet inspiré par les attentes de chacun et porté par des acteurs engagés ! Tous engagés !
-            <br><br>
-            <i>
-                Il n’est pas nécessaire d’être adhérent à LaREM pour remplir ce formulaire. LaREM souhaite encourager tout citoyen,
-                même non adhérent d’un mouvement politique, à prendre part à l’action publique.
-            </i>
         </p>
     </div>
-
+    <div class="information__modal inf-modl--pale-blue">
+        Il n’est pas nécessaire d’être adhérent à LaREM pour remplir ce formulaire.
+        LaREM souhaite encourager tout citoyen, même non adhérent d’un mouvement politique, à prendre part à l’action publique.
+    </div>
+    <br>
     <div class="information__modal inf-modl--pale-blue">
         Ce formulaire n’engage pas une présence sur une liste municipale ou une implication automatique dans une campagne locale.
     </div>
@@ -276,6 +272,14 @@
 
             {% block chart_block %}
                 <div class="em-form__group em-form__group--cgu">
+                    <div class="information__modal inf-modl--pale-blue">
+                        Vous ne pouvez pas candidater par ce site pour être tête de liste.
+                        Si vous souhaitez candidater pour être tête de liste, vous trouverez les modalités sur la circulaire ci-après.
+                        Les candidatures doivent être transmises aux Commissions Départementales d'Investitures départementales, dont le référent et nos parlementaires font partie.
+                        <br><br>
+                        Les candidatures sont par ailleurs prises en compte jusqu'à validation par le Bureau Exécutidf de LaREM d'une investiture ou soutien sur cette commune.
+                        La liste, régulièrement mise à jour, est par ailleurs disponible <a href="#">ici</a>.
+                    </div>
                     <div class="form__checkbox">
                         {% set LREMValuesLabel %}
                             <span class="label-with-link">
