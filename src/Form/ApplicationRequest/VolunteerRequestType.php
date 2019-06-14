@@ -4,6 +4,7 @@ namespace AppBundle\Form\ApplicationRequest;
 
 use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\Repository\ApplicationRequest\TechnicalSkillRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,11 +23,8 @@ class VolunteerRequestType extends AbstractType
                 'class' => TechnicalSkill::class,
                 'multiple' => true,
                 'expanded' => true,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('s')
-                        ->orderBy('s.name', 'ASC')
-                    ;
+                'query_builder' => function (TechnicalSkillRepository $technicalSkillRepository) {
+                    return $technicalSkillRepository->createDisplayabledQueryBuilder();
                 },
                 'group_by' => function (TechnicalSkill $technicalSkill) {
                     if ('Autre(s)' !== $technicalSkill->getName()) {

@@ -20,6 +20,9 @@ class TechnicalSkillAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('display', null, [
+                'label' => 'Affiché ?',
+            ])
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
@@ -35,6 +38,17 @@ class TechnicalSkillAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('display', CheckboxType::class, [
+                'label' => 'Affiché ?',
+                'required' => false,
+            ])
+        ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+            ->remove('delete')
         ;
     }
 }

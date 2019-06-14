@@ -5,6 +5,8 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\Form\Type\BooleanType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ThemeAdmin extends AbstractAdmin
@@ -19,6 +21,9 @@ class ThemeAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('display', null, [
+                'label' => 'Affiché ?',
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -35,6 +40,17 @@ class ThemeAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('display', CheckboxType::class, [
+                'label' => 'Affiché ?',
+                'required' => false,
+            ])
+        ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+            ->remove('delete')
         ;
     }
 }

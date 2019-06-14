@@ -6,6 +6,7 @@ use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
 use AppBundle\Intl\FranceCitiesBundle;
+use AppBundle\Repository\ApplicationRequest\ThemeRepository;
 use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -54,11 +55,8 @@ class ApplicationRequestType extends AbstractType
                 'class' => Theme::class,
                 'multiple' => true,
                 'expanded' => true,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('t')
-                        ->orderBy('t.name', 'ASC')
-                    ;
+                'query_builder' => function (ThemeRepository $themeRepository) {
+                    return $themeRepository->createDisplayabledQueryBuilder();
                 },
                 'group_by' => function (Theme $theme) {
                     if ('Autre(s)' !== $theme->getName()) {

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_technical_skill")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\TechnicalSkillRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -31,6 +31,13 @@ class TechnicalSkill
      * @Assert\NotBlank
      */
     private $name;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $display = true;
 
     public function __construct(string $name = null)
     {
@@ -55,5 +62,15 @@ class TechnicalSkill
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getDisplay(): bool
+    {
+        return $this->display;
+    }
+
+    public function setDisplay(bool $display): void
+    {
+        $this->display = $display;
     }
 }
