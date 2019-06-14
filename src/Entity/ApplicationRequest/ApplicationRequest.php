@@ -199,6 +199,11 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
         $this->lastName = $lastName;
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
     public function getFavoriteCities(): array
     {
         return $this->favoriteCities;
