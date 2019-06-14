@@ -1,10 +1,5 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.favoriteCities %}
-        {% for city in object.favoriteCities %}
-            {{ get_city_name_from_insee_code(city) }} ({{ city }})
-            {% if not loop.last %}, {% endif %}
-        {% endfor %}
-    {% endif %}
+    {{ object.favoriteCities|map(code => get_city_name_from_insee_code(code))|join(', ') }}
 {% endblock %}
