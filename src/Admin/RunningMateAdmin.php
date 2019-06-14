@@ -171,14 +171,4 @@ class RunningMateAdmin extends AbstractAdmin
     {
         $this->storage = $storage;
     }
-
-    public function removeCurriculumIfNeeded(FormEvent $event): void
-    {
-        $form = $event->getForm();
-
-        if (null === $this->getSubject()->getCity() &&
-            SurveyFormType::CITY_CHOICE === $form->get('concernedAreaChoice')->getData()) {
-            $form->get('city')->addError(new FormError($this->trans('survey.city.required')));
-        }
-    }
 }

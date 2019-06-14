@@ -110,16 +110,6 @@ class FranceCitiesBundle
     }
 
     /**
-     * Returns the city for the given INSEE code or null if the city was not found.
-     */
-    public static function searchCityByInseeCode(string $inseeCode): ?string
-    {
-        $citiesByInsee = self::getCityByInseeCode();
-
-        return $citiesByInsee[$inseeCode] ?? null;
-    }
-
-    /**
      * Returns the a list of city for a given list of INSEE code.
      */
     public static function searchCitiesByInseeCodes(array $inseeCodes): array
