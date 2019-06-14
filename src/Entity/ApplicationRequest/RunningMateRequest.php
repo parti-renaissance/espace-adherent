@@ -30,8 +30,7 @@ class RunningMateRequest extends ApplicationRequest
      *     mimeTypes={
      *         "application/pdf",
      *         "application/x-pdf"
-     *     },
-     *     groups={"application_request"}
+     *     }
      * )
      */
     private $curriculum;

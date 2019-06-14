@@ -64,7 +64,7 @@ class TechnicalSkill
         $this->name = $name;
     }
 
-    public function getDisplay(): bool
+    public function isDisplay(): bool
     {
         return $this->display;
     }

@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationRequestType extends AbstractType
 {
@@ -93,10 +92,5 @@ class ApplicationRequestType extends AbstractType
             [$postalCode, $inseeCode] = explode('-', $cityCode);
             $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
         });
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefault('validation_groups', ['application_request']);
     }
 }
