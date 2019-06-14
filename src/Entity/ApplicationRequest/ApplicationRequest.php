@@ -98,7 +98,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\Length(max=15)
+     * @Assert\Length(max=15, groups={"application_request"})
      */
     protected $postalCode;
 

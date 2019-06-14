@@ -7,7 +7,6 @@ use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Repository\ApplicationRequest\ThemeRepository;
-use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

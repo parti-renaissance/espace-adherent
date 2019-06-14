@@ -22,7 +22,7 @@ class VolunteerRequest extends ApplicationRequest
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\TechnicalSkill")
      *
-     * @Assert\Count(min=1, minMessage="application_request.technical_skills.min")
+     * @Assert\Count(min=1, minMessage="application_request.technical_skills.min", groups={"application_request"})
      */
     private $technicalSkills;
 
