@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon espace chef municipal' %}
+{% block canonical_url url('app_municipalchief_index') %}
+
+{% block banner '' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <p>Vous gérez : <span>{{ managedCities|join(', ') }}</span></p>
+                        </div>
+                        <p class="report">🐛 Bug ? Nouveau besoin ?
+                            <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                        </p>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_municipalchief_index*') ? 'active' : '' }}">
+                                <a href="{{ path('app_municipalchief_index') }}">Mon espace</a>
+                            </li></ul>
+                    </nav>
+
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block municipal_chief_content %}{% endblock %}
+            </div>
+        </section>
+
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+{% endblock %}

@@ -183,6 +183,10 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('coordinatorCitizenProjectArea', null, [
                     'label' => 'coordinator.label.codes.cp',
                 ])
+                ->add('municipalChiefManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'Chef municipal',
+                    'required' => false,
+                ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-3'])
                 ->add('isDeputy', 'boolean', [
@@ -334,6 +338,11 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('coordinatorCitizenProjectArea', CoordinatorManagedAreaType::class, [
                     'label' => 'coordinator.label.codes.cp',
                     'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
+                ])
+                ->add('municipalChiefManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'Chef municipal',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas chef municipal. Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC).",
                 ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
@@ -578,6 +587,12 @@ class AdherentAdmin extends AbstractAdmin
                         $qb->leftJoin(sprintf('%s.citizenProjectMemberships', $alias), 'cpms');
                         $where->add('cpms.privilege = :cp_privilege');
                         $qb->setParameter('cp_privilege', CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR);
+                    }
+
+                    // Municipal chief
+                    if (\in_array(AdherentRoleEnum::MUNICIPAL_CHIEF, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.municipalChiefManagedArea', $alias), 'municipalChiefManagedArea');
+                        $where->add('municipalChiefManagedArea IS NOT NULL AND municipalChiefManagedArea.codes IS NOT NULL');
                     }
 
                     if ($where->count()) {

@@ -26,6 +26,7 @@ class RevokeManagedAreaSubscriber implements EventSubscriberInterface
         $managedArea = $adherent->getManagedArea();
         $assessorManagedArea = $adherent->getAssessorManagedArea();
         $procurationManagedArea = $adherent->getProcurationManagedArea();
+        $municipalChiefManagedArea = $adherent->getMunicipalChiefManagedArea();
 
         if ($managedArea && $managedArea->getTags()->isEmpty()) {
             $adherent->revokeReferent();
@@ -37,6 +38,10 @@ class RevokeManagedAreaSubscriber implements EventSubscriberInterface
 
         if ($procurationManagedArea && empty($procurationManagedArea->getCodes())) {
             $adherent->revokeProcurationManager();
+        }
+
+        if ($municipalChiefManagedArea && empty($municipalChiefManagedArea->getCodes())) {
+            $adherent->revokeMunicipalChiefManagedArea();
         }
     }
 }

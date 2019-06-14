@@ -414,6 +414,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $emailUnsubscribedAt;
 
+    /**
+     * @var MunicipalChiefManagedArea|null
+     *
+     * @Assert\Valid
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MunicipalChiefManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $municipalChiefManagedArea;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -592,6 +600,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CANARY_TESTER';
         }
 
+        if ($this->isMunicipalChief()) {
+            $roles[] = 'ROLE_MUNICIPAL_CHIEF';
+        }
+
         return array_merge($roles, $this->roles);
     }
 
@@ -625,6 +637,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
             || $this->isDeputy()
+            || $this->isMunicipalChief()
         ;
     }
 
@@ -1597,6 +1610,44 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isSupervisor()
             || $this->isCitizenProjectAdministrator()
         ;
+    }
+
+    public function isMunicipalChief(): bool
+    {
+        return $this->municipalChiefManagedArea instanceof MunicipalChiefManagedArea && !empty($this->municipalChiefManagedArea->getCodes());
+    }
+
+    public function getMunicipalChiefManagedArea(): ?MunicipalChiefManagedArea
+    {
+        return $this->municipalChiefManagedArea;
+    }
+
+    public function setMunicipalChiefManagedArea(MunicipalChiefManagedArea $municipalChiefManagedArea = null): void
+    {
+        $this->municipalChiefManagedArea = $municipalChiefManagedArea;
+    }
+
+    public function getMunicipalChiefManagedAreaCodesAsString(): ?string
+    {
+        if (!$this->municipalChiefManagedArea) {
+            return '';
+        }
+
+        return $this->municipalChiefManagedArea->getCodesAsString();
+    }
+
+    public function setMunicipalChiefManagedAreaCodesAsString(string $codes = null): void
+    {
+        if (!$this->municipalChiefManagedArea) {
+            $this->municipalChiefManagedArea = new MunicipalChiefManagedArea();
+        }
+
+        $this->municipalChiefManagedArea->setCodesAsString($codes);
+    }
+
+    public function revokeMunicipalChiefManagedArea(): void
+    {
+        $this->municipalChiefManagedArea = null;
     }
 
     public function __clone()
