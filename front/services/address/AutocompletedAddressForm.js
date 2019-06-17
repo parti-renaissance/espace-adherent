@@ -24,6 +24,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
             autocomplete.build();
 
             this.hideAddress();
+            show(this._autocompleteWrapper);
 
             autocomplete.once('changed', () => {
                 this.showAddress();
