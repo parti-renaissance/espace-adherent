@@ -6,7 +6,7 @@
         <div class="em-form__section">
             <div class="em-form__group em-form__type-and-select">
                 {{ form_label(form.favoriteCities_search, 'Villes', { required: true }) }}
-                {{ form_widget(form.favoriteCities_search, { attr: { autocomplete: 'off', placeholder: 'Rechercher une ville' } }) }}
+                {{ form_widget(form.favoriteCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville' } }) }}
                 {% block favorite_cities_help '' %}
                 {{ form_errors(form.favoriteCities) }}
                 <div class="type-and-select__tags">
@@ -148,7 +148,7 @@
 
         <div class="em-form__group">
             <p class="em-form__cgu b__nudge--top">
-                NB : ces données sont récoltées par LaREM et seront transmises aux équipes départementales et candidats investis par LaREM ou tête de file
+                NB : ces données sont collectées par LaREM et seront transmises aux équipes départementales et candidats investis par LaREM ou tête de file
                 LaREM dans les villes où nous soutiendrions un autre candidat d’une autre formation politique ou issu de la société civile.<br /><br />
 
                 Les informations et les champs marqués d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM

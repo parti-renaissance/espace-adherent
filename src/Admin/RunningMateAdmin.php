@@ -101,7 +101,7 @@ class RunningMateAdmin extends AbstractAdmin
                     'label' => 'Autre(s) thématique(s) de prédilection',
                 ])
                 ->add('favoriteThemeDetails', null, [
-                    'label' => 'Pourquoi avez vous choisi cette thématique ?',
+                    'label' => 'Pourquoi avez-vous choisi cette thématique ?',
                 ])
                 ->add('removeCurriculum', CheckboxType::class, [
                     'label' => 'Supprimer le CV ?',
@@ -114,13 +114,13 @@ class RunningMateAdmin extends AbstractAdmin
                     'label' => 'Si oui, n\'hésitez pas à préciser',
                 ])
                 ->add('isPoliticalActivist', BooleanType::class, [
-                    'label' => 'Avez vous déjà eu un engagement militant ?',
+                    'label' => 'Avez-vous déjà eu un engagement militant ?',
                 ])
                 ->add('politicalActivistDetails', null, [
                     'label' => 'Si oui, n\'hésitez pas à préciser',
                 ])
                 ->add('isPreviousElectedOfficial', BooleanType::class, [
-                    'label' => 'Avez vous déjà exercé un mandat ?',
+                    'label' => 'Avez-vous déjà exercé un mandat ?',
                 ])
                 ->add('previousElectedOfficialDetails', null, [
                     'label' => 'Si oui, précisez',
