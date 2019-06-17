@@ -71,7 +71,13 @@
 {% block _favorite_city_entry_row %}
     {% spaceless %}
         <div class="type-and-select__item summary-favorite-city">
-            <span class="type-and-select__item--value favorite-city-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
+            <span class="type-and-select__item--value favorite-city-value">
+                &nbsp;
+                {% if value is not empty %}
+                    {% set city_data = get_city_data_from_insee_code(value) %}
+                    {{ city_data.name }} ({{  city_data.postal_code }})
+                {% endif %}
+            </span>
             <span class="type-and-select__item--remove favorite-city-remove">
                 <img src="{{ asset('/images/icons/icn_remove-item.svg') }}" />
             </span>
