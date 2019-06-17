@@ -55,6 +55,7 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_JECOUTE',
             'ROLE_ADMIN_IDEAS_WORKSHOP',
             'ROLE_ADMIN_ASSESSOR',
+            'ROLE_ADMIN_APPLICATION_REQUEST',
         ];
 
         $writerRoles = [
