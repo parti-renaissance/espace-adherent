@@ -442,9 +442,13 @@ $(document).ready(function() {
 {% endmacro %}
 
 {% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector, labelToShow) %}
-    $('{{ elementToToggleSelector|raw }}').hide();
+    if ('{{ labelToShow }}' === $('{{ choiceSelector|raw }} input[type="radio"]:checked').parent().find('label').text().trim()) {
+        $('{{ elementToToggleSelector|raw }}').show();
+    } else {
+        $('{{ elementToToggleSelector|raw }}').hide();
+    }
 
-    $('{{ choiceSelector|raw }} input[type="radio"]').change(function(){
+    $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
         var selectedLabel = $(this).parent().find('label').text().trim();
         var elementToToggle = $('{{ elementToToggleSelector|raw }}');
 
@@ -454,7 +458,7 @@ $(document).ready(function() {
             elementToToggle.hide();
             elementToToggle.find('textarea, input').val('').keyup();
         }
-    }).change();
+    });
 {% endmacro %}
 
 {% macro toggleDisplayFromCheckbox(choiceSelector, elementToToggleSelector, labelToShow) %}
