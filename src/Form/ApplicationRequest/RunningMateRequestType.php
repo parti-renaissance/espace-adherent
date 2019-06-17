@@ -27,7 +27,7 @@ class RunningMateRequestType extends AbstractType
             ->add('localAssociationDomain', TextareaType::class, [
                 'required' => false,
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
             ->add('isPoliticalActivist', ChoiceType::class, [
                 'choices' => [
@@ -40,7 +40,7 @@ class RunningMateRequestType extends AbstractType
             ->add('politicalActivistDetails', TextareaType::class, [
                 'required' => false,
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
             ->add('isPreviousElectedOfficial', ChoiceType::class, [
                 'choices' => [
@@ -53,19 +53,19 @@ class RunningMateRequestType extends AbstractType
             ->add('previousElectedOfficialDetails', TextareaType::class, [
                 'required' => false,
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
             ->add('favoriteThemeDetails', TextareaType::class, [
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
             ->add('projectDetails', TextareaType::class, [
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
             ->add('professionalAssets', TextareaType::class, [
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
         ;
     }
