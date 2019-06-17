@@ -47,7 +47,7 @@ class VolunteerRequestType extends AbstractType
             ->add('previousCampaignDetails', TextareaType::class, [
                 'required' => false,
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
             ->add('shareAssociativeCommitment', ChoiceType::class, [
                 'choices' => [
@@ -60,7 +60,7 @@ class VolunteerRequestType extends AbstractType
             ->add('associativeCommitmentDetails', TextareaType::class, [
                 'required' => false,
                 'with_character_count' => true,
-                'attr' => ['maxlength' => 2000],
+                'attr' => ['maxlength' => 1000],
             ])
         ;
     }

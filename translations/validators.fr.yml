@@ -348,3 +348,8 @@ assessor.vote_place_wishes.not_blank: Vous devez choisir au moins un bureau de v
 # Vote Place
 #
 vote_place.assessor_request.max: Il y a déjà deux assesseurs pour ce bureau de vote.
+
+#
+# Application Requests
+#
+application_request.curriculum.mime_type: Seuls les fichiers .pdf sont acceptés.

@@ -63,7 +63,8 @@
             {{ js.toggleDisplayFromRadio(
                 '#running_mate_request_isPreviousElectedOfficial',
                 '#running_mate_request_previousElectedOfficialDetails_container',
-                'Oui'
+                'Oui',
+                true
             ) }}
             {{ js.toggleDisplayFromCheckbox(
                 '#running-mate-form .application_request_favoriteThemes',
@@ -134,7 +135,7 @@
                 </div>
 
                 <div class="em-form__group application_request_customTechnicalSkill">
-                    {{ form_label(form.customTechnicalSkills, 'Autre(s)') }}
+                    {{ form_label(form.customTechnicalSkills, 'Autre(s)', { required: true }) }}
                     {{ form_widget(form.customTechnicalSkills) }}
                     {{ form_errors(form.customTechnicalSkills) }}
                 </div>
@@ -241,7 +242,7 @@
                 </div>
 
                 <div class="em-form__group" id="running_mate_request_previousElectedOfficialDetails_container">
-                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez', { required: true}) }}
+                    {{ form_label(form.previousElectedOfficialDetails, 'Si oui, précisez', { required: true }) }}
                     {{ form_widget(form.previousElectedOfficialDetails, { attr: { placeholder: 'Précisez...' } }) }}
                     {{ form_errors(form.previousElectedOfficialDetails) }}
                 </div>

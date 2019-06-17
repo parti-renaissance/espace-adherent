@@ -123,17 +123,17 @@ class FranceCitiesBundle
     /**
      * Returns the city for the given INSEE code or null if the city was not found.
      */
-    public static function getCityNameFromInseeCode(string $inseeCode): ?string
+    public static function getCityDataFromInseeCode(string $inseeCode): ?array
     {
         foreach (self::$cities as $postalCode => $cities) {
-            if (\array_key_exists($inseeCode, $cities)) {
-                return $cities[$inseeCode];
-            }
+            $trimmedInseeCode = ltrim($inseeCode, '0');
 
-            $inseeCode = ltrim($inseeCode, '0');
-
-            if (\array_key_exists($inseeCode, $cities)) {
-                return $cities[$inseeCode];
+            if (\array_key_exists($inseeCode, $cities) || \array_key_exists($trimmedInseeCode, $cities)) {
+                return [
+                    'name' => $cities[$inseeCode],
+                    'postal_code' => $postalCode,
+                    'insee_code' => $inseeCode,
+                ];
             }
         }
 
