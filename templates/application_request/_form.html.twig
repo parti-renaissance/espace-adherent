@@ -119,7 +119,7 @@
         </div>
 
         <div class="em-form__group application_request_customFavoriteTheme">
-            {{ form_label(form.customFavoriteTheme, 'Autre(s)') }}
+            {{ form_label(form.customFavoriteTheme, 'Autre(s)', { required: true }) }}
             {{ form_widget(form.customFavoriteTheme, { attr: { placeholder: 'Entrez une ou plusieurs thématiques' } }) }}
             {{ form_errors(form.customFavoriteTheme) }}
         </div>

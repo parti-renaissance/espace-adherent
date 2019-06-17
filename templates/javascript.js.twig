@@ -441,11 +441,19 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector, labelToShow) %}
+{% macro toggleDisplayFromRadio(choiceSelector, elementToToggleSelector, labelToShow, elementToToggleRequired = false) %}
     if ('{{ labelToShow }}' === $('{{ choiceSelector|raw }} input[type="radio"]:checked').parent().find('label').text().trim()) {
         $('{{ elementToToggleSelector|raw }}').show();
+
+        {% if elementToToggleRequired is same as(true) %}
+            $('{{ elementToToggleSelector|raw }}').find('textarea, input').prop('required', true);
+        {% endif %}
     } else {
         $('{{ elementToToggleSelector|raw }}').hide();
+
+        {% if elementToToggleRequired is same as(true) %}
+            $('{{ elementToToggleSelector|raw }}').find('textarea, input').prop('required', false);
+        {% endif %}
     }
 
     $('{{ choiceSelector|raw }} input[type="radio"]').click(function(){
@@ -453,19 +461,27 @@ $(document).ready(function() {
         var elementToToggle = $('{{ elementToToggleSelector|raw }}');
 
         if ('{{ labelToShow }}' === selectedLabel) {
-           elementToToggle.show();
+            elementToToggle.show();
+
+            {% if elementToToggleRequired is same as(true) %}
+                elementToToggle.find('textarea, input').prop('required', true);
+            {% endif %}
         } else {
             elementToToggle.hide();
             elementToToggle.find('textarea, input').val('').keyup();
+
+            {% if elementToToggleRequired is same as(true) %}
+                elementToToggle.find('textarea, input').prop('required', false);
+            {% endif %}
         }
     });
 {% endmacro %}
 
 {% macro toggleDisplayFromCheckbox(choiceSelector, elementToToggleSelector, labelToShow) %}
     if ('{{ labelToShow }}' === $('{{ choiceSelector|raw }} input[type="checkbox"]:checked').parent().find('label').text().trim()) {
-        $('{{ elementToToggleSelector|raw }}').show();
+        $('{{ elementToToggleSelector|raw }}').show().find('textarea, input').prop('required', true);
     } else {
-        $('{{ elementToToggleSelector|raw }}').hide();
+        $('{{ elementToToggleSelector|raw }}').hide().find('textarea, input').prop('required', false);
     }
 
     $('{{ elementToToggleSelector|raw }}').hide();
@@ -480,9 +496,10 @@ $(document).ready(function() {
 
         if (true === $(this).is(":checked")) {
             elementToToggle.show();
+            elementToToggle.find('textarea, input').prop('required', true);
         } else {
             elementToToggle.hide();
-            elementToToggle.find('textarea, input').val('').keyup();
+            elementToToggle.find('textarea, input').prop('required', false).val('').keyup();
         }
     }).change();
 {% endmacro %}
