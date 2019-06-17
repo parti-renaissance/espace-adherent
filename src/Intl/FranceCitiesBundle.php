@@ -130,7 +130,7 @@ class FranceCitiesBundle
 
             if (\array_key_exists($inseeCode, $cities) || \array_key_exists($trimmedInseeCode, $cities)) {
                 return [
-                    'name' => $cities[$inseeCode],
+                    'name' => $cities[$inseeCode] ?? $cities[$trimmedInseeCode],
                     'postal_code' => $postalCode,
                     'insee_code' => $inseeCode,
                 ];

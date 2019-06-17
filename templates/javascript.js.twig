@@ -332,7 +332,11 @@ $(document).ready(function() {
 $(document).ready(function() {
     var maxCity = {{ maxCity }};
     var favoriteCitiesList = $('{{ idFavoriteCitiesListField|raw }}');
-    var favoriteCitiesSelectedCount = 0;
+    var favoriteCitiesSelectedCount = favoriteCitiesList.find('.summary-favorite-city').length;
+
+    if (favoriteCitiesSelectedCount >= {{ maxCity }}) {
+        $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', true);
+    }
 
     var removeFavoriteCity = function () {
         var btn = $('.favorite-city-remove');
