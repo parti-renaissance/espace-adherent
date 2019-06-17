@@ -27,7 +27,9 @@ class AppIntlExtension extends AbstractExtension
 
     public static function getCityNameFromInseeCode(string $inseeCode): string
     {
-        if ($city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode)) {
+        $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
+
+        if ($city && array_key_exists('name', $city)) {
             return $city['name'];
         }
 

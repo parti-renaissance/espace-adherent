@@ -87,10 +87,12 @@ class ApplicationRequestType extends AbstractType
             $data->setPostalCode($addressForm->get('postalCode')->getData());
             $data->setCity($cityCode = $addressForm->get('city')->getData());
             $data->setCityName($addressForm->get('cityName')->getData());
-            $data->setCountry($addressForm->get('country')->getData());
+            $data->setCountry($country = $addressForm->get('country')->getData());
 
-            [$postalCode, $inseeCode] = explode('-', $cityCode);
-            $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
+            if ('FR' === $country) {
+                [$postalCode, $inseeCode] = explode('-', $cityCode);
+                $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
+            }
         });
     }
 }
