@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp\Synchronisation;
 
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -28,6 +29,7 @@ class RequestBuilder
 
     private $activeTags = [];
     private $inactiveTags = [];
+    private $favoriteCities;
     private $mailchimpObjectIdMapping;
     private $isSubscribeRequest = true;
 
@@ -60,6 +62,16 @@ class RequestBuilder
             ->setEmail($newsletter->getEmail())
             ->setZipCode($newsletter->getPostalCode())
             ->setCountryName($newsletter->getCountryName())
+        ;
+    }
+
+    public function updateFromApplicationRequest(ApplicationRequest $applicationRequest): self
+    {
+        return $this
+            ->setEmail($applicationRequest->getEmailAddress())
+            ->setFirstName($applicationRequest->getFirstName())
+            ->setLastName($applicationRequest->getLastName())
+            ->setFavoriteCities($applicationRequest->getFavoriteCities())
         ;
     }
 
@@ -154,6 +166,13 @@ class RequestBuilder
         return $this;
     }
 
+    private function setFavoriteCities(array $favoriteCities): self
+    {
+        $this->favoriteCities = $favoriteCities;
+
+        return $this;
+    }
+
     public function buildMemberRequest(string $memberIdentifier): MemberRequest
     {
         $request = new MemberRequest($memberIdentifier);
@@ -224,6 +243,10 @@ class RequestBuilder
 
         if ($this->adhesionDate) {
             $mergeFields[MemberRequest::MERGE_FIELD_ADHESION_DATE] = $this->adhesionDate->format('Y-m-d');
+        }
+
+        if ($this->favoriteCities) {
+            $mergeFields[MemberRequest::MERGE_FIELD_FAVORITE_CITIES] = implode(',', $this->favoriteCities);
         }
 
         return $mergeFields;

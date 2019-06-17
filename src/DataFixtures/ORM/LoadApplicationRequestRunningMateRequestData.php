@@ -59,6 +59,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
     public function getDependencies()
     {
         return [
+            LoadReferentTagData::class,
             LoadApplicationRequestThemeData::class,
         ];
     }

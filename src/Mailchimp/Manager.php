@@ -5,6 +5,7 @@ namespace AppBundle\Mailchimp;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
@@ -76,13 +77,30 @@ class Manager implements LoggerAwareInterface
 
     public function editNewsletterMember(NewsletterSubscription $newsletter): bool
     {
-        return $this->driver->editMember(
-            $this->requestBuildersLocator
-                ->get(RequestBuilder::class)
-                ->updateFromNewsletterSubscription($newsletter)
-                ->buildMemberRequest($newsletter->getEmail()),
-            $this->mailchimpObjectIdMapping->getNewsletterListId()
-        );
+        return $this
+            ->driver
+            ->editMember(
+                $this->requestBuildersLocator
+                    ->get(RequestBuilder::class)
+                    ->updateFromNewsletterSubscription($newsletter)
+                    ->buildMemberRequest($newsletter->getEmail()),
+                $this->mailchimpObjectIdMapping->getNewsletterListId()
+            )
+        ;
+    }
+
+    public function editApplicationRequestCandidate(ApplicationRequest $applicationRequest): bool
+    {
+        return $this
+            ->driver
+            ->editMember(
+                $this->requestBuildersLocator
+                    ->get(RequestBuilder::class)
+                    ->updateFromApplicationRequest($applicationRequest)
+                    ->buildMemberRequest($applicationRequest->getEmailAddress()),
+                $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId()
+            )
+        ;
     }
 
     public function getCampaignContent(MailchimpCampaign $campaign): string

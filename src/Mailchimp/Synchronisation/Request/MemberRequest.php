@@ -12,6 +12,7 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_ZIP_CODE = 'ZIP_CODE';
     public const MERGE_FIELD_COUNTRY = 'COUNTRY';
     public const MERGE_FIELD_ADHESION_DATE = 'ADHESION';
+    public const MERGE_FIELD_FAVORITE_CITIES = 'FVR_CITIES';
 
     private $memberIdentifier;
 
