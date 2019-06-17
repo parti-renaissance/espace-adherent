@@ -462,6 +462,12 @@ $(document).ready(function() {
 {% endmacro %}
 
 {% macro toggleDisplayFromCheckbox(choiceSelector, elementToToggleSelector, labelToShow) %}
+    if ('{{ labelToShow }}' === $('{{ choiceSelector|raw }} input[type="checkbox"]:checked').parent().find('label').text().trim()) {
+        $('{{ elementToToggleSelector|raw }}').show();
+    } else {
+        $('{{ elementToToggleSelector|raw }}').hide();
+    }
+
     $('{{ elementToToggleSelector|raw }}').hide();
 
     $('{{ choiceSelector|raw }}  input[type="checkbox"]').change(function() {
