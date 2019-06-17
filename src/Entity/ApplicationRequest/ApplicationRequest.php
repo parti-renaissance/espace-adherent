@@ -264,12 +264,12 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
         $this->cityName = $cityName;
     }
 
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    public function setCountry(string $country): void
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }
