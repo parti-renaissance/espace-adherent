@@ -77,7 +77,8 @@
 
 {% block header_content %}
     <h1 class="text--large">
-        La République c'est vous ! Engagez-vous pour votre commune !
+        La République c'est vous !<br>
+        Engagez-vous pour votre commune !
     </h1>
 {% endblock %}
 
@@ -91,11 +92,11 @@
             Ensemble, construisons un projet en faveur de nos territoires, un projet inspiré par les attentes de chacun et porté par des acteurs engagés ! Tous engagés !
         </p>
     </div>
-    <div class="information__modal inf-modl--pale-blue">
+    <div class="information__modal inf-modl--pale-blue b__nudge--bottom">
         Il n’est pas nécessaire d’être adhérent à LaREM pour remplir ce formulaire.
         LaREM souhaite encourager tout citoyen, même non adhérent d’un mouvement politique, à prendre part à l’action publique.
     </div>
-    <br>
+
     <div class="information__modal inf-modl--pale-blue">
         Ce formulaire n’engage pas une présence sur une liste municipale ou une implication automatique dans une campagne locale.
     </div>
@@ -222,7 +223,7 @@
                 </div>
 
                 <div class="em-form__group em-form__radio--inline">
-                    {{ form_label(form.isPoliticalActivist, 'Avez vous déjà eu un engagement militant ?') }}
+                    {{ form_label(form.isPoliticalActivist, 'Avez-vous déjà eu un engagement militant ?') }}
                     {{ form_widget(form.isPoliticalActivist) }}
                     {{ form_errors(form.isPoliticalActivist) }}
                 </div>
@@ -234,7 +235,7 @@
                 </div>
 
                 <div class="em-form__group em-form__radio--inline">
-                    {{ form_label(form.isPreviousElectedOfficial, 'Avez vous déjà exercé un mandat ?') }}
+                    {{ form_label(form.isPreviousElectedOfficial, 'Avez-vous déjà exercé un mandat ?') }}
                     {{ form_widget(form.isPreviousElectedOfficial) }}
                     {{ form_errors(form.isPreviousElectedOfficial) }}
                 </div>
@@ -248,7 +249,7 @@
 
             {% block themes_block %}
                 <div class="em-form__group">
-                    {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez vous choisi cette thématique ?') }}
+                    {{ form_label(form.favoriteThemeDetails, 'Pourquoi avez-vous choisi cette thématique ?') }}
                     {{ form_widget(form.favoriteThemeDetails, { attr: { placeholder: 'Détaillez...' } }) }}
                     {{ form_errors(form.favoriteThemeDetails) }}
                 </div>

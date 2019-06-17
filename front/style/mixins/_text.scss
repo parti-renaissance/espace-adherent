@@ -701,6 +701,7 @@ $text--size-extra-large--big: 128px;
     border-radius: 3px;
 
     &.inf-modl {
+
         &--pale-yellow {
             color: $inf-modl--text-yellow;
             background-color: $inf-modl--bkg-yellow;
@@ -710,5 +711,10 @@ $text--size-extra-large--big: 128px;
             color: $inf-modl--text-blue;
             background-color: $inf-modl--bkg-blue;
         }
+    }
+
+    a {
+        color: $blue--dark;
+        border: none;
     }
 }

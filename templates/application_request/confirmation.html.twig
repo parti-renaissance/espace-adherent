@@ -9,24 +9,30 @@
 
 
 {% block form_body %}
-    <div class="page-confirmation font-roboto text--center l__wrapper--500">
-        <img class="icn_success" src="{{ asset('images/icons/icn_success.svg') }}" />
-        <p class="text--dark b__nudge--top-large b__nudge--bottom-large">
-            Nous reviendrons vers vous sous 2 semaines environ, pour vous proposer plusieurs pistes d'engagement.
-            <br><br>
-            Si vous avez une question, n'hésitez pas à nous contacter.
-            <br><br>
-            Pour postuler sous une autre forme, cliquez <a class="text--blue--dark link--no--decor" href="{{ path('app_application_request_request') }}">ici</a>.
-        </p>
-        <div class="information__modal inf-modl--pale-blue b__nudge--top-large b__nudge--bottom-large">
-            Pour rappel, ce questionnaire ne sert pas à candidater pour être tête de liste.
-            Si vous souhaitez candidater pour être tête de liste, vous trouverez les modalités dans la
-            <a href="https://storage.googleapis.com/en-marche-fr/Circulaire%20sur%20les%20e%CC%81lections%20municipales-3-vdef3.pdf">circulaire</a>.
-            Les candidatures doivent être transmises aux Commissions Départementales d'Investitures, dont le référent et nos parlementaires font partie.
-            <br><br>
-            Les candidatures sont par ailleurs prises en compte jusqu'à validation par le Bureau Exécutif de LaREM d'une investiture ou d'un soutien sur cette commune.
-            La liste, régulièrement mise à jour, est disponible <a href="#">ici</a>.
+    <div class="page-confirmation font-roboto">
+        <div class="text--center l__wrapper--500">
+            <img class="icn_success" src="{{ asset('images/icons/icn_success.svg') }}" />
+            <p class="text--dark b__nudge--top-large b__nudge--bottom-large">
+                Nous reviendrons vers vous sous 2 semaines environ, pour vous proposer plusieurs pistes d'engagement.
+                <br><br>
+                Si vous avez une question, n'hésitez pas à nous contacter.
+                <br><br>
+                Pour postuler sous une autre forme, cliquez <a class="text--blue--dark link--no--decor" href="{{ path('app_application_request_request') }}">ici</a>.
+            </p>
         </div>
-        <a href="{{ path('homepage') }}" class="form btn btn--blue">Retour à la page d'accueil</a>
+        <div class="l__wrapper--600">
+            <div class="information__modal inf-modl--pale-blue b__nudge--top-50 b__nudge--bottom-50">
+                Pour rappel, ce questionnaire ne sert pas à candidater pour être tête de liste.
+                Si vous souhaitez candidater pour être tête de liste, vous trouverez les modalités dans la
+                <a href="https://storage.googleapis.com/en-marche-fr/Circulaire%20sur%20les%20e%CC%81lections%20municipales-3-vdef3.pdf">circulaire</a>.
+                Les candidatures doivent être transmises aux Commissions Départementales d'Investitures, dont le référent et nos parlementaires font partie.
+                <br><br>
+                Les candidatures sont par ailleurs prises en compte jusqu'à validation par le Bureau Exécutif de LaREM d'une investiture ou d'un soutien sur cette commune.
+                La liste, régulièrement mise à jour, est disponible <a href="#">ici</a>.
+            </div>
+            <div class="text--center">
+                <a href="{{ path('homepage') }}" class="form btn btn--blue">Retour à la page d'accueil</a>
+            </div>
+        </div>
     </div>
 {% endblock %}
