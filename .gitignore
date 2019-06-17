@@ -27,5 +27,3 @@
 /docker-dev.lock
 node_modules
 /web/apps/atelier-des-idees/src/App.css
-
-\.DS_Store
