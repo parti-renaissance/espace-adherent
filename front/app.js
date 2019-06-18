@@ -253,9 +253,9 @@ class App {
         });
     }
 
-    runApplicationRequest(volunteerFormType, runningMateFormType) {
+    runApplicationRequest(volunteerFormType, runningMateFormType, formToDisplay) {
         System.import('pages/application_request').catch((error) => { throw error; }).then((module) => {
-            module.default(volunteerFormType, runningMateFormType);
+            module.default(volunteerFormType, runningMateFormType, formToDisplay);
         });
     }
 }

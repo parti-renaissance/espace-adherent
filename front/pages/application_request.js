@@ -1,7 +1,7 @@
 import AutocompletedAddressForm from '../services/address/AutocompletedAddressForm';
 import AddressObject from '../services/address/AddressObject';
 
-export default (volunteerFormType, runningMateFormType) => {
+export default (volunteerFormType, runningMateFormType, formToDisplay) => {
     /**
      * Volunteer request form
      */
@@ -94,7 +94,13 @@ export default (volunteerFormType, runningMateFormType) => {
     });
 
     // Form swapper
-    $('#volunteer-form').hide();
+    if ('RunningMateRequest' === formToDisplay) {
+        $('#volunteer-form').hide();
+        $('#js-RunningMate').addClass('selected');
+    } else {
+        $('#running-mate-form').hide();
+        $('#js-Volunteer').addClass('selected');
+    }
 
     $('#js-rolePicker .pick-btn').click((event) => {
         const $this = $(event.currentTarget);

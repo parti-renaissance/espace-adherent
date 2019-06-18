@@ -11,7 +11,8 @@
         Kernel.onLoad(function() {
             App.runApplicationRequest(
                 '{{ volunteer_form.vars.form_type_class|e('js') }}',
-                '{{ running_mate_form.vars.form_type_class|e('js') }}'
+                '{{ running_mate_form.vars.form_type_class|e('js') }}',
+                '{{ volunteer_form.vars.submitted == true ? 'VolunteerRequest' : 'RunningMateRequest' }}'
             );
             {{ js.applicationFavoriteCities(
                 '#volunteer_request_favoriteCities',
@@ -105,7 +106,7 @@
     <div class="role-picker">
         <h3 class="text--medium b__nudge--bottom-larger">Je postule en tant que :</h3>
         <div class="role-picker__btns" id="js-rolePicker">
-            <div class="pick-btn pick-btn__running-mate selected" id="js-RunningMate">Colistier</div>
+            <div class="pick-btn pick-btn__running-mate" id="js-RunningMate">Colistier</div>
             <div class="pick-btn pick-btn__volunteer" id="js-Volunteer">Bénévole</div>
         </div>
     </div>
