@@ -85,6 +85,7 @@
 {% block form_body %}
 
     <div class="page-intro b__nudge--top-40 b__nudge--bottom-larger">
+        <img src="{{ asset('images/municipales-marianne.jpg') }}" class="b__nudge--bottom-larger" />
         <p class="text--dark font-roboto">
             Dans le cadre du scrutin municipal de 2020, La République En Marche donnera la possibilité à chaque citoyen de devenir acteur de la vie publique locale.
             Que vous souhaitiez prendre part à une liste ou être membre actif de la campagne, nous vous mettrons en relation avec nos équipes locales.
@@ -276,17 +277,17 @@
                     <div class="information__modal inf-modl--pale-blue b__nudge--top-large b__nudge--bottom-large">
                         Pour rappel, ce questionnaire ne sert pas à candidater pour être tête de liste.
                         Si vous souhaitez candidater pour être tête de liste, vous trouverez les modalités dans la
-                        <a href="https://storage.googleapis.com/en-marche-fr/Circulaire%20sur%20les%20e%CC%81lections%20municipales-3-vdef3.pdf">circulaire</a>.
+                        <a href="https://storage.googleapis.com/en-marche-fr/Circulaire%20sur%20les%20e%CC%81lections%20municipales-3-vdef3.pdf" target="_blank">circulaire</a>.
                         Les candidatures doivent être transmises aux Commissions Départementales d'Investitures, dont le référent et nos parlementaires font partie.
                         <br><br>
                         Les candidatures sont par ailleurs prises en compte jusqu'à validation par le Bureau Exécutif de LaREM d'une investiture ou d'un soutien sur cette commune.
-                        La liste, régulièrement mise à jour, est disponible <a href="#">ici</a>.
+                        La liste, régulièrement mise à jour, est disponible <a href="https://en-marche.fr/municipales/candidats-investis" target="_blank">ici</a>.
                     </div>
                     <div class="form__checkbox">
                         {% set LREMValuesLabel %}
                             <span class="label-with-link">
                                 Je certifie sur l'honneur adhérer à la <a href="https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM-charte-des-valeurs.pdf" class="text--blue--dark" target="_blank">Charte des Valeurs</a> de la République En Marche
-                                et m'engage à respecter les 10 points de la <a href="{{ path('homepage') }}" class="text--blue--dark" target="_blank">Charte de l'élu local</a> LaREM.
+                                et m'engage à respecter les 10 points de la <a href="https://storage.googleapis.com/en-marche-fr/charte_10_engagements.pdf" class="text--blue--dark" target="_blank">Charte de l'élu local</a> LaREM.
                             </span>
                         {% endset %}
                         {{ form_widget(form.agreeToLREMValues) }}
