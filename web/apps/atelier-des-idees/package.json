@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "/apps/atelier-des-idees/build",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "classnames": "^2.2.6",
     "deep-extend": "^0.6.0",
     "draft-js": "^0.10.5",
