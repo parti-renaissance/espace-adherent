@@ -753,7 +753,15 @@
         ######################################################
          -->
 
-        <service id="app.admin.formation_axe" class="AppBundle\Admin\FormationAxeAdmin">
+        <service id="app.admin.formation_path" class="AppBundle\Admin\Formation\PathAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Parcours" group="Espace formation" />
+
+            <argument />
+            <argument>AppBundle\Entity\Formation\Path</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.formation_axe" class="AppBundle\Admin\Formation\AxeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Axes de formation" group="Espace formation"/>
 
             <argument />
@@ -768,11 +776,11 @@
             </call>
         </service>
 
-        <service id="app.admin.formation_article" class="AppBundle\Admin\FormationArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Articles" group="Espace formation"/>
+        <service id="app.admin.formation_module" class="AppBundle\Admin\Formation\ModuleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Modules" group="Espace formation"/>
 
             <argument />
-            <argument>AppBundle\Entity\Formation\Article</argument>
+            <argument>AppBundle\Entity\Formation\Module</argument>
             <argument />
 
             <call method="setStorage">

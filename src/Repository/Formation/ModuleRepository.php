@@ -2,14 +2,14 @@
 
 namespace AppBundle\Repository\Formation;
 
-use AppBundle\Entity\Formation\Article;
+use AppBundle\Entity\Formation\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ArticleRepository extends ServiceEntityRepository
+class ModuleRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Article::class);
+        parent::__construct($registry, Module::class);
     }
 }

@@ -16,11 +16,11 @@ class AxeRepository extends ServiceEntityRepository
     /**
      * @return Axe[]
      */
-    public function findAllWithArticles(): array
+    public function findAllWithModules(): array
     {
         return $this->createQueryBuilder('a')
-            ->addSelect('articles')
-            ->leftJoin('a.articles', 'articles')
+            ->addSelect('modules')
+            ->innerJoin('a.modules', 'modules')
             ->getQuery()
             ->getResult()
         ;

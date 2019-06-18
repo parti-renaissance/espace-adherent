@@ -363,3 +363,16 @@ application_request.profession.required: Veuillez renseigner votre profession.
 application_request.favorite_themes.min: Veuillez sélectionner au moins une thématique.
 application_request.technical_skills.min: Veuillez sélectionner au moins une compétence technique.
 application_request.curriculum.mime_type: Seuls les fichiers .pdf sont acceptés.
+
+#
+# Formation
+#
+path.title.unique_entity: Il existe déjà un parcours de formation avec ce titre.
+path.title.not_blank: Veuillez renseigner un titre.
+path.title.min_length: Le titre doit faire au moins {{ limit }} caractères.
+path.title.max_length: Le titre doit pas faire plus de {{ limit }} caractères.
+path.description.not_blank: Veuillez renseigner une description.
+path.description.min_length: La description doit faire au moins {{ limit }} caractères.
+
+module.title.unique_entity: Il existe déjà un module avec ce titre pour cet axe de formation.
+module.slug.unique_entity: Il existe déjà un module avec cette URL pour cet axe de formation.

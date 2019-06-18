@@ -77,20 +77,30 @@ class Axe implements EntityMediaInterface
     private $content;
 
     /**
-     * @var Article[]|Collection
+     * @var Path
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Formation\Article", mappedBy="axe")
+     * @ORM\ManyToOne(targetEntity="Path", inversedBy="axes")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
      */
-    private $articles;
+    private $path;
+
+    /**
+     * @var Module[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Module", mappedBy="axe")
+     */
+    private $modules;
 
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
+        $this->modules = new ArrayCollection();
     }
 
     public function __toString()
     {
-        return (string) $this->title;
+        return $this->path->getTitle().', '.$this->title;
     }
 
     public function getId(): ?int
@@ -133,8 +143,18 @@ class Axe implements EntityMediaInterface
         $this->content = $content;
     }
 
-    public function getArticles(): Collection
+    public function getModules(): Collection
     {
-        return $this->articles;
+        return $this->modules;
+    }
+
+    public function getPath(): ?Path
+    {
+        return $this->path;
+    }
+
+    public function setPath(?Path $path): void
+    {
+        $this->path = $path;
     }
 }

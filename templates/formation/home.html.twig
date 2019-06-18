@@ -23,18 +23,22 @@
     </div>
 
     <div class="l__wrapper--slim espace-formation__cases">
-        <ol>
-            {% for keyAxe, axe in axes %}
-            <li>
-                <h2 class="text--medium-small" style="padding:80px 0 0 30px;">{{ axe.title }}</h2>
-            </li>
-                {% for keyArticle, article in axe.articles %}
-                    <a href="{{ path('app_formation_article', { 'slug': article.slug }) }}">
-                        <strong>M{{ keyAxe+1 }}.{{ keyArticle }} -</strong> {{ article.title }}
-                    </a>
+        {% for path in paths %}
+            <h2>{{ path.title }}</h2>
+            <p>{{ path.description }}</p>
+            <ol>
+                {% for axe in path.axes %}
+                <li>
+                    <h2 class="text--medium-small" style="padding:80px 0 0 30px;">{{ axe.title }}</h2>
+                    {% for module in axe.modules %}
+                        <a href="{{ path('app_formation_module', { 'slug': module.slug }) }}">
+                            <strong>M{{ loop.parent.loop.index }}.{{ loop.index0 }} -</strong> {{ module.title }}
+                        </a>
+                    {% endfor %}
+                </li>
                 {% endfor %}
-            {% endfor %}
-        </ol>
+            </ol>
+        {% endfor %}
     </div>
 </section>
 {% endblock %}
