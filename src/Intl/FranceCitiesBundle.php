@@ -70,6 +70,15 @@ class FranceCitiesBundle
         return 'FR';
     }
 
+    /**
+     * Returns the list of cities by matching:
+     * - postal codes if given parameter is a number
+     * - city names otherwise
+     *
+     * Cities are ordered by:
+     * - postal codes if given parameter is a number
+     * - city names otherwise
+     */
     public static function searchCities(string $search, int $maxResults = 20): array
     {
         $search = self::canonicalizeCityName($search);
@@ -100,21 +109,23 @@ class FranceCitiesBundle
                     'name' => $cityName,
                 ];
 
-                if (\count($list) >= $maxResults) {
+                if (is_numeric($search) && \count($list) >= $maxResults) {
                     break 2;
                 }
             }
         }
 
-        usort($list, function (array $city1, array $city2) {
-            return $city1['postal_code'] < $city2['postal_code'] ? -1 : 1;
-        });
+        if (!is_numeric($search)) {
+            usort($list, function (array $city1, array $city2) {
+                return $city1['name'] < $city2['name'] ? -1 : 1;
+            });
+        }
 
         return $list;
     }
 
     /**
-     * Returns the a list of city for a given list of INSEE code.
+     * Returns the list of cities for a given list of INSEE code.
      */
     public static function searchCitiesByInseeCodes(array $inseeCodes): array
     {
@@ -134,7 +145,7 @@ class FranceCitiesBundle
 
             if (\array_key_exists($inseeCode, $cities) || \array_key_exists($trimmedInseeCode, $cities)) {
                 return [
-                    'name' => $cities[$inseeCode] ?? $cities[$trimmedInseeCode],
+                    'name' => $cities[$trimmedInseeCode] ?? $cities[$inseeCode],
                     'postal_code' => $postalCode,
                     'insee_code' => $inseeCode,
                 ];
