@@ -52,7 +52,7 @@
                     {% if is_granted('ROLE_REFERENT') %}
                     <nav class="manager-header__menu">
                         <ul>
-                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_referent_jecoute_*']) %}
+                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_jecoute_referent_*']) %}
 
                             <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' : '' }}">
                                 <a href="{{ path('app_referent_events') }}">Événements</a>
@@ -70,8 +70,8 @@
                                 <a href="{{ path('app_referent_users') }}">Adhérents</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_referent_jecoute_*') ? 'active' : '' }}">
-                                <a href="{{ path('app_referent_jecoute_local_surveys_list') }}">J'écoute</a>
+                            <li class="{{ is_active_route(app.request, 'app_jecoute_referent_*') ? 'active' : '' }}">
+                                <a href="{{ path('app_jecoute_referent_local_surveys_list') }}">J'écoute</a>
                             </li>
 
                             {% if is_canary_enabled() %}

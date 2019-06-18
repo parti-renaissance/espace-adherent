@@ -187,6 +187,12 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Chef municipal',
                     'required' => false,
                 ])
+                ->add('isJecouteManager', 'boolean', [
+                    'label' => "Est responsable J'écoute ?",
+                ])
+                ->add('jecouteManagedAreaCodesAsString', null, [
+                    'label' => "Responsable J'écoute",
+                ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-3'])
                 ->add('isDeputy', 'boolean', [
@@ -343,6 +349,11 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'Chef municipal',
                     'required' => false,
                     'help' => "Laisser vide si l'adhérent n'est pas chef municipal. Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC).",
+                ])
+                ->add('jecouteManagedAreaCodesAsString', TextType::class, [
+                    'label' => 'jecoute_manager',
+                    'required' => false,
+                    'help' => "Laisser vide si l'adhérent n'est pas responsable J'écoute. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
                 ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
@@ -575,6 +586,12 @@ class AdherentAdmin extends AbstractAdmin
                     if (\in_array(AdherentRoleEnum::ASSESSOR_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.assessorManagedArea', $alias), 'assessorManagedArea');
                         $where->add('assessorManagedArea IS NOT NULL AND assessorManagedArea.codes IS NOT NULL');
+                    }
+
+                    // J'écoute Manager
+                    if (\in_array(AdherentRoleEnum::JECOUTE_MANAGER, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.jecouteManagedArea', $alias), 'jecouteManagedArea');
+                        $where->add('jecouteManagedArea IS NOT NULL AND jecouteManagedArea.codes IS NOT NULL');
                     }
 
                     // User

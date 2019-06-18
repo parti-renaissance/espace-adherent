@@ -26,6 +26,10 @@
             <span class="label label-primary" style="padding: 2px;">Assesseur</span><br/>
         {% endif %}
 
+        {% if object.isJecouteManager %}
+            <span class="label label-primary" style="padding: 2px;">J'écoute</span><br/>
+        {% endif %}
+
         {% if object.isHostOnly %}
             <span class="label label-primary" style="background-color: #90ade6 !important; padding: 2px;">Co-Animateur</span><br/>
         {% endif %}

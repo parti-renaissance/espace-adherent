@@ -9,23 +9,16 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\NationalSurvey;
-use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
-use AppBundle\Form\Jecoute\SurveyFormType;
 use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
-use AppBundle\Jecoute\StatisticsExporter;
-use AppBundle\Jecoute\StatisticsProvider;
 use AppBundle\Referent\ManagedCitizenProjectsExporter;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
@@ -35,23 +28,16 @@ use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Referent\ReferentMessage;
 use AppBundle\Referent\ReferentMessageNotifier;
-use AppBundle\Referent\SurveyExporter;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
-use AppBundle\Repository\Jecoute\DataAnswerRepository;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
-use AppBundle\Repository\Jecoute\NationalSurveyRepository;
-use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -325,236 +311,6 @@ class ReferentController extends Controller
         return $this->render('referent/base_group_list.html.twig', [
             'title' => 'Projets citoyens',
             'managedGroupsJson' => $citizenProjectsExporter->exportAsJson($citizenProjectRepository->findManagedByReferent($this->getUser())),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaires-locaux",
-     *     name="app_referent_jecoute_local_surveys_list",
-     *     methods={"GET"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function jecouteLocalSurveysListAction(
-        LocalSurveyRepository $localSurveyRepository,
-        SurveyExporter $surveyExporter,
-        UserInterface $user
-    ): Response {
-        /** @var Adherent $user */
-        return $this->render('referent/surveys/local_surveys_list.html.twig', [
-            'surveysListJson' => $surveyExporter->exportLocalSurveysAsJson(
-                $localSurveyRepository->findAllByAuthor($user)
-            ),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaires-nationaux",
-     *     name="app_referent_jecoute_national_surveys_list",
-     *     methods={"GET"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function jecouteNationalSurveysListAction(
-        NationalSurveyRepository $nationalSurveyRepository,
-        SurveyExporter $surveyExporter
-    ): Response {
-        return $this->render('referent/surveys/national_surveys_list.html.twig', [
-            'surveysListJson' => $surveyExporter->exportNationalSurveysAsJson(
-                $nationalSurveyRepository->findAllPublished()
-            ),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaire/creer",
-     *     name="app_referent_jecoute_local_survey_create",
-     *     methods={"GET|POST"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function jecouteSurveyCreateAction(
-        Request $request,
-        ObjectManager $manager,
-        SuggestedQuestionRepository $suggestedQuestionRepository,
-        UserInterface $user
-    ): Response {
-        /** @var Adherent $user */
-        $form = $this
-            ->createForm(SurveyFormType::class, new LocalSurvey($user))
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($form->getData());
-            $manager->flush();
-
-            $this->addFlash('info', 'survey.create.success');
-
-            return $this->redirectToRoute('app_referent_jecoute_local_surveys_list');
-        }
-
-        return $this->render('referent/surveys/create.html.twig', [
-            'form' => $form->createView(),
-            'suggestedQuestions' => $suggestedQuestionRepository->findAllPublished(),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaire/{uuid}/editer",
-     *     name="app_referent_jecoute_local_survey_edit",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET|POST"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', survey)")
-     */
-    public function jecouteSurveyEditAction(
-        Request $request,
-        LocalSurvey $survey,
-        ObjectManager $manager,
-        SuggestedQuestionRepository $suggestedQuestionRepository
-    ): Response {
-        $form = $this
-            ->createForm(SurveyFormType::class, $survey)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->flush();
-
-            $this->addFlash('info', 'survey.edit.success');
-
-            return $this->redirectToRoute('app_referent_jecoute_local_surveys_list');
-        }
-
-        return $this->render('referent/surveys/create.html.twig', [
-            'form' => $form->createView(),
-            'suggestedQuestions' => $suggestedQuestionRepository->findAllPublished(),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaire/{uuid}",
-     *     name="app_referent_jecoute_national_survey_show",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     *
-     * @Entity("nationalSurvey", expr="repository.findOnePublishedByUuid(uuid)")
-     */
-    public function jecouteNationalSurveyShowAction(NationalSurvey $nationalSurvey): Response
-    {
-        $form = $this->createForm(
-            SurveyFormType::class, $nationalSurvey, ['disabled' => true]
-        );
-
-        return $this->render('referent/surveys/show.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaire/{uuid}/stats",
-     *     name="app_referent_jecoute_survey_stats",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     *
-     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     */
-    public function jecouteSurveyStatsAction(Survey $survey, StatisticsProvider $provider): Response
-    {
-        return $this->render('referent/surveys/stats.html.twig', [
-            'data' => $provider->getStatsBySurvey($survey),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaire/{uuid}/dupliquer",
-     *     name="app_referent_jecoute_local_survey_duplicate",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
-     * )
-     *
-     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     *
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', survey)")
-     */
-    public function jecouteSurveyDuplicateAction(LocalSurvey $survey, ObjectManager $manager): Response
-    {
-        $clonedSurvey = clone $survey;
-
-        $manager->persist($clonedSurvey);
-        $manager->flush();
-
-        $this->addFlash('info', 'survey.duplicate.success');
-
-        return $this->redirectToRoute('app_referent_jecoute_local_surveys_list');
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/question/{uuid}/reponses",
-     *     name="app_referent_jecoute_survey_stats_answers_list",
-     *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"},
-     * )
-     *
-     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_AUTHOR_OF', surveyQuestion)")
-     */
-    public function jecouteSurveyAnswersListAction(
-        SurveyQuestion $surveyQuestion,
-        DataAnswerRepository $dataAnswerRepository
-    ): Response {
-        return $this->render('referent/surveys/data_answers_dialog_content.html.twig', [
-            'answers' => $dataAnswerRepository->findAllBySurveyQuestion($surveyQuestion),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/jecoute/questionnaire/{uuid}/stats/download",
-     *     name="app_referent_jecoute_survey_stats_download",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
-     * )
-     *
-     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     *
-     * @Security("is_granted('ROLE_REFERENT') and (is_granted('IS_AUTHOR_OF', survey) or survey.isNational())")
-     */
-    public function jecouteSurveyStatsDownloadAction(Survey $survey, StatisticsExporter $statisticsExporter): Response
-    {
-        $dataFile = $statisticsExporter->export($survey);
-
-        return new Response($dataFile['content'], Response::HTTP_OK, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment;filename="'.$dataFile['filename'].'"',
         ]);
     }
 

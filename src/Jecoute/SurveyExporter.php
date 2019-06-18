@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace AppBundle\Jecoute;
 
 use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\NationalSurvey;
@@ -18,7 +18,7 @@ class SurveyExporter
     /**
      * @param LocalSurvey[] $surveys
      */
-    public function exportLocalSurveysAsJson(array $surveys): string
+    public function exportLocalSurveysAsJson(array $surveys, string $spaceName): string
     {
         $data = [];
         $i = 0;
@@ -34,15 +34,15 @@ class SurveyExporter
                 'author' => $survey->getAuthor()->getFullName(),
                 'edit' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-edit'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_jecoute_local_survey_edit', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate("app_jecoute_{$spaceName}_local_survey_edit", ['uuid' => $survey->getUuid()]),
                 ],
                 'stats' => [
                     'label' => "<span id='survey-stats-$i' class='btn btn--default'><i class='fa fa-bar-chart'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_jecoute_survey_stats', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate("app_jecoute_{$spaceName}_survey_stats", ['uuid' => $survey->getUuid()]),
                 ],
                 'duplicate' => [
                     'label' => "<span class='btn btn--default'><i class='fa fa-copy'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_jecoute_local_survey_duplicate', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate("app_jecoute_{$spaceName}_local_survey_duplicate", ['uuid' => $survey->getUuid()]),
                 ],
                 'publish' => $this->getPublishAction($survey->isPublished()),
             ];
@@ -55,7 +55,7 @@ class SurveyExporter
     /**
      * @param NationalSurvey[] $surveys
      */
-    public function exportNationalSurveysAsJson(array $surveys): string
+    public function exportNationalSurveysAsJson(array $surveys, string $spaceName): string
     {
         $data = [];
         $i = 0;
@@ -69,11 +69,11 @@ class SurveyExporter
                 'createdAt' => $survey->getCreatedAt()->format('d/m/Y'),
                 'stats' => [
                     'label' => "<span id='survey-stats-$i' class='btn btn--default'><i class='fa fa-bar-chart'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_jecoute_survey_stats', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate("app_jecoute_{$spaceName}_survey_stats", ['uuid' => $survey->getUuid()]),
                 ],
                 'show' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-search-plus'></i></span>",
-                    'url' => $this->urlGenerator->generate('app_referent_jecoute_national_survey_show', ['uuid' => $survey->getUuid()]),
+                    'url' => $this->urlGenerator->generate("app_jecoute_{$spaceName}_national_survey_show", ['uuid' => $survey->getUuid()]),
                 ],
                 'publish' => $this->getPublishAction($survey->isPublished()),
             ];
