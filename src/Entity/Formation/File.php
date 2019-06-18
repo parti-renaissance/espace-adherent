@@ -32,25 +32,25 @@ class File extends BaseFile
     protected $file;
 
     /**
-     * @var Article
+     * @var Module
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Formation\Article", inversedBy="files")
+     * @ORM\ManyToOne(targetEntity="Module", inversedBy="files")
      * @ORM\OrderBy({"id": "ASC"})
      */
-    private $article;
+    private $module;
 
     public function getPrefixPath(): string
     {
         return self::PREFIX_PATH;
     }
 
-    public function getArticle(): Article
+    public function getModule(): Module
     {
-        return $this->article;
+        return $this->module;
     }
 
-    public function setArticle(Article $article): void
+    public function setModule(Module $module): void
     {
-        $this->article = $article;
+        $this->module = $module;
     }
 }

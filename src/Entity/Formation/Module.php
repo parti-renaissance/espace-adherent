@@ -13,15 +13,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="formation_articles")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Formation\ArticleRepository")
+ * @ORM\Table(name="formation_modules")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Formation\ModuleRepository")
 
  * @Algolia\Index(autoIndex=false)
  *
- * @UniqueEntity(fields={"title", "axe"}, message="Il existe déjà un article avec ce titre pour cet axe de formation.")
- * @UniqueEntity(fields={"slug", "axe"}, message="Il existe déjà un article avec cette URL pour cet axe de formation.")
+ * @UniqueEntity(fields={"title", "axe"}, message="module.title.unique_entity")
+ * @UniqueEntity(fields={"slug", "axe"}, message="module.slug.unique_entity")
  */
-class Article implements EntityMediaInterface
+class Module implements EntityMediaInterface
 {
     use EntityMediaTrait;
 
@@ -75,7 +75,7 @@ class Article implements EntityMediaInterface
     /**
      * @var Axe|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Formation\Axe", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Formation\Axe", inversedBy="modules")
      *
      * @Assert\NotBlank(message="Veuillez renseigner un axe.")
      */
@@ -87,7 +87,7 @@ class Article implements EntityMediaInterface
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\Formation\File",
      *     cascade={"persist", "remove"},
-     *     mappedBy="article",
+     *     mappedBy="module",
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"id": "ASC"})
@@ -167,7 +167,7 @@ class Article implements EntityMediaInterface
     public function addFile(File $file): void
     {
         if (!$this->files->contains($file)) {
-            $file->setArticle($this);
+            $file->setModule($this);
             $this->files->add($file);
         }
     }

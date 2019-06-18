@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Formation\Article;
+use AppBundle\Entity\Formation\Module;
 use AppBundle\Entity\Page;
-use AppBundle\Repository\Formation\AxeRepository;
+use AppBundle\Repository\Formation\PathRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,11 +21,11 @@ class FormationController extends Controller
      * @Route(name="home", methods="GET")
      * @Entity("page", expr="repository.findOneBySlug('espace-formation')")
      */
-    public function home(Page $page, AxeRepository $axeRepository): Response
+    public function home(Page $page, PathRepository $pathRepository): Response
     {
         return $this->render('formation/home.html.twig', [
             'page' => $page,
-            'axes' => $axeRepository->findAllWithArticles(),
+            'paths' => $pathRepository->findAllWithAxesAndModules(),
         ]);
     }
 
@@ -41,12 +41,12 @@ class FormationController extends Controller
     }
 
     /**
-     * @Route("/article/{slug}", name="article", methods="GET")
+     * @Route("/module/{slug}", name="module", methods="GET")
      */
-    public function article(Article $article): Response
+    public function module(Module $module): Response
     {
-        return $this->render('formation/article.html.twig', [
-            'article' => $article,
+        return $this->render('formation/module.html.twig', [
+            'module' => $module,
         ]);
     }
 }
