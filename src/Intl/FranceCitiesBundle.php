@@ -70,7 +70,7 @@ class FranceCitiesBundle
         return 'FR';
     }
 
-    public static function searchCities(string $search): array
+    public static function searchCities(string $search, int $maxResults = 20): array
     {
         $search = self::canonicalizeCityName($search);
 
@@ -78,13 +78,17 @@ class FranceCitiesBundle
 
         foreach (self::$cities as $postalCode => $cities) {
             foreach ($cities as $inseeCode => $cityName) {
-                $canonicalCityName = self::canonicalizeCityName($cityName);
-
-                if (0 !== strpos($canonicalCityName, $search)) {
-                    continue;
-                }
-
                 $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
+
+                if (!is_numeric($search)) {
+                    if (0 !== strpos(self::canonicalizeCityName($cityName), $search)) {
+                        continue;
+                    }
+                } else {
+                    if (0 !== strpos($postalCode, $search)) {
+                        continue;
+                    }
+                }
 
                 if (\array_key_exists($inseeCode, $list)) {
                     continue;
@@ -96,7 +100,7 @@ class FranceCitiesBundle
                     'name' => $cityName,
                 ];
 
-                if (\count($list) >= 10) {
+                if (\count($list) >= $maxResults) {
                     break 2;
                 }
             }

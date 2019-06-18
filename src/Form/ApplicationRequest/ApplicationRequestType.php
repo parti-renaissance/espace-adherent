@@ -89,8 +89,13 @@ class ApplicationRequestType extends AbstractType
             $data->setCityName($addressForm->get('cityName')->getData());
             $data->setCountry($country = $addressForm->get('country')->getData());
 
-            if ('FR' === $country) {
-                [$postalCode, $inseeCode] = explode('-', $cityCode);
+            if (!$cityCode) {
+                return;
+            }
+
+            [$postalCode, $inseeCode] = explode('-', $cityCode);
+
+            if ('FR' === $country && $postalCode && $inseeCode) {
                 $data->setCityName((string) FranceCitiesBundle::getCity($postalCode, $inseeCode));
             }
         });
