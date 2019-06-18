@@ -323,6 +323,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 $this->mailchimpMapping = new MailchimpObjectIdMapping(
                     'main_list_id',
                     'newsletter_list_id',
+                    'application_request_candidate_list_id',
                     [
                         'referent' => 1,
                         'deputy' => 2,

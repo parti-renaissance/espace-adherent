@@ -21,8 +21,8 @@ class MailchimpSyncSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::SUBSCRIBE => 'onSubscribe',
-            Events::UNSUBSCRIBE => 'onUnsubscribe',
+            Events::SUBSCRIBE => ['onSubscribe', -1],
+            Events::UNSUBSCRIBE => ['onUnsubscribe', -1],
         ];
     }
 

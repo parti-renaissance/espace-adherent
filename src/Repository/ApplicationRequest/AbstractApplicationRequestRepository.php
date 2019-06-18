@@ -1,20 +1,19 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace AppBundle\Repository\ApplicationRequest;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class RunningMateRequestRepository extends ServiceEntityRepository
+abstract class AbstractApplicationRequestRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, RunningMateRequest::class);
-    }
-
+    /**
+     * @return VolunteerRequest[]|RunningMateRequest[]
+     */
     public function findForReferent(Adherent $referent): array
     {
         if (!$referent->isReferent()) {
@@ -35,10 +34,10 @@ class RunningMateRequestRepository extends ServiceEntityRepository
 
         $data = [];
         foreach ($results as $result) {
-            /** @var RunningMateRequest $runningMate */
-            $runningMate = $result[0];
-            $runningMate->setIsAdherent($result['isAdherent']);
-            $data[] = $runningMate;
+            /** @var ApplicationRequest $applicationRequest */
+            $applicationRequest = $result[0];
+            $applicationRequest->setIsAdherent($result['isAdherent']);
+            $data[] = $applicationRequest;
         }
 
         return $data;

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_volunteer")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

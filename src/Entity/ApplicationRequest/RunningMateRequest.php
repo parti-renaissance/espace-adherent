@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_running_mate")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

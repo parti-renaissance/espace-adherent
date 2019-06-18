@@ -6,6 +6,7 @@ class MailchimpObjectIdMapping
 {
     private $mainListId;
     private $newsletterListId;
+    private $applicationRequestCandidateListId;
     private $folderIds;
     private $templateIds;
     private $interestIds;
@@ -16,6 +17,7 @@ class MailchimpObjectIdMapping
     public function __construct(
         string $mainListId,
         string $newsletterListId,
+        string $applicationRequestCandidateListId,
         array $folderIds,
         array $templateIds,
         array $interestIds,
@@ -25,6 +27,7 @@ class MailchimpObjectIdMapping
     ) {
         $this->mainListId = $mainListId;
         $this->newsletterListId = $newsletterListId;
+        $this->applicationRequestCandidateListId = $applicationRequestCandidateListId;
         $this->folderIds = $folderIds;
         $this->templateIds = $templateIds;
         $this->interestIds = $interestIds;
@@ -71,5 +74,10 @@ class MailchimpObjectIdMapping
     public function getNewsletterListId(): string
     {
         return $this->newsletterListId;
+    }
+
+    public function getApplicationRequestCandidateListId(): string
+    {
+        return $this->applicationRequestCandidateListId;
     }
 }

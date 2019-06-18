@@ -144,7 +144,9 @@
         <service id="AppBundle\Form\AssessorRequestType" />
 
         <!-- ApplicationRequest -->
-        <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler">
+        <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler" />
+        <service id="AppBundle\ApplicationRequest\Listener\MailchimpSyncSubscriber" />
+        <service id="AppBundle\ApplicationRequest\Listener\SendConfirmationRequestSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
 
@@ -564,6 +566,7 @@
         <service id="AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping">
             <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <argument type="string">%env(MAILCHIMP_NEWSLETTER_LIST_ID)%</argument>
+            <argument type="string">%env(MAILCHIMP_APPLICATION_REQUEST_CANDIDATE_LIST_ID)%</argument>
             <argument type="string">%env(json:MAILCHIMP_CAMPAIGN_FOLDER_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_TEMPLATE_IDS)%</argument>
             <argument type="string">%env(json:MAILCHIMP_INTEREST_IDS)%</argument>
