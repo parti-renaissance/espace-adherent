@@ -204,6 +204,15 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'media' => $media,
         ]));
 
+        $manager->persist($factory->createFromArray([
+            'keywords' => 'larem candidats municipales 2020',
+            'title' => 'Candidat(e)s investi(e)s et soutenu(e)s par LaREM pour les élections municipales de 2020',
+            'slug' => 'municipales/candidats-investis ',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+            'media' => $media,
+        ]));
+
         $manager->flush();
     }
 
