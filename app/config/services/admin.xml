@@ -983,7 +983,7 @@
         ######################################################
          -->
 
-        <service id="app.admin.technicalskill" class="AppBundle\Admin\TechnicalSkillAdmin">
+        <service id="app.admin.application_request_technical_skill" class="AppBundle\Admin\ApplicationRequestTechnicalSkillAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Compétences techniques" group="Municipales" />
 
             <argument />
@@ -991,7 +991,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.theme" class="AppBundle\Admin\ThemeAdmin">
+        <service id="app.admin.application_request_theme" class="AppBundle\Admin\ApplicationRequestThemeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Thématiques" group="Municipales" />
 
             <argument />
@@ -1000,7 +1000,7 @@
         </service>
 
         <!-- RunningMate manager-->
-        <service id="app.admin.runningmate" class="AppBundle\Admin\RunningMateAdmin">
+        <service id="app.admin.application_request_running_mate_request" class="AppBundle\Admin\ApplicationRequestRunningMateRequestAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Municipales" />
 
             <argument />
@@ -1015,7 +1015,7 @@
             </call>
         </service>
 
-        <service id="app.admin.volunteer" class="AppBundle\Admin\VolunteerAdmin">
+        <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequestVolunteerRequestAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Candidatures bénévoles" group="Municipales" />
 
             <argument />
