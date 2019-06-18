@@ -1,7 +1,7 @@
 import AutocompletedAddressForm from '../services/address/AutocompletedAddressForm';
 import AddressObject from '../services/address/AddressObject';
 
-export default (volunteerFormType, runningMateFormType, formToDisplay) => {
+export default (formToDisplay) => {
     /**
      * Volunteer request form
      */

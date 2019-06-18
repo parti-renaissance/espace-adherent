@@ -10,8 +10,6 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runApplicationRequest(
-                '{{ volunteer_form.vars.form_type_class|e('js') }}',
-                '{{ running_mate_form.vars.form_type_class|e('js') }}',
                 '{{ volunteer_form.vars.submitted == true ? 'VolunteerRequest' : 'RunningMateRequest' }}'
             );
             {{ js.applicationFavoriteCities(
