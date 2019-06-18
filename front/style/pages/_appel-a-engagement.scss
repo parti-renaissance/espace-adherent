@@ -101,6 +101,11 @@
     .page-content {
         padding-bottom: 200px;
 
+        .page-intro img {
+            max-width: 100%;
+            display: block;
+        }
+
         .page-confirmation {
             margin-top: 30px;
 
