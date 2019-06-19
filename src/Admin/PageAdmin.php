@@ -75,6 +75,10 @@ class PageAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
+            ->add('slug', null, [
+                'label' => 'Slug',
+                'show_filter' => true,
+            ])
         ;
     }
 

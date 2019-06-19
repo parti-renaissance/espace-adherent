@@ -83,6 +83,8 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
+     * @Assert\NotBlank
+     *
      * @ORM\Column(type="text")
      */
     private $favoriteThemeDetails;
@@ -90,12 +92,16 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      *
+     * @Assert\NotBlank
+     *
      * @ORM\Column(type="text")
      */
     private $projectDetails;
 
     /**
      * @var string|null
+     *
+     * @Assert\NotBlank
      *
      * @ORM\Column(type="text")
      */
