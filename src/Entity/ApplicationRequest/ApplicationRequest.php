@@ -187,6 +187,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     /**
      * @var ApplicationRequestTag[]|Collection
      *
+     * @Assert\Valid(groups={"ApplicationRequestTag"})
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\ApplicationRequestTag")
      */
     protected $tags;

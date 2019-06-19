@@ -1,0 +1,37 @@
+{% extends 'municipal_chief/_layout.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block municipal_chief_content %}
+
+{% block links '' %}
+
+<hr />
+
+<div class="l__wrapper--slim">
+    {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+        <div class="form__row form__new">
+            {{ form_errors(form.tags) }}
+            {{ form_label(form.tags, 'Tags de candidature', { label_attr: { class: 'label__header--large' } }) }}
+            {{ form_widget(form.tags, { attr: { class: 'form--full committee_event__form__name multi_tags' } }) }}
+        </div>
+        <div class="form__row text--center b__nudge--top">
+            <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Enregistrer</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.multi_tags').select2();
+        });
+    </script>
+{% endblock %}

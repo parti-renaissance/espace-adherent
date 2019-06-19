@@ -38,7 +38,7 @@ Feature:
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
 
   @javascript
-  Scenario: I can see running mate request for the zones I manage and I can see the detail
+  Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-colistiers"
     And I wait 10 seconds until I see "J'ai lu et j'accepte"
@@ -53,8 +53,8 @@ Feature:
     And I should see "Oui"
 
     When I click the "application-detail-0" element
-    Then I should see "Retour à la liste des candidats colistiers"
-    And I should see "Profession : Scientist"
+    And I wait 10 seconds until I see "Retour à la liste des candidats colistiers"
+    Then I should see "Profession : Scientist"
     And I should see "Membre de l'association locale ? Non"
     And I should see "Domaine de l'association locale : Fighting super villains"
     And I should see "Activiste politique ? Non"
@@ -63,6 +63,15 @@ Feature:
     And I should see "Est l'élu précédent détails :"
     And I should see "Détails du projet :"
     And I should see "Actifs professionnels :"
+
+    When I click the ".back-to-list" selector
+    And I click the "application-edit-0" element
+    Then I wait 10 seconds until I see "Tags de candidature"
+
+    When I select "4" from "application_request_tags_tags"
+    And I press "Enregistrer"
+    And I wait 10 seconds until I see NOM
+    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
 
   @javascript
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
@@ -86,6 +95,15 @@ Feature:
     And I should see "Domaine de l'association locale :"
     And I should see "Partage l'engagement associatif ? Non"
     And I should see "Détail de l'engagement associatif :"
+
+    When I click the ".back-to-list" selector
+    And I click the "application-edit-0" element
+    Then I wait 10 seconds until I see "Tags de candidature"
+
+    When I select "4" from "application_request_tags_tags"
+    And I press "Enregistrer"
+    And I wait 10 seconds until I see NOM
+    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
 
   @javascript
   Scenario: I can see the local surveys list, edit a survey and show the statistics

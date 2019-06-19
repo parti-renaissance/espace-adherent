@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadApplicationRequestTagData extends AbstractFixture implements FixtureInterface
 {
-    private const TAGS = [1 => 'Tag 1', 2 => 'Tag 2', 3 => 'Tag 3', 4 => 'Tag 4'];
+    private const TAGS = ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4'];
 
     public function load(ObjectManager $manager)
     {
