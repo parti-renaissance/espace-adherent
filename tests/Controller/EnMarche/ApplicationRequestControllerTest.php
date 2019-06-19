@@ -93,17 +93,16 @@ class ApplicationRequestControllerTest extends WebTestCase
             'running_mate_request' => [
                 'curriculum' => new UploadedFile(
                     __DIR__.'/../../../app/data/files/application_requests/curriculum/cv.pdf',
-                    'cv.jpg',
+                    'cv.pdf',
                     'application/pdf',
                     1234
                 ),
             ],
         ]);
-
-        $this->assertClientIsRedirectedTo('/appel-a-engagement/merci', $this->client);
+        static::assertClientIsRedirectedTo('/appel-a-engagement/merci', $this->client);
 
         $this->client->followRedirect();
-        $this->assertResponseStatusCode(200, $this->client->getResponse());
+        static::assertResponseStatusCode(200, $this->client->getResponse());
 
         /** @var RunningMateRequest $runningMateRequest */
         $runningMateRequest = $this->runningMateRequestRepository->findOneBy(['emailAddress' => 'enzo@colistiers.com']);
@@ -148,7 +147,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         $technicalSkill2 = $this->technicalSkillRepository->findOneBy(['name' => 'Management']);
 
         $crawler = $this->client->request('GET', '/appel-a-engagement');
-        $this->assertResponseStatusCode(200, $this->client->getResponse());
+        static::assertResponseStatusCode(200, $this->client->getResponse());
 
         $form = $crawler->filter('form[name="volunteer_request"]')->form();
 
@@ -189,11 +188,10 @@ class ApplicationRequestControllerTest extends WebTestCase
                 '_token' => $form['volunteer_request[_token]']->getValue(),
             ],
         ]);
-
-        $this->assertClientIsRedirectedTo('/appel-a-engagement/merci', $this->client);
+        static::assertClientIsRedirectedTo('/appel-a-engagement/merci', $this->client);
 
         $this->client->followRedirect();
-        $this->assertResponseStatusCode(200, $this->client->getResponse());
+        static::assertResponseStatusCode(200, $this->client->getResponse());
 
         /** @var VolunteerRequest $volunteerRequest */
         $volunteerRequest = $this->volunteerRequestRepository->findOneBy(['emailAddress' => 'tony@pong.com']);
