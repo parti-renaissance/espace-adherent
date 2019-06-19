@@ -96,11 +96,12 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('name')
-            ->add('author', ModelAutocompleteFilter::class, [
-                'label' => 'Auteurs',
-                'field_options' => [
-                    'property' => 'lastName',
-                ],
+            ->add('author.lastName', null, [
+                'label' => "Nom de l'auteur",
+                'show_filter' => true,
+            ])
+            ->add('author.firstName', null, [
+                'label' => "Prénom de l'auteur",
                 'show_filter' => true,
             ])
             ->add('author.referentTags', ModelAutocompleteFilter::class, [
