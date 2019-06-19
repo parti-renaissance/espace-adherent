@@ -1028,8 +1028,8 @@
         </service>
 
         <service id="app.admin.is_adherent_extension" class="AppBundle\Admin\Extension\IsAdherentAdminExtension">
-            <tag name="sonata.admin.extension" target="app.admin.volunteer" />
-            <tag name="sonata.admin.extension" target="app.admin.runningmate" />
+            <tag name="sonata.admin.extension" target="app.admin.application_request_volunteer_request" />
+            <tag name="sonata.admin.extension" target="app.admin.application_request_running_mate_request" />
         </service>
     </services>
 </container>
