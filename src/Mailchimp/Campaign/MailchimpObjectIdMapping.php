@@ -2,6 +2,8 @@
 
 namespace AppBundle\Mailchimp\Campaign;
 
+use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+
 class MailchimpObjectIdMapping
 {
     private $mainListId;
@@ -79,5 +81,14 @@ class MailchimpObjectIdMapping
     public function getApplicationRequestCandidateListId(): string
     {
         return $this->applicationRequestCandidateListId;
+    }
+
+    public function getListIdByMessageType(string $messageType): string
+    {
+        if (AdherentMessageTypeEnum::MUNICIPAL_CHIEF === $messageType) {
+            return $this->applicationRequestCandidateListId;
+        }
+
+        return $this->mainListId;
     }
 }

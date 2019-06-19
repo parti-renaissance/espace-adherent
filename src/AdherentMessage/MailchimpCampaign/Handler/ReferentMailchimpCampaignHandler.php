@@ -6,17 +6,11 @@ use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
-use AppBundle\Entity\ReferentTag;
 
 class ReferentMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {
     public function handle(AdherentMessageInterface $message): void
     {
-        /** @var ReferentUserFilter $filter */
-        if ($message->isSent()) {
-            return;
-        }
-
         if (!$filter = $message->getFilter()) {
             if (empty($message->getMailchimpCampaigns())) {
                 $message->setMailchimpCampaigns([new MailchimpCampaign($message)]);
@@ -25,7 +19,6 @@ class ReferentMailchimpCampaignHandler implements MailchimpCampaignHandlerInterf
             return;
         }
 
-        /** @var ReferentTag[] */
         $campaignFilters = $this->getCampaignFilters($filter);
 
         /** @var MailchimpCampaign[] */

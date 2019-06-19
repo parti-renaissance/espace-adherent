@@ -26,7 +26,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     AdherentMessageTypeEnum::REFERENT: "ReferentAdherentMessage",
  *     AdherentMessageTypeEnum::DEPUTY: "DeputyAdherentMessage",
  *     AdherentMessageTypeEnum::COMMITTEE: "CommitteeAdherentMessage",
- *     AdherentMessageTypeEnum::CITIZEN_PROJECT: "CitizenProjectAdherentMessage"
+ *     AdherentMessageTypeEnum::CITIZEN_PROJECT: "CitizenProjectAdherentMessage",
+ *     AdherentMessageTypeEnum::MUNICIPAL_CHIEF: "MunicipalChiefAdherentMessage"
  * })
  *
  * @ApiResource(

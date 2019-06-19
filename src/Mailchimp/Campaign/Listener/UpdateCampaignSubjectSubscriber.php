@@ -34,6 +34,9 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::CITIZEN_PROJECT:
                 $prefix = 'Projet citoyen';
                 break;
+            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
+                $prefix = 'Municipales 2020';
+                break;
             default:
                 $prefix = '';
         }

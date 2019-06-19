@@ -155,6 +155,8 @@ abstract class AbstractMessageController extends Controller
      * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
+     *
+     * @param Adherent|UserInterface $adherent
      */
     public function filterMessageAction(
         Request $request,

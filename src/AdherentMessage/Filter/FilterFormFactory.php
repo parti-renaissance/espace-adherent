@@ -5,8 +5,9 @@ namespace AppBundle\AdherentMessage\Filter;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Exception\InvalidAdherentMessageType;
-use AppBundle\Form\AdherentMessage\CommitteeFilterType;
+use AppBundle\Form\AdherentMessage\MunicipalChiefFilterType;
 use AppBundle\Form\AdherentMessage\ReferentFilterType;
+use AppBundle\Intl\FranceCitiesBundle;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -29,8 +30,22 @@ class FilterFormFactory
                     ['single_zone' => 1 === \count($adherent->getManagedAreaTagCodes())]
                 );
 
-            case AdherentMessageTypeEnum::COMMITTEE:
-                return $this->formFactory->create(CommitteeFilterType::class, $data);
+            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
+                return $this->formFactory->create(
+                    MunicipalChiefFilterType::class,
+                    $data,
+                    [
+                        'city_choices' => array_combine(
+                            array_map(
+                                static function (string $code) {
+                                    return ($data = FranceCitiesBundle::getCityDataFromInseeCode($code)) ? $data['name'] : $code;
+                                },
+                                $codes = $adherent->getMunicipalChiefManagedArea()->getCodes()
+                            ),
+                            $codes
+                        ),
+                    ]
+                );
         }
 
         throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));

@@ -555,6 +555,7 @@
                 <argument key="AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
+                <argument key="AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder" />
             </argument>
             <tag name="container.service_locator" />
         </service>
@@ -582,7 +583,6 @@
 
         <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
         <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder">
-            <argument key="$listId" type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
             <argument key="$fromName" type="string">%campaign_sender_name%</argument>
         </service>
         <service id="AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder" />

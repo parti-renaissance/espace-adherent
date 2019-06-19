@@ -9,8 +9,10 @@ use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -34,7 +36,11 @@ class SegmentConditionsBuilder
     {
         $message = $campaign->getMessage();
 
-        $conditions[] = $this->buildSubscriptionTypeCondition($message);
+        $conditions = [];
+
+        if ($this->needCheckSubscriptionType($message)) {
+            $conditions[] = $this->buildSubscriptionTypeCondition($message);
+        }
 
         $filter = $message->getFilter();
 
@@ -46,6 +52,8 @@ class SegmentConditionsBuilder
             $conditions[] = $this->buildCommitteeFilterCondition($filter->getCommittee());
         } elseif ($filter instanceof CitizenProjectFilter) {
             $conditions[] = $this->buildCitizenProjectFilterCondition($filter->getCitizenProject());
+        } elseif ($filter instanceof MunicipalChiefFilter) {
+            $conditions = array_merge($conditions, $this->buildMunicipalChiefFilterCondition($filter, $campaign));
         }
 
         return [
@@ -257,6 +265,42 @@ class SegmentConditionsBuilder
         return $this->buildStaticSegmentCondition($citizenProject->getMailchimpId());
     }
 
+    private function buildMunicipalChiefFilterCondition(
+        MunicipalChiefFilter $filter,
+        MailchimpCampaign $campaign
+    ): array {
+        $conditions = [];
+
+        if ($filter->getFirstName()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'is',
+                'field' => MemberRequest::MERGE_FIELD_FIRST_NAME,
+                'value' => $filter->getFirstName(),
+            ];
+        }
+
+        if ($filter->getLastName()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'is',
+                'field' => MemberRequest::MERGE_FIELD_LAST_NAME,
+                'value' => $filter->getLastName(),
+            ];
+        }
+
+        if ($campaign->getCity()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'contains',
+                'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
+                'value' => $campaign->getCity(),
+            ];
+        }
+
+        return $conditions;
+    }
+
     private function buildStaticSegmentCondition(int $externalId): array
     {
         return [
@@ -265,5 +309,14 @@ class SegmentConditionsBuilder
             'field' => 'static_segment',
             'value' => $externalId,
         ];
+    }
+
+    private function needCheckSubscriptionType(AdherentMessageInterface $message): bool
+    {
+        if ($message instanceof MunicipalChiefAdherentMessage) {
+            return false;
+        }
+
+        return true;
     }
 }

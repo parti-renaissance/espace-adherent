@@ -4,16 +4,22 @@ namespace Tests\AppBundle\AdherentMessage\Handler;
 
 use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
+use AppBundle\AdherentMessage\MailchimpCampaign\Handler\MunicipalChiefMailchimpCampaignHandler;
 use AppBundle\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\District;
 use AppBundle\Entity\ReferentTag;
@@ -71,7 +77,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
-                        'list_id' => 'listId',
+                        'list_id' => 'main_list_id',
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
@@ -136,7 +142,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
-                        'list_id' => 'listId',
+                        'list_id' => 'main_list_id',
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
@@ -183,7 +189,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
-                        'list_id' => 'listId',
+                        'list_id' => 'main_list_id',
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
@@ -252,7 +258,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'from_name' => 'Full Name',
                     ],
                     'recipients' => [
-                        'list_id' => 'listId',
+                        'list_id' => 'main_list_id',
                         'segment_opts' => [
                             'match' => 'all',
                             'conditions' => [
@@ -285,6 +291,154 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                 ]]]
             )
             ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
+    public function testCitizenProjectMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(CitizenProjectAdherentMessage::class);
+        $message->setFilter($filter = new CitizenProjectFilter());
+        $filter->setCitizenProject($this->createConfiguredMock(CitizenProject::class, [
+            'getName' => 'CP name',
+            'getMailchimpId' => 456,
+        ]));
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '4',
+                        'template_id' => 4,
+                        'subject_line' => '[Projet citoyen] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'projetscitoyens@en-marche.fr',
+                        'from_name' => 'Full Name',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 456,
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/123/content', ['json' => [
+                    'template' => [
+                        'id' => 4,
+                        'sections' => [
+                            'content' => 'Content',
+                        ],
+                    ],
+                ]]]
+            )
+            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
+    public function testMunicipalChiefMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
+        $message->setFilter($filter = new MunicipalChiefFilter(['12345', '56788']));
+
+        (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(4))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'jemarche@en-marche.fr',
+                        'from_name' => 'Full Name',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'application_request_candidate_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'contains',
+                                    'field' => 'FVR_CITIES',
+                                    'value' => '12345',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'jemarche@en-marche.fr',
+                        'from_name' => 'Full Name',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'application_request_candidate_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'contains',
+                                    'field' => 'FVR_CITIES',
+                                    'value' => '56788',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                        ],
+                    ],
+                ]]]
+            )
+            ->willReturn(
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id2']))
+            )
         ;
 
         $this->createHandler($message)($this->commandDummy);
@@ -329,12 +483,14 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'deputy' => 2,
                         'committee' => 3,
                         'citizen_project' => 4,
+                        'municipal_chief' => 5,
                     ],
                     [
                         'referent' => 1,
                         'deputy' => 2,
                         'committee' => 3,
                         'citizen_project' => 4,
+                        'municipal_chief' => 5,
                     ],
                     [
                         'subscribed_emails_referents' => 1,
@@ -349,7 +505,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'C'
                 ),
                 new SegmentConditionsBuilder($this->mailchimpMapping),
-                'listId',
                 'FromName'
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
