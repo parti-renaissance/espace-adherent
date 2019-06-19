@@ -56,6 +56,10 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
             ->add('name', null, [
                 'show_filter' => true,
             ])
+            ->add('administrator.emailAddress', null, [
+                'label' => "Email de l'auteur",
+                'show_filter' => true,
+            ])
         ;
     }
 
@@ -66,7 +70,7 @@ class JecouteNationalSurveyAdmin extends AbstractAdmin
                 'label' => 'Nom',
             ])
             ->add('administrator', null, [
-                'label' => 'Créateur',
+                'label' => 'Auteur',
             ])
             ->add('getQuestionsCount', null, [
                 'label' => 'Nombre de questions',
