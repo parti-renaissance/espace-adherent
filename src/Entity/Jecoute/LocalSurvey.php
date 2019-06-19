@@ -29,8 +29,12 @@ class LocalSurvey extends Survey implements AuthoredInterface
      */
     private $city;
 
-    public function __construct(Adherent $author, string $name = null, string $city = null, bool $published = false)
-    {
+    public function __construct(
+        ?Adherent $author = null,
+        ?string $name = null,
+        ?string $city = null,
+        ?bool $published = false
+    ) {
         $this->author = $author;
         $this->city = $city;
 
