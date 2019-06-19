@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Mon espace chef municipal' %}
-{% block canonical_url url('app_municipalchief_index') %}
+{% block canonical_url url('app_municipal_chief_municipal_running_mate_request') %}
 
 {% block banner '' %}
 
@@ -15,7 +15,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ app.user.municipalChiefManagedArea.codes|map(code => get_city_name_from_insee_code(code))|join(', ') }}</span></p>
+                            <p>Vous gérez : <span>{{ get_cities_names_from_insee_code(app.user.municipalChiefManagedArea.codes)|join(', ') }}</span></p>
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
                             <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
@@ -29,8 +29,8 @@
 
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_municipalchief_index*') ? 'active' : '' }}">
-                                <a href="{{ path('app_municipalchief_index') }}">Mon espace</a>
+                            <li class="{{ is_active_route(app.request, 'app_municipal_chief_municipal_running_mate_request*') ? 'active' : '' }}">
+                                <a href="{{ path('app_municipal_chief_municipal_running_mate_request') }}">Municipale</a>
                             </li></ul>
                     </nav>
 

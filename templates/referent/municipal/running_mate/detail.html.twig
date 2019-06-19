@@ -8,26 +8,5 @@
 
     <hr />
 
-    <div class="l__wrapper--slim">
-        <strong>Nom :</strong> {{ runningMateRequest.lastName }}<br>
-        <strong>Prénom :</strong> {{ runningMateRequest.firstName }}<br>
-        <strong>Téléphone :</strong> {{ runningMateRequest.phone ? runningMateRequest.phone|phone_number_format : '' }}<br>
-        <strong>Profession :</strong> {{ runningMateRequest.profession }}<br>
-        <strong>Thèmes favoris :</strong>
-        <ul>
-        {% for favoriteTheme in runningMateRequest.favoriteThemes %}
-            <li>{{ favoriteTheme.name }}</li>
-        {% endfor %}
-        </ul><br>
-        <strong>Thèmes favoris détails :</strong><blockquote>{{ runningMateRequest.favoriteThemeDetails }}</blockquote><br>
-        <strong>CV :</strong> <a href="{{ path('asset_url', { path: runningMateRequest.getPathWithDirectory, mime_type: 'application/pdf' }) }}" target="_blank">Télécharger le CV</a><br>
-        <strong>Membre de l'association locale ?</strong> {{ runningMateRequest.isLocalAssociationMember ? 'Oui' : 'Non' }}<br>
-        <strong>Domaine de l'association locale :</strong><blockquote>{{ runningMateRequest.localAssociationDomain }}</blockquote><br>
-        <strong>Activiste politique ?</strong> {{ runningMateRequest.isPoliticalActivist ? 'Oui' : 'Non' }}<br>
-        <strong>Activiste politique détails :</strong><blockquote>{{ runningMateRequest.politicalActivistDetails }}</blockquote><br>
-        <strong>Est l'élu précédent ?</strong> {{ runningMateRequest.isPreviousElectedOfficial ? 'Oui' : 'Non' }}<br>
-        <strong>Est l'élu précédent détails :</strong><blockquote>{{ runningMateRequest.previousElectedOfficialDetails }}</blockquote><br>
-        <strong>Détails du projet :</strong><blockquote>{{ runningMateRequest.projectDetails }}</blockquote><br>
-        <strong>Actifs professionnels :</strong><blockquote>{{ runningMateRequest.professionalAssets }}</blockquote><br>
-    </div>
+    {{ include('application_request/municipal/_running_mate_detail.html.twig') }}
 {% endblock %}

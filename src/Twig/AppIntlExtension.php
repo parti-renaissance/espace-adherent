@@ -15,6 +15,7 @@ class AppIntlExtension extends AbstractExtension
             new TwigFunction('list_united_nations', [__CLASS__, 'getUnitedNationsList'], [
                 'needs_context' => true,
             ]),
+            new TwigFunction('get_cities_names_from_insee_code', [__CLASS__, 'getCitiesNamesFromInseeCode']),
             new TwigFunction('get_city_name_from_insee_code', [__CLASS__, 'getCityNameFromInseeCode']),
             new TwigFunction('get_city_data_from_insee_code', [__CLASS__, 'getCityDataFromInseeCode']),
         ];
@@ -23,6 +24,25 @@ class AppIntlExtension extends AbstractExtension
     public static function getUnitedNationsList(array $context): array
     {
         return UnitedNationsBundle::getCountries($context['app']->getRequest()->getLocale());
+    }
+
+    public static function getCitiesNamesFromInseeCode(array $inseeCodes, bool $sort = true): array
+    {
+        $cities = [];
+
+        foreach ($inseeCodes as $code) {
+            $city = self::getCityNameFromInseeCode($code);
+
+            if ($city !== $code) {
+                $cities[] = $city;
+            }
+        }
+
+        if ($sort) {
+            asort($cities);
+        }
+
+        return $cities;
     }
 
     public static function getCityNameFromInseeCode(string $inseeCode): string

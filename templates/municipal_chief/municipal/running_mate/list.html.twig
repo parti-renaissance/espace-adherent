@@ -1,0 +1,56 @@
+{% extends 'municipal_chief/_layout.html.twig' %}
+
+{% block municipal_chief_content %}
+    <div class="referent__menu-list-event">
+        <div class="menu-items">
+            <h3>Candidats colistiers</h3>
+            <span class="separator">|</span>
+            <h3><a href="{{ path('app_municipal_chief_municipal_volunteer_request') }}">Candidats volontaires</a></h3>
+        </div>
+    </div>
+
+    <div id="datagrid"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runManagedList(
+                [
+                    {
+                        key: 'lastName',
+                        name: 'Nom',
+                    },
+                    {
+                        key: 'firstName',
+                        name: 'Prénom',
+                    },
+                    {
+                        key: 'phone',
+                        name: 'Tél',
+                    },
+                    {
+                        key: 'favoriteCities',
+                        name: 'Ville(s) choisie(s)',
+                    },
+                    {
+                        key: 'cvLink',
+                        name: 'Lien vers CV',
+                        link: true,
+                        targetBlank: true,
+                    },
+                    {
+                        key: 'isAdherent',
+                        name: 'Adhérent (oui/non)',
+                    },
+                    {
+                        key: 'detailLink',
+                        name: 'Voir le détail',
+                        link: true,
+                    },
+                ],
+                {{ runningMateListJson|raw }}
+            );
+        });
+    </script>
+{% endblock %}

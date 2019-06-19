@@ -4,6 +4,7 @@ namespace AppBundle\Referent;
 
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Repository\AdherentRepository;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
@@ -26,7 +27,7 @@ class MunicipalExporter
     /**
      * @param RunningMateRequest[] $runningMates
      */
-    public function exportRunningMateAsJson(array $runningMates): string
+    public function exportRunningMateAsJson(array $runningMates, string $detailRoute): string
     {
         $data = [];
 
@@ -38,7 +39,7 @@ class MunicipalExporter
                 'phone' => $runningMate->getPhone() instanceof PhoneNumber
                     ? $this->phoneUtils->format($runningMate->getPhone(), PhoneNumberFormat::INTERNATIONAL)
                     : '',
-                'favoriteCities' => $runningMate->getFavoriteCities(),
+                'favoriteCities' => implode(', ', FranceCitiesBundle::searchCitiesByInseeCodes($runningMate->getFavoriteCities())),
                 'cvLink' => [
                     'label' => 'Télécharger le CV',
                     'url' => $this->urlGenerator->generate('asset_url', [
@@ -49,7 +50,7 @@ class MunicipalExporter
                 'isAdherent' => $runningMate->isAdherent() ? 'Oui' : 'Non',
                 'detailLink' => [
                     'label' => "<span id='application-detail-$i' class='btn btn--default'>Voir le détail</span>",
-                    'url' => $this->urlGenerator->generate('app_referent_municipal_running_mate_request_detail', [
+                    'url' => $this->urlGenerator->generate($detailRoute, [
                         'uuid' => $runningMate->getUuid(),
                     ]),
                 ],
@@ -62,7 +63,7 @@ class MunicipalExporter
     /**
      * @param VolunteerRequest[] $volunteers
      */
-    public function exportVolunteerAsJson(array $volunteers): string
+    public function exportVolunteerAsJson(array $volunteers, string $detailRoute): string
     {
         $data = [];
 
@@ -74,11 +75,11 @@ class MunicipalExporter
                 'phone' => $volunteer->getPhone() instanceof PhoneNumber
                     ? $this->phoneUtils->format($volunteer->getPhone(), PhoneNumberFormat::INTERNATIONAL)
                     : '',
-                'favoriteCities' => $volunteer->getFavoriteCities(),
+                'favoriteCities' => implode(', ', FranceCitiesBundle::searchCitiesByInseeCodes($volunteer->getFavoriteCities())),
                 'isAdherent' => $volunteer->isAdherent() ? 'Oui' : 'Non',
                 'detailLink' => [
                     'label' => "<span id='application-detail-$i' class='btn btn--default'>Voir le détail</span>",
-                    'url' => $this->urlGenerator->generate('app_referent_municipal_volunteer_request_detail', [
+                    'url' => $this->urlGenerator->generate($detailRoute, [
                         'uuid' => $volunteer->getUuid(),
                     ]),
                 ],

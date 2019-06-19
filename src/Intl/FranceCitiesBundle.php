@@ -129,10 +129,13 @@ class FranceCitiesBundle
      */
     public static function searchCitiesByInseeCodes(array $inseeCodes): array
     {
-        return array_intersect_key(
+        $results = array_intersect_key(
             self::getCityByInseeCode(),
             array_flip($inseeCodes)
         );
+        asort($results);
+
+        return $results;
     }
 
     /**
