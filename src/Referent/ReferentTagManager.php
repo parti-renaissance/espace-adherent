@@ -3,6 +3,7 @@
 namespace AppBundle\Referent;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\ReferentTaggableEntity;
 use AppBundle\Repository\ReferentTagRepository;
@@ -26,6 +27,18 @@ class ReferentTagManager
 
         foreach ($this->referentTagRepository->findByCodes($codes) as $referentTag) {
             $entity->addReferentTag($referentTag);
+        }
+    }
+
+    public function assignApplicationRequestReferentTags(ApplicationRequest $applicationRequest): void
+    {
+        $codes = [];
+        foreach ($applicationRequest->getFavoriteCities() as $city) {
+            $codes[] = ManagedAreaUtils::getCodeFromPostalCode($city);
+        }
+
+        foreach ($this->referentTagRepository->findByCodes($codes) as $referentTag) {
+            $applicationRequest->addReferentTag($referentTag);
         }
     }
 
