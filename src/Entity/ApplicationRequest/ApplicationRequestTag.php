@@ -22,7 +22,7 @@ class ApplicationRequestTag
      */
     private $name;
 
-    public function __construct(string $name)
+    public function __construct(?string $name = null)
     {
         $this->name = $name;
     }
@@ -37,7 +37,7 @@ class ApplicationRequestTag
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
