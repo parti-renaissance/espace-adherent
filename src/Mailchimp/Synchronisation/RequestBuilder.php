@@ -5,6 +5,7 @@ namespace AppBundle\Mailchimp\Synchronisation;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -67,11 +68,18 @@ class RequestBuilder
 
     public function updateFromApplicationRequest(ApplicationRequest $applicationRequest): self
     {
+        $activeTags = $applicationRequest instanceof VolunteerRequest ? ['Bénévole'] : ['Colistier'];
+
+        if ($applicationRequest->isAdherent()) {
+            $activeTags[] = 'Adhérent';
+        }
+
         return $this
             ->setEmail($applicationRequest->getEmailAddress())
             ->setFirstName($applicationRequest->getFirstName())
             ->setLastName($applicationRequest->getLastName())
             ->setFavoriteCities($applicationRequest->getFavoriteCities())
+            ->setActiveTags($activeTags)
         ;
     }
 

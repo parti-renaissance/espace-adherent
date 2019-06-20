@@ -1009,10 +1009,6 @@
             <call method="setStorage">
                 <argument type="service" id="app.storage" />
             </call>
-            <call method="setTemplate">
-                <argument>outer_list_rows_list</argument>
-                <argument>admin/application_request/list_outer_rows_list.html.twig</argument>
-            </call>
         </service>
 
         <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequestVolunteerRequestAdmin">
@@ -1021,15 +1017,6 @@
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\VolunteerRequest</argument>
             <argument />
-            <call method="setTemplate">
-                <argument>outer_list_rows_list</argument>
-                <argument>admin/application_request/list_outer_rows_list.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.is_adherent_extension" class="AppBundle\Admin\Extension\IsAdherentAdminExtension">
-            <tag name="sonata.admin.extension" target="app.admin.application_request_volunteer_request" />
-            <tag name="sonata.admin.extension" target="app.admin.application_request_running_mate_request" />
         </service>
 
         <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequestTagAdmin">

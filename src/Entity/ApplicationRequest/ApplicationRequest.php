@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\ApplicationRequest;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityReferentTagTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
@@ -168,7 +169,12 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      */
     protected $customFavoriteTheme;
 
-    private $isAdherent = false;
+    /**
+     * @var Adherent|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     */
+    private $adherent;
 
     /**
      * @var ApplicationRequestTag[]|Collection
@@ -332,12 +338,12 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
 
     public function isAdherent(): bool
     {
-        return $this->isAdherent;
+        return null !== $this->adherent;
     }
 
-    public function setIsAdherent(bool $isAdherent): void
+    public function setAdherent(?Adherent $adherent): void
     {
-        $this->isAdherent = $isAdherent;
+        $this->adherent = $adherent;
     }
 
     public function __toString(): string

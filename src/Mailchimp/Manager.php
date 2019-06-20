@@ -70,7 +70,8 @@ class Manager implements LoggerAwareInterface
         if ($result) {
             // Active/Inactive member's tags
             $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($adherent->getEmailAddress(), $message->getRemovedTags())
+                $requestBuilder->createMemberTagsRequest($adherent->getEmailAddress(), $message->getRemovedTags()),
+                $this->mailchimpObjectIdMapping->getMainListId()
             );
         }
     }
@@ -89,18 +90,27 @@ class Manager implements LoggerAwareInterface
         ;
     }
 
-    public function editApplicationRequestCandidate(ApplicationRequest $applicationRequest): bool
+    public function editApplicationRequestCandidate(ApplicationRequest $applicationRequest): void
     {
-        return $this
+        $requestBuilder = $this->requestBuildersLocator->get(RequestBuilder::class);
+
+        $result = $this
             ->driver
             ->editMember(
-                $this->requestBuildersLocator
-                    ->get(RequestBuilder::class)
+                $requestBuilder
                     ->updateFromApplicationRequest($applicationRequest)
                     ->buildMemberRequest($applicationRequest->getEmailAddress()),
                 $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId()
             )
         ;
+
+        if ($result) {
+            // Active/Inactive member's tags
+            $this->driver->updateMemberTags(
+                $requestBuilder->createMemberTagsRequest($applicationRequest->getEmailAddress()),
+                $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId()
+            );
+        }
     }
 
     public function getCampaignContent(MailchimpCampaign $campaign): string
