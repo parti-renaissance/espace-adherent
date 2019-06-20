@@ -70,6 +70,10 @@ class LoadOrganizationalChartItemData extends Fixture
                                     'class' => PersonOrganizationalChartItem::class,
                                     'label' => 'Responsable comités locaux',
                                 ],
+                                'resp_jecoute' => [
+                                    'class' => PersonOrganizationalChartItem::class,
+                                    'label' => "Responsable J'ecoute",
+                                ],
                             ],
                         ],
                         'resp_admin' => [

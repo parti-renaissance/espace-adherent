@@ -133,8 +133,8 @@ ol.organizational-chart > li > ol.organizational-chart > li > ol > li:last-child
         }
 
         .referent-person-link {
+            display: block;
             font-weight: normal;
-            display: inline;
             font-size: 13px;
             color: $status-green;
         }
