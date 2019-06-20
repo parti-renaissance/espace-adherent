@@ -103,6 +103,20 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
      */
     private $referentTags;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $registeredSince;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $registeredUntil;
+
     public function __construct(array $referentTags)
     {
         $this->referentTags = new ArrayCollection();
@@ -255,5 +269,25 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
     public function getCityAsArray(): array
     {
         return $this->city ? array_map('trim', explode(',', $this->city)) : [];
+    }
+
+    public function getRegisteredSince(): ?\DateTime
+    {
+        return $this->registeredSince;
+    }
+
+    public function setRegisteredSince(?\DateTime $registeredSince): void
+    {
+        $this->registeredSince = $registeredSince;
+    }
+
+    public function getRegisteredUntil(): ?\DateTime
+    {
+        return $this->registeredUntil;
+    }
+
+    public function setRegisteredUntil(?\DateTime $registeredUntil): void
+    {
+        $this->registeredUntil = $registeredUntil;
     }
 }

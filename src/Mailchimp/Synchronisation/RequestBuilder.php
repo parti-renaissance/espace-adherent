@@ -226,7 +226,7 @@ class RequestBuilder
         }
 
         if ($this->birthDay) {
-            $mergeFields[MemberRequest::MERGE_FIELD_BIRTHDATE] = $this->birthDay->format('Y-m-d');
+            $mergeFields[MemberRequest::MERGE_FIELD_BIRTHDATE] = $this->birthDay->format(MemberRequest::DATE_FORMAT);
         }
 
         if ($this->city) {
@@ -242,7 +242,7 @@ class RequestBuilder
         }
 
         if ($this->adhesionDate) {
-            $mergeFields[MemberRequest::MERGE_FIELD_ADHESION_DATE] = $this->adhesionDate->format('Y-m-d');
+            $mergeFields[MemberRequest::MERGE_FIELD_ADHESION_DATE] = $this->adhesionDate->format(MemberRequest::DATE_FORMAT);
         }
 
         if ($this->favoriteCities) {
