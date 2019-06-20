@@ -1,17 +1,21 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace AppBundle\Admin\Formation;
 
+use AppBundle\Admin\MediaSynchronisedAdminTrait;
+use AppBundle\Entity\Formation\File;
+use AppBundle\Form\Admin\BaseFileType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\AdminType;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class FormationAxeAdmin extends AbstractAdmin
+class ModuleAdmin extends AbstractAdmin
 {
     use MediaSynchronisedAdminTrait;
 
@@ -19,6 +23,9 @@ class FormationAxeAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-6'])
+                ->add('axe', null, [
+                    'label' => 'Axe de formation',
+                ])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
                 ])
@@ -48,6 +55,19 @@ class FormationAxeAdmin extends AbstractAdmin
                     'attr' => ['class' => 'content-editor', 'rows' => 20],
                 ])
             ->end()
+            ->with('Fichiers attachés', ['class' => 'col-md-12'])
+                ->add('files', CollectionType::class, [
+                    'label' => false,
+                    'entry_type' => BaseFileType::class,
+                    'entry_options' => [
+                        'data_class' => File::class,
+                    ],
+                    'required' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+            ->end()
         ;
     }
 
@@ -56,6 +76,10 @@ class FormationAxeAdmin extends AbstractAdmin
         $datagridMapper
             ->add('title', null, [
                 'label' => 'Titre',
+                'show_filter' => true,
+            ])
+            ->add('axe', null, [
+                'label' => 'Axe de formation',
                 'show_filter' => true,
             ])
         ;
@@ -69,14 +93,14 @@ class FormationAxeAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/formation/list_image.html.twig',
             ])
-            ->addIdentifier('title', TextType::class, [
+            ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
-            ->add('slug', TextType::class, [
+            ->add('slug', null, [
                 'label' => 'URL',
             ])
-            ->add('articles', null, [
-                'label' => 'Articles',
+            ->add('axe', null, [
+                'label' => 'Axe de formation',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

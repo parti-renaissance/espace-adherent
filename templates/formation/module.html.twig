@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block banner '' %}
-{% block page_title article.title %}
-{% block meta_description article.description %}
+{% block page_title module.title %}
+{% block meta_description module.description %}
 
-{% block canonical_url url('app_formation_article', { 'slug': article.slug }) %}
+{% block canonical_url url('app_formation_module', { 'slug': module.slug }) %}
 
 {% block final_javascripts include('bot/_javascript.html.twig') %}
 
@@ -19,12 +19,12 @@
         <section class="espace-formation__article">
             {{ include('formation/_navbar.html.twig') }}
             <article class="l__wrapper--slim">
-                {{ article.content|markdown }}
+                {{ module.content|markdown }}
 
-                {% if article.files|length > 0 %}
+                {% if module.files|length > 0 %}
                     <h2>Contenus du module</h2>
                     <ul>
-                        {% for file in article.files %}
+                        {% for file in module.files %}
                             <li>
                                 <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
                                    target="_blank">{{ file.title }}</a> (pdf)

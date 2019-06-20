@@ -347,3 +347,16 @@ assessor.vote_place_wishes.not_blank: Vous devez choisir au moins un bureau de v
 # Vote Place
 #
 vote_place.assessor_request.max: Il y a déjà deux assesseurs pour ce bureau de vote.
+
+#
+# Formation
+#
+path.title.unique_entity: Il existe déjà un parcours de formation avec ce titre.
+path.title.not_blank: Veuillez renseigner un titre.
+path.title.min_length: Le titre doit faire au moins {{ limit }} caractères.
+path.title.max_length: Le titre doit pas faire plus de {{ limit }} caractères.
+path.description.not_blank: Veuillez renseigner une description.
+path.description.min_length: La description doit faire au moins {{ limit }} caractères.
+
+module.title.unique_entity: Il existe déjà un module avec ce titre pour cet axe de formation.
+module.slug.unique_entity: Il existe déjà un module avec cette URL pour cet axe de formation.
