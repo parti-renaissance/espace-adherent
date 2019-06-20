@@ -35,8 +35,8 @@ class ReferentFilterType extends AbstractType
             ->add('lastName', TextType::class, ['required' => false])
             ->add('city', TextType::class, ['required' => false])
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
-            ->add('registeredSince', DateType::class, ['widget' => 'single_text', 'html5' => true])
-            ->add('registeredUntil', DateType::class, ['widget' => 'single_text', 'html5' => true])
+            ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
+            ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
         ;
 
         if (false === $options['single_zone']) {
