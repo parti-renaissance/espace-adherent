@@ -171,4 +171,31 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
     {
         $this->storage = $storage;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'UUID' => 'uuid',
+            'Prénom' => 'firstName',
+            'Nom' => 'lastName',
+            'Email' => 'emailAddress',
+            'Ville(s) demandée(s)' => 'getFavoriteCitiesAsString',
+            'Téléphone' => 'phone',
+            'Adresse' => 'address',
+            'Code postal' => 'postalCode',
+            'Ville' => 'cityName',
+            'Pays' => 'country',
+            'Profession' => 'profession',
+            'Thématique(s) de prédilection' => 'getFavoriteThemesAsString',
+            'Détails sur thématique(s) choisie(s)' => 'favoriteThemeDetails',
+            'Engagé dans une/des association(s) locale(s) ?' => 'isLocalAssociationMemberAsString',
+            'Précisions sur l\'engagement dans une/des association(s)' => 'localAssociationDomain',
+            'Engagement militant ?' => 'isPoliticalActivistAsString',
+            'Précisions sur l\'engagement militant' => 'politicalActivistDetails',
+            'Déjà exercé un mandat ?' => 'isPreviousElectedOfficialAsString',
+            'Précisions sur le(s) mandat(s)' => 'previousElectedOfficialDetails',
+            'Projet(s) pour la commune' => 'projectDetails',
+            'Atouts professionels' => 'professionalAssets',
+        ];
+    }
 }
