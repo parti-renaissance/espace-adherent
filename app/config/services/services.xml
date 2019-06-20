@@ -145,9 +145,12 @@
 
         <!-- ApplicationRequest -->
         <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler" />
-        <service id="AppBundle\ApplicationRequest\Listener\MailchimpSyncSubscriber" />
+        <service id="AppBundle\ApplicationRequest\Listener\UpdateAdherentRelationSubscriber" />
         <service id="AppBundle\ApplicationRequest\Listener\SendConfirmationRequestSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
+        <service id="AppBundle\ApplicationRequest\Listener\ApplicationRequestChangeSubscriber">
+            <tag name="doctrine.event_subscriber"/>
         </service>
 
         <!-- EventListener -->
@@ -317,6 +320,7 @@
         <service id="AppBundle\Command\MailchimpReportDownloadCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllMembershipsCommand"/>
         <service id="AppBundle\Command\MailchimpSyncAllNewsletterCommand" />
+        <service id="AppBundle\Command\MailchimpSyncAllCandidatesCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllEventsCommand"/>
         <service id="AppBundle\Command\MailchimpUpdateAdherentCommand"/>
         <service id="AppBundle\Command\MailchimpCreateTagFromReferentTagCommand">
