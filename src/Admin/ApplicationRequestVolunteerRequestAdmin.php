@@ -32,9 +32,9 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'E-mail',
             ])
-            ->add('favoriteCities', null, [
+            ->add('favoriteCitiesNames', null, [
                 'label' => 'Ville(s) choisie(s)',
-                'template' => 'admin/application_request/_favorite_cities.html.twig',
+                'template' => 'admin/application_request/show_favorite_cities.html.twig',
             ])
             ->add('isAdherent', 'boolean', [
                 'label' => 'Adhérent',

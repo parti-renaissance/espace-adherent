@@ -1031,5 +1031,13 @@
             <tag name="sonata.admin.extension" target="app.admin.application_request_volunteer_request" />
             <tag name="sonata.admin.extension" target="app.admin.application_request_running_mate_request" />
         </service>
+
+        <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequestTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags de candidature" group="Municipales" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\ApplicationRequestTag</argument>
+            <argument />
+        </service>
     </services>
 </container>

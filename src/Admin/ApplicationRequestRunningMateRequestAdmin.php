@@ -37,7 +37,7 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
             ])
             ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
-                'template' => 'admin/application_request/_favorite_cities.html.twig',
+                'template' => 'admin/application_request/show_favorite_cities.html.twig',
             ])
             ->add('curriculum', null, [
                 'label' => 'CV',

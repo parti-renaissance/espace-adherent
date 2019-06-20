@@ -57,6 +57,8 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
 
             $runningMateRequest->addFavoriteTheme($this->getReference('application-theme-06'));
             $runningMateRequest->addFavoriteTheme($this->getReference('application-theme-08'));
+            $runningMateRequest->addTag($this->getReference('application-request-tag-'.rand(1, 3)));
+            $runningMateRequest->addTag($this->getReference('application-request-tag-'.rand(2, 4)));
             $runningMateRequest->setFavoriteThemeDetails('');
             $runningMateRequest->setCustomFavoriteTheme('Thanos destruction');
 
@@ -83,6 +85,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             LoadAdherentData::class,
             LoadReferentTagData::class,
             LoadApplicationRequestThemeData::class,
+            LoadApplicationRequestTagData::class,
         ];
     }
 }
