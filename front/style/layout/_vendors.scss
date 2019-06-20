@@ -19,11 +19,11 @@
     }
 
     &__button {
-        a.cc-btn {
+        a.cc-btn.cc-dismiss {
             width: 100%;
-            min-width: auto !important;
-            font-weight: normal !important;
-            border-width: 1px !important;
+            min-width: auto;
+            font-weight: normal;
+            border-width: 1px;
 
         }
     }

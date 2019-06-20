@@ -20,9 +20,10 @@ export default () => {
         },
         elements: {
             message: '<span id="cookieconsent:desc" class="text--dark">{{message}}</span>',
-            dismiss: '<a aria-label="dismiss cookie message" tabindex="0" role="button" class="btn cc-btn cc-dismiss">{{dismiss}}</a>',
+            dismiss: '<a aria-label="dismiss cookie message" tabindex="0" role="button" '
+            + 'class="btn cc-btn cc-dismiss">{{dismiss}}</a>',
             link: '<a aria-label="learn more about cookies" tabindex="0" '
-             + 'class="text--blue--dark link--no-decor" href="{{href}}" target="_blank">{{link}}</a>',
+            + 'class="text--blue--dark link--no-decor" href="{{href}}" target="_blank">{{link}}</a>',
         },
     });
 };
