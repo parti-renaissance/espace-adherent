@@ -153,9 +153,9 @@ class ApplicationRequestControllerTest extends WebTestCase
 
         $this->client->request('POST', '/appel-a-engagement', [
             'volunteer_request' => [
-                'firstName' => 'Tony',
-                'lastName' => 'Pong',
-                'emailAddress' => 'tony@pong.com',
+                'firstName' => 'Remi',
+                'lastName' => 'Zoo',
+                'emailAddress' => 'remi@white.com',
                 'phone' => [
                     'country' => 'FR',
                     'number' => '0612345678',
@@ -168,7 +168,7 @@ class ApplicationRequestControllerTest extends WebTestCase
                     'country' => 'FR',
                 ],
                 'favoriteCities' => ['06088', '44109'],
-                'profession' => 'developer junior',
+                'profession' => 'thief',
                 'favoriteThemes' => [
                     $theme1->getId(),
                     $theme2->getId(),
@@ -194,12 +194,12 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertResponseStatusCode(200, $this->client->getResponse());
 
         /** @var VolunteerRequest $volunteerRequest */
-        $volunteerRequest = $this->volunteerRequestRepository->findOneBy(['emailAddress' => 'tony@pong.com']);
+        $volunteerRequest = $this->volunteerRequestRepository->findOneBy(['emailAddress' => 'remi@white.com']);
 
         static::assertInstanceOf(VolunteerRequest::class, $volunteerRequest);
-        static::assertSame('Tony', $volunteerRequest->getFirstName());
-        static::assertSame('Pong', $volunteerRequest->getLastName());
-        static::assertSame('tony@pong.com', $volunteerRequest->getEmailAddress());
+        static::assertSame('Remi', $volunteerRequest->getFirstName());
+        static::assertSame('Zoo', $volunteerRequest->getLastName());
+        static::assertSame('remi@white.com', $volunteerRequest->getEmailAddress());
         static::assertSame(33, $volunteerRequest->getPhone()->getCountryCode());
         static::assertSame('612345678', $volunteerRequest->getPhone()->getNationalNumber());
         static::assertSame('8 Rue Enzo Godeas', $volunteerRequest->getAddress());
@@ -208,7 +208,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertSame('31100-31555', $volunteerRequest->getCity());
         static::assertSame('FR', $volunteerRequest->getCountry());
         static::assertSame(['06088', '44109'], $volunteerRequest->getFavoriteCities());
-        static::assertSame('developer junior', $volunteerRequest->getProfession());
+        static::assertSame('thief', $volunteerRequest->getProfession());
         static::assertSame([$theme1, $theme2], $volunteerRequest->getFavoriteThemes()->toArray());
         static::assertNull($volunteerRequest->getCustomFavoriteTheme());
         static::assertSame([$technicalSkill1, $technicalSkill2], $volunteerRequest->getTechnicalSkills()->toArray());
