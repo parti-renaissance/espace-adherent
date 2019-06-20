@@ -68,7 +68,7 @@ Feature:
     And I should see "Seclin"
 
     When I click the "application-detail-0" element
-    Then I should see "Retour à la liste des candidats volontaires"
+    Then I should see "Retour à la liste des candidats bénévoles"
     And I should see "Thèmes favoris : Sécurité Environnement"
     And I should see "Thèmes favoris personnalisés : Thanos destruction"
     And I should see "Compétences techniques : Communication Management Animation Autre"
@@ -87,7 +87,7 @@ Feature:
     And I should see "<cities-tr-2>"
 
     When I click the "application-detail-0" element
-    Then I should see "Retour à la liste des candidats volontaires"
+    Then I should see "Retour à la liste des candidats bénévoles"
     And I should see "Thèmes favoris : Sécurité Environnement"
     And I should see "Thèmes favoris personnalisés : Thanos destruction"
     And I should see "Compétences techniques : Communication Management Animation Autre"
