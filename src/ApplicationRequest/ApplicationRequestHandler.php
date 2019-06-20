@@ -5,6 +5,7 @@ namespace AppBundle\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\Referent\ReferentTagManager;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
@@ -17,22 +18,26 @@ class ApplicationRequestHandler
     private $storage;
     private $eventDispatcher;
     private $adherentRepository;
+    private $referentTagManager;
 
     public function __construct(
         AdherentRepository $adherentRepository,
         EntityManagerInterface $manager,
         Filesystem $storage,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ReferentTagManager $referentTagManager
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->manager = $manager;
         $this->storage = $storage;
         $this->eventDispatcher = $eventDispatcher;
+        $this->referentTagManager = $referentTagManager;
     }
 
     public function handleVolunteerRequest(VolunteerRequest $volunteerRequest): void
     {
         $this->addAdherentRelation($volunteerRequest);
+        $this->assignReferentTags($volunteerRequest);
 
         $this->manager->persist($volunteerRequest);
         $this->manager->flush();
@@ -43,6 +48,7 @@ class ApplicationRequestHandler
     public function handleRunningMateRequest(RunningMateRequest $runningMateRequest): void
     {
         $this->addAdherentRelation($runningMateRequest);
+        $this->assignReferentTags($runningMateRequest);
 
         $this->uploadCurriculum($runningMateRequest);
 
@@ -69,5 +75,10 @@ class ApplicationRequestHandler
         $applicationRequest->setAdherent(
             $this->adherentRepository->findOneByEmail($applicationRequest->getEmailAddress())
         );
+    }
+
+    private function assignReferentTags(ApplicationRequest $applicationRequest): void
+    {
+        $this->referentTagManager->assignApplicationRequestReferentTags($applicationRequest);
     }
 }
