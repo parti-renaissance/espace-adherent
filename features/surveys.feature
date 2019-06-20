@@ -18,8 +18,8 @@ Feature:
 
     # Create
     Given I am on "/espace-responsable-jecoute/questionnaire/creer"
-    Then I press "OK"
-    When I wait 10 seconds until I see "Retour à la liste des questionnaires locaux"
+    When I press "OK"
+    Then I wait 10 seconds until I see "Retour à la liste des questionnaires locaux"
     And I fill in the following:
       | survey_form[name]                            | Un questionnaire jecoute manager |
       | survey_form[questions][0][question][content] | Une question ?                   |
