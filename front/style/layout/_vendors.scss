@@ -1,13 +1,17 @@
 .cc-window {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100px;
+    text-align: center;
+    width: 100%;
+    border-top: 1px solid $lines-grey;
+
 
     &__text {
-        margin-right: 20px;
-        font-size: 20px;
+        font-size: 14px;
+        color: $dark;
+        margin: 0 0 15px 0;
 
         span, a {
             font-family: $font-roboto;
@@ -15,37 +19,27 @@
     }
 
     &__button {
-        a {
-            font-size: 34px;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 140px;
-            height: 70px;
-            box-sizing: border-box;
-            font-family: $font-gillsans;
+        a.cc-btn.cc-dismiss {
+            width: 100%;
+            min-width: auto;
+            font-weight: normal;
+            border-width: 1px;
+
         }
     }
 
-    @media (max-width: $mobile + 50px) {
-        height: auto;
-        padding: 20px 0;
-        text-align: center;
-        width: 100%;
+    @media (min-width: $mobile) {
+        flex-direction: row;
+        height: 70px;
 
         &__text {
-            margin-bottom: 20px;
-            margin-right: 0;
-
-            .cc-message {
-                margin-bottom: 0.2em;
-            }
+            margin: 0 15px 0 0;
         }
 
-        &__button a {
-            height: auto;
-            font-size: 20px;
+        &__button {
+            a.cc-btn {
+                width: auto;
+            }
         }
     }
 }

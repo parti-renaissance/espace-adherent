@@ -18,11 +18,12 @@ Feature:
 
     # Create
     Given I am on "/espace-responsable-jecoute/questionnaire/creer"
-    When I wait 10 seconds until I see "Retour à la liste des questionnaires locaux"
-    Then I press "OK"
+    When I press "OK"
+    Then I wait 10 seconds until I see "Retour à la liste des questionnaires locaux"
     And I fill in the following:
       | survey_form[name]                            | Un questionnaire jecoute manager |
       | survey_form[questions][0][question][content] | Une question ?                   |
+    And I wait 10 seconds until I see "Champ libre"
     And I click the "#survey_form_questions_0_question_type .form__checkbox:nth-child(3) > label" selector
     And I press "Enregistrer le questionnaire local"
     And I should see "Le questionnaire a bien été enregistré."
