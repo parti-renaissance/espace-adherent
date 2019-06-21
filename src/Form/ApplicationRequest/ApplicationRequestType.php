@@ -37,9 +37,11 @@ class ApplicationRequestType extends AbstractType
             ])
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,
+                'filter_emojis' => true,
             ])
             ->add('lastName', TextType::class, [
                 'format_identity_case' => true,
+                'filter_emojis' => true,
             ])
             ->add('emailAddress', EmailType::class)
             ->add('phone', PhoneNumberType::class, [
@@ -48,7 +50,9 @@ class ApplicationRequestType extends AbstractType
             ->add('address', AddressType::class, [
                 'mapped' => false,
             ])
-            ->add('profession', TextType::class)
+            ->add('profession', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('favoriteThemes', EntityType::class, [
                 'class' => Theme::class,
                 'multiple' => true,
@@ -66,6 +70,7 @@ class ApplicationRequestType extends AbstractType
             ])
             ->add('customFavoriteTheme', TextType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('agreeToLREMValues', CheckboxType::class, [
                 'mapped' => false,

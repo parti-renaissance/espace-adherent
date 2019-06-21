@@ -35,6 +35,7 @@ class VolunteerRequestType extends AbstractType
             ])
             ->add('customTechnicalSkills', TextType::class, [
                 'required' => false,
+                'filter_emojis' => true,
             ])
             ->add('isPreviousCampaignMember', ChoiceType::class, [
                 'choices' => [
@@ -48,6 +49,7 @@ class VolunteerRequestType extends AbstractType
                 'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
             ->add('shareAssociativeCommitment', ChoiceType::class, [
                 'choices' => [
@@ -61,6 +63,7 @@ class VolunteerRequestType extends AbstractType
                 'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
         ;
     }
