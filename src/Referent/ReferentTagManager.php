@@ -32,12 +32,18 @@ class ReferentTagManager
 
     public function assignApplicationRequestReferentTags(ApplicationRequest $applicationRequest): void
     {
+        $applicationRequest->clearReferentTags();
+
         $codes = [];
         foreach ($applicationRequest->getFavoriteCities() as $city) {
-            $codes[] = ManagedAreaUtils::getCodeFromPostalCode($city);
+            $localCode = ManagedAreaUtils::getCodeFromPostalCode($city);
+
+            $relatedCodes = ManagedAreaUtils::getRelatedCodes($localCode);
+
+            $codes = array_merge($codes, [$localCode], $relatedCodes);
         }
 
-        foreach ($this->referentTagRepository->findByCodes($codes) as $referentTag) {
+        foreach ($this->referentTagRepository->findByCodes(array_unique($codes)) as $referentTag) {
             $applicationRequest->addReferentTag($referentTag);
         }
     }

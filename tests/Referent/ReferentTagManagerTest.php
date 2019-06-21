@@ -3,27 +3,67 @@
 namespace Tests\AppBundle\Referent;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Referent\ReferentTagManager;
 use AppBundle\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use PHPUnit\Framework\TestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Tests\AppBundle\Controller\ControllerTestTrait;
 
-class ReferentTagManagerTest extends TestCase
+/**
+ * @group functional
+ */
+class ReferentTagManagerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var ReferentTagManager
      */
     private $referentTagManager;
 
+    /**
+     * @var ReferentTagRepository
+     */
+    private $referentTagRepository;
+
     protected function setUp()
     {
-        $this->referentTagManager = new ReferentTagManager($this->createMock(ReferentTagRepository::class));
+        $this->init();
+
+        $this->referentTagManager = $this->getContainer()->get(ReferentTagManager::class);
+        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }
 
     protected function tearDown()
     {
         $this->referentTagManager = null;
+
+        $this->kill();
+    }
+
+    /**
+     * @param string[]|array $favoriteCities
+     * @param string[]|array $expectedTagCodes
+     *
+     * @dataProvider provideApplicationRequestsReferentTags
+     */
+    public function testAssignApplicationRequestReferentTags(array $favoriteCities, array $expectedTagCodes): void
+    {
+        $applicationRequest = $this->createMock(ApplicationRequest::class);
+
+        $applicationRequest->method('getFavoriteCities')->willReturn($favoriteCities);
+
+        $applicationRequest
+            ->expects($this->exactly(\count($expectedTagCodes)))
+            ->method('addReferentTag')
+            ->will($this->returnValueMap(array_map(function (string $expectedTagCode) {
+                return [$this->referentTagRepository->findOneByCode($expectedTagCode)];
+            }, $expectedTagCodes)))
+        ;
+
+        $this->referentTagManager->assignApplicationRequestReferentTags($applicationRequest);
     }
 
     /**
@@ -43,6 +83,18 @@ class ReferentTagManagerTest extends TestCase
             [true, '75001', ['75']],
             [false, '75001', ['75', '75001']],
             [true, '75001', ['75', '75001', 'France']],
+        ];
+    }
+
+    public function provideApplicationRequestsReferentTags(): array
+    {
+        return [
+            [['11069'], ['11']],
+            [['75001'], ['75001', '75']],
+            [['11069', '75001'], ['11', '75001', '75']],
+            [['11069', '75001'], ['11', '75001', '75']],
+            [['70295', '2A004'], ['70', '2A', '20']],
+            [['70295', '75001', '2A004'], ['70', '75001', '75', '2A', '20']],
         ];
     }
 
