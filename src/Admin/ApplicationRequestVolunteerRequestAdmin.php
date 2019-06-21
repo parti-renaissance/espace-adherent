@@ -120,4 +120,27 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
             ->remove('create')
         ;
     }
+
+    public function getExportFields()
+    {
+        return [
+            'UUID' => 'uuid',
+            'Prénom' => 'firstName',
+            'Nom' => 'lastName',
+            'Email' => 'emailAddress',
+            'Ville(s) demandée(s)' => 'getFavoriteCitiesAsString',
+            'Téléphone' => 'phone',
+            'Adresse' => 'address',
+            'Code postal' => 'postalCode',
+            'Ville' => 'cityName',
+            'Pays' => 'country',
+            'Profession' => 'profession',
+            'Thématique(s) de prédilection' => 'getFavoriteThemesAsString',
+            'Compétences techniques' => 'getTechnicalSkillsAsString',
+            'Déjà participé à une campagne ?' => 'isPreviousCampaignMemberAsString',
+            'Précisions sur la dernière campagne' => 'previousCampaignDetails',
+            'Souhaite faire part de ses engagements' => 'shareAssociativeCommitmentAsString',
+            'Précisions sur les engagements' => 'associativeCommitmentDetails',
+        ];
+    }
 }

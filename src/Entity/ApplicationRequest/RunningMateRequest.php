@@ -239,4 +239,19 @@ class RunningMateRequest extends ApplicationRequest
             $curriculum->getClientOriginalExtension()
         );
     }
+
+    public function isLocalAssociationMemberAsString(): string
+    {
+        return $this->isLocalAssociationMember ? 'Oui' : 'Non';
+    }
+
+    public function isPoliticalActivistAsString(): string
+    {
+        return $this->isPoliticalActivist ? 'Oui' : 'Non';
+    }
+
+    public function isPreviousElectedOfficialAsString(): string
+    {
+        return $this->isPreviousElectedOfficial ? 'Oui' : 'Non';
+    }
 }

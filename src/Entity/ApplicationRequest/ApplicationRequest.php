@@ -367,4 +367,31 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     {
         $this->tags->removeElement($tag);
     }
+
+    public function getFavoriteCitiesAsString(): string
+    {
+        $cities = [];
+        foreach ($this->favoriteCities as $inseeCode) {
+            $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
+
+            $cities[] = !empty($city['name'])
+                ? sprintf('%s (%s)', $city['name'], $city['postal_code'])
+                : $inseeCode;
+        }
+
+        return implode(', ', $cities);
+    }
+
+    public function getFavoriteThemesAsString(): string
+    {
+        $themes = array_map(function (Theme $theme) {
+            return $theme->getName();
+        }, $this->favoriteThemes->toArray());
+
+        if (!empty($this->customFavoriteTheme)) {
+            $themes[] = $this->customFavoriteTheme;
+        }
+
+        return implode(', ', $themes);
+    }
 }

@@ -134,4 +134,27 @@ class VolunteerRequest extends ApplicationRequest
     {
         $this->associativeCommitmentDetails = $associativeCommitmentDetails;
     }
+
+    public function getTechnicalSkillsAsString(): string
+    {
+        $skills = array_map(function (TechnicalSkill $theme) {
+            return $theme->getName();
+        }, $this->technicalSkills->toArray());
+
+        if (!empty($this->customTechnicalSkills)) {
+            $skills[] = $this->customTechnicalSkills;
+        }
+
+        return implode(', ', $skills);
+    }
+
+    public function isPreviousCampaignMemberAsString(): string
+    {
+        return $this->isPreviousCampaignMember ? 'Oui' : 'Non';
+    }
+
+    public function shareAssociativeCommitmentAsString(): string
+    {
+        return $this->shareAssociativeCommitment ? 'Oui' : 'Non';
+    }
 }
