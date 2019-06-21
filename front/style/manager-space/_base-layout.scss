@@ -104,6 +104,22 @@
                             border-bottom-color: $turquoise;
                         }
                     }
+
+                    &.is-new {
+                        &:after {
+                            content: 'Nouveau';
+                            background-color: $black;
+                            font-size: 10px;
+                            color: $white;
+                            font-weight: 600;
+                            padding: 3px 6px;
+                            text-transform: uppercase;
+                            line-height: normal;
+                            border-radius: 50px;
+                            vertical-align: middle;
+                            margin-left: 6px;
+                        }
+                    }
                 }
 
                 &:hover {

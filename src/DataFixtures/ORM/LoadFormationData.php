@@ -41,12 +41,19 @@ class LoadFormationData extends Fixture
 
         $manager->persist($this->createModule($axe1, 'Premier article du premier axe', $media));
         $manager->persist($this->createModule($axe1, 'Deuxième article du premier axe', $media));
+        $manager->persist($this->createModule($axe1, 'Troisième article du premier axe', $media));
+
         $manager->persist($this->createModule($axe2, 'Premier article du deuxième axe', $media));
         $manager->persist($this->createModule($axe2, 'Deuxième article du deuxième axe', $media));
+        $manager->persist($this->createModule($axe2, 'Troisième article du deuxième axe', $media));
+
         $manager->persist($this->createModule($axe3, 'Premier article du troisième axe', $media));
         $manager->persist($this->createModule($axe3, 'Deuxième article du troisième axe', $media));
+        $manager->persist($this->createModule($axe3, 'Troisième article du troisième axe', $media));
+
         $manager->persist($this->createModule($axe4, 'Premier article du quatrième axe', $media));
         $manager->persist($this->createModule($axe4, 'Deuxième article du quatrième axe', $media));
+        $manager->persist($this->createModule($axe4, 'Troisième article du quatrième axe', $media));
 
         $manager->flush();
     }
@@ -82,8 +89,8 @@ class LoadFormationData extends Fixture
         $path = new Path();
         $path->setTitle($title);
         $path->setDescription(<<<EOT
-    Découvrez maintenant votre parcours personnalisé. 
-    Les modules sont numérotés pour vous permettre de 
+    Découvrez maintenant votre parcours personnalisé.
+    Les modules sont numérotés pour vous permettre de
     compléter / renforcer vos compétences par ordre de priorité.
 EOT
         );

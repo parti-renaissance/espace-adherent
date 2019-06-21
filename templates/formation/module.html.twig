@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'formation/layout.html.twig' %}
 
 {% block banner '' %}
 {% block page_title module.title %}
@@ -14,25 +14,22 @@
     <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
 {% endblock %}
 
-{% block content %}
-    <main class="content espace-formation">
-        <section class="espace-formation__article">
-            {{ include('formation/_navbar.html.twig') }}
-            <article class="l__wrapper--slim">
-                {{ module.content|markdown }}
+{% block content__inner %}
+    <section class="espace-formation__article">
+        <article class="l__wrapper--slim">
+            {{ module.content|markdown }}
 
-                {% if module.files|length > 0 %}
-                    <h2>Contenus du module</h2>
-                    <ul>
-                        {% for file in module.files %}
-                            <li>
-                                <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
-                                   target="_blank">{{ file.title }}</a> (pdf)
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </article>
-        </section>
-    </main>
+            {% if module.files|length > 0 %}
+                <h2>Contenus du module</h2>
+                <ul>
+                    {% for file in module.files %}
+                        <li>
+                            <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
+                               target="_blank">{{ file.title }}</a> (pdf)
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </article>
+    </section>
 {% endblock %}

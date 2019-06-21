@@ -56,7 +56,7 @@
 
     ul {
         font-family: $font-roboto;
-   
+
         a {
             border: 0;
         }
@@ -88,7 +88,7 @@
         width: 15px;
         margin-left: 5px;
     }
- 
+
     &:hover {
         .nav__chevron {
             transform: rotate(180deg);
@@ -189,17 +189,13 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-            }
 
-            span {
-                font-size: $text--size-xs;
-                background: $green;
-                color: $green--forest;
-                padding: 3px 7px 2px;
-                border-radius: 50px;
-                text-transform: uppercase;
-                font-weight: bold;
-                margin-left: 5px;
+                &.is-new {
+                    &:after {
+                        content: 'Nouveau';
+                        @include new-feature;
+                    }
+                }
             }
         }
     }
@@ -225,7 +221,7 @@
             font-weight: bold;
             font-size: 18px;
             padding: 0;
-            
+
             a {
                 display: block;
                 width: 100%;
@@ -241,7 +237,7 @@
     &:hover {
         .nav-dropdown__menu, .nav-dropdown__caret, .nav-dropdown__item {
             display: block;
-        } 
+        }
 
         .fa-caret-down {
             display: none;

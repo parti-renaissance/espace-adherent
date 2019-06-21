@@ -94,3 +94,8 @@ $zIndex__overlay-caret: 600;
     justify-content: $positioning;
     flex-direction: $direction;
 }
+
+@mixin transform($transform-value) {
+    transform: $transform-value;
+    -webkit-transform: $transform-value;
+}
