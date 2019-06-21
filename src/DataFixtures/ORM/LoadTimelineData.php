@@ -2,6 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Timeline\Manifesto;
+use AppBundle\Entity\Timeline\ManifestoTranslation;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\MeasureTranslation;
 use AppBundle\Entity\Timeline\Profile;
@@ -161,6 +163,51 @@ class LoadTimelineData extends AbstractFixture
         ],
     ];
 
+    const MANIFESTOS = [
+        'TMA001' => [
+            'title' => [
+                'fr' => 'Présidentielle 2017',
+                'en' => 'Presidential 2017',
+            ],
+            'slug' => [
+                'fr' => 'presidentielle-2017',
+                'en' => 'presidential-2017',
+            ],
+            'description' => [
+                'fr' => 'Le programme présidentiel 2017.',
+                'en' => 'The presidential manifesto 2017.',
+            ],
+        ],
+        'TMA002' => [
+            'title' => [
+                'fr' => 'Européennes 2019',
+                'en' => 'Europeans 2019',
+            ],
+            'slug' => [
+                'fr' => 'europeennes-2019',
+                'en' => 'europeans-2019',
+            ],
+            'description' => [
+                'fr' => 'Le programme européennes 2019.',
+                'en' => 'The europeans manifesto 2019',
+            ],
+        ],
+        'TMA003' => [
+            'title' => [
+                'fr' => 'Hors programme',
+                'en' => 'Out of manifesto',
+            ],
+            'slug' => [
+                'fr' => 'hors-programme',
+                'en' => 'out-of-manifesto',
+            ],
+            'description' => [
+                'fr' => 'Hors programme.',
+                'en' => 'Out of manifesto.',
+            ],
+        ],
+    ];
+
     const MEASURES = [
         'TM001' => [
             'title' => [
@@ -170,6 +217,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT001'],
             'profiles' => ['TP002', 'TP003'],
+            'manifesto' => 'TMA001',
         ],
         'TM002' => [
             'title' => [
@@ -179,6 +227,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT001'],
             'profiles' => ['TP002'],
+            'manifesto' => 'TMA001',
         ],
         'TM003' => [
             'title' => [
@@ -188,6 +237,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT001'],
             'profiles' => ['TP002', 'TP003', 'TP004'],
+            'manifesto' => 'TMA001',
         ],
         'TM004' => [
             'title' => [
@@ -197,6 +247,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT001'],
             'profiles' => ['TP001'],
+            'manifesto' => 'TMA001',
         ],
         'TM005' => [
             'title' => [
@@ -206,6 +257,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_DONE,
             'themes' => ['TT001', 'TT002', 'TT003'],
             'profiles' => ['TP005'],
+            'manifesto' => 'TMA001',
         ],
         'TM006' => [
             'title' => [
@@ -215,6 +267,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_DONE,
             'themes' => ['TT001'],
             'profiles' => ['TP001'],
+            'manifesto' => 'TMA001',
         ],
         'TM007' => [
             'title' => [
@@ -224,6 +277,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_DONE,
             'themes' => ['TT001'],
             'profiles' => ['TP001'],
+            'manifesto' => 'TMA001',
         ],
         'TM008' => [
             'title' => [
@@ -233,6 +287,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_DONE,
             'themes' => ['TT001'],
             'profiles' => ['TP002', 'TP003', 'TP004', 'TP005'],
+            'manifesto' => 'TMA001',
         ],
         'TM009' => [
             'title' => [
@@ -242,6 +297,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP002', 'TP003', 'TP004', 'TP005'],
+            'manifesto' => 'TMA001',
         ],
         'TM010' => [
             'title' => [
@@ -251,6 +307,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP001', 'TP002'],
+            'manifesto' => 'TMA001',
         ],
         'TM011' => [
             'title' => [
@@ -260,6 +317,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP001', 'TP002'],
+            'manifesto' => 'TMA001',
         ],
         'TM012' => [
             'title' => [
@@ -269,6 +327,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002', 'TT001'],
             'profiles' => ['TP001'],
+            'manifesto' => 'TMA001',
         ],
         'TM013' => [
             'title' => [
@@ -278,6 +337,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_UPCOMING,
             'themes' => ['TT002'],
             'profiles' => ['TP002', 'TP003', 'TP004', 'TP005'],
+            'manifesto' => 'TMA001',
         ],
         'TM014' => [
             'title' => [
@@ -287,6 +347,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT002', 'TT003'],
             'profiles' => ['TP001'],
+            'manifesto' => 'TMA001',
         ],
         'TM015' => [
             'title' => [
@@ -296,6 +357,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT002', 'TT004'],
             'profiles' => ['TP002', 'TP003'],
+            'manifesto' => 'TMA001',
         ],
         'TM016' => [
             'title' => [
@@ -305,6 +367,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT002'],
             'profiles' => ['TP001'],
+            'manifesto' => 'TMA002',
         ],
         'TM017' => [
             'title' => [
@@ -314,6 +377,7 @@ class LoadTimelineData extends AbstractFixture
             'status' => Measure::STATUS_IN_PROGRESS,
             'themes' => ['TT002', 'TT003'],
             'profiles' => ['TP001', 'TP002'],
+            'manifesto' => 'TMA003',
         ],
     ];
 
@@ -361,6 +425,27 @@ class LoadTimelineData extends AbstractFixture
             $manager->persist($theme);
         }
 
+        foreach (self::MANIFESTOS as $reference => $metadatas) {
+            $manifesto = new Manifesto();
+
+            $manifesto->addTranslation(new ManifestoTranslation(
+                'fr',
+                $metadatas['title']['fr'],
+                $metadatas['slug']['fr'],
+                $metadatas['description']['fr']
+            ));
+            $manifesto->addTranslation(new ManifestoTranslation(
+                'en',
+                $metadatas['title']['en'],
+                $metadatas['slug']['en'],
+                $metadatas['description']['en']
+            ));
+
+            $this->addReference($reference, $manifesto);
+
+            $manager->persist($manifesto);
+        }
+
         $manager->flush();
 
         foreach (self::MEASURES as $reference => $metadatas) {
@@ -372,6 +457,7 @@ class LoadTimelineData extends AbstractFixture
                 array_map(function (string $themeReference) {
                     return $this->getReference($themeReference);
                 }, $metadatas['themes']),
+                $this->getReference($metadatas['manifesto']),
                 null,
                 true
             );

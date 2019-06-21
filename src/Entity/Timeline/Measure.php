@@ -122,6 +122,14 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      */
     private $themes;
 
+    /**
+     * @var Manifesto
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Timeline\Manifesto")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $manifesto;
+
     private $savedThemes;
 
     /**
@@ -132,6 +140,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         string $status = null,
         array $profiles = [],
         array $themes = [],
+        Manifesto $manifesto = null,
         string $link = null,
         bool $isMajor = false
     ) {
@@ -140,6 +149,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         $this->major = $isMajor;
         $this->profiles = new ArrayCollection($profiles);
         $this->themes = new ArrayCollection($themes);
+        $this->manifesto = $manifesto;
         $this->savedThemes = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
@@ -257,6 +267,16 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         $this->themes->removeElement($theme);
     }
 
+    public function getManifesto(): ?Manifesto
+    {
+        return $this->manifesto;
+    }
+
+    public function setManifesto(?Manifesto $manifesto): void
+    {
+        $this->manifesto = $manifesto;
+    }
+
     public function isUpcoming(): bool
     {
         return self::STATUS_UPCOMING === $this->status;
@@ -307,6 +327,14 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         return array_map(function (Profile $profile) {
             return $profile->getId();
         }, $this->profiles->toArray());
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
+    public function manifestoId(): ?int
+    {
+        return $this->manifesto ? $this->manifesto->getId() : null;
     }
 
     /**
