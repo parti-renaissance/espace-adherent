@@ -352,4 +352,14 @@ vote_place.assessor_request.max: Il y a déjà deux assesseurs pour ce bureau de
 #
 # Application Requests
 #
+application_request.first_name.min_length: Votre prénom doit faire au moins {{ limit }} caractères.
+application_request.first_name.max_length: Votre prénom ne doit pas faire plus de {{ limit }} caractères.
+application_request.last_name.min_length: Votre nom doit faire au moins {{ limit }} caractères.
+application_request.last_name.max_length: Votre nom ne doit pas faire plus de {{ limit }} caractères.
+application_request.favorite_cities.min_length: Veuillez sélectionner au moins {{ limit }} ville.
+application_request.favorite_cities.max_length: Vous ne pouvez pas sélectionner plus de {{ limit }} villes.
+application_request.email_address.not_blank: Veuillez renseigner une adresse e-mail.
+application_request.profession.required: Veuillez renseigner votre profession.
+application_request.favorite_themes.min: Veuillez sélectionner au moins une thématique.
+application_request.technical_skills.min: Veuillez sélectionner au moins une compétence technique.
 application_request.curriculum.mime_type: Seuls les fichiers .pdf sont acceptés.
