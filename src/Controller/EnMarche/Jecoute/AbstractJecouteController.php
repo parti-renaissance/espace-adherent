@@ -27,8 +27,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractJecouteController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(
      *     name="local_surveys_list",
@@ -40,8 +38,6 @@ abstract class AbstractJecouteController extends Controller
         SurveyExporter $surveyExporter,
         UserInterface $user
     ): Response {
-        $this->disableInProduction();
-
         /** @var Adherent $user */
         return  $this->renderTemplate('jecoute/local_surveys_list.html.twig', [
             'surveysListJson' => $surveyExporter->exportLocalSurveysAsJson(
