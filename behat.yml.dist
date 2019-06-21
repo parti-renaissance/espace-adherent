@@ -5,6 +5,7 @@ default:
                 - Behat\MinkExtension\Context\MinkContext
                 - Behatch\Context\BrowserContext:
                     timeout: 3
+                - Behatch\Context\DebugContext
                 - Behatch\Context\XmlContext
                 - FixtureContext:
                     manager: "@doctrine.orm.default_entity_manager"
