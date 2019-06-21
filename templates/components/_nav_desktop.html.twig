@@ -207,34 +207,54 @@
         <a href="{{ path('donation_index') }}" class="btn btn--pink">Donner</a>
     </div>
 </nav>
-{% if is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST') or is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT') or is_granted('ROLE_DEPUTY') or is_granted('ROLE_BOARD_MEMBER') or is_granted('ROLE_COORDINATOR') or is_granted('ROLE_PROCURATION_MANAGER') or is_granted('ROLE_LEGISLATIVE_CANDIDATE') or is_granted('ROLE_ASSESSOR_MANAGER') or is_granted('ROLE_MUNICIPAL_CHIEF') or is_granted('ROLE_JECOUTE_MANAGER') %}
-<div class="background--darker space--10-0 l__hide--on-small-laptop">
+{% if is_granted('ROLE_SUPERVISOR') or
+    is_granted('ROLE_HOST') or
+    is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') or
+    is_granted('ROLE_REFERENT') or
+    is_granted('ROLE_COREFERENT') or
+    is_granted('ROLE_DEPUTY') or
+    is_granted('ROLE_BOARD_MEMBER') or
+    is_granted('ROLE_COORDINATOR') or
+    is_granted('ROLE_PROCURATION_MANAGER') or
+    is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
+    is_granted('ROLE_ASSESSOR_MANAGER') or
+    (is_granted('ROLE_MUNICIPAL_CHIEF') and is_canary_enabled()) or
+    is_granted('ROLE_JECOUTE_MANAGER')
+%}
+    {% set totalSections =
+        (app.user.isSupervisor or app.user.isHost) +
+        (app.user.isReferent or app.user.isCoReferent) +
+        app.user.isDeputy +
+        app.user.isCoordinatorCitizenProjectSector +
+        app.user.isCoordinatorCommitteeSector +
+        app.user.isProcurationManager +
+        app.user.isAssessorManager +
+        (app.user.isMunicipalChief and is_canary_enabled()) +
+        app.user.isJecouteManager +
+        is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR')
+    %}
+
+    <div class="background--darker space--10-0 l__hide--on-small-laptop">
     <ul class="l__wrapper list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-        {% if app.user.isSupervisor or app.user.isHost %}
-            <li>
-                {{ al_committees }}
-            </li>
-            <li>
-                <a href="{{ path('app_committee_space_dashboard') }}">Espace comité ✨</a>
-            </li>
-        {% endif %}
-        {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
-            <li>
-                <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet ✨</a>
-            </li>
-            <li>
-                {{ administrated_citizen_projects }}
-            </li>
-        {% endif %}
-        {% if app.user.isReferent or app.user.isCoReferent %}
-            <li>
-                <a href="{{ path(app.user.isReferent ? 'app_referent_events' : 'app_referent_users') }}">Espace référent</a>
-            </li>
-        {% endif %}
-        {% if app.user.isDeputy %}
-            <li>
-                <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
-            </li>
+        {% if totalSections > 1 %}
+        <li>
+            <ul class="list__links">
+                <div class="nav-dropdown">
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    <i class="fa fa-caret-up" aria-hidden="true"></i>
+                    <ul class="list__links">
+                        <li><a href="#">Mes espaces</a></li>
+                    </ul>
+                    <div class="nav-dropdown__menu nav-dropdown__black">
+                        <ul class="list__links">
+                            {{ include('adherent/_list_my_sections.html.twig') }}
+                        </ul>
+                    </div>
+                </div>
+            </ul>
+        </li>
+        {% else %}
+            {{ include('adherent/_list_my_sections.html.twig') }}
         {% endif %}
 {# Space temporarily closed #}
 {#{% if app.user.isBoardMember %}#}
@@ -242,37 +262,6 @@
 {#<a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>#}
 {#</li>#}
 {#{% endif %}#}
-        {% if app.user.isCoordinatorCitizenProjectSector %}
-            <li>
-                <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}"> Espace Responsable Engagement Citoyen
-                </a>
-            </li>
-        {% endif %}
-        {% if app.user.isCoordinatorCommitteeSector %}
-            <li>
-                <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
-            </li>
-        {% endif %}
-        {% if app.user.isProcurationManager %}
-            <li>
-                <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
-            </li>
-        {% endif %}
-        {% if app.user.isAssessorManager %}
-            <li>
-                <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
-            </li>
-        {% endif %}
-        {% if app.user.isMunicipalChief and is_canary_enabled() %}
-            <li>
-                <a href="{{ path('app_municipal_chief_municipal_running_mate_request') }}">Espace chef municipal</a>
-            </li>
-        {% endif %}
-        {% if app.user.isJecouteManager %}
-            <li>
-                <a href="{{ path('app_jecoute_manager_local_surveys_list') }}">Espace responsable J'écoute</a>
-            </li>
-        {% endif %}
     </ul>
 </div>
 {% endif %}
