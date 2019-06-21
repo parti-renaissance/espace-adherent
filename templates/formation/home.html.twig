@@ -6,39 +6,41 @@
 {% block canonical_url url('app_formation_home') %}
 
 {% block content__inner %}
-<section class="espace-formation">
-
-    <header class="space--40-0">
-        <div class="l__wrapper--slim text--center">
-            <h1 class="text--large text--inline text--on-white">
-                <span class="text--blue--new">{{ app.user.firstname }}</span>, {{ page.title }}
+<section class="l__wrapper">
+    <div class="espace-formation__head">
+        <div class="espace-formation__head--container">
+            <h1 class="espace-formation__head--title text--large">
+                <span class="text--blue">{{ app.user.firstname }}</span>, bienvenue dans<br> votre parcours formation.
             </h1>
         </div>
-    </header>
-
-    <div class="l__wrapper--slim">
-        <div class="espace-formation__intro text--body">
-            {{ page.content|raw }}
-        </div>
     </div>
 
-    <div class="l__wrapper--slim espace-formation__cases">
-        {% for path in paths %}
-            <h2>{{ path.title }}</h2>
-            <p>{{ path.description }}</p>
-            <ol>
+    {{ page.content|raw }}
+
+    {% for path in paths %}
+        <div class="espace-formation__sct">
+            <div class="espace-formation__intro b__nudge--top-60 b__nudge--bottom-60">
+                <h2 class="text--medium b__nudge--bottom-medium">{{ path.title }}</h2>
+                <p>{{ path.description }}</p>
+            </div>
+            <div class="espace-formation__cases">
                 {% for axe in path.axes %}
-                <li>
-                    <h2 class="text--medium-small" style="padding:80px 0 0 30px;">{{ axe.title }}</h2>
-                    {% for module in axe.modules %}
-                        <a href="{{ path('app_formation_module', { 'slug': module.slug }) }}">
-                            <strong>M{{ loop.parent.loop.index }}.{{ loop.index0 }} -</strong> {{ module.title }}
-                        </a>
-                    {% endfor %}
-                </li>
+                    <div class="espace-formation__case espace-formation__case--{{ loop.index }}">
+                        <ul>
+                            <span class="espace-formation__case--number">Axe {{ loop.index }}</span>
+                            <h2 class="espace-formation__case--title">{{ axe.title }}</h2>
+                            {% for module in axe.modules %}
+                            <li>
+                                <a class="espace-formation__module" href="{{ path('app_formation_module', { 'slug': module.slug }) }}">
+                                    <strong>M{{ loop.parent.loop.index }}.{{ loop.index0 }} -</strong> {{ module.title }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 {% endfor %}
-            </ol>
-        {% endfor %}
-    </div>
+            </div>
+        </div>
+    {% endfor %}
 </section>
 {% endblock %}

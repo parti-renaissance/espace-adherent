@@ -1,19 +1,37 @@
-<nav>
+<nav class="espace-formation__nav space--20-0 l__row">
     <ul class="list__links list__links--row list__links--no-decor list__links--nav">
         <li>
             <a href="{{ path('app_formation_home') }}" class="{{ is_active_route(app.request, 'app_formation_home') ? 'active' }}">
-                Mon parcours
+                Mes parcours
             </a>
         </li>
-        <li>
-            <a href="{{ path('app_formation_faq') }}" class="{{ is_active_route(app.request, 'app_formation_faq') ? 'active' }}">
-                Foire aux questions
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                Faire le QCM
-            </a>
-        </li>
+        {% if is_active_route(app.request, 'app_formation_module') %}
+            <li>
+                <a class="this-breadcrumb" href="{{ path('app_formation_home') }}">
+                    {{ module.axe.path.title }}
+                </a>
+            </li>
+            <li>
+                <a class="this-breadcrumb" href="{{ path('app_formation_home') }}">
+                    {{ module.axe.title }}
+                </a>
+            </li>
+            <li>
+                <span class="this-breadcrumb {{ is_active_route(app.request, 'app_formation_module') ? 'active' }}">
+                    {{ module.title }}
+                </span>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('app_formation_faq') }}" class="{{ is_active_route(app.request, 'app_formation_faq') ? 'active' }}">
+                    Foire aux questions
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    Faire le QCM
+                </a>
+            </li>
+        {% endif %}
     </ul>
 </nav>

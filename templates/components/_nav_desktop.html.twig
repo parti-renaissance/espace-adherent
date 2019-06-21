@@ -132,9 +132,7 @@
                                         {% endif %}
                                         {% if app.user.isHost %}
                                             <li class="visually-hidden">
-                                                <a href="{{ path('app_formation_home') }}">Je me forme
-                                                    <span>Nouveau</span>
-                                                </a>
+                                                <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
                                             </li>
                                         {% endif %}
                                     </ul>
@@ -216,6 +214,9 @@
             </li>
             <li>
                 <a href="{{ path('app_committee_space_dashboard') }}">Espace comité ✨</a>
+            </li>
+            <li>
+                <a class="is-new" href="{{ path('app_formation_home') }}">Je me forme</a>
             </li>
         {% endif %}
         {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
