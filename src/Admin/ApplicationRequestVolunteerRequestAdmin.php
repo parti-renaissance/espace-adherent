@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
 use AppBundle\Entity\ApplicationRequest\Theme;
+use AppBundle\Form\GenderType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -23,6 +24,10 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('gender', 'trans', [
+                'label' => 'Genre',
+                'format' => 'common.gender.%s',
+            ])
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
@@ -52,6 +57,9 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations personnelles')
+                ->add('gender', GenderType::class, [
+                    'label' => 'Genre',
+                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -125,6 +133,7 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
     {
         return [
             'UUID' => 'uuid',
+            'Genre' => 'gender',
             'Prénom' => 'firstName',
             'Nom' => 'lastName',
             'Email' => 'emailAddress',

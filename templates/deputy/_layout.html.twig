@@ -26,7 +26,7 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' : '' }}">
+                            <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
                                 <a href="{{ path("app_message_deputy_list", route_params|default({})) }}">Mes messages</a>
                             </li>
                         </ul>

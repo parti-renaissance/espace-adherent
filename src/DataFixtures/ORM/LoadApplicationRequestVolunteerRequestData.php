@@ -28,6 +28,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
             $municipal3->municipalChiefManagedArea()->getCodes()[1],
         ]);
         $volunteerRequest2->setEmailAddress('damien.schmidt@example.ch');
+        $volunteerRequest2->setAdherent($this->getReference('adherent-14'));
 
         $volunteerRequest3 = new VolunteerRequest();
         $volunteerRequest3->setFavoriteCities([
@@ -41,6 +42,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
         ]);
         $volunteerRequest4->setEmailAddress('damien.schmidt@example.ch');
+        $volunteerRequest4->setAdherent($this->getReference('adherent-14'));
 
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
         foreach ([$volunteerRequest1, $volunteerRequest2, $volunteerRequest3, $volunteerRequest4] as $i => $volunteerRequest) {

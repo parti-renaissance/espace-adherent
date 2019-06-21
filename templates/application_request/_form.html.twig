@@ -17,6 +17,14 @@
             <h4 class="text--medium b__nudge--bottom-larger">Qui êtes-vous ?</h4>
 
             <div class="em-form__row">
+                <div class="em-form__group em-form__radio--inline">
+                    {{ form_label(form.gender, 'Genre') }}
+                    {{ form_widget(form.gender) }}
+                    {{ form_errors(form.gender) }}
+                </div>
+            </div>
+
+            <div class="em-form__row">
                 <div class="em-form__group em-form__width--1">
                     {{ form_label(form.lastName, 'Nom') }}
                     {{ form_widget(form.lastName, { attr: { placeholder: 'Votre nom' } }) }}

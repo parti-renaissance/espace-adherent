@@ -18,16 +18,16 @@
 
         <nav class="manager-header__menu">
             <ul>
-                <li class="{{ is_active_route(app.request, 'app_committee_manager_edit') ? 'active' : '' }}">
+                <li class="{{ is_active_route(app.request, 'app_committee_manager_edit') ? 'active' }}">
                     <a href="{{ path('app_committee_manager_edit', {slug: committee.slug }) }}">Modifier mon comité</a>
                 </li>
 
                 {% if committee.isApproved %}
-                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host', 'app_committee_contact_members']) ? 'active' : '' }}">
+                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host', 'app_committee_contact_members']) ? 'active' }}">
                         <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}">Adhérents</a>
                     </li>
 
-                    <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' : '' }}">
+                    <li class="{{ is_active_route(app.request, 'app_message_committee_*') ? 'active' }}">
                         <a href="{{ path('app_message_committee_list', {committee_slug: committee.slug}) }}">Mes messages</a>
                     </li>
                 {% endif %}

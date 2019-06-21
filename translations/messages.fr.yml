@@ -2,7 +2,9 @@
 # Common
 #
 common.gender.man: Masculin
-common.gender.woman: Feminin
+common.gender.male: Masculin
+common.gender.woman: Féminin
+common.gender.female: Féminin
 common.gender.other: Autre
 common.civility.mr: Monsieur
 common.civility.mrs: Madame

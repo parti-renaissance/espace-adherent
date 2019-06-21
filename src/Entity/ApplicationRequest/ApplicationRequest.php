@@ -28,6 +28,14 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     use EntityTimestampableTrait;
 
     /**
+     * @ORM\Column(length=6, nullable=true)
+     *
+     * @Assert\NotBlank(message="common.gender.not_blank")
+     * @Assert\Choice(choices=AppBundle\ValueObject\Genders::CHOICES, strict=true)
+     */
+    private $gender;
+
+    /**
      * @var string|null
      *
      * @ORM\Column
@@ -192,6 +200,16 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
 
         $this->phone = new PhoneNumber();
         $this->phone->setCountryCode(33);
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 
     public function getFirstName(): ?string
