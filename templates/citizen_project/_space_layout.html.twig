@@ -21,21 +21,21 @@
 
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_citizen_project_manager_edit') ? 'active' : '' }}">
+                            <li class="{{ is_active_route(app.request, 'app_citizen_project_manager_edit') ? 'active' }}">
                                 <a href="{{ path('app_citizen_project_manager_edit', {slug: citizen_project.slug }) }}">Modifier mon projet</a>
                             </li>
 
                             {% if citizen_project.isApproved() %}
-                                <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' : '' }}">
+                                <li class="{{ is_active_route(app.request, 'app_citizen_project_list_actors') ? 'active' }}">
                                     <a href="{{ path('app_citizen_project_list_actors', {slug: citizen_project.slug}) }}">Adhérents</a>
                                 </li>
 
-                                <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' : '' }}">
+                                <li class="{{ is_active_route(app.request, 'app_message_citizen_project_*') ? 'active' }}">
                                     <a href="{{ path('app_message_citizen_project_list', {citizen_project_slug: citizen_project.slug}) }}">Mes messages</a>
                                 </li>
                             {% endif %}
 
-                            <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' : '' }}">
+                            <li class="{{ is_active_route(app.request, ['app_citizen_project_image_generator', 'app_citizen_project_tract_generator']) ? 'active' }}">
                                 <a href="{{ path('app_citizen_project_image_generator', {slug: citizen_project.slug}) }}">Images de promotion</a>
                             </li>
                         </ul>

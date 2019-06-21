@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\Theme;
+use AppBundle\Form\GenderType;
 use League\Flysystem\Filesystem;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -26,6 +27,10 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('gender', 'trans', [
+                'label' => 'Genre',
+                'format' => 'common.gender.%s',
+            ])
             ->add('lastName', null, [
                 'label' => 'Nom',
             ])
@@ -59,6 +64,9 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Informations personnelles')
+                ->add('gender', GenderType::class, [
+                    'label' => 'Genre',
+                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
@@ -176,6 +184,7 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
     {
         return [
             'UUID' => 'uuid',
+            'Genre' => 'gender',
             'Prénom' => 'firstName',
             'Nom' => 'lastName',
             'Email' => 'emailAddress',

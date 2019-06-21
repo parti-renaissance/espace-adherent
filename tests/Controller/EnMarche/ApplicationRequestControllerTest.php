@@ -55,6 +55,7 @@ class ApplicationRequestControllerTest extends WebTestCase
 
         $this->client->request('POST', '/appel-a-engagement', [
             'running_mate_request' => [
+                'gender' => 'male',
                 'firstName' => 'Enzo',
                 'lastName' => 'Colistier',
                 'emailAddress' => 'enzo@colistiers.com',
@@ -108,6 +109,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         $runningMateRequest = $this->runningMateRequestRepository->findOneBy(['emailAddress' => 'enzo@colistiers.com']);
 
         static::assertInstanceOf(RunningMateRequest::class, $runningMateRequest);
+        static::assertSame('male', $runningMateRequest->getGender());
         static::assertSame('Enzo', $runningMateRequest->getFirstName());
         static::assertSame('Colistier', $runningMateRequest->getLastName());
         static::assertSame('enzo@colistiers.com', $runningMateRequest->getEmailAddress());
@@ -153,6 +155,7 @@ class ApplicationRequestControllerTest extends WebTestCase
 
         $this->client->request('POST', '/appel-a-engagement', [
             'volunteer_request' => [
+                'gender' => 'other',
                 'firstName' => 'Remi',
                 'lastName' => 'Zoo',
                 'emailAddress' => 'remi@white.com',
@@ -197,6 +200,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         $volunteerRequest = $this->volunteerRequestRepository->findOneBy(['emailAddress' => 'remi@white.com']);
 
         static::assertInstanceOf(VolunteerRequest::class, $volunteerRequest);
+        static::assertSame('other', $volunteerRequest->getGender());
         static::assertSame('Remi', $volunteerRequest->getFirstName());
         static::assertSame('Zoo', $volunteerRequest->getLastName());
         static::assertSame('remi@white.com', $volunteerRequest->getEmailAddress());

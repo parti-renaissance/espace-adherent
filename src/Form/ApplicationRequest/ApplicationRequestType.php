@@ -7,12 +7,15 @@ use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\AddressType;
 use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Repository\ApplicationRequest\ThemeRepository;
+use AppBundle\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -31,9 +34,14 @@ class ApplicationRequestType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ])
-            ->add('favoriteCities_search', TextType::class, [
+            ->add('favoriteCities_search', SearchType::class, [
                 'mapped' => false,
                 'required' => false,
+            ])
+            ->add('gender', ChoiceType::class, [
+                'choices' => Genders::CHOICES,
+                'expanded' => true,
+                'multiple' => false,
             ])
             ->add('firstName', TextType::class, [
                 'format_identity_case' => true,

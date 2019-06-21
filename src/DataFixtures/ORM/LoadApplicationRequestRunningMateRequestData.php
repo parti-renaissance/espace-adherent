@@ -28,6 +28,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $municipal3->municipalChiefManagedArea()->getCodes()[1],
         ]);
         $runningMateRequest2->setEmailAddress('damien.schmidt@example.ch');
+        $runningMateRequest2->setAdherent($this->getReference('adherent-14'));
 
         $runningMateRequest3 = new RunningMateRequest();
         $runningMateRequest3->setFavoriteCities([
@@ -41,6 +42,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
         ]);
         $runningMateRequest4->setEmailAddress('damien.schmidt@example.ch');
+        $runningMateRequest4->setAdherent($this->getReference('adherent-14'));
 
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
         foreach ([$runningMateRequest1, $runningMateRequest2, $runningMateRequest3, $runningMateRequest4] as $i => $runningMateRequest) {
