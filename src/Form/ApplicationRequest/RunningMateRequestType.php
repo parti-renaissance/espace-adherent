@@ -28,6 +28,7 @@ class RunningMateRequestType extends AbstractType
                 'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
             ->add('isPoliticalActivist', ChoiceType::class, [
                 'choices' => [
@@ -41,6 +42,7 @@ class RunningMateRequestType extends AbstractType
                 'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
             ->add('isPreviousElectedOfficial', ChoiceType::class, [
                 'choices' => [
@@ -54,18 +56,22 @@ class RunningMateRequestType extends AbstractType
                 'required' => false,
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
             ->add('favoriteThemeDetails', TextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
             ->add('projectDetails', TextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
             ->add('professionalAssets', TextareaType::class, [
                 'with_character_count' => true,
                 'attr' => ['maxlength' => 1000],
+                'filter_emojis' => true,
             ])
         ;
     }
