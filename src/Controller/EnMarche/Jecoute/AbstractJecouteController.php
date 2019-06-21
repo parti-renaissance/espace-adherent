@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche\Jecoute;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\NationalSurvey;
