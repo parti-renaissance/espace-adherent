@@ -1,0 +1,8 @@
+{% extends 'referent/municipal/_edit_tags.html.twig' %}
+
+{% block links %}
+    <a href="{{ path('app_referent_municipal_volunteer_request') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
+        {{ include('components/caret--left.html.twig') }}
+        Retour à la liste des candidats volontaires
+    </a>
+{% endblock %}

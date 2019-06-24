@@ -10,7 +10,7 @@ Feature:
       | LoadApplicationRequestVolunteerRequestData   |
 
   @javascript
-  Scenario: I can see running mate request only for the zones I manage
+  Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-chef-municipal/municipale/candidature-colistiers"
     Then I should see "Vous gérez : Lille, Oignies, Seclin"
@@ -31,8 +31,17 @@ Feature:
     And I should see "Détails du projet :"
     And I should see "Actifs professionnels :"
 
+    When I click the ".back-to-list" selector
+    And I click the "application-edit-0" element
+    Then I wait 10 seconds until I see "Tags de candidature"
+
+    When I select "4" from "application_request_tags_tags"
+    And I press "Enregistrer"
+    And I wait 10 seconds until I see NOM
+    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
+
   @javascript
-  Scenario Outline: I can see running mate request only for the zones I manage
+  Scenario Outline: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
     When I am on "/espace-chef-municipal/municipale/candidature-colistiers"
     Then I should see "<managed-cities>"
@@ -51,6 +60,15 @@ Feature:
     And I should see "Est l'élu précédent détails :"
     And I should see "Détails du projet :"
     And I should see "Actifs professionnels :"
+
+    When I click the ".back-to-list" selector
+    And I click the "application-edit-0" element
+    Then I wait 10 seconds until I see "Tags de candidature"
+
+    When I select "4" from "application_request_tags_tags"
+    And I press "Enregistrer"
+    And I wait 10 seconds until I see NOM
+    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
 
     Examples:
       | user                               | managed-cities                                        | cities-tr-1                        | cities-tr-2                        |
@@ -58,7 +76,7 @@ Feature:
       | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Mons-en-Baroeul | Mons-en-Pévèle, Seclin             |
 
   @javascript
-  Scenario: I can see running mate request only for the zones I manage
+  Scenario: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-chef-municipal/municipale/candidature-benevole"
     Then I should see "Vous gérez : Lille, Oignies, Seclin"
@@ -77,8 +95,17 @@ Feature:
     And I should see "Partage l'engagement associatif ? Non"
     And I should see "Détail de l'engagement associatif :"
 
+    When I click the ".back-to-list" selector
+    And I click the "application-edit-0" element
+    Then I wait 10 seconds until I see "Tags de candidature"
+
+    When I select "4" from "application_request_tags_tags"
+    And I press "Enregistrer"
+    And I wait 10 seconds until I see NOM
+    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
+
   @javascript
-  Scenario Outline: I can see running mate request only for the zones I manage
+  Scenario Outline: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
     When I am on "/espace-chef-municipal/municipale/candidature-benevole"
     Then I should see "<managed-cities>"
@@ -95,6 +122,15 @@ Feature:
     And I should see "Domaine de l'association locale :"
     And I should see "Partage l'engagement associatif ? Non"
     And I should see "Détail de l'engagement associatif :"
+
+    When I click the ".back-to-list" selector
+    And I click the "application-edit-0" element
+    Then I wait 10 seconds until I see "Tags de candidature"
+
+    When I select "4" from "application_request_tags_tags"
+    And I press "Enregistrer"
+    And I wait 10 seconds until I see NOM
+    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
 
     Examples:
       | user                               | managed-cities                                        | cities-tr-1                        | cities-tr-2                        |

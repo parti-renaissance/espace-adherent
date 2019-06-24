@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\Event;
@@ -13,6 +14,7 @@ use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
 use AppBundle\Form\ReferentMessageType;
@@ -38,6 +40,7 @@ use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -390,7 +393,8 @@ class ReferentController extends Controller
         return $this->render('referent/municipal/running_mate/list.html.twig', [
             'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
                 $runningMateRequestRepository->findForReferent($referent),
-                'app_referent_municipal_running_mate_request_detail'
+                'app_referent_municipal_running_mate_request_detail',
+                'app_referent_municipal_running_mate_request_edit_tags'
             ),
         ]);
     }
@@ -414,7 +418,8 @@ class ReferentController extends Controller
         return $this->render('referent/municipal/volunteer/list.html.twig', [
             'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
                 $volunteerRequestRepository->findForReferent($referent),
-                'app_referent_municipal_volunteer_request_detail'
+                'app_referent_municipal_volunteer_request_detail',
+                'app_referent_municipal_volunteer_request_edit_tags'
             ),
         ]);
     }
@@ -458,6 +463,83 @@ class ReferentController extends Controller
 
         return $this->render('referent/municipal/volunteer/detail.html.twig', [
             'volunteerRequest' => $volunteerRequest,
+        ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers/{uuid}/editer-tags",
+     *     name="app_referent_municipal_running_mate_request_edit_tags",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET", "POST"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalRunningMateEditTagsAction(
+        ObjectManager $objectManager,
+        Request $request,
+        RunningMateRequest $runningMateRequest
+    ): Response {
+        $this->disableInProduction();
+
+        return $this->handleApplicationRequestTagsRequest(
+            $objectManager,
+            $request,
+            $runningMateRequest,
+            'referent/municipal/running_mate/edit_tags.html.twig',
+            'app_referent_municipal_running_mate_request'
+        );
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole/{uuid}/editer-tags",
+     *     name="app_referent_municipal_volunteer_request_edit_tags",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET", "POST"},
+     * )
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function municipalVolunteerEditTagsAction(
+        ObjectManager $objectManager,
+        Request $request,
+        VolunteerRequest $volunteerRequest
+    ): Response {
+        $this->disableInProduction();
+
+        return $this->handleApplicationRequestTagsRequest(
+            $objectManager,
+            $request,
+            $volunteerRequest,
+            'referent/municipal/volunteer/edit_tags.html.twig',
+            'app_referent_municipal_volunteer_request'
+        );
+    }
+
+    private function handleApplicationRequestTagsRequest(
+        ObjectManager $objectManager,
+        Request $request,
+        ApplicationRequest $applicationRequest,
+        string $view,
+        string $redirectRoute
+    ): Response {
+        $form = $this->createForm(ApplicationRequestTagsType::class, $applicationRequest);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $objectManager->flush();
+
+            return $this->redirectToRoute($redirectRoute);
+        }
+
+        return $this->render($view, [
+            'form' => $form->createView(),
         ]);
     }
 }
