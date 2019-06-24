@@ -166,20 +166,7 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      */
     public function titles(): array
     {
-        /** @var ThemeTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
-
-        /** @var ThemeTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getTitle(),
-            'en' => $english->getTitle(),
-        ];
+        return $this->getFieldTranslations('title');
     }
 
     /**
@@ -187,20 +174,7 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      */
     public function slugs(): array
     {
-        /** @var ThemeTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
-
-        /** @var ThemeTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getSlug(),
-            'en' => $english->getSlug(),
-        ];
+        return $this->getFieldTranslations('slug');
     }
 
     /**
@@ -208,20 +182,7 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      */
     public function descriptions(): array
     {
-        /** @var ThemeTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
-
-        /** @var ThemeTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getDescription(),
-            'en' => $english->getDescription(),
-        ];
+        return $this->getFieldTranslations('description');
     }
 
     public function exportTitles(): string

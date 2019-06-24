@@ -342,20 +342,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      */
     public function titles(): array
     {
-        /** @var MeasureTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
-
-        /** @var MeasureTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getTitle(),
-            'en' => $english->getTitle(),
-        ];
+        return $this->getFieldTranslations('title');
     }
 
     public function exportTitles(): string
