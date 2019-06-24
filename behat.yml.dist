@@ -5,7 +5,8 @@ default:
                 - Behat\MinkExtension\Context\MinkContext
                 - Behatch\Context\BrowserContext:
                     timeout: 3
-                - Behatch\Context\DebugContext
+                - Behatch\Context\DebugContext:
+                    screenshotDir: 'var/behat'
                 - Behatch\Context\XmlContext
                 - Behatch\Context\TableContext
                 - FixtureContext:
