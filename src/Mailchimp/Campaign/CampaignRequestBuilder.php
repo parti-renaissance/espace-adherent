@@ -8,19 +8,16 @@ use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
 class CampaignRequestBuilder
 {
     private $objectIdMapping;
-    private $listId;
     private $fromName;
     private $segmentConditionsBuilder;
 
     public function __construct(
         MailchimpObjectIdMapping $objectIdMapping,
         SegmentConditionsBuilder $segmentConditionsBuilder,
-        string $listId,
         string $fromName
     ) {
         $this->objectIdMapping = $objectIdMapping;
         $this->segmentConditionsBuilder = $segmentConditionsBuilder;
-        $this->listId = $listId;
         $this->fromName = $fromName;
     }
 
@@ -28,7 +25,7 @@ class CampaignRequestBuilder
     {
         $message = $campaign->getMessage();
 
-        return (new EditCampaignRequest($this->listId))
+        return (new EditCampaignRequest($this->objectIdMapping->getListIdByMessageType($message->getType())))
             ->setFolderId($this->objectIdMapping->getFolderIdByType($message->getType()))
             ->setTemplateId($this->objectIdMapping->getTemplateIdByType($message->getType()))
             ->setSubject($message->getSubject())

@@ -29,6 +29,10 @@ class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInte
     {
         $message = $event->getMessage();
 
+        if ($message->isSent()) {
+            return;
+        }
+
         foreach ($this->handlers as $handler) {
             if ($handler->supports($message)) {
                 $handler->handle($message);

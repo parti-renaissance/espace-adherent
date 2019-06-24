@@ -17,7 +17,7 @@ class AppIntlExtension extends AbstractExtension
             ]),
             new TwigFunction('get_cities_names_from_insee_code', [__CLASS__, 'getCitiesNamesFromInseeCode']),
             new TwigFunction('get_city_name_from_insee_code', [__CLASS__, 'getCityNameFromInseeCode']),
-            new TwigFunction('get_city_data_from_insee_code', [__CLASS__, 'getCityDataFromInseeCode']),
+            new TwigFunction('get_city_data_from_insee_code', [FranceCitiesBundle::class, 'getCityDataFromInseeCode']),
         ];
     }
 
@@ -47,17 +47,6 @@ class AppIntlExtension extends AbstractExtension
 
     public static function getCityNameFromInseeCode(string $inseeCode): string
     {
-        $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
-
-        if ($city && array_key_exists('name', $city)) {
-            return $city['name'];
-        }
-
-        return $inseeCode;
-    }
-
-    public static function getCityDataFromInseeCode(string $inseeCode): ?array
-    {
-        return FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
+        return FranceCitiesBundle::getCityNameFromInseeCode($inseeCode) ?? $inseeCode;
     }
 }

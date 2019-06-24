@@ -186,7 +186,10 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     {
         $this->synchronized = false;
 
-        $this->recipientCount = $this->label = $this->staticSegmentId = null;
+        $this->recipientCount =
+        $this->label =
+        $this->city =
+        $this->staticSegmentId = null;
     }
 
     public function getReport(): ?MailchimpCampaignReport

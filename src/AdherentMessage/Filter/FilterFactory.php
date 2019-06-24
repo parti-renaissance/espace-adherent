@@ -6,6 +6,7 @@ use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 
 abstract class FilterFactory
@@ -19,10 +20,12 @@ abstract class FilterFactory
                 return static::createDeputyFilter($user);
             case AdherentMessageTypeEnum::COMMITTEE:
                 return static::createCommitteeFilter();
+            case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
+                return static::createMunicipalChiefFilter($user);
         }
     }
 
-    private static function createReferentFilter(Adherent $user): AdherentMessageFilterInterface
+    private static function createReferentFilter(Adherent $user): ReferentUserFilter
     {
         $managedArea = $user->getManagedArea();
 
@@ -33,7 +36,7 @@ abstract class FilterFactory
         return new ReferentUserFilter($managedArea->getTags()->toArray());
     }
 
-    private static function createDeputyFilter(Adherent $user): AdherentMessageFilterInterface
+    private static function createDeputyFilter(Adherent $user): AdherentZoneFilter
     {
         if (!$user->isDeputy()) {
             throw new \InvalidArgumentException('[AdherentMessage] Adherent should be a deputy');
@@ -42,8 +45,13 @@ abstract class FilterFactory
         return new AdherentZoneFilter($user->getManagedDistrict()->getReferentTag());
     }
 
-    private static function createCommitteeFilter(): AdherentMessageFilterInterface
+    private static function createCommitteeFilter(): CommitteeFilter
     {
         return new CommitteeFilter();
+    }
+
+    private static function createMunicipalChiefFilter(Adherent $adherent): MunicipalChiefFilter
+    {
+        return new MunicipalChiefFilter($adherent->getMunicipalChiefManagedArea()->getCodes());
     }
 }

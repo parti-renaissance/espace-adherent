@@ -20,6 +20,7 @@
                             <div class="filter__row">
                                 <label class="filter__label">Zones gérées</label>
                                 {{ form_widget(form.referentTags, {attr: {class: 'filter__field multi_select2'}}) }}
+                                {{ form_errors(form.referentTags) }}
                             </div>
                         {% endif %}
 
@@ -79,16 +80,19 @@
                         <div class="filter__row">
                             <label class="filter__label">Nom</label>
                             {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                            {{ form_errors(form.lastName) }}
                         </div>
 
                         <div class="filter__row">
                             <label class="filter__label">Prénom</label>
                             {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                            {{ form_errors(form.firstName) }}
                         </div>
 
                         <div class="filter__row">
                             <label class="filter__label">Ville ou code postal</label>
                             {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
+                            {{ form_errors(form.city) }}
                         </div>
                     </div>
                 </div>
