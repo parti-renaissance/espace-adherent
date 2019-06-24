@@ -144,6 +144,10 @@ jobs:
                 esac
             - store_test_results:
                 path: ./behat
+            - store_artifacts:
+                path: var/behat
+                destination: screenshots
+                when: on_fail
 
     deployment:
         <<: *working_directory
