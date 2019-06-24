@@ -1,0 +1,51 @@
+{% if app.user.isSupervisor or app.user.isHost %}
+    <li>
+        <a href="{{ path('app_committee_space_dashboard') }}">Espace comité ✨</a>
+    </li>
+{% endif %}
+{% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
+    <li>
+        <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet ✨</a>
+    </li>
+{% endif %}
+{% if app.user.isReferent or app.user.isCoReferent %}
+    <li>
+        <a href="{{ path(app.user.isReferent ? 'app_referent_events' : 'app_referent_users') }}">Espace référent</a>
+    </li>
+{% endif %}
+{% if app.user.isDeputy %}
+    <li>
+        <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
+    </li>
+{% endif %}
+{% if app.user.isCoordinatorCitizenProjectSector %}
+    <li>
+        <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}"> Espace Responsable Engagement Citoyen
+        </a>
+    </li>
+{% endif %}
+{% if app.user.isCoordinatorCommitteeSector %}
+    <li>
+        <a href="{{ path('app_coordinator_committees', { s: constant('AppBundle\\Entity\\Committee::PENDING')}) }}">Espace coordinateur régional</a>
+    </li>
+{% endif %}
+{% if app.user.isProcurationManager %}
+    <li>
+        <a href="{{ path('app_procuration_manager_requests') }}">Espace responsable procuration</a>
+    </li>
+{% endif %}
+{% if app.user.isAssessorManager %}
+    <li>
+        <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
+    </li>
+{% endif %}
+{% if app.user.isMunicipalChief and is_canary_enabled() %}
+    <li>
+        <a href="{{ path('app_municipal_chief_municipal_running_mate_request') }}">Espace chef municipal</a>
+    </li>
+{% endif %}
+{% if app.user.isJecouteManager %}
+    <li>
+        <a href="{{ path('app_jecoute_manager_local_surveys_list') }}">Espace responsable J'écoute</a>
+    </li>
+{% endif %}
