@@ -164,6 +164,26 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     /**
      * @Algolia\Attribute
      */
+    public function manifestoIds(): array
+    {
+        $manifestos = new ArrayCollection();
+
+        foreach ($this->measures as $measure) {
+            $manifesto = $measure->getManifesto();
+
+            if (!$manifestos->contains($manifesto)) {
+                $manifestos->add($manifesto);
+            }
+        }
+
+        return array_map(function (Manifesto $manifesto) {
+            return $manifesto->getId();
+        }, $manifestos->toArray());
+    }
+
+    /**
+     * @Algolia\Attribute
+     */
     public function titles(): array
     {
         return $this->getFieldTranslations('title');

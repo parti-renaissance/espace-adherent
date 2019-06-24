@@ -3,9 +3,11 @@
 namespace Tests\AppBundle\Controller\Admin;
 
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
+use AppBundle\Entity\Timeline\Manifesto;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Entity\Timeline\Theme;
+use AppBundle\Repository\Timeline\ManifestoRepository;
 use AppBundle\Repository\Timeline\MeasureRepository;
 use AppBundle\Repository\Timeline\ProfileRepository;
 use AppBundle\Repository\Timeline\ThemeRepository;
@@ -37,6 +39,11 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
      * @var ProfileRepository
      */
     private $profileRepository;
+
+    /**
+     * @var ManifestoRepository
+     */
+    private $manifestoRepository;
 
     public function testUnindexedMeasureAfterMeasureRemoval()
     {
@@ -120,6 +127,7 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
                 LoadTimelineData::PROFILES['TP002']['title']['fr'],
                 LoadTimelineData::PROFILES['TP003']['title']['fr'],
             ]),
+            'manifestoId' => $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),
             'titles' => [
                 'fr' => LoadTimelineData::MEASURES['TM001']['title']['fr'],
                 'en' => LoadTimelineData::MEASURES['TM001']['title']['en'],
@@ -153,6 +161,9 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
                 LoadTimelineData::PROFILES['TP001']['title']['fr'],
                 LoadTimelineData::PROFILES['TP005']['title']['fr'],
             ]),
+            'manifestoIds' => [
+                $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),
+            ],
             'titles' => [
                 'fr' => LoadTimelineData::THEMES['TT001']['title']['fr'],
                 'en' => LoadTimelineData::THEMES['TT001']['title']['en'],
@@ -186,6 +197,10 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
                 LoadTimelineData::PROFILES['TP005']['title']['fr'],
                 LoadTimelineData::PROFILES['TP001']['title']['fr'],
             ]),
+            'manifestoIds' => [
+                $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),
+                $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA003']['title']['fr']),
+            ],
             'titles' => [
                 'fr' => LoadTimelineData::THEMES['TT003']['title']['fr'],
                 'en' => LoadTimelineData::THEMES['TT003']['title']['en'],
@@ -215,6 +230,7 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         $this->measureRepository = $this->getRepository(Measure::class);
         $this->themeRepository = $this->getRepository(Theme::class);
         $this->profileRepository = $this->getRepository(Profile::class);
+        $this->manifestoRepository = $this->getRepository(Manifesto::class);
     }
 
     protected function tearDown()
@@ -224,26 +240,28 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
         $this->measureRepository = null;
         $this->themeRepository = null;
         $this->profileRepository = null;
+        $this->manifestoRepository = null;
 
         parent::tearDown();
     }
 
     private function getMeasureIdsByTitles(array $measureTitles): array
     {
-        $repository = $this->measureRepository;
-
-        return array_map(function (string $measureTitle) use ($repository) {
-            return $repository->findOneByTitle($measureTitle)->getId();
+        return array_map(function (string $measureTitle) {
+            return $this->measureRepository->findOneByTitle($measureTitle)->getId();
         }, $measureTitles);
     }
 
     private function getProfileIdsByTitles(array $profileTitles): array
     {
-        $repository = $this->profileRepository;
-
-        return array_map(function (string $profileTitle) use ($repository) {
-            return $repository->findOneByTitle($profileTitle)->getId();
+        return array_map(function (string $profileTitle) {
+            return $this->profileRepository->findOneByTitle($profileTitle)->getId();
         }, $profileTitles);
+    }
+
+    private function getManifestoIdByTitle(string $manifestoTitle): int
+    {
+        return $this->manifestoRepository->findOneByTitle($manifestoTitle)->getId();
     }
 
     private function getIndexer(): DummyIndexer

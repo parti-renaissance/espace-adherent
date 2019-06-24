@@ -3,7 +3,6 @@
 namespace AppBundle\Repository\Timeline;
 
 use AppBundle\Entity\Timeline\Manifesto;
-use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Repository\TranslatableRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -17,7 +16,7 @@ class ManifestoRepository extends ServiceEntityRepository
         parent::__construct($registry, Manifesto::class);
     }
 
-    public function findOneByTitle(string $title): ?Profile
+    public function findOneByTitle(string $title): ?Manifesto
     {
         return $this
             ->createQueryBuilder('manifesto')
