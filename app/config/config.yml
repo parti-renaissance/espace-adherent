@@ -292,11 +292,6 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'mailer-delayed-transactional', type: direct }
             class:            AppBundle\Producer\MailerProducer
 
-        referent_message_dispatcher:
-            connection:       default
-            exchange_options: { name: 'referent-message-dispatcher', type: direct }
-            class:            AppBundle\Producer\ReferentMessageDispatcherProducer
-
         deputy_message_dispatcher:
             connection:       default
             exchange_options: { name: 'deputy-message-dispatcher', type: direct }

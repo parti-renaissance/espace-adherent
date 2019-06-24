@@ -176,11 +176,6 @@
             <argument type="service" id="event_dispatcher"/>
         </service>
 
-        <service id="app.validator.unique_citizen_project" class="AppBundle\Validator\UniqueCitizenProjectValidator">
-            <argument type="service" id="AppBundle\Repository\CitizenProjectRepository"/>
-            <tag name="validator.constraint_validator" alias="app.validator.unique_citizen_project"/>
-        </service>
-
         <service id="app.citizen_project.creation_handler" class="AppBundle\CitizenProject\CitizenProjectCreationCommandHandler">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="AppBundle\CitizenProject\CitizenProjectFactory"/>
@@ -264,12 +259,6 @@
             <argument type="service" id="app.event.registration_manager"/>
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="app.routing.remote_url_generator"/>
-        </service>
-
-        <!-- Referents -->
-        <service id="AppBundle\Referent\ReferentMessageNotifier">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="old_sound_rabbit_mq.referent_message_dispatcher_producer" />
         </service>
 
         <!-- BoardMember -->

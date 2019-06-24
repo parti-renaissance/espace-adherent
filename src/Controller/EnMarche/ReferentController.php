@@ -9,13 +9,11 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
-use AppBundle\Form\ReferentMessageType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
@@ -26,8 +24,6 @@ use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Referent\OrganizationalChartManager;
-use AppBundle\Referent\ReferentMessage;
-use AppBundle\Referent\ReferentMessageNotifier;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 use AppBundle\Repository\CitizenProjectRepository;
@@ -79,56 +75,14 @@ class ReferentController extends Controller
             $request->query->getInt('page', 1)
         );
 
-        if ($filter->hasToken() && true !== $filter->onlyEmailSubscribers()) {
-            $resultsSubscriptionCount = $repository->search($referent, $filter, true)->getTotalItems();
-        }
-
         $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
 
         return $this->render('referent/users_list.html.twig', [
             'managedArea' => $referent->getManagedArea(),
             'filter' => $filter,
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
-            'results_subscription_count' => $resultsSubscriptionCount ?? $results->getTotalItems(),
             'total_count' => $repository->countAdherentInReferentZone($referent),
             'results' => $results,
-        ]);
-    }
-
-    /**
-     * @Route("/utilisateurs/message", name="app_referent_users_message", methods={"GET", "POST"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function usersSendMessageAction(Request $request): Response
-    {
-        $filter = new ManagedUsersFilter();
-        $filter->handleRequest($request);
-
-        if ($filter->hasToken() && !$this->isCsrfTokenValid(self::TOKEN_ID, $filter->getToken())) {
-            return $this->redirectToRoute('app_referent_users');
-        }
-
-        $message = ReferentMessage::create($this->getUser(), $filter);
-
-        $form = $this->createForm(ReferentMessageType::class, $message);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(ReferentMessageNotifier::class)->sendMessage($message);
-            $this->addFlash('info', 'referent.message.success');
-
-            return $this->redirectToRoute('app_referent_users', $filter->toArray());
-        }
-
-        $repository = $this->getDoctrine()->getRepository(ReferentManagedUser::class);
-        $results = $repository->search($this->getUser(), $filter->hasToken() ? $filter : null, true);
-
-        return $this->render('referent/users_message.html.twig', [
-            'filter' => $filter,
-            'results_count' => $results->getTotalItems(),
-            'message' => $message,
-            'form' => $form->createView(),
         ]);
     }
 

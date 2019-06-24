@@ -17,9 +17,6 @@ services:
         class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
         public: false
 
-    old_sound_rabbit_mq.referent_message_dispatcher_producer:
-        class: 'Tests\AppBundle\Test\Producer\ReferentMessageNullProducer'
-
     old_sound_rabbit_mq.deputy_message_dispatcher_producer:
         class: 'Tests\AppBundle\Test\Producer\DeputyMessageNullProducer'
 
