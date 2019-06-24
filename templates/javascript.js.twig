@@ -1,4 +1,4 @@
-{% macro address(address, options = {}) %}
+.{% macro address(address, options = {}) %}
 App.createAddressSelector(
     '{{ address.country.vars.id }}',
     '{{ address.postalCode.vars.id }}',
@@ -161,6 +161,9 @@ $(document).ready(function() {
             noResults: '',
             results: function () {
             },
+        },
+        open: function() {
+            $("ul.ui-menu").width($(this).innerWidth());
         }
     });
 
@@ -304,8 +307,11 @@ $(document).ready(function() {
             }
 
             return false;
+        },
+        open: function() {
+            $("ul.ui-menu").width($(this).innerWidth());
         }
-    });
+    }).autocomplete('widget').addClass('em-form__autocomplete');
 
     // Add committee by pressing Enter
     input.keyup(function (e) {
@@ -421,8 +427,11 @@ $(document).ready(function() {
             }
 
             return false;
+        },
+        open: function() {
+            $("ul.ui-menu").width($(this).innerWidth());
         }
-    });
+    }).autocomplete('widget').addClass('em-form__autocomplete');
 
     // Add favorite city by pressing Enter
     input.keyup(function (e) {

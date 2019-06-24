@@ -168,6 +168,7 @@
 .manager__fixed-bar {
     display: block;
     position: fixed;
+    z-index: 5;
     left: 0;
     right: 0;
     top: -80px;

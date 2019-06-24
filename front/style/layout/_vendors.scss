@@ -68,9 +68,9 @@
 
 .ui-autocomplete {
     background: white;
-    width: 590px !important;
     margin-left: 5px;
     border: 1px solid $gray;
+    box-sizing: border-box;
 
     li a {
         cursor: pointer;
