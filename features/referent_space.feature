@@ -47,7 +47,7 @@ Feature:
     And I should see "Banner"
     And I should see "Bruce"
     And I should see "+33 6 06 06 06 06"
-    And I should see "Camphin-en-Pévèle, Mons-en-Baroeul"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
     And I should see "Seclin"
     And I should see "Télécharger le CV"
     And I should see "Oui"
@@ -82,7 +82,7 @@ Feature:
     And I wait 10 seconds until I see NOM
     And I should see "Stark"
     And I should see "Tony"
-    And I should see "Camphin-en-Pévèle, Mons-en-Baroeul"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
     And I should see "Seclin"
     And I should see "Oui"
 

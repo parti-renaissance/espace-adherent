@@ -192,6 +192,13 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      */
     protected $tags;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    protected $takenForCity;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -412,5 +419,15 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
         }
 
         return implode(', ', $themes);
+    }
+
+    public function getTakenForCity(): ?string
+    {
+        return $this->takenForCity;
+    }
+
+    public function setTakenForCity(?string $takenForCity): void
+    {
+        $this->takenForCity = $takenForCity;
     }
 }
