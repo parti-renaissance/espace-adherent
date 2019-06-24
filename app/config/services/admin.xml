@@ -515,6 +515,14 @@
         ######################################################
          -->
 
+        <service id="app.admin.timeline_manifesto" class="AppBundle\Admin\TimelineManifestoAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Programmes" group="Timeline" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Manifesto</argument>
+            <argument>AppBundle\Controller\Admin\AdminTimelineManifestoController</argument>
+        </service>
+
         <service id="app.admin.timeline_profile" class="AppBundle\Admin\TimelineProfileAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Profils" group="Timeline" />
 

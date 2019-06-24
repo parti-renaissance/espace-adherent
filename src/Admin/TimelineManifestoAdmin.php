@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class TimelineProfileAdmin extends AbstractAdmin
+class TimelineManifestoAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -24,7 +24,7 @@ class TimelineProfileAdmin extends AbstractAdmin
                         ],
                         'slug' => [
                             'label' => 'URL de publication',
-                            'sonata_help' => 'Ne spécifier que la fin : http://en-marche.fr/timeline/profil/[votre-valeur]<br />Doit être unique',
+                            'sonata_help' => 'Ne spécifier que la fin : http://en-marche.fr/timeline/programme/[votre-valeur]<br />Doit être unique',
                         ],
                         'description' => [
                             'label' => 'Description',
@@ -57,7 +57,7 @@ class TimelineProfileAdmin extends AbstractAdmin
             ->addIdentifier('title', TextType::class, [
                 'label' => 'Titre',
                 'virtual_field' => true,
-                'template' => 'admin/timeline/profile/list_title.html.twig',
+                'template' => 'admin/timeline/theme/list_title.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
