@@ -253,14 +253,6 @@
         </div>
     </div>
 
-    {% if has_filter and is_granted('ROLE_REFERENT') and results_subscription_count %}
-        <div class="b__nudge--bottom-large">
-            <a href="{{ path('app_referent_users_message', filter.toArray) }}" class="btn-type-table" id="send-message-btn">
-                Contacter ({{ results_subscription_count|number_format(0, ',', ' ') }})
-            </a>
-        </div>
-    {% endif %}
-
     <div class="datagrid">
         <div class="b__nudge--bottom-larger">
             <table class="datagrid__table-manager">
