@@ -316,6 +316,28 @@
     }
 }
 
+.data-listing {
+
+    &__row {
+        display: flex;
+        flex-direction: row;
+        padding: 6px 0;
+    }
+
+    &__item {
+
+        &--label {
+            width: 45%;
+            color: $neutral-grey;
+            padding-right: 15px;
+        }
+
+        &--value {
+            color: $dark;
+        }
+    }
+}
+
 // global components
 .tips-information {
     max-width: 900px;

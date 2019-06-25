@@ -53,8 +53,13 @@ Feature:
     And I should see "Oui"
 
     When I click the "application-detail-0" element
+<<<<<<< HEAD
     And I wait 10 seconds until I see "Retour à la liste des candidats colistiers"
     Then I should see "Profession : Scientist"
+=======
+    Then I should see "⟵ Retour"
+    And I should see "Profession : Scientist"
+>>>>>>> Add style on candidate detail view
     And I should see "Membre de l'association locale ? Non"
     And I should see "Domaine de l'association locale : Fighting super villains"
     And I should see "Activiste politique ? Non"
@@ -87,9 +92,9 @@ Feature:
     And I should see "Oui"
 
     When I click the "application-detail-0" element
-    Then I should see "Retour à la liste des candidats bénévoles"
-    And I should see "Thèmes favoris : Sécurité Environnement"
-    And I should see "Thèmes favoris personnalisés : Thanos destruction"
+    Then I should see "⟵ Retour"
+    And I should see "Thèmes favoris Sécurité Environnement"
+    And I should see "Thèmes favoris personnalisés Thanos destruction"
     And I should see "Compétences techniques : Communication Management Animation Autre"
     And I should see "Fait partie d'une précédente campagne ? Non"
     And I should see "Domaine de l'association locale :"

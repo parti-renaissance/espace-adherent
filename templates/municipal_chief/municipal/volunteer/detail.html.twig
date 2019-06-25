@@ -1,12 +1,9 @@
 {% extends 'municipal_chief/_layout.html.twig' %}
 
 {% block municipal_chief_content %}
-    <a href="{{ path('app_municipal_chief_municipal_volunteer_request') }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
-        {{ include('components/caret--left.html.twig') }}
-        Retour à la liste des candidats bénévoles
+    <a href="{{ path('app_municipal_chief_municipal_volunteer_request') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+        ⟵ Retour
     </a>
-
-    <hr />
-
+    
     {{ include('application_request/municipal/_volunteer_detail.html.twig') }}
 {% endblock %}
