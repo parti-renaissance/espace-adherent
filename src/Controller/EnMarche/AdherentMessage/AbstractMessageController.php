@@ -174,7 +174,7 @@ abstract class AbstractMessageController extends Controller
         }
 
         // Reset Filter object
-        if ($request->request->has('reset') && $message->getFilter()) {
+        if ($request->query->has('reset') && $message->getFilter()) {
             $manager->updateFilter($message, null);
 
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);

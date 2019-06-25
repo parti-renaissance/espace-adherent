@@ -9,6 +9,7 @@ export default(api, messageId, synchronized, recipientCount) => {
             messageId={messageId}
             synchronized={synchronized}
             recipientCount={recipientCount}
+            withResetButton={!!dom('.btn-filter--reset')}
         />,
         dom('#message-actions-block')
     );
