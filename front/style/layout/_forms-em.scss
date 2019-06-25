@@ -132,6 +132,34 @@
     }
 }
 
+@mixin em-form-autocomplete {
+    background: white;
+    margin-left: 5px;
+    border: solid 1px $lines-grey;
+    padding: 8px 0;
+
+    li {
+        padding: 0 8px;
+
+        a {
+            font-family: $font-roboto;
+            font-size: 16px;
+            color: $dark;
+            cursor: pointer;
+            border: 0;
+            padding: 8px 10px;
+            border-radius: 3px;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+
+            &:hover {
+                background: $gray--lighter;
+            }
+        }
+    }
+}
+
 .em-form {
 
     .em-form__section {
@@ -388,5 +416,8 @@
     .form__radio {
         @include em-form-radio;
     }
+}
 
+ul.em-form__autocomplete.ui-autocomplete {
+    @include em-form-autocomplete;
 }
