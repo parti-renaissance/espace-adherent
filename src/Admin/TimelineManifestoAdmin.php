@@ -67,7 +67,7 @@ class TimelineManifestoAdmin extends AbstractAdmin
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
                 'virtual_field' => true,
-                'template' => 'admin/timeline/theme/list_title.html.twig',
+                'template' => 'admin/timeline/manifesto/list_title.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

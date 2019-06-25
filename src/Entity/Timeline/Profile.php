@@ -76,16 +76,16 @@ class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
 
     public function exportTitles(): string
     {
-        return join(', ', $this->getTitles());
+        return implode(', ', $this->getTitles());
     }
 
     public function exportSlugs(): string
     {
-        return join(', ', $this->getSlugs());
+        return implode(', ', $this->getSlugs());
     }
 
     public function exportDescriptions(): string
     {
-        return join(', ', $this->getDescriptions());
+        return implode(', ', $this->getDescriptions());
     }
 }

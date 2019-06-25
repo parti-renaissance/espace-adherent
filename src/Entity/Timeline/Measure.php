@@ -347,16 +347,16 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
 
     public function exportTitles(): string
     {
-        return join(', ', $this->getTitles());
+        return implode(', ', $this->getTitles());
     }
 
     public function exportThemes(): string
     {
-        return join(', ', $this->themes->toArray());
+        return implode(', ', $this->themes->toArray());
     }
 
     public function exportProfiles(): string
     {
-        return join(', ', $this->profiles->toArray());
+        return implode(', ', $this->profiles->toArray());
     }
 }
