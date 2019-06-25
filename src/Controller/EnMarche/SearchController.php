@@ -142,7 +142,7 @@ class SearchController extends Controller
     {
         $committeeRepository = $this->getDoctrine()->getRepository(Committee::class);
         $maxResultPage = $this->getParameter('search_max_results');
-        $results = $committeeRepository->paginate($page > 1 ? $maxResultPage * $page : 0);
+        $results = $committeeRepository->paginateAllApprovedCommittees($page > 1 ? $maxResultPage * $page : 0);
         $totalResults = $results->count();
         $totalPage = (int) ceil($totalResults / $maxResultPage);
 

@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Search\SearchParametersFilter;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -107,15 +106,12 @@ class SearchControllerTest extends WebTestCase
 
     public function testListAllCommittee()
     {
-        /** @var Paginator $evenets */
-        $events = $this->getRepository(Committee::class)->paginate();
-
         $this->client->request(Request::METHOD_GET, '/tous-les-comites/3');
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/tous-les-comites/1');
 
-        $this->assertSame($events->count(), $crawler->filter('.search__committee__box')->count());
+        $this->assertSame(9, $crawler->filter('.search__committee__box')->count());
         $this->assertSame(0, $crawler->filter('meta[rel="prev"]')->count());
         $this->assertSame(0, $crawler->filter('meta[rel="next"]')->count());
         $this->assertSame(1, $crawler->filter('.listing__paginator li')->count());

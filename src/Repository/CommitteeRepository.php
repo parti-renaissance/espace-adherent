@@ -332,9 +332,13 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function paginate(int $offset = 0, int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS): Paginator
-    {
+    public function paginateAllApprovedCommittees(
+        int $offset = 0,
+        int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS
+    ): Paginator {
         $query = $this->createQueryBuilder('e')
+            ->andWhere('e.status = :approved')
+            ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
             ->setMaxResults($limit)
             ->setFirstResult($offset)
