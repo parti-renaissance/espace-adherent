@@ -8,6 +8,7 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
+use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @Route(
  *     path="/espace-chef-municipal",
- *     name="app_municipal_chief_municipal_"
+ *     name="app_municipal_chief_"
  * )
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */
@@ -32,7 +33,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-colistiers",
-     *     name="running_mate_request",
+     *     name="municipal_running_mate_request",
      *     methods={"GET"},
      * )
      */
@@ -50,7 +51,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-benevole",
-     *     name="volunteer_request",
+     *     name="municipal_volunteer_request",
      *     methods={"GET"},
      * )
      */
@@ -68,7 +69,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-colistiers/{uuid}/detail",
-     *     name="running_mate_request_detail",
+     *     name="municipal_running_mate_request_detail",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -87,7 +88,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-benevole/{uuid}/detail",
-     *     name="volunteer_request_detail",
+     *     name="municipal_volunteer_request_detail",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -106,7 +107,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-benevole/{uuid}/ajouter-a-mon-equipe",
-     *     name="volunteer_request_add_to_team",
+     *     name="municipal_volunteer_request_add_to_team",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -128,7 +129,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-benevole/{uuid}/retirer-de-mon-equipe",
-     *     name="volunteer_request_remove_from_team",
+     *     name="municipal_volunteer_request_remove_from_team",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -150,7 +151,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-colistiers/{uuid}/ajouter-a-mon-equipe",
-     *     name="running_mate_request_add_to_team",
+     *     name="municipal_running_mate_request_add_to_team",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -172,7 +173,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-colistiers/{uuid}/retirer-de-mon-equipe",
-     *     name="running_mate_request_remove_from_team",
+     *     name="municipal_running_mate_request_remove_from_team",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -220,7 +221,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-colistiers/{uuid}/editer-tags",
-     *     name="running_mate_request_edit_tags",
+     *     name="municipal_running_mate_request_edit_tags",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -246,7 +247,7 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(
      *     path="/municipale/candidature-benevole/{uuid}/editer-tags",
-     *     name="volunteer_request_edit_tags",
+     *     name="municipal_volunteer_request_edit_tags",
      *     requirements={
      *         "uuid": "%pattern_uuid%",
      *     },
@@ -289,6 +290,23 @@ class MunicipalChiefController extends Controller
 
         return $this->render($view, [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route(path="/adherents", name="adherents_list", methods={"GET"})
+     */
+    public function adherentsListAction(
+        Request $request,
+        UserInterface $municipalChief,
+        AdherentRepository $adherentRepository
+    ): Response {
+        $this->disableInProduction();
+        $inseeCodes = $municipalChief->getMunicipalChiefManagedArea()->getCodes();
+        $paginator = $adherentRepository->findPaginatedForInseeCodes($inseeCodes, $request->query->getInt('page'));
+
+        return $this->render('municipal_chief/adherent/list.html.twig', [
+            'results' => $paginator,
         ]);
     }
 }

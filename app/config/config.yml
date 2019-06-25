@@ -153,6 +153,7 @@ doctrine:
                 json_contains: AppBundle\Query\Mysql\JsonContains
                 find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
                 json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
+                substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
 
         hydrators:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
