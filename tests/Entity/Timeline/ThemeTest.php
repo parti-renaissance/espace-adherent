@@ -54,7 +54,7 @@ class ThemeTest extends TestCase
     {
         $theme = new Theme();
 
-        $this->assertNull($theme->image());
+        $this->assertNull($theme->getImage());
 
         $media = $this->createMock(Media::class);
         $media
@@ -65,7 +65,7 @@ class ThemeTest extends TestCase
 
         $theme->setMedia($media);
 
-        $this->assertEquals('images/timeline/theme-agriculture.jpg', $theme->image());
+        $this->assertEquals('images/timeline/theme-agriculture.jpg', $theme->getImage());
     }
 
     public function testTitles()

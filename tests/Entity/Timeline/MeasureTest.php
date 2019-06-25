@@ -18,7 +18,7 @@ class MeasureTest extends TestCase
         $measure->addProfile($this->createProfile(2));
         $measure->addProfile($this->createProfile(3));
 
-        $this->assertEquals([1, 2, 3], $measure->profileIds());
+        $this->assertEquals([1, 2, 3], $measure->getProfileIds());
     }
 
     public function testTitles()

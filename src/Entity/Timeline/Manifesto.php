@@ -6,6 +6,7 @@ use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\AbstractTranslatableEntity;
 use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use AppBundle\Entity\EntityMediaTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
+    use EntityMediaTrait;
     use Translatable;
 
     /**
@@ -48,6 +50,14 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @Algolia\Attribute(algoliaName="image")
+     */
+    public function getImage(): ?string
+    {
+        return $this->media ? $this->media->getPathWithDirectory() : null;
     }
 
     /**

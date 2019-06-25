@@ -166,11 +166,11 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
      */
     public function getManifestoIds(): array
     {
-        return array_unique(
+        return array_values(array_unique(
             array_map(function (Measure $measure) {
                 return $measure->getManifesto()->getId();
             }, $this->measures->toArray())
-        );
+        ));
     }
 
     /**

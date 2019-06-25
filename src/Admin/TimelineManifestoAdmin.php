@@ -32,6 +32,12 @@ class TimelineManifestoAdmin extends AbstractAdmin
                     ],
                 ])
             ->end()
+            ->with('Publication', ['class' => 'col-md-4'])
+                ->add('media', null, [
+                    'label' => 'Image principale',
+                    'required' => false,
+                ])
+            ->end()
         ;
     }
 
@@ -53,6 +59,11 @@ class TimelineManifestoAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('_thumbnail', null, [
+                'label' => 'Image',
+                'virtual_field' => true,
+                'template' => 'admin/timeline/manifesto/list_image.html.twig',
+            ])
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
                 'virtual_field' => true,
