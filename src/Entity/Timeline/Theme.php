@@ -108,17 +108,17 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="image")
      */
-    public function image(): ?string
+    public function getImage(): ?string
     {
         return $this->media ? $this->media->getPathWithDirectory() : null;
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="measureIds")
      */
-    public function measureIds(): array
+    public function getMeasureIds(): array
     {
         return array_map(function (Measure $measure) {
             return $measure->getId();
@@ -126,9 +126,9 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="measureTitles")
      */
-    public function measureTitles(): array
+    public function getMeasureTitles(): array
     {
         $titles = [];
         foreach ($this->measures as $measure) {
@@ -142,9 +142,9 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="profileIds")
      */
-    public function profileIds(): array
+    public function getProfileIds(): array
     {
         $profiles = new ArrayCollection();
 
@@ -162,61 +162,53 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="manifestoIds")
      */
-    public function manifestoIds(): array
+    public function getManifestoIds(): array
     {
-        $manifestos = new ArrayCollection();
-
-        foreach ($this->measures as $measure) {
-            $manifesto = $measure->getManifesto();
-
-            if (!$manifestos->contains($manifesto)) {
-                $manifestos->add($manifesto);
-            }
-        }
-
-        return array_map(function (Manifesto $manifesto) {
-            return $manifesto->getId();
-        }, $manifestos->toArray());
+        return array_unique(
+            array_map(function (Measure $measure) {
+                return $measure->getManifesto()->getId();
+            }, $this->measures->toArray())
+        );
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="titles")
      */
-    public function titles(): array
+    public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="slugs")
      */
-    public function slugs(): array
+    public function getSlugs(): array
     {
         return $this->getFieldTranslations('slug');
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="descriptions")
      */
-    public function descriptions(): array
+    public function getDescriptions(): array
     {
         return $this->getFieldTranslations('description');
     }
 
     public function exportTitles(): string
     {
-        return join(', ', $this->titles());
+        return join(', ', $this->getTitles());
     }
 
     public function exportSlugs(): string
     {
-        return join(', ', $this->slugs());
+        return join(', ', $this->getSlugs());
     }
 
     public function exportDescriptions(): string
     {
-        return join(', ', $this->descriptions());
+        return join(', ', $this->getDescriptions());
     }
 }

@@ -51,41 +51,41 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="titles")
      */
-    public function titles(): array
+    public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="slugs")
      */
-    public function slugs(): array
+    public function getSlugs(): array
     {
         return $this->getFieldTranslations('slug');
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="descriptions")
      */
-    public function descriptions(): array
+    public function getDescriptions(): array
     {
         return $this->getFieldTranslations('description');
     }
 
     public function exportTitles(): string
     {
-        return join(', ', $this->titles());
+        return join(', ', $this->getTitles());
     }
 
     public function exportSlugs(): string
     {
-        return join(', ', $this->slugs());
+        return join(', ', $this->getSlugs());
     }
 
     public function exportDescriptions(): string
     {
-        return join(', ', $this->descriptions());
+        return join(', ', $this->getDescriptions());
     }
 }

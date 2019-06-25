@@ -320,9 +320,9 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="profileIds")
      */
-    public function profileIds(): array
+    public function getProfileIds(): array
     {
         return array_map(function (Profile $profile) {
             return $profile->getId();
@@ -330,24 +330,24 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="manifestoId")
      */
-    public function manifestoId(): ?int
+    public function getManifestoId(): ?int
     {
         return $this->manifesto ? $this->manifesto->getId() : null;
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="titles")
      */
-    public function titles(): array
+    public function getTitles(): array
     {
         return $this->getFieldTranslations('title');
     }
 
     public function exportTitles(): string
     {
-        return join(', ', $this->titles());
+        return join(', ', $this->getTitles());
     }
 
     public function exportThemes(): string

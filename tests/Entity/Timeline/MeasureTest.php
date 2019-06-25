@@ -26,17 +26,17 @@ class MeasureTest extends TestCase
         $measure = new Measure();
 
         // No translation
-        $this->assertEmpty($measure->titles());
+        $this->assertEmpty($measure->getTitles());
 
         // French only
         $measure->addTranslation($this->createMeasureTranslation('fr', 'Titre'));
 
-        $this->assertEquals(['fr' => 'Titre', 'en' => 'Titre'], $measure->titles());
+        $this->assertEquals(['fr' => 'Titre', 'en' => 'Titre'], $measure->getTitles());
 
         // French + English
         $measure->addTranslation($this->createMeasureTranslation('en', 'Title'));
 
-        $this->assertEquals(['fr' => 'Titre', 'en' => 'Title'], $measure->titles());
+        $this->assertEquals(['fr' => 'Titre', 'en' => 'Title'], $measure->getTitles());
     }
 
     public function testGetThemesToIndex()

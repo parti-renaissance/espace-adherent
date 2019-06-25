@@ -7,7 +7,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TimelineProfileAdmin extends AbstractAdmin
 {
@@ -54,7 +53,7 @@ class TimelineProfileAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title', TextType::class, [
+            ->addIdentifier('title', null, [
                 'label' => 'Titre',
                 'virtual_field' => true,
                 'template' => 'admin/timeline/profile/list_title.html.twig',

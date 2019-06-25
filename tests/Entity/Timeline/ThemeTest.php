@@ -22,7 +22,7 @@ class ThemeTest extends TestCase
         // Check that Theme::measureTitles does not return duplicates
         $theme->addMeasure($this->createMeasure(null, 'Title 1', 'Titre 1'));
 
-        $this->assertEquals(['Titre 1', 'Title 1', 'Titre 2', 'Title 2'], $theme->measureTitles());
+        $this->assertEquals(['Titre 1', 'Title 1', 'Titre 2', 'Title 2'], $theme->getMeasureTitles());
     }
 
     public function testMeasureIds()
@@ -33,7 +33,7 @@ class ThemeTest extends TestCase
         $theme->addMeasure($this->createMeasure(44));
         $theme->addMeasure($this->createMeasure(59));
 
-        $this->assertEquals([6, 44, 59], $theme->measureIds());
+        $this->assertEquals([6, 44, 59], $theme->getMeasureIds());
     }
 
     public function testProfileIds()
@@ -47,7 +47,7 @@ class ThemeTest extends TestCase
         $theme->addMeasure($this->createMeasure(null, null, null, [$profile1, $profile2]));
         $theme->addMeasure($this->createMeasure(null, null, null, [$profile2, $profile3]));
 
-        $this->assertEquals([1, 2, 3], $theme->profileIds());
+        $this->assertEquals([1, 2, 3], $theme->getProfileIds());
     }
 
     public function testImage()
@@ -73,17 +73,17 @@ class ThemeTest extends TestCase
         $theme = new Theme();
 
         // No translation
-        $this->assertEmpty($theme->titles());
+        $this->assertEmpty($theme->getTitles());
 
         // French only
         $theme->addTranslation($this->createThemeTranslation('fr', 'Titre'));
 
-        $this->assertEquals(['fr' => 'Titre', 'en' => 'Titre'], $theme->titles());
+        $this->assertEquals(['fr' => 'Titre', 'en' => 'Titre'], $theme->getTitles());
 
         // French + English
         $theme->addTranslation($this->createThemeTranslation('en', 'Title'));
 
-        $this->assertEquals(['fr' => 'Titre', 'en' => 'Title'], $theme->titles());
+        $this->assertEquals(['fr' => 'Titre', 'en' => 'Title'], $theme->getTitles());
     }
 
     public function testSlugs()
@@ -91,17 +91,17 @@ class ThemeTest extends TestCase
         $theme = new Theme();
 
         // No translation
-        $this->assertEmpty($theme->slugs());
+        $this->assertEmpty($theme->getSlugs());
 
         // French only
         $theme->addTranslation($this->createThemeTranslation('fr', null, 'titre'));
 
-        $this->assertEquals(['fr' => 'titre', 'en' => 'titre'], $theme->slugs());
+        $this->assertEquals(['fr' => 'titre', 'en' => 'titre'], $theme->getSlugs());
 
         // French + English
         $theme->addTranslation($this->createThemeTranslation('en', null, 'title'));
 
-        $this->assertEquals(['fr' => 'titre', 'en' => 'title'], $theme->slugs());
+        $this->assertEquals(['fr' => 'titre', 'en' => 'title'], $theme->getSlugs());
     }
 
     public function testDescriptions()
@@ -109,7 +109,7 @@ class ThemeTest extends TestCase
         $theme = new Theme();
 
         // No translation
-        $this->assertEmpty($theme->descriptions());
+        $this->assertEmpty($theme->getDescriptions());
 
         // French only
         $theme->addTranslation($this->createThemeTranslation('fr', null, null, 'Courte description'));
@@ -117,7 +117,7 @@ class ThemeTest extends TestCase
         $this->assertEquals([
             'fr' => 'Courte description',
             'en' => 'Courte description',
-        ], $theme->descriptions());
+        ], $theme->getDescriptions());
 
         // French + English
         $theme->addTranslation($this->createThemeTranslation('en', null, null, 'Short description'));
@@ -125,7 +125,7 @@ class ThemeTest extends TestCase
         $this->assertEquals([
             'fr' => 'Courte description',
             'en' => 'Short description',
-        ], $theme->descriptions());
+        ], $theme->getDescriptions());
     }
 
     private function createMeasure(
