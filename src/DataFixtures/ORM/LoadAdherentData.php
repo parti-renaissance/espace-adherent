@@ -58,6 +58,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const COMMITTEE_8_UUID = '93b72179-7d27-40c4-948c-5188aaf264b6';
     public const COMMITTEE_9_UUID = '62ea97e7-6662-427b-b90a-23429136d0dd';
     public const COMMITTEE_10_UUID = '79638242-5101-11e7-b114-b2f933d5fe66';
+    public const COMMITTEE_11_UUID = 'eb050b5e-9444-49ec-b3dc-005c98024507';
 
     public const MUNICIPAL_CHIEF_1_UUID = '15d9154e-22d0-45f4-9b82-7f383342a3b8';
     public const MUNICIPAL_CHIEF_2_UUID = 'bdc66cc7-ddf0-4406-b76a-447acb1594ab';
@@ -761,6 +762,19 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $committee10->approved('2017-05-09 13:17:42');
         $this->addReference('committee-10', $committee10);
 
+        $committee11 = $committeeFactory->createFromArray([
+            'uuid' => self::COMMITTEE_11_UUID,
+            'created_by' => (string) $adherent7->getUuid(),
+            'created_at' => '2017-05-12 12:18:22',
+            'name' => 'En Marche - Suisse refused',
+            'description' => 'En Marche pour la France et nos partenaires en Suisse. (refused)',
+            'address' => PostAddress::createForeignAddress('CH', '8057', 'Zürich', '32 Zeppelinstrasse', null, 47.3950786, 8.5361402),
+            'phone' => '33 673654567',
+        ]);
+        $committee11->approved('2017-05-13 13:17:42');
+        $committee11->refused('2017-05-14 13:17:42');
+        $this->addReference('committee-11', $committee11);
+
         // Make an adherent request a new password
         $resetPasswordToken = AdherentResetPasswordToken::generate($adherent1);
 
@@ -833,6 +847,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($committee8);
         $manager->persist($committee9);
         $manager->persist($committee10);
+        $manager->persist($committee11);
 
         // Make adherents join committees
         $manager->persist($adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
@@ -860,6 +875,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($referent->superviseCommittee($committee10));
         $manager->persist($adherent13->followCommittee($committee10));
         $manager->persist($adherent14->followCommittee($committee10));
+        $manager->persist($adherent13->followCommittee($committee11));
+        $manager->persist($adherent14->followCommittee($committee11));
 
         $manager->flush();
     }
