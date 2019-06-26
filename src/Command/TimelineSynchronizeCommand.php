@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Timeline\Manifesto;
 use AppBundle\Entity\Timeline\Measure;
 use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Entity\Timeline\Theme;
@@ -12,6 +13,7 @@ class TimelineSynchronizeCommand extends AlgoliaSynchronizeCommand
 {
     protected const ENTITIES_TO_INDEX = [
         Profile::class,
+        Manifesto::class,
         Theme::class,
         Measure::class,
     ];
