@@ -25,8 +25,10 @@ use AppBundle\Entity\District;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
+use AppBundle\Mailchimp\Campaign\ContentSection\CitizenProjectMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
+use AppBundle\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
@@ -102,8 +104,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'id' => 3,
                         'sections' => [
                             'content' => 'Content',
-                            'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité" style="text-align:center;font-size:16px;color:#000;font-family:roboto,helvetica neue,helvetica,arial,sans-serif">Committee name</a>',
-                            'reply_to_link' => '<a class="mcnButton" title="RÉPONDRE" href="mailto:adherent@mail.com" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#2BBAFF;">RÉPONDRE</a>',
+                            'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
+                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -174,7 +176,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
-                            'reply_to_link' => '<a class="mcnButton" title="RÉPONDRE" href="mailto:adherent@mail.com" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#FF6955;mso-line-height-rule:exactly;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;display:block;">RÉPONDRE</a>',
+                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]],
@@ -221,7 +223,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
-                            'reply_to_link' => '<a class="mcnButton" title="RÉPONDRE" href="mailto:adherent@mail.com" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#FF6955;mso-line-height-rule:exactly;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;display:block;">RÉPONDRE</a>',
+                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -345,6 +347,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'id' => 4,
                         'sections' => [
                             'content' => 'Content',
+                            'citizen_project_link' => '<a target="_blank" href="https://citizen_project_url" title="Voir le projet citoyen">CP name</a>',
+                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -396,6 +400,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'id' => 5,
                         'sections' => [
                             'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]],
@@ -429,6 +435,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'id' => 5,
                         'sections' => [
                             'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -520,6 +528,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             CommitteeAdherentMessage::class => new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
             ReferentAdherentMessage::class => new ReferentMessageSectionBuilder(),
             DeputyAdherentMessage::class => new DeputyMessageSectionBuilder(),
+            MunicipalChiefAdherentMessage::class => new MunicipalChiefMessageSectionBuilder(),
+            CitizenProjectAdherentMessage::class => new CitizenProjectMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://citizen_project_url'])),
         ]);
     }
 
