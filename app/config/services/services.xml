@@ -240,7 +240,7 @@
         <service id="AppBundle\Report\Listener\EnableSubjectForResolvingReportsListener" />
 
         <!-- Repository -->
-        <prototype namespace="AppBundle\Repository\" resource="../../../src/Repository/*" />
+        <prototype namespace="AppBundle\Repository\" resource="../../../src/Repository/**" />
 
         <!-- Security -->
         <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
@@ -633,5 +633,11 @@
         <!-- Command -->
         <service id="AppBundle\Command\ImportAssessorsCommand" />
         <service id="AppBundle\Command\ImportVotePlacesCommand" />
+
+        <!-- OLDOLF -->
+        <prototype namespace="AppBundle\Command\Oldolf\" resource="../../../src/Command/Oldolf/*" />
+        <prototype namespace="AppBundle\Form\Admin\Oldolf\" resource="../../../src/Form/Admin/Oldolf/*" />
+        <prototype namespace="AppBundle\Oldolf\" resource="../../../src/Oldolf/*" />
+        <service id="AppBundle\Validator\OldolfMeasurePayloadValidator" />
     </services>
 </container>
