@@ -24,6 +24,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
 
         $runningMateRequest2 = new RunningMateRequest();
         $runningMateRequest2->setFavoriteCities([
+            $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[0],
             $municipal3->municipalChiefManagedArea()->getCodes()[1],
         ]);

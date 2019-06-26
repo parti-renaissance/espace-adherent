@@ -14,8 +14,9 @@ Feature:
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-chef-municipal/municipale/candidature-colistiers"
     Then I should see "Vous gérez : Lille, Oignies, Seclin"
-    And I should see 3 "tr" in the 1st "table.datagrid__table-manager tbody"
+    And I should see 4 "tr" in the 1st "table.datagrid__table-manager tbody"
     And I should see "Camphin-en-Carembault, Lille"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
     And I should see "Mons-en-Pévèle, Seclin"
     And I should see "Seclin"
 
@@ -71,16 +72,16 @@ Feature:
     Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
 
     Examples:
-      | user                               | managed-cities                                        | cities-tr-1                        | cities-tr-2                        |
-      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille       | Camphin-en-Pévèle, Mons-en-Baroeul |
-      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Mons-en-Baroeul | Mons-en-Pévèle, Seclin             |
+      | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               |
+      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul |
+      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    |
 
   @javascript
   Scenario: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-chef-municipal/municipale/candidature-benevole"
     Then I should see "Vous gérez : Lille, Oignies, Seclin"
-    And I should see 3 "tr" in the 1st "table.datagrid__table-manager tbody"
+    And I should see 4 "tr" in the 1st "table.datagrid__table-manager tbody"
     And I should see "Camphin-en-Carembault, Lille"
     And I should see "Mons-en-Pévèle, Seclin"
     And I should see "Seclin"
@@ -133,6 +134,26 @@ Feature:
     Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
 
     Examples:
-      | user                               | managed-cities                                        | cities-tr-1                        | cities-tr-2                        |
-      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille       | Camphin-en-Pévèle, Mons-en-Baroeul |
-      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Mons-en-Baroeul | Mons-en-Pévèle, Seclin             |
+      | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               |
+      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul |
+      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    |
+
+  @javascript
+  Scenario Outline: I can define application request as added to my team
+    Given I am logged as "municipal-chief-2@en-marche-dev.fr"
+    When I am on "<url>"
+    And I click the "application-team-0" element
+    And I wait 10 seconds until I see NOM
+    Then I should see an "i.fa-minus" element
+    And I should not see an "span.btn--disabled" element
+
+    When I am on "/deconnexion"
+    And I am logged as "municipal-chief@en-marche-dev.fr"
+    And I am on "<url>"
+    And I wait 10 seconds until I see NOM
+    Then I should see an "span.btn--disabled" element
+
+    Examples:
+      | url                                                      |
+      | /espace-chef-municipal/municipale/candidature-benevole   |
+      | /espace-chef-municipal/municipale/candidature-colistiers |

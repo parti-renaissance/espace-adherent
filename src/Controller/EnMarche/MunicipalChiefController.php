@@ -6,6 +6,7 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
 use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
@@ -85,10 +86,8 @@ class MunicipalChiefController extends Controller
      *     methods={"GET"},
      * )
      */
-    public function municipalRunningMateDetailAction(
-        UserInterface $municipalChief,
-        RunningMateRequest $runningMateRequest
-    ): Response {
+    public function municipalRunningMateDetailAction(RunningMateRequest $runningMateRequest): Response
+    {
         $this->disableInProduction();
 
         return $this->render('municipal_chief/municipal/running_mate/detail.html.twig', [
@@ -106,15 +105,127 @@ class MunicipalChiefController extends Controller
      *     methods={"GET"},
      * )
      */
-    public function municipalVolunteerDetailAction(
-        UserInterface $municipalChief,
-        VolunteerRequest $volunteerRequest
-    ): Response {
+    public function municipalVolunteerDetailAction(VolunteerRequest $volunteerRequest): Response
+    {
         $this->disableInProduction();
 
         return $this->render('municipal_chief/municipal/volunteer/detail.html.twig', [
             'volunteerRequest' => $volunteerRequest,
         ]);
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole/{uuid}/ajouter-a-mon-equipe",
+     *     name="volunteer_request_add_to_team",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     */
+    public function municipalVolunteerAddToTeamAction(
+        ObjectManager $objectManager,
+        UserInterface $municipalChief,
+        VolunteerRequest $volunteerRequest
+    ): Response {
+        $this->disableInProduction();
+
+        $this->addToTeam($objectManager, $volunteerRequest, $municipalChief->getMunicipalChiefManagedArea());
+
+        return $this->redirectToRoute('app_municipal_chief_municipal_volunteer_request');
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-benevole/{uuid}/retirer-de-mon-equipe",
+     *     name="volunteer_request_remove_from_team",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     */
+    public function municipalVolunteerRemoveFromTeamAction(
+        ObjectManager $objectManager,
+        UserInterface $municipalChief,
+        VolunteerRequest $volunteerRequest
+    ): Response {
+        $this->disableInProduction();
+
+        $this->removeFromTeam($objectManager, $volunteerRequest, $municipalChief->getMunicipalChiefManagedArea());
+
+        return $this->redirectToRoute('app_municipal_chief_municipal_volunteer_request');
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers/{uuid}/ajouter-a-mon-equipe",
+     *     name="running_mate_request_add_to_team",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     */
+    public function municipalRunningMateAddToTeamAction(
+        ObjectManager $objectManager,
+        UserInterface $municipalChief,
+        RunningMateRequest $runningMateRequest
+    ): Response {
+        $this->disableInProduction();
+
+        $this->addToTeam($objectManager, $runningMateRequest, $municipalChief->getMunicipalChiefManagedArea());
+
+        return $this->redirectToRoute('app_municipal_chief_municipal_running_mate_request');
+    }
+
+    /**
+     * @Route(
+     *     path="/municipale/candidature-colistiers/{uuid}/retirer-de-mon-equipe",
+     *     name="running_mate_request_remove_from_team",
+     *     requirements={
+     *         "uuid": "%pattern_uuid%",
+     *     },
+     *     methods={"GET"},
+     * )
+     */
+    public function municipalRunningMateRemoveFromTeamAction(
+        ObjectManager $objectManager,
+        UserInterface $municipalChief,
+        RunningMateRequest $runningMateRequest
+    ): Response {
+        $this->disableInProduction();
+
+        $this->removeFromTeam($objectManager, $runningMateRequest, $municipalChief->getMunicipalChiefManagedArea());
+
+        return $this->redirectToRoute('app_municipal_chief_municipal_running_mate_request');
+    }
+
+    private function addToTeam(
+        ObjectManager $objectManager,
+        ApplicationRequest $applicationRequest,
+        MunicipalChiefManagedArea $municipalChiefManagedArea
+    ): void {
+        $cities = array_intersect(
+            $municipalChiefManagedArea->getCodes(),
+            $applicationRequest->getFavoriteCities()
+        );
+        if (!$applicationRequest->getTakenForCity() && !empty($city = reset($cities))) {
+            $applicationRequest->setTakenForCity($city);
+            $objectManager->flush();
+        }
+    }
+
+    private function removeFromTeam(
+        ObjectManager $objectManager,
+        ApplicationRequest $applicationRequest,
+        MunicipalChiefManagedArea $municipalChiefManagedArea
+    ): void {
+        if ($applicationRequest->getTakenForCity() && \in_array($applicationRequest->getTakenForCity(), $municipalChiefManagedArea->getCodes())) {
+            $applicationRequest->setTakenForCity(null);
+            $objectManager->flush();
+        }
     }
 
     /**

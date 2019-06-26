@@ -24,6 +24,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
 
         $volunteerRequest2 = new VolunteerRequest();
         $volunteerRequest2->setFavoriteCities([
+            $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[0],
             $municipal3->municipalChiefManagedArea()->getCodes()[1],
         ]);
