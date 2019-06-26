@@ -53,16 +53,16 @@ Feature:
     And I should see "Oui"
 
     When I click the "application-detail-0" element
-    And I wait 10 seconds until I see "Retour à la liste des candidats colistiers"
-    Then I should see "Profession : Scientist"
+    And I wait 10 seconds until I see "⟵ Retour"
+    Then I should see "Profession Scientist"
     And I should see "Membre de l'association locale ? Non"
-    And I should see "Domaine de l'association locale : Fighting super villains"
+    And I should see "Domaine de l'association locale Fighting super villains"
     And I should see "Activiste politique ? Non"
-    And I should see "Activiste politique détails : Putsch Thanos from his galactic throne"
+    And I should see "Activiste politique détails Putsch Thanos from his galactic throne"
     And I should see "Est l'élu précédent ? Non"
-    And I should see "Est l'élu précédent détails :"
-    And I should see "Détails du projet :"
-    And I should see "Actifs professionnels :"
+    And I should see "Est l'élu précédent détails"
+    And I should see "Détails du projet"
+    And I should see "Actifs professionnels"
 
     When I click the ".back-to-list" selector
     And I click the "application-edit-0" element
@@ -87,14 +87,14 @@ Feature:
     And I should see "Oui"
 
     When I click the "application-detail-0" element
-    Then I should see "Retour à la liste des candidats bénévoles"
-    And I should see "Thèmes favoris : Sécurité Environnement"
-    And I should see "Thèmes favoris personnalisés : Thanos destruction"
-    And I should see "Compétences techniques : Communication Management Animation Autre"
+    Then I should see "⟵ Retour"
+    And I should see "Thèmes favoris Sécurité Environnement"
+    And I should see "Thèmes favoris personnalisés Thanos destruction"
+    And I should see "Compétences techniques Communication Management Animation Autre"
     And I should see "Fait partie d'une précédente campagne ? Non"
-    And I should see "Domaine de l'association locale :"
+    And I should see "Domaine de l'association locale"
     And I should see "Partage l'engagement associatif ? Non"
-    And I should see "Détail de l'engagement associatif :"
+    And I should see "Détail de l'engagement associatif"
 
     When I click the ".back-to-list" selector
     And I click the "application-edit-0" element

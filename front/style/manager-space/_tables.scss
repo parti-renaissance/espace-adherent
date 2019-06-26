@@ -191,7 +191,13 @@
 
                 a:not(.row-action) {
                     color: $blue--dark;
-                    border-color: $blue--dark;
+                    border: none;
+                    transition: all 0.2s;
+
+                    &:hover {
+                        color: $black;
+                        opacity: 0.8;
+                    }
 
                     &.person {
                         color: $dark;

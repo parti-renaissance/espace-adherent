@@ -1,23 +1,72 @@
 <div class="l__wrapper--slim">
-    <strong>Nom :</strong> {{ volunteerRequest.lastName }}<br>
-    <strong>Prénom :</strong> {{ volunteerRequest.firstName }}<br>
-    <strong>Téléphone :</strong> {{ volunteerRequest.phone ? volunteerRequest.phone|phone_number_format : '' }}<br>
-    <strong>Profession :</strong> {{ volunteerRequest.profession }}<br>
-    <strong>Thèmes favoris :</strong>
-    <ul>
-    {% for favoriteTheme in volunteerRequest.favoriteThemes %}
-        <li>{{ favoriteTheme.name }}</li>
-    {% endfor %}
-    </ul><br>
-    <strong>Thèmes favoris personnalisés :</strong><blockquote>{{ volunteerRequest.customFavoriteTheme }}</blockquote><br>
-    <strong>Compétences techniques :</strong>
-    <ul>
-    {% for technicalSkill in volunteerRequest.technicalSkills %}
-        <li>{{ technicalSkill.name }}</li>
-    {% endfor %}
-    </ul><br>
-    <strong>Fait partie d'une précédente campagne ?</strong> {{ volunteerRequest.isPreviousCampaignMember ? 'Oui' : 'Non' }}<br>
-    <strong>Domaine de l'association locale :</strong><blockquote>{{ volunteerRequest.previousCampaignDetails }}</blockquote><br>
-    <strong>Partage l'engagement associatif ?</strong> {{ volunteerRequest.shareAssociativeCommitment ? 'Oui' : 'Non' }}<br>
-    <strong>Détail de l'engagement associatif :</strong><blockquote>{{ volunteerRequest.associativeCommitmentDetails }}</blockquote><br>
+    <h3 class="text--medium b__nudge--bottom-50">Détails du candidat</h3>
+
+    <div class="data-listing">
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Nom</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.lastName }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Prénom</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.firstName }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Téléphone</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.phone ? volunteerRequest.phone|phone_number_format : '' }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Profession</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.profession }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Thèmes favoris</div>
+            <div class="data-listing__item data-listing__item--value">
+                <ul>
+                    {% for favoriteTheme in volunteerRequest.favoriteThemes %}
+                        <li>{{ favoriteTheme.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Thèmes favoris personnalisés</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.customFavoriteTheme }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Compétences techniques</div>
+            <div class="data-listing__item data-listing__item--value">
+                <ul>
+                    {% for technicalSkill in volunteerRequest.technicalSkills %}
+                        <li>{{ technicalSkill.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Fait partie d'une précédente campagne ?</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.isPreviousCampaignMember ? 'Oui' : 'Non' }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Domaine de l'association locale</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.previousCampaignDetails }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Partage l'engagement associatif ?</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.shareAssociativeCommitment ? 'Oui' : 'Non' }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Détail de l'engagement associatif</div>
+            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.associativeCommitmentDetails }}</div>
+        </div>
+    </div>
 </div>

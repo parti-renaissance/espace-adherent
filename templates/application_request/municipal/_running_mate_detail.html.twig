@@ -1,22 +1,88 @@
 <div class="l__wrapper--slim">
-    <strong>Nom :</strong> {{ runningMateRequest.lastName }}<br>
-    <strong>Prénom :</strong> {{ runningMateRequest.firstName }}<br>
-    <strong>Téléphone :</strong> {{ runningMateRequest.phone ? runningMateRequest.phone|phone_number_format : '' }}<br>
-    <strong>Profession :</strong> {{ runningMateRequest.profession }}<br>
-    <strong>Thèmes favoris :</strong>
-    <ul>
-        {% for favoriteTheme in runningMateRequest.favoriteThemes %}
-            <li>{{ favoriteTheme.name }}</li>
-        {% endfor %}
-    </ul><br>
-    <strong>Thèmes favoris détails :</strong><blockquote>{{ runningMateRequest.favoriteThemeDetails }}</blockquote><br>
-    <strong>CV :</strong> <a href="{{ path('asset_url', { path: runningMateRequest.getPathWithDirectory, mime_type: 'application/pdf' }) }}" target="_blank">Télécharger le CV</a><br>
-    <strong>Membre de l'association locale ?</strong> {{ runningMateRequest.isLocalAssociationMember ? 'Oui' : 'Non' }}<br>
-    <strong>Domaine de l'association locale :</strong><blockquote>{{ runningMateRequest.localAssociationDomain }}</blockquote><br>
-    <strong>Activiste politique ?</strong> {{ runningMateRequest.isPoliticalActivist ? 'Oui' : 'Non' }}<br>
-    <strong>Activiste politique détails :</strong><blockquote>{{ runningMateRequest.politicalActivistDetails }}</blockquote><br>
-    <strong>Est l'élu précédent ?</strong> {{ runningMateRequest.isPreviousElectedOfficial ? 'Oui' : 'Non' }}<br>
-    <strong>Est l'élu précédent détails :</strong><blockquote>{{ runningMateRequest.previousElectedOfficialDetails }}</blockquote><br>
-    <strong>Détails du projet :</strong><blockquote>{{ runningMateRequest.projectDetails }}</blockquote><br>
-    <strong>Actifs professionnels :</strong><blockquote>{{ runningMateRequest.professionalAssets }}</blockquote><br>
+    <h3 class="text--medium b__nudge--bottom-50">Détails du candidat</h3>
+
+    <div class="data-listing">
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Nom</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.lastName }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Prénom</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.firstName }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Téléphone</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.phone ? runningMateRequest.phone|phone_number_format : '' }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Profession</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.profession }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Thèmes favoris</div>
+            <div class="data-listing__item data-listing__item--value">
+                <ul>
+                    {% for favoriteTheme in runningMateRequest.favoriteThemes %}
+                        <li>{{ favoriteTheme.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Thèmes favoris détails</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.favoriteThemeDetails }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">CV</div>
+            <div class="data-listing__item data-listing__item--value">
+                <a href="{{ path('asset_url', { path: runningMateRequest.getPathWithDirectory, mime_type: 'application/pdf' }) }}" class="text--blue--dark link--no-decor" target="_blank">Télécharger le CV</a>
+            </div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Membre de l'association locale ?</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.isLocalAssociationMember ? 'Oui' : 'Non' }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Domaine de l'association locale</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.localAssociationDomain }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Activiste politique ?</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.isPoliticalActivist ? 'Oui' : 'Non' }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Activiste politique détails</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.politicalActivistDetails }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Est l'élu précédent ?</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.isPreviousElectedOfficial ? 'Oui' : 'Non' }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Est l'élu précédent détails</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.previousElectedOfficialDetails }}</div>
+        </div>
+
+        <div class="data-listing__row">
+            <div class="data-listing__item data-listing__item--label">Détails du projet</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.projectDetails }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Actifs professionnels</div>
+            <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.professionalAssets }}</div>
+        </div>
+    </div>
 </div>
