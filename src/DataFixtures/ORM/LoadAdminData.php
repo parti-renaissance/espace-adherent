@@ -80,6 +80,7 @@ class LoadAdminData extends Fixture
             'email' => 'jean.dupond@en-marche.fr',
             'password' => 'secret!12345',
             'roles' => $adminRoles,
+            'activated' => false,
         ]);
         $this->setReference('administrator-1', $admin);
 

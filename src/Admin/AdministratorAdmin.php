@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -53,6 +54,9 @@ class AdministratorAdmin extends AbstractAdmin
         $formMapper
             ->add('emailAddress', EmailType::class, [
                 'label' => 'Adresse e-mail',
+            ])
+            ->add('activated', null, [
+                'label' => 'Activé',
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Permissions',
@@ -169,7 +173,15 @@ class AdministratorAdmin extends AbstractAdmin
                     'delete' => [],
                 ],
             ])
+            ->add('activated', null, [
+                'label' => 'Activé',
+            ])
         ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('delete');
     }
 
     public function setEncoders(EncoderFactoryInterface $encoders)
