@@ -156,12 +156,21 @@ table {
         border: 0 none;
 
         & .oval {
+            transition: background-color .6s;
             display: inline-block;
             width: 5px;
             height: 5px;
             background-color: #ced4dd;
             border-radius: 50%;
             margin-right: 3px;
+
+            &:first-child {
+                transition-duration: .3s;
+            }
+
+            &:last-child {
+                transition-duration: .9s;
+            }
         }
     }
 
@@ -169,7 +178,7 @@ table {
         display: none;
         position: absolute;
         text-align: left;
-        left: -20px;
+        right: -30px;
         top: 30px;
         background-color: $white;
         z-index: 5;
@@ -199,6 +208,12 @@ table {
         & .action-dropdown-menu {
             z-index: 10;
             display: block;
+        }
+
+        & > a {
+            .oval {
+                background-color: $dark;
+            }
         }
     }
 }

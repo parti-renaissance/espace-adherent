@@ -49,8 +49,10 @@
         <tbody>
             {% for message in messages %}
                 <tr>
-                    <td class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
-                        <span></span>{{ message.status|trans }}
+                    <td>
+                        <span class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
+                            {{ message.status|trans }}
+                        </span>
                     </td>
                     <td width="100">{{ message.label }}</td>
                     <td>{{ message.subject }}</td>

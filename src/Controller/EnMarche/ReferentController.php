@@ -24,7 +24,6 @@ use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
-use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
@@ -339,17 +338,12 @@ class ReferentController extends Controller
      */
     public function municipalRunningMateRequestAction(
         RunningMateRequestRepository $runningMateRequestRepository,
-        MunicipalExporter $municipalExporter,
         UserInterface $referent
     ): Response {
         $this->disableInProduction();
 
         return $this->render('referent/municipal/running_mate/list.html.twig', [
-            'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
-                $runningMateRequestRepository->findForReferent($referent),
-                'app_referent_municipal_running_mate_request_detail',
-                'app_referent_municipal_running_mate_request_edit_tags'
-            ),
+            'running_mates' => $runningMateRequestRepository->findForReferent($referent),
         ]);
     }
 
@@ -364,17 +358,12 @@ class ReferentController extends Controller
      */
     public function municipalVolunteerAction(
         VolunteerRequestRepository $volunteerRequestRepository,
-        MunicipalExporter $municipalExporter,
         UserInterface $referent
     ): Response {
         $this->disableInProduction();
 
         return $this->render('referent/municipal/volunteer/list.html.twig', [
-            'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
-                $volunteerRequestRepository->findForReferent($referent),
-                'app_referent_municipal_volunteer_request_detail',
-                'app_referent_municipal_volunteer_request_edit_tags'
-            ),
+            'volunteers' => $volunteerRequestRepository->findForReferent($referent),
         ]);
     }
 

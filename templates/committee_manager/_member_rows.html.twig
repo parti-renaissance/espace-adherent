@@ -11,9 +11,10 @@
             <td class="member-age">{{ member.age|default('~') }}</td>
             <td class="member-postal-code">{{ member.postalCode|default('~') }}</td>
             <td class="member-city-name">{{ member.cityName|default('~') }}</td>
-            <td class="status status__{{ member.hasSubscribedLocalHostEmails ? '1' : '2' }}">
-                <span></span>
-                {{ member.hasSubscribedLocalHostEmails ? 'Abonné(e)' : 'Non-abonné(e)' }}
+            <td>
+                <span class="status status__{{ member.hasSubscribedLocalHostEmails ? '1' : '2' }}">
+                    {{ member.hasSubscribedLocalHostEmails ? 'Abonné(e)' : 'Non-abonné(e)' }}
+                </span>
             </td>
             <td>
                 {% if not is_promotable_host %}

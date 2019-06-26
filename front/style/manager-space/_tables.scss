@@ -162,9 +162,10 @@
                     }
                 }
 
-                &.status {
+                & span.status {
 
-                    span {
+                    &:before {
+                        content: '';
                         width: 7px;
                         height: 7px;
                         display: inline-block;
@@ -175,17 +176,23 @@
 
                     &__1 {
                         color: $status-green;
-                        span { background-color: $status-green; }
+                        &:before {
+                            background-color: $status-green;
+                        }
                     }
 
                     &__2 {
                         color: $silver-grey;
-                        span { border: 2px solid $silver-grey; }
+                        &:before {
+                            border: 2px solid $silver-grey;
+                        }
                     }
 
                     &__3 {
                         color: $status-red;
-                        span { border: 2px solid $status-red; }
+                        &:before {
+                            border: 2px solid $status-red;
+                        }
                     }
                 }
 

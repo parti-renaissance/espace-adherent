@@ -78,15 +78,9 @@ class App {
         });
     }
 
-    runDonationInformations(formType) {
-        System.import('pages/donation_informations').catch((error) => { throw error; }).then((module) => {
+    runDonationInformation(formType) {
+        System.import('pages/donation_information').catch((error) => { throw error; }).then((module) => {
             module.default(formType);
-        });
-    }
-
-    runOrganisation() {
-        System.import('pages/organisation').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('map_factory'), this.get('api'));
         });
     }
 
@@ -105,12 +99,6 @@ class App {
     runEventsMap() {
         System.import('pages/events_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
-        });
-    }
-
-    runReferentUsers(columns, users) {
-        System.import('pages/referent_users').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('slugifier'), columns, users);
         });
     }
 

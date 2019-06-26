@@ -6,23 +6,29 @@ use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
+use Ramsey\Uuid\Uuid;
 
 class LoadApplicationRequestVolunteerRequestData extends Fixture
 {
+    private const UUID_1 = '214ef0d4-8923-48a6-99e1-e50eeefaeaf4';
+    private const UUID_2 = 'a6ac8cc7-776f-4f4f-854e-f6b0a1bd7c62';
+    private const UUID_3 = '5ca5fc5c-b6f4-4edf-bb8e-111aa9222696';
+    private const UUID_4 = '06d61c85-929a-4152-b46c-b94b6883b8d6';
+
     public function load(ObjectManager $manager)
     {
         $municipal1 = $this->getReference('municipal-chief-1');
         $municipal2 = $this->getReference('municipal-chief-2');
         $municipal3 = $this->getReference('municipal-chief-3');
 
-        $volunteerRequest1 = new VolunteerRequest();
+        $volunteerRequest1 = new VolunteerRequest(Uuid::fromString(self::UUID_1));
         $volunteerRequest1->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[1],
         ]);
         $volunteerRequest1->setEmailAddress('tony.stark@stark-industries.com');
 
-        $volunteerRequest2 = new VolunteerRequest();
+        $volunteerRequest2 = new VolunteerRequest(Uuid::fromString(self::UUID_2));
         $volunteerRequest2->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[0],
@@ -31,14 +37,14 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $volunteerRequest2->setEmailAddress('damien.schmidt@example.ch');
         $volunteerRequest2->setAdherent($this->getReference('adherent-14'));
 
-        $volunteerRequest3 = new VolunteerRequest();
+        $volunteerRequest3 = new VolunteerRequest(Uuid::fromString(self::UUID_3));
         $volunteerRequest3->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
             $municipal3->municipalChiefManagedArea()->getCodes()[0],
         ]);
         $volunteerRequest3->setEmailAddress('tony.stark@stark-industries.com');
 
-        $volunteerRequest4 = new VolunteerRequest();
+        $volunteerRequest4 = new VolunteerRequest(Uuid::fromString(self::UUID_4));
         $volunteerRequest4->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
         ]);

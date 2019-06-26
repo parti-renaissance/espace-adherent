@@ -261,6 +261,37 @@ export default class DataGrid extends React.Component {
                             </a>
                         </td>
                     );
+                } else if ('undefined' !== typeof columns[j].menu && columns[j].menu) {
+                    const links = [];
+
+                    result[columns[j].key].forEach((link, index) => {
+                        const targetBlank = 'undefined' !== typeof link.targetBlank && link.targetBlank;
+
+                        links.push(
+                            <a target={targetBlank ? '_blank' : '_self'}
+                               key={`result${i}-column${j}-link${index}`}
+                               href={link.url}
+                               className={link.className || ''}
+                               dangerouslySetInnerHTML={{ __html: link.label }}>
+                            </a>
+                        );
+                    });
+
+                    resultColumns.push(
+                        <td key={`result${i}-column${j}`}
+                            style={columns[j].style || null}
+                            className={columns[j].className || ''}>
+
+                            <div className="action-menu-oval">
+                                <a href="#">
+                                    <span className="oval" />
+                                    <span className="oval" />
+                                    <span className="oval" />
+                                </a>
+                                <div className="action-dropdown-menu">{links}</div>
+                            </div>
+                        </td>
+                    );
                 } else {
                     resultColumns.push(
                         <td key={`result${i}-column${j}`}
