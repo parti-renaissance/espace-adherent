@@ -1,8 +1,0 @@
-{% extends 'referent/users/_list.html.twig' %}
-
-{% block referent_menu_users_list 'class="active"' %}
-
-{% block referent_users_list_action path('app_referent_users_selected', { 'from': 'users' }) %}
-{% block referent_users_list_description %}
-J’envoie un message <span class="text--bold">à tous les contacts</span> dans mon territoire.
-{% endblock %}

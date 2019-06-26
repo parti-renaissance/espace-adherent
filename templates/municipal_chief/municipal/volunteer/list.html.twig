@@ -36,28 +36,45 @@
                     {
                         key: 'tags',
                         name: 'Tags de candidature',
+                        className: 'municipal-candidate-tags',
                     },
                     {
                         key: 'isAdherent',
                         name: 'Adhérent ?',
                     },
                     {
-                        key: 'show',
-                        name: 'Détail',
-                        link: true,
-                    },
-                    {
-                        key: 'edit',
-                        name: 'Editer',
-                        link: true,
-                    },
-                    {
-                        key: 'team',
-                        name: 'Mon equipe',
-                        link: true,
-                    },
+                        key: 'menu',
+                        name: 'Action',
+                        menu: true,
+                    }
                 ],
-                {{ volunteerListJson|raw }}
+                [
+                    {% for volunteer in volunteers %}
+                        {% if volunteer.takenForCity %}
+                            {% set team_url = '#' %}
+                            {% if volunteer.takenForCity in app.user.municipalChiefManagedArea.codes %}
+                                {% set team_url = path('app_municipal_chief_municipal_volunteer_request_remove_from_team', {uuid: volunteer.uuid}) %}
+                            {% endif %}
+                        {% else %}
+                            {% set team_url = path('app_municipal_chief_municipal_volunteer_request_add_to_team', {uuid: volunteer.uuid}) %}
+                        {% endif %}
+
+                        {% include 'application_request/municipal/_volunteer_row.js.twig'
+                            with {
+                                volunteer: volunteer,
+                                show_route_name: 'app_municipal_chief_municipal_volunteer_request_detail',
+                                edit_route_name: 'app_municipal_chief_municipal_volunteer_request_edit_tags',
+                                menu: [
+                                    {
+                                        label: volunteer.takenForCity ? 'Retirer de mon équipe' : 'Ajouter à mon équipe',
+                                        url: team_url,
+                                        className: 'row-action text--dark link--no-decor' ~ (team_url is same as('#') ? ' link--disabled')
+                                    }
+                                ]
+                            }
+                        %},
+                    {% endfor %}
+                ]
             );
         });
     </script>

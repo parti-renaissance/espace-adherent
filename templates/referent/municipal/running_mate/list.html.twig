@@ -36,29 +36,29 @@
                     {
                         key: 'tags',
                         name: 'Tags de candidature',
-                    },
-                    {
-                        key: 'cvLink',
-                        name: 'Lien vers CV',
-                        link: true,
-                        targetBlank: true,
+                        className: 'municipal-candidate-tags',
                     },
                     {
                         key: 'isAdherent',
                         name: 'Adhérent (oui/non)',
                     },
                     {
-                        key: 'show',
-                        name: "Détail",
-                        link: true,
-                    },
-                    {
-                        key: 'edit',
-                        name: "Editer",
-                        link: true,
+                        key: 'menu',
+                        name: 'Action',
+                        menu: true,
                     },
                 ],
-                {{ runningMateListJson|raw }}
+                [
+                    {% for running_mate in running_mates %}
+                        {% include 'application_request/municipal/_running_mate_row.js.twig'
+                            with {
+                                running_mate: running_mate,
+                                show_route_name: 'app_referent_municipal_running_mate_request_detail',
+                                edit_route_name: 'app_referent_municipal_running_mate_request_edit_tags',
+                            }
+                        %},
+                    {% endfor %}
+                ]
             );
         });
     </script>

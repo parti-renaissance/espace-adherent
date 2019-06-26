@@ -1,0 +1,21 @@
+{% spaceless %}
+    {% set row = {
+        lastName: volunteer.firstName,
+        firstName: volunteer.lastName,
+        phone: volunteer.phone|phone_number_format,
+        favoriteCities: volunteer.favoriteCitiesNames|join(', '),
+        tags: '<span>' ~ volunteer.tags|join('</span><span>') ~ '</span>',
+        isAdherent: volunteer.adherent ? '<span class="status status__1">Adhérent</span>' : '<span class="status status__2">Non-adhérent</span>',
+        menu: [
+            {
+                label: 'Plus d\'infos',
+                url: path(show_route_name, {uuid: volunteer.uuid})
+            },
+            {
+                label: 'Taguer',
+                url: path(edit_route_name, {uuid: volunteer.uuid})
+            }
+        ]|merge(menu|default([]))
+    } %}
+    {{ row|json_encode|raw }}
+{% endspaceless %}

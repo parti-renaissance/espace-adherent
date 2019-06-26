@@ -36,23 +36,29 @@
                     {
                         key: 'tags',
                         name: 'Tags de candidature',
+                        className: 'municipal-candidate-tags',
                     },
                     {
                         key: 'isAdherent',
                         name: 'Adhérent (oui/non)',
                     },
                     {
-                        key: 'show',
-                        name: "Détail",
-                        link: true,
-                    },
-                    {
-                        key: 'edit',
-                        name: "Editer",
-                        link: true,
-                    },
+                        key: 'menu',
+                        name: 'Action',
+                        menu: true,
+                    }
                 ],
-                {{ volunteerListJson|raw }}
+                [
+                    {% for volunteer in volunteers %}
+                        {% include 'application_request/municipal/_volunteer_row.js.twig'
+                            with {
+                                volunteer: volunteer,
+                                show_route_name: 'app_referent_municipal_volunteer_request_detail',
+                                edit_route_name: 'app_referent_municipal_volunteer_request_edit_tags',
+                            }
+                        %},
+                    {% endfor %}
+                ]
             );
         });
     </script>

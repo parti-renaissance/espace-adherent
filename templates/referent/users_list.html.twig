@@ -324,8 +324,10 @@
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}
                         </td>
-                        <td class="status status__{{ user.isMailSubscriber ? '1' : '2' }}">
-                            <span></span>{{ (user.isMailSubscriber ? 'referent.adherent.subscribed' : 'referent.adherent.unsubscribed')|trans }}
+                        <td>
+                            <span class="status status__{{ user.isMailSubscriber ? '1' : '2' }}">
+                                {{ (user.isMailSubscriber ? 'referent.adherent.subscribed' : 'referent.adherent.unsubscribed')|trans }}
+                            </span>
                         </td>
                     </tr>
                 {% else %}

@@ -8,7 +8,6 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
-use AppBundle\Referent\MunicipalExporter;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -39,17 +38,12 @@ class MunicipalChiefController extends Controller
      */
     public function municipalRunningMateRequestAction(
         RunningMateRequestRepository $runningMateRequestRepository,
-        MunicipalExporter $municipalExporter,
         UserInterface $municipalChief
     ): Response {
         $this->disableInProduction();
 
         return $this->render('municipal_chief/municipal/running_mate/list.html.twig', [
-            'runningMateListJson' => $municipalExporter->exportRunningMateAsJson(
-                $runningMateRequestRepository->findForMunicipalChief($municipalChief),
-                'app_municipal_chief_municipal_running_mate_request_detail',
-                'app_municipal_chief_municipal_running_mate_request_edit_tags'
-            ),
+            'running_mates' => $runningMateRequestRepository->findForMunicipalChief($municipalChief),
         ]);
     }
 
@@ -62,17 +56,12 @@ class MunicipalChiefController extends Controller
      */
     public function municipalVolunteerAction(
         VolunteerRequestRepository $volunteerRequestRepository,
-        MunicipalExporter $municipalExporter,
         UserInterface $municipalChief
     ): Response {
         $this->disableInProduction();
 
         return $this->render('municipal_chief/municipal/volunteer/list.html.twig', [
-            'volunteerListJson' => $municipalExporter->exportVolunteerAsJson(
-                $volunteerRequestRepository->findForMunicipalChief($municipalChief),
-                'app_municipal_chief_municipal_volunteer_request_detail',
-                'app_municipal_chief_municipal_volunteer_request_edit_tags'
-            ),
+            'volunteers' => $volunteerRequestRepository->findForMunicipalChief($municipalChief),
         ]);
     }
 
