@@ -48,7 +48,6 @@ class TimelineManifestoAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-
             ->add('translations.description', null, [
                 'label' => 'Description',
                 'show_filter' => true,

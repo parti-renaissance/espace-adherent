@@ -44,6 +44,7 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
                     'Synchronizing entity AppBundle\Entity\CustomSearchResult ... done, 2 records indexed',
                     'Synchronizing entity AppBundle\Entity\Event ... done, 21 records indexed',
                     'Synchronizing entity AppBundle\Entity\Timeline\Profile ... done, 5 records indexed',
+                    'Synchronizing entity AppBundle\Entity\Timeline\Manifesto ... done, 3 records indexed',
                     'Synchronizing entity AppBundle\Entity\Timeline\Theme ... done, 5 records indexed',
                     'Synchronizing entity AppBundle\Entity\Timeline\Measure ... done, 17 records indexed',
                 ],

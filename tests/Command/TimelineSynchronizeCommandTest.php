@@ -18,6 +18,7 @@ class TimelineSynchronizeCommandTest extends WebTestCase
 
         $expectedOutput = <<<EOL
 Synchronizing entity AppBundle\Entity\Timeline\Profile ... done, 5 records indexed
+Synchronizing entity AppBundle\Entity\Timeline\Manifesto ... done, 3 records indexed
 Synchronizing entity AppBundle\Entity\Timeline\Theme ... done, 5 records indexed
 Synchronizing entity AppBundle\Entity\Timeline\Measure ... done, 17 records indexed
 Timeline has been successfully synchronized with Algolia.

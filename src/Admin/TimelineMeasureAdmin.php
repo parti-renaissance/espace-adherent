@@ -160,6 +160,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
             'Mise en avant' => 'major',
             'Thèmes' => 'exportThemes',
             'Profils' => 'exportProfiles',
+            'Programme' => 'exportManifesto',
         ];
     }
 }

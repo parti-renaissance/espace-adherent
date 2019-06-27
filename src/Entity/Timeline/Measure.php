@@ -359,4 +359,9 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     {
         return implode(', ', $this->profiles->toArray());
     }
+
+    public function exportManifesto(): string
+    {
+        return $this->manifesto->exportTitles();
+    }
 }
