@@ -148,3 +148,15 @@ Feature:
       | url                                                      |
       | /espace-chef-municipal/municipale/candidature-benevole   |
       | /espace-chef-municipal/municipale/candidature-colistiers |
+
+  Scenario Outline: I list adherent living in the cities I manage
+    Given I am logged as "<user>"
+    And I am on "/espace-chef-municipal/adherents"
+    And I wait 10 seconds until I see "Identité"
+    Then I should see "<shouldSee>"
+    And I should not see "<shouldNotSee>"
+
+    Examples:
+      | user                               | shouldSee         | shouldNotSee      |
+      | municipal-chief@en-marche-dev.fr   | Dusse Jean-Claude | Morin Bernard     |
+      | municipal-chief-3@en-marche-dev.fr | Morin Bernard     | Dusse Jean-Claude |

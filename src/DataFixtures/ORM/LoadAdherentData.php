@@ -40,6 +40,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const ADHERENT_14_UUID = '511c21bf-1240-5271-abaa-3393d3f40740';
     public const ADHERENT_15_UUID = '0a68eb57-c88a-5f34-9e9d-27f85e68af4f';
     public const ADHERENT_16_UUID = '25e75e2f-2f73-4f51-8542-bd511ba6a945';
+    public const ADHERENT_17_UUID = '69fcc468-598a-49ac-a651-d4d3ee856446';
+    public const ADHERENT_18_UUID = 'a2acfbda-6d5d-4614-b96a-ba00ab6fc7ee';
     public const COORDINATOR_1_UUID = 'd72d88ee-44bf-5059-bd19-02af28f0c7dc';
     public const COORDINATOR_2_UUID = '1ebee762-4dc1-42f6-9884-1c83ba9c6d71';
     public const REFERENT_1_UUID = '29461c49-2646-4d89-9c82-50b3f9b586f4';
@@ -370,6 +372,42 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent16->setPosition(ActivityPositions::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, UK');
 
+        $adherent17 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_17_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'jean-claude.dusse@example.fr',
+            'gender' => 'male',
+            'nationality' => 'FR',
+            'first_name' => 'Jean-Claude',
+            'last_name' => 'Dusse',
+            'address' => PostAddress::createFrenchAddress('13 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
+            'birthdate' => '1952-04-16',
+            'position' => 'commissioner',
+            'phone' => '33 712345678',
+            'registered_at' => '1994-03-09 00:00:00',
+        ]);
+        $adherent17->setPosition(ActivityPositions::EMPLOYED);
+        $adherent17->setStatus(Adherent::ENABLED);
+        $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+
+        $adherent18 = $adherentFactory->createFromArray([
+            'uuid' => self::ADHERENT_18_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'bernard.morin@example.fr',
+            'gender' => 'male',
+            'nationality' => 'FR',
+            'first_name' => 'Bernard',
+            'last_name' => 'Morin',
+            'address' => PostAddress::createFrenchAddress('230 Rue du Moulin', '59246-59411', null, 50.481964435189084, 3.10317921728396),
+            'birthdate' => '1951-05-04',
+            'position' => 'commissioner',
+            'phone' => '33 712345678',
+            'registered_at' => '1994-03-09 00:00:00',
+        ]);
+        $adherent18->setPosition(ActivityPositions::EMPLOYED);
+        $adherent18->setStatus(Adherent::ENABLED);
+        $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::REFERENT_1_UUID,
             'password' => self::DEFAULT_PASSWORD,
@@ -608,6 +646,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key23 = AdherentActivationToken::generate($municipalChief1);
         $key24 = AdherentActivationToken::generate($municipalChief2);
         $key25 = AdherentActivationToken::generate($municipalChief3);
+        $key26 = AdherentActivationToken::generate($adherent17);
+        $key27 = AdherentActivationToken::generate($adherent18);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -623,6 +663,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent13->activate($key13, '2017-05-03 09:16:54');
         $adherent14->activate($key14, '2017-05-04 09:34:21');
         $adherent16->activate($key22, '2017-05-04 09:34:21');
+        $adherent17->activate($key26, '2017-06-25 11:36:48');
+        $adherent18->activate($key27, '2017-06-25 11:36:48');
         // $key15 is not activated, but adherent is enabled
         $referent->activate($key8, '2017-02-07 13:20:45');
         $coordinator->activate($key16, '2017-09-20 17:44:32');
@@ -804,6 +846,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($municipalChief1);
         $manager->persist($municipalChief2);
         $manager->persist($municipalChief3);
+        $manager->persist($adherent17);
+        $manager->persist($adherent18);
 
         // For Organizational chart: adherent which is co-referent in the referent@en-marche-dev.fr team
         $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
@@ -834,6 +878,8 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($key23);
         $manager->persist($key24);
         $manager->persist($key25);
+        $manager->persist($key26);
+        $manager->persist($key27);
 
         $manager->persist($resetPasswordToken);
 
