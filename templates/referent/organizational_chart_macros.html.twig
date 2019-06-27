@@ -28,8 +28,13 @@
                         <span class="function">
                             {{ item.label }}
                         </span>
-                        {% if ref_person_link and ref_person_link.isCoReferent %}
-                            <span class="referent-person-link">{{ 'referent.coreferent_access'|trans }}</span>
+                        {% if ref_person_link %}
+                            {% if ref_person_link.isCoReferent %}
+                                <span class="referent-person-link">{{ 'referent.coreferent_access'|trans }}</span>
+                            {% endif %}
+                            {% if ref_person_link.isJecouteManager %}
+                                <span class="referent-person-link">{{ 'referent.jecoute_manager'|trans }}</span>
+                            {% endif %}
                         {% endif %}
                 {% if editable %}
                     </a>

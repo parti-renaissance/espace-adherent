@@ -3,11 +3,13 @@ Feature: Make sure we can see and interact with organizational chart
   As a root referent
   I need to be able to see and edit an organizational chart
 
-  Scenario: As a root referent I can see and click to access to organizational chart page
+  Background:
     Given the following fixtures are loaded:
       | LoadAdherentData                |
       | LoadOrganizationalChartItemData |
-    And I am logged as "referent@en-marche-dev.fr"
+
+  Scenario: As a root referent I can see and click to access to organizational chart page
+    Given I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/utilisateurs"
     When I follow "Mon équipe"
     Then I should see "Référent départemental"
@@ -15,20 +17,14 @@ Feature: Make sure we can see and interact with organizational chart
     And I should see "Jean Dupont Co-Référent"
 
   Scenario: As a child referent I can't see and click to access to organizational chart page
-    Given the following fixtures are loaded:
-      | LoadAdherentData                |
-      | LoadOrganizationalChartItemData |
-    And I am logged as "referent-child@en-marche-dev.fr"
+    Given I am logged as "referent-child@en-marche-dev.fr"
     And I am on "/espace-referent/utilisateurs"
     Then I should not see "Mon équipe"
     When I am on "/espace-referent/mon-equipe"
     Then the response status code should be 403
 
   Scenario: As a root referent I can edit a node in the organizational chart
-    Given the following fixtures are loaded:
-      | LoadAdherentData                |
-      | LoadOrganizationalChartItemData |
-    And I am logged as "referent@en-marche-dev.fr"
+    Given I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
 
     When I follow "Nom du responsable Responsable logistique"
@@ -59,10 +55,7 @@ Feature: Make sure we can see and interact with organizational chart
     And I should see "Donner un accès à l'onglet Adhérents"
 
   Scenario: As a root referent I can transform a member to co-referent
-    Given the following fixtures are loaded:
-      | LoadAdherentData                |
-      | LoadOrganizationalChartItemData |
-    And I am logged as "referent@en-marche-dev.fr"
+    Given I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
@@ -79,3 +72,20 @@ Feature: Make sure we can see and interact with organizational chart
 
     When I follow "Carl Mirabeau Responsable digital"
     Then the "referent_person_link_isCoReferent" checkbox should be unchecked
+
+  Scenario: As a root referent I can add a J'ecoute manager
+    Given I am logged as "referent@en-marche-dev.fr"
+    And I am on "/espace-referent/mon-equipe"
+    When I follow "Nom du responsable Responsable J'ecoute"
+    Then I should see "Edition de Responsable J'ecoute"
+    When I fill in the following:
+      | Nom             | Jecoutino              |
+      | Prénom          | Lucie                  |
+      | E-mail          | luciole1989@spambox.fr |
+      | Téléphone       | 0612345678             |
+      | Adresse postale | 1 avenue du svelto     |
+    And I check "referent_person_link_isJecouteManager"
+    And I press "Sauvegarder"
+    Then I should be on "/espace-referent/mon-equipe"
+    And I should see "Organigramme mis à jour."
+    And I should see "Lucie Jecoutino Responsable J'ecoute"

@@ -36,6 +36,13 @@
             </label>
         </div>
 
+        <div class="form__checkbox">
+            {{ form_widget(form.isJecouteManager) }}
+            <label class="form form__label" for="{{ form.isJecouteManager.vars.id }}">
+                {{ 'referent.checkbox.jecoute_manager'|trans|raw }}
+            </label>
+        </div>
+
         <div class="form__row text--center b__nudge--top-50">
             <p>
                 <button type="submit" class="btn btn--blue btn--large-and-full">Sauvegarder</button>

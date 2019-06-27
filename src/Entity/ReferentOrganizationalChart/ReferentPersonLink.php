@@ -91,6 +91,13 @@ class ReferentPersonLink
      */
     private $isCoReferent = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $isJecouteManager = false;
+
     public function __construct(PersonOrganizationalChartItem $personOrganizationalChartItem, Referent $referent)
     {
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
@@ -172,6 +179,11 @@ class ReferentPersonLink
         $this->adherent = $adherent;
     }
 
+    public function detachAdherent(): void
+    {
+        $this->adherent = null;
+    }
+
     public function isCoReferent(): bool
     {
         return $this->isCoReferent;
@@ -180,6 +192,16 @@ class ReferentPersonLink
     public function setIsCoReferent(bool $isCoReferent): void
     {
         $this->isCoReferent = $isCoReferent;
+    }
+
+    public function isJecouteManager(): bool
+    {
+        return $this->isJecouteManager;
+    }
+
+    public function setIsJecouteManager(bool $isJecouteManager): void
+    {
+        $this->isJecouteManager = $isJecouteManager;
     }
 
     public function getPersonOrganizationalChartItem(): ?PersonOrganizationalChartItem

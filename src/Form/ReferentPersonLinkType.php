@@ -46,6 +46,9 @@ class ReferentPersonLinkType extends AbstractType
             ->add('isCoReferent', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('isJecouteManager', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
 
         $builder->addModelTransformer(new CallbackTransformer(
