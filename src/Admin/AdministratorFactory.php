@@ -20,6 +20,9 @@ class AdministratorFactory
         $admin->setEmailAddress($data['email']);
         $admin->setPassword($this->encodePassword($data['password']));
         $admin->setGoogleAuthenticatorSecret($data['secret'] ?? null);
+        if (isset($data['activated'])) {
+            $admin->setActivated($data['activated']);
+        }
 
         foreach ($data['roles'] as $role) {
             $admin->addRole($role);

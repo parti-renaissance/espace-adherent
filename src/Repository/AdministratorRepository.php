@@ -22,6 +22,7 @@ class AdministratorRepository extends EntityRepository implements UserLoaderInte
         $query = $this
             ->createQueryBuilder('a')
             ->where('a.emailAddress = :username')
+            ->andWhere('a.activated = true')
             ->setParameter('username', $username)
             ->getQuery()
         ;

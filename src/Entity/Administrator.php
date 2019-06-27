@@ -62,6 +62,13 @@ class Administrator implements UserInterface, TwoFactorInterface
      */
     private $roles;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $activated = true;
+
     public function __construct()
     {
         $this->roles[] = 'ROLE_ADMIN_DASHBOARD';
@@ -151,6 +158,16 @@ class Administrator implements UserInterface, TwoFactorInterface
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    public function isActivated(): bool
+    {
+        return $this->activated;
+    }
+
+    public function setActivated(bool $activated): void
+    {
+        $this->activated = $activated;
     }
 
     /**

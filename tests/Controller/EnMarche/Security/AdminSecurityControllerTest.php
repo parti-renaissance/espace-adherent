@@ -54,6 +54,23 @@ class AdminSecurityControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('#_auth_code'));
     }
 
+    public function testAuthenticationFailedWhenAdminIsNotActivated(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+
+        $this->client->submit($crawler->selectButton('Connexion')->form([
+            '_login_email' => 'jean.dupond@en-marche.fr',
+            '_login_password' => 'secret!12345',
+        ]));
+
+        $this->client->followRedirect();
+
+        $this->assertContains(
+            'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
+            $this->client->getResponse()->getContent()
+        );
+    }
+
     /**
      * @dataProvider provideInvalidCredentials
      */
