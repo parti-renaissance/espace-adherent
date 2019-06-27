@@ -10,6 +10,7 @@ export default class MessageStatusLoader extends React.Component {
 
         this.api = props.api;
         this.messageId = props.messageId;
+        this.withResetButton = props.withResetButton;
 
         this.state = {
             synchronized: props.synchronized,
@@ -73,6 +74,14 @@ export default class MessageStatusLoader extends React.Component {
 
         return <div>
             <p className="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
+            {this.withResetButton ?
+                <p>
+                    <a href="./filtrer?reset"
+                       className="btn btn--ghosting--blue btn--large-and-full b__nudge--top"
+                    >Réinitialiser le filtre</a>
+                </p>
+                : ''
+            }
         </div>;
     }
 
@@ -102,6 +111,7 @@ export default class MessageStatusLoader extends React.Component {
 MessageStatusLoader.defaultProps = {
     synchronized: false,
     recipientCount: null,
+    withResetButton: false,
 };
 
 MessageStatusLoader.propsType = {
@@ -109,4 +119,5 @@ MessageStatusLoader.propsType = {
     messageId: PropTypes.string.isRequired,
     synchronized: PropTypes.bool,
     recipientCount: PropTypes.integer,
+    withResetButton: PropTypes.bool,
 };
