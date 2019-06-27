@@ -27,7 +27,7 @@ class CitizenProjectMessageSectionBuilder implements ContentSectionBuilderInterf
 
         $request
             ->addSection('citizen_project_link', sprintf(
-                '<a target="_blank" href="%s" title="Voir le projet citoyen" style="text-align:center;font-size:16px;color:#000;font-family:roboto,helvetica neue,helvetica,arial,sans-serif">%s</a>',
+                '<a target="_blank" href="%s" title="Voir le projet citoyen">%s</a>',
                 $this->urlGenerator->generate(
                     'app_citizen_project_show',
                     ['slug' => $citizenProject->getSlug()],
@@ -36,7 +36,7 @@ class CitizenProjectMessageSectionBuilder implements ContentSectionBuilderInterf
                 StringCleaner::htmlspecialchars($citizenProject->getName())
             ))
             ->addSection('reply_to_link', sprintf(
-                '<a class="mcnButton" title="RÉPONDRE" href="mailto:%s" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%%;text-align:center;text-decoration:none;color:#FFDA00;mso-line-height-rule:exactly;-ms-text-size-adjust:100%%;-webkit-text-size-adjust:100%%;display:block;">RÉPONDRE</a>',
+                '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $message->getAuthor()->getEmailAddress()
             ))
         ;

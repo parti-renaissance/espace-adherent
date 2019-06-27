@@ -13,7 +13,7 @@ class ReferentMessageSectionBuilder implements ContentSectionBuilderInterface
         $request
             ->addSection('first_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFirstName()))
             ->addSection('reply_to_link', sprintf(
-                '<a class="mcnButton" title="RÉPONDRE" href="mailto:%s" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%%;text-align:center;text-decoration:none;color:#FF6955;mso-line-height-rule:exactly;-ms-text-size-adjust:100%%;-webkit-text-size-adjust:100%%;display:block;">RÉPONDRE</a>',
+                '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $message->getAuthor()->getEmailAddress()
             ))
         ;

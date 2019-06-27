@@ -27,7 +27,7 @@ class CommitteeMessageSectionBuilder implements ContentSectionBuilderInterface
 
         $request
             ->addSection('committee_link', sprintf(
-                '<a target="_blank" href="%s" title="Voir le comité" style="text-align:center;font-size:16px;color:#000;font-family:roboto,helvetica neue,helvetica,arial,sans-serif">%s</a>',
+                '<a target="_blank" href="%s" title="Voir le comité">%s</a>',
                 $this->urlGenerator->generate(
                     'app_committee_show',
                     ['slug' => $committee->getSlug()],
@@ -36,7 +36,7 @@ class CommitteeMessageSectionBuilder implements ContentSectionBuilderInterface
                 StringCleaner::htmlspecialchars($committee->getName())
             ))
             ->addSection('reply_to_link', sprintf(
-                '<a class="mcnButton" title="RÉPONDRE" href="mailto:%s" target="_blank" style="font-weight:normal;letter-spacing:normal;line-height:100%%;text-align:center;text-decoration:none;color:#2BBAFF;">RÉPONDRE</a>',
+                '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $message->getAuthor()->getEmailAddress()
             ))
         ;
