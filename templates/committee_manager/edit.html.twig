@@ -14,6 +14,16 @@
 {% block committee_content %}
     <main>
         <section class="l__wrapper--slim">
+            {% if committee.isPending or committee.isPreApproved %}
+                <div class="committee__waiting-for-approval">
+                    Votre comité est en attente de validation par les équipes d'En Marche !
+                    Vous serez alerté(e) par e-mail quand il sera validé.
+                    <p>
+                        Une fois validé, vous pourrez contacter les adhérents suivant votre comité.
+                    </p>
+                </div>
+            {% endif %}
+
             <h3 class="text--medium">Modifier mon comité</h3>
             {{ form_start(form, {attr: {'id': 'edit-committee-form', 'class': 'form committee-form b__nudge--top-40'}}) }}
                 {{ include('committee/_form.html.twig') }}

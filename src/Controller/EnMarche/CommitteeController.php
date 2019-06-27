@@ -36,6 +36,12 @@ class CommitteeController extends Controller
             return $authenticate;
         }
 
+        if ($committee->isPending() || $committee->isPreApproved()) {
+            return $this->redirectToRoute('app_committee_manager_edit', [
+                'slug' => $committee->getSlug(),
+            ]);
+        }
+
         $committeeManager = $this->getCommitteeManager();
 
         $feeds = $committeeManager->getTimeline($committee, $this->getParameter('timeline_max_messages'));
