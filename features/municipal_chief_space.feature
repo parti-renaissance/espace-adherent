@@ -36,13 +36,15 @@ Feature:
     When I follow "⟵ Retour"
     Then I should be on "/espace-chef-municipal/municipale/candidature-colistiers"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
     And I follow "Taguer"
     Then I should see "Tags de candidature"
 
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
-    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
+    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario Outline: I can see running mate request for the zones I manage, I can see the detail and I can add tags
@@ -90,13 +92,15 @@ Feature:
     When I follow "⟵ Retour"
     Then I should be on "/espace-chef-municipal/municipale/candidature-benevole"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
     And I follow "Taguer"
     Then I should see "Tags de candidature"
 
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
-    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
+    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario Outline: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
@@ -124,17 +128,20 @@ Feature:
   Scenario Outline: I can define application request as added to my team
     Given I am logged as "municipal-chief-2@en-marche-dev.fr"
     When I am on "<url>"
+    And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
     And I follow "Ajouter à mon équipe"
-    Then I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
     And I should see "Retirer de mon équipe"
     And I should not see an ".link--disabled" element
 
     When I am on "/deconnexion"
     And I am logged as "municipal-chief@en-marche-dev.fr"
     And I am on "<url>"
+    And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
-    Then I should see "Retirer de mon équipe"
+    Then I should see "Ajouter à mon équipe"
     And I should see an ".link--disabled" element
 
     Examples:

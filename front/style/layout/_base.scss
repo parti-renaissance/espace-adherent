@@ -66,6 +66,19 @@ a {
         }
     }
 
+    &.link--disabled {
+        pointer-events: none;
+        border-color: #c9c9c9;
+        color: #999;
+
+        &:hover {
+            cursor: default;
+            background: #fff;
+            transition: 0s;
+            color: #999;
+        }
+    }
+
     &.link--blue {
         color: $blue;
         border-color: $blue;
