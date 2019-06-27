@@ -108,17 +108,17 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="image")
      */
-    public function image(): ?string
+    public function getImage(): ?string
     {
         return $this->media ? $this->media->getPathWithDirectory() : null;
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="measureIds")
      */
-    public function measureIds(): array
+    public function getMeasureIds(): array
     {
         return array_map(function (Measure $measure) {
             return $measure->getId();
@@ -126,9 +126,9 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="measureTitles")
      */
-    public function measureTitles(): array
+    public function getMeasureTitles(): array
     {
         $titles = [];
         foreach ($this->measures as $measure) {
@@ -142,9 +142,9 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="profileIds")
      */
-    public function profileIds(): array
+    public function getProfileIds(): array
     {
         $profiles = new ArrayCollection();
 
@@ -162,80 +162,53 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="manifestoIds")
      */
-    public function titles(): array
+    public function getManifestoIds(): array
     {
-        /** @var ThemeTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
-
-        /** @var ThemeTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getTitle(),
-            'en' => $english->getTitle(),
-        ];
+        return array_values(array_unique(
+            array_map(function (Measure $measure) {
+                return $measure->getManifesto()->getId();
+            }, $this->measures->toArray())
+        ));
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="titles")
      */
-    public function slugs(): array
+    public function getTitles(): array
     {
-        /** @var ThemeTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
-
-        /** @var ThemeTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getSlug(),
-            'en' => $english->getSlug(),
-        ];
+        return $this->getFieldTranslations('title');
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="slugs")
      */
-    public function descriptions(): array
+    public function getSlugs(): array
     {
-        /** @var ThemeTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
+        return $this->getFieldTranslations('slug');
+    }
 
-        /** @var ThemeTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getDescription(),
-            'en' => $english->getDescription(),
-        ];
+    /**
+     * @Algolia\Attribute(algoliaName="descriptions")
+     */
+    public function getDescriptions(): array
+    {
+        return $this->getFieldTranslations('description');
     }
 
     public function exportTitles(): string
     {
-        return join(', ', $this->titles());
+        return implode(', ', $this->getTitles());
     }
 
     public function exportSlugs(): string
     {
-        return join(', ', $this->slugs());
+        return implode(', ', $this->getSlugs());
     }
 
     public function exportDescriptions(): string
     {
-        return join(', ', $this->descriptions());
+        return implode(', ', $this->getDescriptions());
     }
 }

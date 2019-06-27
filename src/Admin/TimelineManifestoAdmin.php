@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class TimelineProfileAdmin extends AbstractAdmin
+class TimelineManifestoAdmin extends AbstractAdmin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -23,13 +23,19 @@ class TimelineProfileAdmin extends AbstractAdmin
                         ],
                         'slug' => [
                             'label' => 'URL de publication',
-                            'sonata_help' => 'Ne spécifier que la fin : http://en-marche.fr/timeline/profil/[votre-valeur]<br />Doit être unique',
+                            'sonata_help' => 'Ne spécifier que la fin : http://en-marche.fr/timeline/programme/[votre-valeur]<br />Doit être unique',
                         ],
                         'description' => [
                             'label' => 'Description',
                             'filter_emojis' => true,
                         ],
                     ],
+                ])
+            ->end()
+            ->with('Publication', ['class' => 'col-md-4'])
+                ->add('media', null, [
+                    'label' => 'Image principale',
+                    'required' => false,
                 ])
             ->end()
         ;
@@ -42,7 +48,6 @@ class TimelineProfileAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-
             ->add('translations.description', null, [
                 'label' => 'Description',
                 'show_filter' => true,
@@ -53,10 +58,15 @@ class TimelineProfileAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('_thumbnail', null, [
+                'label' => 'Image',
+                'virtual_field' => true,
+                'template' => 'admin/timeline/manifesto/list_image.html.twig',
+            ])
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
                 'virtual_field' => true,
-                'template' => 'admin/timeline/profile/list_title.html.twig',
+                'template' => 'admin/timeline/manifesto/list_title.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

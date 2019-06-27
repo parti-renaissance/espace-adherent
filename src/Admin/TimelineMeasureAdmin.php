@@ -119,7 +119,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title', TextType::class, [
+            ->addIdentifier('title', null, [
                 'label' => 'Titre',
                 'virtual_field' => true,
                 'template' => 'admin/timeline/measure/list_title.html.twig',
@@ -160,6 +160,7 @@ class TimelineMeasureAdmin extends AbstractAdmin
             'Mise en avant' => 'major',
             'Thèmes' => 'exportThemes',
             'Profils' => 'exportProfiles',
+            'Programme' => 'exportManifesto',
         ];
     }
 }

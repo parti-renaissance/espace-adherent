@@ -122,6 +122,14 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      */
     private $themes;
 
+    /**
+     * @var Manifesto
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Timeline\Manifesto")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $manifesto;
+
     private $savedThemes;
 
     /**
@@ -132,6 +140,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         string $status = null,
         array $profiles = [],
         array $themes = [],
+        Manifesto $manifesto = null,
         string $link = null,
         bool $isMajor = false
     ) {
@@ -140,6 +149,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         $this->major = $isMajor;
         $this->profiles = new ArrayCollection($profiles);
         $this->themes = new ArrayCollection($themes);
+        $this->manifesto = $manifesto;
         $this->savedThemes = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
@@ -257,6 +267,16 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
         $this->themes->removeElement($theme);
     }
 
+    public function getManifesto(): ?Manifesto
+    {
+        return $this->manifesto;
+    }
+
+    public function setManifesto(?Manifesto $manifesto): void
+    {
+        $this->manifesto = $manifesto;
+    }
+
     public function isUpcoming(): bool
     {
         return self::STATUS_UPCOMING === $this->status;
@@ -300,9 +320,9 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="profileIds")
      */
-    public function profileIds(): array
+    public function getProfileIds(): array
     {
         return array_map(function (Profile $profile) {
             return $profile->getId();
@@ -310,38 +330,38 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     }
 
     /**
-     * @Algolia\Attribute
+     * @Algolia\Attribute(algoliaName="manifestoId")
      */
-    public function titles(): array
+    public function getManifestoId(): ?int
     {
-        /** @var MeasureTranslation $french */
-        if (!$french = $this->translate('fr')) {
-            return [];
-        }
+        return $this->manifesto ? $this->manifesto->getId() : null;
+    }
 
-        /** @var MeasureTranslation $english */
-        if (!$english = $this->translate('en')) {
-            $english = $french;
-        }
-
-        return [
-            'fr' => $french->getTitle(),
-            'en' => $english->getTitle(),
-        ];
+    /**
+     * @Algolia\Attribute(algoliaName="titles")
+     */
+    public function getTitles(): array
+    {
+        return $this->getFieldTranslations('title');
     }
 
     public function exportTitles(): string
     {
-        return join(', ', $this->titles());
+        return implode(', ', $this->getTitles());
     }
 
     public function exportThemes(): string
     {
-        return join(', ', $this->themes->toArray());
+        return implode(', ', $this->themes->toArray());
     }
 
     public function exportProfiles(): string
     {
-        return join(', ', $this->profiles->toArray());
+        return implode(', ', $this->profiles->toArray());
+    }
+
+    public function exportManifesto(): string
+    {
+        return $this->manifesto->exportTitles();
     }
 }

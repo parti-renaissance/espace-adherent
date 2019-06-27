@@ -33,6 +33,26 @@ abstract class AbstractTranslatableEntity
         }
     }
 
+    protected function getFieldTranslations(string $field): array
+    {
+        /** @var EntityTranslationInterface $french */
+        if (!$french = $this->translate('fr')) {
+            return [];
+        }
+
+        /** @var EntityTranslationInterface $english */
+        if (!$english = $this->translate('en')) {
+            $english = $french;
+        }
+
+        $getter = sprintf('get%s', ucfirst($field));
+
+        return [
+            'fr' => $french->$getter(),
+            'en' => $english->$getter(),
+        ];
+    }
+
     private function removeTranslationIfEmpty(string $locale): void
     {
         /** @var EntityTranslationInterface $translation */

@@ -121,7 +121,7 @@ class TimelineThemeAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/timeline/theme/list_image.html.twig',
             ])
-            ->addIdentifier('title', TextType::class, [
+            ->addIdentifier('title', null, [
                 'label' => 'Titre',
                 'virtual_field' => true,
                 'template' => 'admin/timeline/theme/list_title.html.twig',

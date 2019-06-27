@@ -13,17 +13,17 @@ class ProfileTest extends TestCase
         $profile = new Profile();
 
         // No translation
-        $this->assertEmpty($profile->titles());
+        $this->assertEmpty($profile->getTitles());
 
         // French only
         $profile->addTranslation($this->createTranslation('fr', 'Titre'));
 
-        $this->assertEquals(['fr' => 'Titre', 'en' => 'Titre'], $profile->titles());
+        $this->assertEquals(['fr' => 'Titre', 'en' => 'Titre'], $profile->getTitles());
 
         // French + English
         $profile->addTranslation($this->createTranslation('en', 'Title'));
 
-        $this->assertEquals(['fr' => 'Titre', 'en' => 'Title'], $profile->titles());
+        $this->assertEquals(['fr' => 'Titre', 'en' => 'Title'], $profile->getTitles());
     }
 
     public function testSlugs()
@@ -31,17 +31,17 @@ class ProfileTest extends TestCase
         $profile = new Profile();
 
         // No translation
-        $this->assertEmpty($profile->slugs());
+        $this->assertEmpty($profile->getSlugs());
 
         // French only
         $profile->addTranslation($this->createTranslation('fr', null, 'titre'));
 
-        $this->assertEquals(['fr' => 'titre', 'en' => 'titre'], $profile->slugs());
+        $this->assertEquals(['fr' => 'titre', 'en' => 'titre'], $profile->getSlugs());
 
         // French + English
         $profile->addTranslation($this->createTranslation('en', null, 'title'));
 
-        $this->assertEquals(['fr' => 'titre', 'en' => 'title'], $profile->slugs());
+        $this->assertEquals(['fr' => 'titre', 'en' => 'title'], $profile->getSlugs());
     }
 
     public function testDescriptions()
@@ -49,7 +49,7 @@ class ProfileTest extends TestCase
         $profile = new Profile();
 
         // No translation
-        $this->assertEmpty($profile->descriptions());
+        $this->assertEmpty($profile->getDescriptions());
 
         // French only
         $profile->addTranslation($this->createTranslation('fr', null, null, 'Courte description'));
@@ -57,7 +57,7 @@ class ProfileTest extends TestCase
         $this->assertEquals([
             'fr' => 'Courte description',
             'en' => 'Courte description',
-        ], $profile->descriptions());
+        ], $profile->getDescriptions());
 
         // French + English
         $profile->addTranslation($this->createTranslation('en', null, null, 'Short description'));
@@ -65,7 +65,7 @@ class ProfileTest extends TestCase
         $this->assertEquals([
             'fr' => 'Courte description',
             'en' => 'Short description',
-        ], $profile->descriptions());
+        ], $profile->getDescriptions());
     }
 
     private function createTranslation(
