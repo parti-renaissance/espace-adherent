@@ -902,6 +902,8 @@ class AdherentControllerTest extends WebTestCase
      */
     public function testRegularAdherentCanCreateOneNewCommittee(string $emaiLAddress, string $phone): void
     {
+        $this->client->followRedirects();
+
         $this->authenticateAsAdherent($this->client, $emaiLAddress);
         $crawler = $this->client->request(Request::METHOD_GET, '/');
         $crawler = $this->client->click($crawler->selectLink('Créer un comité')->link());
@@ -943,7 +945,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame("Vous devez accepter d'être contacté(e) par la plateforme En Marche !", $crawler->filter('#field-contacting-terms > .form__errors > li')->text());
 
         // Submit the committee form with valid data to create committee
-        $this->client->submit($crawler->selectButton('Créer mon comité')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Créer mon comité')->form([
             'create_committee[name]' => 'lyon est En Marche !',
             'create_committee[description]' => 'Comité français En Marche ! de la ville de Lyon',
             'create_committee[address][country]' => 'FR',
@@ -960,22 +962,16 @@ class AdherentControllerTest extends WebTestCase
             'create_committee[photo]' => new UploadedFile(__DIR__.'/../../Fixtures/image.jpg', 'image.jpg', 'image/jpeg', 631, \UPLOAD_ERR_OK, true),
         ]));
 
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
 
-        // Follow the redirect and check the adherent can see the committee page
-        $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'Votre comité a été créé avec succès. Il est en attente de validation par nos équipes.');
-        $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee-name')->text());
-        $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee-description')->text());
+        $this->assertSame('Lyon est En Marche !', $crawler->filter('#committee_name')->attr('value'));
+        $this->assertSame('Comité français En Marche ! de la ville de Lyon', $crawler->filter('#committee_description')->text());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('04 78 45 78 98', $crawler->filter('#committee_phone_number')->attr('value'));
         $this->assertSame(1, $crawler->filter('#field-photo img')->count());
     }

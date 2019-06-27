@@ -162,18 +162,18 @@ class CommitteeManagerControllerTest extends WebTestCase
 
     public function testCommitteeHostCanEditCompletelyAddressOfPendingCommittee()
     {
+        $this->client->followRedirects();
+
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Submit the committee form with new address
-        $this->client->submit($crawler->selectButton('Enregistrer')->form([
+        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee' => [
                 'address' => [
                     'country' => 'CH',
@@ -184,10 +184,6 @@ class CommitteeManagerControllerTest extends WebTestCase
             ],
         ]));
 
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        // Follow the redirect and check the adherent can see the committee edit page again
-        $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         // Address has been changed totally
         $this->assertSame('12 Pilgerweg', $crawler->filter('#committee_address_address')->attr('value'));

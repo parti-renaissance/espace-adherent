@@ -23,6 +23,45 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private $committeeRepository;
 
+    public function testBackButtonNotPresentWhenCommitteeIsPending(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/editer');
+
+        $this->assertNotContains('Tous mes comités', $this->client->getResponse()->getContent());
+    }
+
+    public function testBackButtonPresentWhenCommitteeIsAccepted(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-comite-de-new-york-city/editer');
+
+        $this->assertContains('Tous mes comités', $this->client->getResponse()->getContent());
+    }
+
+    public function testRedirectionFromCommitteeShowToCommitteeEditWhenCommitteeIsPending(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3');
+
+        $this->client->followRedirect();
+
+        $this->assertContains('/comites/en-marche-marseille-3/editer', $this->client->getRequest()->getUri());
+    }
+
+    public function testCommitteeEditContainsWarningMessageWhenCommitteeIsPending(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/editer');
+
+        $this->assertEquals(
+            1,
+            $crawler->filter(
+                'html div.committee__waiting-for-approval:contains("Votre comité est en attente de validation par les équipes d\'En Marche !")'
+            )->count()
+        );
+    }
+
     public function testRedirectionComiteFromOldUrl()
     {
         $this->client->request(Request::METHOD_GET, '/comites/'.LoadAdherentData::COMMITTEE_3_UUID.'/en-marche-dammarie-les-lys');
@@ -112,7 +151,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         // Browse to the committee details page
-        $committeeUrl = sprintf('/comites/%s', 'en-marche-dammarie-les-lys');
+        $committeeUrl = '/comites/en-marche-dammarie-les-lys';
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -159,7 +198,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     public function testApprovedCommitteePageIsViewableByAnyone()
     {
-        $committeeUrl = sprintf('/comites/%s', 'en-marche-dammarie-les-lys');
+        $committeeUrl = '/comites/en-marche-dammarie-les-lys';
 
         // Anonymous
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
@@ -205,7 +244,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     public function testUnapprovedCommitteeIsViewableByItsCreator()
     {
-        $committeeUrl = sprintf('/comites/%s', 'en-marche-marseille-3');
+        $committeeUrl = '/comites/en-marche-marseille-3';
 
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -215,18 +254,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
         $this->logout($this->client);
-
-        // Creator
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-
-        $this->client->request(Request::METHOD_GET, $committeeUrl);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testAnonymousGuestCanShowCommitteePage()
     {
-        $committeeUrl = sprintf('/comites/%s', 'en-marche-paris-8');
+        $committeeUrl = '/comites/en-marche-paris-8';
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
@@ -247,7 +279,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
 
-        $committeeUrl = sprintf('/comites/%s', 'en-marche-paris-8');
+        $committeeUrl = '/comites/en-marche-paris-8';
 
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 

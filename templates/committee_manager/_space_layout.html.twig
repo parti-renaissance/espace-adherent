@@ -5,9 +5,11 @@
 {% block committee_space_header %}
     <div class="l__wrapper">
         <div class="first-section">
-            <div class="manager-information">
-                <a href="{{ path('app_committee_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous mes comités</a>
-            </div>
+            {% if not committee.isPending %}
+                <div class="manager-information">
+                    <a href="{{ path('app_committee_space_dashboard') }}" class="text--blue--dark link--no-decor font-roboto">⟵ Tous mes comités</a>
+                </div>
+            {% endif %}
         </div>
         <div class="second-section">
             <h1 class="page-title text--large b__nudge--bottom">
