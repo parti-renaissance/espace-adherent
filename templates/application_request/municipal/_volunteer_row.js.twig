@@ -1,21 +1,25 @@
 {% spaceless %}
     {% set row = {
-        lastName: volunteer.firstName,
-        firstName: volunteer.lastName,
-        phone: volunteer.phone|phone_number_format,
-        favoriteCities: volunteer.favoriteCitiesNames|join(', '),
-        tags: '<span>' ~ volunteer.tags|join('</span><span>') ~ '</span>',
-        isAdherent: volunteer.adherent ? '<span class="status status__1">Adhérent</span>' : '<span class="status status__2">Non-adhérent</span>',
+        gender: request.gender ? ('common.gender.' ~ request.gender)|trans,
+        lastName: request.firstName,
+        firstName: request.lastName,
+        phone: request.phone|phone_number_format,
+        favoriteCities: request.favoriteCitiesNames|join(', '),
+        tags: '<span>' ~ request.tags|join('</span><span>') ~ '</span>',
+        isAdherent: request.adherent ?
+            '<span class="status status__1">Oui</span>'
+            : '<span class="status status__2">Non</span>',
         menu: [
             {
                 label: 'Plus d\'infos',
-                url: path(show_route_name, {uuid: volunteer.uuid})
+                url: path(show_route_name, {uuid: request.uuid})
             },
             {
                 label: 'Taguer',
-                url: path(edit_route_name, {uuid: volunteer.uuid})
+                url: path(edit_route_name, {uuid: request.uuid})
             }
         ]|merge(menu|default([]))
-    } %}
+    }|merge(columns|default({})) %}
+
     {{ row|json_encode|raw }}
 {% endspaceless %}

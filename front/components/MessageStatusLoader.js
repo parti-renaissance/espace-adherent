@@ -76,9 +76,9 @@ export default class MessageStatusLoader extends React.Component {
             <p className="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
             {this.withResetButton ?
                 <p>
-                    <a href="./filtrer?reset"
-                       className="btn btn--ghosting--blue btn--large-and-full b__nudge--top"
-                    >Réinitialiser le filtre</a>
+                    <a href="./filtrer" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top">
+                        RECHARGER
+                    </a>
                 </p>
                 : ''
             }

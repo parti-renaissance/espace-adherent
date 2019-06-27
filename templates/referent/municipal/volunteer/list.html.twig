@@ -18,6 +18,10 @@
             App.runManagedList(
                 [
                     {
+                        key: 'gender',
+                        name: 'Genre',
+                    },
+                    {
                         key: 'lastName',
                         name: 'Nom',
                     },
@@ -27,7 +31,7 @@
                     },
                     {
                         key: 'phone',
-                        name: 'Tél',
+                        name: 'Téléphone',
                     },
                     {
                         key: 'favoriteCities',
@@ -40,7 +44,7 @@
                     },
                     {
                         key: 'isAdherent',
-                        name: 'Adhérent (oui/non)',
+                        name: 'Adhérent ?',
                     },
                     {
                         key: 'menu',
@@ -49,14 +53,11 @@
                     }
                 ],
                 [
-                    {% for volunteer in volunteers %}
-                        {% include 'application_request/municipal/_volunteer_row.js.twig'
-                            with {
-                                volunteer: volunteer,
-                                show_route_name: 'app_referent_municipal_volunteer_request_detail',
-                                edit_route_name: 'app_referent_municipal_volunteer_request_edit_tags',
-                            }
-                        %},
+                    {% for request in volunteers %}
+                        {% include 'application_request/municipal/_volunteer_row.js.twig' with {
+                            show_route_name: 'app_referent_municipal_volunteer_request_detail',
+                            edit_route_name: 'app_referent_municipal_volunteer_request_edit_tags',
+                        } %},
                     {% endfor %}
                 ]
             );

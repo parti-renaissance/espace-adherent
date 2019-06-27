@@ -67,22 +67,23 @@ Feature:
     When I follow "⟵ Retour"
     Then I should be on "/espace-referent/municipale/candidature-colistiers"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
     And I follow "Taguer"
     Then I should see "Tags de candidature"
-    Then I wait 10 seconds until I see "Tags de candidature"
 
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
-    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
+    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
     Given I am logged as "referent-75-77@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-benevole"
-    And I wait 10 seconds until I see "J'ai lu et j'accepte"
+    And I wait 5 seconds until I see "J'ai lu et j'accepte"
     And I accept terms of use
-    And I wait 10 seconds until I see NOM
+    And I wait 5 seconds until I see NOM
     And I should see "Stark"
     And I should see "Tony"
     And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
@@ -103,13 +104,15 @@ Feature:
     When I follow "⟵ Retour"
     Then I should be on "/espace-referent/municipale/candidature-benevole"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
     And I follow "Taguer"
     Then I should see "Tags de candidature"
 
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
-    Then the 5 column of the 1 row in the table.managed__list__table table should contain "Tag 4"
+    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario: I can see the local surveys list, edit a survey and show the statistics

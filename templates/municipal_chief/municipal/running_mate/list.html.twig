@@ -18,6 +18,10 @@
             App.runManagedList(
                 [
                     {
+                        key: 'gender',
+                        name: 'Genre',
+                    },
+                    {
                         key: 'lastName',
                         name: 'Nom',
                     },
@@ -43,36 +47,53 @@
                         name: 'Adhérent ?',
                     },
                     {
+                        key: 'inMyTeam',
+                        name: 'Équipier ?',
+                    },
+                    {
                         key: 'menu',
                         name: 'Action',
                         menu: true,
                     },
                 ],
                 [
-                    {% for running_mate in running_mates %}
-                        {% if running_mate.takenForCity %}
-                            {% set team_url = '#' %}
-                            {% if running_mate.takenForCity in app.user.municipalChiefManagedArea.codes %}
-                                {% set team_url = path('app_municipal_chief_municipal_running_mate_request_remove_from_team', {uuid: running_mate.uuid}) %}
-                            {% endif %}
-                        {% else %}
-                            {% set team_url = path('app_municipal_chief_municipal_running_mate_request_add_to_team', {uuid: running_mate.uuid}) %}
-                        {% endif %}
+                    {% for request in running_mates %}
+                        {% spaceless %}
+                            {% set team_link_label = 'Ajouter à mon équipe' %}
 
-                        {% include 'application_request/municipal/_running_mate_row.js.twig'
-                            with {
-                                running_mate: running_mate,
-                                show_route_name: 'app_municipal_chief_municipal_running_mate_request_detail',
-                                edit_route_name: 'app_municipal_chief_municipal_running_mate_request_edit_tags',
-                                menu: [
-                                    {
-                                        label: running_mate.takenForCity ? 'Retirer de mon équipe' : 'Ajouter à mon équipe',
-                                        url: team_url,
-                                        className: 'row-action text--dark link--no-decor' ~ (team_url is same as('#') ? ' link--disabled')
+                            {% if request.takenForCity %}
+                                {% if request.takenForCity in app.user.municipalChiefManagedArea.codes %}
+                                    {% set team_link_label = 'Retirer de mon équipe' %}
+                                    {% set team_link_url = path("app_municipal_chief_municipal_running_mate_request_remove_from_team", {uuid: request.uuid}) %}
+                                    {% set team_link_class = 'text--error' %}
+                                {% else %}
+                                    {% set team_link_url = '#' %}
+                                    {% set team_link_class = 'link--disabled' %}
+                                {% endif %}
+                            {% else %}
+                                {% set team_link_class = 'text-dark' %}
+                                {% set team_link_url = path("app_municipal_chief_municipal_running_mate_request_add_to_team", {uuid: request.uuid}) %}
+                            {% endif %}
+
+                            {% include 'application_request/municipal/_running_mate_row.js.twig'
+                                with {
+                                    show_route_name: 'app_municipal_chief_municipal_running_mate_request_detail',
+                                    edit_route_name: 'app_municipal_chief_municipal_running_mate_request_edit_tags',
+                                    menu: [
+                                        {
+                                            label: team_link_label,
+                                            url: team_link_url,
+                                            className: "row-action text--dark link--no-decor #{team_link_class}"
+                                        }
+                                    ],
+                                    columns: {
+                                        inMyTeam: request.takenForCity in app.user.municipalChiefManagedArea.codes ?
+                                            '<span class="status status__1">Oui</span>'
+                                            : '<span class="status status__2">Non</span>',
                                     }
-                                ]
-                            }
-                        %},
+                                }
+                            %},
+                        {% endspaceless %}
                     {% endfor %}
                 ]
             );

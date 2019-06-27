@@ -1,26 +1,30 @@
 {% spaceless %}
     {% set row = {
-        lastName: running_mate.firstName,
-        firstName: running_mate.lastName,
-        phone: running_mate.phone|phone_number_format,
-        favoriteCities: running_mate.favoriteCitiesNames|join(', '),
-        tags: '<span>' ~ running_mate.tags|join('</span><span>') ~ '</span>',
-        isAdherent: running_mate.adherent ? '<span class="status status__1">Adhérent</span>' : '<span class="status status__2">Non-adhérent</span>',
+        gender: request.gender ? ('common.gender.' ~ request.gender)|trans,
+        lastName: request.firstName,
+        firstName: request.lastName,
+        phone: request.phone|phone_number_format,
+        favoriteCities: request.favoriteCitiesNames|join(', '),
+        tags: '<span>' ~ request.tags|join('</span><span>') ~ '</span>',
+        isAdherent: request.adherent ?
+            '<span class="status status__1">Oui</span>'
+            : '<span class="status status__2">Non</span>',
         menu: [
             {
                 label: 'Télécharger le CV',
-                url: path('asset_url', {path: running_mate.pathWithDirectory, mime_type: 'application/pdf'}),
+                url: path('asset_url', {path: request.pathWithDirectory, mime_type: 'application/pdf'}),
                 targetBlank: true
             },
             {
                 label: 'Plus d\'infos',
-                url: path(show_route_name, {uuid: running_mate.uuid})
+                url: path(show_route_name, {uuid: request.uuid})
             },
             {
                 label: 'Taguer',
-                url: path(edit_route_name, {uuid: running_mate.uuid})
+                url: path(edit_route_name, {uuid: request.uuid})
             }
         ]|merge(menu|default([]))
-    } %}
+    }|merge(columns|default({})) %}
+
     {{ row|json_encode|raw }}
 {% endspaceless %}
