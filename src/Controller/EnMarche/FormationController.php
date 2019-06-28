@@ -2,10 +2,9 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Formation\Article;
-use AppBundle\Entity\Formation\Axe;
+use AppBundle\Entity\Formation\Module;
 use AppBundle\Entity\Page;
-use AppBundle\Repository\Formation\AxeRepository;
+use AppBundle\Repository\Formation\PathRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,51 +12,41 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-formation")
+ * @Route("/espace-formation", name="app_formation_")
  * @Security("is_granted('ROLE_HOST')")
  */
 class FormationController extends Controller
 {
     /**
-     * @Route(name="app_formation_intro", methods="GET")
-     * @Entity("page", expr="repository.findOneBySlug('espace-formation-intro')")
-     */
-    public function intro(Page $page): Response
-    {
-        return $this->render('formation/intro.html.twig', [
-            'page' => $page,
-        ]);
-    }
-
-    /**
-     * @Route("/mon-parcours", name="app_formation_home", methods="GET")
+     * @Route(name="home", methods="GET")
      * @Entity("page", expr="repository.findOneBySlug('espace-formation')")
      */
-    public function home(Page $page, AxeRepository $axeRepository): Response
+    public function home(Page $page, PathRepository $pathRepository): Response
     {
         return $this->render('formation/home.html.twig', [
             'page' => $page,
-            'axes' => $axeRepository->findAll(),
+            'paths' => $pathRepository->findAllWithAxesAndModules(),
         ]);
     }
 
     /**
-     * @Route("/axe/{slug}", name="app_formation_axe", methods="GET")
+     * @Route("/faq", name="faq", methods="GET")
+     * @Entity("page", expr="repository.findOneBySlug('espace-formation/faq')")
      */
-    public function axe(Axe $axe): Response
+    public function faq(Page $page): Response
     {
-        return $this->render('formation/axe.html.twig', [
-            'axe' => $axe,
+        return $this->render('formation/faq.html.twig', [
+            'page' => $page,
         ]);
     }
 
     /**
-     * @Route("/article/{slug}", name="app_formation_article", methods="GET")
+     * @Route("/module/{slug}", name="module", methods="GET")
      */
-    public function article(Article $article): Response
+    public function module(Module $module): Response
     {
-        return $this->render('formation/article.html.twig', [
-            'article' => $article,
+        return $this->render('formation/module.html.twig', [
+            'module' => $module,
         ]);
     }
 }

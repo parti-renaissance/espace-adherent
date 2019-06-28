@@ -331,6 +331,10 @@
     }
 
     &__nudge {
+        &--top-60 {
+            margin-top: 60px;
+        }
+
         &--top-50 {
             margin-top: 50px;
         }
@@ -527,5 +531,22 @@
 
     #chart_dialog {
         height: 75% !important;
+    }
+}
+
+// Improved version of Flexbox
+@mixin d-flex($f-direction, $f-justify, $f-align, $f-wrap) {
+    display: flex;
+    flex-direction: $f-direction;
+    justify-content: $f-justify;
+    align-items: $f-align;
+    flex-wrap: $f-wrap;
+}
+
+// d-flex Usage
+.your-markeup {
+    @include d-flex(column, space-between, center, wrap);
+    @media (min-width: $mobile) {
+        @include d-flex(row, space-between, center, wrap);
     }
 }

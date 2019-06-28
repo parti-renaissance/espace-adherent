@@ -1,0 +1,25 @@
+{% extends 'formation/layout.html.twig' %}
+
+{% block page_title page.title %}
+{% block meta_description page.description %}
+{% block meta_twitter_description page.twitterDescription ?: page.description %}
+{% block canonical_url url('app_formation_home') %}
+
+{% block content__inner %}
+    <section class="espace-formation">
+
+        <header class="space--40-0">
+            <div class="l__wrapper--slim text--center">
+                <h1 class="text--large text--inline text--on-white">
+                    {{ page.title }}
+                </h1>
+            </div>
+        </header>
+
+        <div class="l__wrapper--slim">
+            <div class="espace-formation__intro text--body">
+                {{ page.content|raw }}
+            </div>
+        </div>
+    </section>
+{% endblock %}

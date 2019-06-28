@@ -219,6 +219,21 @@ $text--size-extra-large--big: 128px;
     line-height: normal;
 }
 
+// new feature tag
+@mixin new-feature {
+    line-height: normal;
+    vertical-align: middle;
+    font-size: 9px;
+    background: $green;
+    color: $black;
+    padding: 3px 7px 2px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+
 .text {
     &--breakword {
         @include breakword;
@@ -652,6 +667,13 @@ $text--size-extra-large--big: 128px;
     &__links--subnav li a {
         color: white;
         font-size: $text--size-small;
+
+        &.is-new {
+            &:after {
+                content: 'Nouveau';
+                @include new-feature;
+            }
+        }
     }
 }
 

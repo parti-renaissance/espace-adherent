@@ -5,21 +5,23 @@ namespace AppBundle\Entity\Formation;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityMediaInterface;
 use AppBundle\Entity\EntityMediaTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="formation_articles")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Formation\ArticleRepository")
+ * @ORM\Table(name="formation_modules")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Formation\ModuleRepository")
 
  * @Algolia\Index(autoIndex=false)
  *
- * @UniqueEntity(fields={"title", "axe"}, message="Il existe déjà un article avec ce titre pour cet axe de formation.")
- * @UniqueEntity(fields={"slug", "axe"}, message="Il existe déjà un article avec cette URL pour cet axe de formation.")
+ * @UniqueEntity(fields={"title", "axe"}, message="module.title.unique_entity")
+ * @UniqueEntity(fields={"slug", "axe"}, message="module.slug.unique_entity")
  */
-class Article implements EntityMediaInterface
+class Module implements EntityMediaInterface
 {
     use EntityMediaTrait;
 
@@ -73,11 +75,31 @@ class Article implements EntityMediaInterface
     /**
      * @var Axe|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Formation\Axe", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Formation\Axe", inversedBy="modules")
      *
      * @Assert\NotBlank(message="Veuillez renseigner un axe.")
      */
     private $axe;
+
+    /**
+     * @var Collection|File[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\Formation\File",
+     *     cascade={"persist", "remove"},
+     *     mappedBy="module",
+     *     orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"id": "ASC"})
+     *
+     * @Assert\Valid
+     */
+    private $files;
+
+    public function __construct()
+    {
+        $this->files = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -132,5 +154,26 @@ class Article implements EntityMediaInterface
     public function setAxe(Axe $axe): void
     {
         $this->axe = $axe;
+    }
+
+    /**
+     * @return Collection|File[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): void
+    {
+        if (!$this->files->contains($file)) {
+            $file->setModule($this);
+            $this->files->add($file);
+        }
+    }
+
+    public function removeFile(File $file): void
+    {
+        $this->files->removeElement($file);
     }
 }

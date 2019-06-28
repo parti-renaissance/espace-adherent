@@ -12,4 +12,17 @@ class AxeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Axe::class);
     }
+
+    /**
+     * @return Axe[]
+     */
+    public function findAllWithModules(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('modules')
+            ->innerJoin('a.modules', 'modules')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

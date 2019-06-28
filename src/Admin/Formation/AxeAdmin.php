@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace AppBundle\Admin\Formation;
 
+use AppBundle\Admin\MediaSynchronisedAdminTrait;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -11,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class FormationArticleAdmin extends AbstractAdmin
+class AxeAdmin extends AbstractAdmin
 {
     use MediaSynchronisedAdminTrait;
 
@@ -19,8 +20,8 @@ class FormationArticleAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Méta-données', ['class' => 'col-md-6'])
-                ->add('axe', null, [
-                    'label' => 'Axe de formation',
+                ->add('path', null, [
+                    'label' => 'Parcours',
                 ])
                 ->add('title', TextType::class, [
                     'label' => 'Titre',
@@ -61,10 +62,6 @@ class FormationArticleAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-            ->add('axe', null, [
-                'label' => 'Axe de formation',
-                'show_filter' => true,
-            ])
         ;
     }
 
@@ -76,14 +73,14 @@ class FormationArticleAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/formation/list_image.html.twig',
             ])
-            ->addIdentifier('title', TextType::class, [
+            ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
-            ->add('slug', TextType::class, [
+            ->add('slug', null, [
                 'label' => 'URL',
             ])
-            ->add('axe', null, [
-                'label' => 'Axe de formation',
+            ->add('modules', null, [
+                'label' => 'Modules',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

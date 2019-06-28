@@ -132,9 +132,7 @@
                                         {% endif %}
                                         {% if app.user.isHost %}
                                             <li class="visually-hidden">
-                                                <a href="{{ path('app_formation_intro') }}">Je me forme
-                                                    <span>Nouveau</span>
-                                                </a>
+                                                <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
                                             </li>
                                         {% endif %}
                                     </ul>
@@ -256,12 +254,11 @@
         {% else %}
             {{ include('adherent/_list_my_sections.html.twig') }}
         {% endif %}
-{# Space temporarily closed #}
-{#{% if app.user.isBoardMember %}#}
-{#<li>#}
-{#<a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>#}
-{#</li>#}
-{#{% endif %}#}
+        {% if app.user.isHost %}
+            <li>
+                <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
+            </li>
+        {% endif %}
     </ul>
 </div>
 {% endif %}

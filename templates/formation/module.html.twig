@@ -1,0 +1,35 @@
+{% extends 'formation/layout.html.twig' %}
+
+{% block banner '' %}
+{% block page_title module.title %}
+{% block meta_description module.description %}
+
+{% block canonical_url url('app_formation_module', { 'slug': module.slug }) %}
+
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block base_stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content__inner %}
+    <section class="espace-formation__article">
+        <article class="l__wrapper--slim">
+            {{ module.content|markdown }}
+
+            {% if module.files|length > 0 %}
+                <h2>Contenus du module</h2>
+                <ul>
+                    {% for file in module.files %}
+                        <li>
+                            <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
+                               target="_blank">{{ file.title }}</a> (pdf)
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </article>
+    </section>
+{% endblock %}
