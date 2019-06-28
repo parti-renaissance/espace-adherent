@@ -100,7 +100,7 @@ class Axe implements EntityMediaInterface
 
     public function __toString()
     {
-        return $this->path->getTitle().', '.$this->title;
+        return $this->path ? $this->path->getTitle().', '.$this->title : '';
     }
 
     public function getId(): ?int
