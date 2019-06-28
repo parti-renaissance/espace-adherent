@@ -19,12 +19,15 @@
 
     &__waiting-for-approval {
         font-family: $font-roboto;
-        @include text--default;
         margin-top: 20px;
-        margin-bottom: 20px;
-        color: $dark;
-        background: $yellow;
-        padding: 5px 10px;
+        margin-bottom: 30px;
+        color: $inf-modl--text-yellow;
+        background-color: $inf-modl--bkg-yellow;
+        padding: 20px;
+        font-size: 15px;
+        max-width: 900px;
+        font-weight: normal;
+        line-height: 20px;
     }
 
     &__name {
