@@ -31,6 +31,26 @@ class ProcurationControllerTest extends WebTestCase
     /** @var ProcurationProxyRepository */
     private $procurationProxyRepostitory;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->procurationRequestRepostitory = $this->getProcurationRequestRepository();
+        $this->procurationProxyRepostitory = $this->getProcurationProxyRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->procurationRequestRepostitory = null;
+        $this->procurationProxyRepostitory = null;
+
+        parent::tearDown();
+    }
+
     public function testLandingWithoutComingElection()
     {
         $this->loadFixtures([]); // We need empty tables for this test only
@@ -702,26 +722,6 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('2e tour des éléctions présidentielles 2017', $rounds->eq(1)->text());
         $this->assertSame('1er tour des éléctions législatives 2017', $rounds->eq(2)->text());
         $this->assertSame('2e tour des éléctions législatives 2017', $rounds->eq(3)->text());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->procurationRequestRepostitory = $this->getProcurationRequestRepository();
-        $this->procurationProxyRepostitory = $this->getProcurationProxyRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->procurationRequestRepostitory = null;
-        $this->procurationProxyRepostitory = null;
-
-        parent::tearDown();
     }
 
     private function setElectionContext(string $action = ElectionContext::ACTION_REQUEST): void

@@ -23,13 +23,13 @@ class ReportVoterTest extends TestCase
      */
     private $authorizationChecker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->voter = new ReportVoter($this->authorizationChecker);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->voter = new ReportVoter($this->authorizationChecker);

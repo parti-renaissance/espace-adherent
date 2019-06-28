@@ -28,6 +28,22 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
     /* @var EntityAddressGeocodingSubscriber */
     private $subscriber;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $this->subscriber = new EntityAddressGeocodingSubscriber(new DummyGeocoder(), $this->manager);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->manager = null;
+        $this->subscriber = null;
+
+        parent::tearDown();
+    }
+
     public function testOnAdherentAccountRegistrationCompletedSucceeds()
     {
         $adherent = $this->createAdherent('92 bld Victor Hugo');
@@ -216,21 +232,5 @@ class EntityAddressGeocodingSubscriberTest extends TestCase
             ActivityPositions::STUDENT,
             PostAddress::createFrenchAddress($address, '92110-92024')
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $this->subscriber = new EntityAddressGeocodingSubscriber(new DummyGeocoder(), $this->manager);
-    }
-
-    protected function tearDown()
-    {
-        $this->manager = null;
-        $this->subscriber = null;
-
-        parent::tearDown();
     }
 }

@@ -15,6 +15,20 @@ class ReferentNominationControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testOurReferentsDirectory()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/nos-referents');
@@ -46,19 +60,5 @@ class ReferentNominationControllerTest extends WebTestCase
         $this->client->click($crawler->selectLink('Retour à la liste des référents')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

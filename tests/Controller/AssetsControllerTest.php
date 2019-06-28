@@ -19,6 +19,24 @@ class AssetsControllerTest extends WebTestCase
     /** @var Signature */
     private $signature;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->signature = SignatureFactory::create($this->container->getParameter('kernel.secret'));
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->signature = null;
+
+        parent::tearDown();
+    }
+
     public function testAssetWithSignatureIsFound()
     {
         $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg', [
@@ -140,23 +158,5 @@ class AssetsControllerTest extends WebTestCase
             $this->client->getResponse(),
             'Foreign characters are not allowed'
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->signature = SignatureFactory::create($this->container->getParameter('kernel.secret'));
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->signature = null;
-
-        parent::tearDown();
     }
 }

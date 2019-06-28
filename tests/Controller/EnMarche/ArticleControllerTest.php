@@ -16,6 +16,20 @@ class ArticleControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testRedirectArticlePublished()
     {
         $this->client->request(Request::METHOD_GET, '/article/outre-mer');
@@ -114,19 +128,5 @@ class ArticleControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/articles/opinions/mes-opinions');
 
         $this->assertContains('<a href="http://www.google.fr" class="category category--opinions">', $this->client->getResponse()->getContent());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

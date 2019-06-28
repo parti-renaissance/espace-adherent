@@ -23,6 +23,24 @@ class CommitteeAdminTest extends WebTestCase
      */
     private $committeeRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->committeeRepository = $this->getCommitteeRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->committeeRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testCommitteeStaticSegmentCommandIsDispatchedWhenCommitteeIsApproved(): void
     {
         $this->authenticateAsAdmin($this->client);
@@ -35,23 +53,5 @@ class CommitteeAdminTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/admin/app/committee/list', $this->client);
 
         $this->assertMessageIsDispatched(CreateStaticSegmentCommand::class);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->committeeRepository = $this->getCommitteeRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeRepository = null;
-
-        parent::tearDown();
     }
 }

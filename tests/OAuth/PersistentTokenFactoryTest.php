@@ -36,6 +36,30 @@ class PersistentTokenFactoryTest extends TestCase
     private $clientRepository;
     private $adherentRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->accessTokenRepository = $this->createMock(AccessTokenRepository::class);
+        $this->clientRepository = $this->createMock(ClientRepository::class);
+        $this->adherentRepository = $this->createMock(AdherentRepository::class);
+        $this->tokenFactory = new PersistentTokenFactory(
+            $this->accessTokenRepository,
+            $this->clientRepository,
+            $this->adherentRepository
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->accessTokenRepository = null;
+        $this->clientRepository = null;
+        $this->adherentRepository = null;
+        $this->tokenFactory = null;
+
+        parent::tearDown();
+    }
+
     public function testCreateAuthorizationCode(): void
     {
         $token = $this->createAuthorizationCode();
@@ -275,29 +299,5 @@ class PersistentTokenFactoryTest extends TestCase
     private function createScope(string $identifier): InMemoryScope
     {
         return new InMemoryScope($identifier);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->accessTokenRepository = $this->createMock(AccessTokenRepository::class);
-        $this->clientRepository = $this->createMock(ClientRepository::class);
-        $this->adherentRepository = $this->createMock(AdherentRepository::class);
-        $this->tokenFactory = new PersistentTokenFactory(
-            $this->accessTokenRepository,
-            $this->clientRepository,
-            $this->adherentRepository
-        );
-    }
-
-    protected function tearDown()
-    {
-        $this->accessTokenRepository = null;
-        $this->clientRepository = null;
-        $this->adherentRepository = null;
-        $this->tokenFactory = null;
-
-        parent::tearDown();
     }
 }

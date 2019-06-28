@@ -27,6 +27,25 @@ class BindAdherentDistrictSubscriberTest extends TestCase
     /* @var BindAdherentDistrictSubscriber */
     private $subscriber;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->manager = $this->createMock(EntityManagerInterface::class);
+        $this->districtRepository = $this->createMock(DistrictRepository::class);
+        $this->manager->expects($this->once())->method('getRepository')->willReturn($this->districtRepository);
+        $this->subscriber = new BindAdherentDistrictSubscriber($this->manager);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->manager = null;
+        $this->districtRepository = null;
+        $this->subscriber = null;
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider provideReferentTagHasCount
      */
@@ -65,21 +84,6 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         $this->assertSame($count, $adherent->getReferentTags()->count());
     }
 
-    private function createAdherent(): Adherent
-    {
-        return Adherent::create(
-            Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
-            'john.smith@example.org',
-            'super-password',
-            'male',
-            'John',
-            'Smith',
-            new \DateTime('1990-12-12'),
-            ActivityPositions::EMPLOYED,
-            PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
-        );
-    }
-
     public function provideReferentTagHasCount(): array
     {
         /** @var GeoData $geoData */
@@ -105,22 +109,18 @@ class BindAdherentDistrictSubscriberTest extends TestCase
         ];
     }
 
-    protected function setUp()
+    private function createAdherent(): Adherent
     {
-        parent::setUp();
-
-        $this->manager = $this->createMock(EntityManagerInterface::class);
-        $this->districtRepository = $this->createMock(DistrictRepository::class);
-        $this->manager->expects($this->once())->method('getRepository')->willReturn($this->districtRepository);
-        $this->subscriber = new BindAdherentDistrictSubscriber($this->manager);
-    }
-
-    protected function tearDown()
-    {
-        $this->manager = null;
-        $this->districtRepository = null;
-        $this->subscriber = null;
-
-        parent::tearDown();
+        return Adherent::create(
+            Uuid::fromString('c0d66d5f-e124-4641-8fd1-1dd72ffda563'),
+            'john.smith@example.org',
+            'super-password',
+            'male',
+            'John',
+            'Smith',
+            new \DateTime('1990-12-12'),
+            ActivityPositions::EMPLOYED,
+            PostAddress::createFrenchAddress('26 rue de la Paix', '75008-75108', null, 48.869878, 2.332197)
+        );
     }
 }

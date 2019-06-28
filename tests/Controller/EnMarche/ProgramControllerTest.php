@@ -14,6 +14,20 @@ class ProgramControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider provideActions
      */
@@ -52,19 +66,5 @@ class ProgramControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/emmanuel-macron/le-programme/mieux-vivre-de-son-travail');
 
         $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

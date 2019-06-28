@@ -33,6 +33,28 @@ class InteractiveControllerTest extends WebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->MyEuropeChoiceRepository = $this->getMyEuropeChoiceRepository();
+        $this->MyEuropeInvitationRepository = $this->getMyEuropeInvitationRepository();
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->emailRepository = null;
+        $this->MyEuropeInvitationRepository = null;
+        $this->MyEuropeChoiceRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testMyEuropeAction()
     {
         $this->assertCount(0, $this->emailRepository->findAll());
@@ -79,28 +101,6 @@ class InteractiveControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, self::MY_EUROPE_RESTART_PATH);
 
         $this->assertNull($this->client->getRequest()->getSession()->get(MyEuropeProcessorHandler::SESSION_KEY));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->MyEuropeChoiceRepository = $this->getMyEuropeChoiceRepository();
-        $this->MyEuropeInvitationRepository = $this->getMyEuropeInvitationRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->emailRepository = null;
-        $this->MyEuropeInvitationRepository = null;
-        $this->MyEuropeChoiceRepository = null;
-
-        parent::tearDown();
     }
 
     private function getMyEuropeInvitationHandler(): MyEuropeProcessorHandler

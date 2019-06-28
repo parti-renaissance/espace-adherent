@@ -17,6 +17,20 @@ class ReferentsControllerTest extends WebTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testApiReferents()
     {
         $this->client->request(Request::METHOD_GET, '/api/referents');
@@ -31,19 +45,5 @@ class ReferentsControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('postalCode', $content);
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('coordinates', $content);
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

@@ -11,10 +11,28 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class NewsletterSubscriptionRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /** @var NewsletterSubscriptionRepository */
     private $repository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->repository = $this->getNewsletterSubscriptionRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+        $this->container = null;
+
+        parent::tearDown();
+    }
 
     public function testFindAllManagedBy()
     {
@@ -26,23 +44,5 @@ class NewsletterSubscriptionRepositoryTest extends WebTestCase
         $this->assertSame('abc@en-marche-dev.fr', $managedByReferent[0]->getEmail());
         $this->assertSame('def@en-marche-dev.fr', $managedByReferent[1]->getEmail());
         $this->assertSame('ghi@en-marche-dev.fr', $managedByReferent[2]->getEmail());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->repository = $this->getNewsletterSubscriptionRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-        $this->container = null;
-
-        parent::tearDown();
     }
 }

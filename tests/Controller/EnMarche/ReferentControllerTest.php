@@ -30,6 +30,26 @@ class ReferentControllerTest extends WebTestCase
      */
     private $referentMessageRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->referentMessageRepository = $this->manager->getRepository(ReferentManagedUsersMessage::class);
+
+        $this->disableRepublicanSilence();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->referentMessageRepository = null;
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider providePages
      */
@@ -547,25 +567,5 @@ class ReferentControllerTest extends WebTestCase
             'EEEE d LLLL Y, H');
 
         return ucfirst(strtolower($formatter->format($date).'h00'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->referentMessageRepository = $this->manager->getRepository(ReferentManagedUsersMessage::class);
-
-        $this->disableRepublicanSilence();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->referentMessageRepository = null;
-
-        parent::tearDown();
     }
 }

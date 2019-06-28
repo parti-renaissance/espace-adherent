@@ -14,6 +14,20 @@ class BiographyControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testAnonymousUserCanSeeOurOrganization(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/notre-organisation');
@@ -67,19 +81,5 @@ class BiographyControllerTest extends WebTestCase
             'Christophe Castaner, né le 3 janvier 1966 à Ollioules, est un juriste et homme politique français.',
             $crawler->filter('#biography .profile-content p')->text()
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

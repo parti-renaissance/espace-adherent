@@ -23,6 +23,20 @@ class CitizenActionManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testCreateCitizenActionIsForbiddenIfUserIsNotProjectOrganizer()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -359,19 +373,5 @@ class CitizenActionManagerControllerTest extends WebTestCase
     private function seeParticipantsList(Crawler $crawler, int $count): bool
     {
         return $count === \count($crawler->filter('table tbody tr'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

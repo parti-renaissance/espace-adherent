@@ -27,6 +27,26 @@ class AdherentSecurityControllerTest extends WebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->emailRepository = null;
+        $this->adherentRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testAuthenticationIsSuccessful(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
@@ -217,26 +237,6 @@ class AdherentSecurityControllerTest extends WebTestCase
         $client->request(Request::METHOD_GET, $resetPasswordUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->adherentRepository = $this->getAdherentRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->emailRepository = null;
-        $this->adherentRepository = null;
-
-        parent::tearDown();
     }
 
     private function getFirstAdherentResetPasswordToken()

@@ -16,6 +16,20 @@ class BoardMemberControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testUnauthorizeToAccessOnBoardMemberArea()
     {
         $this->authenticateAsAdherent($this->client, 'michel.vasseur@example.ch');
@@ -258,11 +272,6 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertCountMails(1, BoardMemberMessage::class, 'jemarche@en-marche.fr');
     }
 
-    private function authenticateAsBoardMember()
-    {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
-    }
-
     public function testSaveBoardMemberOnList()
     {
         $this->authenticateAsBoardMember();
@@ -305,17 +314,8 @@ class BoardMemberControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    protected function setUp()
+    private function authenticateAsBoardMember()
     {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
+        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
     }
 }

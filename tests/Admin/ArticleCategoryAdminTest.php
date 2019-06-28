@@ -14,6 +14,20 @@ class ArticleCategoryAdminTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->kill();
+    }
+
     public function testCreateCategoryFail()
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr', 'superadmin');
@@ -87,19 +101,5 @@ class ArticleCategoryAdminTest extends WebTestCase
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertValidationErrors(['data.ctaLink'], $this->client->getContainer());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->kill();
     }
 }

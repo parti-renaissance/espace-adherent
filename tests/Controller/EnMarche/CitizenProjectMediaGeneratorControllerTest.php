@@ -13,6 +13,20 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testCoverImageIsGeneratedSuccessfully(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
@@ -56,19 +70,5 @@ class CitizenProjectMediaGeneratorControllerTest extends WebTestCase
         $this->assertArrayHasKey('content-disposition', $response->headers->all());
         $this->assertContains('attachment; filename="tract_', $response->headers->get('content-disposition'));
         $this->assertSame('application/pdf', $response->headers->get('content-type'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

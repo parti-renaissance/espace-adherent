@@ -17,6 +17,20 @@ class UserControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testUserCannotReplaceYourEmailByOneAlreadyUsed(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -65,19 +79,5 @@ class UserControllerTest extends WebTestCase
         $this->manager->clear(Adherent::class);
         $adherent = $this->getAdherentRepository()->findOneByUuid($token->getAdherentUuid()->toString());
         self::assertSame('new.mail@test.com', $adherent->getEmailAddress());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

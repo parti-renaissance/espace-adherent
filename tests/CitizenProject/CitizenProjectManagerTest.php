@@ -30,6 +30,29 @@ class CitizenProjectManagerTest extends WebTestCase
     /* @var CitizenProjectManager */
     private $citizenProjectManager;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->citizenProjectManager = new CitizenProjectManager(
+            $this->getManagerRegistry(),
+            $this->getStorage(),
+            $this->createMock(CitizenProjectAuthority::class),
+            $this->createMock(EventDispatcherInterface::class)
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->citizenProjectManager = null;
+
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testGetCitizenProjectAdministrators()
     {
         $this->assertInstanceOf(
@@ -116,28 +139,5 @@ class CitizenProjectManagerTest extends WebTestCase
             $eventDispatcher
         );
         $citizenProjectManager->followCitizenProject($adherent, $citizenProject);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->citizenProjectManager = new CitizenProjectManager(
-            $this->getManagerRegistry(),
-            $this->getStorage(),
-            $this->createMock(CitizenProjectAuthority::class),
-            $this->createMock(EventDispatcherInterface::class)
-        );
-    }
-
-    protected function tearDown()
-    {
-        $this->citizenProjectManager = null;
-
-        $this->kill();
-
-        parent::tearDown();
     }
 }

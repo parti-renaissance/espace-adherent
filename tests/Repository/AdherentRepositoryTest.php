@@ -19,6 +19,8 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class AdherentRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var AdherentRepository
      */
@@ -29,7 +31,25 @@ class AdherentRepositoryTest extends WebTestCase
      */
     private $referentTagRepository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->adherentRepository = null;
+        $this->referentTagRepository = null;
+
+        parent::tearDown();
+    }
 
     public function testLoadUserByUsername()
     {
@@ -253,25 +273,5 @@ class AdherentRepositoryTest extends WebTestCase
                 ['referent@en-marche-dev.fr'],
             ],
         ];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->adherentRepository = $this->getAdherentRepository();
-        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->adherentRepository = null;
-        $this->referentTagRepository = null;
-
-        parent::tearDown();
     }
 }

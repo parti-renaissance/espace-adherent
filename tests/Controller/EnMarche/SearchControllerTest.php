@@ -18,6 +18,20 @@ class SearchControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider provideQuery
      */
@@ -117,19 +131,5 @@ class SearchControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('.listing__paginator li')->count());
         $this->assertSame('/tous-les-comites', $crawler->filter('.listing__paginator li a')->attr('href'));
         $this->assertSame('1', trim($crawler->filter('.listing__paginator li a')->text()));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

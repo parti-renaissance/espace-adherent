@@ -21,6 +21,24 @@ class AdminThreadControllerTest extends WebTestCase
     /** @var ThreadRepository $threadRepository */
     private $threadRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->threadRepository = $this->getThreadRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->threadRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testDisableAction(): void
     {
         /** @var Thread $thread */
@@ -57,23 +75,5 @@ class AdminThreadControllerTest extends WebTestCase
         $thread = $this->threadRepository->findOneByUuid(LoadIdeaThreadData::THREAD_09_UUID);
 
         $this->assertTrue($thread->isEnabled());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->threadRepository = $this->getThreadRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->threadRepository = null;
-
-        parent::tearDown();
     }
 }

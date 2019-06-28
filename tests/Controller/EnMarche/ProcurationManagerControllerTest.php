@@ -25,6 +25,20 @@ class ProcurationManagerControllerTest extends WebTestCase
         self::SUBJECT_PROPOSAL,
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider providePages
      */
@@ -323,20 +337,6 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertProcurationTotalCount($crawler, self::SUBJECT_PROPOSAL, 1, 'désactivée');
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Annie Versaire")'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 
     private function assertProcurationTotalCount(Crawler $crawler, string $subject, int $count, string $status): void

@@ -13,6 +13,16 @@ class FileListenerTest extends WebTestCase
 {
     private $entityFileListener;
 
+    protected function setUp(): void
+    {
+        self::bootKernel();
+        $container = self::$kernel->getContainer();
+        $this->entityFileListener = new FileListener(
+            $container->get(Filesystem::class),
+            $container->get(Server::class)
+        );
+    }
+
     public function testProcessFile(): void
     {
         $entityFile = new AttachmentFile();
@@ -22,15 +32,5 @@ class FileListenerTest extends WebTestCase
 
         self::assertNotNull($entityFile->getPath());
         self::assertNull($entityFile->getFile());
-    }
-
-    protected function setUp()
-    {
-        self::bootKernel();
-        $container = self::$kernel->getContainer();
-        $this->entityFileListener = new FileListener(
-            $container->get(Filesystem::class),
-            $container->get(Server::class)
-        );
     }
 }

@@ -18,6 +18,20 @@ class AssessorControllerTest extends WebTestCase
 
     private const ASSESSOR_REQUEST_PATH = '/assesseur/demande';
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testAssessorRequest()
     {
         $crawler = $this->client->request(Request::METHOD_GET, self::ASSESSOR_REQUEST_PATH);
@@ -152,19 +166,5 @@ class AssessorControllerTest extends WebTestCase
             'month' => '01',
             'day' => '01',
         ]];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

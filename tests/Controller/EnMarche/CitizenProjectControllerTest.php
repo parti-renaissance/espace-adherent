@@ -22,6 +22,20 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
 {
     use MessengerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testAnonymousUserCanSeeAnApprovedCitizenProject(): void
     {
         $this->client->request(Request::METHOD_GET, '/projets-citoyens/75008-le-projet-citoyen-a-paris-8');
@@ -400,6 +414,11 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         $this->assertSame('Nos coups de cœur', trim($crawler->filter('.citizen_project_featured')->text()));
     }
 
+    protected function getGroupUrl(): string
+    {
+        return '/projets-citoyens/75008-le-projet-citoyen-a-paris-8';
+    }
+
     private function assertSeeCitizenActions(): void
     {
         $this->assertCount(2, $actions = $this->client->getCrawler()->filter('.citizen-project-actions ul'), 'There should be 2 next actions');
@@ -460,24 +479,5 @@ class CitizenProjectControllerTest extends AbstractGroupControllerTest
         }
 
         return true;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
-    }
-
-    protected function getGroupUrl(): string
-    {
-        return '/projets-citoyens/75008-le-projet-citoyen-a-paris-8';
     }
 }

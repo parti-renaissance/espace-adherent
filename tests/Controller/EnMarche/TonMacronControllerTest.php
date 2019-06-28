@@ -37,6 +37,28 @@ class TonMacronControllerTest extends WebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->tonMacronChoiceRepository = $this->getTonMacronChoiceRepository();
+        $this->tonMacronInvitationRepository = $this->getTonMacronInvitationRepository();
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->emailRepository = null;
+        $this->tonMacronInvitationRepository = null;
+        $this->tonMacronChoiceRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testInviteAction()
     {
         $this->assertCount(0, $this->emailRepository->findAll());
@@ -180,28 +202,6 @@ class TonMacronControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, self::INVITATION_RESTART_PATH);
 
         $this->assertNull($this->client->getRequest()->getSession()->get(InvitationProcessorHandler::SESSION_KEY));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->tonMacronChoiceRepository = $this->getTonMacronChoiceRepository();
-        $this->tonMacronInvitationRepository = $this->getTonMacronInvitationRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->emailRepository = null;
-        $this->tonMacronInvitationRepository = null;
-        $this->tonMacronChoiceRepository = null;
-
-        parent::tearDown();
     }
 
     private function getTonMacronInvitationHandler(): InvitationProcessorHandler

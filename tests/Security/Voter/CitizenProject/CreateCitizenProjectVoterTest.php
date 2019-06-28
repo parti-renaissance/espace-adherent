@@ -39,11 +39,6 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
         yield [false, true, CitizenProjectPermissions::CREATE];
     }
 
-    protected function getVoter(): AbstractAdherentVoter
-    {
-        return new CreateCitizenProjectVoter($this->projectRepository);
-    }
-
     public function testNonAdherentIsNotGranted()
     {
         $adherent = $this->getAdherentMock(false);
@@ -82,6 +77,11 @@ class CreateCitizenProjectVoterTest extends AbstractAdherentVoterTest
 
         $this->assertRepositoryBehavior($adherent, true);
         $this->assertGrantedForAdherent(true, true, $adherent, CitizenProjectPermissions::CREATE);
+    }
+
+    protected function getVoter(): AbstractAdherentVoter
+    {
+        return new CreateCitizenProjectVoter($this->projectRepository);
     }
 
     /**

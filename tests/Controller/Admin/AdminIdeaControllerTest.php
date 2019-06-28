@@ -21,6 +21,24 @@ class AdminIdeaControllerTest extends WebTestCase
     /** @var IdeaRepository $ideaRepository */
     private $ideaRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->ideaRepository = $this->getIdeaRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->ideaRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testDisableAction(): void
     {
         /** @var Idea $idea */
@@ -57,23 +75,5 @@ class AdminIdeaControllerTest extends WebTestCase
         $idea = $this->ideaRepository->findOneByUuid(LoadIdeaData::IDEA_08_UUID);
 
         $this->assertTrue($idea->isEnabled());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->ideaRepository = $this->getIdeaRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->ideaRepository = null;
-
-        parent::tearDown();
     }
 }

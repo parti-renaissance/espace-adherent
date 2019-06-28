@@ -21,6 +21,20 @@ class FormControllerTest extends WebTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function validateProvider(): iterable
     {
         yield AdherentRegistrationType::class => [
@@ -175,19 +189,5 @@ class FormControllerTest extends WebTestCase
                 static::assertSame($item, $actual[$key]);
             }
         }
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

@@ -17,6 +17,20 @@ class CommitteesControllerTest extends WebTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testApiApprovedCommittees()
     {
         $this->client->request(Request::METHOD_GET, '/api/committees');
@@ -33,19 +47,5 @@ class CommitteesControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('name', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('position', $content);
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

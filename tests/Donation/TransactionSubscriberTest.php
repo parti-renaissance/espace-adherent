@@ -24,6 +24,26 @@ class TransactionSubscriberTest extends WebTestCase
      */
     private $transactionRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->donationRepository = $this->getDonationRepository();
+        $this->transactionRepository = $this->getTransactionRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->donationRepository = null;
+        $this->transactionRepository = null;
+
+        parent::tearDown();
+    }
+
     public function payloadProvider(): iterable
     {
         yield 'transaction1' => ['424241'];
@@ -87,25 +107,5 @@ class TransactionSubscriberTest extends WebTestCase
         $params['Sign'] = $this->createSignature($params);
 
         return $params;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->donationRepository = $this->getDonationRepository();
-        $this->transactionRepository = $this->getTransactionRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->donationRepository = null;
-        $this->transactionRepository = null;
-
-        parent::tearDown();
     }
 }

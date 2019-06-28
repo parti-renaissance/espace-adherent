@@ -13,6 +13,20 @@ class MyEuropeMessageBodyBuilderTest extends TestCase
 {
     private $repository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->repository = $this->createMock(MyEuropeChoiceRepository::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->repository = null;
+
+        parent::tearDown();
+    }
+
     public function testBuildMessageBody()
     {
         $introductionText = <<<'EOF'
@@ -111,19 +125,5 @@ EOF;
             new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/views')),
             $this->repository
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->repository = $this->createMock(MyEuropeChoiceRepository::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->repository = null;
-
-        parent::tearDown();
     }
 }

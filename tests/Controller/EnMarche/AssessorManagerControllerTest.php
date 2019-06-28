@@ -30,7 +30,7 @@ class AssessorManagerControllerTest extends WebTestCase
         self::SUBJECT_VOTE_PLACE,
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -531,56 +531,6 @@ class AssessorManagerControllerTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
     }
 
-    private function assertSameAssessorProfile(Crawler $crawler, array $profile): void
-    {
-        $this->assertSame($profile['author'], trim($crawler->filter('#request-author')->text()));
-        $this->assertSame($profile['email'], trim($crawler->filter('#request-email')->text()));
-        $this->assertSame($profile['phone'], trim($crawler->filter('#request-phone')->text()));
-        $this->assertSame($profile['birthdate'], trim($crawler->filter('#request-birthdate')->text()));
-        $this->assertSame($profile['votePlaceWishes'], trim($crawler->filter('#request-vote-place-wishes')->text()));
-        $this->assertSame($profile['office'], trim($crawler->filter('#request-office')->text()));
-        $this->assertSame($profile['voteCity'], trim($crawler->filter('#request-vote-city')->text()));
-        $this->assertSame($profile['address'], trim($crawler->filter('#request-address')->text()));
-        $this->assertSame($profile['city'], trim($crawler->filter('#request-city')->text()));
-    }
-
-    private function assertSameVotePlaceProfile(Crawler $crawler, array $profile): void
-    {
-        $this->assertSame($profile['name'], trim($crawler->filter('#vote-place-name')->text()));
-        $this->assertSame($profile['address'], trim($crawler->filter('#vote-place-address')->text()));
-        $this->assertSame($profile['postalCode'], trim($crawler->filter('#vote-place-postalCode')->text()));
-        $this->assertSame($profile['city'], trim($crawler->filter('#vote-place-city')->text()));
-
-        foreach ($profile['availableOffices'] as $availableOffice) {
-            $this->assertContains($availableOffice, trim($crawler->filter('#vote-place-available-offices')->html()));
-        }
-    }
-
-    private function assertAssessorRequestTotalCount(
-        Crawler $crawler,
-        string $subject,
-        int $count,
-        string $status
-    ): void {
-        if (self::SUBJECT_REQUEST === $subject) {
-            $message = $crawler->filter('.assessor_requests_total_count');
-        } elseif (self::SUBJECT_VOTE_PLACE === $subject) {
-            $message = $crawler->filter('.assessor_vote_places_total_count');
-        } else {
-            throw new \InvalidArgumentException(sprintf('Expected one of "%s" or "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
-        }
-
-        $regexp = sprintf(
-            'Vous avez %se? %s %ss?.',
-            $count > 1 ? $count : 'un',
-            $subject,
-            $status
-        );
-
-        $this->assertCount(1, $message);
-        $this->assertRegExp("/^$regexp\$/", trim($message->text()));
-    }
-
     public function testAssessorRequestExport()
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
@@ -657,5 +607,55 @@ class AssessorManagerControllerTest extends WebTestCase
         $array = $spreadsheet->getActiveSheet()->toArray();
 
         return $array;
+    }
+
+    private function assertSameAssessorProfile(Crawler $crawler, array $profile): void
+    {
+        $this->assertSame($profile['author'], trim($crawler->filter('#request-author')->text()));
+        $this->assertSame($profile['email'], trim($crawler->filter('#request-email')->text()));
+        $this->assertSame($profile['phone'], trim($crawler->filter('#request-phone')->text()));
+        $this->assertSame($profile['birthdate'], trim($crawler->filter('#request-birthdate')->text()));
+        $this->assertSame($profile['votePlaceWishes'], trim($crawler->filter('#request-vote-place-wishes')->text()));
+        $this->assertSame($profile['office'], trim($crawler->filter('#request-office')->text()));
+        $this->assertSame($profile['voteCity'], trim($crawler->filter('#request-vote-city')->text()));
+        $this->assertSame($profile['address'], trim($crawler->filter('#request-address')->text()));
+        $this->assertSame($profile['city'], trim($crawler->filter('#request-city')->text()));
+    }
+
+    private function assertSameVotePlaceProfile(Crawler $crawler, array $profile): void
+    {
+        $this->assertSame($profile['name'], trim($crawler->filter('#vote-place-name')->text()));
+        $this->assertSame($profile['address'], trim($crawler->filter('#vote-place-address')->text()));
+        $this->assertSame($profile['postalCode'], trim($crawler->filter('#vote-place-postalCode')->text()));
+        $this->assertSame($profile['city'], trim($crawler->filter('#vote-place-city')->text()));
+
+        foreach ($profile['availableOffices'] as $availableOffice) {
+            $this->assertContains($availableOffice, trim($crawler->filter('#vote-place-available-offices')->html()));
+        }
+    }
+
+    private function assertAssessorRequestTotalCount(
+        Crawler $crawler,
+        string $subject,
+        int $count,
+        string $status
+    ): void {
+        if (self::SUBJECT_REQUEST === $subject) {
+            $message = $crawler->filter('.assessor_requests_total_count');
+        } elseif (self::SUBJECT_VOTE_PLACE === $subject) {
+            $message = $crawler->filter('.assessor_vote_places_total_count');
+        } else {
+            throw new \InvalidArgumentException(sprintf('Expected one of "%s" or "%s", but got "%s".', implode('", "', self::SUBJECTS), $subject));
+        }
+
+        $regexp = sprintf(
+            'Vous avez %se? %s %ss?.',
+            $count > 1 ? $count : 'un',
+            $subject,
+            $status
+        );
+
+        $this->assertCount(1, $message);
+        $this->assertRegExp("/^$regexp\$/", trim($message->text()));
     }
 }

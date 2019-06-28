@@ -15,6 +15,20 @@ class SocialShareControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testList()
     {
         $this->client->request(Request::METHOD_GET, '/jepartage');
@@ -27,19 +41,5 @@ class SocialShareControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/jepartage/culture');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

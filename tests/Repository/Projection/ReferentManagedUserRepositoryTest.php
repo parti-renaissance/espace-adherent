@@ -28,6 +28,25 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
      */
     private $referentTagRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->referentManagedUserRepository = $this->getRepository(ReferentManagedUser::class);
+        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->referentManagedUserRepository = null;
+        $this->referentTagRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testSearch()
     {
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
@@ -151,24 +170,5 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         }
 
         $this->assertSame(1, $count);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->referentManagedUserRepository = $this->getRepository(ReferentManagedUser::class);
-        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->referentManagedUserRepository = null;
-        $this->referentTagRepository = null;
-
-        parent::tearDown();
     }
 }

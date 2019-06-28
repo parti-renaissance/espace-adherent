@@ -14,6 +14,20 @@ class HomeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testIndex(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -116,19 +130,5 @@ class HomeControllerTest extends WebTestCase
         yield 'Actualités' => ['/articles/actualites/', '/articles/actualites'];
         yield 'Inscription' => ['/adhesion/', '/adhesion'];
         yield 'Inscription with parameters' => ['/adhesion/?param1=value1&param2=value2', '/adhesion?param1=value1&param2=value2'];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

@@ -15,6 +15,20 @@ class IntlControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testGetPostalCode()
     {
         $this->client->request(Request::METHOD_GET, '/api/postal-code/35420');
@@ -49,19 +63,5 @@ class IntlControllerTest extends WebTestCase
             'Sarrebruck',
             'Stuttgart',
         ], \GuzzleHttp\json_decode($this->client->getResponse()->getContent(), true));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

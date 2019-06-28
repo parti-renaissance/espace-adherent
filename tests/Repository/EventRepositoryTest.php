@@ -14,12 +14,30 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class EventRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var EventRepository
      */
     private $repository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->repository = $this->getEventRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+
+        parent::tearDown();
+    }
 
     public function testCountEvents()
     {
@@ -74,23 +92,5 @@ class EventRepositoryTest extends WebTestCase
         $search = $this->get(SearchParametersFilter::class)->handleRequest($request);
 
         $this->assertSame(2, \count($this->repository->searchAllEvents($search)));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->repository = $this->getEventRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-
-        parent::tearDown();
     }
 }

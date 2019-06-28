@@ -12,12 +12,30 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class TonMacronChoiceRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var TonMacronChoiceRepository
      */
     private $repository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->repository = $this->getTonMacronChoiceRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+        $this->container = null;
+
+        parent::tearDown();
+    }
 
     public function testGetMailIntroductionAndConclusion()
     {
@@ -30,23 +48,5 @@ class TonMacronChoiceRepositoryTest extends WebTestCase
 
         $this->assertInstanceOf(TonMacronChoice::class, $conclusion);
         $this->assertSame('31276b63-a4f3-4994-aca8-ed4ca78c173e', $conclusion->getUuid()->toString());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->repository = $this->getTonMacronChoiceRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-        $this->container = null;
-
-        parent::tearDown();
     }
 }

@@ -19,6 +19,8 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class BoardMemberManagerTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var AdherentRepository
      */
@@ -29,7 +31,25 @@ class BoardMemberManagerTest extends WebTestCase
      */
     private $boardMemberManager;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->boardMemberManager = $this->container->get('app.board_member.manager');
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->boardMemberManager = null;
+        $this->adherentRepository = null;
+
+        parent::tearDown();
+    }
 
     public function testSearchMembers()
     {
@@ -84,25 +104,5 @@ class BoardMemberManagerTest extends WebTestCase
 
         $this->assertCount(15, $roles);
         $this->assertContainsOnlyInstancesOf(Role::class, $roles);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->adherentRepository = $this->getAdherentRepository();
-        $this->boardMemberManager = $this->container->get('app.board_member.manager');
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->boardMemberManager = null;
-        $this->adherentRepository = null;
-
-        parent::tearDown();
     }
 }

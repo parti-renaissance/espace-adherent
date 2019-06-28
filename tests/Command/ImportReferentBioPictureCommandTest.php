@@ -14,6 +14,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 class ImportReferentBioPictureCommandTest extends WebTestCase
 {
     use ControllerTestTrait;
+
     const VALID_ARCHIVE_NAME = 'correct.zip';
     const ARCHIVE_WITHOUT_CSV_NAME = 'archive_without_csv.zip';
     const ARCHIVE_WITH_NOT_REFERENT_IN_DB = 'archive_with_not_referent_in_db.zip';
@@ -24,6 +25,26 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         self::ARCHIVE_WITH_NOT_REFERENT_IN_DB,
         self::ARCHIVE_WITH_MISSING_IMAGE_FILE,
     ];
+
+    protected function setUp(): void
+    {
+        $this->container = $this->getContainer();
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        foreach (self::ARCHIVES_NAME as $archiveName) {
+            if (file_exists($archiveName)) {
+                unlink($archiveName);
+            }
+        }
+
+        parent::tearDown();
+    }
 
     public function testCommandSucessImport()
     {
@@ -159,25 +180,5 @@ class ImportReferentBioPictureCommandTest extends WebTestCase
         $archive->addFromString(ImportReferentBioPictureCommand::CSV_FILENAME, $csvContent);
 
         $archive->close();
-    }
-
-    public function setUp()
-    {
-        $this->container = $this->getContainer();
-
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        foreach (self::ARCHIVES_NAME as $archiveName) {
-            if (file_exists($archiveName)) {
-                unlink($archiveName);
-            }
-        }
-
-        parent::tearDown();
     }
 }

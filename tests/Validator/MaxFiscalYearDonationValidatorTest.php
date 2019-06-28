@@ -22,6 +22,18 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
      */
     private $donationRequestUtils;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->donationRequestUtils = new DonationRequestUtils(
+            $this->createMock(ServiceLocator::class),
+            $this->createMock(Slugify::class),
+            $this->createMock(MembershipRegistrationProcess::class),
+            $this->createMock(GeoCoder::class)
+        );
+    }
+
     /**
      * @dataProvider noValidateDonationProvider
      */
@@ -179,17 +191,5 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         $donationRequest->setEmailAddress($email);
 
         return $donationRequest;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->donationRequestUtils = new DonationRequestUtils(
-            $this->createMock(ServiceLocator::class),
-            $this->createMock(Slugify::class),
-            $this->createMock(MembershipRegistrationProcess::class),
-            $this->createMock(GeoCoder::class)
-        );
     }
 }

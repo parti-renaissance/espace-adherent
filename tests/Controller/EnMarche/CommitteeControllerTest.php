@@ -23,6 +23,24 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private $committeeRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->committeeRepository = $this->getCommitteeRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->committeeRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testBackButtonNotPresentWhenCommitteeIsPending(): void
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
@@ -429,6 +447,23 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertEditDeleteButton($crawler, 0);
     }
 
+    public function assertRedictIfCommitteeNotExist()
+    {
+        $this->client->request(Request::METHOD_GET, '/comites/ariege-leze');
+
+        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
+
+        $this->assertClientIsRedirectedTo('/comites', $this->client);
+        $this->client->followRedirect();
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
+    protected function getGroupUrl(): string
+    {
+        return '/comites/en-marche-dammarie-les-lys';
+    }
+
     private function seeLoginLink(Crawler $crawler): bool
     {
         return 1 === \count($crawler->filter('#committee-login-link'));
@@ -552,41 +587,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         } else {
             $this->assertCount(0, $crawler->filter($twitterLinkPattern));
         }
-    }
-
-    public function assertRedictIfCommitteeNotExist()
-    {
-        $this->client->request(Request::METHOD_GET, '/comites/ariege-leze');
-
-        $this->assertStatusCode(Response::HTTP_MOVED_PERMANENTLY, $this->client);
-
-        $this->assertClientIsRedirectedTo('/comites', $this->client);
-        $this->client->followRedirect();
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->committeeRepository = $this->getCommitteeRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeRepository = null;
-
-        parent::tearDown();
-    }
-
-    protected function getGroupUrl(): string
-    {
-        return '/comites/en-marche-dammarie-les-lys';
     }
 
     private function assertEditDeleteButton(Crawler $crawler, int $nbExpected)

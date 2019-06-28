@@ -15,6 +15,20 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        $this->init();
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testSendMailWhenNoteIsFinished(): void
     {
         $this->updateIdeaFinalizedAt(LoadIdeaData::IDEA_04_UUID, '-10 minutes');
@@ -31,20 +45,6 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
         $this->runCommand('idea-workshop:notification:idea-author', ['--caution' => null]);
 
         $this->assertCountMails(1, IdeaFinalizeMessage::class, 'jacques.picard@en-marche.fr');
-    }
-
-    public function setUp()
-    {
-        $this->init();
-
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 
     private function updateIdeaFinalizedAt(string $uuid, string $time): void

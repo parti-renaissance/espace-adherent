@@ -22,6 +22,24 @@ class LegislativesControllerTest extends WebTestCase
      */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->emailRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testAnonymousUserIsForbiddenToSendContactMessage()
     {
         $this->client->request(Request::METHOD_GET, '/espace-candidat-legislatives/contact');
@@ -120,23 +138,5 @@ class LegislativesControllerTest extends WebTestCase
             ['comptes.legislatives@en-marche.fr', 'financial'],
             ['campagne.legislatives@en-marche.fr', 'standard'],
         ];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->emailRepository = null;
-
-        parent::tearDown();
     }
 }

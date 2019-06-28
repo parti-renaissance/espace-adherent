@@ -50,6 +50,20 @@ class SummaryManagerControllerTest extends WebTestCase
         self::SECTION_INTERESTS,
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function provideActions()
     {
         yield 'Index' => ['/espace-adherent/mon-profil'];
@@ -1277,20 +1291,6 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('#summary-recent-activities p'));
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 
     private function getSummarySection(Crawler $crawler, string $section): Crawler

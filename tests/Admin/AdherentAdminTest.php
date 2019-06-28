@@ -15,11 +15,29 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class AdherentAdminTest extends WebTestCase
 {
-    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%s/edit';
-
     use ControllerTestTrait;
 
+    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%s/edit';
+
     private $adherentRepository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->adherentRepository = $this->getAdherentRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->adherentRepository = null;
+
+        parent::tearDown();
+    }
 
     public function testAnAdminCantBanAnAdherent()
     {
@@ -134,23 +152,5 @@ class AdherentAdminTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Confirmer')->form());
 
         $this->assertContains(sprintf('L\'adhérent <b>%s</b> a bien été exclu', $adherent->getFullName()), $this->client->getResponse()->getContent());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->adherentRepository = $this->getAdherentRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->adherentRepository = null;
-
-        parent::tearDown();
     }
 }

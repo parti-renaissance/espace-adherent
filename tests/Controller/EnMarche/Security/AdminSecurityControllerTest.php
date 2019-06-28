@@ -15,6 +15,20 @@ class AdminSecurityControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testAuthenticationIsSuccessful(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
@@ -112,19 +126,5 @@ class AdminSecurityControllerTest extends WebTestCase
                 'foo-bar-pass',
             ],
         ];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

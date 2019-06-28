@@ -15,6 +15,20 @@ class GroupUtilsTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testGetUuidsFromJson()
     {
         $this->assertSame([], GroupUtils::getUuidsFromJson(''));
@@ -112,19 +126,5 @@ class GroupUtilsTest extends WebTestCase
         $this->expectException(\BadMethodCallException::class);
 
         GroupUtils::getUuidsFromAdherents('this is not an iterable value');
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

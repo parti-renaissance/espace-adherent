@@ -15,6 +15,20 @@ class SummaryControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function provideSummarySlug()
     {
         yield ['carl-mirabeau'];
@@ -73,19 +87,5 @@ class SummaryControllerTest extends WebTestCase
         $this->assertSame('https://twitter.com/lucie-olivera-fake', $crawler->filter('.summary-contact-twitter a')->attr('href'));
 
         $this->assertSame(0, $crawler->filter('.cv__skills--modify:contains("Modifier")')->count());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

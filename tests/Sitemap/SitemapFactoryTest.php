@@ -38,6 +38,15 @@ class SitemapFactoryTest extends TestCase
      */
     private $cache;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->objectManager = $this->createMock(ObjectManager::class);
+        $this->router = $this->createMock(RouterInterface::class);
+        $this->cache = $this->createMock(CacheItemPoolInterface::class);
+    }
+
     public function testAddArticle(): void
     {
         $this->initMock();
@@ -121,15 +130,6 @@ class SitemapFactoryTest extends TestCase
 
         $this->expectException(SitemapException::class);
         $this->invokeReflectionMethod('addCommittees', new Sitemap(), 1, 10);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->objectManager = $this->createMock(ObjectManager::class);
-        $this->router = $this->createMock(RouterInterface::class);
-        $this->cache = $this->createMock(CacheItemPoolInterface::class);
     }
 
     protected function initMock(): void

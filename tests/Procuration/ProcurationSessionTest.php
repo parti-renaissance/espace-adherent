@@ -18,12 +18,12 @@ class ProcurationSessionTest extends TestCase
     /** @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $session;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->session = $this->createMock(SessionInterface::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->session = null;
     }

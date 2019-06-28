@@ -32,6 +32,30 @@ class CommitteeFeedManagerTest extends WebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        $this->init();
+
+        $this->committeeFeedManager = $this->get('app.committee.feed_manager');
+        $this->committeeRepository = $this->getCommitteeRepository();
+        $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
+        $this->emailRepository = $this->getEmailRepository();
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->committeeFeedManager = null;
+        $this->committeeRepository = null;
+        $this->committeeMembershipRepository = null;
+        $this->emailRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testCreateMessage()
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_1_UUID);
@@ -64,29 +88,5 @@ class CommitteeFeedManagerTest extends WebTestCase
         $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'luciole1989@spambox.fr');
         $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'gisele-berthoux@caramail.com');
         $this->assertCountMails(0, CommitteeMessageNotificationMessage::class, 'carl999@example.fr');
-    }
-
-    public function setUp()
-    {
-        $this->init();
-
-        $this->committeeFeedManager = $this->get('app.committee.feed_manager');
-        $this->committeeRepository = $this->getCommitteeRepository();
-        $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
-        $this->emailRepository = $this->getEmailRepository();
-
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeFeedManager = null;
-        $this->committeeRepository = null;
-        $this->committeeMembershipRepository = null;
-        $this->emailRepository = null;
-
-        parent::tearDown();
     }
 }

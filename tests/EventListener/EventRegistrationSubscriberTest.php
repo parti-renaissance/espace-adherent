@@ -24,6 +24,22 @@ class EventRegistrationSubscriberTest extends TestCase
 
     private $urlGenerator;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mailer = $this->createMock(MailerService::class);
+        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->mailer = null;
+        $this->urlGenerator = null;
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider provideEventRegistrationCreated
      */
@@ -83,21 +99,5 @@ class EventRegistrationSubscriberTest extends TestCase
             '2017-01-01',
             '2017-01-04'
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->mailer = $this->createMock(MailerService::class);
-        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->mailer = null;
-        $this->urlGenerator = null;
-
-        parent::tearDown();
     }
 }

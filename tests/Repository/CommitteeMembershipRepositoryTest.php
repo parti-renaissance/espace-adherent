@@ -13,12 +13,30 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class CommitteeMembershipRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var CommitteeMembershipRepository
      */
     private $repository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->repository = $this->getCommitteeMembershipRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+        $this->container = null;
+
+        parent::tearDown();
+    }
 
     public function testFindCommitteeHostMembersList()
     {
@@ -68,23 +86,5 @@ class CommitteeMembershipRepositoryTest extends WebTestCase
         $this->assertFalse($this->repository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_1_UUID)));
         $this->assertFalse($this->repository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_2_UUID)));
         $this->assertFalse($this->repository->hostCommittee($this->getAdherent(LoadAdherentData::ADHERENT_4_UUID)));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->repository = $this->getCommitteeMembershipRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-        $this->container = null;
-
-        parent::tearDown();
     }
 }

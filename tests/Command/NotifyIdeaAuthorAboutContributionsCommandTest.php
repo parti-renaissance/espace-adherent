@@ -13,24 +13,24 @@ class NotifyIdeaAuthorAboutContributionsCommandTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    public function testSendMailAboutContributions(): void
-    {
-        $this->runCommand('idea-workshop:notification:contributions');
-
-        $this->assertCountMails(1, IdeaContributionsMessage::class, 'michel.vasseur@example.ch');
-    }
-
-    public function setUp()
+    protected function setUp(): void
     {
         $this->init();
 
         parent::setUp();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->kill();
 
         parent::tearDown();
+    }
+
+    public function testSendMailAboutContributions(): void
+    {
+        $this->runCommand('idea-workshop:notification:contributions');
+
+        $this->assertCountMails(1, IdeaContributionsMessage::class, 'michel.vasseur@example.ch');
     }
 }

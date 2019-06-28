@@ -32,11 +32,6 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
         parent::tearDown();
     }
 
-    protected function getVoter(): AbstractAdherentVoter
-    {
-        return new AttendEventVoter($this->registrationRepository);
-    }
-
     public function provideAnonymousCases(): iterable
     {
         yield [false, true, CitizenActionPermissions::UNREGISTER, $this->createMock(CitizenAction::class)];
@@ -70,5 +65,10 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
         yield [false, CitizenActionPermissions::UNREGISTER, $action];
         yield [true, EventPermissions::UNREGISTER, $event];
         yield [false, EventPermissions::UNREGISTER, $event];
+    }
+
+    protected function getVoter(): AbstractAdherentVoter
+    {
+        return new AttendEventVoter($this->registrationRepository);
     }
 }

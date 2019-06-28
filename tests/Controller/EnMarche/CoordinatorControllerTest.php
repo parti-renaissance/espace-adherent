@@ -15,6 +15,20 @@ class CoordinatorControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider providePages
      */
@@ -115,19 +129,5 @@ class CoordinatorControllerTest extends WebTestCase
             ['/espace-coordinateur/comites/list'],
             ['/espace-coordinateur/projet-citoyen/list'],
         ];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

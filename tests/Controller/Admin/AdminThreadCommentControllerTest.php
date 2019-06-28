@@ -21,6 +21,24 @@ class AdminThreadCommentControllerTest extends WebTestCase
     /** @var ThreadCommentRepository $threadCommentRepository */
     private $threadCommentRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->threadCommentRepository = $this->getThreadCommentRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->threadCommentRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testDisableAction(): void
     {
         /** @var ThreadComment $threadComment */
@@ -57,23 +75,5 @@ class AdminThreadCommentControllerTest extends WebTestCase
         $threadComment = $this->threadCommentRepository->findOneByUuid(LoadIdeaThreadCommentData::THREAD_COMMENT_10_UUID);
 
         $this->assertTrue($threadComment->isEnabled());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->threadCommentRepository = $this->getThreadCommentRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->threadCommentRepository = null;
-
-        parent::tearDown();
     }
 }

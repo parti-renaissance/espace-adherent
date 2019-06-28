@@ -15,6 +15,20 @@ class FacebookControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testIndex()
     {
         $this->client->request(Request::METHOD_GET, '/profil-facebook');
@@ -25,19 +39,5 @@ class FacebookControllerTest extends WebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/profil-facebook/connexion');
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $response = $this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

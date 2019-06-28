@@ -13,6 +13,20 @@ class JWTAuthenticationTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testJWTAuthenticationSuccess(): void
     {
         $this->client->request('GET', '/api/users/me');
@@ -48,19 +62,5 @@ class JWTAuthenticationTest extends WebTestCase
         ]);
         $this->assertStatusCode(401, $this->client);
         $this->assertSame('{"code":401,"message":"Expired JWT Token"}', $this->client->getResponse()->getContent());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

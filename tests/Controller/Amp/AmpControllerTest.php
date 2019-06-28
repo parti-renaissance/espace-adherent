@@ -15,6 +15,20 @@ class AmpControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init('amp');
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testArticlePublished()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/articles/actualites/outre-mer');
@@ -107,19 +121,5 @@ class AmpControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/sitemap.xml');
 
         $this->isSuccessful($this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init('amp');
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

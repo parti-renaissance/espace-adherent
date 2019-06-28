@@ -14,6 +14,18 @@ class RedirectionManagerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        $this->getContainer()->get('app.cache.redirection')->clear();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testSimpleResolveRedirection(): void
     {
         $redirectionManager = $this->getContainer()->get(RedirectionManager::class);
@@ -67,17 +79,5 @@ class RedirectionManagerTest extends WebTestCase
         self::assertSame($source, $redirection->getFrom());
         self::assertSame($target, $redirection->getTo());
         self::assertSame($type, $redirection->getType());
-    }
-
-    protected function setUp()
-    {
-        $this->getContainer()->get('app.cache.redirection')->clear();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

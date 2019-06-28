@@ -29,7 +29,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -37,7 +37,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $this->factory = new ProcurationProxyMessageFactory($this->urlGenerator, 'procurations@en-marche-dev.fr');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->urlGenerator = null;
         $this->factory = null;

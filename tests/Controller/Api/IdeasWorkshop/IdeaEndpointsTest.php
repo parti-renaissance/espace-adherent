@@ -13,6 +13,12 @@ class IdeaEndpointTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        $this->init();
+        parent::setUp();
+    }
+
     public function testAddAndRemoveDocumentInIdeaAnswerContent(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
@@ -93,11 +99,5 @@ class IdeaEndpointTest extends WebTestCase
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
-
-    protected function setUp()
-    {
-        $this->init();
-        parent::setUp();
     }
 }

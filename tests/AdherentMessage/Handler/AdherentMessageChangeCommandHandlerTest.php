@@ -55,6 +55,21 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     /** @var MailchimpObjectIdMapping */
     private $mailchimpMapping;
 
+    protected function setUp(): void
+    {
+        $this->adherentDummy = $this->createConfiguredMock(Adherent::class, [
+            '__toString' => 'Full Name',
+            'getFullName' => 'Full Name',
+            'getFirstName' => 'First Name',
+            'getEmailAddress' => 'adherent@mail.com',
+            'getManagedDistrict' => $this->createConfiguredMock(District::class, ['__toString' => 'District1']),
+        ]);
+
+        $this->clientMock = $this->createMock(ClientInterface::class);
+        $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
+        $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::uuid4());
+    }
+
     public function testCommitteeMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(CommitteeAdherentMessage::class);
@@ -450,21 +465,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         ;
 
         $this->createHandler($message)($this->commandDummy);
-    }
-
-    protected function setUp()
-    {
-        $this->adherentDummy = $this->createConfiguredMock(Adherent::class, [
-            '__toString' => 'Full Name',
-            'getFullName' => 'Full Name',
-            'getFirstName' => 'First Name',
-            'getEmailAddress' => 'adherent@mail.com',
-            'getManagedDistrict' => $this->createConfiguredMock(District::class, ['__toString' => 'District1']),
-        ]);
-
-        $this->clientMock = $this->createMock(ClientInterface::class);
-        $this->commandDummy = $this->createMock(AdherentMessageChangeCommand::class);
-        $this->commandDummy->expects($this->once())->method('getUuid')->willReturn(Uuid::uuid4());
     }
 
     private function preparedMessage(string $messageClass): AdherentMessageInterface

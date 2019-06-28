@@ -9,12 +9,13 @@ use PHPUnit\Framework\TestCase;
 class IcalSerializationVisitorTest extends TestCase
 {
     protected $propertyNamingStrategy;
+
     /**
      * @var IcalSerializationVisitor
      */
     protected $visitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->propertyNamingStrategy = $this->createMock(PropertyNamingStrategyInterface::class);
 

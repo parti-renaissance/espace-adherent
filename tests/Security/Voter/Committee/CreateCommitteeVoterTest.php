@@ -36,11 +36,6 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
         yield [false, true, CommitteePermissions::CREATE];
     }
 
-    protected function getVoter(): AbstractAdherentVoter
-    {
-        return new CreateCommitteeVoter($this->committeeRepository);
-    }
-
     public function testAdherentCannotCreateIfReferent()
     {
         $adherent = $this->getAdherentMock(true);
@@ -71,6 +66,11 @@ class CreateCommitteeVoterTest extends AbstractAdherentVoterTest
 
         $this->assertRepositoryBehavior(true, $adherent, true);
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::CREATE);
+    }
+
+    protected function getVoter(): AbstractAdherentVoter
+    {
+        return new CreateCommitteeVoter($this->committeeRepository);
     }
 
     /**

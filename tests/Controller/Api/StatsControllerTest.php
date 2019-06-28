@@ -15,6 +15,20 @@ class StatsControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testIndex()
     {
         $this->client->request(Request::METHOD_GET, '/api/stats');
@@ -31,19 +45,5 @@ class StatsControllerTest extends WebTestCase
             'eventCount' => 19,
             'committeeCount' => 9,
         ], $data);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

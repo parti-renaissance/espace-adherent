@@ -46,6 +46,26 @@ class AdherentControllerTest extends WebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->committeeRepository = $this->getCommitteeRepository();
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->emailRepository = null;
+        $this->committeeRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testMyEventsPageIsProtected(): void
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
@@ -1216,26 +1236,6 @@ class AdherentControllerTest extends WebTestCase
                 'kiroule.p@blabla.tld',
             ],
         ];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->committeeRepository = $this->getCommitteeRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->emailRepository = null;
-        $this->committeeRepository = null;
-
-        parent::tearDown();
     }
 
     private function getSubscriptionTypesFormValues(array $codes)

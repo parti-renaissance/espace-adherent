@@ -26,6 +26,26 @@ class CommitteeManagerTest extends WebTestCase
     /* @var CommitteeManager */
     private $committeeManager;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->committeeManager = new CommitteeManager(
+            $this->getManagerRegistry(),
+            $this->get('event_dispatcher')
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->committeeManager = null;
+
+        parent::tearDown();
+    }
+
     public function testGetCommitteeHosts()
     {
         $this->assertInstanceOf(
@@ -193,14 +213,6 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertEquals(['75008', '75'], $this->getReferentTagCodes($membershipHistory));
     }
 
-    private function getReferentTagCodes(CommitteeMembershipHistory $history): array
-    {
-        return array_map(
-            function (ReferentTag $tag) { return $tag->getCode(); },
-            $history->getReferentTags()->toArray()
-        );
-    }
-
     public function testFollowCommitteesTwice(): void
     {
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
@@ -341,26 +353,6 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertEquals(false, $adherent->getMembershipFor($committee)->isHostMember());
     }
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->committeeManager = new CommitteeManager(
-            $this->getManagerRegistry(),
-            $this->get('event_dispatcher')
-        );
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeManager = null;
-
-        parent::tearDown();
-    }
-
     private function findCommitteeMembershipHistoryByAdherent(Adherent $adherent): array
     {
         $membershipEvent = $this->getCommitteeMembershipHistoryRepository()->findBy(
@@ -368,5 +360,13 @@ class CommitteeManagerTest extends WebTestCase
         );
 
         return $membershipEvent;
+    }
+
+    private function getReferentTagCodes(CommitteeMembershipHistory $history): array
+    {
+        return array_map(
+            function (ReferentTag $tag) { return $tag->getCode(); },
+            $history->getReferentTags()->toArray()
+        );
     }
 }

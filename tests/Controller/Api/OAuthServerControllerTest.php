@@ -29,6 +29,26 @@ class OAuthServerControllerTest extends WebTestCase
     /** @var CryptKey */
     private $privateCryptKey;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->encryptionKey = $this->getContainer()->getParameter('env(SSL_ENCRYPTION_KEY)');
+        $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('env(SSL_PRIVATE_KEY)'));
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->privateCryptKey = null;
+        $this->encryptionKey = null;
+
+        parent::tearDown();
+    }
+
     public function testTryRequestSecuredResourceWithExpiredAccessToken(): void
     {
         $jwtAccessToken = $this->getExpiredJwtAccessToken();
@@ -420,25 +440,5 @@ class OAuthServerControllerTest extends WebTestCase
         }
 
         return $token->convertToJWT($this->privateCryptKey);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->encryptionKey = $this->getContainer()->getParameter('env(SSL_ENCRYPTION_KEY)');
-        $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('env(SSL_PRIVATE_KEY)'));
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->privateCryptKey = null;
-        $this->encryptionKey = null;
-
-        parent::tearDown();
     }
 }

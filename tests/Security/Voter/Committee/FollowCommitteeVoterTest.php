@@ -39,11 +39,6 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
         yield 'Anonymous cannot unfollow committees' => [false, true, CommitteePermissions::UNFOLLOW, $this->getCommitteeMock()];
     }
 
-    protected function getVoter(): AbstractAdherentVoter
-    {
-        return new FollowerCommitteeVoter($this->membershipRepository);
-    }
-
     public function testAdherentCannotFollowCommitteeIfAlreadyFollowing()
     {
         $committee = $this->getCommitteeMock(true);
@@ -123,6 +118,11 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTest
 
         $this->assertRepositoryBehavior(true);
         $this->assertGrantedForAdherent(true, true, $adherent, CommitteePermissions::UNFOLLOW, $committee);
+    }
+
+    protected function getVoter(): AbstractAdherentVoter
+    {
+        return new FollowerCommitteeVoter($this->membershipRepository);
     }
 
     /**

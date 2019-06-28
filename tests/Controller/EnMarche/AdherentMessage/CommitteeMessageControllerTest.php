@@ -15,6 +15,20 @@ class CommitteeMessageControllerTest extends WebTestCase
     use ControllerTestTrait;
     use MessengerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testSupervisorCanCreateMessageAndChangeFilterSuccessfully(): void
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -36,19 +50,5 @@ class CommitteeMessageControllerTest extends WebTestCase
             'Message aux membres du comité En Marche - Suisse',
             trim($crawler->filter('main section div.text--center')->text())
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

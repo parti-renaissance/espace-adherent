@@ -21,6 +21,24 @@ class JeMarcheControllerTest extends WebTestCase
     /** @var JeMarcheReportRepository */
     private $jeMarcheReportRepostitory;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->jeMarcheReportRepostitory = $this->getJeMarcheReportRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->jeMarcheReportRepostitory = null;
+
+        parent::tearDown();
+    }
+
     public function testReportJeMarche()
     {
         // There should not be any report at the moment
@@ -93,23 +111,5 @@ class JeMarcheControllerTest extends WebTestCase
         $this->assertSame([], $report->getConvinced());
         $this->assertSame(['xyz@en-marche.fr', 'tuv@en-marche.fr'], $report->getAlmostConvinced());
         $this->assertSame('Emmanuel Macron va gagner !', $report->getReaction());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->jeMarcheReportRepostitory = $this->getJeMarcheReportRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->jeMarcheReportRepostitory = null;
-
-        parent::tearDown();
     }
 }

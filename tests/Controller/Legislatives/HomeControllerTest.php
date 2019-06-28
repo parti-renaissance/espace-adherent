@@ -15,6 +15,20 @@ class HomeControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testLegislativesCandidatesDirectory()
     {
         $crawler = $this->client->request(Request::METHOD_GET, $this->hosts['scheme'].'://'.$this->hosts['legislatives']);
@@ -77,19 +91,5 @@ class HomeControllerTest extends WebTestCase
         $this->assertSame('Onzième circonscription des Français établis hors de France', $profile->filter('#candidate-district-name')->text());
         $this->assertSame(0, $profile->filter('.candidate_links')->count());
         $this->assertSame(2, $description->filter('p')->count());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

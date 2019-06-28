@@ -17,6 +17,22 @@ class GeocoderTest extends TestCase
     private $adapter;
     private $geocoder;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->adapter = $this->getMockBuilder(BazingaGeocoder::class)->getMock();
+        $this->geocoder = new Geocoder($this->adapter);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->adapter = null;
+        $this->geocoder = null;
+
+        parent::tearDown();
+    }
+
     public function testGeocodeAddressSucceeds()
     {
         $addresses = new AddressCollection([
@@ -70,21 +86,5 @@ class GeocoderTest extends TestCase
         ;
 
         $this->geocoder->geocode(self::ADDRESS);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->adapter = $this->getMockBuilder(BazingaGeocoder::class)->getMock();
-        $this->geocoder = new Geocoder($this->adapter);
-    }
-
-    protected function tearDown()
-    {
-        $this->adapter = null;
-        $this->geocoder = null;
-
-        parent::tearDown();
     }
 }

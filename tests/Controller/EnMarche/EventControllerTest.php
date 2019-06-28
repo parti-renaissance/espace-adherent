@@ -22,6 +22,24 @@ class EventControllerTest extends AbstractEventControllerTest
     /** @var EventRegistrationRepository */
     private $repository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->repository = $this->getEventRegistrationRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+
+        parent::tearDown();
+    }
+
     public function testAnonymousUserCanRegisterToEvent()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/');
@@ -357,17 +375,6 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
     }
 
-    private function assertRedirectionEventNotPublishTest(string $url): void
-    {
-        $this->client->request(Request::METHOD_GET, $url);
-
-        $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
-
-        $this->client->followRedirect();
-
-        $this->isSuccessful($this->client->getResponse());
-    }
-
     public function testEventWithSpecialCharInTitle()
     {
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
@@ -432,26 +439,19 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
     }
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->repository = $this->getEventRegistrationRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-
-        parent::tearDown();
-    }
-
     protected function getEventUrl(): string
     {
         return '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne';
+    }
+
+    private function assertRedirectionEventNotPublishTest(string $url): void
+    {
+        $this->client->request(Request::METHOD_GET, $url);
+
+        $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
+
+        $this->client->followRedirect();
+
+        $this->isSuccessful($this->client->getResponse());
     }
 }

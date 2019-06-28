@@ -38,6 +38,28 @@ class MembershipControllerTest extends WebTestCase
      */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->adherentRepository = $this->getAdherentRepository();
+        $this->activationTokenRepository = $this->getActivationTokenRepository();
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->emailRepository = null;
+        $this->activationTokenRepository = null;
+        $this->adherentRepository = null;
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider provideEmailAddress
      */
@@ -340,27 +362,5 @@ class MembershipControllerTest extends WebTestCase
                 'allowEmailNotifications' => true,
             ],
         ];
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->adherentRepository = $this->getAdherentRepository();
-        $this->activationTokenRepository = $this->getActivationTokenRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->emailRepository = null;
-        $this->activationTokenRepository = null;
-        $this->adherentRepository = null;
-
-        parent::tearDown();
     }
 }

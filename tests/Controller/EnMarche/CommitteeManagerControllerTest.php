@@ -40,6 +40,28 @@ class CommitteeManagerControllerTest extends WebTestCase
     /* @var CommitteeMembershipRepository */
     private $committeeMembershipRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->committeeEventRepository = $this->getEventRepository();
+        $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
+        $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->committeeMembershipRepository = null;
+        $this->committeeFeedItemRepository = null;
+        $this->committeeEventRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testCommitteeFollowerIsNotAllowedToEditCommitteeInformation()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -729,27 +751,5 @@ class CommitteeManagerControllerTest extends WebTestCase
         $array = $spreadsheet->getActiveSheet()->toArray();
 
         return $array;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->committeeEventRepository = $this->getEventRepository();
-        $this->committeeFeedItemRepository = $this->getCommitteeFeedItemRepository();
-        $this->committeeMembershipRepository = $this->getCommitteeMembershipRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeMembershipRepository = null;
-        $this->committeeFeedItemRepository = null;
-        $this->committeeEventRepository = null;
-
-        parent::tearDown();
     }
 }

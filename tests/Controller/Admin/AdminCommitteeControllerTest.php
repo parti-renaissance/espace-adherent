@@ -20,6 +20,24 @@ class AdminCommitteeControllerTest extends WebTestCase
 
     private $committeeRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->committeeRepository = $this->getCommitteeRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->committeeRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testApproveAction(): void
     {
         $committee = $this->committeeRepository->findOneByUuid(LoadAdherentData::COMMITTEE_2_UUID);
@@ -38,23 +56,5 @@ class AdminCommitteeControllerTest extends WebTestCase
         $this->assertTrue($committee->isApproved());
         $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
         $this->assertCountMails(1, CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr');
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->committeeRepository = $this->getCommitteeRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->committeeRepository = null;
-
-        parent::tearDown();
     }
 }

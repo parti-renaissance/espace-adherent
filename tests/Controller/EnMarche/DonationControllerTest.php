@@ -35,6 +35,33 @@ class DonationControllerTest extends WebTestCase
     /* @var PayboxProvider */
     private $payboxProvider;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        // Delete all donations for tests
+        $this->getRepository(Transaction::class)->createQueryBuilder('t')->delete()->getQuery()->execute();
+        $this->getDonationRepository()->createQueryBuilder('d')->delete()->getQuery()->execute();
+
+        $this->payboxClient = new PayboxClient();
+        $this->donationRepository = $this->getDonationRepository();
+        $this->transactionRepository = $this->getTransactionRepository();
+        $this->payboxProvider = $this->get(PayboxProvider::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->transactionRepository = null;
+        $this->payboxClient = null;
+        $this->donationRepository = null;
+
+        parent::tearDown();
+    }
+
     public function getDonationSubscriptions(): iterable
     {
         yield 'None' => [PayboxPaymentSubscription::NONE];
@@ -401,33 +428,6 @@ class DonationControllerTest extends WebTestCase
         ]);
 
         $this->assertStatusCode(Response::HTTP_BAD_REQUEST, $this->client);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        // Delete all donations for tests
-        $this->getRepository(Transaction::class)->createQueryBuilder('t')->delete()->getQuery()->execute();
-        $this->getDonationRepository()->createQueryBuilder('d')->delete()->getQuery()->execute();
-
-        $this->payboxClient = new PayboxClient();
-        $this->donationRepository = $this->getDonationRepository();
-        $this->transactionRepository = $this->getTransactionRepository();
-        $this->payboxProvider = $this->get(PayboxProvider::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->transactionRepository = null;
-        $this->payboxClient = null;
-        $this->donationRepository = null;
-
-        parent::tearDown();
     }
 
     private function simulateIpnCall(Donation $donation, string $status): string

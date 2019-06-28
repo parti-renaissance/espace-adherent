@@ -12,12 +12,30 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class ManagedEventsExporterTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var ManagedEventsExporter
      */
     private $exporter;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->exporter = $this->container->get(ManagedEventsExporter::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->exporter = null;
+
+        parent::tearDown();
+    }
 
     public function testExportAsJson()
     {
@@ -43,23 +61,5 @@ class ManagedEventsExporterTest extends WebTestCase
             '[{"id":24,"name":{"label":"Meeting #11 de Brooklyn","url":"'.$this->hosts['scheme'].':\/\/'.$this->hosts['app'].'\/evenements\/'.$expectedDate.'-meeting-11-de-brooklyn"},"beginAt":"'.$expectedBeginAt.'","category":"Marche","postalCode":"10019","organizer":"un ancien adh\u00e9rent","participants":0,"type":"Comit\u00e9"}]',
             $this->exporter->exportAsJson([$event])
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->exporter = $this->container->get(ManagedEventsExporter::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->exporter = null;
-
-        parent::tearDown();
     }
 }

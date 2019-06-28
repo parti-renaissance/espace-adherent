@@ -12,12 +12,30 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class MyEuropeChoiceRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var MyEuropeChoiceRepository
      */
     private $repository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->repository = $this->getMyEuropeChoiceRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+        $this->container = null;
+
+        parent::tearDown();
+    }
 
     public function testGetMailIntroductionAndConclusion()
     {
@@ -35,23 +53,5 @@ class MyEuropeChoiceRepositoryTest extends WebTestCase
 
         $this->assertInstanceOf(MyEuropeChoice::class, $common);
         $this->assertSame('a642dbc7-aba5-49e4-877a-06bc1ef23168', $common->getUuid()->toString());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->repository = $this->getMyEuropeChoiceRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-        $this->container = null;
-
-        parent::tearDown();
     }
 }

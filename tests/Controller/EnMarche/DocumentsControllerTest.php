@@ -15,6 +15,20 @@ class DocumentsControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testDocumentsIndexAsAnonymous()
     {
         $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
@@ -174,19 +188,5 @@ class DocumentsControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, $documentsRoot.'/animateurs/document-host-b.pdf');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->logout($this->client);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

@@ -22,7 +22,7 @@ class StatisticsExporterTest extends TestCase
     /** @var MockObject|StatisticsExporter */
     private $statisticsExporter;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->statisticsProvider = $this->getMockBuilder(StatisticsProvider::class)
             ->disableOriginalConstructor()

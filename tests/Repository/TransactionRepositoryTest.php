@@ -16,6 +16,24 @@ class TransactionRepositoryTest extends WebTestCase
      */
     private $transactionRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->transactionRepository = $this->getTransactionRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->transactionRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testGetTotalAmountCurrentYearByEmail(): void
     {
         // Update all transactions to start of this year
@@ -31,23 +49,5 @@ class TransactionRepositoryTest extends WebTestCase
         ;
 
         static::assertSame(25000, $this->transactionRepository->getTotalAmountInCentsByEmail('jacques.picard@en-marche.fr'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->transactionRepository = $this->getTransactionRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->transactionRepository = null;
-
-        parent::tearDown();
     }
 }

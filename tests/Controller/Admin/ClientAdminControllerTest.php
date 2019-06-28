@@ -19,6 +19,22 @@ class ClientAdminControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->authenticateAsAdmin($this->client);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testCreateLinkFromDashboard(): void
     {
         $crawler = $this->client->request('GET', '/admin/dashboard');
@@ -79,22 +95,6 @@ class ClientAdminControllerTest extends WebTestCase
 
         $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->authenticateAsAdmin($this->client);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 
     private function findClient(string $uuid): Client

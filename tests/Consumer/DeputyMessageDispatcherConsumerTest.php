@@ -31,7 +31,7 @@ class DeputyMessageDispatcherConsumerTest extends TestCase
      */
     private $entityManager;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this
@@ -44,7 +44,7 @@ class DeputyMessageDispatcherConsumerTest extends TestCase
         $this->validator = $this->createMock(ValidatorInterface::class);
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         $this->entityManager = null;
         $this->validator = null;

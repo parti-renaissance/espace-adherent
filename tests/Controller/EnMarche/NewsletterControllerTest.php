@@ -30,6 +30,28 @@ class NewsletterControllerTest extends WebTestCase
     /** @var EmailRepository */
     private $emailRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
+        $this->newsletterInviteRepository = $this->getNewsletterInvitationRepository();
+        $this->emailRepository = $this->getEmailRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->subscriptionsRepository = null;
+        $this->newsletterInviteRepository = null;
+        $this->emailRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testSubscriptionAndRetry()
     {
         $this->assertCount(5, $this->subscriptionsRepository->findAll());
@@ -203,27 +225,5 @@ class NewsletterControllerTest extends WebTestCase
 
         $this->assertInstanceOf(NewsletterSubscription::class, $subscription);
         $this->assertSame('59000', $subscription->getPostalCode());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
-        $this->newsletterInviteRepository = $this->getNewsletterInvitationRepository();
-        $this->emailRepository = $this->getEmailRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->subscriptionsRepository = null;
-        $this->newsletterInviteRepository = null;
-        $this->emailRepository = null;
-
-        parent::tearDown();
     }
 }

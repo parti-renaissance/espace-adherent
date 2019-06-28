@@ -21,6 +21,24 @@ class InvitationControllerTest extends WebTestCase
     /** @var InvitationRepository */
     private $invitationRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->invitationRepository = $this->getInvitationRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->invitationRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testInvite()
     {
         // There should not be any invites at the moment
@@ -81,23 +99,5 @@ class InvitationControllerTest extends WebTestCase
 
         // Invitation should not have been saved
         $this->assertCount(1, $this->invitationRepository->findAll());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->invitationRepository = $this->getInvitationRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->invitationRepository = null;
-
-        parent::tearDown();
     }
 }

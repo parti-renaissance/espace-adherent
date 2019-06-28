@@ -17,6 +17,20 @@ class LegislativesControllerTest extends WebTestCase
     use ControllerTestTrait;
     use ApiControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testApiWonCandidates()
     {
         $this->client->request(Request::METHOD_GET, '/api/candidates');
@@ -34,19 +48,5 @@ class LegislativesControllerTest extends WebTestCase
         $this->assertEachJsonItemContainsKey('picture', $content);
         $this->assertEachJsonItemContainsKey('url', $content);
         $this->assertEachJsonItemContainsKey('geojson', $content);
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    public function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

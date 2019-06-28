@@ -15,6 +15,24 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenActionControllerTest extends AbstractEventControllerTest
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->repository = $this->getEventRegistrationRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+
+        parent::tearDown();
+    }
+
     public function testAnonymousUserCanRegisterToCitizenAction()
     {
         $registrations = $this->getEventRegistrationRepository()->findAll();
@@ -217,24 +235,6 @@ CONTENT;
         $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Lucie")'));
         $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Marie")'));
         $this->assertCount(1, $crawler->filter('table.committee__members__list td.member-first-name:contains("Pierre")'));
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->repository = $this->getEventRegistrationRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-
-        parent::tearDown();
     }
 
     protected function getEventUrl(): string

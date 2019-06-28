@@ -11,12 +11,30 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  */
 class CommitteeRepositoryTest extends WebTestCase
 {
+    use ControllerTestTrait;
+
     /**
      * @var CommitteeRepository
      */
     private $repository;
 
-    use ControllerTestTrait;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container = $this->getContainer();
+        $this->repository = $this->getCommitteeRepository();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->repository = null;
+        $this->container = null;
+
+        parent::tearDown();
+    }
 
     public function testCountApprovedCommittees()
     {
@@ -26,23 +44,5 @@ class CommitteeRepositoryTest extends WebTestCase
     public function testFindApprovedCommittees()
     {
         $this->assertCount(9, $this->repository->findApprovedCommittees());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->container = $this->getContainer();
-        $this->repository = $this->getCommitteeRepository();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->repository = null;
-        $this->container = null;
-
-        parent::tearDown();
     }
 }

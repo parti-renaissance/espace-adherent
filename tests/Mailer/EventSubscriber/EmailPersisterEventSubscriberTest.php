@@ -22,6 +22,30 @@ class EmailPersisterEventSubscriberTest extends TestCase
     private $repository;
     private $manager;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $this->repository = $this->getMockBuilder(EmailRepository::class)->disableOriginalConstructor()->getMock();
+
+        $this->repository->expects($this->any())->method('getClassName')->willReturn(Email::class);
+
+        $this->subscriber = new EmailPersisterEventSubscriber(
+            $this->manager,
+            $this->repository
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->manager = null;
+        $this->repository = null;
+        $this->subscriber = null;
+
+        parent::tearDown();
+    }
+
     public function testOnMailerDeliveryMessage()
     {
         $this->manager->expects($this->once())->method('persist');
@@ -120,29 +144,5 @@ EOF;
         $mock->expects($this->any())->method('getContent')->willReturn($content);
 
         return $mock;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $this->repository = $this->getMockBuilder(EmailRepository::class)->disableOriginalConstructor()->getMock();
-
-        $this->repository->expects($this->any())->method('getClassName')->willReturn(Email::class);
-
-        $this->subscriber = new EmailPersisterEventSubscriber(
-            $this->manager,
-            $this->repository
-        );
-    }
-
-    protected function tearDown()
-    {
-        $this->manager = null;
-        $this->repository = null;
-        $this->subscriber = null;
-
-        parent::tearDown();
     }
 }

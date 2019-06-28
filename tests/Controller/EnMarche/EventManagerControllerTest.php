@@ -19,6 +19,20 @@ class EventManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider provideHostProtectedPages
      */
@@ -368,19 +382,5 @@ class EventManagerControllerTest extends WebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

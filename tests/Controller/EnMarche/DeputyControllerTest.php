@@ -25,6 +25,24 @@ class DeputyControllerTest extends WebTestCase
      */
     private $deputyMessageRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->deputyMessageRepository = $this->manager->getRepository(DeputyManagedUsersMessage::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->deputyMessageRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testSendMailSuccessful()
     {
         $deputyEmail = 'deputy-ch-li@en-marche-dev.fr';
@@ -87,23 +105,5 @@ class DeputyControllerTest extends WebTestCase
             'Recherche dans la zone : Français établis hors de France, 6ème circonscription (FDE-06)',
             trim($crawler->filter('#deputy-managed-areas')->text())
         );
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->deputyMessageRepository = $this->manager->getRepository(DeputyManagedUsersMessage::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->deputyMessageRepository = null;
-
-        parent::tearDown();
     }
 }

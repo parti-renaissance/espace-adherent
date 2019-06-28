@@ -45,6 +45,32 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
      */
     private $manifestoRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+
+        $this->get('doctrine.orm.entity_manager')->getFilters()->disable('oneLocale');
+
+        $this->measureRepository = $this->getRepository(Measure::class);
+        $this->themeRepository = $this->getRepository(Theme::class);
+        $this->profileRepository = $this->getRepository(Profile::class);
+        $this->manifestoRepository = $this->getRepository(Manifesto::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        $this->measureRepository = null;
+        $this->themeRepository = null;
+        $this->profileRepository = null;
+        $this->manifestoRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testUnindexedMeasureAfterMeasureRemoval()
     {
         /* @var $measure Measure */
@@ -217,32 +243,6 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
 
         $this->assertArrayHasKey('objectID', $newThemePayload);
         $this->assertNotEmpty($newThemePayload['objectID']);
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-
-        $this->get('doctrine.orm.entity_manager')->getFilters()->disable('oneLocale');
-
-        $this->measureRepository = $this->getRepository(Measure::class);
-        $this->themeRepository = $this->getRepository(Theme::class);
-        $this->profileRepository = $this->getRepository(Profile::class);
-        $this->manifestoRepository = $this->getRepository(Manifesto::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        $this->measureRepository = null;
-        $this->themeRepository = null;
-        $this->profileRepository = null;
-        $this->manifestoRepository = null;
-
-        parent::tearDown();
     }
 
     private function getMeasureIdsByTitles(array $measureTitles): array

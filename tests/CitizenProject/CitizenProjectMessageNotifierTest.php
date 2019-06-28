@@ -27,6 +27,20 @@ class CitizenProjectMessageNotifierTest extends TestCase
 {
     private $adherentRepository;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->adherentRepository = $this->createMock(AdherentRepository::class);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->adherentRepository = null;
+
+        parent::tearDown();
+    }
+
     public function testOnCitizenProjectApprove()
     {
         $mailer = $this->createMock(MailerService::class);
@@ -198,19 +212,5 @@ class CitizenProjectMessageNotifierTest extends TestCase
         }
 
         return $manager;
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->adherentRepository = $this->createMock(AdherentRepository::class);
-    }
-
-    protected function tearDown()
-    {
-        $this->adherentRepository = null;
-
-        parent::tearDown();
     }
 }

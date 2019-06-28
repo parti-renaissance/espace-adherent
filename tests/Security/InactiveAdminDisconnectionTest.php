@@ -15,6 +15,20 @@ class InactiveAdminDisconnectionTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testLogoutInactiveAdmin()
     {
         $this->authenticateAsAdmin($this->client);
@@ -46,19 +60,5 @@ class InactiveAdminDisconnectionTest extends WebTestCase
 
         // status code should be 200 OK, because there is no redirection to disconnect
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

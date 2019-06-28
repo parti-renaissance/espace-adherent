@@ -15,6 +15,22 @@ class DocumentRepositoryTest extends TestCase
     /** @var DocumentRepository */
     private $repository;
 
+    protected function setUp(): void
+    {
+        $this->filesystem = new Filesystem(new MemoryAdapter());
+        $this->repository = new DocumentRepository($this->filesystem);
+
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->filesystem = null;
+        $this->repository = null;
+    }
+
     public function testListDocuments()
     {
         $this->put(DocumentRepository::DIRECTORY_ADHERENTS, 'documenta.pdf', 'Document A');
@@ -66,21 +82,5 @@ class DocumentRepositoryTest extends TestCase
     private function put(string $directory, string $path, string $content)
     {
         $this->filesystem->write(DocumentRepository::DIRECTORY_ROOT.'/'.$directory.'/'.$path, $content);
-    }
-
-    protected function setUp()
-    {
-        $this->filesystem = new Filesystem(new MemoryAdapter());
-        $this->repository = new DocumentRepository($this->filesystem);
-
-        parent::setUp();
-    }
-
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $this->filesystem = null;
-        $this->repository = null;
     }
 }

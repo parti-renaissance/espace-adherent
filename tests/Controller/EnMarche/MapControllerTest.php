@@ -15,6 +15,20 @@ class MapControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->init();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->kill();
+
+        parent::tearDown();
+    }
+
     public function testCommitteesMap()
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/le-mouvement/la-carte');
@@ -33,19 +47,5 @@ class MapControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("La carte des événements")')->count());
         $this->assertContains('Tous (9)', $crawler->filter('.events-map-categories--all')->first()->text());
-    }
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->init();
-    }
-
-    protected function tearDown()
-    {
-        $this->kill();
-
-        parent::tearDown();
     }
 }

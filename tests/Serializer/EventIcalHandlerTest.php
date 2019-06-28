@@ -17,7 +17,7 @@ class EventIcalHandlerTest extends TestCase
      */
     protected $handler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->handler = new EventICalHandler();
     }

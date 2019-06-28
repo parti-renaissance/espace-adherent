@@ -30,11 +30,6 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
         parent::tearDown();
     }
 
-    protected function getVoter(): AbstractAdherentVoter
-    {
-        return new ManageCitizenActionVoter($this->membershipRepository);
-    }
-
     public function provideAnonymousCases(): iterable
     {
         foreach (CitizenActionPermissions::MANAGE as $permission) {
@@ -125,6 +120,11 @@ class ManageCitizenActionVoterTest extends AbstractAdherentVoterTest
         // assert repository is invoked
         $this->assertMembershipRepositoryMock(false, $adherent, $project);
         $this->assertGrantedForAdherent(false, true, $adherent, $attribute, $project);
+    }
+
+    protected function getVoter(): AbstractAdherentVoter
+    {
+        return new ManageCitizenActionVoter($this->membershipRepository);
     }
 
     /**
