@@ -58,10 +58,10 @@ Feature:
     And I should not see "<missing-tag>"
 
     When I am on "/espace-chef-municipal/municipale/candidature-colistiers/<forbidden-uuid>/detail"
-    Then I should see "Détails du candidat"
+    Then I should see "403"
 
     When I am on "/espace-chef-municipal/municipale/candidature-colistiers/<forbidden-uuid>/editer-tags"
-    Then I should see "Tags de candidature"
+    Then I should see "403"
 
     Examples:
       | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               | missing-city           | missing-tag | forbidden-uuid                       |
@@ -114,25 +114,25 @@ Feature:
     And I should not see "<missing-tag>"
 
     When I am on "/espace-chef-municipal/municipale/candidature-benevole/<forbidden-uuid>/detail"
-    Then I should see "Détails du candidat"
+    Then I should see "403"
 
     When I am on "/espace-chef-municipal/municipale/candidature-benevole/<forbidden-uuid>/editer-tags"
-    Then I should see "Tags de candidature"
+    Then I should see "403"
 
     Examples:
       | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               | missing-city           | missing-tag | forbidden-uuid                       |
       | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
-      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
+      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 06d61c85-929a-4152-b46c-b94b6883b8d6 |
 
   @javascript
   Scenario Outline: I can define application request as added to my team
-    Given I am logged as "municipal-chief-2@en-marche-dev.fr"
+    Given I am logged as "municipal-chief-3@en-marche-dev.fr"
     When I am on "<url>"
     And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    And I hover "table.datagrid__table-manager tbody tr > td div.action-menu-oval"
     And I follow "Ajouter à mon équipe"
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    And I hover "table.datagrid__table-manager tbody tr > td div.action-menu-oval"
     And I should see "Retirer de mon équipe"
     And I should not see an ".link--disabled" element
 
@@ -141,8 +141,8 @@ Feature:
     And I am on "<url>"
     And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
-    Then I should see "Ajouter à mon équipe"
-    And I should see an ".link--disabled" element
+    Then I should not see "Ajouter à mon équipe"
+    And I should see "Déjà pris dans une autre ville" in the "table.datagrid__table-manager tbody > tr" element
 
     Examples:
       | url                                                      |

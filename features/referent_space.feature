@@ -24,26 +24,20 @@ Feature:
     And I should see "Massive Open Online Course"
     And I should see "Formation en ligne ouverte à tous"
 
-  # Municipales space
+  # Municipal space
   @javascript
-  Scenario: I cannot see running mate request for the zones I don't manage
-    Given I am logged as "referent@en-marche-dev.fr"
+  Scenario: I cannot see running mate or volunteer request for the zones I don't manage
+    Given I am logged as "referent-75-77@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-colistiers"
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
-
-  @javascript
-  Scenario: I cannot see running mate request for the zones I don't manage
-    Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-benevole"
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
 
   @javascript
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
-    Given I am logged as "referent-75-77@en-marche-dev.fr"
+    Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-colistiers"
-    And I wait 10 seconds until I see "J'ai lu et j'accepte"
-    And I accept terms of use
-    And I wait 10 seconds until I see NOM
+    And I wait 5 seconds until I see NOM
     And I should see "Banner"
     And I should see "Bruce"
     And I should see "+33 6 06 06 06 06"
@@ -79,10 +73,8 @@ Feature:
 
   @javascript
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
-    Given I am logged as "referent-75-77@en-marche-dev.fr"
+    Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/municipale/candidature-benevole"
-    And I wait 5 seconds until I see "J'ai lu et j'accepte"
-    And I accept terms of use
     And I wait 5 seconds until I see NOM
     And I should see "Stark"
     And I should see "Tony"

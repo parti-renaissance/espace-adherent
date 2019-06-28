@@ -75,6 +75,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', runningMateRequest)")
      */
     public function municipalRunningMateDetailAction(RunningMateRequest $runningMateRequest): Response
     {
@@ -94,6 +96,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', volunteerRequest)")
      */
     public function municipalVolunteerDetailAction(VolunteerRequest $volunteerRequest): Response
     {
@@ -113,6 +117,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', volunteerRequest)")
      */
     public function municipalVolunteerAddToTeamAction(
         ObjectManager $objectManager,
@@ -135,6 +141,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', volunteerRequest)")
      */
     public function municipalVolunteerRemoveFromTeamAction(
         ObjectManager $objectManager,
@@ -157,6 +165,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', runningMateRequest)")
      */
     public function municipalRunningMateAddToTeamAction(
         ObjectManager $objectManager,
@@ -179,6 +189,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', runningMateRequest)")
      */
     public function municipalRunningMateRemoveFromTeamAction(
         ObjectManager $objectManager,
@@ -192,32 +204,6 @@ class MunicipalChiefController extends Controller
         return $this->redirectToRoute('app_municipal_chief_municipal_running_mate_request');
     }
 
-    private function addToTeam(
-        ObjectManager $objectManager,
-        ApplicationRequest $applicationRequest,
-        MunicipalChiefManagedArea $municipalChiefManagedArea
-    ): void {
-        $cities = array_intersect(
-            $municipalChiefManagedArea->getCodes(),
-            $applicationRequest->getFavoriteCities()
-        );
-        if (!$applicationRequest->getTakenForCity() && !empty($city = reset($cities))) {
-            $applicationRequest->setTakenForCity($city);
-            $objectManager->flush();
-        }
-    }
-
-    private function removeFromTeam(
-        ObjectManager $objectManager,
-        ApplicationRequest $applicationRequest,
-        MunicipalChiefManagedArea $municipalChiefManagedArea
-    ): void {
-        if ($applicationRequest->getTakenForCity() && \in_array($applicationRequest->getTakenForCity(), $municipalChiefManagedArea->getCodes())) {
-            $applicationRequest->setTakenForCity(null);
-            $objectManager->flush();
-        }
-    }
-
     /**
      * @Route(
      *     path="/municipale/candidature-colistiers/{uuid}/editer-tags",
@@ -227,6 +213,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET", "POST"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', runningMateRequest)")
      */
     public function municipalRunningMateEditTagsAction(
         ObjectManager $objectManager,
@@ -253,6 +241,8 @@ class MunicipalChiefController extends Controller
      *     },
      *     methods={"GET", "POST"},
      * )
+     *
+     * @Security("is_granted('MUNICIPAL_CHIEF_OF', volunteerRequest)")
      */
     public function municipalVolunteerEditTagsAction(
         ObjectManager $objectManager,
@@ -268,6 +258,32 @@ class MunicipalChiefController extends Controller
             'municipal_chief/municipal/volunteer/edit_tags.html.twig',
             'app_municipal_chief_municipal_volunteer_request'
         );
+    }
+
+    private function addToTeam(
+        ObjectManager $objectManager,
+        ApplicationRequest $applicationRequest,
+        MunicipalChiefManagedArea $municipalChiefManagedArea
+    ): void {
+        $cities = array_intersect(
+            $municipalChiefManagedArea->getCodes(),
+            $applicationRequest->getFavoriteCities()
+        );
+        if (!$applicationRequest->getTakenForCity() && !empty($city = reset($cities))) {
+            $applicationRequest->setTakenForCity($city);
+            $objectManager->flush();
+        }
+    }
+
+    private function removeFromTeam(
+        ObjectManager $objectManager,
+        ApplicationRequest $applicationRequest,
+        MunicipalChiefManagedArea $municipalChiefManagedArea
+    ): void {
+        if ($applicationRequest->getTakenForCity() && \in_array($applicationRequest->getTakenForCity(), $municipalChiefManagedArea->getCodes())) {
+            $applicationRequest->setTakenForCity(null);
+            $objectManager->flush();
+        }
     }
 
     private function handleApplicationRequestTagsRequest(

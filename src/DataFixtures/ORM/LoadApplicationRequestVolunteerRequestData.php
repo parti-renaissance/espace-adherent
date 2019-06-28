@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
@@ -22,39 +23,58 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $municipal3 = $this->getReference('municipal-chief-3');
 
         $volunteerRequest1 = new VolunteerRequest(Uuid::fromString(self::UUID_1));
+        $volunteerRequest1->setGender(Genders::MALE);
+        $volunteerRequest1->setFirstName('Tony');
+        $volunteerRequest1->setLastName('Stark');
+        $volunteerRequest1->setEmailAddress('tony.stark@stark-industries.com');
+
         $volunteerRequest1->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[1],
         ]);
-        $volunteerRequest1->setEmailAddress('tony.stark@stark-industries.com');
+
+        $volunteerRequest1->setTakenForCity($municipal2->municipalChiefManagedArea()->getCodes()[1]);
 
         $volunteerRequest2 = new VolunteerRequest(Uuid::fromString(self::UUID_2));
+        $volunteerRequest2->setGender(Genders::FEMALE);
+        $volunteerRequest2->setFirstName('Damien');
+        $volunteerRequest2->setLastName('Schmidt');
+        $volunteerRequest2->setEmailAddress('damien.schmidt@example.ch');
+
         $volunteerRequest2->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[0],
             $municipal3->municipalChiefManagedArea()->getCodes()[1],
         ]);
-        $volunteerRequest2->setEmailAddress('damien.schmidt@example.ch');
+
         $volunteerRequest2->setAdherent($this->getReference('adherent-14'));
 
         $volunteerRequest3 = new VolunteerRequest(Uuid::fromString(self::UUID_3));
+        $volunteerRequest3->setGender(Genders::MALE);
+        $volunteerRequest3->setFirstName('Tony');
+        $volunteerRequest3->setLastName('Stark');
+        $volunteerRequest3->setEmailAddress('tony.stark@stark-industries.com');
+
         $volunteerRequest3->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
             $municipal3->municipalChiefManagedArea()->getCodes()[0],
         ]);
-        $volunteerRequest3->setEmailAddress('tony.stark@stark-industries.com');
 
         $volunteerRequest4 = new VolunteerRequest(Uuid::fromString(self::UUID_4));
+        $volunteerRequest4->setGender(Genders::OTHER);
+        $volunteerRequest4->setFirstName('Damien');
+        $volunteerRequest4->setLastName('Schmidt');
+        $volunteerRequest4->setEmailAddress('damien.schmidt@example.ch');
+
         $volunteerRequest4->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
         ]);
-        $volunteerRequest4->setEmailAddress('damien.schmidt@example.ch');
+
         $volunteerRequest4->setAdherent($this->getReference('adherent-14'));
 
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
+
         foreach ([$volunteerRequest1, $volunteerRequest2, $volunteerRequest3, $volunteerRequest4] as $i => $volunteerRequest) {
-            $volunteerRequest->setFirstName('Tony');
-            $volunteerRequest->setLastName('Stark');
             $volunteerRequest->setPostalCode('90265');
             $volunteerRequest->setCityName('Malibu');
             $volunteerRequest->setCountry('US');
@@ -77,7 +97,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
             $volunteerRequest->setIsPreviousCampaignMember(false);
             $volunteerRequest->setShareAssociativeCommitment(false);
 
-            $volunteerRequest->addReferentTag($this->getReference(sprintf('referent_tag_%s', (bool) ($i % 2) ? '75' : '62')));
+            $volunteerRequest->addReferentTag($this->getReference('referent_tag_59'));
 
             $manager->persist($volunteerRequest);
         }
