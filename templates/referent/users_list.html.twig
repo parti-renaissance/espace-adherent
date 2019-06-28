@@ -12,7 +12,10 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             if ($('#referent_filter_interests').length) {
-                $('#referent_filter_interests').select2({placeholder: '{{ 'referent.filter.interests'|trans|e('js') }}'});
+                $('#referent_filter_interests').select2({
+                    placeholder: '{{ 'referent.filter.interests'|trans|e('js') }}',
+                    theme: 'default em-filters'
+                });
             }
         });
     </script>

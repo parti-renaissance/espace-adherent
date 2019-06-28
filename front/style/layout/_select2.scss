@@ -1,0 +1,134 @@
+.select2 {
+    &.select2-container { font-family: $font-roboto; }
+    &.select2-container--default {
+
+        // -------------------
+        // em-form theme
+        // -------------------
+        &.em-form {
+
+            .select2-selection {
+                &--multiple {
+                    @include em-form-field;
+                    height: auto;
+                    min-height: 60px;
+
+                    &::placeholder {
+                        color: $neutral-grey;
+                        font-weight: normal;
+                    }
+
+                    .select2-selection__rendered {
+                        display: block;
+                        padding: 13px 0 0;
+
+                        li {
+                            display: inline-block;
+                            float: none;
+                        }
+
+                        .select2-selection__choice {
+                            margin: 0 5px 5px 0;
+                            padding: 0 15px 0 5px;
+                            border-radius: 50px;
+                            background-color: $inf-modl--bkg-blue;
+                            color: $inf-modl--text-blue;
+                            font-size: 15px;
+                            border: none;
+                            line-height: 34px;
+
+                            &__remove {
+                                color: $inf-modl--text-blue;
+                                padding: 0 5px;
+                                font-size: 15px;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .select2-search--inline {
+                .select2-search__field {
+                    margin: 0;
+                    height: 34px;
+                    outline: 0;
+                    float: none;
+                }
+            }
+        }
+
+        // -------------------
+        // em-filters theme
+        // -------------------
+        &.em-filters {
+
+            .select2-selection {
+                &--multiple {
+                    box-sizing: border-box;
+                    display: block;
+                    @include filter-field-text;
+                    width: 100%;
+                    padding-left: 8px;
+                    color: $dark;
+                    margin: 0;
+                    border-radius: 2px;
+                    border: solid 1px $filter-field-border;
+                    background-color: $white;
+                    height: auto;
+                    min-height: 40px;
+
+                    &::placeholder {
+                        color: $neutral-grey;
+                        font-weight: normal;
+                    }
+
+                    .select2-selection__rendered {
+                        display: flex;
+                        flex-wrap: wrap;
+                        padding: 6px 0 0;
+
+                        li {
+                            display: inline-block;
+                            float: none;
+                            vertical-align: middle;
+                        }
+
+                        .select2-selection__choice {
+                            margin: 0;
+                            margin-right: 6px;
+                            margin-bottom: 6px;
+                            padding: 0 8px 0 2px;
+                            border-radius: 2px;
+                            background-color: $filter-tag-bkg;
+                            color: $filter-tag-text;
+                            font-size: 13px;
+                            border: none;
+                            line-height: 25px;
+
+                            &__remove {
+                                color: $filter-tag-text;
+                                padding: 0 5px;
+                                font-size: 15px;
+                                font-weight: normal;
+                                vertical-align: middle;
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .select2-search--inline {
+                .select2-search__field {
+                    margin: 0;
+                    margin-bottom: 7px;
+                    height: 24px;
+                    outline: 0;
+                    float: none;
+                }
+            }
+        }
+
+    }
+}
