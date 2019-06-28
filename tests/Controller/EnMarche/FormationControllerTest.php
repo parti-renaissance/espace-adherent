@@ -56,6 +56,14 @@ class FormationControllerTest extends WebTestCase
         $this->assertContains('Deuxième article du deuxième axe', $content);
     }
 
+    public function testMunicipalChiefCanAccessFormationSection(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'municipal-chief@en-marche-dev.fr');
+        $this->client->request(Request::METHOD_GET, '/espace-formation');
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testIfArticlesAreClickableInFormationHomepage(): void
     {
         $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
