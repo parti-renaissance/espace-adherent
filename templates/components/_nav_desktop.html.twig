@@ -254,41 +254,11 @@
         {% else %}
             {{ include('adherent/_list_my_sections.html.twig') }}
         {% endif %}
-        {% if app.user.isSupervisor or app.user.isHost %}
+        {% if app.user.isHost %}
             <li>
-                {{ al_committees }}
-            </li>
-            <li>
-                <a href="{{ path('app_committee_space_dashboard') }}">Espace comité ✨</a>
-            </li>
-            <li>
-                <a class="is-new" href="{{ path('app_formation_home') }}">Je me forme</a>
+                <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
             </li>
         {% endif %}
-        {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
-            <li>
-                <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet ✨</a>
-            </li>
-            <li>
-                {{ administrated_citizen_projects }}
-            </li>
-        {% endif %}
-        {% if app.user.isReferent or app.user.isCoReferent %}
-            <li>
-                <a href="{{ path(app.user.isReferent ? 'app_referent_events' : 'app_referent_users') }}">Espace référent</a>
-            </li>
-        {% endif %}
-        {% if app.user.isDeputy %}
-            <li>
-                <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
-            </li>
-        {% endif %}
-{# Space temporarily closed #}
-{#{% if app.user.isBoardMember %}#}
-{#<li>#}
-{#<a href="{{ path('app_board_member_home') }}">Espace membre du Conseil</a>#}
-{#</li>#}
-{#{% endif %}#}
     </ul>
 </div>
 {% endif %}
