@@ -5,18 +5,10 @@ namespace AppBundle\Security\Voter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AssessorRequest;
 use AppBundle\Entity\ManagedArea;
-use AppBundle\Repository\AssessorRequestRepository;
 
 class ManageAssessorVoter extends AbstractAdherentVoter
 {
     private const MANAGE = 'MANAGE';
-
-    private $assessorRequestRepository;
-
-    public function __construct(AssessorRequestRepository $assessorRequestRepository)
-    {
-        $this->assessorRequestRepository = $assessorRequestRepository;
-    }
 
     protected function supports($attribute, $subject)
     {

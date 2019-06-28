@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;
@@ -22,39 +23,58 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
         $municipal3 = $this->getReference('municipal-chief-3');
 
         $runningMateRequest1 = new RunningMateRequest(Uuid::fromString(self::UUID_1));
+        $runningMateRequest1->setGender(Genders::MALE);
+        $runningMateRequest1->setFirstName('Bruce');
+        $runningMateRequest1->setLastName('Banner');
+        $runningMateRequest1->setEmailAddress('bruce.banner@gmail.com');
+
         $runningMateRequest1->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[1],
         ]);
-        $runningMateRequest1->setEmailAddress('bruce.banner@gmail.com');
+
+        $runningMateRequest1->setTakenForCity($municipal2->municipalChiefManagedArea()->getCodes()[1]);
 
         $runningMateRequest2 = new RunningMateRequest(Uuid::fromString(self::UUID_2));
+        $runningMateRequest2->setGender(Genders::FEMALE);
+        $runningMateRequest2->setFirstName('Damien');
+        $runningMateRequest2->setLastName('Schmidt');
+        $runningMateRequest2->setEmailAddress('damien.schmidt@example.ch');
+
         $runningMateRequest2->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
             $municipal2->municipalChiefManagedArea()->getCodes()[0],
             $municipal3->municipalChiefManagedArea()->getCodes()[1],
         ]);
-        $runningMateRequest2->setEmailAddress('damien.schmidt@example.ch');
+
         $runningMateRequest2->setAdherent($this->getReference('adherent-14'));
 
         $runningMateRequest3 = new RunningMateRequest(Uuid::fromString(self::UUID_3));
+        $runningMateRequest3->setGender(Genders::OTHER);
+        $runningMateRequest3->setFirstName('Bruce');
+        $runningMateRequest3->setLastName('Banner');
+        $runningMateRequest3->setEmailAddress('bruce.banner@gmail.com');
+
         $runningMateRequest3->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
             $municipal3->municipalChiefManagedArea()->getCodes()[0],
         ]);
-        $runningMateRequest3->setEmailAddress('bruce.banner@gmail.com');
 
         $runningMateRequest4 = new RunningMateRequest(Uuid::fromString(self::UUID_4));
+        $runningMateRequest4->setGender(Genders::FEMALE);
+        $runningMateRequest4->setFirstName('Damien');
+        $runningMateRequest4->setLastName('Schmidt');
+        $runningMateRequest4->setEmailAddress('damien.schmidt@example.ch');
+
         $runningMateRequest4->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
         ]);
-        $runningMateRequest4->setEmailAddress('damien.schmidt@example.ch');
+
         $runningMateRequest4->setAdherent($this->getReference('adherent-14'));
 
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
+
         foreach ([$runningMateRequest1, $runningMateRequest2, $runningMateRequest3, $runningMateRequest4] as $i => $runningMateRequest) {
-            $runningMateRequest->setFirstName('Bruce');
-            $runningMateRequest->setLastName('Banner');
             $runningMateRequest->setPostalCode('10001');
             $runningMateRequest->setCityName('New York City');
             $runningMateRequest->setCountry('US');
@@ -80,7 +100,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $runningMateRequest->setProjectDetails('');
             $runningMateRequest->setProfessionalAssets('');
 
-            $runningMateRequest->addReferentTag($this->getReference(sprintf('referent_tag_%s', (bool) ($i % 2) ? '75' : '62')));
+            $runningMateRequest->addReferentTag($this->getReference('referent_tag_59'));
 
             $manager->persist($runningMateRequest);
         }
