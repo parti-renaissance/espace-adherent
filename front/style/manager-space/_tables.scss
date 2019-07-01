@@ -292,3 +292,17 @@
         }
     }
 }
+
+td.municipal-candidate-tags {
+    .candidate-tag {
+        display: inline-block;
+        margin: 0 5px 5px 0;
+        padding: 4px 8px;
+        border-radius: 50px;
+        background-color: $inf-modl--bkg-blue;
+        color: $inf-modl--text-blue;
+        font-size: 12px;
+        border: none;
+        white-space: nowrap;
+    }
+}

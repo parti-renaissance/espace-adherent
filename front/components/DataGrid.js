@@ -288,7 +288,11 @@ export default class DataGrid extends React.Component {
                                     <span className="oval" />
                                     <span className="oval" />
                                 </a>
-                                <div className="action-dropdown-menu">{links}</div>
+                                <div className="action-dropdown-menu--bounce">
+                                    <div className="action-dropdown-menu--content">
+                                        {links}
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     );
