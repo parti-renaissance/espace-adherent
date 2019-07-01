@@ -324,6 +324,7 @@
         <service id="AppBundle\Command\MailchimpSyncAllCandidatesCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllEventsCommand"/>
         <service id="AppBundle\Command\MailchimpUpdateAdherentCommand"/>
+        <service id="AppBundle\Command\MailchimpDeleteContactsFromCsvCommand"/>
         <service id="AppBundle\Command\MailchimpCreateTagFromReferentTagCommand">
             <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
