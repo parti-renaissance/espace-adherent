@@ -7,7 +7,7 @@
     {% if inline %}
         {% for key, val in value %}
             {% if not loop.first %}
-                ,
+                ,&nbsp;
             {% endif %}
             {% if val is iterable %}
                 ({{ _self.render_array(val, inline) }})

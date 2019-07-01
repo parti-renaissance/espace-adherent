@@ -31,3 +31,20 @@ unregistration_reasons.elected: Je suis déçu(e) par mon/les élu(e)s LaREM
 unregistration_reasons.movement: Je ne me reconnais plus dans les actions du mouvement En Marche !
 unregistration_reasons.committee: Je suis en désaccord avec l’activité de mon comité local
 unregistration_reasons.other: Autre
+
+#
+# OLDOLF
+#
+oldolf.marker.type.maison_service_accueil_public: Nouvelle maison de service et d'accueil au public
+
+oldolf.measure.type.suppression_taxe_habitation: Suppression de la taxe d’habitation
+oldolf.measure.type.couverture_fibre: Couverture en fibre de tout le territoire
+oldolf.measure.type.maison_service_accueil_public: Généralisation des maisons de service et d'accueil du public
+oldolf.measure.type.creation_entreprises: Créations nettes d’entreprises dans la commune
+oldolf.measure.type.baisse_nombre_chomeurs: Baisse du nombre de chômeurs
+oldolf.measure.type.pass_culture: Mise en Place du Pass Culture
+oldolf.measure.type.emplois_francs: Emplois francs
+oldolf.measure.type.creation_police_securite_quotidien: Création d'une force de police de sécurité du quotidien
+oldolf.measure.type.cheque_energie: Chèque énergie
+oldolf.measure.type.prime_conversion_automobile: Prime à la conversion automobile
+oldolf.measure.type.conversion_surface_agricole_bio: Conversion de la surface agricole en Bio

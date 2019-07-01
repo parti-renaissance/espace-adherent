@@ -250,6 +250,9 @@ security:
             - ROLE_APP_ADMIN_APPLICATION_REQUEST_THEME_ALL
             - ROLE_APP_ADMIN_APPLICATION_REQUEST_TECHNICAL_SKILL_ALL
 
+        ROLE_ADMIN_OLDOLF:
+            - ROLE_APP_ADMIN_OLDOLF_CITY_ALL
+
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN_DASHBOARD
             - ROLE_ADMIN_MEDIAS
@@ -295,6 +298,7 @@ security:
             - ROLE_ADMIN_BAN
             - ROLE_ADMIN_IDEAS_WORKSHOP
             - ROLE_ADMIN_APPLICATION_REQUEST
+            - ROLE_ADMIN_OLDOLF
 
     access_decision_manager:
         strategy: unanimous

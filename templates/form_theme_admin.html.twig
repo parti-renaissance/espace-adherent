@@ -1,5 +1,16 @@
 {% extends '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
 
+{% block measure_entry_row %}
+    <div class="row">
+        <div class="col-xs-4">
+            {{ form_row(form.key, { required: true }) }}
+        </div>
+        <div class="col-xs-4">
+            {{ form_row(form.value, { required: true }) }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block app_admin_mooc_mooc_image_file_image_row -%}
     {{ block('admin_image_with_url_row') }}
 {% endblock %}
