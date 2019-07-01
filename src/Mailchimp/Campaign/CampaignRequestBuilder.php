@@ -8,17 +8,14 @@ use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
 class CampaignRequestBuilder
 {
     private $objectIdMapping;
-    private $fromName;
     private $segmentConditionsBuilder;
 
     public function __construct(
         MailchimpObjectIdMapping $objectIdMapping,
-        SegmentConditionsBuilder $segmentConditionsBuilder,
-        string $fromName
+        SegmentConditionsBuilder $segmentConditionsBuilder
     ) {
         $this->objectIdMapping = $objectIdMapping;
         $this->segmentConditionsBuilder = $segmentConditionsBuilder;
-        $this->fromName = $fromName;
     }
 
     public function createEditCampaignRequestFromMessage(MailchimpCampaign $campaign): EditCampaignRequest
@@ -31,7 +28,7 @@ class CampaignRequestBuilder
             ->setSubject($message->getSubject())
             ->setTitle($this->createCampaignLabel($campaign))
             ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->build($campaign) : [])
-            ->setFromName($message->getFromName() ?? $this->fromName)
+            ->setFromName(sprintf('%s | La République En Marche !', $message->getFromName()))
         ;
     }
 

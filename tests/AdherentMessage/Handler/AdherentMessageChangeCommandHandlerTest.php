@@ -76,7 +76,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Comité] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
                         'reply_to' => 'jemarche@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -141,7 +141,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code1',
                         'reply_to' => 'jemarche@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -188,7 +188,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code2',
                         'reply_to' => 'jemarche@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -257,7 +257,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Député] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
                         'reply_to' => 'ne-pas-repondre@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -319,7 +319,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Projet citoyen] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
                         'reply_to' => 'projetscitoyens@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'main_list_id',
@@ -378,7 +378,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
                         'reply_to' => 'jemarche@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'application_request_candidate_list_id',
@@ -413,7 +413,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
                         'reply_to' => 'jemarche@en-marche.fr',
-                        'from_name' => 'Full Name',
+                        'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
                         'list_id' => 'application_request_candidate_list_id',
@@ -512,8 +512,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     'B',
                     'C'
                 ),
-                new SegmentConditionsBuilder($this->mailchimpMapping),
-                'FromName'
+                new SegmentConditionsBuilder($this->mailchimpMapping)
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
                 $this->mailchimpMapping,

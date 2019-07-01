@@ -582,9 +582,7 @@
         </service>
 
         <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
-        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder">
-            <argument key="$fromName" type="string">%campaign_sender_name%</argument>
-        </service>
+        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
         <service id="AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
