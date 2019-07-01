@@ -63,7 +63,10 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             $('.multi_select2').each(function () {
-                $(this).select2({placeholder: this.dataset.placeholder || ''});
+                $(this).select2({
+                    placeholder: this.dataset.placeholder || '',
+                    theme: 'default em-filters'
+                });
             });
         });
     </script>
