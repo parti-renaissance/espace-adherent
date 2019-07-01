@@ -38,6 +38,7 @@ class AxeAdmin extends AbstractAdmin
             ->with('Média', ['class' => 'col-md-6'])
                 ->add('media', AdminType::class, [
                     'label' => 'Image principale',
+                    'required' => false,
                 ])
                 ->add('displayMedia', CheckboxType::class, [
                     'label' => 'Afficher l\'image principale',

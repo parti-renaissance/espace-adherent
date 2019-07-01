@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityMediaTrait
 {
@@ -11,8 +10,6 @@ trait EntityMediaTrait
      * @var Media|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
-     *
-     * @Assert\NotBlank
      */
     private $media;
 
@@ -28,7 +25,7 @@ trait EntityMediaTrait
         return $this->media;
     }
 
-    public function setMedia(Media $media = null)
+    public function setMedia(Media $media = null): void
     {
         $this->media = $media;
     }
@@ -38,7 +35,7 @@ trait EntityMediaTrait
         return $this->displayMedia;
     }
 
-    public function setDisplayMedia(bool $displayMedia)
+    public function setDisplayMedia(bool $displayMedia): void
     {
         $this->displayMedia = $displayMedia;
     }

@@ -114,7 +114,7 @@ class Media
         return $this->name ?: '';
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
