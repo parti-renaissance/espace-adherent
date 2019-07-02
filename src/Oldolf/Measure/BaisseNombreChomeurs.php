@@ -20,7 +20,7 @@ class BaisseNombreChomeurs extends AbstractMeasure
     {
         return [
             self::KEY_BAISSE_VILLE => true,
-            self::KEY_BAISSE_DEPARTEMENT => false,
+            self::KEY_BAISSE_DEPARTEMENT => true,
         ];
     }
 
