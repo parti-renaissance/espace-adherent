@@ -18,7 +18,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Referent Space
         'app_referent_users' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_referent_users_message' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
-        'app_referent_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
+        'app_referent_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_message_send' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
         'app_message_referent_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_REFERENT,
 

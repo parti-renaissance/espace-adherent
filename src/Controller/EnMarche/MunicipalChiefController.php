@@ -318,11 +318,12 @@ class MunicipalChiefController extends Controller
         AdherentRepository $adherentRepository
     ): Response {
         $this->disableInProduction();
-        $inseeCodes = $municipalChief->getMunicipalChiefManagedArea()->getCodes();
-        $paginator = $adherentRepository->findPaginatedForInseeCodes($inseeCodes, $request->query->getInt('page'));
 
         return $this->render('municipal_chief/adherent/list.html.twig', [
-            'results' => $paginator,
+            'results' => $adherentRepository->findPaginatedForInseeCodes(
+                $municipalChief->getMunicipalChiefManagedArea()->getCodes(),
+                $request->query->getInt('page')
+            ),
         ]);
     }
 }

@@ -8,20 +8,15 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Entity\Event;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use AppBundle\Event\EventCommand;
-use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
-use AppBundle\Form\EventCommandType;
 use AppBundle\Form\InstitutionalEventCommandType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Referent\ManagedCitizenProjectsExporter;
 use AppBundle\Referent\ManagedCommitteesExporter;
-use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\OrganizationalChartManager;
@@ -29,7 +24,6 @@ use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\EventRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
@@ -85,49 +79,6 @@ class ReferentController extends Controller
             'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
             'total_count' => $repository->countAdherentInReferentZone($referent),
             'results' => $results,
-        ]);
-    }
-
-    /**
-     * @Route("/evenements", name="app_referent_events", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function eventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
-    {
-        return $this->render('referent/events_list.html.twig', [
-            'managedEventsJson' => $eventsExporter->exportAsJson($eventRepository->findManagedBy($this->getUser())),
-        ]);
-    }
-
-    /**
-     * @Route("/evenements/creer", name="app_referent_events_create", methods={"GET", "POST"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
-     */
-    public function eventsCreateAction(Request $request, GeoCoder $geoCoder): Response
-    {
-        $command = new EventCommand($this->getUser());
-        $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
-        $form = $this->createForm(EventCommandType::class, $command);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Event $event */
-            $event = $this->get('app.event.handler')->handle($command);
-
-            $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
-            $this->get('app.event.registration_handler')->handle($registrationCommand);
-
-            $this->addFlash('info', 'referent.event.creation.success');
-
-            return $this->redirectToRoute('app_event_show', [
-                'slug' => $event->getSlug(),
-            ]);
-        }
-
-        return $this->render('referent/event_create.html.twig', [
-            'form' => $form->createView(),
         ]);
     }
 

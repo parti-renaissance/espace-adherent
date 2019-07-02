@@ -33,13 +33,13 @@
 
                     <ul class="horizontal">
                         <li><a href="{{ path('app_referent_users') }}" class="button">{{ 'dashboard.send_email'|trans }}</a></li>
-                        <li><a href="{{ path('app_referent_events_create') }}" class="button">{{ 'dashboard.create_event'|trans }}</a></li>
+                        <li><a href="{{ path('app_referent_event_manager_events_create') }}" class="button">{{ 'dashboard.create_event'|trans }}</a></li>
                     </ul>
                     <br>
                     <hr>
                     <ul class="horizontal">
                         <li><a href="{{ path('app_referent_users') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_members'|trans }}</a></li>
-                        <li><a href="{{ path('app_referent_events') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_events'|trans }}</a></li>
+                        <li><a href="{{ path('app_referent_event_manager_events') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_events'|trans }}</a></li>
                         <li><a href="{{ path('app_referent_committees') }}" class="link--no-decor link--newblue">{{ 'dashboard.show_committees'|trans }}</a></li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
                     </ul>
                 {% endif %}
                 <p style="text-align: center;">
-                    <a href="{{ path('app_referent_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
+                    <a href="{{ path('app_referent_event_manager_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
                 </p>
             </div>
 

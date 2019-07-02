@@ -1,7 +1,5 @@
-{% extends 'referent/_layout.html.twig' %}
+{% extends 'event_manager/_layout.html.twig' %}
 
-                   
-             
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
@@ -9,7 +7,7 @@
                 [
                     {
                         key: 'name',
-                        name: 'Nom de l\'événement',
+                        name: "Nom de l'événement",
                         link: true,
                         targetBlank: true,
                     },
@@ -43,16 +41,16 @@
                         },
                     }
                 ],
-                    {{ managedEventsJson|raw }}
+                    {{ eventsAsJson|raw }}
             );
         });
     </script>
 {% endblock %}
 
-{% block referent_content %}
+{% block event_manager_content %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Événements</h3>
-        <a href="{{ path('app_referent_events_create') }}" class="btn-type-table">
+        <a href="{{ path("app_#{space_name}_event_manager_events_create") }}" class="btn-type-table">
             + Créer
         </a>
     </div>

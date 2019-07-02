@@ -1,0 +1,136 @@
+{% extends 'event_manager/_layout.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+    {% if form is defined %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.address(form.address) }}
+                App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block event_manager_content %}
+    {% if event is defined %}
+        <div class="box-success text--center l__wrapper--500 font-roboto">
+            <img class="icn_success b__nudge--bottom" src="{{ asset('images/icons/icn_success.svg') }}" />
+
+            <h2 class="text--medium b__nudge--bottom-larger">Événement créé.</h2>
+
+            <p class="text--normal b__nudge--bottom ">Votre événement <a class="link--no--decor text--blue--dark" href="{{ path('app_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été crée.</p>
+
+            {% if event.status == constant('STATUS_SCHEDULED', event) %}
+                <p class="alert alert-warning">
+                    Votre événement est bien créé mais pas encore diffusé.<br/> Partagez le par e-mail à vos contacts en cliquant ci-dessous.
+                </p>
+            {% endif %}
+
+            <br/>
+
+            <form method="POST" action="{{ path("app_message_#{space_name}_create") }}">
+                <input type="hidden" name='message_content' value="Inscrivez-vous à l'événement <a href='{{ url('app_event_show', { slug: event.slug }) }}'>ici</a>">
+                <button class="btn btn--blue b__nudge--bottom">L'envoyer par e-mail</button>
+            </form>
+
+            <br/>
+
+            <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
+                Tous mes événements
+            </a>
+        </div>
+    {% else %}
+        <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
+            ⟵ Annuler
+        </a>
+        <div class="l__wrapper--slim">
+            <h2 class="text--medium b__nudge--bottom-larger">
+                Créer un événement
+            </h2>
+
+            {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+            {{ form_errors(form) }}
+
+            <div class="form__row" id="committee-event-name-field">
+                {{ form_errors(form.name) }}
+                {{ form_label(form.name, "Nom de l'événement") }}
+                {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom de l'événement" } }) }}
+            </div>
+
+            <div class="form__row" id="committee-event-description-field">
+                {{ form_errors(form.category) }}
+                {{ form_label(form.category, 'Type') }}
+                {{ form_widget(form.category, { attr: { class: 'form--full committee_event__form__category', placeholder: "Choisissez le type de l'événement" } }) }}
+            </div>
+
+            <div class="form__row form__date-and-time" id="committee-event-beginat-field">
+                {{ form_errors(form.beginAt) }}
+                {{ form_label(form.beginAt, 'Début') }}
+                {{ form_widget(form.beginAt, { attr: { class: 'form__group event__begin_at', autocomplete: 'off' } }) }}
+            </div>
+
+            <div class="form__row form__date-and-time" id="committee-event-finishat-field">
+                {{ form_errors(form.finishAt) }}
+                {{ form_label(form.finishAt, 'Fin') }}
+                {{ form_widget(form.finishAt, { attr: { class: 'form__group event__finish_at', autocomplete: 'off' } }) }}
+            </div>
+
+            <div id="committee-event-address">
+                {{ form_errors(form.address) }}
+
+                <div class="form__row committee_event__form--trunc" id="committee-event-address-address-field">
+                    {{ form_errors(form.address.address) }}
+                    {{ form_label(form.address.address, 'Adresse') }}
+                    {{ form_widget(form.address.address, { attr: { class: 'form--full', placeholder: "Entrez l'adresse de l'événement" } }) }}
+                </div>
+
+                <div class="form__group dual__fields">
+                    <div class="form__row committee_event__form__zip_code" id="committee-event-address-zipcode-field">
+                        {{ form_label(form.address.postalCode, 'Code postal') }}
+                        {{ form_widget(form.address.postalCode, { attr: { class: 'form--full', placeholder: 'Entrez le code postal' } }) }}
+                    </div>
+
+                    <div class="form__row committee_event__form__city" id="committee-event-address-city-field">
+                        {{ form_errors(form.address.city) }}
+                        {{ form_label(form.address.cityName, 'Ville') }}
+                        {{ form_widget(form.address.city, { attr: { class: 'committee_event__form__city'}}) }}
+                        {{ form_widget(form.address.cityName, { 'attr': { 'class': 'form--full', placeholder: 'Ville' } }) }}
+                    </div>
+                </div>
+
+                <div class="form__group dual__fields">
+                    <div class="form__row committee_event__form__country" id="committee-event-address-country-field">
+                        {{ form_errors(form.address.country) }}
+                        {{ form_label(form.address.country, 'Pays') }}
+                        {{ form_widget(form.address.country, { attr: { class: 'form--full', placeholder: 'Choisissez le pays' } }) }}
+                    </div>
+                    <div class="form__row committee_event__form__timezone"
+                         id="committee_event-address-timezone-field">
+                        {{ form_errors(form.timeZone) }}
+                        {{ form_label(form.timeZone, 'Fuseau horaire') }}
+                        {{ form_widget(form.timeZone, { attr: { class: 'form--full', placeholder: 'Choisissez le fuseau horaire' } }) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form__row" id="committee-event-description-field">
+                {{ form_errors(form.description) }}
+                {{ form_label(form.description, 'À propos') }}
+                {{ form_widget(form.description, { attr: { class: 'form--full form__field--textarea-300 b__nudge--top-15', placeholder: 'Entrez un paragraphe afin de décrire cet événement.', rows: '20', cols: '70' } }) }}
+            </div>
+
+            <div class="form__row" id="committee-event-capacity-field">
+                {{ form_errors(form.capacity) }}
+                {{ form_label(form.capacity, 'Capacité') }}
+                {{ form_widget(form.capacity, { attr: { class: 'form--full committee_event__form__capacity', placeholder: 'Quel est le nombre maximum de participants à cet événement.' } }) }}
+            </div>
+
+            <div class="form__row b__nudge--top-50">
+                <button type="submit" class="btn btn--blue btn--large-and-full">Créer cet événement</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+{% endblock %}
