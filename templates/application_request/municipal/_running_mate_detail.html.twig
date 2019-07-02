@@ -18,12 +18,12 @@
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">Profession</div>
+            <div class="data-listing__item data-listing__item--label">Quelle est votre profession ?</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.profession }}</div>
         </div>
 
         <div class="data-listing__row">
-            <div class="data-listing__item data-listing__item--label">Thèmes favoris</div>
+            <div class="data-listing__item data-listing__item--label">Vos thématique(s) de prédilection</div>
             <div class="data-listing__item data-listing__item--value">
                 <ul>
                     {% for favoriteTheme in runningMateRequest.favoriteThemes %}
@@ -34,7 +34,7 @@
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">Thèmes favoris détails</div>
+            <div class="data-listing__item data-listing__item--label">Vos thématique(s) de prédilection personnalisés</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.favoriteThemeDetails }}</div>
         </div>
 
@@ -46,42 +46,42 @@
         </div>
 
         <div class="data-listing__row">
-            <div class="data-listing__item data-listing__item--label">Membre de l'association locale ?</div>
+            <div class="data-listing__item data-listing__item--label">Êtes-vous engagé dans une/des association(s) locale(s) ?</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.isLocalAssociationMember ? 'Oui' : 'Non' }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">Domaine de l'association locale</div>
+            <div class="data-listing__item data-listing__item--label">Détails</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.localAssociationDomain }}</div>
         </div>
 
         <div class="data-listing__row">
-            <div class="data-listing__item data-listing__item--label">Activiste politique ?</div>
+            <div class="data-listing__item data-listing__item--label">Avez-vous déjà eu un engagement militant ?</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.isPoliticalActivist ? 'Oui' : 'Non' }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">Activiste politique détails</div>
+            <div class="data-listing__item data-listing__item--label">Détails</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.politicalActivistDetails }}</div>
         </div>
 
         <div class="data-listing__row">
-            <div class="data-listing__item data-listing__item--label">Est l'élu précédent ?</div>
+            <div class="data-listing__item data-listing__item--label">Avez-vous déjà exercé un mandat ?</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.isPreviousElectedOfficial ? 'Oui' : 'Non' }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">Est l'élu précédent détails</div>
+            <div class="data-listing__item data-listing__item--label">Détails</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.previousElectedOfficialDetails }}</div>
         </div>
 
         <div class="data-listing__row">
-            <div class="data-listing__item data-listing__item--label">Détails du projet</div>
+            <div class="data-listing__item data-listing__item--label">Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.projectDetails }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">Actifs professionnels</div>
+            <div class="data-listing__item data-listing__item--label">Quel sont les atouts de votre parcours professionnel ?</div>
             <div class="data-listing__item data-listing__item--value">{{ runningMateRequest.professionalAssets }}</div>
         </div>
     </div>
