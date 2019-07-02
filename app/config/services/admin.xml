@@ -825,6 +825,7 @@
         <service id="app.admin.algolia_indexed_entity_extension" class="AppBundle\Admin\Extension\AlgoliaIndexedEntityAdminExtension">
             <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
 
+            <tag name="sonata.admin.extension" target="app.admin.timeline_manifesto" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
