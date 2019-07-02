@@ -33,18 +33,18 @@ unregistration_reasons.committee: Je suis en désaccord avec l’activité de mo
 unregistration_reasons.other: Autre
 
 #
-# OLDOLF
+# ChezVous
 #
-oldolf.marker.type.maison_service_accueil_public: Nouvelle maison de service et d'accueil au public
+chez_vous.marker.type.maison_service_accueil_public: Nouvelle maison de service et d'accueil au public
 
-oldolf.measure.type.suppression_taxe_habitation: Suppression de la taxe d’habitation
-oldolf.measure.type.couverture_fibre: Couverture en fibre de tout le territoire
-oldolf.measure.type.maison_service_accueil_public: Généralisation des maisons de service et d'accueil du public
-oldolf.measure.type.creation_entreprises: Créations nettes d’entreprises dans la commune
-oldolf.measure.type.baisse_nombre_chomeurs: Baisse du nombre de chômeurs
-oldolf.measure.type.pass_culture: Mise en Place du Pass Culture
-oldolf.measure.type.emplois_francs: Emplois francs
-oldolf.measure.type.creation_police_securite_quotidien: Création d'une force de police de sécurité du quotidien
-oldolf.measure.type.cheque_energie: Chèque énergie
-oldolf.measure.type.prime_conversion_automobile: Prime à la conversion automobile
-oldolf.measure.type.conversion_surface_agricole_bio: Conversion de la surface agricole en Bio
+chez_vous.measure.type.suppression_taxe_habitation: Suppression de la taxe d’habitation
+chez_vous.measure.type.couverture_fibre: Couverture en fibre de tout le territoire
+chez_vous.measure.type.maison_service_accueil_public: Généralisation des maisons de service et d'accueil du public
+chez_vous.measure.type.creation_entreprises: Créations nettes d’entreprises dans la commune
+chez_vous.measure.type.baisse_nombre_chomeurs: Baisse du nombre de chômeurs
+chez_vous.measure.type.pass_culture: Mise en Place du Pass Culture
+chez_vous.measure.type.emplois_francs: Emplois francs
+chez_vous.measure.type.creation_police_securite_quotidien: Création d'une force de police de sécurité du quotidien
+chez_vous.measure.type.cheque_energie: Chèque énergie
+chez_vous.measure.type.prime_conversion_automobile: Prime à la conversion automobile
+chez_vous.measure.type.conversion_surface_agricole_bio: Conversion de la surface agricole en Bio

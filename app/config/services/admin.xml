@@ -829,7 +829,7 @@
             <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
             <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
-            <tag name="sonata.admin.extension" target="app.admin.oldolf_city" />
+            <tag name="sonata.admin.extension" target="app.admin.chez_vous_city" />
         </service>
 
         <service id="app.admin.empty_translation_remover_extension" class="AppBundle\Admin\Extension\EmptyTranslationRemoverAdminExtension">
@@ -1053,20 +1053,20 @@
 
         <!--
         ######################################################
-        # OLDOLF
+        # ChezVous
         ######################################################
          -->
 
-        <service id="app.admin.oldolf_city" class="AppBundle\Admin\OldolfCityAdmin">
+        <service id="app.admin.chez_vous_city" class="AppBundle\Admin\ChezVous\CityAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Villes" group="Chez vous" />
 
             <argument />
-            <argument>AppBundle\Entity\Oldolf\City</argument>
+            <argument>AppBundle\Entity\ChezVous\City</argument>
             <argument />
 
             <call method="setTemplate">
                 <argument>edit</argument>
-                <argument>admin/oldolf/city/edit.html.twig</argument>
+                <argument>admin/chez_vous/city/edit.html.twig</argument>
             </call>
         </service>
     </services>

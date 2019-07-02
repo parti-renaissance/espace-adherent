@@ -114,7 +114,7 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_FORMATION',
                     'ROLE_ADMIN_ASSESSOR',
                     'ROLE_ADMIN_APPLICATION_REQUEST',
-                    'ROLE_ADMIN_OLDOLF',
+                    'ROLE_ADMIN_CHEZ_VOUS',
                 ],
             ])
             ->add(
