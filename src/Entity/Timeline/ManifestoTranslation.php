@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  * @UniqueEntity(fields={"locale", "slug"}, errorPath="slug")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ManifestoTranslation implements EntityTranslationInterface
 {
