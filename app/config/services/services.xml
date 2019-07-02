@@ -634,10 +634,10 @@
         <service id="AppBundle\Command\ImportAssessorsCommand" />
         <service id="AppBundle\Command\ImportVotePlacesCommand" />
 
-        <!-- OLDOLF -->
-        <prototype namespace="AppBundle\Command\Oldolf\" resource="../../../src/Command/Oldolf/*" />
-        <prototype namespace="AppBundle\Form\Admin\Oldolf\" resource="../../../src/Form/Admin/Oldolf/*" />
-        <prototype namespace="AppBundle\Oldolf\" resource="../../../src/Oldolf/*" />
-        <service id="AppBundle\Validator\OldolfMeasurePayloadValidator" />
+        <!-- ChezVous -->
+        <prototype namespace="AppBundle\Command\ChezVous\" resource="../../../src/Command/ChezVous/*" />
+        <prototype namespace="AppBundle\Form\Admin\ChezVous\" resource="../../../src/Form/Admin/ChezVous/*" />
+        <prototype namespace="AppBundle\ChezVous\" resource="../../../src/ChezVous/*" />
+        <service id="AppBundle\Validator\ChezVous\MeasurePayloadValidator" />
     </services>
 </container>

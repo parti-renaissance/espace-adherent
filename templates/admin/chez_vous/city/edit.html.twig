@@ -1,0 +1,74 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        var MEASURE_TYPE_ENTRIES_MAP = {{ get_chez_vous_measure_type_keys_map()|json_encode|raw }};
+
+        $(document).ready(function() {
+            initMeasureEntries();
+        });
+
+        $(document).on('sonata-collection-item-added', function() {
+            initMeasureEntries();
+        });
+
+        var initMeasureEntries = function() {
+            $('.measure-type-select').each(function() {
+                var measureTypeSelect = $(this);
+                var selectedType = measureTypeSelect.val();
+                var selectableKeys = selectedType.length > 0 ? MEASURE_TYPE_ENTRIES_MAP[selectedType] : [];
+                var measureEntries = measureTypeSelect
+                    .closest('.form-group')
+                    .parent()
+                    .find('.measure-entries-collection')
+                    .closest('.form-group')
+                ;
+
+                if (0 === selectedType.length || 0 === selectableKeys.length) {
+                    measureEntries.hide();
+
+                    return;
+                }
+
+                measureEntries.show();
+
+                measureEntries.find('.measure-entry-key-select').each(function() {
+                    var keySelect = $(this);
+                    var selectedKey = keySelect.val();
+
+                    keySelect.empty();
+                    appendSelectOption(keySelect, 'Sélectionnez une clé', '', true, false);
+
+                    for (var key in selectableKeys) {
+                        appendSelectOption(keySelect, key, key, false, key === selectedKey);
+                    }
+                });
+            }).on('change', function() {
+                removeEntries($(this));
+
+                initMeasureEntries();
+            });
+        }
+
+        var removeEntries = function (measureTypeSelect) {
+            measureTypeSelect
+                .closest('.form-group')
+                .parent()
+                .find('.measure-entries-collection .sonata-collection-delete')
+                .click()
+            ;
+        }
+
+        var appendSelectOption = function(select, label, value, defaultSelected, selected) {
+            var option = new Option(label, value, defaultSelected, selected);
+
+            // Needed for Edge
+            $(option).html(label);
+
+            select.append(option);
+        }
+    </script>
+{% endblock %}

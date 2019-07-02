@@ -2,7 +2,7 @@
 /app/config/assets_version.yml
 /app/data/images/
 /app/data/files/
-/app/data/oldolf/
+/app/data/chez-vous/
 /app/data/user_documents/
 /app/data/dumped_referents_users
 /templates/amp/style.css.twig
