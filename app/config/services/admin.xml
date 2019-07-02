@@ -799,6 +799,11 @@
             </call>
         </service>
 
+        <service id="app.admin.manage_media_extension" class="AppBundle\Admin\Extension\ManageMediaExtension">
+            <tag name="sonata.admin.extension" target="app.admin.formation_module" />
+            <tag name="sonata.admin.extension" target="app.admin.formation_axe" />
+        </service>
+
         <!--
         ######################################################
         # Data Transformer
