@@ -6,12 +6,14 @@ use AppBundle\Entity\Oldolf\City;
 use AppBundle\Entity\Oldolf\Measure;
 use AppBundle\Oldolf\Measure\BaisseNombreChomeurs;
 use AppBundle\Oldolf\Measure\ChequeEnergie;
+use AppBundle\Oldolf\Measure\ConversionSurfaceAgricoleBio;
 use AppBundle\Oldolf\Measure\CouvertureFibre;
 use AppBundle\Oldolf\Measure\CreationEntreprise;
 use AppBundle\Oldolf\Measure\CreationPoliceSecuriteQuotidien;
 use AppBundle\Oldolf\Measure\EmploisFrancs;
 use AppBundle\Oldolf\Measure\MaisonServiceAccueilPublic;
 use AppBundle\Oldolf\Measure\PassCulture;
+use AppBundle\Oldolf\Measure\PrimeConversionAutomobile;
 use AppBundle\Oldolf\Measure\SuppressionTaxeHabitation;
 use AppBundle\Oldolf\MeasureChoiceLoader;
 use AppBundle\Repository\Oldolf\CityRepository;
@@ -131,6 +133,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 $this->loadMeasureChequeEnergie($metadata);
 
                 break;
+            case ConversionSurfaceAgricoleBio::getType():
+                $this->loadMeasureConversionSurfaceAgricoleBio($metadata);
+
+                break;
             case CouvertureFibre::getType():
                 $this->loadMeasureCouvertureFibre($metadata);
 
@@ -153,6 +159,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 break;
             case PassCulture::getType():
                 $this->loadMeasureWithEmptyPayload(PassCulture::class, $metadata);
+
+                break;
+            case PrimeConversionAutomobile::getType():
+                $this->loadMeasurePrimeConversionAutomobile($metadata);
 
                 break;
             case SuppressionTaxeHabitation::getType():
@@ -189,7 +199,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         foreach (BaisseNombreChomeurs::getKeys() as $key => $required) {
             if ($required && (0 === \strlen($metadata[$key]) || !is_numeric($metadata[$key]))) {
-                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.'");
+                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.");
 
                 return;
             }
@@ -240,6 +250,56 @@ class ImportMeasuresCommand extends AbstractImportCommand
         $this->em->persist(ChequeEnergie::create($city, $nombreBeneficiaires));
     }
 
+    private function loadMeasureConversionSurfaceAgricoleBio(array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $hectaresBio = $metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO];
+        $progression = $metadata[ConversionSurfaceAgricoleBio::KEY_PROGRESSION];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        if (
+            0 === \strlen($metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO])
+            || !is_numeric($metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO])
+        ) {
+            $this->io->text(sprintf(
+                'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
+                ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if (0 === \strlen($metadata[ConversionSurfaceAgricoleBio::KEY_PROGRESSION])) {
+            $this->io->text(sprintf(
+                'Key "%s" is required (insee_code: "%s"). Skipping.',
+                ConversionSurfaceAgricoleBio::KEY_PROGRESSION,
+                $inseeCode
+            ));
+
+            return;
+        }
+
+        if ($measure = $this->findMeasure($city, ConversionSurfaceAgricoleBio::getType())) {
+            $measure->setPayload(ConversionSurfaceAgricoleBio::createPayload($hectaresBio, $progression));
+
+            return;
+        }
+
+        $this->em->persist(ConversionSurfaceAgricoleBio::create($city, $hectaresBio, $progression));
+    }
+
     private function loadMeasureCouvertureFibre(array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
@@ -262,7 +322,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         foreach (CouvertureFibre::getKeys() as $key => $required) {
             if ($required && (0 === \strlen($metadata[$key]) || !is_numeric($metadata[$key]))) {
-                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.'");
+                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.");
 
                 return;
             }
@@ -335,6 +395,41 @@ class ImportMeasuresCommand extends AbstractImportCommand
         $this->em->persist(CreationEntreprise::create($city, $entreprises, $microEntreprises));
     }
 
+    private function loadMeasurePrimeConversionAutomobile(array $metadata): void
+    {
+        $inseeCode = $metadata['insee_code'];
+        $nombreBeneficiaires = $metadata[PrimeConversionAutomobile::KEY_NOMBRE_BENEFICIAIRES];
+        $montantMoyen = $metadata[PrimeConversionAutomobile::KEY_MONTANT_MOYEN];
+
+        if (empty($inseeCode)) {
+            return;
+        }
+
+        $city = $this->findCity($inseeCode);
+
+        if (!$city) {
+            $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
+
+            return;
+        }
+
+        foreach (PrimeConversionAutomobile::getKeys() as $key => $required) {
+            if ($required && (0 === \strlen($metadata[$key]) || !is_numeric($metadata[$key]))) {
+                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.");
+
+                return;
+            }
+        }
+
+        if ($measure = $this->findMeasure($city, PrimeConversionAutomobile::getType())) {
+            $measure->setPayload(PrimeConversionAutomobile::createPayload($nombreBeneficiaires, $montantMoyen));
+
+            return;
+        }
+
+        $this->em->persist(PrimeConversionAutomobile::create($city, $nombreBeneficiaires, $montantMoyen));
+    }
+
     private function loadMeasureSuppressionTaxeHabitation(array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
@@ -357,13 +452,13 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         foreach (SuppressionTaxeHabitation::getKeys() as $key => $required) {
             if ($required && (0 === \strlen($metadata[$key]) || !is_numeric($metadata[$key]))) {
-                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.'");
+                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.");
 
                 return;
             }
         }
 
-        if ($measure = $this->findMeasure($city, CouvertureFibre::getType())) {
+        if ($measure = $this->findMeasure($city, SuppressionTaxeHabitation::getType())) {
             $measure->setPayload(SuppressionTaxeHabitation::createPayload(
                 $nombreFoyers,
                 $baisse2018,
