@@ -55,7 +55,7 @@ class ImportMarkersCommand extends AbstractImportCommand
         if ($type) {
             $this->importMarkerType($type);
         } else {
-            foreach ($this->measureFactory->getTypeChoices() as $type) {
+            foreach ($this->markerChoiceLoader->getTypeChoices() as $type) {
                 $this->importMarkerType($type);
             }
         }
@@ -67,11 +67,11 @@ class ImportMarkersCommand extends AbstractImportCommand
 
     private function importMarkerType(string $type): void
     {
-        if (!\in_array($type, $this->measureFactory->getTypeChoices(), true)) {
+        if (!\in_array($type, $this->markerChoiceLoader->getTypeChoices(), true)) {
             throw new \InvalidArgumentException(sprintf(
                 '"%s" is not a known marker type. Known marker types are: "%s".',
                 $type,
-                implode('", "', $this->measureFactory->getTypeChoices())
+                implode('", "', $this->markerChoiceLoader->getTypeChoices())
             ));
         }
 
@@ -116,7 +116,7 @@ class ImportMarkersCommand extends AbstractImportCommand
     {
         switch ($type) {
             case DedoublementClasses::getType():
-                $this->loadGeocodedMarker($type, $metadata);
+                $this->loadGeocodedMarker(DedoublementClasses::class, $metadata);
 
                 break;
             default:
@@ -133,7 +133,7 @@ class ImportMarkersCommand extends AbstractImportCommand
     {
         $inseeCode = $metadata['insee_code'];
         $latitude = $metadata['lat'];
-        $longitude= $metadata['long'];
+        $longitude = $metadata['long'];
 
         if (empty($inseeCode)) {
             return;
