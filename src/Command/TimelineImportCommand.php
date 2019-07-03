@@ -287,11 +287,13 @@ class TimelineImportCommand extends Command
 
             $this->em->persist($measure);
 
+            $this->io->progressAdvance();
             ++$count;
 
             if (0 === ($count % 50)) {
                 $this->em->flush();
                 $this->em->clear(Measure::class);
+                $this->em->clear(MeasureTranslation::class);
 
                 $this->io->comment("Processed $count measures.");
             }
