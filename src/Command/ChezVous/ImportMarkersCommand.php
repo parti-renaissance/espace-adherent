@@ -4,8 +4,6 @@ namespace AppBundle\Command\ChezVous;
 
 use AppBundle\ChezVous\Marker\DedoublementClasses;
 use AppBundle\ChezVous\MarkerChoiceLoader;
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Marker;
 use AppBundle\Repository\ChezVous\CityRepository;
 use AppBundle\Repository\ChezVous\MarkerRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -124,11 +122,6 @@ class ImportMarkersCommand extends AbstractImportCommand
         }
     }
 
-    private function findMarker(City $city, string $type): ?Marker
-    {
-        return $this->markerRepository->findOneByCityAndType($city, $type);
-    }
-
     private function loadGeocodedMarker(string $markerClass, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
@@ -143,12 +136,6 @@ class ImportMarkersCommand extends AbstractImportCommand
 
         if (!$city) {
             $this->io->text("No city found for insee_code \"$inseeCode\". Skipping.");
-
-            return;
-        }
-
-        if ($marker = $this->findMarker($city, $markerClass::getType())) {
-            $marker->setCoordinates($latitude, $longitude);
 
             return;
         }
