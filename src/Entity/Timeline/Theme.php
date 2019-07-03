@@ -22,7 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     attributesForFaceting={
  *         "titles.fr",
  *         "titles.en",
- *         "profileIds"
+ *         "profileIds",
+ *         "manifestoIds"
  *     }
  * )
  */

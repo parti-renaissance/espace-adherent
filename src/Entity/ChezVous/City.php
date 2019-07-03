@@ -17,7 +17,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("slug")
  * @UniqueEntity("inseeCode")
  *
- * @Algolia\Index(autoIndex=false)
+ * @Algolia\Index(
+ *     autoIndex=false,
+ *     searchableAttributes={
+ *         "name",
+ *         "postalCodes"
+ *     }
+ * )
  */
 class City implements AlgoliaIndexedEntityInterface
 {
@@ -138,7 +144,7 @@ class City implements AlgoliaIndexedEntityInterface
     ) {
         $this->department = $department;
         $this->name = $name;
-        $this->inseeCode = self::normalizeCode($inseeCode);
+        $this->inseeCode = $inseeCode ? self::normalizeCode($inseeCode) : null;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
         $this->slug = $slug;
