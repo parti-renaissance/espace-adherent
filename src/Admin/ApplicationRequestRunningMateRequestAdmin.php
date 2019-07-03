@@ -116,7 +116,7 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
                     'required' => false,
                 ])
                 ->add('isLocalAssociationMember', BooleanType::class, [
-                    'label' => 'Êtes-vous engagé dans une/des association(s) locale(s) ?',
+                    'label' => 'Êtes-vous engagé(e) dans une/des association(s) locale(s) ?',
                 ])
                 ->add('localAssociationDomain', null, [
                     'label' => 'Si oui, n\'hésitez pas à préciser',
