@@ -2,28 +2,43 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Timeline\Manifesto;
 use AppBundle\Entity\Timeline\Measure;
+use AppBundle\Entity\Timeline\MeasureTranslation;
 use AppBundle\Entity\Timeline\Profile;
 use AppBundle\Entity\Timeline\Theme;
 use AppBundle\Timeline\TimelineFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Reader;
+use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class TimelineImportCommand extends Command
 {
     private const BOOLEAN_CHOICES = ['oui' => true, 'non' => false];
+    private const CSV_DIRECTORY = 'timeline';
+    private const CSV_PROFILES = 'profiles.csv';
+    private const CSV_THEMES = 'themes.csv';
+    private const CSV_MEASURES = 'measures';
 
     private $em;
     private $factory;
+    private $storage;
 
-    public function __construct(EntityManagerInterface $em, TimelineFactory $factory)
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
+
+    public function __construct(EntityManagerInterface $em, TimelineFactory $factory, Filesystem $storage)
     {
         $this->em = $em;
         $this->factory = $factory;
+        $this->storage = $storage;
 
         parent::__construct();
     }
@@ -32,37 +47,54 @@ class TimelineImportCommand extends Command
     {
         $this
             ->setName('app:timeline:import')
-            ->addArgument('profilesUrl', InputArgument::REQUIRED)
-            ->addArgument('themesUrl', InputArgument::REQUIRED)
-            ->addArgument('measuresUrl', InputArgument::REQUIRED)
             ->setDescription('Import timeline from CSV files')
+            ->addArgument('manifestoSlug', InputArgument::REQUIRED, 'The manifesto slug to link measures with.')
         ;
+    }
+
+    public function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(['', 'Starting Timeline import.']);
+        $this->io->title('Import timeline measures');
 
         $this->em->beginTransaction();
 
-        $this->importProfiles($input, $output);
-        $this->importThemes($input, $output);
-        $this->importMeasures($input, $output);
+        $this->importProfiles();
+        $this->importThemes();
+        $this->importMeasures($input->getArgument('manifestoSlug'));
 
         $this->em->commit();
 
         $output->writeln(['', 'Timeline imported successfully!']);
     }
 
-    private function importProfiles(InputInterface $input, OutputInterface $output): void
+    private function importProfiles(): void
     {
-        $profilesUrl = $input->getArgument('profilesUrl');
+        $this->io->section('Importing profiles');
 
-        $output->writeln(['', sprintf('Starting profiles import from "%s".', $profilesUrl)]);
+        $filename = self::CSV_DIRECTORY.'/'.self::CSV_PROFILES;
+
+        if (!$this->storage->has($filename)) {
+            $this->io->comment("No CSV found ($filename).");
+
+            return;
+        }
+
+        $this->io->comment("Processing \"$filename\".");
+
+        $reader = Reader::createFromStream($this->storage->readStream($filename));
+        $reader->setHeaderOffset(0);
+
+        $this->io->progressStart($total = $reader->count());
 
         $count = 0;
-        foreach ($this->parseCSV($profilesUrl) as $index => $row) {
-            list($title, $description) = $row;
+        foreach ($reader as $index => $row) {
+            $title = $row['title'];
+            $description = $row['description'];
 
             if (empty($title)) {
                 throw new \RuntimeException(sprintf('No title found for profile. (line %d)', $index + 2));
@@ -80,18 +112,36 @@ class TimelineImportCommand extends Command
         $this->em->flush();
         $this->em->clear();
 
-        $output->writeln(sprintf('Saved %s profiles.', $count));
+        $this->io->progressFinish();
+
+        $this->io->comment("Processed $total profiles.");
     }
 
-    private function importThemes(InputInterface $input, OutputInterface $output): void
+    private function importThemes(): void
     {
-        $themesUrl = $input->getArgument('themesUrl');
+        $this->io->section('Importing themes');
 
-        $output->writeln(['', sprintf('Starting themes import from "%s".', $themesUrl)]);
+        $filename = self::CSV_DIRECTORY.'/'.self::CSV_THEMES;
+
+        if (!$this->storage->has($filename)) {
+            $this->io->comment("No CSV found ($filename).");
+
+            return;
+        }
+
+        $this->io->comment("Processing \"$filename\".");
+
+        $reader = Reader::createFromStream($this->storage->readStream($filename));
+        $reader->setHeaderOffset(0);
+
+        $this->io->progressStart($total = $reader->count());
 
         $count = 0;
-        foreach ($this->parseCSV($themesUrl) as $index => $row) {
-            list($title, $isFeatured, $description, $imageUrl) = $row;
+        foreach ($reader as $index => $row) {
+            $title = $row['title'];
+            $isFeatured = $row['is_featured'];
+            $description = $row['description'];
+            $imageUrl = $row['image_url'];
 
             if (empty($title)) {
                 throw new \RuntimeException(sprintf('No title found for theme. (line %d)', $index + 2));
@@ -129,21 +179,40 @@ class TimelineImportCommand extends Command
         $this->em->flush();
         $this->em->clear();
 
-        $output->writeln(sprintf('Saved %d themes.', $count));
+        $this->io->comment("Processed $total themes.");
     }
 
-    public function importMeasures(InputInterface $input, OutputInterface $output): void
+    public function importMeasures(string $manifestoSlug): void
     {
+        $this->io->section('Importing measures');
+
         $savedProfiles = $this->getProfiles();
         $savedThemes = $this->getThemes();
+        $manifesto = $this->getManifesto($manifestoSlug);
 
-        $measuresUrl = $input->getArgument('measuresUrl');
+        $filename = sprintf('%s/%s_%s.csv', self::CSV_DIRECTORY, self::CSV_MEASURES, $manifestoSlug);
 
-        $output->writeln(['', sprintf('Starting measures import from "%s".', $measuresUrl)]);
+        if (!$this->storage->has($filename)) {
+            $this->io->comment("No CSV found ($filename).");
+
+            return;
+        }
+
+        $this->io->comment("Processing \"$filename\".");
+
+        $reader = Reader::createFromStream($this->storage->readStream($filename));
+        $reader->setHeaderOffset(0);
+
+        $this->io->progressStart($total = $reader->count());
 
         $count = 0;
-        foreach ($this->parseCSV($measuresUrl) as $index => $row) {
-            list($title, $status, $isGlobal, $themes, $profiles, $link) = $row;
+        foreach ($reader as $index => $row) {
+            $title = $row['title'];
+            $status = $row['status'];
+            $isGlobal = $row['is_global'];
+            $themes = $row['themes'];
+            $profiles = $row['profiles'];
+            $link = $row['link'];
 
             if (empty($title)) {
                 throw new \RuntimeException(sprintf('No title found for measure. (line %d)', $index + 2));
@@ -155,9 +224,11 @@ class TimelineImportCommand extends Command
                     $title,
                     Measure::TITLE_MAX_LENGTH
                 ));
+
+                continue;
             }
 
-            if (!array_key_exists($status, Measure::STATUSES)) {
+            if (!\in_array($status, Measure::STATUSES, true)) {
                 throw new \RuntimeException(sprintf(
                     'Invalid status for measure "%s": "%s" given, valid values are "%s". (line %d)',
                     $title,
@@ -204,59 +275,41 @@ class TimelineImportCommand extends Command
             }
 
             $measure = new Measure(
-                $title,
-                Measure::STATUSES[$status],
+                $status,
                 $relatedProfiles,
                 $relatedThemes,
+                $manifesto,
                 $link,
                 !empty($isGlobal)
             );
 
+            $measure->addTranslation(new MeasureTranslation('fr', $title));
+
             $this->em->persist($measure);
 
+            $this->io->progressAdvance();
             ++$count;
 
             if (0 === ($count % 50)) {
                 $this->em->flush();
                 $this->em->clear(Measure::class);
+                $this->em->clear(MeasureTranslation::class);
 
-                $output->writeln(sprintf('Saved %d measures.', $count));
+                $this->io->comment("Processed $count measures.");
             }
         }
 
         $this->em->flush();
         $this->em->clear();
 
-        $output->writeln(sprintf('Saved %d measures.', $count));
-    }
-
-    private function parseCSV(string $filepath): array
-    {
-        if (false === ($handle = fopen($filepath, 'r'))) {
-            throw new FileNotFoundException(sprintf('File "%s" was not found', $filename));
-        }
-
-        $isFirstRow = true;
-        while (false !== ($data = fgetcsv($handle, 0, ','))) {
-            if (true === $isFirstRow) {
-                $isFirstRow = false;
-
-                continue;
-            }
-
-            $rows[] = array_map('trim', $data);
-        }
-
-        fclose($handle);
-
-        return $rows ?? [];
+        $this->io->comment("Processed $total measures.");
     }
 
     private function getProfiles(): array
     {
         /** @var Profile $profile */
         foreach ($this->em->getRepository(Profile::class)->findAll() as $profile) {
-            $profiles[$profile->getTitle()] = $profile;
+            $profiles[$profile->translate()->getTitle()] = $profile;
         }
 
         return $profiles ?? [];
@@ -266,9 +319,14 @@ class TimelineImportCommand extends Command
     {
         /** @var Theme $theme */
         foreach ($this->em->getRepository(Theme::class)->findAll() as $theme) {
-            $themes[$theme->getTitle()] = $theme;
+            $themes[$theme->translate()->getTitle()] = $theme;
         }
 
         return $themes ?? [];
+    }
+
+    private function getManifesto(string $slug): ?Manifesto
+    {
+        return $this->em->getRepository(Manifesto::class)->findOneBySlug($slug);
     }
 }

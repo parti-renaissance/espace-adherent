@@ -27,4 +27,16 @@ class ManifestoRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findOneBySlug(string $slug): ?Manifesto
+    {
+        return $this
+            ->createQueryBuilder('manifesto')
+            ->join('manifesto.translations', 'translations')
+            ->andWhere('translations.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

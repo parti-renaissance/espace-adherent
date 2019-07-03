@@ -170,7 +170,7 @@ class LoadTimelineData extends AbstractFixture
                 'en' => 'Presidential 2017',
             ],
             'slug' => [
-                'fr' => 'presidentielle-2017',
+                'fr' => 'presidentielles-2017',
                 'en' => 'presidential-2017',
             ],
             'description' => [
