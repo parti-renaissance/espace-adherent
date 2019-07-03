@@ -3,6 +3,7 @@
 /app/data/images/
 /app/data/files/
 /app/data/chez-vous/
+/app/data/timeline/
 /app/data/user_documents/
 /app/data/dumped_referents_users
 /templates/amp/style.css.twig
