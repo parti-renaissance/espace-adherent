@@ -49,7 +49,7 @@ Feature:
     And I follow "Plus d'infos"
     Then I should see "⟵ Retour"
     And I should see "Quelle est votre profession ? Scientist"
-    And I should see "Êtes-vous engagé dans une/des association(s) locale(s) ? Non"
+    And I should see "Êtes-vous engagé(e) dans une/des association(s) locale(s) ? Non"
     And I should see "Détails Fighting super villains"
     And I should see "Avez-vous déjà eu un engagement militant ? Non"
     And I should see "Détails Putsch Thanos from his galactic throne"
