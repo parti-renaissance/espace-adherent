@@ -24,7 +24,7 @@ class ConversionSurfaceAgricoleBio extends AbstractMeasure
         ];
     }
 
-    public static function create(City $city, int $hectaresBio, int $progression): Measure
+    public static function create(City $city, int $hectaresBio, string $progression): Measure
     {
         $measure = self::createMeasure($city);
         $measure->setPayload(self::createPayload($hectaresBio, $progression));
@@ -32,7 +32,7 @@ class ConversionSurfaceAgricoleBio extends AbstractMeasure
         return $measure;
     }
 
-    public static function createPayload(int $hectaresBio, int $progression): array
+    public static function createPayload(int $hectaresBio, string $progression): array
     {
         return [
             self::KEY_HECTARES_BIO => $hectaresBio,

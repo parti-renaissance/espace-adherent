@@ -2,11 +2,13 @@
 
 namespace AppBundle\ChezVous;
 
+use AppBundle\ChezVous\Marker\DedoublementClasses;
 use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
 
 class MarkerChoiceLoader
 {
     private const TYPES = [
+        DedoublementClasses::class,
         MaisonServiceAccueilPublic::class,
     ];
 

@@ -128,4 +128,10 @@ class Marker
     {
         return [$this->latitude, $this->longitude];
     }
+
+    public function setCoordinates(string $latitude, string $longitude): void
+    {
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+    }
 }
