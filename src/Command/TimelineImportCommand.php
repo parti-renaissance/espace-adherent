@@ -48,7 +48,7 @@ class TimelineImportCommand extends Command
         $this
             ->setName('app:timeline:import')
             ->setDescription('Import timeline from CSV files')
-            ->addArgument('manifestoSlug', InputArgument::REQUIRED, 'The manifesto slug to link measures with.');
+            ->addArgument('manifestoSlug', InputArgument::REQUIRED, 'The manifesto slug to link measures with.')
         ;
     }
 
@@ -228,7 +228,7 @@ class TimelineImportCommand extends Command
                 continue;
             }
 
-            if (!in_array($status, Measure::STATUSES, true)) {
+            if (!\in_array($status, Measure::STATUSES, true)) {
                 throw new \RuntimeException(sprintf(
                     'Invalid status for measure "%s": "%s" given, valid values are "%s". (line %d)',
                     $title,
