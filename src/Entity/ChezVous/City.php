@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\ChezVous;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\ChezVous\MeasureChoiceLoader;
 use AppBundle\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -262,7 +263,18 @@ class City implements AlgoliaIndexedEntityInterface
      */
     public function getMeasures(): array
     {
-        return array_values($this->measures->toArray());
+        $typesOrder = array_keys(MeasureChoiceLoader::getTypeKeysMap());
+
+        $measures = array_values($this->measures->toArray());
+
+        usort($measures, function (Measure $measure1, Measure $measure2) use ($typesOrder) {
+            $positionMeasure1 = array_search($measure1->getType(), $typesOrder);
+            $positionMeasure2 = array_search($measure2->getType(), $typesOrder);
+
+            return ($positionMeasure1 < $positionMeasure2) ? -1 : 1;
+        });
+
+        return $measures;
     }
 
     public function addMeasure(Measure $measure): void
