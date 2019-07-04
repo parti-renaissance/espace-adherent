@@ -638,5 +638,7 @@
         <prototype namespace="AppBundle\Form\Admin\ChezVous\" resource="../../../src/Form/Admin/ChezVous/*" />
         <prototype namespace="AppBundle\ChezVous\" resource="../../../src/ChezVous/*" />
         <service id="AppBundle\Validator\ChezVous\MeasurePayloadValidator" />
+
+        <service id="AppBundle\EventListener\AdministratorExportHistoryListener" />
     </services>
 </container>
