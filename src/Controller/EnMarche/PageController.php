@@ -197,6 +197,6 @@ class PageController extends Controller
      */
     public function showPageAction(Page $page)
     {
-        return $this->render('page/layout.html.twig', ['page' => $page]);
+        return $this->render(sprintf('page/layout/%s.html.twig', $page->getLayout()), ['page' => $page]);
     }
 }
