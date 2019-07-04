@@ -17,7 +17,7 @@ class NationalSurvey extends Survey
      */
     private $administrator;
 
-    public function __construct(Administrator $administrator, string $name = null, bool $published = false)
+    public function __construct(Administrator $administrator = null, string $name = null, bool $published = false)
     {
         $this->administrator = $administrator;
 
