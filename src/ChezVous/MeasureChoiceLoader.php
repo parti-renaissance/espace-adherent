@@ -7,6 +7,7 @@ use AppBundle\ChezVous\Measure\ChequeEnergie;
 use AppBundle\ChezVous\Measure\ConversionSurfaceAgricoleBio;
 use AppBundle\ChezVous\Measure\CouvertureFibre;
 use AppBundle\ChezVous\Measure\CreationEntreprise;
+use AppBundle\ChezVous\Measure\DedoublementClasses;
 use AppBundle\ChezVous\Measure\EmploisFrancs;
 use AppBundle\ChezVous\Measure\MaisonServiceAccueilPublic;
 use AppBundle\ChezVous\Measure\PassCulture;
@@ -17,6 +18,7 @@ use AppBundle\ChezVous\Measure\SuppressionTaxeHabitation;
 class MeasureChoiceLoader
 {
     private const TYPES = [
+        DedoublementClasses::class,
         MaisonServiceAccueilPublic::class,
         SuppressionTaxeHabitation::class,
         PassCulture::class,

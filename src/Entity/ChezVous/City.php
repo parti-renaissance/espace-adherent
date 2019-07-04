@@ -118,6 +118,8 @@ class City implements AlgoliaIndexedEntityInterface
      * @ORM\OneToMany(targetEntity=Measure::class, mappedBy="city", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      *
      * @Assert\Valid
+     *
+     * @Algolia\Attribute
      */
     private $measures;
 
@@ -258,10 +260,7 @@ class City implements AlgoliaIndexedEntityInterface
         $this->department = $department;
     }
 
-    /**
-     * @Algolia\Attribute
-     */
-    public function getMeasures(): array
+    public function getMeasures(): Collection
     {
         $typesOrder = array_keys(MeasureChoiceLoader::getTypeKeysMap());
 
@@ -274,7 +273,7 @@ class City implements AlgoliaIndexedEntityInterface
             return ($positionMeasure1 < $positionMeasure2) ? -1 : 1;
         });
 
-        return $measures;
+        return new ArrayCollection($measures);
     }
 
     public function addMeasure(Measure $measure): void
