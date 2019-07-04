@@ -2,9 +2,9 @@
 
 namespace AppBundle\ChezVous\Measure;
 
-class CreationPoliceSecuriteQuotidien extends AbstractMeasure
+class QuartierReconqueteRepublicaine extends AbstractMeasure
 {
-    public const TYPE = 'creation_police_securite_quotidien';
+    public const TYPE = 'quartier_reconquete_republicaine';
 
     public static function getType(): string
     {

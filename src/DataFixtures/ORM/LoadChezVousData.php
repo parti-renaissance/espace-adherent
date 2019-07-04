@@ -4,8 +4,8 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
 use AppBundle\ChezVous\Measure\BaisseNombreChomeurs;
-use AppBundle\ChezVous\Measure\CreationPoliceSecuriteQuotidien;
 use AppBundle\ChezVous\Measure\MaisonServiceAccueilPublic as MaisonServiceAccueilPublicMeasure;
+use AppBundle\ChezVous\Measure\QuartierReconqueteRepublicaine;
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Department;
 use AppBundle\Entity\ChezVous\Marker;
@@ -68,7 +68,7 @@ class LoadChezVousData extends AbstractFixture
             'latitude' => 50.633333,
             'longitude' => 3.066667,
             'measures' => [
-                ['type' => CreationPoliceSecuriteQuotidien::TYPE],
+                ['type' => QuartierReconqueteRepublicaine::TYPE],
                 ['type' => MaisonServiceAccueilPublicMeasure::TYPE],
                 [
                     'type' => BaisseNombreChomeurs::TYPE,
@@ -103,7 +103,7 @@ class LoadChezVousData extends AbstractFixture
             'latitude' => 47.216667,
             'longitude' => -1.55,
             'measures' => [
-                ['type' => CreationPoliceSecuriteQuotidien::TYPE],
+                ['type' => QuartierReconqueteRepublicaine::TYPE],
             ],
             'markers' => [
                 [
@@ -130,7 +130,7 @@ class LoadChezVousData extends AbstractFixture
             'latitude' => 43.7,
             'longitude' => 7.25,
             'measures' => [
-                ['type' => CreationPoliceSecuriteQuotidien::TYPE],
+                ['type' => QuartierReconqueteRepublicaine::TYPE],
                 [
                     'type' => BaisseNombreChomeurs::TYPE,
                     'payload' => [

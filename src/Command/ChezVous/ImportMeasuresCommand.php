@@ -7,11 +7,11 @@ use AppBundle\ChezVous\Measure\ChequeEnergie;
 use AppBundle\ChezVous\Measure\ConversionSurfaceAgricoleBio;
 use AppBundle\ChezVous\Measure\CouvertureFibre;
 use AppBundle\ChezVous\Measure\CreationEntreprise;
-use AppBundle\ChezVous\Measure\CreationPoliceSecuriteQuotidien;
 use AppBundle\ChezVous\Measure\EmploisFrancs;
 use AppBundle\ChezVous\Measure\MaisonServiceAccueilPublic;
 use AppBundle\ChezVous\Measure\PassCulture;
 use AppBundle\ChezVous\Measure\PrimeConversionAutomobile;
+use AppBundle\ChezVous\Measure\QuartierReconqueteRepublicaine;
 use AppBundle\ChezVous\Measure\SuppressionTaxeHabitation;
 use AppBundle\ChezVous\MeasureChoiceLoader;
 use AppBundle\Entity\ChezVous\City;
@@ -145,8 +145,8 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 $this->loadMeasureCreationEntreprises($metadata);
 
                 break;
-            case CreationPoliceSecuriteQuotidien::getType():
-                $this->loadMeasureWithEmptyPayload(CreationPoliceSecuriteQuotidien::class, $metadata);
+            case QuartierReconqueteRepublicaine::getType():
+                $this->loadMeasureWithEmptyPayload(QuartierReconqueteRepublicaine::class, $metadata);
 
                 break;
             case EmploisFrancs::getType():
@@ -205,6 +205,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
             }
         }
 
+        if ($baisseVille <= 0 || $baisseDepartement <= 0) {
+            return;
+        }
+
         if ($measure = $this->findMeasure($city, BaisseNombreChomeurs::getType())) {
             $measure->setPayload(BaisseNombreChomeurs::createPayload($baisseVille, $baisseDepartement));
 
@@ -254,7 +258,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
     {
         $inseeCode = $metadata['insee_code'];
         $hectaresBio = $metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO];
-        $progression = $metadata[ConversionSurfaceAgricoleBio::KEY_PROGRESSION];
+        $progression = rtrim($metadata[ConversionSurfaceAgricoleBio::KEY_PROGRESSION], '%');
 
         if (empty($inseeCode)) {
             return;
@@ -291,6 +295,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
+        if ($progression <= 0) {
+            return;
+        }
+
         if ($measure = $this->findMeasure($city, ConversionSurfaceAgricoleBio::getType())) {
             $measure->setPayload(ConversionSurfaceAgricoleBio::createPayload($hectaresBio, $progression));
 
@@ -307,6 +315,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         $hausseDepuis2017Ville = $metadata[CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_VILLE];
         $nombreLocauxRaccordesDepartement = $metadata[CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT];
         $hausseDepuis2017Departement = $metadata[CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT];
+        $progression = $metadata['progression'];
 
         if (empty($inseeCode)) {
             return;
@@ -326,6 +335,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
                 return;
             }
+        }
+
+        if (!($hausseDepuis2017Ville >= 100 || $progression > 0)) {
+            return;
         }
 
         if ($measure = $this->findMeasure($city, CouvertureFibre::getType())) {
@@ -383,6 +396,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 $inseeCode
             ));
 
+            return;
+        }
+
+        if ($entreprises <= 3) {
             return;
         }
 

@@ -47,6 +47,9 @@ class AdminChezVousCityControllerTest extends WebTestCase
         $this->assertEmpty($entitiesToIndex);
     }
 
+    /**
+     * @group debug
+     */
     public function testIndexedCityAfterUpdate()
     {
         /* @var City $city */
@@ -105,7 +108,7 @@ class AdminChezVousCityControllerTest extends WebTestCase
                     ],
                 ],
                 [
-                    'type' => 'creation_police_securite_quotidien',
+                    'type' => 'quartier_reconquete_republicaine',
                     'payload' => null,
                 ],
             ],
