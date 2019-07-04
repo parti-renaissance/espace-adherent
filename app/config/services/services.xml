@@ -145,6 +145,7 @@
 
         <!-- ApplicationRequest -->
         <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler" />
+        <service id="AppBundle\ApplicationRequest\ApplicationRequestRepository" />
         <service id="AppBundle\Command\ApplicationRequestsUpdateMissingTags" />
         <service id="AppBundle\ApplicationRequest\Listener\UpdateAdherentRelationSubscriber" />
         <service id="AppBundle\ApplicationRequest\Listener\SendConfirmationRequestSubscriber">

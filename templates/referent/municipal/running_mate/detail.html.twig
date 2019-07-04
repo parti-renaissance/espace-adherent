@@ -1,9 +1,0 @@
-{% extends 'referent/_layout.html.twig' %}
-
-{% block referent_content %}
-    <a href="{{ path('app_referent_municipal_running_mate_request') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
-        ⟵ Retour
-    </a>
-
-    {{ include('application_request/municipal/_running_mate_detail.html.twig') }}
-{% endblock %}

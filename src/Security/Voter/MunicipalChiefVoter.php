@@ -7,7 +7,7 @@ use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 
 class MunicipalChiefVoter extends AbstractAdherentVoter
 {
-    private const ROLE = 'MUNICIPAL_CHIEF_OF';
+    public const ROLE = 'MUNICIPAL_CHIEF_OF';
 
     protected function supports($attribute, $subject)
     {

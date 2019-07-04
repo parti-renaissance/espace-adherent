@@ -4,29 +4,29 @@
     <div class="data-listing">
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Nom</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.lastName }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.lastName }}</div>
         </div>
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Prénom</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.firstName }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.firstName }}</div>
         </div>
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Téléphone</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.phone ? volunteerRequest.phone|phone_number_format : '' }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.phone ? request.phone|phone_number_format : '' }}</div>
         </div>
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Quelle est votre profession ?</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.profession }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.profession }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Vos thématique(s) de prédilection</div>
             <div class="data-listing__item data-listing__item--value">
                 <ul>
-                    {% for favoriteTheme in volunteerRequest.favoriteThemes %}
+                    {% for favoriteTheme in request.favoriteThemes %}
                         <li>{{ favoriteTheme.name }}</li>
                     {% endfor %}
                 </ul>
@@ -35,14 +35,14 @@
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Vos thématique(s) de prédilection personnalisés</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.customFavoriteTheme }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.customFavoriteTheme }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Disposez-vous de compétences techniques spécifiques ?</div>
             <div class="data-listing__item data-listing__item--value">
                 <ul>
-                    {% for technicalSkill in volunteerRequest.technicalSkills %}
+                    {% for technicalSkill in request.technicalSkills %}
                         <li>{{ technicalSkill.name }}</li>
                     {% endfor %}
                 </ul>
@@ -51,22 +51,22 @@
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Avez-vous déjà participé à une campagne ?</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.isPreviousCampaignMember ? 'Oui' : 'Non' }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.isPreviousCampaignMember ? 'Oui' : 'Non' }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Détails</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.previousCampaignDetails }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.previousCampaignDetails }}</div>
         </div>
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.shareAssociativeCommitment ? 'Oui' : 'Non' }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.shareAssociativeCommitment ? 'Oui' : 'Non' }}</div>
         </div>
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Détails</div>
-            <div class="data-listing__item data-listing__item--value">{{ volunteerRequest.associativeCommitmentDetails }}</div>
+            <div class="data-listing__item data-listing__item--value">{{ request.associativeCommitmentDetails }}</div>
         </div>
     </div>
 </div>

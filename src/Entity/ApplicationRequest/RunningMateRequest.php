@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\ApplicationRequest;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -253,5 +254,10 @@ class RunningMateRequest extends ApplicationRequest
     public function isPreviousElectedOfficialAsString(): string
     {
         return $this->isPreviousElectedOfficial ? 'Oui' : 'Non';
+    }
+
+    public function getType(): string
+    {
+        return ApplicationRequestTypeEnum::RUNNING_MATE;
     }
 }

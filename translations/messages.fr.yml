@@ -579,3 +579,10 @@ assessor_request.office.substitute.label: Suppléant
 vote_place.unassociated.choices: "{1} Vous avez un bureau de vote à remplir.|[2, Inf[ Vous avez %count% bureaux de vote à remplir."
 vote_place.associated.choices: "{1} Vous avez un bureau de vote complet.|[2, Inf[ Vous avez %count% bureaux de vote complet."
 vote_place.availability:none: 'Aucune'
+
+#
+# Application request
+#
+application_request.tags.edited_successfully: Les tags ont bien été mis à jour
+application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
+application_request.removed_successfully: Le candidat a été retiré de votre équipe

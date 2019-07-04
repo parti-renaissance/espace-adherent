@@ -430,4 +430,6 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     {
         $this->takenForCity = $takenForCity;
     }
+
+    abstract public function getType(): string;
 }

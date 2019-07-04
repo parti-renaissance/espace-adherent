@@ -3,8 +3,10 @@
 namespace AppBundle\Repository\ApplicationRequest;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\Entity\ReferentTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -20,37 +22,42 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     }
 
     /**
+     * @var ReferentTag[]
+     *
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findForReferent(Adherent $referent): array
+    public function findForReferentTags(array $referentTags): array
     {
-        if (!$referent->isReferent()) {
-            return [];
-        }
-
         return $this->createListQueryBuilder('r')
             ->innerJoin('r.referentTags', 'tag')
             ->andWhere('tag IN (:tags)')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
+            ->setParameter('tags', $referentTags)
             ->getQuery()
             ->getResult()
         ;
     }
 
     /**
+     * @return VolunteerRequest|RunningMateRequest|null
+     */
+    public function findOneByUuid(string $uuid): ?ApplicationRequest
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
+
+    /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findForMunicipalChief(Adherent $municipalChief): array
+    public function findAllForInseeCodes(array $inseeCodes): array
     {
-        if (!$municipalChief->isMunicipalChief()) {
-            return [];
-        }
-
-        $qb = $this->createListQueryBuilder('r');
+        $qb = $this->createListQueryBuilder('r')
+            ->addSelect('tag')
+            ->leftJoin('r.tags', 'tag')
+        ;
 
         $orExpression = new Orx();
 
-        foreach ($municipalChief->getMunicipalChiefManagedArea()->getCodes() as $key => $code) {
+        foreach ($inseeCodes as $key => $code) {
             $orExpression->add("FIND_IN_SET(:codes_$key, r.favoriteCities) > 0");
             $qb->setParameter("codes_$key", $code);
         }
