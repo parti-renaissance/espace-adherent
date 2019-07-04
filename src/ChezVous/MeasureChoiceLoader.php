@@ -17,17 +17,17 @@ use AppBundle\ChezVous\Measure\SuppressionTaxeHabitation;
 class MeasureChoiceLoader
 {
     private const TYPES = [
+        MaisonServiceAccueilPublic::class,
+        SuppressionTaxeHabitation::class,
+        PassCulture::class,
+        CreationEntreprise::class,
         BaisseNombreChomeurs::class,
+        EmploisFrancs::class,
+        CouvertureFibre::class,
+        PrimeConversionAutomobile::class,
         ChequeEnergie::class,
         ConversionSurfaceAgricoleBio::class,
-        CouvertureFibre::class,
-        CreationEntreprise::class,
         CreationPoliceSecuriteQuotidien::class,
-        EmploisFrancs::class,
-        MaisonServiceAccueilPublic::class,
-        PassCulture::class,
-        PrimeConversionAutomobile::class,
-        SuppressionTaxeHabitation::class,
     ];
 
     public static function getTypeKeysMap(): array
