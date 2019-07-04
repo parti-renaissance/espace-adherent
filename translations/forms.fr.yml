@@ -36,7 +36,9 @@ unregistration_reasons.other: Autre
 # ChezVous
 #
 chez_vous.marker.type.maison_service_accueil_public: Nouvelle maison de service et d'accueil au public
+chez_vous.marker.type.dedoublement_classes: Dédoublement de classe
 
+chez_vous.measure.type.dedoublement_classes: Dédoublement de classes
 chez_vous.measure.type.suppression_taxe_habitation: Suppression de la taxe d’habitation
 chez_vous.measure.type.couverture_fibre: Couverture en fibre de tout le territoire
 chez_vous.measure.type.maison_service_accueil_public: Généralisation des maisons de service et d'accueil du public
