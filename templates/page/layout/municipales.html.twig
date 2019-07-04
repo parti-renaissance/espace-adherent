@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title page.title %}
+{% block canonical_url url('app_static_page', { slug: page.slug }) %}
+
+{% block content %}
+    <main id="layout-municipales">
+        <section class="content">
+            <header>
+                <div class="l__wrapper--slim">
+                    <h2 class="text--uppercase text--gray b__nudge--bottom">Élections municipales</h2>
+                    <h1 class="text--large">
+                        {{ page.title }}
+                    </h1>
+                </div>
+                <div class="national-scarf">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </header>
+
+            <article class="l__wrapper--slim b__nudge--bottom-huge">
+                {{ page.content|markdown }}
+            </article>
+        </section>
+    </main>
+{% endblock %}

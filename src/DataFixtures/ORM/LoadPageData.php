@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Content\MediaFactory;
 use AppBundle\Content\PageFactory;
+use AppBundle\Entity\Page;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -202,6 +203,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'description' => 'Foire aux questions pour les animateurs locaux.',
             'content' => 'FAQ',
             'media' => $media,
+            'layout' => Page::LAYOUT_DEFAULT,
         ]));
 
         $manager->persist($factory->createFromArray([
@@ -211,6 +213,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
             'description' => $description,
             'content' => file_get_contents(__DIR__.'/../content.md'),
             'media' => $media,
+            'layout' => Page::LAYOUT_MUNICIPALES,
         ]));
 
         $manager->flush();

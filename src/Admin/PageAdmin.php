@@ -2,10 +2,12 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Page;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -47,6 +49,11 @@ class PageAdmin extends AbstractAdmin
                     'label' => 'Description pour Twitter',
                     'filter_emojis' => true,
                     'required' => false,
+                ])
+                ->add('layout', ChoiceType::class, [
+                    'label' => 'Layout',
+                    'choices' => Page::LAYOUTS,
+                    'choice_label' => function (?string $choice) { return $choice; },
                 ])
                 ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
