@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/", name="app_application_request_referent")
+ * @Route(path="/espace-referent/", name="app_referent")
  *
  * @Security("is_granted('ROLE_REFERENT')")
  */

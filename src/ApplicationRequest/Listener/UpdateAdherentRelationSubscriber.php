@@ -2,23 +2,18 @@
 
 namespace AppBundle\ApplicationRequest\Listener;
 
+use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\Membership\AdherentEvent;
 use AppBundle\Membership\AdherentEvents;
-use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
-use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
 {
-    private $volunteerRepository;
-    private $runningMateRepository;
+    private $repository;
 
-    public function __construct(
-        VolunteerRequestRepository $volunteerRepository,
-        RunningMateRequestRepository $runningMateRepository
-    ) {
-        $this->volunteerRepository = $volunteerRepository;
-        $this->runningMateRepository = $runningMateRepository;
+    public function __construct(ApplicationRequestRepository $repository)
+    {
+        $this->repository = $repository;
     }
 
     public static function getSubscribedEvents()
@@ -32,7 +27,6 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        $this->runningMateRepository->updateAdherentRelation($adherent->getEmailAddress(), $adherent);
-        $this->volunteerRepository->updateAdherentRelation($adherent->getEmailAddress(), $adherent);
+        $this->repository->updateAdherentRelation($adherent->getEmailAddress(), $adherent);
     }
 }

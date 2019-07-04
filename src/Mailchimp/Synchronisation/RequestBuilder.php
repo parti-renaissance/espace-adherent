@@ -31,6 +31,7 @@ class RequestBuilder
     private $activeTags = [];
     private $inactiveTags = [];
     private $favoriteCities;
+    private $takenForCity = false;
     private $mailchimpObjectIdMapping;
     private $isSubscribeRequest = true;
 
@@ -79,6 +80,7 @@ class RequestBuilder
             ->setFirstName($applicationRequest->getFirstName())
             ->setLastName($applicationRequest->getLastName())
             ->setFavoriteCities($applicationRequest->getFavoriteCities())
+            ->setTakenForCity($applicationRequest->getTakenForCity())
             ->setActiveTags($activeTags)
         ;
     }
@@ -174,9 +176,16 @@ class RequestBuilder
         return $this;
     }
 
-    private function setFavoriteCities(array $favoriteCities): self
+    public function setFavoriteCities(array $favoriteCities): self
     {
         $this->favoriteCities = $favoriteCities;
+
+        return $this;
+    }
+
+    public function setTakenForCity(?string $takenForCity): self
+    {
+        $this->takenForCity = $takenForCity;
 
         return $this;
     }
@@ -255,6 +264,10 @@ class RequestBuilder
 
         if ($this->favoriteCities) {
             $mergeFields[MemberRequest::MERGE_FIELD_FAVORITE_CITIES] = implode(',', $this->favoriteCities);
+        }
+
+        if (false !== $this->takenForCity) {
+            $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
         }
 
         return $mergeFields;
