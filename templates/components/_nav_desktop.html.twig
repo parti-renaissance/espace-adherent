@@ -232,33 +232,29 @@
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR')
     %}
 
-    <div class="background--darker space--10-0 l__hide--on-small-laptop">
-    <ul class="l__wrapper list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-        {% if totalSections > 1 %}
-        <li>
-            <ul class="list__links">
-                <div class="nav-dropdown">
+    <div class="background--darker l__hide--on-small-laptop">
+        <ul class="l__wrapper space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
+            {% if totalSections > 1 %}
+            <li>
+                <div class="nav-dropdown" style="margin: 0;">
+                    <a href="#">Mes espaces</a>
                     <i class="fa fa-caret-down" aria-hidden="true"></i>
                     <i class="fa fa-caret-up" aria-hidden="true"></i>
-                    <ul class="list__links">
-                        <li><a href="#">Mes espaces</a></li>
-                    </ul>
                     <div class="nav-dropdown__menu nav-dropdown__black">
                         <ul class="list__links">
                             {{ include('adherent/_list_my_sections.html.twig') }}
                         </ul>
                     </div>
                 </div>
-            </ul>
-        </li>
-        {% else %}
-            {{ include('adherent/_list_my_sections.html.twig') }}
-        {% endif %}
-        {% if app.user.isHost or app.user.isMunicipalChief %}
-            <li>
-                <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
             </li>
-        {% endif %}
-    </ul>
-</div>
+            {% else %}
+                {{ include('adherent/_list_my_sections.html.twig') }}
+            {% endif %}
+            {% if app.user.isHost or app.user.isMunicipalChief %}
+                <li>
+                    <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 {% endif %}

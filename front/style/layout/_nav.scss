@@ -266,15 +266,14 @@
     &__black {
         position: absolute;
         top: 34px;
-        left: 0;
+        left: -15px;
         width: auto;
-        margin: -10px -10px 0;
-        padding: 15px 10px 5px;
+        margin-top: -10px;
+        padding: 15px;
         line-height: 24px;
         background-color: $darker;
 
         ul {
-            padding-left: 5px;
             display: block;
             li a {
                 width: auto;

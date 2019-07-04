@@ -162,8 +162,7 @@ table {
     font-size: 0;
     padding: 15px 0;
     cursor: pointer;
-    display: block;
-    width: 25px;
+    display: inline-block;
 
     & > a {
         border: 0 none;
@@ -171,8 +170,8 @@ table {
         & .oval {
             transition: background-color .6s;
             display: inline-block;
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             background-color: #ced4dd;
             border-radius: 50%;
             margin-right: 3px;
@@ -188,44 +187,51 @@ table {
     }
 
     .action-dropdown-menu {
-        display: none;
-        position: absolute;
-        text-align: left;
-        right: -30px;
-        top: 30px;
-        background-color: $white;
-        z-index: 5;
-        box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.15);
-        border-radius: 3px;
-        width: 180px;
-        padding: 5px 0;
 
-        & a {
-            display: block;
-            padding: 8px 15px;
-            background-color: white;
-            font-size: 15px;
-            border: none;
-
-            &:hover {
-                opacity: 0.6;
-            }
+        &--bounce {
+            display: none;
+            position: absolute;
+            text-align: left;
+            right: 0;
+            top: 0;
+            z-index: 5;
+            padding-top: 30px;
         }
 
-        & a:last-child {
-            border: 0 none;
+        &--content {
+            background-color: $white;
+            box-shadow: 0 2px 4px 0 rgba(99, 98, 150, 0.25);
+            border-radius: 3px;
+            min-width: 150px;
+            padding: 5px 0;
+
+            & a {
+                display: block;
+                padding: 6px 15px;
+                background-color: white;
+                font-size: 14px;
+                border: none;
+
+                &:hover {
+                    color: rgba(0,0,0,0.4);
+                }
+            }
+
+            & a:last-child {
+                border: 0 none;
+            }
         }
     }
 
     &:hover {
-        & .action-dropdown-menu {
+        & .action-dropdown-menu--bounce {
             z-index: 10;
             display: block;
         }
 
         & > a {
             .oval {
-                background-color: $dark;
+                background-color: $neutral-grey;
             }
         }
     }
