@@ -4,8 +4,12 @@ namespace AppBundle\Command\ChezVous;
 
 use AppBundle\ChezVous\Marker\DedoublementClasses;
 use AppBundle\ChezVous\MarkerChoiceLoader;
+use AppBundle\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
+use AppBundle\Entity\ChezVous\City;
+use AppBundle\Entity\ChezVous\Measure;
 use AppBundle\Repository\ChezVous\CityRepository;
 use AppBundle\Repository\ChezVous\MarkerRepository;
+use AppBundle\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +24,7 @@ class ImportMarkersCommand extends AbstractImportCommand
 
     private $markerRepository;
     private $markerChoiceLoader;
+    private $measureRepository;
 
     protected function configure()
     {
@@ -34,12 +39,14 @@ class ImportMarkersCommand extends AbstractImportCommand
         CityRepository $cityRepository,
         Filesystem $storage,
         MarkerRepository $markerRepository,
-        MarkerChoiceLoader $markerChoiceLoader
+        MarkerChoiceLoader $markerChoiceLoader,
+        MeasureRepository $measureRepository
     ) {
         parent::__construct($em, $cityRepository, $storage);
 
         $this->markerRepository = $markerRepository;
         $this->markerChoiceLoader = $markerChoiceLoader;
+        $this->measureRepository = $measureRepository;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -127,6 +134,7 @@ class ImportMarkersCommand extends AbstractImportCommand
         $inseeCode = $metadata['insee_code'];
         $latitude = $metadata['lat'];
         $longitude = $metadata['long'];
+        $totalCpCe1 = $metadata['total_cp_ce1'];
 
         if (empty($inseeCode)) {
             return;
@@ -141,5 +149,20 @@ class ImportMarkersCommand extends AbstractImportCommand
         }
 
         $this->em->persist($markerClass::createMarker($city, $latitude, $longitude));
+
+        if (DedoublementClasses::class === $markerClass) {
+            if ($measure = $this->findMeasure($city, MeasureDedoublementClasses::getType())) {
+                $measure->setPayload(MeasureDedoublementClasses::createPayload($totalCpCe1));
+
+                return;
+            }
+
+            $this->em->persist(MeasureDedoublementClasses::create($city, $totalCpCe1));
+        }
+    }
+
+    private function findMeasure(City $city, string $type): ?Measure
+    {
+        return $this->measureRepository->findOneByCityAndType($city, $type);
     }
 }
