@@ -21,19 +21,19 @@ class CouvertureFibre extends AbstractMeasure
     public static function getKeys(): array
     {
         return [
-            self::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE => true,
-            self::KEY_HAUSSE_DEPUIS_2017_VILLE => true,
-            self::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT => true,
-            self::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT => true,
+            self::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE => false,
+            self::KEY_HAUSSE_DEPUIS_2017_VILLE => false,
+            self::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT => false,
+            self::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT => false,
         ];
     }
 
     public static function create(
         City $city,
-        int $nombreLocauxRaccordesVille,
-        int $hausseDepuis2017Ville,
-        int $nombreLocauxRaccordesDepartement,
-        int $hausseDepuis2017Departement
+        ?int $nombreLocauxRaccordesVille,
+        ?int $hausseDepuis2017Ville,
+        ?int $nombreLocauxRaccordesDepartement,
+        ?int $hausseDepuis2017Departement
     ): Measure {
         $measure = self::createMeasure($city);
         $measure->setPayload(self::createPayload(
@@ -47,10 +47,10 @@ class CouvertureFibre extends AbstractMeasure
     }
 
     public static function createPayload(
-        int $nombreLocauxRaccordesVille,
-        int $hausseDepuis2017Ville,
-        int $nombreLocauxRaccordesDepartement,
-        int $hausseDepuis2017Departement
+        ?int $nombreLocauxRaccordesVille,
+        ?int $hausseDepuis2017Ville,
+        ?int $nombreLocauxRaccordesDepartement,
+        ?int $hausseDepuis2017Departement
     ): array {
         return [
             self::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE => $nombreLocauxRaccordesVille,

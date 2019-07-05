@@ -34,14 +34,9 @@ class CreationEntreprise extends AbstractMeasure
 
     public static function createPayload(int $entreprises, ?int $microEntreprises): array
     {
-        $payload = [
+        return [
             self::KEY_ENTREPRISES => $entreprises,
+            self::KEY_MICRO_ENTREPRISES => $microEntreprises,
         ];
-
-        if (!empty($microEntreprises)) {
-            $payload[self::KEY_MICRO_ENTREPRISES] = $microEntreprises;
-        }
-
-        return $payload;
     }
 }

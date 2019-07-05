@@ -122,16 +122,13 @@ class Marker
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="coordinates")
+     * @Algolia\Attribute(algoliaName="_geoloc")
      */
     public function getCoordinates(): array
     {
-        return [$this->latitude, $this->longitude];
-    }
-
-    public function setCoordinates(string $latitude, string $longitude): void
-    {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+        return [
+            'lat' => (float) $this->latitude,
+            'lng' => (float) $this->longitude,
+        ];
     }
 }

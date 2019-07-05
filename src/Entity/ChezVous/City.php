@@ -22,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     autoIndex=false,
  *     searchableAttributes={
  *         "name",
- *         "postalCodes"
+ *         "postalCodes",
+ *         "inseeCode",
  *     }
  * )
  */
@@ -291,7 +292,7 @@ class City implements AlgoliaIndexedEntityInterface
 
     public function getMarkers(): Collection
     {
-        return $this->markers;
+        return new ArrayCollection(array_values($this->markers->toArray()));
     }
 
     public function addMarker(Marker $marker): void
@@ -313,11 +314,14 @@ class City implements AlgoliaIndexedEntityInterface
     }
 
     /**
-     * @Algolia\Attribute(algoliaName="coordinates")
+     * @Algolia\Attribute(algoliaName="_geoloc")
      */
     public function getCoordinates(): array
     {
-        return [(float) $this->latitude, (float) $this->longitude];
+        return [
+            'lat' => (float) $this->latitude,
+            'lng' => (float) $this->longitude,
+        ];
     }
 
     public static function normalizeCode(string $inseeCode): string
