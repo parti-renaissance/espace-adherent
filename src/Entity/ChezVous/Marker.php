@@ -126,12 +126,6 @@ class Marker
      */
     public function getCoordinates(): array
     {
-        return [$this->latitude, $this->longitude];
-    }
-
-    public function setCoordinates(string $latitude, string $longitude): void
-    {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+        return [(float) $this->latitude, (float) $this->longitude];
     }
 }

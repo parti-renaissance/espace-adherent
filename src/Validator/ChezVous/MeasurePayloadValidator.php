@@ -2,6 +2,8 @@
 
 namespace AppBundle\Validator\ChezVous;
 
+use AppBundle\ChezVous\Measure\BaisseNombreChomeurs;
+use AppBundle\ChezVous\Measure\CouvertureFibre;
 use AppBundle\ChezVous\MeasureChoiceLoader;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -57,6 +59,82 @@ class MeasurePayloadValidator extends ConstraintValidator
                         '{{ type }}' => $this->translateChoice(array_search($type, $typeChoices)),
                     ])
                     ->atPath('type')
+                    ->addViolation()
+                ;
+            }
+        }
+
+        if (BaisseNombreChomeurs::getType() === $type) {
+            if (
+                !array_key_exists(BaisseNombreChomeurs::KEY_BAISSE_VILLE, $payload)
+                && !array_key_exists(BaisseNombreChomeurs::KEY_BAISSE_DEPARTEMENT, $payload)
+            ) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->defineAtLeastOneKeyForType)
+                    ->atPath('type')
+                    ->setParameters([
+                        '{{ keys }}' => implode(', ', array_map(
+                            function (string $key) use ($keyChoices) {
+                                return $this->translateChoice(array_search($key, $keyChoices));
+                            },
+                            array_keys(BaisseNombreChomeurs::getKeys())
+                        )),
+                        '{{ type }}' => $this->translateChoice(array_search($type, $typeChoices)),
+                    ])
+                    ->addViolation()
+                ;
+            }
+        }
+
+        if (CouvertureFibre::getType() === $type) {
+            $hausseVilleExists = array_key_exists(CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_VILLE, $payload);
+            $locauxVilleExists = array_key_exists(CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE, $payload);
+
+            if (($hausseVilleExists && !$locauxVilleExists) || (!$hausseVilleExists && $locauxVilleExists)) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->defineAtLeastOneKeyForType)
+                    ->atPath('type')
+                    ->setParameters([
+                        '{{ keys }}' => implode(', ', array_map(
+                            function (string $key) use ($keyChoices) {
+                                return $this->translateChoice(array_search($key, $keyChoices));
+                            },
+                            [
+                                CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_VILLE,
+                                CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE,
+                            ]
+                        )),
+                        '{{ type }}' => $this->translateChoice(array_search($type, $typeChoices)),
+                    ])
+                    ->addViolation()
+                ;
+            }
+
+            $hausseDepartementExists = array_key_exists(CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT, $payload);
+            $locauxDepartementExists = array_key_exists(CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT, $payload);
+
+            if (
+                ($hausseDepartementExists && !$locauxDepartementExists)
+                || (!$hausseDepartementExists && $locauxDepartementExists)
+            ) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->defineAtLeastOneKeyForType)
+                    ->atPath('type')
+                    ->setParameters([
+                        '{{ keys }}' => implode(', ', array_map(
+                            function (string $key) use ($keyChoices) {
+                                return $this->translateChoice(array_search($key, $keyChoices));
+                            },
+                            [
+                                CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT,
+                                CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT,
+                            ]
+                        )),
+                        '{{ type }}' => $this->translateChoice(array_search($type, $typeChoices)),
+                    ])
                     ->addViolation()
                 ;
             }

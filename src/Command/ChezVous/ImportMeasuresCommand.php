@@ -197,16 +197,20 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        foreach (BaisseNombreChomeurs::getKeys() as $key => $required) {
-            if ($required && (0 === \strlen($metadata[$key]) || !is_numeric($metadata[$key]))) {
-                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.");
+        foreach (array_keys(BaisseNombreChomeurs::getKeys()) as $key) {
+            if (0 !== \strlen($metadata[$key]) && !is_numeric($metadata[$key])) {
+                $this->io->text("If defined, key \"$key\" should be a number (insee_code: \"$inseeCode\"). Skipping.");
 
                 return;
             }
         }
 
-        if ($baisseVille <= 0 || $baisseDepartement <= 0) {
-            return;
+        if (0 >= $baisseVille) {
+            $baisseVille = null;
+        }
+
+        if (0 >= $baisseDepartement) {
+            $baisseDepartement = null;
         }
 
         if ($measure = $this->findMeasure($city, BaisseNombreChomeurs::getType())) {
@@ -295,7 +299,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($progression <= 0) {
+        if (0 >= $progression) {
             return;
         }
 
@@ -329,15 +333,25 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        foreach (CouvertureFibre::getKeys() as $key => $required) {
-            if ($required && (0 === \strlen($metadata[$key]) || !is_numeric($metadata[$key]))) {
-                $this->io->text("Key \"$key\" is required and should be a number (insee_code: \"$inseeCode\"). Skipping.");
+        foreach (array_keys(CouvertureFibre::getKeys()) as $key) {
+            if (0 !== \strlen($metadata[$key]) && !is_numeric($metadata[$key])) {
+                $this->io->text("If defined, key \"$key\" should be a number (insee_code: \"$inseeCode\"). Skipping.");
 
                 return;
             }
         }
 
-        if (!($hausseDepuis2017Ville >= 100 || $progression > 0)) {
+        if (100 >= $hausseDepuis2017Ville || 0 > $progression) {
+            $hausseDepuis2017Ville = null;
+            $nombreLocauxRaccordesVille = null;
+        }
+
+        if (100 >= $hausseDepuis2017Departement) {
+            $hausseDepuis2017Departement = null;
+            $nombreLocauxRaccordesDepartement = null;
+        }
+
+        if (!$hausseDepuis2017Ville && !$hausseDepuis2017Departement) {
             return;
         }
 
@@ -399,8 +413,12 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($entreprises <= 3) {
+        if (3 >= $entreprises) {
             return;
+        }
+
+        if (0 === $microEntreprises) {
+            $microEntreprises = null;
         }
 
         if ($measure = $this->findMeasure($city, CreationEntreprise::getType())) {

@@ -47,9 +47,6 @@ class AdminChezVousCityControllerTest extends WebTestCase
         $this->assertEmpty($entitiesToIndex);
     }
 
-    /**
-     * @group debug
-     */
     public function testIndexedCityAfterUpdate()
     {
         /* @var City $city */
@@ -128,9 +125,9 @@ class AdminChezVousCityControllerTest extends WebTestCase
                     ],
                 ],
             ],
-            'coordinates' => [
-                43.7,
-                7.25,
+            '_geoloc' => [
+                'lat' => 43.7,
+                'lng' => 7.25,
             ],
         ], $cityPayload);
         $this->assertArrayHasKey('objectID', $cityPayload);
