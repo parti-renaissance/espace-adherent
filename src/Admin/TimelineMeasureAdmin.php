@@ -53,6 +53,9 @@ class TimelineMeasureAdmin extends AbstractAdmin
                     'by_reference' => false,
                     'multiple' => true,
                 ])
+                ->add('manifesto', null, [
+                    'label' => 'Programme',
+                ])
                 ->add('major', null, [
                     'label' => 'Mise en avant (32)',
                     'required' => false,
