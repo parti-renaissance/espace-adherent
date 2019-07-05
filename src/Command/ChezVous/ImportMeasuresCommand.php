@@ -213,6 +213,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
             $baisseDepartement = null;
         }
 
+        if (!$baisseVille && !$baisseDepartement) {
+            return;
+        }
+
         if ($measure = $this->findMeasure($city, BaisseNombreChomeurs::getType())) {
             $measure->setPayload(BaisseNombreChomeurs::createPayload($baisseVille, $baisseDepartement));
 
