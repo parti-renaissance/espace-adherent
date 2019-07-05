@@ -10,7 +10,7 @@
 {% endif %}
 {% if app.user.isReferent or app.user.isCoReferent %}
     <li>
-        <a href="{{ path(app.user.isReferent ? 'app_referent_events' : 'app_referent_users') }}">Espace référent</a>
+        <a href="{{ path(app.user.isReferent ? 'app_referent_event_manager_events' : 'app_referent_users') }}">Espace référent</a>
     </li>
 {% endif %}
 {% if app.user.isDeputy %}

@@ -64,8 +64,14 @@ abstract class AbstractMessageController extends Controller
         UserInterface $adherent,
         AdherentMessageManager $messageManager
     ): Response {
+        $message = new AdherentMessageDataObject();
+
+        if ($request->isMethod('POST') && $request->request->has('message_content')) {
+            $message->setContent($request->request->get('message_content'));
+        }
+
         $form = $this
-            ->createForm(AdherentMessageType::class)
+            ->createForm(AdherentMessageType::class, $message)
             ->handleRequest($request)
         ;
 

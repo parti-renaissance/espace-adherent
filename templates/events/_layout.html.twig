@@ -2,7 +2,7 @@
 
 {% block content %}
     <section class="l__wrapper">
-        <a href="{{ path("app_#{committee_event.type}_show", {slug: committee_event.slug}) }}"
+        <a href="{{ path("app_#{event.type}_show", {slug: event.slug}) }}"
            class="previous-link icon--with-text text--summary">
             {{ include('components/caret--left.html.twig') }}
             Retour à la page de l'événement
@@ -12,16 +12,16 @@
             <div class="committee-event-titles">
                 {% block event_name %}
                     <h2 class="committee-event-name text--large b__nudge--bottom">
-                        {{- committee_event.name -}}
+                        {{- event.name -}}
                     </h2>
                 {% endblock %}
                 <h3 class="committee-event-date text--body text--normal icon--with-text">
                     <i class="fa fa-clock-o"></i>
-                    {{- committee_event.beginAt|localizeddate('full', 'none')|capitalize }} à {{ committee_event.beginAt|date('G\\hi') -}}.
+                    {{- event.beginAt|localizeddate('full', 'none')|capitalize }} à {{ event.beginAt|date('G\\hi') -}}.
                 </h3>
                 <h3 class="committee-event-address text--body text--normal icon--with-text">
                     <i class="fa fa-map-marker"></i>
-                    {{- committee_event.inlineFormattedAddress -}}
+                    {{- event.inlineFormattedAddress -}}
                 </h3>
                 <ul class="list__links list__links--row list__links--default b__nudge--top-10 l__row--h-start">
                     <li class="icon--with-text">
@@ -29,13 +29,13 @@
                         Ajouter au calendrier :
                     </li>
                     <li role="button" aria-label="{{ 'committee.event.show.share.cal_google'|trans }}">
-                        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text={{ committee_event.name|url_encode }}&amp;dates={{ committee_event.beginAt|date('Ymd') }}T{{ committee_event.beginAt|date('His') }}/{{ committee_event.finishAt|date('Ymd') }}T{{ committee_event.finishAt|date('His') }}&amp;location={{ committee_event.inlineFormattedAddress }}" target="_blank" title="{{ 'committee.event.show.share.cal_google'|trans }}">
+                        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text={{ event.name|url_encode }}&amp;dates={{ event.beginAt|date('Ymd') }}T{{ event.beginAt|date('His') }}/{{ event.finishAt|date('Ymd') }}T{{ event.finishAt|date('His') }}&amp;location={{ event.inlineFormattedAddress }}" target="_blank" title="{{ 'committee.event.show.share.cal_google'|trans }}">
                             Google
                             <span class="sr-only">{{ 'committee.event.show.share.cal_google'|trans }}</span>
                         </a>
                     </li>
                     <li role="button" aria-label="{{ 'committee.event.show.share.download_ical'|trans }}">
-                        <a href="{{ path("app_#{committee_event.type}_export_ical", {uuid: committee_event.uuid, slug: committee_event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
+                        <a href="{{ path("app_#{event.type}_export_ical", {uuid: event.uuid, slug: event.slug}) }}" title="{{ 'committee.event.show.share.download_ical'|trans }}">
                             Apple
                             <span class="sr-only">{{ 'committee.event.show.share.download_ical'|trans }}</span>
                         </a>

@@ -1,12 +1,12 @@
 {% extends 'events/_layout.html.twig' %}
 
-{% block page_title "Inscription à #{committee_event.name} - #{committee_event.cityName}, #{committee_event.beginAt|date('d/m/Y')}" %}
-{% block canonical_url url('app_event_attend', { slug: committee_event.slug }) %}
-{% block meta_description "S'inscrire à #{committee_event.name} qui est un événement local du mouvement La République En Marche ! organisé par #{committee_event.organizer} le #{committee_event.beginAt|date('d/m/Y')} à #{committee_event.beginAt|date('G\\hi')}, dans la ville de #{committee_event.cityName}." %}
+{% block page_title "Inscription à #{event.name} - #{event.cityName}, #{event.beginAt|date('d/m/Y')}" %}
+{% block canonical_url url('app_event_attend', { slug: event.slug }) %}
+{% block meta_description "S'inscrire à #{event.name} qui est un événement local du mouvement La République En Marche ! organisé par #{event.organizer} le #{event.beginAt|date('d/m/Y')} à #{event.beginAt|date('G\\hi')}, dans la ville de #{event.cityName}." %}
 
 {% block event_name %}
     <h1 class="committee-event-name text--large b__nudge--bottom">
-        Inscription à {{ committee_event.name }} - {{ committee_event.cityName }}, {{ committee_event.beginAt|date('d/m/Y') }}
+        Inscription à {{ event.name }} - {{ event.cityName }}, {{ event.beginAt|date('d/m/Y') }}
     </h1>
 {% endblock %}
 
@@ -17,13 +17,13 @@
             {% if not has_role_adherent %}
                 <p>
                     Avez-vous déjà un compte En Marche ?
-                    <a href="{{ login_path_for_anonymous_follower("app_#{committee_event.type}_attend", { slug: committee_event.slug }) }}">
+                    <a href="{{ login_path_for_anonymous_follower("app_#{event.type}_attend", { slug: event.slug }) }}">
                         Connectez-vous
                     </a>.
                 </p>
             {% endif %}
 
-            <form action="{{ path("app_#{committee_event.type}_attend", { slug: committee_event.slug }) }}" method="post" id="committee-event-registration-form">
+            <form action="{{ path("app_#{event.type}_attend", { slug: event.slug }) }}" method="post" id="committee-event-registration-form">
                 {{ form_errors(form) }}
 
                 <div class="form__row" id="field-first-name">
@@ -83,7 +83,7 @@
                     <button type="submit" class="btn btn--blue" id="attend-committee-event">
                         Je m'inscris
                     </button>
-                    <a  href="{{ path('app_event_show', {'slug': committee_event.slug}) }}"
+                    <a  href="{{ path('app_event_show', {'slug': event.slug}) }}"
                         class="btn">
                         Annuler
                     </a>

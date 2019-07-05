@@ -148,19 +148,12 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
 
-        /** @var Event $event */
-        $event = $this->getEventRepository()->findOneBy(['name' => 'Premier événement']);
+        $this->assertSame('Événement créé.', $this->client->getCrawler()->filter('.box-success h2')->text());
 
-        $this->assertInstanceOf(Event::class, $event);
-        $this->assertClientIsRedirectedTo('/evenements/'.$event->getSlug(), $this->client);
-
-        $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertSame($this->formatEventDate($event->getBeginAt(), $event->getTimeZone()).' UTC +02:00', $this->client->getCrawler()->filter('span.committee-event-date')->text());
-        $this->assertSame('Pilgerweg 58, 8802 Kilchberg, Suisse', $this->client->getCrawler()->filter('span.committee-event-address')->text());
-        $this->assertSame('Premier événement en Suisse', $this->client->getCrawler()->filter('div.committee-event-description')->text());
-        $this->assertContains('1 inscrit', $this->client->getCrawler()->filter('div.committee-event-attendees')->html());
+        $this->assertSame(
+            'Votre événement est bien créé mais pas encore diffusé. Partagez le par e-mail à vos contacts en cliquant ci-dessous.',
+            trim($this->client->getCrawler()->filter('.box-success .alert-warning')->text())
+        );
 
         $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'referent@en-marche-dev.fr');
     }

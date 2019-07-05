@@ -85,7 +85,7 @@ class EventController extends Controller
         }
 
         return $this->render('events/attend.html.twig', [
-            'committee_event' => $event,
+            'event' => $event,
             'committee' => $event->getCommittee(),
             'form' => $form->createView(),
         ]);
@@ -116,7 +116,7 @@ class EventController extends Controller
         }
 
         return $this->render('events/attend_confirmation.html.twig', [
-            'committee_event' => $event,
+            'event' => $event,
             'committee' => $event->getCommittee(),
             'registration' => $registration,
         ]);
@@ -149,7 +149,7 @@ class EventController extends Controller
         }
 
         return $this->render('events/invitation.html.twig', [
-            'committee_event' => $event,
+            'event' => $event,
             'invitation_form' => $form->createView(),
         ]);
     }
@@ -166,7 +166,7 @@ class EventController extends Controller
         }
 
         return $this->render('events/invitation_sent.html.twig', [
-            'committee_event' => $event,
+            'event' => $event,
             'invitations_count' => $invitationsCount,
         ]);
     }

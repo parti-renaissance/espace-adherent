@@ -27,10 +27,10 @@
 
                             {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
                             {% if last_visit_date is not null %}
-                            <p>
-                                Dernière visite le <span>{{ last_visit_date|date('d/m/Y') }}</span>
-                                à <span>{{ last_visit_date|date('H\\hi') }}</span>
-                            </p>
+                                <p>
+                                    Dernière visite le <span>{{ last_visit_date|date('d/m/Y') }}</span>
+                                    à <span>{{ last_visit_date|date('H\\hi') }}</span>
+                                </p>
                             {% endif %}
                         </div>
                         <p class="report">🐛 Bug ? Nouveau besoin ?
@@ -44,7 +44,7 @@
                         {% if is_granted('ROLE_REFERENT') %}
                             <div class="direct-actions">
                                 <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                                <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                                <a href="{{ path('app_referent_event_manager_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
                             </div>
                         {% endif %}
                     </div>
@@ -52,10 +52,10 @@
                     {% if is_granted('ROLE_REFERENT') %}
                     <nav class="manager-header__menu">
                         <ul>
-                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_events*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_jecoute_referent_*']) %}
+                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_jecoute_referent_*']) %}
 
-                            <li class="{{ is_active_route(app.request, 'app_referent_events*') ? 'active' }}">
-                                <a href="{{ path('app_referent_events') }}">Événements</a>
+                            <li class="{{ is_active_route(app.request, 'app_referent_event_manager_event*') ? 'active' }}">
+                                <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
                             </li>
 
                             <li class="{{ is_active_route(app.request, 'app_referent_committees') ? 'active' }}">
@@ -110,7 +110,7 @@
                     {% if is_granted('ROLE_REFERENT') %}
                         <div class="direct-actions">
                             <a href="{{ path('app_message_referent_create') }}" class="btn btn--blue">+&nbsp;<span>Nouveau&nbsp;</span>message</a>
-                            <a href="{{ path('app_referent_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
+                            <a href="{{ path('app_referent_event_manager_events_create') }}" class="btn btn--ghosting--blue">+&nbsp;<span>Créer un&nbsp;</span>événement</a>
                         </div>
                     {% endif %}
                 </div>
