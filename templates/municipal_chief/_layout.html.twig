@@ -13,12 +13,18 @@
             <header class="manager-header">
                 <div class="l__wrapper">
                     <div class="first-section">
-                        <div class="manager-information">
+                        <div class="el manager-information">
                             <p>Vous gérez : <span>{{ get_cities_names_from_insee_code(app.user.municipalChiefManagedArea.codes)|join(', ') }}</span></p>
                         </div>
-                        <p class="report">🐛 Bug ? Nouveau besoin ?
-                            <a href="mailto:techsupport&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
-                        </p>
+                        <div class="el">
+                            <p class="report">🐛 Bug ? Nouveau besoin ?
+                                <a href="mailto:techsupport&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                            </p>
+                            <a class="hightlight_url" href="https://chezvous.en-marche.fr/" target="_blank">
+                                Ce qui a changé près de chez vous →
+                                <span></span>
+                            </a>
+                        </div>
                     </div>
                     <div class="second-section">
                         <h1 class="page-title text--large b__nudge--bottom">
@@ -38,6 +44,7 @@
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_adherents_*') ? 'active' }}">
                                 <a href="{{ path('app_municipal_chief_adherents_list') }}">Adhérents</a>
                             </li>
+
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_event_manager_*') ? 'active' }}">
                                 <a href="{{ path('app_municipal_chief_event_manager_events') }}">Événements</a>
                             </li>
@@ -48,6 +55,10 @@
 
                             <li class="menu-right {{ is_active_route(app.request, 'app_message_municipal_chief_*') ? 'active' }}">
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('app_formation_home') }}">Je me forme</a>
                             </li>
                         </ul>
                     </nav>

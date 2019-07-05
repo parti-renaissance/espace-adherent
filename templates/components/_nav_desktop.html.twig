@@ -252,7 +252,7 @@
             {% endif %}
             {% if app.user.isHost or app.user.isMunicipalChief %}
                 <li>
-                    <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
+                    <a href="{{ path('app_formation_home') }}" class="{{ app.user.isMunicipalChief ? '' : 'is-new' }}">Je me forme</a>
                 </li>
             {% endif %}
         </ul>

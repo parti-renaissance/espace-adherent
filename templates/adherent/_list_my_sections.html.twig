@@ -1,11 +1,11 @@
 {% if app.user.isSupervisor or app.user.isHost %}
     <li>
-        <a href="{{ path('app_committee_space_dashboard') }}">Espace comité ✨</a>
+        <a href="{{ path('app_committee_space_dashboard') }}">Espace comité</a>
     </li>
 {% endif %}
 {% if is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR') %}
     <li>
-        <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet ✨</a>
+        <a href="{{ path('app_citizen_project_space_dashboard') }}">Espace porteur de projet</a>
     </li>
 {% endif %}
 {% if app.user.isReferent or app.user.isCoReferent %}
@@ -20,7 +20,7 @@
 {% endif %}
 {% if app.user.isCoordinatorCitizenProjectSector %}
     <li>
-        <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}"> Espace Responsable Engagement Citoyen
+        <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}"> Espace responsable engagement citoyen
         </a>
     </li>
 {% endif %}
@@ -41,7 +41,7 @@
 {% endif %}
 {% if app.user.isMunicipalChief and is_canary_enabled() %}
     <li>
-        <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Espace Municipales 2020</a>
+        <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Espace Municipales 2020 🇫🇷</a>
     </li>
 {% endif %}
 {% if app.user.isJecouteManager %}

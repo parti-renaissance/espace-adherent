@@ -31,6 +31,12 @@
             letter-spacing: 1px;
             margin: 0;
         }
+
+        .el:last-child {
+            @media (min-width: $mobile) {
+                text-align: right;
+            }
+        }
     }
 
     .second-section {
@@ -365,4 +371,26 @@
     padding: 20px;
     margin-bottom: 60px;
     color: $inf-modl--text-yellow;
+}
+
+// Going to an external new product
+.hightlight_url {
+    display: inline-block;
+    font-family: $font-roboto;
+    text-transform: uppercase;
+    border: none;
+    background-color: #FFF0C4;
+    font-weight: 600;
+    color: $black;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    border-radius: 50px;
+    line-height: 11px;
+    transition: all 125ms ease-in;
+    margin-top: 6px;
+
+    &:hover {
+        transform: translateX(2px);
+    }
 }
