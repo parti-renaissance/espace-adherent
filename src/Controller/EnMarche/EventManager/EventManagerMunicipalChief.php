@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche\EventManager;
 
 use AppBundle\Event\EventManagerSpaceEnum;
+use AppBundle\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,5 +17,10 @@ class EventManagerMunicipalChief extends AbstractEventManagerController
     protected function getSpaceType(): string
     {
         return EventManagerSpaceEnum::MUNICIPAL_CHIEF;
+    }
+
+    protected function getEvents(EventRepository $eventRepository, string $type = null): array
+    {
+        return $eventRepository->findEventsByOrganizer($this->getUser());
     }
 }

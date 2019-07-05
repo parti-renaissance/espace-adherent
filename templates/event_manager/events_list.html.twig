@@ -55,5 +55,25 @@
         </a>
     </div>
 
+    {% if space_name == constant('AppBundle\\Event\\EventManagerSpaceEnum::REFERENT') %}
+        <div class="referent__menu-list-event">
+            <div class="menu-items">
+                {% if is_active_route(app.request, 'app_referent_event_manager_events') %}
+                    <h3>Tous les événements</h3>
+                {% else %}
+                    <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
+                {% endif %}
+
+                <span class="separator">|</span>
+
+                {% if is_active_route(app.request, 'app_referent_event_manager_events_mine') %}
+                    <h3>Mes événements</h3>
+                {% else %}
+                    <h3><a href="{{ path("app_#{space_name}_event_manager_events_mine") }}">Mes événements</a></h3>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
     <div id="datagrid"></div>
 {% endblock %}

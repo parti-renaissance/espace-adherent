@@ -6,7 +6,6 @@ use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventCommandHandler;
-use AppBundle\Event\EventManagerSpaceEnum;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationCommandHandler;
 use AppBundle\Form\EventCommandType;
@@ -20,19 +19,33 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractEventManagerController extends Controller
 {
-    /**
-     * @Route("/evenements", name="events", methods={"GET"})
-     */
-    public function eventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
-    {
-        if (EventManagerSpaceEnum::REFERENT === $this->getSpaceType()) {
-            $events = $eventRepository->findManagedBy($this->getUser());
-        } else {
-            $events = $eventRepository->findEventsByOrganizer($this->getUser());
-        }
+    public const EVENTS_TYPE_ALL = 'all';
+    public const EVENTS_TYPE_MINE = 'mine';
 
+    /**
+     * @Route(
+     *     path="/evenements",
+     *     name="events",
+     *     defaults={"type": AbstractEventManagerController::EVENTS_TYPE_ALL},
+     *     methods={"GET"}
+     * )
+     *
+     * @Route(
+     *     path="/mes-evenements",
+     *     name="events_mine",
+     *     defaults={"type": AbstractEventManagerController::EVENTS_TYPE_MINE},
+     *     methods={"GET"}
+     * )
+     */
+    public function eventsAction(
+        EventRepository $eventRepository,
+        ManagedEventsExporter $eventsExporter,
+        string $type
+    ): Response {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
-            'eventsAsJson' => $eventsExporter->exportAsJson($events),
+            'eventsAsJson' => $eventsExporter->exportAsJson(
+                $this->getEvents($eventRepository, $type)
+            ),
         ]);
     }
 
@@ -70,6 +83,8 @@ abstract class AbstractEventManagerController extends Controller
     }
 
     abstract protected function getSpaceType(): string;
+
+    abstract protected function getEvents(EventRepository $eventRepository, string $type = null): array;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
