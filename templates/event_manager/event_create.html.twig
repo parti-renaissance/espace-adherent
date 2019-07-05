@@ -19,11 +19,11 @@
 
             <h2 class="text--medium b__nudge--bottom-larger">Événement créé.</h2>
 
-            <p class="text--normal b__nudge--bottom ">Votre événement <a class="link--no--decor text--blue--dark" href="{{ path('app_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été crée.</p>
+            <p class="text--normal b__nudge--bottom ">Votre événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</p>
 
             {% if event.status == constant('STATUS_SCHEDULED', event) %}
                 <p class="alert alert-warning">
-                    Votre événement est bien créé mais pas encore diffusé.<br/> Partagez le par e-mail à vos contacts en cliquant ci-dessous.
+                    Votre événement a bien été créé mais pas encore diffusé.<br/> Partagez le par e-mail à vos contacts en cliquant ci-dessous.
                 </p>
             {% endif %}
 
@@ -36,9 +36,16 @@
 
             <br/>
 
-            <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
-                Tous mes événements
-            </a>
+            {% if space_name == constant('AppBundle\\Event\\EventManagerSpaceEnum::REFERENT') %}
+                <a href="{{ path("app_referent_event_manager_events_mine") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
+                    Voir tous mes événements
+                </a>
+            {% else %}
+                <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
+                    Voir tous les événements
+                </a>
+            {% endif %}
+
         </div>
     {% else %}
         <a href="{{ path("app_#{space_name}_event_manager_events") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
