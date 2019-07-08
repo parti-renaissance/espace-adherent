@@ -16,7 +16,9 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     private function createListQueryBuilder(string $alias): QueryBuilder
     {
         return $this->createQueryBuilder($alias)
-            ->addOrderBy("$alias.lastName", 'ASC')
+            ->addSelect('tag')
+            ->leftJoin("$alias.tags", 'tag')
+            ->orderBy("$alias.lastName", 'ASC')
             ->addOrderBy("$alias.firstName", 'ASC')
         ;
     }
@@ -29,8 +31,8 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     public function findForReferentTags(array $referentTags): array
     {
         return $this->createListQueryBuilder('r')
-            ->innerJoin('r.referentTags', 'tag')
-            ->andWhere('tag IN (:tags)')
+            ->innerJoin('r.referentTags', 'refTag')
+            ->andWhere('refTag IN (:tags)')
             ->setParameter('tags', $referentTags)
             ->getQuery()
             ->getResult()
@@ -50,10 +52,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
      */
     public function findAllForInseeCodes(array $inseeCodes): array
     {
-        $qb = $this->createListQueryBuilder('r')
-            ->addSelect('tag')
-            ->leftJoin('r.tags', 'tag')
-        ;
+        $qb = $this->createListQueryBuilder('r');
 
         $orExpression = new Orx();
 
@@ -75,8 +74,6 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     public function findAllTakenFor(array $inseeCodes): array
     {
         return $this->createListQueryBuilder('r')
-            ->addSelect('tag')
-            ->leftJoin('r.tags', 'tag')
             ->where('r.takenForCity IN (:cities)')
             ->setParameter('cities', $inseeCodes)
             ->getQuery()
