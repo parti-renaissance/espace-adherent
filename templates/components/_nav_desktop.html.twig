@@ -216,7 +216,7 @@
     is_granted('ROLE_PROCURATION_MANAGER') or
     is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
     is_granted('ROLE_ASSESSOR_MANAGER') or
-    (is_granted('ROLE_MUNICIPAL_CHIEF') and is_canary_enabled()) or
+    is_granted('ROLE_MUNICIPAL_CHIEF') or
     is_granted('ROLE_JECOUTE_MANAGER')
 %}
     {% set totalSections =
@@ -227,7 +227,7 @@
         app.user.isCoordinatorCommitteeSector +
         app.user.isProcurationManager +
         app.user.isAssessorManager +
-        (app.user.isMunicipalChief and is_canary_enabled()) +
+        app.user.isMunicipalChief +
         app.user.isJecouteManager +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR')
     %}
