@@ -1,7 +1,7 @@
 {% extends base_template %}
 
 {% block application_request_main_block  %}
-    <a href="{{ path("app_application_request_#{space_name}_#{request_type}_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+    <a href="{{ path("app_#{space_name}_candidate_#{request_type}_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
     </a>
 

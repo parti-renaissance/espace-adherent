@@ -69,6 +69,21 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         ;
     }
 
+    /**
+     * @return VolunteerRequest[]|RunningMateRequest[]
+     */
+    public function findAllTakenFor(array $inseeCodes): array
+    {
+        return $this->createListQueryBuilder('r')
+            ->addSelect('tag')
+            ->leftJoin('r.tags', 'tag')
+            ->where('r.takenForCity IN (:cities)')
+            ->setParameter('cities', $inseeCodes)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function updateAdherentRelation(string $email, ?Adherent $adherent): void
     {
         $this->_em->createQueryBuilder()

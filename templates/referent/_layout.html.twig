@@ -75,8 +75,8 @@
                             </li>
 
                             {% if is_canary_enabled() %}
-                                <li class="{{ is_active_route(app.request, 'app_application_request_referent_*') ? 'active' }}">
-                                    <a href="{{ path('app_application_request_referent_running_mate_list') }}">Municipales</a>
+                                <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
+                                    <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
                                 </li>
                             {% endif %}
 

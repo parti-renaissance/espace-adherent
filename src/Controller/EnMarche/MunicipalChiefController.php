@@ -17,10 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @Route(
- *     path="/espace-chef-municipal",
- *     name="app_municipal_chief"
- * )
+ * @Route(path="/espace-chef-municipal", name="app_municipal_chief")
+ *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */
 class MunicipalChiefController extends Controller
@@ -54,7 +52,7 @@ class MunicipalChiefController extends Controller
 
         $this->addFlash('info', 'application_request.taken_successfully');
 
-        return $this->redirectToRoute("app_application_request_municipal_chief_${type}_list");
+        return $this->redirectToRoute("app_municipal_chief_candidate_${type}_list");
     }
 
     /**
@@ -62,6 +60,7 @@ class MunicipalChiefController extends Controller
      * @Route("candidature-benevoles/{uuid}/retirer-de-mon-equipe", name="_volunteer_remove_from_my_team", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      */
     public function removeFromMyTeamAction(
+        Request $httpRequest,
         ObjectManager $manager,
         ApplicationRequestRepository $repository,
         string $uuid,
@@ -84,7 +83,9 @@ class MunicipalChiefController extends Controller
 
         $this->addFlash('info', 'application_request.removed_successfully');
 
-        return $this->redirectToRoute("app_application_request_municipal_chief_${type}_list");
+        $myTeamTarget = $httpRequest->query->has('mtt');
+
+        return $this->redirectToRoute('app_municipal_chief_'.($myTeamTarget ? 'my_team' : 'candidate')."_${type}_list");
     }
 
     /**

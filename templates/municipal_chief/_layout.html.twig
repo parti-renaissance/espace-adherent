@@ -31,8 +31,8 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_application_request_municipal_chief_*') ? 'active' }}">
-                                <a href="{{ path('app_application_request_municipal_chief_running_mate_list') }}">Candidats</a>
+                            <li class="{{ is_active_route(app.request, 'app_municipal_chief_candidate_*') ? 'active' }}">
+                                <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Candidats</a>
                             </li>
 
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_adherents_*') ? 'active' }}">
@@ -40,6 +40,10 @@
                             </li>
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_event_manager_*') ? 'active' }}">
                                 <a href="{{ path('app_municipal_chief_event_manager_events') }}">Événements</a>
+                            </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_municipal_chief_my_team_*') ? 'active' }}">
+                                <a href="{{ path('app_municipal_chief_my_team_running_mate_list') }}">Mon équipe</a>
                             </li>
 
                             <li class="menu-right {{ is_active_route(app.request, 'app_message_municipal_chief_*') ? 'active' }}">

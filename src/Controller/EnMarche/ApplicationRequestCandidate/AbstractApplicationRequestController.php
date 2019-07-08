@@ -18,8 +18,8 @@ abstract class AbstractApplicationRequestController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("candidature-colistiers", name="_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, methods={"GET"})
-     * @Route("candidature-benevoles", name="_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, methods={"GET"})
+     * @Route("candidature-colistiers", name="_candidate_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, methods={"GET"})
+     * @Route("candidature-benevoles", name="_candidate_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, methods={"GET"})
      */
     public function candidatesListAction(Request $request, ApplicationRequestRepository $repository): Response
     {
@@ -35,8 +35,8 @@ abstract class AbstractApplicationRequestController extends Controller
     }
 
     /**
-     * @Route("candidature-colistiers/{uuid}", name="_running_mate_detail", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
-     * @Route("candidature-benevoles/{uuid}", name="_volunteer_detail", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
+     * @Route("candidature-colistiers/{uuid}", name="_candidate_running_mate_detail", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
+     * @Route("candidature-benevoles/{uuid}", name="_candidate_volunteer_detail", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      */
     public function candidateDetailShowAction(
         ApplicationRequestRepository $repository,
@@ -58,8 +58,8 @@ abstract class AbstractApplicationRequestController extends Controller
     }
 
     /**
-     * @Route("candidature-colistiers/{uuid}/editer-tags", name="_running_mate_tags", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
-     * @Route("candidature-benevoles/{uuid}/editer-tags", name="_volunteer_tags", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
+     * @Route("candidature-colistiers/{uuid}/editer-tags", name="_candidate_running_mate_tags", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
+     * @Route("candidature-benevoles/{uuid}/editer-tags", name="_candidate_volunteer_tags", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET", "POST"})
      */
     public function candidateTagsEditAction(
         Request $request,
@@ -86,7 +86,7 @@ abstract class AbstractApplicationRequestController extends Controller
 
             $this->addFlash('info', 'application_request.tags.edited_successfully');
 
-            return $this->redirectToSpaceRoute($applicationRequest->getType().'_list');
+            return $this->redirectToSpaceRoute('candidate_'.$applicationRequest->getType().'_list');
         }
 
         return $this->renderTemplate('application_request/space/edit_tags.html.twig', [
@@ -114,6 +114,6 @@ abstract class AbstractApplicationRequestController extends Controller
 
     protected function redirectToSpaceRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_application_request_{$this->getSpaceName()}_${subName}", $parameters);
+        return $this->redirectToRoute("app_{$this->getSpaceName()}_${subName}", $parameters);
     }
 }

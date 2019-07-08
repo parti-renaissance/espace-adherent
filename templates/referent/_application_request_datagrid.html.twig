@@ -40,8 +40,8 @@
             [
                 {% for request in requests %}
                     {% include "application_request/space/_#{request_type}_row.js.twig" with {
-                        show_route_name: "app_application_request_referent_#{request_type}_detail",
-                        edit_route_name: "app_application_request_referent_#{request_type}_tags",
+                        show_route_name: "app_referent_candidate_#{request_type}_detail",
+                        edit_route_name: "app_referent_candidate_#{request_type}_tags",
                     } %},
                 {% endfor %}
             ]
