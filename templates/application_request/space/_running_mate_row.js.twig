@@ -5,7 +5,7 @@
         firstName: request.lastName,
         phone: request.phone|phone_number_format,
         favoriteCities: request.favoriteCitiesNames|join(', '),
-        tags: '<span>' ~ request.tags|join('</span><span>') ~ '</span>',
+        tags: request.tags ? '<span>' ~ request.tags|join('</span><span>') ~ '</span>',
         isAdherent: request.adherent ?
             '<span class="status status__1">Oui</span>'
             : '<span class="status status__2">Non</span>',

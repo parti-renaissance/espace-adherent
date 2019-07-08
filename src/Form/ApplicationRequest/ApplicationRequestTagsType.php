@@ -23,6 +23,7 @@ class ApplicationRequestTagsType extends AbstractType
                 },
                 'multiple' => true,
                 'required' => false,
+                'by_reference' => false,
             ])
         ;
     }

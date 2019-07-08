@@ -377,9 +377,9 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
         return $this->firstName.' '.$this->lastName;
     }
 
-    public function getTags(): Collection
+    public function getTags(): array
     {
-        return $this->tags;
+        return $this->tags->toArray();
     }
 
     public function addTag(ApplicationRequestTag $tag): void
