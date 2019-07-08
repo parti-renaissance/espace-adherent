@@ -39,7 +39,7 @@
         <a href="{{ path('app_assessor_manager_requests') }}">Espace responsable assesseur</a>
     </li>
 {% endif %}
-{% if app.user.isMunicipalChief and is_canary_enabled() %}
+{% if app.user.isMunicipalChief %}
     <li>
         <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Espace Municipales 2020</a>
     </li>

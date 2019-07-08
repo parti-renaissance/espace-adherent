@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
 
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,16 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractApplicationRequestController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("candidature-colistiers", name="_candidate_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, methods={"GET"})
      * @Route("candidature-benevoles", name="_candidate_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, methods={"GET"})
      */
     public function candidatesListAction(Request $request, ApplicationRequestRepository $repository): Response
     {
-        $this->disableInProduction();
-
         return $this->renderTemplate('application_request/space/list.html.twig', [
             'requests' => $this->getApplicationRequests(
                 $repository,
@@ -43,8 +38,6 @@ abstract class AbstractApplicationRequestController extends Controller
         string $uuid,
         string $type
     ): Response {
-        $this->disableInProduction();
-
         if (!$request = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }
@@ -68,8 +61,6 @@ abstract class AbstractApplicationRequestController extends Controller
         string $uuid,
         string $type
     ): Response {
-        $this->disableInProduction();
-
         if (!$applicationRequest = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }

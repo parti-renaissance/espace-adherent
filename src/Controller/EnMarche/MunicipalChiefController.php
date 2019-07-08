@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Security\Voter\MunicipalChiefVoter;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,8 +22,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class MunicipalChiefController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("candidature-colistiers/{uuid}/ajouter-a-mon-equipe", name="_running_mate_add_to_my_team", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      * @Route("candidature-benevoles/{uuid}/ajouter-a-mon-equipe", name="_volunteer_add_to_my_team", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
@@ -35,8 +32,6 @@ class MunicipalChiefController extends Controller
         string $uuid,
         string $type
     ): Response {
-        $this->disableInProduction();
-
         if (!$request = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }
@@ -66,8 +61,6 @@ class MunicipalChiefController extends Controller
         string $uuid,
         string $type
     ): Response {
-        $this->disableInProduction();
-
         if (!$request = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }
@@ -96,8 +89,6 @@ class MunicipalChiefController extends Controller
         UserInterface $municipalChief,
         AdherentRepository $adherentRepository
     ): Response {
-        $this->disableInProduction();
-
         return $this->render('municipal_chief/adherent/list.html.twig', [
             'results' => $adherentRepository->findPaginatedForInseeCodes(
                 $municipalChief->getMunicipalChiefManagedArea()->getCodes(),
