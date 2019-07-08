@@ -28,15 +28,15 @@ Feature:
   @javascript
   Scenario: I cannot see running mate or volunteer request for the zones I don't manage
     Given I am logged as "referent-75-77@en-marche-dev.fr"
-    When I am on "/espace-referent/municipale/candidature-colistiers"
+    When I am on "/espace-referent/candidature-colistiers"
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
-    When I am on "/espace-referent/municipale/candidature-benevole"
+    When I am on "/espace-referent/candidature-benevoles"
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
 
   @javascript
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-referent/municipale/candidature-colistiers"
+    When I am on "/espace-referent/candidature-colistiers"
     And I wait 5 seconds until I see NOM
     And I should see "Banner"
     And I should see "Bruce"
@@ -59,7 +59,7 @@ Feature:
     And I should see "Quel sont les atouts de votre parcours professionnel ?"
 
     When I follow "⟵ Retour"
-    Then I should be on "/espace-referent/municipale/candidature-colistiers"
+    Then I should be on "/espace-referent/candidature-colistiers"
 
     When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
@@ -74,7 +74,7 @@ Feature:
   @javascript
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
     Given I am logged as "referent@en-marche-dev.fr"
-    When I am on "/espace-referent/municipale/candidature-benevole"
+    When I am on "/espace-referent/candidature-benevoles"
     And I wait 5 seconds until I see NOM
     And I should see "Stark"
     And I should see "Tony"
@@ -94,7 +94,7 @@ Feature:
     And I should see "Détails"
 
     When I follow "⟵ Retour"
-    Then I should be on "/espace-referent/municipale/candidature-benevole"
+    Then I should be on "/espace-referent/candidature-benevoles"
 
     When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"

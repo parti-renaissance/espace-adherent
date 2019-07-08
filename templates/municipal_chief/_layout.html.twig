@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Mon espace Municipales 2020' %}
-{% block canonical_url url('app_municipal_chief_municipal_running_mate_request') %}
 
 {% block banner '' %}
 
@@ -32,9 +31,10 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_municipal_chief_municipal_*') ? 'active' }}">
-                                <a href="{{ path('app_municipal_chief_municipal_running_mate_request') }}">Candidats</a>
+                            <li class="{{ is_active_route(app.request, 'app_application_request_municipal_chief_*') ? 'active' }}">
+                                <a href="{{ path('app_application_request_municipal_chief_running_mate_list') }}">Candidats</a>
                             </li>
+
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_adherents_*') ? 'active' }}">
                                 <a href="{{ path('app_municipal_chief_adherents_list') }}">Adhérents</a>
                             </li>

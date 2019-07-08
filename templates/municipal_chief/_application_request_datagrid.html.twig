@@ -1,0 +1,83 @@
+<script type="text/javascript">
+    Kernel.onLoad(function() {
+        App.runManagedList(
+            [
+                {
+                    key: 'lastName',
+                    name: 'Nom',
+                },
+                {
+                    key: 'firstName',
+                    name: 'Prénom',
+                },
+                {
+                    key: 'gender',
+                    name: 'Genre',
+                },
+                {
+                    key: 'phone',
+                    name: 'Téléphone',
+                },
+                {
+                    key: 'favoriteCities',
+                    name: 'Ville(s) choisie(s)',
+                },
+                {
+                    key: 'tags',
+                    name: 'Tags de candidature',
+                    className: 'municipal-candidate-tags',
+                },
+                {
+                    key: 'isAdherent',
+                    name: 'Adhérent ?',
+                },
+                {
+                    key: 'inMyTeam',
+                    name: 'Équipier ?',
+                },
+                {
+                    key: 'menu',
+                    name: 'Action',
+                    menu: true,
+                },
+            ],
+            [
+                {% for request in requests %}
+                    {% spaceless %}
+                        {% set team_link_url = false %}
+
+                        {% if request.takenForCity in app.user.municipalChiefManagedArea.codes %}
+                            {% set team_link_label = 'Retirer de mon équipe' %}
+                            {% set team_link_class = 'text--error' %}
+                            {% set team_link_url = path("app_municipal_chief_#{request_type}_remove_from_my_team", {uuid: request.uuid}) %}
+                        {% elseif not request.takenForCity %}
+                            {% set team_link_label = 'Ajouter à mon équipe' %}
+                            {% set team_link_class = 'text-dark' %}
+                            {% set team_link_url = path("app_municipal_chief_#{request_type}_add_to_my_team", {uuid: request.uuid}) %}
+                        {% endif %}
+
+                        {% set menu = team_link_url ? [{
+                            label: team_link_label,
+                            url: team_link_url,
+                            className: "row-action text--dark link--no-decor #{team_link_class}"
+                        }] : [] %}
+
+                        {% include "application_request/space/_#{request_type}_row.js.twig" with {
+                            show_route_name: "app_application_request_municipal_chief_#{request_type}_detail",
+                            edit_route_name: "app_application_request_municipal_chief_#{request_type}_tags",
+                            menu: menu,
+                            columns: {
+                                inMyTeam: request.takenForCity in app.user.municipalChiefManagedArea.codes ?
+                                    '<span class="status status__1">Oui</span>'
+                                    : (request.takenForCity ?
+                                        '<span class="text--smallest text--italic">Déjà pris dans une autre ville</span>'
+                                        : '<span class="status status__2">Non</span>'
+                                    ),
+                            }
+                        } %},
+                    {% endspaceless %}
+                {% endfor %}
+            ]
+        );
+    });
+</script>

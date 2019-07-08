@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\ApplicationRequest;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -156,5 +157,10 @@ class VolunteerRequest extends ApplicationRequest
     public function shareAssociativeCommitmentAsString(): string
     {
         return $this->shareAssociativeCommitment ? 'Oui' : 'Non';
+    }
+
+    public function getType(): string
+    {
+        return ApplicationRequestTypeEnum::VOLUNTEER;
     }
 }
