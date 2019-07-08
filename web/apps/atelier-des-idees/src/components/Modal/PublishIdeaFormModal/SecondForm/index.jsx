@@ -115,7 +115,7 @@ class SecondForm extends React.Component {
                     <React.Fragment>
                         <div className="second-form__section">
                             <label className="second-form__section__label">
-                Avez-vous écrit cette note avec votre comité local ?
+                Avez-vous écrit cette proposition avec votre comité local ?
                             </label>
                             <Select
                                 options={this.props.authorOptions}
