@@ -66,6 +66,10 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
 
         $this->entityManager->refresh($message);
 
+        if ($filter = $message->getFilter()) {
+            $this->entityManager->refresh($filter);
+        }
+
         foreach ($message->getMailchimpCampaigns() as $campaign) {
             $this->entityManager->refresh($campaign);
         }
