@@ -1,3 +1,14 @@
 {% set target_sub_space = 'my_team' %}
 
 {% extends 'application_request/space/list.html.twig' %}
+
+{% block help_message_block '' %}
+
+{% block application_request_main_block %}
+
+    <div class="text--right">
+        <a class="btn btn--blue" href="{{ path('app_message_municipal_chief_create') }}">+ Contacter mon équipe</a>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

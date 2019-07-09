@@ -4,6 +4,7 @@ namespace AppBundle\Form\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,8 @@ class MunicipalChiefFilterType extends AbstractType
                 'choices' => $options['city_choices'],
                 'multiple' => true,
             ])
+            ->add('contactRunningMateTeam', CheckboxType::class, ['required' => false])
+            ->add('contactVolunteerTeam', CheckboxType::class, ['required' => false])
         ;
     }
 

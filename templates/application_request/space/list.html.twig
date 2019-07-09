@@ -17,6 +17,14 @@
         </div>
     </div>
 
+    {% block help_message_block %}
+        <div class="text--small l__wrapper--main">
+            <div class="alert alert-warning b__nudge--right-extra-large">
+                Cliquez sur le bouton <i>Action</i> pour consulter le détail d'un candidat, le taguer et/ou l'ajouter à votre équipe
+            </div>
+        </div>
+    {% endblock %}
+
     <div id="datagrid"></div>
 {% endblock %}
 

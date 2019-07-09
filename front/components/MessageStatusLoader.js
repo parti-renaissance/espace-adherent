@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Loader from './Loader';
 import numberFormat from '../utils/number';
 
-const MAX_API_CALLS = 100;
+const MAX_API_CALLS = 50;
 
 export default class MessageStatusLoader extends React.Component {
     constructor(props) {

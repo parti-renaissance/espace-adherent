@@ -20,6 +20,7 @@ use AppBundle\Entity\ReferentTag;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 use AppBundle\Mailchimp\Manager;
+use AppBundle\Mailchimp\Synchronisation\ApplicationRequestTagLabelEnum;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 
@@ -289,13 +290,37 @@ class SegmentConditionsBuilder
             ];
         }
 
-        if ($campaign->getCity()) {
+        if (!$campaign->getCity()) {
+            throw new InvalidFilterException(sprintf(
+                '[MunicipalChiefMessage] Message (%s) does not have a valid city value',
+                $campaign->getMessage()->getUuid()->toString()
+            ));
+        }
+
+        $conditions[] = [
+            'condition_type' => 'TextMerge',
+            'op' => 'contains',
+            'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
+            'value' => $campaign->getCity(),
+        ];
+
+        if ($filter->getContactRunningMateTeam() || $filter->getContactVolunteerTeam()) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
-                'op' => 'contains',
-                'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
+                'op' => 'is',
+                'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
                 'value' => $campaign->getCity(),
             ];
+
+            if ($filter->getContactRunningMateTeam() ^ $filter->getContactVolunteerTeam()) {
+                $conditions[] = $this->buildStaticSegmentCondition(
+                    $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
+                        $filter->getContactRunningMateTeam()
+                            ? ApplicationRequestTagLabelEnum::RUNNING_MATE
+                            : ApplicationRequestTagLabelEnum::VOLUNTEER
+                    ]
+                );
+            }
         }
 
         return $conditions;
