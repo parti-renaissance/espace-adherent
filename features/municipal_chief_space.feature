@@ -82,7 +82,7 @@ Feature:
     And I follow "Plus d'infos"
     Then I should see "⟵ Retour"
     And I should see "Vos thématique(s) de prédilection Sécurité Environnement"
-    And I should see "Vos thématique(s) de prédilection personnalisés Thanos destruction"
+    And I should see "Détails thématiques “Autres” Thanos destruction"
     And I should see "Disposez-vous de compétences techniques spécifiques ? Communication Management Animation Autre"
     And I should see "Avez-vous déjà participé à une campagne ? Non"
     And I should see "Détails"

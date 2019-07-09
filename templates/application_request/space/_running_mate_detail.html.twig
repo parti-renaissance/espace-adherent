@@ -1,4 +1,4 @@
-<div class="l__wrapper--slim">
+<div class="l__wrapper--narrow">
     <h3 class="text--medium b__nudge--bottom-50">Détails du candidat</h3>
 
     <div class="data-listing">
@@ -34,8 +34,13 @@
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
+            <div class="data-listing__item data-listing__item--label">Détails thématiques “Autres”</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.customFavoriteTheme }}</div>
+        </div>
+
+        <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Pourquoi avez-vous choisi cette thématique ?</div>
-            <div class="data-listing__item data-listing__item--value">{{ request.favoriteThemeDetails }}</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.favoriteThemeDetails }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
@@ -52,7 +57,7 @@
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Détails</div>
-            <div class="data-listing__item data-listing__item--value">{{ request.localAssociationDomain }}</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.localAssociationDomain }}</div>
         </div>
 
         <div class="data-listing__row">
@@ -62,7 +67,7 @@
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Détails</div>
-            <div class="data-listing__item data-listing__item--value">{{ request.politicalActivistDetails }}</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.politicalActivistDetails }}</div>
         </div>
 
         <div class="data-listing__row">
@@ -72,17 +77,17 @@
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Détails</div>
-            <div class="data-listing__item data-listing__item--value">{{ request.previousElectedOfficialDetails }}</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.previousElectedOfficialDetails }}</div>
         </div>
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?</div>
-            <div class="data-listing__item data-listing__item--value">{{ request.projectDetails }}</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.projectDetails }}</div>
         </div>
 
         <div class="data-listing__row b__nudge--bottom">
             <div class="data-listing__item data-listing__item--label">Quel sont les atouts de votre parcours professionnel ?</div>
-            <div class="data-listing__item data-listing__item--value">{{ request.professionalAssets }}</div>
+            <div class="data-listing__item data-listing__item--value text--justify">{{ request.professionalAssets }}</div>
         </div>
     </div>
 </div>
