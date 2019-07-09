@@ -22,7 +22,7 @@ class AdminCommitteeMergeMenuListener
 
         $menu = $event->getMenu();
 
-        $menu['Système']['Fusions de comités']->addChild('committee_merge', [
+        $menu['Territoire']['Fusions de comités']->addChild('committee_merge', [
             'label' => 'Fusions de comités',
             'route' => 'app_admin_committee_merge',
             'display' => false,

@@ -11,12 +11,12 @@
 
         <!--
         ######################################################
-        # Contenu
+        # Communication
         ######################################################
-         -->
+        -->
 
         <service id="app.admin.media" class="AppBundle\Admin\MediaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Images / Vidéos" group="Contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Upload" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\Media</argument>
@@ -32,7 +32,7 @@
         </service>
 
         <service id="app.admin.article" class="AppBundle\Admin\ArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Actualités" group="Contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Actualités" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\Article</argument>
@@ -40,7 +40,7 @@
         </service>
 
         <service id="app.admin.page" class="AppBundle\Admin\PageAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Pages statiques" group="Contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Pages statiques" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\Page</argument>
@@ -48,39 +48,15 @@
         </service>
 
         <service id="app.admin.home_block" class="AppBundle\Admin\HomeBlockAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Accueil » Blocs d'articles" group="Contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Blocs d'articles" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\HomeBlock</argument>
             <argument />
         </service>
 
-        <service id="app.admin.live_link" class="AppBundle\Admin\LiveLinkAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Accueil » Liens En direct" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\LiveLink</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Programme » Thèmes" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\ProposalTheme</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.proposal" class="AppBundle\Admin\ProposalAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Programme » Propositions" group="Contenu" />
-
-            <argument />
-            <argument>AppBundle\Entity\Proposal</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.clarification" class="AppBundle\Admin\ClarificationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Désintox" group="Contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Désintox" group="Communication" />
             <argument />
             <argument>AppBundle\Entity\Clarification</argument>
             <argument />
@@ -98,48 +74,77 @@
         </service>
 
         <service id="app.admin.redirection" class="AppBundle\Admin\RedirectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Redirections" group="Contenu" />
+            <tag name="sonata.admin" manager-type="orm" label="Redirections" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\Redirection</argument>
             <argument />
         </service>
 
+        <service id="app.admin.biography_executive_office_member" class="AppBundle\Admin\ExecutiveOfficeMemberAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Biographies BurEx" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\Biography\ExecutiveOfficeMember</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.live_link" class="AppBundle\Admin\LiveLinkAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Liens En Direct" group="Communication" />
+
+            <argument />
+            <argument>AppBundle\Entity\LiveLink</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
-        # Campaign
+        # Adhérents
         ######################################################
-         -->
+        -->
+
+        <service id="app.admin.adherent" class="AppBundle\Admin\AdherentAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Adhérents" />
+
+            <argument />
+            <argument>AppBundle\Entity\Adherent</argument>
+            <argument>AppBundle\Controller\Admin\AdminBanAdherentController</argument>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
 
         <service id="app.admin.invite" class="AppBundle\Admin\InviteAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Campagne" />
+            <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Adhérents" />
 
             <argument />
             <argument>AppBundle\Entity\Invite</argument>
             <argument />
         </service>
 
-        <service id="app.admin.je_marche" class="AppBundle\Admin\JeMarcheReportAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Campagne" />
-
-            <argument />
-            <argument>AppBundle\Entity\JeMarcheReport</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.donation" class="AppBundle\Admin\DonationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Campagne" />
-
-            <argument />
-            <argument>AppBundle\Entity\Donation</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.unregistration" class="AppBundle\Admin\UnregistrationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Désinscriptions/Exclusions" group="Campagne" />
+            <tag name="sonata.admin" manager-type="orm" label="Désadhésions/exclusions" group="Adhérents" />
 
             <argument />
             <argument>AppBundle\Entity\Unregistration</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.summary" class="AppBundle\Admin\SummaryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Profils" group="Adhérents" />
+
+            <argument />
+            <argument>AppBundle\Entity\Summary</argument>
+            <argument />
+
+            <call method="setInterestChoices">
+                <argument>%adherent_interests%</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.summary_mission_type" class="AppBundle\Admin\MissionTypeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Type de missions (profils)" group="Adhérents" />
+
+            <argument />
+            <argument>AppBundle\Entity\MemberSummary\MissionType</argument>
             <argument />
         </service>
 
@@ -147,16 +152,7 @@
         ######################################################
         # Territory
         ######################################################
-         -->
-
-        <service id="app.admin.adherent" class="AppBundle\Admin\AdherentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Adhérents" group="Territoire" />
-
-            <argument />
-            <argument>AppBundle\Entity\Adherent</argument>
-            <argument>AppBundle\Controller\Admin\AdminBanAdherentController</argument>
-            <argument type="service" id="event_dispatcher"/>
-        </service>
+        -->
 
         <service id="app.admin.committee" class="AppBundle\Admin\CommitteeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Comités" group="Territoire" />
@@ -167,6 +163,14 @@
             <argument type="service" id="app.committee.manager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="event_dispatcher"/>
+        </service>
+
+        <service id="app.admin.reporting_committee_merge_history" class="AppBundle\Admin\CommitteeMergeHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Fusions de comités" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\Reporting\CommitteeMergeHistory</argument>
+            <argument />
         </service>
 
         <service id="app.admin.event" class="AppBundle\Admin\EventAdmin">
@@ -251,7 +255,7 @@
         </service>
 
         <service id="app.admin.organizational_chart_item_admin" class="AppBundle\Admin\OrganizationalChartItemAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Organigramme" group="Territoire" />
+            <tag name="sonata.admin" manager-type="orm" label="Équipe départementale" group="Territoire" />
 
             <argument />
             <argument>AppBundle\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem</argument>
@@ -268,43 +272,11 @@
             </call>
         </service>
 
-        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Élections" group="Territoire" />
-
-            <argument />
-            <argument>AppBundle\Entity\Election</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.board_member_roles" class="AppBundle\Admin\BoardMemberRoleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Rôles des membres du Conseil" group="Territoire" />
-
-            <argument />
-            <argument>AppBundle\Entity\BoardMember\Role</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.district" class="AppBundle\Admin\DistrictAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Circonscriptions" group="Territoire" show_in_dashboard="false" />
 
             <argument />
             <argument>AppBundle\Entity\District</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.referent_tag" class="AppBundle\Admin\ReferentTagAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Tags réferent" group="Territoire" />
-
-            <argument />
-            <argument>AppBundle\Entity\ReferentTag</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.elected.representatives.register" class="AppBundle\Admin\ElectedRepresentativesRegisterAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Territoire" />
-
-            <argument />
-            <argument>AppBundle\Entity\ElectedRepresentativesRegister</argument>
             <argument />
         </service>
 
@@ -316,7 +288,7 @@
             <argument />
         </service>
 
-	<service id="app.admin.assessor_request_admin" class="AppBundle\Admin\AssessorRequestAdmin">
+        <service id="app.admin.assessor_request_admin" class="AppBundle\Admin\AssessorRequestAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Demandes" group="Territoire" />
 
             <argument />
@@ -324,77 +296,76 @@
             <argument />
         </service>
 
-        <!--
-        ######################################################
-        # Legislatives
-        ######################################################
-         -->
-
-        <service id="app.admin.legislative_candidate" class="AppBundle\Admin\LegislativeCandidateAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Candidats" group="Législatives" />
+        <service id="app.admin.jecoute_suggested_question" class="AppBundle\Admin\JecouteSuggestedQuestionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questions panier" group="Territoire" />
 
             <argument />
-            <argument>AppBundle\Entity\LegislativeCandidate</argument>
+            <argument>AppBundle\Entity\Jecoute\SuggestedQuestion</argument>
             <argument />
 
-            <call method="setStorage">
-                <argument type="service" id="app.storage" />
-            </call>
-
-            <call method="setGlide">
-                <argument type="service" id="app.glide" />
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/suggested_question_edit.html.twig</argument>
             </call>
         </service>
 
-        <service id="app.admin.legislative_district_zone" class="AppBundle\Admin\LegislativeDistrictZoneAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Zones géographiques" group="Législatives" />
-            <argument />
-            <argument>AppBundle\Entity\LegislativeDistrictZone</argument>
-            <argument />
-        </service>
-
-        <!--
-        ######################################################
-        # Summary
-        ######################################################
-         -->
-
-        <service id="app.admin.summary" class="AppBundle\Admin\SummaryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Profils" group="Profils En Marche" />
+        <service id="app.admin.jecoute_local_survey" class="AppBundle\Admin\JecouteLocalSurveyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questionnaires locaux" group="Territoire" />
 
             <argument />
-            <argument>AppBundle\Entity\Summary</argument>
+            <argument>AppBundle\Entity\Jecoute\LocalSurvey</argument>
             <argument />
 
-            <call method="setInterestChoices">
-                <argument>%adherent_interests%</argument>
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/survey_edit.html.twig</argument>
             </call>
         </service>
 
-        <service id="app.admin.skill" class="AppBundle\Admin\SkillAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Gestion des compétences" group="Profils En Marche" />
+        <service id="app.admin.jecoute_national_survey" class="AppBundle\Admin\JecouteNationalSurveyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="J'écoute » Questionnaires nationaux" group="Territoire" />
 
             <argument />
-            <argument>AppBundle\Entity\Skill</argument>
+            <argument>AppBundle\Entity\Jecoute\NationalSurvey</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/jecoute/survey_edit.html.twig</argument>
+            </call>
         </service>
 
-        <service id="app.admin.summary_mission_type" class="AppBundle\Admin\MissionTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Type de missions" group="Profils En Marche" />
+        <service id="app.admin.report" class="AppBundle\Admin\ReportAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoire" />
 
             <argument />
-            <argument>AppBundle\Entity\MemberSummary\MissionType</argument>
+            <argument>AppBundle\Entity\Report\Report</argument>
             <argument />
+            <argument type="service" id="AppBundle\Repository\ReportRepository" />
         </service>
 
         <!--
         ######################################################
-        # System
+        # Finances
         ######################################################
-         -->
+        -->
+
+        <service id="app.admin.donation" class="AppBundle\Admin\DonationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Dons" group="Finances" />
+
+            <argument />
+            <argument>AppBundle\Entity\Donation</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
+        # Tech
+        ######################################################
+        -->
 
         <service id="app.admin.administrator" class="AppBundle\Admin\AdministratorAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Système" />
+            <tag name="sonata.admin" manager-type="orm" label="Administrateurs" group="Tech" />
 
             <argument />
             <argument>AppBundle\Entity\Administrator</argument>
@@ -410,7 +381,7 @@
         </service>
 
         <service id="app.admin.email" class="AppBundle\Admin\EmailAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Logs Mailer" group="Emails" />
+            <tag name="sonata.admin" manager-type="orm" label="Logs Mailer" group="Tech" />
 
             <argument />
             <argument>AppBundle\Entity\Email</argument>
@@ -418,7 +389,7 @@
         </service>
 
         <service id="app.admin.adherent_tag" class="AppBundle\Admin\AdherentTagAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Tags d'adhérent" group="Système" />
+            <tag name="sonata.admin" manager-type="orm" label="Tags adhérents" group="Tech" />
 
             <argument />
             <argument>AppBundle\Entity\AdherentTag</argument>
@@ -426,27 +397,10 @@
         </service>
 
         <service id="app.admin.subscription_type" class="AppBundle\Admin\SubscriptionTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Types de subscription aux e-mails" group="Système" />
+            <tag name="sonata.admin" manager-type="orm" label="Types d'e-mails" group="Tech" />
 
             <argument />
             <argument>AppBundle\Entity\SubscriptionType</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.report" class="AppBundle\Admin\ReportAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Système" />
-
-            <argument />
-            <argument>AppBundle\Entity\Report\Report</argument>
-            <argument />
-            <argument type="service" id="AppBundle\Repository\ReportRepository" />
-        </service>
-
-        <service id="app.admin.reporting_committee_merge_history" class="AppBundle\Admin\CommitteeMergeHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Fusions de comités" group="Système" />
-
-            <argument />
-            <argument>AppBundle\Entity\Reporting\CommitteeMergeHistory</argument>
             <argument />
         </service>
 
@@ -454,7 +408,7 @@
         ######################################################
         # CitizenProject
         ######################################################
-         -->
+        -->
 
         <service id="app.admin.citizen_project" class="AppBundle\Admin\CitizenProjectAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Projets citoyens" group="Projets citoyens" />
@@ -511,141 +465,11 @@
 
         <!--
         ######################################################
-        # Timeline
-        ######################################################
-         -->
-
-        <service id="app.admin.timeline_manifesto" class="AppBundle\Admin\TimelineManifestoAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Programmes" group="Timeline" />
-
-            <argument />
-            <argument>AppBundle\Entity\Timeline\Manifesto</argument>
-            <argument>AppBundle\Controller\Admin\AdminTimelineManifestoController</argument>
-        </service>
-
-        <service id="app.admin.timeline_profile" class="AppBundle\Admin\TimelineProfileAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Profils" group="Timeline" />
-
-            <argument />
-            <argument>AppBundle\Entity\Timeline\Profile</argument>
-            <argument>AppBundle\Controller\Admin\AdminTimelineProfileController</argument>
-        </service>
-
-        <service id="app.admin.timeline_theme" class="AppBundle\Admin\TimelineThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Thèmes" group="Timeline" />
-
-            <argument />
-            <argument>AppBundle\Entity\Timeline\Theme</argument>
-            <argument>AppBundle\Controller\Admin\AdminTimelineThemeController</argument>
-        </service>
-
-        <service id="app.admin.timeline_measure" class="AppBundle\Admin\TimelineMeasureAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Mesures" group="Timeline" />
-
-            <argument />
-            <argument>AppBundle\Entity\Timeline\Measure</argument>
-            <argument>AppBundle\Controller\Admin\AdminTimelineMeasureController</argument>
-        </service>
-
-        <!--
-        ######################################################
-        # MOOC
+        # Idées
         ######################################################
         -->
-        <service id="app.admin.mooc_mooc" class="AppBundle\Admin\MoocAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Mooc" group="Mooc" />
-
-            <argument />
-            <argument>AppBundle\Entity\Mooc\Mooc</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.mooc_chapter" class="AppBundle\Admin\MoocChapterAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Chapitres" group="Mooc" />
-
-            <argument />
-            <argument>AppBundle\Entity\Mooc\Chapter</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
-        </service>
-
-        <service id="app.admin.mooc_element" class="AppBundle\Admin\MoocElementAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Éléments" group="Mooc" />
-
-            <argument />
-            <argument>AppBundle\Entity\Mooc\BaseMoocElement</argument>
-            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="Vidéo">AppBundle\Entity\Mooc\Video</argument>
-                    <argument key="Quiz">AppBundle\Entity\Mooc\Quiz</argument>
-                </argument>
-            </call>
-        </service>
-
-        <!--
-        ######################################################
-        # Biography
-        ######################################################
-        -->
-        <service id="app.admin.biography_executive_office_member" class="AppBundle\Admin\ExecutiveOfficeMemberAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Membres BurEx" group="Biographies" />
-
-            <argument />
-            <argument>AppBundle\Entity\Biography\ExecutiveOfficeMember</argument>
-            <argument />
-        </service>
-
-        <!--
-        ######################################################
-        # J'écoute
-        ######################################################
-        -->
-        <service id="app.admin.jecoute_suggested_question" class="AppBundle\Admin\JecouteSuggestedQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Questions panier" group="J'écoute" />
-
-            <argument />
-            <argument>AppBundle\Entity\Jecoute\SuggestedQuestion</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/jecoute/suggested_question_edit.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.jecoute_local_survey" class="AppBundle\Admin\JecouteLocalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Questionnaires locaux" group="J'écoute" />
-
-            <argument />
-            <argument>AppBundle\Entity\Jecoute\LocalSurvey</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/jecoute/survey_edit.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.jecoute_national_survey" class="AppBundle\Admin\JecouteNationalSurveyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Questionnaires nationaux" group="J'écoute" />
-
-            <argument />
-            <argument>AppBundle\Entity\Jecoute\NationalSurvey</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/jecoute/survey_edit.html.twig</argument>
-            </call>
-        </service>
-
-        <!--
-        ######################################################
-        # Ideas Workshop
-        ######################################################
-         -->
         <service id="app.admin.ideas_workshop_idea" class="AppBundle\Admin\IdeasWorkshopIdeaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Propositions" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Propositions" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Idea</argument>
@@ -653,7 +477,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_thread" class="AppBundle\Admin\IdeasWorkshopThreadAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Fils de discussion" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Fils de discussion" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Thread</argument>
@@ -661,7 +485,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_consultation" class="AppBundle\Admin\IdeasWorkshopConsultationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Consultation en cours" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Consultation en cours" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Consultation</argument>
@@ -669,7 +493,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_consultation_report" class="AppBundle\Admin\IdeasWorkshopConsultationReportAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Rapports de consultations" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Rapports de consultations" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\ConsultationReport</argument>
@@ -677,7 +501,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_category" class="AppBundle\Admin\IdeasWorkshopCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Echelles" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Echelles" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Category</argument>
@@ -685,7 +509,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_need" class="AppBundle\Admin\IdeasWorkshopNeedAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Besoins" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Besoins" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Need</argument>
@@ -693,7 +517,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_theme" class="AppBundle\Admin\IdeasWorkshopThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Thèmes" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Thèmes" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Theme</argument>
@@ -705,7 +529,7 @@
         </service>
 
         <service id="app.admin.ideas_workshop_guideline" class="AppBundle\Admin\IdeasWorkshopGuidelineAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trame (sections)" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Trame (sections)" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Guideline</argument>
@@ -713,56 +537,66 @@
         </service>
 
         <service id="app.admin.ideas_workshop_question" class="AppBundle\Admin\IdeasWorkshopQuestionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trame (questions)" group="Atelier des idées" />
+            <tag name="sonata.admin" manager-type="orm" label="ADI » Trame (questions)" group="Idées" />
 
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Question</argument>
             <argument />
         </service>
 
-        <!--
-        ######################################################
-        # OAuth
-        ######################################################
-         -->
-
-        <service id="app.admin.client" class="AppBundle\Admin\OAuth\ClientAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Client" group="OAuth" />
+        <service id="app.admin.timeline_manifesto" class="AppBundle\Admin\TimelineManifestoAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Programmes" group="Idées" />
 
             <argument />
-            <argument>AppBundle\Entity\OAuth\Client</argument>
+            <argument>AppBundle\Entity\Timeline\Manifesto</argument>
+            <argument>AppBundle\Controller\Admin\AdminTimelineManifestoController</argument>
+        </service>
+
+        <service id="app.admin.timeline_profile" class="AppBundle\Admin\TimelineProfileAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Profils" group="Idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Profile</argument>
+            <argument>AppBundle\Controller\Admin\AdminTimelineProfileController</argument>
+        </service>
+
+        <service id="app.admin.timeline_theme" class="AppBundle\Admin\TimelineThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Thèmes" group="Idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Theme</argument>
+            <argument>AppBundle\Controller\Admin\AdminTimelineThemeController</argument>
+        </service>
+
+        <service id="app.admin.timeline_measure" class="AppBundle\Admin\TimelineMeasureAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Mesures" group="Idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\Timeline\Measure</argument>
+            <argument>AppBundle\Controller\Admin\AdminTimelineMeasureController</argument>
+        </service>
+
+        <service id="app.admin.chez_vous_city" class="AppBundle\Admin\ChezVous\CityAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Chez vous » Villes" group="Idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\ChezVous\City</argument>
             <argument />
 
-            <call method="setClientManager">
-                <argument type="service" id="AppBundle\OAuth\ClientManager" />
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/chez_vous/city/edit.html.twig</argument>
             </call>
         </service>
 
         <!--
         ######################################################
-        # Republican Silence
+        # Formation
         ######################################################
-         -->
-
-        <service id="app.admin.republican_silence" class="AppBundle\Admin\RepublicanSilenceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Silence républicain" group="Campagne"/>
-
-            <argument />
-            <argument>AppBundle\Entity\RepublicanSilence</argument>
-            <argument />
-            <call method="setRepublicanSilenceManager">
-                <argument type="service" id="AppBundle\RepublicanSilence\RepublicanSilenceManager"/>
-            </call>
-        </service>
-
-        <!--
-        ######################################################
-        # Espace formation
-        ######################################################
-         -->
+        -->
 
         <service id="app.admin.formation_path" class="AppBundle\Admin\Formation\PathAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Parcours" group="Espace formation" />
+            <tag name="sonata.admin" manager-type="orm" label="Parcours" group="Formation" />
 
             <argument />
             <argument>AppBundle\Entity\Formation\Path</argument>
@@ -770,7 +604,7 @@
         </service>
 
         <service id="app.admin.formation_axe" class="AppBundle\Admin\Formation\AxeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Axes de formation" group="Espace formation"/>
+            <tag name="sonata.admin" manager-type="orm" label="Axes de formation" group="Formation"/>
 
             <argument />
             <argument>AppBundle\Entity\Formation\Axe</argument>
@@ -785,7 +619,7 @@
         </service>
 
         <service id="app.admin.formation_module" class="AppBundle\Admin\Formation\ModuleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Modules" group="Espace formation"/>
+            <tag name="sonata.admin" manager-type="orm" label="Modules" group="Formation"/>
 
             <argument />
             <argument>AppBundle\Entity\Formation\Module</argument>
@@ -804,11 +638,41 @@
             <tag name="sonata.admin.extension" target="app.admin.formation_axe" />
         </service>
 
+        <service id="app.admin.mooc_mooc" class="AppBundle\Admin\MoocAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="MOOC" group="Formation" />
+
+            <argument />
+            <argument>AppBundle\Entity\Mooc\Mooc</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.mooc_chapter" class="AppBundle\Admin\MoocChapterAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Chapitres MOOC" group="Formation" />
+
+            <argument />
+            <argument>AppBundle\Entity\Mooc\Chapter</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+        </service>
+
+        <service id="app.admin.mooc_element" class="AppBundle\Admin\MoocElementAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Éléments MOOC" group="Formation" />
+
+            <argument />
+            <argument>AppBundle\Entity\Mooc\BaseMoocElement</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+            <call method="setSubClasses">
+                <argument type="collection">
+                    <argument key="Vidéo">AppBundle\Entity\Mooc\Video</argument>
+                    <argument key="Quiz">AppBundle\Entity\Mooc\Quiz</argument>
+                </argument>
+            </call>
+        </service>
+
         <!--
         ######################################################
         # Data Transformer
         ######################################################
-         -->
+        -->
 
         <service id="app.form.data_transformer.referent_area_transformer" class="AppBundle\Form\DataTransformer\ReferentAreaTransformer">
             <argument type="service" id="doctrine.orm.entity_manager"/>
@@ -820,7 +684,7 @@
         ######################################################
         # Extension
         ######################################################
-         -->
+        -->
 
         <service id="app.admin.algolia_indexed_entity_extension" class="AppBundle\Admin\Extension\AlgoliaIndexedEntityAdminExtension">
             <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
@@ -877,9 +741,114 @@
 
         <!--
        ######################################################
-       # Archives
+       # Politique
        ######################################################
+       -->
+
+        <service id="app.admin.application_request_technical_skill" class="AppBundle\Admin\ApplicationRequestTechnicalSkillAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\TechnicalSkill</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.application_request_theme" class="AppBundle\Admin\ApplicationRequestThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Thématiques" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\Theme</argument>
+            <argument />
+        </service>
+
+        <!-- RunningMate manager-->
+        <service id="app.admin.application_request_running_mate_request" class="AppBundle\Admin\ApplicationRequestRunningMateRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\RunningMateRequest</argument>
+            <argument />
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+        </service>
+
+        <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequestVolunteerRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Candidatures bénévoles" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\VolunteerRequest</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequestTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags de candidature" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ApplicationRequest\ApplicationRequestTag</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.republican_silence" class="AppBundle\Admin\RepublicanSilenceAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Silence républicain" group="Politique"/>
+
+            <argument />
+            <argument>AppBundle\Entity\RepublicanSilence</argument>
+            <argument />
+            <call method="setRepublicanSilenceManager">
+                <argument type="service" id="AppBundle\RepublicanSilence\RepublicanSilenceManager"/>
+            </call>
+        </service>
+
+        <service id="app.admin.legislative_candidate" class="AppBundle\Admin\LegislativeCandidateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Élus" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\LegislativeCandidate</argument>
+            <argument />
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+
+        <service id="app.admin.elected.representatives.register" class="AppBundle\Admin\ElectedRepresentativesRegisterAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentativesRegister</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Élections" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\Election</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
+        # Archives
+        ######################################################
         -->
+
+        <service id="app.admin.client" class="AppBundle\Admin\OAuth\ClientAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Client" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\OAuth\Client</argument>
+            <argument />
+
+            <call method="setClientManager">
+                <argument type="service" id="AppBundle\OAuth\ClientManager" />
+            </call>
+        </service>
 
         <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Archives" />
@@ -990,84 +959,70 @@
             <argument />
         </service>
 
+        <service id="app.admin.board_member_roles" class="AppBundle\Admin\BoardMemberRoleAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Rôles des membres du Conseil" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\BoardMember\Role</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.legislative_district_zone" class="AppBundle\Admin\LegislativeDistrictZoneAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Zones géographiques" group="Archives" />
+            <argument />
+            <argument>AppBundle\Entity\LegislativeDistrictZone</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.skill" class="AppBundle\Admin\SkillAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Gestion des compétences" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\Skill</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.referent_tag" class="AppBundle\Admin\ReferentTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags réferent" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\ReferentTag</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.proposal_theme" class="AppBundle\Admin\ProposalThemeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Programme » Thèmes" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\ProposalTheme</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.proposal" class="AppBundle\Admin\ProposalAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Programme » Propositions" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\Proposal</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.je_marche" class="AppBundle\Admin\JeMarcheReportAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Je Marche" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\JeMarcheReport</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Menu
         ######################################################
-         -->
+        -->
 
         <service id="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
             <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
         </service>
 
-        <!--
-        ######################################################
-        # Municipales
-        ######################################################
-         -->
-
-        <service id="app.admin.application_request_technical_skill" class="AppBundle\Admin\ApplicationRequestTechnicalSkillAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Compétences techniques" group="Municipales" />
-
-            <argument />
-            <argument>AppBundle\Entity\ApplicationRequest\TechnicalSkill</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.application_request_theme" class="AppBundle\Admin\ApplicationRequestThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Thématiques" group="Municipales" />
-
-            <argument />
-            <argument>AppBundle\Entity\ApplicationRequest\Theme</argument>
-            <argument />
-        </service>
-
-        <!-- RunningMate manager-->
-        <service id="app.admin.application_request_running_mate_request" class="AppBundle\Admin\ApplicationRequestRunningMateRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Municipales" />
-
-            <argument />
-            <argument>AppBundle\Entity\ApplicationRequest\RunningMateRequest</argument>
-            <argument />
-            <call method="setStorage">
-                <argument type="service" id="app.storage" />
-            </call>
-        </service>
-
-        <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequestVolunteerRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Candidatures bénévoles" group="Municipales" />
-
-            <argument />
-            <argument>AppBundle\Entity\ApplicationRequest\VolunteerRequest</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequestTagAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Tags de candidature" group="Municipales" />
-
-            <argument />
-            <argument>AppBundle\Entity\ApplicationRequest\ApplicationRequestTag</argument>
-            <argument />
-        </service>
-
-
-        <!--
-        ######################################################
-        # ChezVous
-        ######################################################
-         -->
-
-        <service id="app.admin.chez_vous_city" class="AppBundle\Admin\ChezVous\CityAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Villes" group="Chez vous" />
-
-            <argument />
-            <argument>AppBundle\Entity\ChezVous\City</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/chez_vous/city/edit.html.twig</argument>
-            </call>
-        </service>
     </services>
 </container>
