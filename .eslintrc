@@ -36,7 +36,8 @@
     "removeClass": true,
     "cookieconsent": true,
     "App": true,
-    "google": true
+    "google": true,
+    "getUrlParameter": true,
   },
   "rules": {
     "indent": ["error", 4],
