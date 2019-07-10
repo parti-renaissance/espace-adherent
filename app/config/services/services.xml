@@ -583,9 +583,9 @@
             <argument type="string">%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%</argument>
         </service>
 
-        <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
-        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
-        <service id="AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder" />
+        <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
+        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" shared="false"/>
+        <service id="AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder" shared="false"/>
         <service id="AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
 
