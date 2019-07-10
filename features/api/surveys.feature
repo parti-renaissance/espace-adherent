@@ -14,7 +14,7 @@ Feature:
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 401
 
-  Scenario: As a logged-in user I can get the surveys of my referent(s)
+  Scenario: As a logged-in user I can get the surveys of my referent(s) and the national surveys
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     When I send a "GET" request to "/api/jecoute/survey"
     Then the response status code should be 200
@@ -24,6 +24,7 @@ Feature:
     [
       {
         "id":2,
+        "type": "local",
         "questions":[
           {
             "id":1,
@@ -70,11 +71,110 @@ Feature:
         ],
         "name":"Questionnaire numéro 1",
         "city":"Paris 1er"
+      },
+      {
+        "id":1,
+        "type": "national",
+        "questions":[
+          {
+            "id":6,
+            "type":"simple_field",
+            "content":"Une première question du 1er questionnaire national ?",
+            "choices":[
+
+            ]
+          },
+          {
+            "id":7,
+            "type":"multiple_choice",
+            "content":"Une deuxième question du 1er questionnaire national ?",
+            "choices":[
+              {
+                "id":5,
+                "content":"Réponse nationale A"
+              },
+              {
+                "id":6,
+                "content":"Réponse nationale B"
+              },
+              {
+                "id":7,
+                "content":"Réponse nationale C"
+              },
+              {
+                "id":8,
+                "content":"Réponse nationale D"
+              }
+            ]
+          }
+        ],
+        "name":"Questionnaire national numéro 1"
       }
     ]
     """
 
-  Scenario: As a logged-in user I can reply to a survey
+  Scenario: As a logged-in user I can reply to a national survey
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
+    And I add "Content-Type" header equal to "application/json"
+    And I add "Accept" header equal to "application/json"
+    When I send a "POST" request to "/api/jecoute/survey/reply" with body:
+    """
+    {
+      "survey":1,
+      "type": "national",
+      "lastName":"Bonsoirini",
+      "firstName":"Ernestino",
+      "emailAddress":"ernestino@bonsoirini.fr",
+      "agreedToStayInContact":true,
+      "agreedToContactForJoin":true,
+      "agreedToTreatPersonalData":true,
+      "postalCode":"59000",
+      "profession":"employees",
+      "ageRange": "between_25_39",
+      "gender": "male",
+      "answers":[
+        {
+          "surveyQuestion":6,
+          "textField":"Réponse libre d'un questionnaire national"
+        },
+        {
+          "surveyQuestion":7,
+          "selectedChoices":[
+            "5",
+            "6"
+          ]
+        }
+      ]
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "status": "ok"
+    }
+    """
+    And I should have 1 email "DataSurveyAnsweredMessage" for "ernestino@bonsoirini.fr" with payload:
+    """
+    {
+      "FromEmail":"contact@en-marche.fr",
+      "FromName":"En Marche !",
+      "Subject":"",
+      "MJ-TemplateID":"665490",
+      "MJ-TemplateLanguage":true,
+      "Recipients": [
+          {
+            "Email":"ernestino@bonsoirini.fr",
+            "Vars": {
+              "first_name":"Ernestino"
+            }
+         }
+      ]
+    }
+    """
+
+  Scenario: As a logged-in user I can reply to a local survey
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
@@ -82,6 +182,7 @@ Feature:
     """
     {
       "survey":2,
+      "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
@@ -148,6 +249,7 @@ Feature:
     """
     {
       "survey":3,
+      "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
@@ -174,7 +276,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I cannot reply to a survey with errors
+  Scenario: As a logged-in user I cannot reply to a local survey with errors
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
@@ -182,6 +284,7 @@ Feature:
     """
     {
       "survey":null,
+      "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"bonsoirini.fr",
@@ -250,7 +353,7 @@ Feature:
     }
     """
 
-  Scenario: As a logged-in user I cannot reply to a survey with custom validations errors
+  Scenario: As a logged-in user I cannot reply to a local survey with custom validations errors
     Given I am logged with "michelle.dufour@example.ch" via OAuth client "J'écoute" with scope "jecoute_surveys"
     And I add "Content-Type" header equal to "application/json"
     And I add "Accept" header equal to "application/json"
@@ -258,6 +361,7 @@ Feature:
     """
     {
       "survey":2,
+      "type": "local",
       "lastName":"Bonsoirini",
       "firstName":"Ernestino",
       "emailAddress":"ernestino@bonsoirini.fr",
