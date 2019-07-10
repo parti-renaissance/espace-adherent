@@ -404,6 +404,18 @@
             <argument />
         </service>
 
+        <service id="app.admin.client" class="AppBundle\Admin\OAuth\ClientAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Client" group="Tech" />
+
+            <argument />
+            <argument>AppBundle\Entity\OAuth\Client</argument>
+            <argument />
+
+            <call method="setClientManager">
+                <argument type="service" id="AppBundle\OAuth\ClientManager" />
+            </call>
+        </service>
+
         <!--
         ######################################################
         # CitizenProject
@@ -754,7 +766,7 @@
         </service>
 
         <service id="app.admin.application_request_theme" class="AppBundle\Admin\ApplicationRequestThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Thématiques" group="Politique" />
+            <tag name="sonata.admin" manager-type="orm" label="Muni » Thématiques" group="Politique" />
 
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\Theme</argument>
@@ -763,7 +775,7 @@
 
         <!-- RunningMate manager-->
         <service id="app.admin.application_request_running_mate_request" class="AppBundle\Admin\ApplicationRequestRunningMateRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Candidatures colistiers" group="Politique" />
+            <tag name="sonata.admin" manager-type="orm" label="Muni » Candidatures colistiers" group="Politique" />
 
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\RunningMateRequest</argument>
@@ -774,7 +786,7 @@
         </service>
 
         <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequestVolunteerRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Candidatures bénévoles" group="Politique" />
+            <tag name="sonata.admin" manager-type="orm" label="Muni » Candidatures bénévoles" group="Politique" />
 
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\VolunteerRequest</argument>
@@ -782,7 +794,7 @@
         </service>
 
         <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequestTagAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Tags de candidature" group="Politique" />
+            <tag name="sonata.admin" manager-type="orm" label="Muni » Tags de candidature" group="Politique" />
 
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\ApplicationRequestTag</argument>
@@ -824,31 +836,11 @@
             <argument />
         </service>
 
-        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Élections" group="Politique" />
-
-            <argument />
-            <argument>AppBundle\Entity\Election</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Archives
         ######################################################
         -->
-
-        <service id="app.admin.client" class="AppBundle\Admin\OAuth\ClientAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Client" group="Archives" />
-
-            <argument />
-            <argument>AppBundle\Entity\OAuth\Client</argument>
-            <argument />
-
-            <call method="setClientManager">
-                <argument type="service" id="AppBundle\OAuth\ClientManager" />
-            </call>
-        </service>
 
         <service id="app.admin.ton_macron_choice" class="AppBundle\Admin\TonMacronChoiceAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Archives" />
@@ -1011,6 +1003,14 @@
 
             <argument />
             <argument>AppBundle\Entity\JeMarcheReport</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Procus » Élections" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\Election</argument>
             <argument />
         </service>
 
