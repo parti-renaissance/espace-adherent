@@ -18,8 +18,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         return $this->createQueryBuilder($alias)
             ->addSelect('tag')
             ->leftJoin("$alias.tags", 'tag')
-            ->orderBy("$alias.lastName", 'ASC')
-            ->addOrderBy("$alias.firstName", 'ASC')
+            ->orderBy("$alias.createdAt", 'DESC')
         ;
     }
 

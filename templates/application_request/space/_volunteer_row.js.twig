@@ -6,6 +6,8 @@
         phone: request.phone|phone_number_format,
         favoriteCities: request.favoriteCitiesNames|join(', '),
         tags: request.tags ? '<span>' ~ request.tags|join('</span><span>') ~ '</span>',
+        createdAt: request.createdAt|date('d/m/Y à H:i'),
+        updatedAt: request.updatedAt|date('d/m/Y à H:i'),
         isAdherent: request.adherent ?
             '<span class="status status__1">Oui</span>'
             : '<span class="status status__2">Non</span>',
