@@ -363,6 +363,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     {
         $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
         $message->setFilter($filter = new MunicipalChiefFilter(['12345', '56788']));
+        $filter->setContactRunningMateTeam(true);
 
         (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
 
@@ -390,6 +391,18 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'op' => 'contains',
                                     'field' => 'FVR_CITIES',
                                     'value' => '12345',
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'is',
+                                    'field' => 'MUNIC_TEAM',
+                                    'value' => '12345',
+                                ],
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 123,
                                 ],
                             ],
                         ],
@@ -425,6 +438,18 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'op' => 'contains',
                                     'field' => 'FVR_CITIES',
                                     'value' => '56788',
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'is',
+                                    'field' => 'MUNIC_TEAM',
+                                    'value' => '56788',
+                                ],
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 123,
                                 ],
                             ],
                         ],
@@ -510,7 +535,11 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     ],
                     'A',
                     'B',
-                    'C'
+                    'C',
+                    [
+                        'running_mate' => 123,
+                        'volunteer' => 345,
+                    ]
                 ),
                 new SegmentConditionsBuilder($this->mailchimpMapping)
             ),

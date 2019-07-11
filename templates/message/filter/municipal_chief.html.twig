@@ -15,6 +15,7 @@
             <h4 class="manager__filters__subtitle">Filtrer par</h4>
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
+                    <div class="manager__filters__group">
                         <div class="filter__row">
                             <label class="filter__label">Villes</label>
                             {{ form_widget(form.cities, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'Choisissez une ou plusieures villes'}}) }}
@@ -31,6 +32,16 @@
                             <label class="filter__label">Prénom</label>
                             {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
                             {{ form_errors(form.firstName) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Mon équipe</label>
+                            {{ form_row(form.contactRunningMateTeam, {label: 'Colistiers de mon équipe'}) }}
+                            {{ form_row(form.contactVolunteerTeam, {label: 'Bénévoles de mon équipe'}) }}
                         </div>
                     </div>
                 </div>
