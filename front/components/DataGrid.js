@@ -18,6 +18,7 @@ export default class DataGrid extends React.Component {
 
         this.handleSearchInputChange = this.handleSearchInputChange.bind(this);
         this.handlePagerClick = this.handlePagerClick.bind(this);
+        this.handleSortableClick = this.handleSortableClick.bind(this);
         this.handleHeaderCheckboxChange = this.handleHeaderCheckboxChange.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     }
@@ -25,6 +26,7 @@ export default class DataGrid extends React.Component {
     componentWillMount() {
         this.setState({ results: this._buildResultsCollection() });
     }
+
     handleSearchInputChange(event) {
         const term = event.target.value;
 
@@ -47,6 +49,17 @@ export default class DataGrid extends React.Component {
     handlePagerClick(newPage) {
         this.setState({
             page: newPage,
+        });
+    }
+
+    handleSortableClick(event) {
+        event.preventDefault();
+
+        const url = event.currentTarget.href;
+
+        this.setState({
+            sort: getUrlParameter(url, 'sort'),
+            order: getUrlParameter(url, 'order'),
         });
     }
 
@@ -110,6 +123,8 @@ export default class DataGrid extends React.Component {
         const pagesCount = Math.max(1, Math.ceil(totalCount / this._perPage));
         const currentPage = Math.min(this.state.page, pagesCount);
 
+        this._sortResults();
+
         return (
             <div className="datagrid">
                 {this.state.loading ? <div className="datagrid__loader">Chargement ...</div> : '' }
@@ -154,10 +169,8 @@ export default class DataGrid extends React.Component {
             </div>
         );
     }
-    _buildPagesList(pagesCount, current, position) {
-        const from = Math.max(1, current - 2);
-        const to = Math.min(pagesCount, current + 2);
 
+    _buildPagesList(pagesCount, current, position) {
         const pagesList = [];
 
         pagesList.push(
@@ -213,7 +226,19 @@ export default class DataGrid extends React.Component {
                 <th key={`column${columns[i].key}`}
                     style={columns[i].style || null}
                     className={columns[i].className || ''}>
-                    {columns[i].name}
+                    {columns[i].sortable ?
+                        <a
+                            href={`?sort=${columns[i].key}&order=${
+                                this.state.sort === columns[i].key && 'd' === this.state.order ? 'a' : 'd'
+                            }`}
+                           onClick={this.handleSortableClick}
+                           className={`sort-link sort-link--order-${
+                               this.state.sort === columns[i].key ? this.state.order : 'd'
+                           }`}>
+                            {columns[i].name}
+                        </a>
+                        : columns[i].name
+                    }
                 </th>
             );
         });
@@ -325,6 +350,25 @@ export default class DataGrid extends React.Component {
         }
 
         return resultsList;
+    }
+
+    _sortResults() {
+        if (this.state.sort) {
+            const sort = this.state.sort;
+            const order = this.state.order || 'd';
+
+            this.state.results.sort((a, b) => {
+                if (a[sort] === b[sort]) {
+                    return 0;
+                }
+
+                if (a[sort] < b[sort]) {
+                    return 'a' === order ? -1 : 1;
+                }
+
+                return 'a' === order ? 1 : -1;
+            });
+        }
     }
 }
 
