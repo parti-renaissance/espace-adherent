@@ -134,6 +134,16 @@ abstract class Survey
 
     /**
      * @JMS\VirtualProperty
+     * @JMS\SerializedName("type"),
+     * @JMS\Groups({"survey_list"})
+     */
+    public function getExposedType(): string
+    {
+        return $this->getType();
+    }
+
+    /**
+     * @JMS\VirtualProperty
      * @JMS\SerializedName("questions")
      * @JMS\Groups({"survey_list"})
      */

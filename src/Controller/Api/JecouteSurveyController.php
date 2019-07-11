@@ -5,15 +5,19 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\Jecoute\DataSurveyFormType;
 use AppBundle\Jecoute\DataSurveyAnswerHandler;
+use AppBundle\Jecoute\SurveyTypeEnum;
 use AppBundle\Repository\Jecoute\LocalSurveyRepository;
+use AppBundle\Repository\Jecoute\NationalSurveyRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,13 +32,17 @@ class JecouteSurveyController extends Controller
      */
     public function surveyListAction(
         LocalSurveyRepository $localSurveyRepository,
+        NationalSurveyRepository $nationalSurveyRepository,
         Serializer $serializer,
         UserInterface $user
     ): Response {
         /** @var Adherent $user */
         return new JsonResponse(
             $serializer->serialize(
-                $localSurveyRepository->findAllByAdherent($user),
+                array_merge(
+                    $localSurveyRepository->findAllByAdherent($user),
+                    $nationalSurveyRepository->findAllPublished()
+                ),
                 'json',
                 SerializationContext::create()->setGroups('survey_list')
             ),
@@ -50,13 +58,23 @@ class JecouteSurveyController extends Controller
     public function surveyReplyAction(
         Request $request,
         DataSurveyAnswerHandler $dataSurveyHandler,
+        FormFactoryInterface $formFactory,
         UserInterface $user
     ): JsonResponse {
-        $form = $this->createForm(DataSurveyFormType::class, null, [
+        $data = json_decode($request->getContent(), true);
+
+        if (!SurveyTypeEnum::isValid($data['type'])) {
+            throw new BadRequestHttpException('Invalid type.');
+        }
+
+        $form = $formFactory->create(DataSurveyFormType::class, null, [
             'csrf_protection' => false,
+            'type' => $data['type'],
         ]);
 
-        $form->submit(json_decode($request->getContent(), true));
+        unset($data['type']);
+
+        $form->submit($data);
 
         if (!$form->isValid()) {
             return new JsonResponse(
