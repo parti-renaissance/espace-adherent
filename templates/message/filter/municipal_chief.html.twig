@@ -37,11 +37,16 @@
                 </div>
 
                 <div class="manager__filters__section">
-                    <div class="manager__filters__group">
+                    <div class="manager__filters__group" id="contact-choices-container">
                         <div class="filter__row">
-                            <label class="filter__label">Mon équipe</label>
+                            <label class="filter__label">ÉQUIPE</label>
                             {{ form_row(form.contactRunningMateTeam, {label: 'Colistiers de mon équipe'}) }}
                             {{ form_row(form.contactVolunteerTeam, {label: 'Bénévoles de mon équipe'}) }}
+                        </div>
+                        <div class="filter__row">
+                            <label class="filter__label">CANDIDATS</label>
+                            {{ form_row(form.contactOnlyRunningMates, {label: 'Colistiers (hors équipe)'}) }}
+                            {{ form_row(form.contactOnlyVolunteers, {label: 'Bénévoles (hors équipe)'}) }}
                         </div>
                     </div>
                 </div>
@@ -78,6 +83,20 @@
                     placeholder: this.dataset.placeholder || '',
                     theme: 'default em-filters'
                 });
+            });
+
+            $('#contact-choices-container input').on('change', function () {
+                if (this.checked) {
+                    var parentElement = $(this).closest('.filter__row');
+
+                    $('#contact-choices-container .filter__row').each(function () {
+                        var groupElement = $(this);
+
+                        if (groupElement.is(parentElement) === false) {
+                            $('input', groupElement).prop('checked', false);
+                        }
+                    });
+                }
             });
         });
     </script>
