@@ -199,6 +199,13 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      */
     protected $takenForCity;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $displayed = true;
+
     public function __construct(UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
@@ -429,6 +436,16 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     public function setTakenForCity(?string $takenForCity): void
     {
         $this->takenForCity = $takenForCity;
+    }
+
+    public function isDisplayed(): bool
+    {
+        return $this->displayed;
+    }
+
+    public function setDisplayed(bool $displayed): void
+    {
+        $this->displayed = $displayed;
     }
 
     abstract public function getType(): string;

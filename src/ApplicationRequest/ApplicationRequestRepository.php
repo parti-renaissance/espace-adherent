@@ -3,6 +3,8 @@
 namespace AppBundle\ApplicationRequest;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
 use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
 
@@ -59,5 +61,14 @@ class ApplicationRequestRepository
     {
         $this->runningMateRepository->updateAdherentRelation($email, $adherent);
         $this->volunteerRepository->updateAdherentRelation($email, $adherent);
+    }
+
+    public function hideDuplicates(ApplicationRequest $request): void
+    {
+        if ($request instanceof RunningMateRequest) {
+            $this->runningMateRepository->hideDuplicates($request);
+        } else {
+            $this->volunteerRepository->hideDuplicates($request);
+        }
     }
 }

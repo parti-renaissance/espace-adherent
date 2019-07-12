@@ -42,9 +42,9 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isLocalAssociationMember;
+    private $isLocalAssociationMember = false;
 
     /**
      * @var string|null
@@ -56,9 +56,9 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isPoliticalActivist;
+    private $isPoliticalActivist = false;
 
     /**
      * @var string|null
@@ -70,9 +70,9 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $isPreviousElectedOfficial;
+    private $isPreviousElectedOfficial = false;
 
     /**
      * @var string|null

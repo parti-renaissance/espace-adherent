@@ -17,6 +17,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     {
         return $this->createQueryBuilder($alias)
             ->addSelect('tag')
+            ->where("$alias.displayed = true")
             ->leftJoin("$alias.tags", 'tag')
             ->orderBy("$alias.createdAt", 'DESC')
         ;
@@ -88,6 +89,21 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
             ->set('candidate.adherent', ':adherent')
             ->setParameter('email', $email)
             ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
+    public function hideDuplicates(ApplicationRequest $request): void
+    {
+        $this->_em->createQueryBuilder()
+            ->update($this->_entityName, 'candidate')
+            ->where('candidate.id != :id')
+            ->andWhere('candidate.emailAddress = :email')
+            ->andWhere('candidate.displayed = true')
+            ->set('candidate.displayed', 0)
+            ->setParameter('id', $request->getId())
+            ->setParameter('email', $request->getEmailAddress())
             ->getQuery()
             ->execute()
         ;
