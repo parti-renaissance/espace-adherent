@@ -22,7 +22,7 @@ class CampaignRequestBuilder
     {
         $message = $campaign->getMessage();
 
-        return (new EditCampaignRequest($this->objectIdMapping->getListIdByMessageType($message->getType())))
+        return (new EditCampaignRequest())
             ->setFolderId($this->objectIdMapping->getFolderIdByType($message->getType()))
             ->setTemplateId($this->objectIdMapping->getTemplateIdByType($message->getType()))
             ->setSubject($message->getSubject())

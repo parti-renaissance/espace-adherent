@@ -17,6 +17,7 @@ use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 use AppBundle\Mailchimp\Manager;
@@ -58,8 +59,11 @@ class SegmentConditionsBuilder
         }
 
         return [
-            'match' => 'all',
-            'conditions' => $conditions ?? [],
+            'list_id' => $this->getListId($message),
+            'segment_opts' => [
+                'match' => 'all',
+                'conditions' => $conditions ?? [],
+            ],
         ];
     }
 
@@ -203,9 +207,9 @@ class SegmentConditionsBuilder
         if ($campaign->getCity()) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
-                'op' => 'contains',
+                'op' => 'starts',
                 'field' => MemberRequest::MERGE_FIELD_CITY,
-                'value' => $campaign->getCity(),
+                'value' => $campaign->getCity().' (',
             ];
         }
 
@@ -270,6 +274,13 @@ class SegmentConditionsBuilder
         MunicipalChiefFilter $filter,
         MailchimpCampaign $campaign
     ): array {
+        if (!$campaign->getCity()) {
+            throw new InvalidFilterException(sprintf(
+                '[MunicipalChiefMessage] Message (%s) does not have a valid city value',
+                $campaign->getMessage()->getUuid()->toString()
+            ));
+        }
+
         $conditions = [];
 
         if ($filter->getFirstName()) {
@@ -290,53 +301,59 @@ class SegmentConditionsBuilder
             ];
         }
 
-        if (!$campaign->getCity()) {
-            throw new InvalidFilterException(sprintf(
-                '[MunicipalChiefMessage] Message (%s) does not have a valid city value',
-                $campaign->getMessage()->getUuid()->toString()
-            ));
-        }
+        if ($filter->getContactAdherents()) {
+            if (!$cityName = FranceCitiesBundle::getCityNameFromInseeCode($campaign->getCity())) {
+                throw new InvalidFilterException(sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $campaign->getCity()));
+            }
 
-        $conditions[] = [
-            'condition_type' => 'TextMerge',
-            'op' => 'contains',
-            'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
-            'value' => $campaign->getCity(),
-        ];
-
-        if ($filter->getContactRunningMateTeam() || $filter->getContactVolunteerTeam()) {
             $conditions[] = [
                 'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
+                'op' => 'starts',
+                'field' => MemberRequest::MERGE_FIELD_CITY,
+                'value' => $cityName.' (',
+            ];
+        } else {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'contains',
+                'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
                 'value' => $campaign->getCity(),
             ];
 
-            if ($filter->getContactRunningMateTeam() ^ $filter->getContactVolunteerTeam()) {
-                $conditions[] = $this->buildStaticSegmentCondition(
-                    $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
+            if ($filter->getContactRunningMateTeam() || $filter->getContactVolunteerTeam()) {
+                $conditions[] = [
+                    'condition_type' => 'TextMerge',
+                    'op' => 'is',
+                    'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
+                    'value' => $campaign->getCity(),
+                ];
+
+                if ($filter->getContactRunningMateTeam() ^ $filter->getContactVolunteerTeam()) {
+                    $conditions[] = $this->buildStaticSegmentCondition(
+                        $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
                         $filter->getContactRunningMateTeam()
                             ? ApplicationRequestTagLabelEnum::RUNNING_MATE
                             : ApplicationRequestTagLabelEnum::VOLUNTEER
-                    ]
-                );
-            }
-        } elseif ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'not',
-                'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
-                'value' => $campaign->getCity(),
-            ];
+                        ]
+                    );
+                }
+            } elseif ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers()) {
+                $conditions[] = [
+                    'condition_type' => 'TextMerge',
+                    'op' => 'not',
+                    'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
+                    'value' => $campaign->getCity(),
+                ];
 
-            if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
-                $conditions[] = $this->buildStaticSegmentCondition(
-                    $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
-                    $filter->getContactOnlyRunningMates()
-                        ? ApplicationRequestTagLabelEnum::RUNNING_MATE
-                        : ApplicationRequestTagLabelEnum::VOLUNTEER
-                    ]
-                );
+                if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
+                    $conditions[] = $this->buildStaticSegmentCondition(
+                        $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
+                        $filter->getContactOnlyRunningMates()
+                            ? ApplicationRequestTagLabelEnum::RUNNING_MATE
+                            : ApplicationRequestTagLabelEnum::VOLUNTEER
+                        ]
+                    );
+                }
             }
         }
 
@@ -360,5 +377,14 @@ class SegmentConditionsBuilder
         }
 
         return true;
+    }
+
+    private function getListId(AdherentMessageInterface $message): string
+    {
+        if (($filter = $message->getFilter()) && $filter instanceof MunicipalChiefFilter && $filter->getContactAdherents()) {
+            return $this->mailchimpObjectIdMapping->getMainListId();
+        }
+
+        return $this->mailchimpObjectIdMapping->getListIdByMessageType($message->getType());
     }
 }

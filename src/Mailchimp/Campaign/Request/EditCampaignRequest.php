@@ -11,15 +11,9 @@ class EditCampaignRequest implements RequestInterface
     private $templateId;
     private $subject;
     private $title;
-    private $listId;
     private $segmentOptions;
     private $fromName;
     private $replyTo;
-
-    public function __construct(string $listId = null)
-    {
-        $this->listId = $listId;
-    }
 
     public function setFolderId(?string $id)
     {
@@ -70,7 +64,7 @@ class EditCampaignRequest implements RequestInterface
 
     public function setSegmentOptions(array $segmentOptions): self
     {
-        if (!empty($segmentOptions) && empty($this->listId)) {
+        if (!empty($segmentOptions) && empty($segmentOptions['list_id'])) {
             throw new \InvalidArgumentException(
                 'You must instantiate a request object with Mailchimp List id for using the filters'
             );
@@ -110,12 +104,7 @@ class EditCampaignRequest implements RequestInterface
         }
 
         if ($this->segmentOptions) {
-            $recipients = [
-                'recipients' => [
-                    'list_id' => $this->listId,
-                    'segment_opts' => $this->segmentOptions,
-                ],
-            ];
+            $recipients = ['recipients' => $this->segmentOptions];
         }
 
         return array_merge(

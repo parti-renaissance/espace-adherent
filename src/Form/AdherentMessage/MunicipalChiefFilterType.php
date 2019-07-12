@@ -25,6 +25,7 @@ class MunicipalChiefFilterType extends AbstractType
             ->add('contactVolunteerTeam', CheckboxType::class, ['required' => false])
             ->add('contactOnlyRunningMates', CheckboxType::class, ['required' => false])
             ->add('contactOnlyVolunteers', CheckboxType::class, ['required' => false])
+            ->add('contactAdherents', CheckboxType::class, ['required' => false])
         ;
     }
 
