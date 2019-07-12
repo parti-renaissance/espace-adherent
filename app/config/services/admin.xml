@@ -836,6 +836,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Élections" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\Election</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Archives
@@ -1003,14 +1011,6 @@
 
             <argument />
             <argument>AppBundle\Entity\JeMarcheReport</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Procus » Élections" group="Archives" />
-
-            <argument />
-            <argument>AppBundle\Entity\Election</argument>
             <argument />
         </service>
 
