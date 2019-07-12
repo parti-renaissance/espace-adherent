@@ -51,6 +51,10 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
             ->add('isAdherent', 'boolean', [
                 'label' => 'Adhérent',
             ])
+            ->add('displayed', 'boolean', [
+                'label' => 'Affiché',
+                'editable' => true,
+            ])
             ->add('_action', null, [
                 'actions' => [
                     'edit' => [],
@@ -94,6 +98,10 @@ class ApplicationRequestRunningMateRequestAdmin extends AbstractAdmin
                 ->add('phone', PhoneNumberType::class, [
                     'label' => 'Téléphone',
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                ])
+                ->add('displayed', CheckboxType::class, [
+                    'label' => 'Affiché',
+                    'required' => false,
                 ])
             ->end()
             ->with('Candidature')

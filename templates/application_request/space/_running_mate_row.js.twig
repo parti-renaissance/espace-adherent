@@ -1,8 +1,8 @@
 {% spaceless %}
     {% set row = {
         gender: request.gender ? ('common.gender.' ~ request.gender)|trans,
-        lastName: request.firstName,
-        firstName: request.lastName,
+        lastName: request.lastName,
+        firstName: request.firstName,
         phone: request.phone|phone_number_format,
         favoriteCities: request.favoriteCitiesNames|join(', '),
         tags: request.tags ? '<span>' ~ request.tags|join('</span><span>') ~ '</span>',

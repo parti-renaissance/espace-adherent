@@ -6,6 +6,7 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 use libphonenumber\PhoneNumberUtil;
 use Ramsey\Uuid\Uuid;
 
@@ -18,15 +19,17 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create('fr_FR');
+
         $municipal1 = $this->getReference('municipal-chief-1');
         $municipal2 = $this->getReference('municipal-chief-2');
         $municipal3 = $this->getReference('municipal-chief-3');
 
         $runningMateRequest1 = new RunningMateRequest(Uuid::fromString(self::UUID_1));
-        $runningMateRequest1->setGender(Genders::MALE);
-        $runningMateRequest1->setFirstName('Bruce');
-        $runningMateRequest1->setLastName('Banner');
-        $runningMateRequest1->setEmailAddress('bruce.banner@gmail.com');
+        $runningMateRequest1->setGender(Genders::FEMALE);
+        $runningMateRequest1->setFirstName('Lorie');
+        $runningMateRequest1->setLastName('Delisle');
+        $runningMateRequest1->setEmailAddress('l.delisle@en-marche-dev.fr');
 
         $runningMateRequest1->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[0],
@@ -36,7 +39,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
         $runningMateRequest1->setTakenForCity($municipal2->municipalChiefManagedArea()->getCodes()[1]);
 
         $runningMateRequest2 = new RunningMateRequest(Uuid::fromString(self::UUID_2));
-        $runningMateRequest2->setGender(Genders::FEMALE);
+        $runningMateRequest2->setGender(Genders::MALE);
         $runningMateRequest2->setFirstName('Damien');
         $runningMateRequest2->setLastName('Schmidt');
         $runningMateRequest2->setEmailAddress('damien.schmidt@example.ch');
@@ -53,7 +56,7 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
         $runningMateRequest3->setGender(Genders::OTHER);
         $runningMateRequest3->setFirstName('Bruce');
         $runningMateRequest3->setLastName('Banner');
-        $runningMateRequest3->setEmailAddress('bruce.banner@gmail.com');
+        $runningMateRequest3->setEmailAddress('bruce.banner@en-marche-dev.fr');
 
         $runningMateRequest3->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
@@ -61,26 +64,26 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
         ]);
 
         $runningMateRequest4 = new RunningMateRequest(Uuid::fromString(self::UUID_4));
-        $runningMateRequest4->setGender(Genders::FEMALE);
-        $runningMateRequest4->setFirstName('Damien');
-        $runningMateRequest4->setLastName('Schmidt');
-        $runningMateRequest4->setEmailAddress('damien.schmidt@example.ch');
+        $runningMateRequest4->setGender(Genders::MALE);
+        $runningMateRequest4->setFirstName('Killian');
+        $runningMateRequest4->setLastName('Jacquinot');
+        $runningMateRequest4->setEmailAddress('kill.jac@example.ch');
 
         $runningMateRequest4->setFavoriteCities([
             $municipal1->municipalChiefManagedArea()->getCodes()[2],
         ]);
 
-        $runningMateRequest4->setAdherent($this->getReference('adherent-14'));
-
         $phone = PhoneNumberUtil::getInstance()->parse('06-06-06-06-06', 'FR');
 
         foreach ([$runningMateRequest1, $runningMateRequest2, $runningMateRequest3, $runningMateRequest4] as $i => $runningMateRequest) {
-            $runningMateRequest->setPostalCode('10001');
-            $runningMateRequest->setCityName('New York City');
-            $runningMateRequest->setCountry('US');
-            $runningMateRequest->setAddress('890 Fifth Avenue, Manhattan');
+            /** @var RunningMateRequest $runningMateRequest */
+            $runningMateRequest->setPostalCode($faker->postcode);
+            $runningMateRequest->setCityName($faker->city);
+            $runningMateRequest->setCity('75012-75112');
+            $runningMateRequest->setCountry('FR');
+            $runningMateRequest->setAddress($faker->streetAddress);
             $runningMateRequest->setPhone($phone);
-            $runningMateRequest->setProfession('Scientist');
+            $runningMateRequest->setProfession($faker->jobTitle);
 
             $runningMateRequest->setCurriculumName('cv.pdf');
 
@@ -88,18 +91,17 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture
             $runningMateRequest->addFavoriteTheme($this->getReference('application-theme-08'));
             $runningMateRequest->addTag($this->getReference('application-request-tag-'.$i));
             $runningMateRequest->addTag($this->getReference('application-request-tag-'.($i + 1) % 4));
-            $runningMateRequest->setFavoriteThemeDetails('');
-            $runningMateRequest->setCustomFavoriteTheme('Thanos destruction');
+            $runningMateRequest->setFavoriteThemeDetails($faker->paragraph());
+            $runningMateRequest->setCustomFavoriteTheme($faker->sentence());
 
-            $runningMateRequest->setIsLocalAssociationMember(false);
-            $runningMateRequest->setIsPreviousElectedOfficial(false);
-            $runningMateRequest->setPreviousElectedOfficialDetails('');
-            $runningMateRequest->setLocalAssociationDomain('Fighting super villains');
-            $runningMateRequest->setPoliticalActivistDetails('Putsch Thanos from his galactic throne');
-            $runningMateRequest->setIsPoliticalActivist(false);
-            $runningMateRequest->setProjectDetails('');
-            $runningMateRequest->setProfessionalAssets('');
-
+            $runningMateRequest->setIsLocalAssociationMember(true);
+            $runningMateRequest->setLocalAssociationDomain($faker->paragraph());
+            $runningMateRequest->setIsPoliticalActivist(true);
+            $runningMateRequest->setPoliticalActivistDetails($faker->paragraph());
+            $runningMateRequest->setProjectDetails($faker->paragraph(10));
+            $runningMateRequest->setProfessionalAssets($faker->paragraph(10));
+            $runningMateRequest->setCreatedAt($faker->dateTimeBetween('-3 week'));
+            $runningMateRequest->setUpdatedAt($faker->dateTimeBetween('-1 day'));
             $runningMateRequest->addReferentTag($this->getReference('referent_tag_59'));
 
             $manager->persist($runningMateRequest);

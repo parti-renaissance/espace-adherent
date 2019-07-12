@@ -148,6 +148,7 @@
         <service id="AppBundle\ApplicationRequest\ApplicationRequestRepository" />
         <service id="AppBundle\Command\ApplicationRequestsUpdateMissingTags" />
         <service id="AppBundle\ApplicationRequest\Listener\UpdateAdherentRelationSubscriber" />
+        <service id="AppBundle\ApplicationRequest\Listener\HideDuplicateRequestsSubscriber" />
         <service id="AppBundle\ApplicationRequest\Listener\SendConfirmationRequestSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>

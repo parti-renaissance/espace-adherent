@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
 class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
@@ -43,6 +44,10 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
             ])
             ->add('isAdherent', 'boolean', [
                 'label' => 'Adhérent',
+            ])
+            ->add('displayed', 'boolean', [
+                'label' => 'Affiché',
+                'editable' => true,
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -84,6 +89,10 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
                 ->add('phone', PhoneNumberType::class, [
                     'label' => 'Téléphone',
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                ])
+                ->add('displayed', CheckboxType::class, [
+                    'label' => 'Affiché',
+                    'required' => false,
                 ])
             ->end()
             ->with('Candidature')

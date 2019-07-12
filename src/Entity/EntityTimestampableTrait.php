@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 trait EntityTimestampableTrait
 {
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
      *
@@ -20,7 +20,7 @@ trait EntityTimestampableTrait
     protected $createdAt;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
      *
@@ -28,17 +28,22 @@ trait EntityTimestampableTrait
      */
     protected $updatedAt;
 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
