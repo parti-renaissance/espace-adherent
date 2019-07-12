@@ -321,6 +321,23 @@ class SegmentConditionsBuilder
                     ]
                 );
             }
+        } elseif ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'not',
+                'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
+                'value' => $campaign->getCity(),
+            ];
+
+            if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
+                $conditions[] = $this->buildStaticSegmentCondition(
+                    $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
+                    $filter->getContactOnlyRunningMates()
+                        ? ApplicationRequestTagLabelEnum::RUNNING_MATE
+                        : ApplicationRequestTagLabelEnum::VOLUNTEER
+                    ]
+                );
+            }
         }
 
         return $conditions;
