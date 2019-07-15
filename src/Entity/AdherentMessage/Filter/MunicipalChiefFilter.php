@@ -65,6 +65,13 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
      */
     private $contactRunningMateTeam = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $contactAdherents = false;
+
     public function __construct(array $cities)
     {
         $this->cities = $cities;
@@ -138,5 +145,15 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
     public function setContactOnlyRunningMates(bool $contactOnlyRunningMates): void
     {
         $this->contactOnlyRunningMates = $contactOnlyRunningMates;
+    }
+
+    public function getContactAdherents(): bool
+    {
+        return $this->contactAdherents;
+    }
+
+    public function setContactAdherents(bool $contactAdherents): void
+    {
+        $this->contactAdherents = $contactAdherents;
     }
 }
