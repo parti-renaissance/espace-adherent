@@ -123,7 +123,7 @@ class ImportElectedRepresentativesRegisterCommand extends Command
                 if (\in_array($index, $this->skippedColumns)) {
                     continue;
                 }
-                $tmp[] = '' === $value ? null : $value;
+                $tmp[] = ('' === $value || 'NULL' === $value) ? null : $value;
             }
             $parameters[] = $tmp;
 
