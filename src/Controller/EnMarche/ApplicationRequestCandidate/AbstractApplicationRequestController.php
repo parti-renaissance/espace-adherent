@@ -20,6 +20,8 @@ abstract class AbstractApplicationRequestController extends Controller
      */
     public function candidatesListAction(Request $request, ApplicationRequestRepository $repository): Response
     {
+        $this->checkAccess();
+
         return $this->renderTemplate('application_request/space/list.html.twig', [
             'requests' => $this->getApplicationRequests(
                 $repository,
@@ -90,7 +92,7 @@ abstract class AbstractApplicationRequestController extends Controller
 
     abstract protected function getSpaceName(): string;
 
-    abstract protected function checkAccess(ApplicationRequest $request): void;
+    abstract protected function checkAccess(ApplicationRequest $request = null): void;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {

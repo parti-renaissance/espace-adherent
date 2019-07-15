@@ -27,7 +27,7 @@ Feature:
   # Municipal space
   @javascript
   Scenario: I cannot see running mate or volunteer request for the zones I don't manage
-    Given I am logged as "referent-75-77@en-marche-dev.fr"
+    Given I am logged as "referent-child@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-colistiers"
     Then I should see "Aucun résultat" in the "#datagrid div table.managed__list__table tbody tr td" element
     When I am on "/espace-referent/candidature-benevoles"

@@ -74,10 +74,10 @@
                                 <a href="{{ path('app_jecoute_referent_local_surveys_list') }}">J'écoute</a>
                             </li>
 
-                            {% if is_canary_enabled() %}
-                            <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
-                                <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
-                            </li>
+                            {% if is_canary_enabled() and 0 == app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
+                                    <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
+                                </li>
                             {% endif %}
 
                             <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
