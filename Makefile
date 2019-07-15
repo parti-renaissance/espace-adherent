@@ -68,12 +68,11 @@ rabbitmq-fabric: wait-for-rabbitmq
 ##---------------------------------------------------------------------------
 
 wait-for-db:
-	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',3306)){break;}echo \"Waiting for MySQL\n\";sleep(1);}"
+	$(EXEC) php -r "set_time_limit(60);for(;;){if(@fsockopen('db',5432)){break;}echo \"Waiting for PGSQL\n\";sleep(1);}"
 
 db: vendor wait-for-db                                                                                 ## Reset the database and load fixtures
 	$(CONSOLE) doctrine:database:drop --force --if-exists
 	$(CONSOLE) doctrine:database:create --if-not-exists
-	$(CONSOLE) doctrine:database:import -n -- dump/dump-2018.sql
 	$(CONSOLE) doctrine:migrations:migrate -n
 	$(CONSOLE) doctrine:fixtures:load -n
 
@@ -153,7 +152,6 @@ tfp-db: wait-for-db                                                             
 	$(EXEC) rm -rf /tmp/data.db app/data/dumped_referents_users || true
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test
 	$(CONSOLE) doctrine:database:create --env=test
-	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
 	$(CONSOLE) doctrine:migration:migrate -n --env=test
 	$(CONSOLE) doctrine:schema:validate --env=test
 	$(CONSOLE) doctrine:fixtures:load --env=test -n

@@ -95,7 +95,7 @@ twig:
 
 doctrine:
     dbal:
-        driver:           pdo_mysql
+        driver:           pdo_pgsql
         charset:          UTF8
         host:             "%env(DATABASE_HOST)%"
         port:             "%env(DATABASE_PORT)%"
@@ -103,10 +103,10 @@ doctrine:
         user:             "%env(DATABASE_USER)%"
         password:         "%env(DATABASE_PASSWORD)%"
         unix_socket:      "%env(DATABASE_SOCKET)%"
-        server_version:   5.7
+        server_version:   "11.1"
         options:
             1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
-        schema_filter: '#^(?!ideas_workshop_idea_notification_dates)#'
+        schema_filter: '#^(?!(ideas_workshop_idea_notification_dates|public|topology|tiger))#'
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
@@ -140,20 +140,20 @@ doctrine:
 
         dql:
             datetime_functions:
-                year_month: DoctrineExtensions\Query\Mysql\YearMonth
+                year_month: DoctrineExtensions\Query\PostgreSQL\YearMonth
             numeric_functions:
-                acos: DoctrineExtensions\Query\Mysql\Acos
-                cos: DoctrineExtensions\Query\Mysql\Cos
-                radians: DoctrineExtensions\Query\Mysql\Radians
-                sin: DoctrineExtensions\Query\Mysql\Sin
-                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\GeomFromText
-                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STWithin
-                point: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point
+                acos: DoctrineExtensions\Query\PostgreSQL\Acos
+                cos: DoctrineExtensions\Query\PostgreSQL\Cos
+                radians: DoctrineExtensions\Query\PostgreSQL\Radians
+                sin: DoctrineExtensions\Query\PostgreSQL\Sin
+                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\GeomFromText
+                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\STWithin
+                point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\Point
             string_functions:
-                json_contains: AppBundle\Query\Mysql\JsonContains
-                find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
-                json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
-                substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
+                json_contains: AppBundle\Query\PostgreSQL\JsonContains
+                find_in_set: DoctrineExtensions\Query\PostgreSQL\FindInSet
+                json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\PostgreSQL\JsonLength
+                substring_index: DoctrineExtensions\Query\PostgreSQL\SubstringIndex
 
         hydrators:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
