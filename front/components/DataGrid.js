@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import noResultImg from './../../web/images/icons/icn_no-result.svg';
 
 export default class DataGrid extends React.Component {
     constructor(props) {
@@ -343,6 +344,7 @@ export default class DataGrid extends React.Component {
             resultsList.push(
                 <tr>
                     <td colSpan={columns.length + 1}>
+                        <img src={noResultImg} className="icn--no-result" width="30" />
                         Aucun résultat
                     </td>
                 </tr>

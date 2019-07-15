@@ -1,4 +1,4 @@
-<nav class="gtm__navigation__mobile l__wrapper l__hide--above-small-laptop space--20-0">
+<nav class="gtm__navigation__mobile l__wrapper l__hide--on-desktop space--20-0">
     <ul class="list__links list__links--row list__links--nav l__row--h-stretch">
         <li>
             <a href="{{ path('homepage') }}" class="link--no-decor text--logo">EM!</a>
@@ -75,7 +75,7 @@
                     {% endif %}
                     {% if app.user.isCoordinatorCitizenProjectSector %}
                         <li>
-                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace Responsable Engagement Citoyen</a>
+                            <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}">Espace responsable engagement citoyen</a>
                         </li>
                     {% endif %}
                     {% if app.user.isCoordinatorCommitteeSector %}
@@ -95,7 +95,7 @@
                     {% endif %}
                     {% if app.user.isMunicipalChief %}
                         <li>
-                            <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Espace chef municipal</a>
+                            <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Espace Municipal 2020 🇫🇷</a>
                         </li>
                     {% endif %}
                 </ul>

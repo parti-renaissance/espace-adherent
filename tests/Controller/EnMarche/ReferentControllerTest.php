@@ -152,7 +152,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->assertSame(
             'Votre événement a bien été créé mais pas encore diffusé. Partagez le par e-mail à vos contacts en cliquant ci-dessous.',
-            trim($this->client->getCrawler()->filter('.box-success .alert-warning')->text())
+            trim($this->client->getCrawler()->filter('.box-success .alert--tips')->text())
         );
 
         $this->assertCountMails(1, EventRegistrationConfirmationMessage::class, 'referent@en-marche-dev.fr');

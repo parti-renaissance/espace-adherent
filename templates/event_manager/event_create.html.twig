@@ -22,7 +22,7 @@
             <p class="text--normal b__nudge--bottom ">Votre événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</p>
 
             {% if event.status == constant('STATUS_SCHEDULED', event) %}
-                <p class="alert alert-warning">
+                <p class="alert alert--tips b__nudge--bottom-20">
                     Votre événement a bien été créé mais pas encore diffusé.<br/> Partagez le par e-mail à vos contacts en cliquant ci-dessous.
                 </p>
             {% endif %}
