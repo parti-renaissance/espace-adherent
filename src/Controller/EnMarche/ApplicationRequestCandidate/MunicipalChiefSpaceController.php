@@ -44,8 +44,10 @@ class MunicipalChiefSpaceController extends AbstractApplicationRequestController
         return self::SPACE_NAME;
     }
 
-    protected function checkAccess(ApplicationRequest $request): void
+    protected function checkAccess(ApplicationRequest $request = null): void
     {
-        $this->denyAccessUnlessGranted(MunicipalChiefVoter::ROLE, $request);
+        if ($request) {
+            $this->denyAccessUnlessGranted(MunicipalChiefVoter::ROLE, $request);
+        }
     }
 }
