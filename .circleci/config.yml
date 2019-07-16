@@ -197,6 +197,7 @@ workflows:
                     branches:
                         only:
                             - master
+                            - postgres
 
     prod_deploy:
         jobs:
