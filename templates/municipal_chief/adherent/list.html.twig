@@ -37,7 +37,7 @@
                             </div>
                         </td>
                         <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
-                        <td>{{ user.cityName }} {{ user.postalCode }}</td>
+                        <td>{{ user.cityName }}<br />{{ user.postalCode }}</td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.registeredAt|date('d/m/Y H:i') }}
                         </td>

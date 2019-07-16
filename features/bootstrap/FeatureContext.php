@@ -107,4 +107,18 @@ class FeatureContext extends RawMinkContext
             $termsOfUseModal->click();
         }
     }
+
+    /**
+     * Scroll HTML element into view
+     *
+     * @Then I scroll element :cssSelector into view
+     */
+    public function iScrollElementIntoView($cssSelector): void
+    {
+        $js = <<<JS
+document.querySelector("$cssSelector").scrollIntoView();
+JS;
+
+        $this->getSession()->executeScript($js);
+    }
 }

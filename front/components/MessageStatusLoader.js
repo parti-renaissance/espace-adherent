@@ -94,7 +94,7 @@ export default class MessageStatusLoader extends React.Component {
             this.componentWillUnmount();
 
             return <div>
-                <p className="tips-information">
+                <p className="alert alert--tips">
                     Nous n'avons pas encore terminé la recherche, veuillez revenir dans quelques instants.
                 </p>
             </div>;
@@ -102,7 +102,7 @@ export default class MessageStatusLoader extends React.Component {
 
         return (
             <div>
-                {!this.state.synchronized ? <Loader title="Chargement de vos adhérents" /> : this.renderActionBlock()}
+                {!this.state.synchronized ? <Loader title="Chargement de vos contacts" /> : this.renderActionBlock()}
             </div>
         );
     }

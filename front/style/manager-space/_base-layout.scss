@@ -26,7 +26,7 @@
 
         .report {
             @include text--uppercase;
-            font-size: 13px;
+            font-size: 11px;
             color: $silver-grey;
             letter-spacing: 1px;
             margin: 0;
@@ -362,19 +362,22 @@
 }
 
 // global components
-.tips-information {
+.alert {
     max-width: 900px;
-    background-color: $inf-modl--bkg-yellow;
     font-size: 15px;
     font-weight: normal;
     line-height: 20px;
     padding: 20px;
-    margin-bottom: 60px;
-    color: $inf-modl--text-yellow;
+    border-radius: 3px;
+
+    &--tips {
+        background-color: $inf-modl--bkg-yellow;
+        color: $inf-modl--text-yellow;
+    }
 }
 
 // Going to an external new product
-.hightlight_url {
+.highlight_url {
     display: inline-block;
     font-family: $font-roboto;
     text-transform: uppercase;
@@ -382,13 +385,13 @@
     background-color: #FFF0C4;
     font-weight: 600;
     color: $black;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 1px;
-    padding: 4px 8px;
+    padding: 6px 10px;
     border-radius: 50px;
     line-height: 11px;
     transition: all 125ms ease-in;
-    margin-top: 6px;
+    margin: 8px 0 16px 0;
 
     &:hover {
         transform: translateX(2px);

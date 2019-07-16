@@ -20,7 +20,7 @@ Feature:
     And I should see "Mons-en-Pévèle, Seclin"
     And I should see "Seclin"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    When I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Plus d'infos"
     Then I should see "⟵ Retour"
     And I should see "Quelle est votre profession ?"
@@ -37,14 +37,14 @@ Feature:
     Then I should be on "/espace-chef-municipal/candidature-colistiers"
 
     When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Taguer"
     Then I should see "Tags de candidature"
 
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario Outline: I can see running mate request for the zones I manage, I can see the detail and I can add tags
@@ -78,7 +78,7 @@ Feature:
     And I should see "Mons-en-Pévèle, Seclin"
     And I should see "Seclin"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    When I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Plus d'infos"
     Then I should see "⟵ Retour"
     And I should see "Vos thématique(s) de prédilection Sécurité Environnement"
@@ -93,14 +93,14 @@ Feature:
     Then I should be on "/espace-chef-municipal/candidature-benevoles"
 
     When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Taguer"
     Then I should see "Tags de candidature"
 
     When I select "4" from "application_request_tags_tags"
     And I press "Enregistrer"
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
+    And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario Outline: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
@@ -129,20 +129,20 @@ Feature:
     Given I am logged as "municipal-chief-3@en-marche-dev.fr"
     When I am on "<url>"
     And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody tr > td div.action-menu-oval"
+    And I scroll element "table.datagrid__table-manager" into view
+    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Ajouter à mon équipe"
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody tr > td div.action-menu-oval"
+    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I should see "Retirer de mon équipe"
-    And I should not see an ".link--disabled" element
 
     When I am on "/deconnexion"
     And I am logged as "municipal-chief@en-marche-dev.fr"
     And I am on "<url>"
     And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
+    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     Then I should not see "Ajouter à mon équipe"
-    And I should see "Déjà pris dans une autre ville" in the "table.datagrid__table-manager tbody > tr" element
+    And I should see "Déjà pris dans une autre ville" in the "table.datagrid__table-manager tbody tr" element
 
     Examples:
       | url                                           |
