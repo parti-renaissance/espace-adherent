@@ -12,6 +12,7 @@ class MunicipalChiefMailchimpCampaignHandler implements MailchimpCampaignHandler
 {
     public function handle(AdherentMessageInterface $message): void
     {
+        /** @var MunicipalChiefFilter|null $filter */
         if (!$filter = $message->getFilter()) {
             if (empty($message->getMailchimpCampaigns())) {
                 $message->setMailchimpCampaigns([new MailchimpCampaign($message)]);
@@ -19,9 +20,6 @@ class MunicipalChiefMailchimpCampaignHandler implements MailchimpCampaignHandler
 
             return;
         }
-
-        /** @var MunicipalChiefFilter $filter */
-        $filter = $message->getFilter();
 
         $cities = array_values($filter->getCities());
 
