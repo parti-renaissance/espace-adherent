@@ -99,9 +99,12 @@ class ImportElectedRepresentativesRegisterCommand extends Command
 
         $line = 0;
         foreach ($csv as $row) {
+            $birthDate = new \DateTime($row['date_naissance']);
+
             $adherent = $this->adherentRepository->findOneBy([
                 'lastName' => $row['nom'],
                 'firstName' => $row['prenom'],
+                'birthdate' => $birthDate,
             ]);
 
             $electedRepresentative = ElectedRepresentativesRegister::create(
@@ -114,7 +117,7 @@ class ImportElectedRepresentativesRegisterCommand extends Command
                 $row['nom'],
                 $row['prenom'],
                 $row['genre'],
-                new \DateTime($row['date_naissance']),
+                $birthDate,
                 (int) $row['code_profession'] ?? null,
                 $row['nom_profession'],
                 $row['date_debut_mandat'],
