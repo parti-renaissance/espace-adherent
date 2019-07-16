@@ -1,6 +1,6 @@
 parameters:
     env(DATABASE_HOST):         db
-    env(DATABASE_PORT):         3306
+    env(DATABASE_PORT):         5432
     env(DATABASE_SOCKET):       ~
     env(DATABASE_NAME):         enmarche
     env(DATABASE_USER):         root

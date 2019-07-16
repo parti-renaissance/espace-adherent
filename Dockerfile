@@ -23,7 +23,7 @@ RUN apt-get update -q && \
         nano \
         nginx \
         git \
-        mysql-client \
+        postgresql-client \
         php7.1 \
         php7.1-bcmath \
         php7.1-common \
@@ -36,7 +36,7 @@ RUN apt-get update -q && \
         php7.1-json \
         php7.1-mbstring \
         php7.1-mcrypt \
-        php7.1-mysql \
+        php7.1-pgsql \
         php7.1-opcache \
         php7.1-pdo \
         php7.1-phar \

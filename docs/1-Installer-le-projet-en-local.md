@@ -9,7 +9,6 @@ La plateforme en-marche.fr est basée sur les outils open-source suivants :
 - [Webpack](https://webpack.github.io/docs/), aggrégateur de modules JavaScript
 - [MariaDB](https://mariadb.org/), moteur de base de donnée dérivé de MySQL
 
-
 ## 1.1.1 Installer les pré-requis du projet
 
 Le projet En Marche utilise [Docker](https://www.docker.com/), un outil de container permettant de mettre en
@@ -64,7 +63,7 @@ Il ne comporte AUCUNE GARANTIE, dans la mesure de ce que permet la loi.
 > **Note**: si vous utilisez Windows, nous vous recommandons très fortement d'utiliser la console Linux intgrée à
 > Windows 10 (https://msdn.microsoft.com/fr-fr/commandline/wsl/install_guide) ou d'utiliser un émulateur de ligne de
 > commande pour pouvoir utiliser `make` qui vous facilitera grandement le travail.
-**Note**: Pour les utilisateurs de Windows, vous pouvez utiliser [l'équivalent Windows de make](http://gnuwin32.sourceforge.net/packages/make.htm)
+> **Note**: Pour les utilisateurs de Windows, vous pouvez utiliser [l'équivalent Windows de make](http://gnuwin32.sourceforge.net/packages/make.htm)
 
 Si Docker, docker-compose et make fonctionnent correctement, vous êtes prêt à préparer le projet pour développer.
 
@@ -166,6 +165,7 @@ Une fois le projet installé, vous pouvez accéder à l'espace d'administration 
 [http://enmarche.code:8000/admin](http://enmarche.dev:8000/admin).
 
 Vous pouvez alors y entrer les identifiants suivants :
+
 ```
 admin@en-marche-dev.fr / admin        pour l'accès en mode administrateur
 writer@en-marche-dev.fr / writer      pour l'accès en mode rédacteur
@@ -176,6 +176,7 @@ referent@en-marche-dev.fr / referent  pour l'accès en mode référent
 
 Une fois le projet installé, vous pouvez accéder à l'espace adhérent en cliquant sur "Connexion".
 Vous pouvez alors y entrer l'identifiant suivant :
+
 ```
 jacques.picard@en-marche.fr / secret!12345
 ```
@@ -191,13 +192,14 @@ créé 4 containers :
 - `rabbitmq`, un système permettant de gérer des files de messages
 
 Par défaut, si vous avez copié le `docker-compose.override.yml.dist` en `docker-compose.override.yml` vous avez access à des containers supplémentaires :
+
 - `pma`, PHPMyAdmin, pour travailler avec la base de donnée
 - `blackfire`, un profiler PHP
 
 De plus vous devriez pouvoir accéder aux containers sur les ports suivants de votre machine locale :
 
 - `app`, HTTP sur le port 8000
-- `db`, MySQL sur le port 3306
+- `db`, Postgresql sur le port 5432
 - `pma`, HTTP sur le port 8080
 - `rabbitmq`, HTTP sur le port 15672
 
