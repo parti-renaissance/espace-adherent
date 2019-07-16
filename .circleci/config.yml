@@ -47,6 +47,10 @@ jobs:
                   key: composer-{{ checksum "composer.lock" }}
             - restore_cache:
                   key: npm-{{ checksum "yarn.lock" }}
+            - restore_cache:
+                  key: npm-adi-{{ checksum "./web/apps/atelier-des-idees/yarn.lock" }}
+            - restore_cache:
+                  key: npm-cp-{{ checksum "./web/apps/projets-citoyens/yarn.lock" }}
 
             - *generate_docker_hashes
             - *authenticate_on_registry
@@ -73,6 +77,14 @@ jobs:
                   paths:
                       - ./node_modules
                   key: npm-{{ checksum "yarn.lock" }}
+            - save_cache:
+                  paths:
+                      - ./web/apps/atelier-des-idees/node_modules
+                  key: npm-adi-{{ checksum "./web/apps/atelier-des-idees/yarn.lock" }}
+            - save_cache:
+                  paths:
+                      - ./web/apps/projets-citoyens/node_modules
+                  key: npm-cp-{{ checksum "./web/apps/projets-citoyens/yarn.lock" }}
 
             - persist_to_workspace:
                   root: ./
