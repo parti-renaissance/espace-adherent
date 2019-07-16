@@ -2,8 +2,14 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\ElectedRepresentativesRegister;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class ElectedRepresentativesRegisterRepository extends EntityRepository
+class ElectedRepresentativesRegisterRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ElectedRepresentativesRegister::class);
+    }
 }
