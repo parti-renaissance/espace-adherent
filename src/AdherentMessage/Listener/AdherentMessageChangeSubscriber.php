@@ -56,7 +56,10 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
 
         if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object);
-        } elseif ($object instanceof AdherentMessageFilterInterface && false === $object->isSynchronized()) {
+        } elseif (
+            ($object instanceof AdherentMessageFilterInterface || $object instanceof MailchimpCampaign)
+            && false === $object->isSynchronized()
+        ) {
             $this->dispatchMessage($object->getMessage());
         }
     }
