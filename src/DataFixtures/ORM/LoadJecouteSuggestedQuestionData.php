@@ -41,7 +41,7 @@ class LoadJecouteSuggestedQuestionData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_suggested_question');
+        // AutoIncrementResetter::resetAutoIncrement($manager, 'jecoute_suggested_question');
 
         foreach (self::SUGGESTED_QUESTIONS as $code => $data) {
             $question = new SuggestedQuestion($data['content'], $data['type'], $data['published']);

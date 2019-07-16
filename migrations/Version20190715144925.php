@@ -15,6 +15,7 @@ final class Version20190715144925 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
+        $this->addSql('CREATE EXTENSION postgis');
         $this->addSql('CREATE SEQUENCE donation_transactions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE medias_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE districts_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
