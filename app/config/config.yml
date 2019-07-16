@@ -139,21 +139,21 @@ doctrine:
                 enabled: true
 
         dql:
-            datetime_functions:
-                year_month: DoctrineExtensions\Query\PostgreSQL\YearMonth
-            numeric_functions:
-                acos: DoctrineExtensions\Query\PostgreSQL\Acos
-                cos: DoctrineExtensions\Query\PostgreSQL\Cos
-                radians: DoctrineExtensions\Query\PostgreSQL\Radians
-                sin: DoctrineExtensions\Query\PostgreSQL\Sin
-                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\GeomFromText
-                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\STWithin
-                point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\Point
-            string_functions:
-                json_contains: AppBundle\Query\PostgreSQL\JsonContains
-                find_in_set: DoctrineExtensions\Query\PostgreSQL\FindInSet
-                json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\PostgreSQL\JsonLength
-                substring_index: DoctrineExtensions\Query\PostgreSQL\SubstringIndex
+            # datetime_functions:
+            #     year_month: DoctrineExtensions\Query\PostgreSQL\YearMonth
+            # numeric_functions:
+            #     acos: DoctrineExtensions\Query\PostgreSQL\Acos
+            #     cos: DoctrineExtensions\Query\PostgreSQL\Cos
+            #     radians: DoctrineExtensions\Query\PostgreSQL\Radians
+            #     sin: DoctrineExtensions\Query\PostgreSQL\Sin
+            #     st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\GeomFromText
+            #     st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\STWithin
+            #     point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\Point
+            # string_functions:
+            #     json_contains: AppBundle\Query\PostgreSQL\JsonContains
+            #     find_in_set: DoctrineExtensions\Query\PostgreSQL\FindInSet
+            #     json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\PostgreSQL\JsonLength
+            #     substring_index: DoctrineExtensions\Query\PostgreSQL\SubstringIndex
 
         hydrators:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
