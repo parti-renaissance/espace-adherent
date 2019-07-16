@@ -105,6 +105,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=15, nullable=true)
      *
+     * @Assert\NotBlank(message="common.postal_code.not_blank")
      * @Assert\Length(max=15)
      */
     protected $postalCode;
@@ -116,7 +117,6 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @ORM\Column(length=20, nullable=true)
      *
-     * @Assert\NotBlank(message="common.city_name.not_blank")
      * @Assert\Length(max=20)
      */
     protected $city;
@@ -128,6 +128,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @Assert\NotBlank(message="common.city_name.not_blank")
      * @Assert\Length(max=50)
+     * @Assert\Expression(expression="(this.getCountry() === 'FR' and this.getCity()) or value", message="common.city_name.not_blank")
      */
     protected $cityName;
 
