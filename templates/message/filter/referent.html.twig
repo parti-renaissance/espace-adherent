@@ -138,7 +138,9 @@
             });
 
             var candidateChangeHandler = function () {
-                $('.candidate-incompatible').prop('disabled', !!$('#candidate-checkboxes-container input:checked').length);
+                var disable = !!$('#candidate-checkboxes-container input:checked').length;
+                $('.candidate-incompatible').prop('disabled', disable);
+                $('.candidate-incompatible[type="checkbox"]').prop('checked', !disable);
             };
 
             candidateChangeHandler();
