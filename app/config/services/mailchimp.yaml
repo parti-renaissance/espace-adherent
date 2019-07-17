@@ -11,17 +11,26 @@ services:
             tags: ['app.mailchimp.webhook_handler']
         AppBundle\AdherentMessage\MailchimpCampaign\Handler\MailchimpCampaignHandlerInterface:
             tags: ['app.mailchimp.campaign.handler']
+        AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface:
+            tags: ['app.mailchimp.campaign.segment_condition_builder']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
 
     AppBundle\Mailchimp\Webhook\Handler\:
         resource: ../../../src/Mailchimp/Webhook/Handler/
 
+    AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\:
+        resource: ../../../src/Mailchimp/Campaign/SegmentConditionBuilder/
+
     AppBundle\AdherentMessage\MailchimpCampaign\:
         resource: ../../../src/AdherentMessage/MailchimpCampaign/
 
     AppBundle\Mailchimp\Webhook\WebhookHandler:
         arguments: [!tagged 'app.mailchimp.webhook_handler']
+
+    AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder:
+        arguments:
+            $builders: !tagged 'app.mailchimp.campaign.segment_condition_builder'
 
     AppBundle\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
         arguments: [!tagged 'app.mailchimp.campaign.handler']

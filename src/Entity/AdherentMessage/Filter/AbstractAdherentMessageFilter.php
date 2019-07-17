@@ -55,4 +55,9 @@ abstract class AbstractAdherentMessageFilter implements AdherentMessageFilterInt
     {
         return $this->message;
     }
+
+    public function setMessage(AdherentMessageInterface $message): void
+    {
+        $this->message = $message;
+    }
 }

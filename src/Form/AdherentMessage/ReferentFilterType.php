@@ -37,6 +37,8 @@ class ReferentFilterType extends AbstractType
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
             ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
+            ->add('contactOnlyRunningMates', CheckboxType::class, ['required' => false])
+            ->add('contactOnlyVolunteers', CheckboxType::class, ['required' => false])
         ;
 
         if (false === $options['single_zone']) {

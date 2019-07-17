@@ -14,6 +14,13 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
      * @var string|null
      *
      * @ORM\Column(nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
      */
@@ -75,6 +82,16 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
     public function __construct(array $cities)
     {
         $this->cities = $cities;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 
     public function getFirstName(): ?string

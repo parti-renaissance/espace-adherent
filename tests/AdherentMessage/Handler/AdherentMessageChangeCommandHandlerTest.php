@@ -33,6 +33,15 @@ use AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\CitizenProjectConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToAdherentConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToCandidateConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToAdherentConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToCandidateConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder;
 use AppBundle\Mailchimp\Driver;
 use AppBundle\Mailchimp\Manager;
@@ -541,7 +550,17 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'volunteer' => 345,
                     ]
                 ),
-                new SegmentConditionsBuilder($this->mailchimpMapping)
+                new SegmentConditionsBuilder($this->mailchimpMapping, [
+                    new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
+                    new ReferentToAdherentConditionBuilder($this->mailchimpMapping),
+                    new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
+                    new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping),
+                    new MunicipalChiefToCandidateConditionBuilder($this->mailchimpMapping),
+                    new AdherentZoneConditionBuilder($this->mailchimpMapping),
+                    new CommitteeConditionBuilder($this->mailchimpMapping),
+                    new CitizenProjectConditionBuilder($this->mailchimpMapping),
+                    new ContactNameConditionBuilder(),
+                ])
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(
                 $this->mailchimpMapping,
