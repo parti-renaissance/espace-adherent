@@ -3,59 +3,43 @@
 namespace AppBundle\Mailchimp\Campaign;
 
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
-use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Mailchimp\Exception\InvalidFilterException;
-use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\ApplicationRequestTagLabelEnum;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
 
 class SegmentConditionsBuilder
 {
     private $mailchimpObjectIdMapping;
+    /** @var SegmentConditionBuilderInterface[] */
+    private $builders;
 
-    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
+    public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping, iterable $builders)
     {
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
+        $this->builders = $builders;
     }
 
     public function build(MailchimpCampaign $campaign): array
     {
         $message = $campaign->getMessage();
+        $filter = $message->getFilter();
+
+        if (!$filter) {
+            throw new \InvalidArgumentException('Filter is null');
+        }
 
         $conditions = [];
 
-        if ($this->needCheckSubscriptionType($message)) {
-            $conditions[] = $this->buildSubscriptionTypeCondition($message);
+        foreach ($this->builders as $builder) {
+            if ($builder->support($filter)) {
+                $conditions = array_merge($conditions, $builder->build($campaign));
+                $built = true;
+            }
         }
 
-        $filter = $message->getFilter();
-
-        if ($filter instanceof ReferentUserFilter) {
-            $conditions = array_merge($conditions, $this->buildReferentConditions($filter, $campaign));
-        } elseif ($filter instanceof AdherentZoneFilter) {
-            $conditions[] = $this->buildReferentZoneCondition($filter->getReferentTag());
-        } elseif ($filter instanceof CommitteeFilter) {
-            $conditions[] = $this->buildCommitteeFilterCondition($filter->getCommittee());
-        } elseif ($filter instanceof CitizenProjectFilter) {
-            $conditions[] = $this->buildCitizenProjectFilterCondition($filter->getCitizenProject());
-        } elseif ($filter instanceof MunicipalChiefFilter) {
-            $conditions = array_merge($conditions, $this->buildMunicipalChiefFilterCondition($filter, $campaign));
+        if (!isset($built)) {
+            throw new \RuntimeException(sprintf('Any builder was found for the filter class: %s', \get_class($filter)));
         }
 
         return [
@@ -67,322 +51,16 @@ class SegmentConditionsBuilder
         ];
     }
 
-    private function buildSubscriptionTypeCondition(AdherentMessageInterface $message, bool $matchAll = true): array
-    {
-        $interestKeys = [];
-
-        switch ($messageClass = \get_class($message)) {
-            case ReferentAdherentMessage::class:
-                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
-                break;
-            case DeputyAdherentMessage::class:
-                $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
-                break;
-            case CommitteeAdherentMessage::class:
-                $interestKeys[] = SubscriptionTypeEnum::LOCAL_HOST_EMAIL;
-                break;
-            case CitizenProjectAdherentMessage::class:
-                $interestKeys[] = SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL;
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('Message type %s does not match any subscription type', $messageClass));
-        }
-
-        return $this->buildInterestCondition($interestKeys, $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId(), $matchAll);
-    }
-
-    private function buildInterestCondition(array $interestKeys, string $groupId, bool $matchAll = true): array
-    {
-        return [
-            'condition_type' => 'Interests',
-            'op' => $matchAll ? 'interestcontainsall' : 'interestcontains',
-            'field' => sprintf('interests-%s', $groupId),
-            'value' => array_values(
-                array_intersect_key($this->mailchimpObjectIdMapping->getInterestIds(), array_fill_keys($interestKeys, true))
-            ),
-        ];
-    }
-
-    private function buildReferentConditions(ReferentUserFilter $filter, MailchimpCampaign $campaign): array
-    {
-        $conditions = [];
-
-        if (
-            $filter->includeCitizenProjectHosts()
-            || $filter->includeCommitteeHosts()
-            || $filter->includeCommitteeSupervisors()
-            || $filter->includeAdherentsInCommittee()
-            || $filter->includeAdherentsNoCommittee()
-        ) {
-            $interestKeys = [];
-
-            if ($filter->includeCitizenProjectHosts()) {
-                $interestKeys[] = Manager::INTEREST_KEY_CP_HOST;
-            }
-
-            if ($filter->includeCommitteeSupervisors()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
-            }
-
-            if ($filter->includeCommitteeHosts()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
-            }
-
-            if ($filter->includeAdherentsInCommittee()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
-            }
-
-            if ($filter->includeAdherentsNoCommittee()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER;
-            }
-
-            $conditions[] = $this->buildInterestCondition($interestKeys, $this->mailchimpObjectIdMapping->getMemberGroupInterestGroupId(), false);
-        }
-
-        if ($filter->getGender()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_GENDER,
-                'value' => $filter->getGender(),
-            ];
-        }
-
-        $now = new \DateTimeImmutable('now');
-
-        if ($minAge = $filter->getAgeMin()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'less',
-                'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($maxAge = $filter->getAgeMax()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'greater',
-                'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($registeredSince = $filter->getRegisteredSince()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'greater',
-                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => $registeredSince->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($registeredUntil = $filter->getRegisteredUntil()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'less',
-                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => $registeredUntil->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($filter->getFirstName()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_FIRST_NAME,
-                'value' => $filter->getFirstName(),
-            ];
-        }
-
-        if ($filter->getLastName()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_LAST_NAME,
-                'value' => $filter->getLastName(),
-            ];
-        }
-
-        if ($campaign->getCity()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'starts',
-                'field' => MemberRequest::MERGE_FIELD_CITY,
-                'value' => $campaign->getCity().' (',
-            ];
-        }
-
-        if ($filter->getInterests()) {
-            $conditions[] = $this->buildInterestCondition($filter->getInterests(), $this->mailchimpObjectIdMapping->getMemberInterestInterestGroupId());
-        }
-
-        if (!$campaign->getStaticSegmentId()) {
-            throw new StaticSegmentIdMissingException(sprintf(
-                '[ReferentMessage] Referent message (%s) does not have a Mailchimp Static segment ID',
-                $campaign->getMessage()->getUuid()->toString()
-            ));
-        }
-
-        $conditions[] = $this->buildStaticSegmentCondition($campaign->getStaticSegmentId());
-
-        return $conditions;
-    }
-
-    private function buildReferentZoneCondition(ReferentTag $tag): array
-    {
-        if (!$tag->getExternalId()) {
-            throw new \InvalidArgumentException(
-                sprintf('[AdherentMessage] Referent tag (%s) does not have a Mailchimp ID', $tag->getCode())
-            );
-        }
-
-        return $this->buildStaticSegmentCondition($tag->getExternalId());
-    }
-
-    private function buildCommitteeFilterCondition(?Committee $committee): array
-    {
-        if (!$committee) {
-            throw new InvalidFilterException('[AdherentMessage] Committee should not be empty');
-        }
-
-        if (!$committee->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(
-                sprintf('[AdherentMessage] Committee "%s" does not have mailchimp ID', $committee->getUuidAsString())
-            );
-        }
-
-        return $this->buildStaticSegmentCondition($committee->getMailchimpId());
-    }
-
-    private function buildCitizenProjectFilterCondition(?CitizenProject $citizenProject): array
-    {
-        if (!$citizenProject) {
-            throw new InvalidFilterException('[AdherentMessage] Citizen project should not be empty');
-        }
-
-        if (!$citizenProject->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(
-                sprintf('[AdherentMessage] Citizen project "%s" does not have mailchimp ID', $citizenProject->getUuidAsString())
-            );
-        }
-
-        return $this->buildStaticSegmentCondition($citizenProject->getMailchimpId());
-    }
-
-    private function buildMunicipalChiefFilterCondition(
-        MunicipalChiefFilter $filter,
-        MailchimpCampaign $campaign
-    ): array {
-        if (!$campaign->getCity()) {
-            throw new InvalidFilterException(sprintf(
-                '[MunicipalChiefMessage] Message (%s) does not have a valid city value',
-                $campaign->getMessage()->getUuid()->toString()
-            ));
-        }
-
-        $conditions = [];
-
-        if ($filter->getFirstName()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_FIRST_NAME,
-                'value' => $filter->getFirstName(),
-            ];
-        }
-
-        if ($filter->getLastName()) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'is',
-                'field' => MemberRequest::MERGE_FIELD_LAST_NAME,
-                'value' => $filter->getLastName(),
-            ];
-        }
-
-        if ($filter->getContactAdherents()) {
-            if (!$cityName = FranceCitiesBundle::getCityNameFromInseeCode($campaign->getCity())) {
-                throw new InvalidFilterException(sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $campaign->getCity()));
-            }
-
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'starts',
-                'field' => MemberRequest::MERGE_FIELD_CITY,
-                'value' => $cityName.' (',
-            ];
-        } else {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'contains',
-                'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
-                'value' => $campaign->getCity(),
-            ];
-
-            if ($filter->getContactRunningMateTeam() || $filter->getContactVolunteerTeam()) {
-                $conditions[] = [
-                    'condition_type' => 'TextMerge',
-                    'op' => 'is',
-                    'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
-                    'value' => $campaign->getCity(),
-                ];
-
-                if ($filter->getContactRunningMateTeam() ^ $filter->getContactVolunteerTeam()) {
-                    $conditions[] = $this->buildStaticSegmentCondition(
-                        $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
-                        $filter->getContactRunningMateTeam()
-                            ? ApplicationRequestTagLabelEnum::RUNNING_MATE
-                            : ApplicationRequestTagLabelEnum::VOLUNTEER
-                        ]
-                    );
-                }
-            } elseif ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers()) {
-                $conditions[] = [
-                    'condition_type' => 'TextMerge',
-                    'op' => 'not',
-                    'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
-                    'value' => $campaign->getCity(),
-                ];
-
-                if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
-                    $conditions[] = $this->buildStaticSegmentCondition(
-                        $this->mailchimpObjectIdMapping->getApplicationRequestTagIds()[
-                        $filter->getContactOnlyRunningMates()
-                            ? ApplicationRequestTagLabelEnum::RUNNING_MATE
-                            : ApplicationRequestTagLabelEnum::VOLUNTEER
-                        ]
-                    );
-                }
-            }
-        }
-
-        return $conditions;
-    }
-
-    private function buildStaticSegmentCondition(int $externalId): array
-    {
-        return [
-            'condition_type' => 'StaticSegment',
-            'op' => 'static_is',
-            'field' => 'static_segment',
-            'value' => $externalId,
-        ];
-    }
-
-    private function needCheckSubscriptionType(AdherentMessageInterface $message): bool
-    {
-        if ($message instanceof MunicipalChiefAdherentMessage) {
-            return false;
-        }
-
-        return true;
-    }
-
     private function getListId(AdherentMessageInterface $message): string
     {
-        if (($filter = $message->getFilter()) && $filter instanceof MunicipalChiefFilter && $filter->getContactAdherents()) {
-            return $this->mailchimpObjectIdMapping->getMainListId();
+        if ($filter = $message->getFilter()) {
+            if ($filter instanceof MunicipalChiefFilter && $filter->getContactAdherents()) {
+                return $this->mailchimpObjectIdMapping->getMainListId();
+            }
+
+            if ($filter instanceof ReferentUserFilter && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())) {
+                return $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId();
+            }
         }
 
         return $this->mailchimpObjectIdMapping->getListIdByMessageType($message->getType());

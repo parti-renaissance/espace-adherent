@@ -221,6 +221,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         $this->resetFilter();
 
         $this->filter = $filter;
+        $this->filter->setMessage($this);
     }
 
     public function resetFilter(): void

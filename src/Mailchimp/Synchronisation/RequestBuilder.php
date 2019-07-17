@@ -34,6 +34,7 @@ class RequestBuilder
     private $takenForCity = false;
     private $mailchimpObjectIdMapping;
     private $isSubscribeRequest = true;
+    private $referentTagsCodes = [];
 
     public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
     {
@@ -69,17 +70,21 @@ class RequestBuilder
 
     public function updateFromApplicationRequest(ApplicationRequest $applicationRequest): self
     {
-        $activeTags = $applicationRequest instanceof VolunteerRequest ? ['Bénévole'] : ['Colistier'];
+        $activeTags = $applicationRequest instanceof VolunteerRequest ?
+            [ApplicationRequestTagLabelEnum::VOLUNTEER_LABEL]
+            : [ApplicationRequestTagLabelEnum::RUNNING_MATE_LABEL];
 
         if ($applicationRequest->isAdherent()) {
-            $activeTags[] = 'Adhérent';
+            $activeTags[] = ApplicationRequestTagLabelEnum::ADHERENT_LABEL;
         }
 
         return $this
             ->setEmail($applicationRequest->getEmailAddress())
+            ->setGender($applicationRequest->getGender())
             ->setFirstName($applicationRequest->getFirstName())
             ->setLastName($applicationRequest->getLastName())
             ->setFavoriteCities($applicationRequest->getFavoriteCities())
+            ->setReferentTagCodes($applicationRequest->getReferentTagsCodes())
             ->setTakenForCity($applicationRequest->getTakenForCity())
             ->setActiveTags($activeTags)
         ;
@@ -183,6 +188,13 @@ class RequestBuilder
         return $this;
     }
 
+    public function setReferentTagCodes(array $codes): self
+    {
+        $this->referentTagsCodes = $codes;
+
+        return $this;
+    }
+
     public function setTakenForCity(?string $takenForCity): self
     {
         $this->takenForCity = $takenForCity;
@@ -264,6 +276,10 @@ class RequestBuilder
 
         if ($this->favoriteCities) {
             $mergeFields[MemberRequest::MERGE_FIELD_FAVORITE_CITIES] = implode(',', $this->favoriteCities);
+        }
+
+        if ($this->referentTagsCodes) {
+            $mergeFields[MemberRequest::MERGE_FIELD_REFERENT_TAGS] = implode(',', $this->referentTagsCodes);
         }
 
         if (false !== $this->takenForCity) {

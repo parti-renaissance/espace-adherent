@@ -33,6 +33,11 @@
                             {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
                             {{ form_errors(form.firstName) }}
                         </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Genre</label>
+                            {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                        </div>
                     </div>
                 </div>
 

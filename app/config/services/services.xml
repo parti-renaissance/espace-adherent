@@ -586,8 +586,7 @@
         </service>
 
         <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
-        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" shared="false"/>
-        <service id="AppBundle\Mailchimp\Campaign\SegmentConditionsBuilder" shared="false"/>
+        <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />
 

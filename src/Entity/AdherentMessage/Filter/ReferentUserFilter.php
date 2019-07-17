@@ -126,6 +126,20 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
      */
     private $registeredUntil;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $contactOnlyVolunteers = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $contactOnlyRunningMates = false;
+
     public function __construct(array $referentTags)
     {
         $this->referentTags = new ArrayCollection();
@@ -298,5 +312,25 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
     public function setRegisteredUntil(?\DateTime $registeredUntil): void
     {
         $this->registeredUntil = $registeredUntil;
+    }
+
+    public function getContactOnlyVolunteers(): bool
+    {
+        return $this->contactOnlyVolunteers;
+    }
+
+    public function setContactOnlyVolunteers(bool $contactOnlyVolunteers): void
+    {
+        $this->contactOnlyVolunteers = $contactOnlyVolunteers;
+    }
+
+    public function getContactOnlyRunningMates(): bool
+    {
+        return $this->contactOnlyRunningMates;
+    }
+
+    public function setContactOnlyRunningMates(bool $contactOnlyRunningMates): void
+    {
+        $this->contactOnlyRunningMates = $contactOnlyRunningMates;
     }
 }

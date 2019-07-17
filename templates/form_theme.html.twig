@@ -239,7 +239,15 @@
     {% endfor -%}
 {% endblock %}
 
+{% block _municipal_chief_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
 {% block _referent_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
+{% block choice_tab_widget %}
     <div {{ block('widget_container_attributes') }}>
         {%- for child in form %}
             <div class="filter__radio__tab">

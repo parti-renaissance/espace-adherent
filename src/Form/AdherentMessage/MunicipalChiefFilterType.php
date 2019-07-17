@@ -3,6 +3,7 @@
 namespace AppBundle\Form\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use AppBundle\Form\GenderType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,6 +16,11 @@ class MunicipalChiefFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('gender', GenderType::class, [
+                'placeholder' => 'Tous',
+                'expanded' => true,
+                'required' => false,
+            ])
             ->add('firstName', TextType::class, ['required' => false])
             ->add('lastName', TextType::class, ['required' => false])
             ->add('cities', ChoiceType::class, [
