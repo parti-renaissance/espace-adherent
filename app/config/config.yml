@@ -112,6 +112,7 @@ doctrine:
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
             geo_point:      AppBundle\Doctrine\DBAL\Types\GeoPointType
             geometry:       CrEOF\Spatial\DBAL\Types\GeometryType
+            point:          CrEOF\Spatial\DBAL\Types\Geometry\PointType
             polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
             multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
     orm:
@@ -141,7 +142,9 @@ doctrine:
         dql:
             # datetime_functions:
             #     year_month: DoctrineExtensions\Query\PostgreSQL\YearMonth
-            # numeric_functions:
+            numeric_functions:
+                st_distance_sphere: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistanceSphere
+                st_point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STPoint
             #     acos: DoctrineExtensions\Query\PostgreSQL\Acos
             #     cos: DoctrineExtensions\Query\PostgreSQL\Cos
             #     radians: DoctrineExtensions\Query\PostgreSQL\Radians

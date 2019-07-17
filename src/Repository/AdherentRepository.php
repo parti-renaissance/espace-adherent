@@ -336,15 +336,15 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         $qb->andWhere($distance)
-            ->setParameter('distance_max', $radius)
+            ->setParameter('distance_max', $radius * 1000)
             ->setParameter('citizenProjectCreationEmailSubscriptionRadius', CitizenProjectNotificationDistance::DISTANCE_ALL)
         ;
 
         $having = $qb->expr()->orX();
-        $having->add($this->getNearbyExpression().' <= n.citizenProjectCreationEmailSubscriptionRadius')
+        $having->add($this->getNearbyExpression().' <= n.citizenProjectCreationEmailSubscriptionRadius * 1000')
             ->add('n.citizenProjectCreationEmailSubscriptionRadius = :acceptAllNotification')
         ;
-        $qb->having($having)
+        $qb->andWhere($having)
             ->setParameter('acceptAllNotification', CitizenProjectNotificationDistance::DISTANCE_ALL)
         ;
 
