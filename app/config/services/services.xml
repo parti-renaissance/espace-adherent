@@ -645,5 +645,9 @@
         <service id="AppBundle\Validator\ChezVous\MeasurePayloadValidator" />
 
         <service id="AppBundle\EventListener\AdministratorExportHistoryListener" />
+
+        <service id="AppBundle\Doctrine\Migrations\FixDefaultSchemaListener">
+            <tag name="doctrine.event_subscriber" connection="default"/>
+        </service>
     </services>
 </container>

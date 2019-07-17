@@ -2,14 +2,14 @@
 
 namespace Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-final class Version20190717103041 extends AbstractMigration
+final class Version20190717131102 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE EXTENSION postgis');
+        $this->addSql('CREATE EXTENSION IF NOT EXISTS postgis');
         $this->addSql('CREATE SEQUENCE donation_transactions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE medias_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE districts_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -1057,7 +1057,6 @@ final class Version20190717103041 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE adherents DROP CONSTRAINT FK_562C7DA3EA9FDD75');
         $this->addSql('ALTER TABLE referent DROP CONSTRAINT FK_FE9AAC6CEA9FDD75');
         $this->addSql('ALTER TABLE pages DROP CONSTRAINT FK_2074E575EA9FDD75');
