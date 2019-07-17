@@ -1,20 +1,14 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
-final class Version20190715144925 extends AbstractMigration
+final class Version20190717103041 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-
         $this->addSql('CREATE EXTENSION postgis');
         $this->addSql('CREATE SEQUENCE donation_transactions_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE medias_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -1061,11 +1055,8 @@ final class Version20190715144925 extends AbstractMigration
         $this->addSql('ALTER TABLE election_rounds ADD CONSTRAINT FK_37C02EA0A708DAFF FOREIGN KEY (election_id) REFERENCES elections (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE adherents DROP CONSTRAINT FK_562C7DA3EA9FDD75');
         $this->addSql('ALTER TABLE referent DROP CONSTRAINT FK_FE9AAC6CEA9FDD75');
