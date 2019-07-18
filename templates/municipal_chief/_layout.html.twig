@@ -37,6 +37,10 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
+                            <li class="{{ is_active_route(app.request, 'app_municipal_chief_home') ? 'active' }}">
+                                <a href="{{ path('app_municipal_chief_home') }}">Accueil</a>
+                            </li>
+
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_candidate_*') ? 'active' }}">
                                 <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Candidats</a>
                             </li>

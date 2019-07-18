@@ -23,6 +23,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MunicipalChiefController extends Controller
 {
     /**
+     * @Route(name="_home", methods={"GET"})
+     */
+    public function homeAction(): Response
+    {
+        return $this->render('municipal_chief/home.html.twig');
+    }
+
+    /**
      * @Route("candidature-colistiers/{uuid}/ajouter-a-mon-equipe", name="_running_mate_add_to_my_team", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      * @Route("candidature-benevoles/{uuid}/ajouter-a-mon-equipe", name="_volunteer_add_to_my_team", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      */
