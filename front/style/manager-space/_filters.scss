@@ -117,6 +117,16 @@
                 color: $neutral-grey;
                 font-weight: normal;
             }
+
+            &:disabled {
+                background-color: #EEF2F7;
+                color: rgba(123,136,155,0.5);
+                cursor: not-allowed;
+
+                &::placeholder {
+                    color: rgba(123,136,155,0.5) !important;
+                }
+            }
         }
 
         .filter__compl-info {
@@ -183,6 +193,18 @@
 
             label {
                 margin-bottom: 0;
+            }
+        }
+
+        .form__checkbox {
+
+            input:disabled + .form__label {
+                color: rgba(123,136,155,0.5);
+                cursor: not-allowed;
+
+                &:before {
+                    background-color: #EEF2F7;
+                }
             }
         }
 
