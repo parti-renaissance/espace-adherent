@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-chef-municipal/", name="app_municipal_chief")
+ * @Route(path="/espace-municipales-2020/", name="app_municipal_chief")
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */
