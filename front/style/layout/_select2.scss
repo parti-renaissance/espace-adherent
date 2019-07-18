@@ -128,6 +128,22 @@
                     float: none;
                 }
             }
+
+            // disabled
+            &.select2-container--disabled {
+                .select2-selection {
+                    &--multiple {
+                        background-color: #EEF2F7;
+                        cursor: not-allowed;
+                        color: rgba(123,136,155,0.5);
+
+                        input::placeholder {
+                            color: rgba(123,136,155,0.5) !important;
+                        }
+
+                    }
+                }
+            }
         }
 
     }
