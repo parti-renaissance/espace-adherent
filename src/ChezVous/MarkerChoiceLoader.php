@@ -4,12 +4,14 @@ namespace AppBundle\ChezVous;
 
 use AppBundle\ChezVous\Marker\DedoublementClasses;
 use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
+use AppBundle\ChezVous\Marker\MissionBern;
 
 class MarkerChoiceLoader
 {
     private const TYPES = [
         DedoublementClasses::class,
         MaisonServiceAccueilPublic::class,
+        MissionBern::class,
     ];
 
     public static function getTypeChoices(): array

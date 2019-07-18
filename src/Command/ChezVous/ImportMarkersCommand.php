@@ -3,6 +3,8 @@
 namespace AppBundle\Command\ChezVous;
 
 use AppBundle\ChezVous\Marker\DedoublementClasses;
+use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
+use AppBundle\ChezVous\Marker\MissionBern;
 use AppBundle\ChezVous\MarkerChoiceLoader;
 use AppBundle\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
 use AppBundle\Entity\ChezVous\City;
@@ -121,7 +123,9 @@ class ImportMarkersCommand extends AbstractImportCommand
     {
         switch ($type) {
             case DedoublementClasses::getType():
-                $this->loadGeocodedMarker(DedoublementClasses::class, $metadata);
+            case MissionBern::getType():
+            case MaisonServiceAccueilPublic::getType():
+                $this->loadGeocodedMarker($type, $metadata);
 
                 break;
             default:
@@ -134,7 +138,6 @@ class ImportMarkersCommand extends AbstractImportCommand
         $inseeCode = $metadata['insee_code'];
         $latitude = $metadata['lat'];
         $longitude = $metadata['long'];
-        $totalCpCe1 = $metadata['total_cp_ce1'];
 
         if (empty($inseeCode)) {
             return;
@@ -151,6 +154,8 @@ class ImportMarkersCommand extends AbstractImportCommand
         $this->em->persist($markerClass::createMarker($city, $latitude, $longitude));
 
         if (DedoublementClasses::class === $markerClass) {
+            $totalCpCe1 = $metadata['total_cp_ce1'];
+
             if ($measure = $this->findMeasure($city, MeasureDedoublementClasses::getType())) {
                 $measure->setPayload(MeasureDedoublementClasses::createPayload($totalCpCe1));
 
