@@ -3,7 +3,6 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\ElectedRepresentativesRegister;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\ElectedRepresentativesRegisterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -19,27 +18,22 @@ class ImportElectedRepresentativesRegisterCommand extends Command
 {
     protected static $defaultName = 'app:elected-representatives-register:import';
 
-    private const BATCH_SIZE = 500;
-
-    private $csvSeparator;
+    private const BATCH_SIZE = 1000;
 
     /** @var SymfonyStyle */
     private $io;
 
     private $manager;
     private $electedRepresentativesRepository;
-    private $adherentRepository;
     private $storage;
 
     public function __construct(
         EntityManagerInterface $manager,
         ElectedRepresentativesRegisterRepository $electedRepresentativesRepository,
-        AdherentRepository $adherentRepository,
         Filesystem $storage
     ) {
         $this->manager = $manager;
         $this->electedRepresentativesRepository = $electedRepresentativesRepository;
-        $this->adherentRepository = $adherentRepository;
         $this->storage = $storage;
 
         parent::__construct();
@@ -61,7 +55,6 @@ class ImportElectedRepresentativesRegisterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('file');
-        $this->csvSeparator = $input->getOption('separator');
 
         if (!$this->io->confirm('Clear all data on table ?', false)) {
             $this->io->success('import canceled');
@@ -101,16 +94,10 @@ class ImportElectedRepresentativesRegisterCommand extends Command
         foreach ($csv as $row) {
             $birthDate = new \DateTime($row['date_naissance']);
 
-            $adherent = $this->adherentRepository->findOneBy([
-                'lastName' => $row['nom'],
-                'firstName' => $row['prenom'],
-                'birthdate' => $birthDate,
-            ]);
-
             $electedRepresentative = ElectedRepresentativesRegister::create(
                 (int) $row['department_id'] ?? null,
                 (int) $row['commune_id'] ?? null,
-                $adherent,
+                null,
                 $row['type_elu'],
                 $row['dpt'],
                 $row['dpt_nom'],
@@ -143,7 +130,7 @@ class ImportElectedRepresentativesRegisterCommand extends Command
                 $row['infos_supp'],
                 $row['uuid'],
                 (int) $row['nb_participation_events'] ?? null,
-                $adherent ? $adherent->getUuid() : null
+                null
             );
 
             $this->manager->persist($electedRepresentative);
