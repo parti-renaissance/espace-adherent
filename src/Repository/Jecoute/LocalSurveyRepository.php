@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,38 +32,47 @@ class LocalSurveyRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllByTags(array $tags): array
+    {
+        $qb = $this
+            ->createQueryBuilder('survey')
+            ->addSelect('questions')
+            ->innerJoin('survey.questions', 'questions')
+        ;
+
+        return $qb
+            ->andWhere($this->createOrExpressionForSurveyTags($qb, $tags))
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @param Adherent|UserInterface $adherent
      */
     public function createSurveysForAdherentQueryBuilder(Adherent $adherent): QueryBuilder
     {
-        return $this
+        $qb = $this
             ->createQueryBuilder('survey')
             ->addSelect('questions')
             ->innerJoin('survey.questions', 'questions')
-            ->innerJoin('survey.author', 'author')
-            ->innerJoin('author.managedArea', 'managedArea')
-            ->innerJoin('managedArea.tags', 'tags')
-            ->andWhere('tags.code IN (:codes)')
-            ->setParameter('codes', $adherent->getReferentTagsCodes())
+        ;
+
+        return $qb
+            ->where($this->createOrExpressionForSurveyTags($qb, $adherent->getReferentTagCodes()))
             ->andWhere('survey.published = true')
         ;
     }
 
-    /**
-     * @return LocalSurvey[]
-     */
-    public function findAllByAuthor(Adherent $author): array
+    public function createOrExpressionForSurveyTags(QueryBuilder $qb, array $tags): Orx
     {
-        return $this
-            ->createQueryBuilder('survey')
-            ->addSelect('questions')
-            ->innerJoin('survey.questions', 'questions')
-            ->andWhere('survey.author = :author')
-            ->andWhere('survey INSTANCE OF '.LocalSurvey::class)
-            ->setParameter('author', $author)
-            ->getQuery()
-            ->getResult()
-        ;
+        $expression = new Orx();
+
+        foreach ($tags as $key => $tag) {
+            $expression->add("FIND_IN_SET(:tags_$key, survey.tags) > 0");
+            $qb->setParameter("tags_$key", $tag);
+        }
+
+        return $expression;
     }
 }

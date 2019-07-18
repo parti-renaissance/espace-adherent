@@ -112,7 +112,7 @@ Feature:
     When I am on "/espace-referent/jecoute"
     And I should see "Questionnaires locaux"
     And I wait until I see "Questionnaire numéro 1"
-    And I should not see "Un deuxième questionnaire"
+    And I should see "Un deuxième questionnaire"
 
     Given I click the "survey-edit-0" element
     Then I should see "Nom du questionnaire"
