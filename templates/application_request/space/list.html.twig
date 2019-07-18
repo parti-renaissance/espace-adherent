@@ -18,9 +18,11 @@
     </div>
 
     {% block help_message_block %}
-        <div class="alert alert--tips b__nudge--bottom-60">
-            Cliquez sur le bouton <i>Action</i> pour consulter le détail d'un candidat, le taguer et/ou l'ajouter à votre équipe
-        </div>
+        {% if space_name == 'municipal_chief' %}
+            <div class="alert alert--tips b__nudge--bottom-60">
+                Cliquez sur le bouton <i>Action</i> pour consulter le détail d'un candidat, le taguer et/ou l'ajouter à votre équipe
+            </div>
+        {% endif %}
     {% endblock %}
 
     <div id="datagrid"></div>

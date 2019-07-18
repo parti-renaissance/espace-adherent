@@ -67,17 +67,36 @@
                             {% set team_link_url = path("app_municipal_chief_#{request_type}_add_to_my_team", {uuid: request.uuid}|merge(target_sub_space == 'my_team' ? {mtt: true} : {})) %}
                         {% endif %}
 
-                        {% set menu = team_link_url ? [{
+                        {% set menu = [
+                            {
+                                label: 'Plus d\'infos',
+                                url: path("app_municipal_chief_candidate_#{request_type}_detail", {uuid: request.uuid})
+                            },
+                            {
+                                label: 'Taguer',
+                                url: path("app_municipal_chief_candidate_#{request_type}_tags", {uuid: request.uuid})
+                            }
+                        ] %}
+
+                        {% if request_type == 'running_mate' %}
+                            {% set menu = menu|merge([{
+                                label: 'Télécharger le CV',
+                                url: path('asset_url', {path: request.pathWithDirectory, mime_type: 'application/pdf'}),
+                                targetBlank: true
+                            }]) %}
+                        {% endif %}
+
+                        {% set menu = menu|merge(team_link_url ? [{
                             label: team_link_label,
                             url: team_link_url,
                             className: "row-action text--dark link--no-decor #{team_link_class}"
-                        }] : [] %}
+                        }] : []) %}
 
-                        {% include "application_request/space/_#{request_type}_row.js.twig" with {
-                            show_route_name: "app_municipal_chief_candidate_#{request_type}_detail",
-                            edit_route_name: "app_municipal_chief_candidate_#{request_type}_tags",
+                        {% include "application_request/space/_application_request_row.js.twig" with {
                             menu: menu,
                             columns: {
+                                tags: request.tags ? '<span>' ~ request.tags|join('</span><span>') ~ '</span>',
+                                updatedAt: request.updatedAt|date('d/m/Y à H:i'),
                                 inMyTeam: request.takenForCity in app.user.municipalChiefManagedArea.codes ?
                                     '<span class="status status__1">Oui</span>'
                                     : (request.takenForCity ?
