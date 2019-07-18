@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-chef-municipal", name="app_municipal_chief_event_manager_")
+ * @Route(path="/espace-municipales-2020", name="app_municipal_chief_event_manager_")
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */

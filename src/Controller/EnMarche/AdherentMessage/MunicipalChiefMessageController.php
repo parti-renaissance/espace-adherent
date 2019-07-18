@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-chef-municipal/messagerie", name="app_message_municipal_chief_")
+ * @Route(path="/espace-municipales-2020/messagerie", name="app_message_municipal_chief_")
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */

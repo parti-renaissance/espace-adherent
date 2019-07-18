@@ -12,7 +12,7 @@ Feature:
   @javascript
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
-    When I am on "/espace-chef-municipal/candidature-colistiers"
+    When I am on "/espace-municipales-2020/candidature-colistiers"
     Then I should see "Vous gérez : Lille, Oignies, Seclin"
     And I should see 4 "tr" in the 1st "table.datagrid__table-manager tbody"
     And I should see "Camphin-en-Carembault, Lille"
@@ -34,7 +34,7 @@ Feature:
     And I should see "Quel sont les atouts de votre parcours professionnel ?"
 
     When I follow "⟵ Retour"
-    Then I should be on "/espace-chef-municipal/candidature-colistiers"
+    Then I should be on "/espace-municipales-2020/candidature-colistiers"
 
     When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
@@ -49,7 +49,7 @@ Feature:
   @javascript
   Scenario Outline: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
-    When I am on "/espace-chef-municipal/candidature-colistiers"
+    When I am on "/espace-municipales-2020/candidature-colistiers"
     Then I should see "<managed-cities>"
     And I should see 2 "tr" in the 1st "table.datagrid__table-manager tbody"
     And I should see "<cities-tr-1>"
@@ -57,10 +57,10 @@ Feature:
     And I should not see "<missing-city>"
     And I should not see "<missing-tag>"
 
-    When I am on "/espace-chef-municipal/candidature-colistiers/<forbidden-uuid>"
+    When I am on "/espace-municipales-2020/candidature-colistiers/<forbidden-uuid>"
     Then I should see "403"
 
-    When I am on "/espace-chef-municipal/candidature-colistiers/<forbidden-uuid>/editer-tags"
+    When I am on "/espace-municipales-2020/candidature-colistiers/<forbidden-uuid>/editer-tags"
     Then I should see "403"
 
     Examples:
@@ -71,7 +71,7 @@ Feature:
   @javascript
   Scenario: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
-    When I am on "/espace-chef-municipal/candidature-benevoles"
+    When I am on "/espace-municipales-2020/candidature-benevoles"
     Then I should see "Vous gérez : Lille, Oignies, Seclin"
     And I should see 4 "tr" in the 1st "table.datagrid__table-manager tbody"
     And I should see "Camphin-en-Carembault, Lille"
@@ -90,7 +90,7 @@ Feature:
     And I should see "Détails"
 
     When I follow "⟵ Retour"
-    Then I should be on "/espace-chef-municipal/candidature-benevoles"
+    Then I should be on "/espace-municipales-2020/candidature-benevoles"
 
     When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
@@ -105,7 +105,7 @@ Feature:
   @javascript
   Scenario Outline: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
-    When I am on "/espace-chef-municipal/candidature-benevoles"
+    When I am on "/espace-municipales-2020/candidature-benevoles"
     Then I should see "<managed-cities>"
     And I should see 2 "tr" in the 1st "table.datagrid__table-manager tbody"
     And I should see "<cities-tr-1>"
@@ -113,10 +113,10 @@ Feature:
     And I should not see "<missing-city>"
     And I should not see "<missing-tag>"
 
-    When I am on "/espace-chef-municipal/candidature-benevoles/<forbidden-uuid>"
+    When I am on "/espace-municipales-2020/candidature-benevoles/<forbidden-uuid>"
     Then I should see "403"
 
-    When I am on "/espace-chef-municipal/candidature-benevoles/<forbidden-uuid>/editer-tags"
+    When I am on "/espace-municipales-2020/candidature-benevoles/<forbidden-uuid>/editer-tags"
     Then I should see "403"
 
     Examples:
@@ -146,12 +146,12 @@ Feature:
 
     Examples:
       | url                                           |
-      | /espace-chef-municipal/candidature-benevoles  |
-      | /espace-chef-municipal/candidature-colistiers |
+      | /espace-municipales-2020/candidature-benevoles  |
+      | /espace-municipales-2020/candidature-colistiers |
 
   Scenario Outline: I list adherent living in the cities I manage
     Given I am logged as "<user>"
-    And I am on "/espace-chef-municipal/adherents"
+    And I am on "/espace-municipales-2020/adherents"
     And I wait 10 seconds until I see "Identité"
     Then I should see "<shouldSee>"
     And I should not see "<shouldNotSee>"
