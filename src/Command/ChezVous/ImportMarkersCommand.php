@@ -124,9 +124,15 @@ class ImportMarkersCommand extends AbstractImportCommand
     {
         switch ($type) {
             case DedoublementClasses::getType():
+                $this->loadGeocodedMarker(DedoublementClasses::class, $metadata);
+
+                break;
             case MissionBern::getType():
+                $this->loadGeocodedMarker(MissionBern::class, $metadata);
+
+                break;
             case MaisonServiceAccueilPublic::getType():
-                $this->loadGeocodedMarker($type, $metadata);
+                $this->loadGeocodedMarker(MaisonServiceAccueilPublic::class, $metadata);
 
                 break;
         }
