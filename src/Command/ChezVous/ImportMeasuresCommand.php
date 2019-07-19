@@ -169,8 +169,6 @@ class ImportMeasuresCommand extends AbstractImportCommand
                 $this->loadMeasureSuppressionTaxeHabitation($metadata);
 
                 break;
-            default:
-                break;
         }
     }
 

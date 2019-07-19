@@ -129,8 +129,6 @@ class ImportMarkersCommand extends AbstractImportCommand
                 $this->loadGeocodedMarker($type, $metadata);
 
                 break;
-            default:
-                break;
         }
     }
 
@@ -168,19 +166,19 @@ class ImportMarkersCommand extends AbstractImportCommand
 
                 break;
             case MissionBern::class:
-                $montant = $metadata['montant'];
                 $link = $metadata['link'];
+                $montant = \intval(str_replace(',', '', $metadata['montant']));
+
+                $montant = $montant > 200 ? $montant : null;
 
                 if ($measure = $this->findMeasure($city, MeasureMissionBern::getType())) {
-                    $measure->setPayload(MeasureMissionBern::createPayload($montant, $link));
+                    $measure->setPayload(MeasureMissionBern::createPayload($link, $montant));
 
                     break;
                 }
 
-                $this->em->persist(MeasureMissionBern::create($city, $montant, $link));
+                $this->em->persist(MeasureMissionBern::create($city, $link, $montant));
 
-                break;
-            default:
                 break;
         }
     }
