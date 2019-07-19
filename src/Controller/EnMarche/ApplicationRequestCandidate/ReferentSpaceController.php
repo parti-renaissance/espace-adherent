@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
 
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferentSpaceController extends AbstractApplicationRequestController
 {
-    use CanaryControllerTrait;
-
     private const SPACE_NAME = 'referent';
 
     protected function getApplicationRequests(ApplicationRequestRepository $repository, string $type): array
@@ -31,8 +28,6 @@ class ReferentSpaceController extends AbstractApplicationRequestController
 
     protected function checkAccess(ApplicationRequest $request = null): void
     {
-        $this->disableInProduction();
-
         // Block access to the individual application request
         if ($request) {
             throw $this->createNotFoundException();
