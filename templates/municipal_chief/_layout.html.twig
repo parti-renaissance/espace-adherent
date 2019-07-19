@@ -20,10 +20,6 @@
                             <p class="report">🐛 Bug ? Nouveau besoin ?
                                 <a href="mailto:techsupport&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
                             </p>
-                            <a class="highlight_url" href="https://chezvous.en-marche.fr/" target="_blank">
-                                Ce qui a changé près de chez vous →
-                                <span></span>
-                            </a>
                         </div>
                     </div>
                     <div class="second-section">
@@ -38,7 +34,7 @@
                     <nav class="manager-header__menu">
                         <ul>
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_home') ? 'active' }}">
-                                <a href="{{ path('app_municipal_chief_home') }}">Accueil</a>
+                                <a href="{{ path('app_municipal_chief_home') }}">Vue d'ensemble</a>
                             </li>
 
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_candidate_*') ? 'active' }}">
@@ -57,12 +53,8 @@
                                 <a href="{{ path('app_municipal_chief_my_team_running_mate_list') }}">Mon équipe</a>
                             </li>
 
-                            <li class="menu-right {{ is_active_route(app.request, 'app_message_municipal_chief_*') ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, 'app_message_municipal_chief_*') ? 'active' }}">
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
-                            </li>
-
-                            <li>
-                                <a href="{{ path('app_formation_home') }}">Je me forme</a>
                             </li>
                         </ul>
                     </nav>

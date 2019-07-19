@@ -6,5 +6,82 @@
 {% endblock %}
 
 {% block municipal_chief_content %}
-    Bonsoir
+    <div class="manager-overview">
+        <div class="manager-overview__row">
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Mes contacts</span>
+                <span class="manager-overview__case--value">48</span>
+                <h1 class="manager-overview__case--title">Candidatures</h1>
+                <footer class="manager-overview__case--footer">
+                    <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}" class="btn btn btn--ghosting--blue">Analyser</a>
+                </footer>
+            </div>
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Mes contacts</span>
+                <span class="manager-overview__case--value">48</span>
+                <h1 class="manager-overview__case--title">Membres d'équipe</h1>
+                <footer class="manager-overview__case--footer">
+                    <a href="{{ path('app_municipal_chief_my_team_running_mate_list') }}" class="btn btn btn--ghosting--blue">Gérer</a>
+                </footer>
+            </div>
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                <span class="manager-overview__case--value">48</span>
+                <h1 class="manager-overview__case--title">Événements</h1>
+                <footer class="manager-overview__case--footer">
+                    <a href="{{ path('app_municipal_chief_event_manager_events') }}" class="btn btn btn--ghosting--blue">Voir</a>
+                </footer>
+            </div>
+        </div>
+
+        <!-- If no e-mail has been sent : disabled this row -->
+        <div class="manager-overview__row">
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                <h1 class="manager-overview__case--title">Statistique du dernier e-mail : <a href="" class="link--no-decor text--blue--dark">Une bouteille à la Mer (de guitz)</a></h1>
+                <div class="manager-overview__case--data-row b__nudge--top-large">
+                    <div class="el">
+                        <div class="text--data-label">Envoyé à</div>
+                        <div class="b__nudge--top-5">
+                            <span class="text--data-value">0</span>
+                            <span class="text--dark">contacts</span>
+                        </div>
+                    </div>
+                    <div class="el">
+                        <div class="text--data-label">Taux d'ouverture</div>
+                        <div class="b__nudge--top-5">
+                            <span class="text--data-value">0%</span>
+                            <span class="text--dark">(0)</span>
+                        </div>
+                    </div>
+                    <div class="el">
+                        <div class="text--data-label">Taux de clique</div>
+                        <div class="b__nudge--top-5">
+                            <span class="text--data-value">0%</span>
+                            <span class="text--dark">(0)</span>
+                        </div>
+                    </div>
+                    <div class="el">
+                        <div class="text--data-label">Taux de désabonnement</div>
+                        <div class="b__nudge--top-5">
+                            <span class="text--data-value">0%</span>
+                            <span class="text--dark">(0)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="manager-overview__row">
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                <h1 class="manager-overview__case--title">« Ce qui a changé près de chez vous »</h1>
+                <p class="manager-overview__case--baseline">Les 2 ans du quinquennat</p>
+                <footer class="manager-overview__case--footer">
+                    <a href="https://chezvous.en-marche.fr/" target="_blank" class="btn btn btn--ghosting--blue">Consulter</a>
+                </footer>
+            </div>
+            <div></div>
+        </div>
+    </div>
 {% endblock %}
