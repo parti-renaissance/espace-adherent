@@ -37,6 +37,7 @@ unregistration_reasons.other: Autre
 #
 chez_vous.marker.type.maison_service_accueil_public: Nouvelle maison de service et d'accueil au public
 chez_vous.marker.type.dedoublement_classes: Dédoublement de classe
+chez_vous.marker.type.mission_bern: Mission Bern
 
 chez_vous.measure.type.dedoublement_classes: Dédoublement de classes
 chez_vous.measure.type.suppression_taxe_habitation: Suppression de la taxe d’habitation
@@ -50,3 +51,4 @@ chez_vous.measure.type.quartier_reconquete_republicaine: Création d'un quartier
 chez_vous.measure.type.cheque_energie: Chèque énergie
 chez_vous.measure.type.prime_conversion_automobile: Prime à la conversion automobile
 chez_vous.measure.type.conversion_surface_agricole_bio: Conversion de la surface agricole en Bio
+chez_vous.measure.type.mission_bern: Mission Bern

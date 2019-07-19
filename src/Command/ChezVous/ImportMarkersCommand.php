@@ -7,6 +7,7 @@ use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
 use AppBundle\ChezVous\Marker\MissionBern;
 use AppBundle\ChezVous\MarkerChoiceLoader;
 use AppBundle\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
+use AppBundle\ChezVous\Measure\MissionBern as MeasureMissionBern;
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
 use AppBundle\Repository\ChezVous\CityRepository;
@@ -153,16 +154,34 @@ class ImportMarkersCommand extends AbstractImportCommand
 
         $this->em->persist($markerClass::createMarker($city, $latitude, $longitude));
 
-        if (DedoublementClasses::class === $markerClass) {
-            $totalCpCe1 = $metadata['total_cp_ce1'];
+        switch ($markerClass) {
+            case DedoublementClasses::class:
+                $totalCpCe1 = $metadata['total_cp_ce1'];
 
-            if ($measure = $this->findMeasure($city, MeasureDedoublementClasses::getType())) {
-                $measure->setPayload(MeasureDedoublementClasses::createPayload($totalCpCe1));
+                if ($measure = $this->findMeasure($city, MeasureDedoublementClasses::getType())) {
+                    $measure->setPayload(MeasureDedoublementClasses::createPayload($totalCpCe1));
 
-                return;
-            }
+                    break;
+                }
 
-            $this->em->persist(MeasureDedoublementClasses::create($city, $totalCpCe1));
+                $this->em->persist(MeasureDedoublementClasses::create($city, $totalCpCe1));
+
+                break;
+            case MissionBern::class:
+                $montant = $metadata['montant'];
+                $link = $metadata['link'];
+
+                if ($measure = $this->findMeasure($city, MeasureMissionBern::getType())) {
+                    $measure->setPayload(MeasureMissionBern::createPayload($montant, $link));
+
+                    break;
+                }
+
+                $this->em->persist(MeasureMissionBern::create($city, $montant, $link));
+
+                break;
+            default:
+                break;
         }
     }
 
