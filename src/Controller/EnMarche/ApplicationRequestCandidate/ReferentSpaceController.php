@@ -33,6 +33,11 @@ class ReferentSpaceController extends AbstractApplicationRequestController
     {
         $this->disableInProduction();
 
+        // Block access to the individual application request
+        if ($request) {
+            throw $this->createNotFoundException();
+        }
+
         if (
             array_filter(
                 $this->getUser()->getManagedAreaTagCodes(),

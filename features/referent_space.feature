@@ -45,32 +45,6 @@ Feature:
     And I should see "Seclin"
     And I should see "Oui"
 
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
-    And I follow "Plus d'infos"
-    Then I should see "⟵ Retour"
-    And I should see "Quelle est votre profession ?"
-    And I should see "Êtes-vous engagé(e) dans une/des association(s) locale(s) ?"
-    And I should see "Détails"
-    And I should see "Avez-vous déjà eu un engagement militant ?"
-    And I should see "Détails"
-    And I should see "Avez-vous déjà exercé un mandat ?"
-    And I should see "Détails"
-    And I should see "Quel projet pour votre commune souhaiteriez-vous contribuer à porter ?"
-    And I should see "Quel sont les atouts de votre parcours professionnel ?"
-
-    When I follow "⟵ Retour"
-    Then I should be on "/espace-referent/candidature-colistiers"
-
-    When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
-    And I follow "Taguer"
-    Then I should see "Tags de candidature"
-
-    When I select "4" from "application_request_tags_tags"
-    And I press "Enregistrer"
-    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
-
   @javascript
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
     Given I am logged as "referent@en-marche-dev.fr"
@@ -81,30 +55,6 @@ Feature:
     And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
     And I should see "Seclin"
     And I should see "Oui"
-
-    When I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
-    And I follow "Plus d'infos"
-    Then I should see "⟵ Retour"
-    And I should see "Vos thématique(s) de prédilection Sécurité Environnement"
-    And I should see "Détails thématiques “Autres” Thanos destruction"
-    And I should see "Disposez-vous de compétences techniques spécifiques ? Communication Management Animation Autre"
-    And I should see "Avez-vous déjà participé à une campagne ? Non"
-    And I should see "Détails"
-    And I should see "Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ? Non"
-    And I should see "Détails"
-
-    When I follow "⟵ Retour"
-    Then I should be on "/espace-referent/candidature-benevoles"
-
-    When I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody > tr td div.action-menu-oval"
-    And I follow "Taguer"
-    Then I should see "Tags de candidature"
-
-    When I select "4" from "application_request_tags_tags"
-    And I press "Enregistrer"
-    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I should see "Tag 4" in the "table.datagrid__table-manager tbody > tr td.municipal-candidate-tags" element
 
   @javascript
   Scenario: I can see the local surveys list, edit a survey and show the statistics
