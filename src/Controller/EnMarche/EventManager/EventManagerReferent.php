@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\EventManager;
 
+use AppBundle\Entity\Event;
 use AppBundle\Event\EventManagerSpaceEnum;
 use AppBundle\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -14,17 +15,29 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EventManagerReferent extends AbstractEventManagerController
 {
+    private $repository;
+
+    public function __construct(EventRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     protected function getSpaceType(): string
     {
         return EventManagerSpaceEnum::REFERENT;
     }
 
-    protected function getEvents(EventRepository $eventRepository, string $type = null): array
+    protected function getEvents(string $type = null): array
     {
         if (AbstractEventManagerController::EVENTS_TYPE_ALL === $type) {
-            return $eventRepository->findManagedBy($this->getUser());
-        } else {
-            return $eventRepository->findEventsByOrganizer($this->getUser());
+            return $this->repository->findManagedBy($this->getUser());
         }
+
+        return $this->repository->findEventsByOrganizer($this->getUser());
+    }
+
+    protected function getEventClassName(): string
+    {
+        return Event::class;
     }
 }
