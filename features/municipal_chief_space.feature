@@ -140,6 +140,7 @@ Feature:
     And I am logged as "municipal-chief@en-marche-dev.fr"
     And I am on "<url>"
     And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
+    And I press "OK"
     And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     Then I should see "Déjà pris dans une autre ville" in the "table.datagrid__table-manager tbody tr" element
 
