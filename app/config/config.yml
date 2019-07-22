@@ -103,7 +103,7 @@ doctrine:
         user:             "%env(DATABASE_USER)%"
         password:         "%env(DATABASE_PASSWORD)%"
         unix_socket:      "%env(DATABASE_SOCKET)%"
-        server_version:   "11.1"
+        server_version:   "9.6.11"
         options:
             1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
         schema_filter: '#^(?!(ideas_workshop_idea_notification_dates|public|topology|tiger))#'
