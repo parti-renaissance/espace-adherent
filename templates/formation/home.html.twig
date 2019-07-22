@@ -15,11 +15,13 @@
         </div>
     </div>
 
-    {{ page.content|raw }}
+    <div class="espace-formation__intro">
+        {{ page.content|raw }}
+    </div>
 
     {% for path in paths %}
         <div class="espace-formation__sct">
-            <div class="espace-formation__intro b__nudge--top-60 b__nudge--bottom-60">
+            <div class="espace-formation__descr b__nudge--top-60 b__nudge--bottom-60">
                 <h2 class="text--medium b__nudge--bottom-medium">{{ path.title }}</h2>
                 <p>{{ path.description }}</p>
             </div>
