@@ -189,7 +189,8 @@ workflows:
                     - build
 
             - deployment:
-                # requires:
+                requires:
+                    - build
                     # - phpunit
                     # - behat
                     # - lint
