@@ -15,6 +15,13 @@
 {% endblock %}
 
 {% block content__inner %}
+
+    <div class="l__wrapper b__nudge--top-50">
+        <a href="{{ path('app_formation_home') }}" class="espace-formation__go-back">
+            <img src="{{ asset('/images/icons/icn_go-back-left-arrow.svg') }}" />
+        </a>
+    </div>
+
     <section class="espace-formation__article">
         <article class="l__wrapper--slim">
             {{ module.content|markdown }}
@@ -25,7 +32,7 @@
                     {% for file in module.files %}
                         <li>
                             <a href="{{ path('asset_url', { path: file.path, mime_type: 'application/pdf' }) }}"
-                               target="_blank">{{ file.title }}</a> (pdf)
+                               target="_blank" class="text--blue link--no-decor">{{ file.title }}</a> (pdf)
                         </li>
                     {% endfor %}
                 </ul>
