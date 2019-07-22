@@ -29,6 +29,11 @@ class LocalSurvey extends Survey implements AuthoredInterface
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $tags = [];
+
     public function __construct(
         ?Adherent $author = null,
         ?string $name = null,
@@ -59,6 +64,16 @@ class LocalSurvey extends Survey implements AuthoredInterface
     public function setCity(?string $city): void
     {
         $this->city = $city;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    public function setTags(array $tags): void
+    {
+        $this->tags = $tags;
     }
 
     public function getType(): string

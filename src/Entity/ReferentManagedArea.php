@@ -122,4 +122,9 @@ class ReferentManagedArea
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->getTags()->toArray());
     }
+
+    public function getReferentTagCodesAsString(): string
+    {
+        return !empty($this->getTags()) ? implode(', ', $this->getReferentTagCodes()) : '';
+    }
 }

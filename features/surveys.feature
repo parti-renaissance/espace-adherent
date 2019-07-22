@@ -14,7 +14,7 @@ Feature:
     Given I am logged as "damien.schmidt@example.ch"
     When I am on "/espace-responsable-jecoute"
     Then I should see "Mon espace J'écoute"
-    And I should see "Vous gérez : CH"
+    And I should see "Vous gérez : CH, ES, 92, 76, 77, 13, 59"
 
     # Create
     Given I am on "/espace-responsable-jecoute/questionnaire/creer"
@@ -30,7 +30,7 @@ Feature:
 
     # Edit
     Given I should see "Un questionnaire jecoute manager"
-    When I click the "survey-edit-0" element
+    When I click the "survey-edit-2" element
     And I should see "Nom du questionnaire"
     And I should see "Enregistrer le questionnaire"
 
@@ -40,7 +40,7 @@ Feature:
 
     # Show statistics
     Given I wait until I see "Un questionnaire jecoute manager (modifié)"
-    And I click the "survey-stats-0" element
+    And I click the "survey-stats-2" element
     Then I should see "Statistiques : Un questionnaire jecoute manager (modifié)"
     And I should see "Une question ?"
     And I should see "Aucune donnée n'est disponible pour le moment."

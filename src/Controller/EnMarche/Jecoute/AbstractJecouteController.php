@@ -38,9 +38,13 @@ abstract class AbstractJecouteController extends Controller
         UserInterface $user
     ): Response {
         /** @var Adherent $user */
+        $tags = $user->isJecouteManager() ? $user->getJecouteManagedArea()->getCodes() :
+            $user->getManagedAreaTagCodes()
+        ;
+
         return  $this->renderTemplate('jecoute/local_surveys_list.html.twig', [
             'surveysListJson' => $surveyExporter->exportLocalSurveysAsJson(
-                $localSurveyRepository->findAllByAuthor($user),
+                $localSurveyRepository->findAllByTags($tags),
                 $this->getSpaceName()
             ),
         ]);
@@ -79,12 +83,20 @@ abstract class AbstractJecouteController extends Controller
         UserInterface $user
     ): Response {
         /** @var Adherent $user */
+        $localSurvey = new LocalSurvey($user);
+
         $form = $this
-            ->createForm(SurveyFormType::class, new LocalSurvey($user))
+            ->createForm(SurveyFormType::class, $localSurvey)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tags = $user->isJecouteManager() ? $user->getJecouteManagedArea()->getCodes() :
+                $user->getManagedArea()->getReferentTagCodes()
+            ;
+
+            $localSurvey->setTags($tags);
+
             $manager->persist($form->getData());
             $manager->flush();
 
@@ -109,7 +121,7 @@ abstract class AbstractJecouteController extends Controller
      *     methods={"GET|POST"},
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
      */
     public function jecouteSurveyEditAction(
         Request $request,
@@ -190,7 +202,7 @@ abstract class AbstractJecouteController extends Controller
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey)")
+     * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
      */
     public function jecouteSurveyDuplicateAction(LocalSurvey $survey, ObjectManager $manager): Response
     {
@@ -209,10 +221,9 @@ abstract class AbstractJecouteController extends Controller
      *     path="/question/{uuid}/reponses",
      *     name="survey_stats_answers_list",
      *     condition="request.isXmlHttpRequest()",
-     *     methods={"GET"},
      * )
      *
-     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion)")
+     * @Security("is_granted('IS_AUTHOR_OF', surveyQuestion) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey())")
      */
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
@@ -235,7 +246,7 @@ abstract class AbstractJecouteController extends Controller
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
      *
-     * @Security("is_granted('IS_AUTHOR_OF', survey) or survey.isNational()")
+     * @Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")
      */
     public function jecouteSurveyStatsDownloadAction(Survey $survey, StatisticsExporter $statisticsExporter): Response
     {

@@ -57,12 +57,16 @@ class LoadJecouteSurveyData extends Fixture
         $localSurvey1->addQuestion($surveyQuestion3);
         $localSurvey1->addQuestion($surveyQuestion4);
 
+        $localSurvey1->setTags($referent1->getManagedArea()->getReferentTagCodes());
+
         /** @var Question $question4 */
         $question4 = $this->getReference('question-4');
 
         $localSurvey2Question1 = new SurveyQuestion($localSurvey2, $question4);
 
         $localSurvey2->addQuestion($localSurvey2Question1);
+
+        $localSurvey2->setTags($referent2->getManagedArea()->getReferentTagCodes());
 
         $manager->persist($localSurvey1);
         $manager->persist($localSurvey2);
@@ -104,6 +108,7 @@ class LoadJecouteSurveyData extends Fixture
     public function getDependencies()
     {
         return [
+            LoadReferentData::class,
             LoadAdherentData::class,
             LoadAdminData::class,
             LoadJecouteQuestionData::class,
