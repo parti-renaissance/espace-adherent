@@ -18,7 +18,7 @@ services:
             - .:/app
 
     db:
-        image: mdillon/postgis:11
+        image: mdillon/postgis:9.6
         environment:
             POSTGRES_DB: enmarche
             POSTGRES_USER: root
