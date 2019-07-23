@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
  * @ORM\Entity
@@ -30,7 +31,8 @@ use JMS\Serializer\Annotation as JMS;
  * @ORM\DiscriminatorMap({
  *     "event": "AppBundle\Entity\Event",
  *     "citizen_action": "AppBundle\Entity\CitizenAction",
- *     "institutional_event": "AppBundle\Entity\InstitutionalEvent"
+ *     "institutional_event": "AppBundle\Entity\InstitutionalEvent",
+ *     "municipal_event": "AppBundle\Entity\MunicipalEvent",
  * })
  *
  * @Algolia\Index
@@ -83,6 +85,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @Algolia\Attribute
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $name;
 
@@ -110,6 +114,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @Algolia\Attribute
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $slug;
 
@@ -119,6 +125,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @ORM\Column(type="text")
      *
      * @Algolia\Attribute
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $description;
 
@@ -129,6 +137,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("timeZone")
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $timeZone;
 
@@ -139,6 +149,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("beginAt")
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $beginAt;
 
@@ -149,6 +161,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("finishAt")
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $finishAt;
 
@@ -167,6 +181,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
      * @JMS\SerializedName("participantsCount")
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $participantsCount;
 
@@ -176,6 +192,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @ORM\Column(length=20)
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $status;
 
@@ -192,6 +210,8 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
      * @ORM\Column(type="integer", nullable=true)
      *
      * @JMS\Groups({"public", "event_read", "citizen_action_read"})
+     *
+     * @SymfonySerializer\Groups({"event_read"})
      */
     protected $capacity;
 

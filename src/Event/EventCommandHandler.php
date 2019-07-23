@@ -21,9 +21,9 @@ class EventCommandHandler
         $this->manager = $manager;
     }
 
-    public function handle(EventCommand $command): Event
+    public function handle(EventCommand $command, string $eventClass = Event::class): Event
     {
-        $event = $this->factory->createFromEventCommand($command);
+        $event = $this->factory->createFromEventCommand($command, $eventClass);
 
         $this->manager->persist($event);
 

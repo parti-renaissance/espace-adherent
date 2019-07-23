@@ -10,7 +10,6 @@ use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationCommandHandler;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Referent\ManagedEventsExporter;
-use AppBundle\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,15 +36,10 @@ abstract class AbstractEventManagerController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function eventsAction(
-        EventRepository $eventRepository,
-        ManagedEventsExporter $eventsExporter,
-        string $type
-    ): Response {
+    public function eventsAction(ManagedEventsExporter $eventsExporter, string $type): Response
+    {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
-            'eventsAsJson' => $eventsExporter->exportAsJson(
-                $this->getEvents($eventRepository, $type)
-            ),
+            'eventsAsJson' => $eventsExporter->exportAsJson($this->getEvents($type)),
         ]);
     }
 
@@ -63,11 +57,13 @@ abstract class AbstractEventManagerController extends Controller
         $command = new EventCommand($user);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
 
-        $form = $this->createForm(EventCommandType::class, $command);
-        $form->handleRequest($request);
+        $form = $this
+            ->createForm(EventCommandType::class, $command)
+            ->handleRequest($request)
+        ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = $eventCommandHandler->handle($command);
+            $event = $eventCommandHandler->handle($command, $this->getEventClassName());
 
             $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
             $eventRegistrationCommandHandler->handle($registrationCommand);
@@ -84,7 +80,9 @@ abstract class AbstractEventManagerController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function getEvents(EventRepository $eventRepository, string $type = null): array;
+    abstract protected function getEvents(string $type = null): array;
+
+    abstract protected function getEventClassName(): string;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
