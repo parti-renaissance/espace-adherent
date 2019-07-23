@@ -106,7 +106,7 @@ doctrine:
         server_version:   "9.6.11"
         options:
             1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
-        schema_filter: '#^(?!(ideas_workshop_idea_notification_dates|public|topology|tiger))#'
+        schema_filter: '#^(?!(public|topology|tiger))#'
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType

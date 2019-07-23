@@ -1,20 +1,14 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20190722122611 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-        
         $this->addSql('CREATE EXTENSION IF NOT EXISTS postgis');
         $this->addSql('CREATE SEQUENCE citizen_projects_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE adherents_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
@@ -1061,11 +1055,8 @@ final class Version20190722122611 extends AbstractMigration
         $this->addSql('ALTER TABLE districts ADD CONSTRAINT FK_68E318DC9C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
-
         $this->addSql('ALTER TABLE citizen_projects_skills DROP CONSTRAINT FK_B3D202D9B3584533');
         $this->addSql('ALTER TABLE citizen_project_referent_tag DROP CONSTRAINT FK_73ED204AB3584533');
         $this->addSql('ALTER TABLE reports DROP CONSTRAINT FK_F11FA745B3584533');
