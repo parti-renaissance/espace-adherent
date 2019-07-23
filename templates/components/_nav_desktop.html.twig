@@ -37,56 +37,91 @@
         <li>
             <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
         </li>
-    </br>
-    <div>
-        <li>
-            <a href="https://en-marche.fr/municipales" rel="noopener noreferrer" target="_blank">
-                <strong>Municipales 2020</strong>
+        </br>
+        <div class="l__row">
+            <div class="nav-dropdown nav-dropdown__mrg--0">
+                <p>
+                    <a href="https://en-marche.fr/municipales">
+                        <strong>Municipales 2020</strong>
+                    </a>
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item">
+                    <li>
+                        <a href="https://en-marche.fr/articles/communiques/cni-municipales-larem">
+                            La CNI
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://storage.googleapis.com/en-marche-fr/charte_10_engagements.pdf" rel="noopener noreferrer" target="_blank">
+                            Les 10 engagements de l'élu
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://en-marche.fr/articles/actualites/laboratoire-initiatives-locales">
+                            Le laboratoire d’initiatives locales
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://en-marche.fr/municipales/candidats-investis">
+                            Nos candidat(e)s
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://en-marche.fr/articles/actualites/toutes-politiques-engagement-femmes">
+                            Toutes Politiques
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_application_request_request') }}">
+                            Appel à l’engagement
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="l__row">
+            <div class="nav-dropdown">
+                <p>
+                    S'engager
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item">
+                    <li>
+                        <a href="{{ path('app_search_events') }}">Événements</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_search_committees') }}">Comités</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('page_campus') }}">Formation</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('donation_index') }}">Faire un don</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %}>
+            <a class="je-cherche" href="javascript:void(0)">
+                {{ include('components/search.html.twig') }}
             </a>
         </li>
-    </div>
-    <div class="l__row">
-        <div class="nav-dropdown">
-            <p>
-                S'engager
-                <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
-            </p>
-            <ul class="nav-dropdown__item">
-                <li>
-                    <a href="{{ path('app_search_events') }}">Événements</a>
-                </li>
-                <li>
-                    <a href="{{ path('app_search_committees') }}">Comités</a>
-                </li>
-                <li>
-                    <a href="{{ path('react_app_citizen_projects_home') }}">Projets citoyens</a>
-                </li>
-                <li>
-                    <a href="{{ path('react_app_ideas_workshop_home') }}">Atelier des idées</a>
-                </li>
-                <li>
-                    <a href="{{ path('page_campus') }}">Formation</a>
-                </li>
-                <li>
-                    <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
-                </li>
-                <li>
-                    <a href="{{ path('donation_index') }}">Faire un don</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %}>
-        <a class="je-cherche" href="javascript:void(0)">
-            {{ include('components/search.html.twig') }}
-        </a>
-    </li>
     </ul>
     <div class="l__row">
         <div class="nav-dropdown">
             {% if is_granted('ROLE_ADMIN_DASHBOARD') %}
                 <div class="space--20-0">
-                    <a href="{{ path('sonata_admin_dashboard') }}" class="nav-dropdown__name">
+                    <a href="{{ path('sonata_admin_dashboard') }}" class="nav-dropdown__name link--no--decor">
                         Admin 🤓
                     </a>
                 </div>

@@ -75,6 +75,10 @@
     font-family: $font-roboto;
     margin: 0 15px;
 
+    &__mrg--0 {
+        margin: 0;
+    }
+
     &>p {
         display: flex;
 
