@@ -276,8 +276,20 @@
         background-color: $pale-grey;
         padding: 30px;
 
-        p {
+        .item-card-name {
             margin: 0;
+            font-weight: normal;
+        }
+
+        .item-card-url {
+            display: block;
+            margin-bottom: auto;
+            margin-right: auto;
+
+            .icn-link {
+                position: relative;
+                top: 2px;
+            }
         }
 
         &.iterate {
