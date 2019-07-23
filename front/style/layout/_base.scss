@@ -10,6 +10,8 @@ body {
     font-size: 16px;
     line-height: 24px;
     font-family: $font-gillsans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
     // Sets the default color in case the visitor has changed them
     background-color: $defaultBackgroundColor;

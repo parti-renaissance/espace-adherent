@@ -350,6 +350,126 @@
     }
 }
 
+.manager-overview {
+    padding-bottom: 100px;
+
+    &__row {
+        display: flex;
+        flex-direction: column;
+
+        > div {
+            flex-grow: 1;
+            flex-basis: 100%;
+        }
+
+        @media (min-width: $tablet) {
+            flex-direction: row;
+
+            > div {
+                flex-basis: 50%;
+            }
+        }
+    }
+
+    &__case {
+        background-color: $pale-grey;
+        box-shadow: 0 1px 0 0 rgba(229, 233, 238, 1);
+        padding: 20px;
+        margin-bottom: 26px;
+
+        @media (min-width: $tablet) {
+            margin-right: 26px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        &--section {
+            display: block;
+            font-weight: 400;
+            color: $silver-grey;
+            font-size: 12px;
+            margin-bottom: 20px;
+            line-height: normal;
+            text-transform: uppercase;
+        }
+
+        &--value {
+            display: block;
+            font-weight: 400;
+            color: $black;
+            font-size: 34px;
+            line-height: normal;
+            margin-bottom: 5px;
+        }
+
+        &--title {
+            font-weight: 400;
+            color: $black;
+            font-size: 19px;
+            margin-bottom: 10px;
+            line-height: normal;
+        }
+
+        &--baseline {
+            margin: 0;
+            color: $dark;
+            font-size: 16px;
+        }
+
+        &--data-row {
+            display: flex;
+            flex-direction: column;
+
+            .el {
+                margin-right: 30px;
+                margin-bottom: 20px;
+            }
+        }
+
+        &--footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media (min-width: $mobile) {
+            padding: 30px;
+
+            &--value {
+                font-size: 40px;
+            }
+
+            &--title {
+                font-size: 22px;
+            }
+
+            &--data-row {
+                flex-direction: row;
+
+                .el {
+                    margin-bottom: 0;
+                }
+            }
+
+            &--footer {
+                margin-top: 40px;
+            }
+        }
+
+        @media (min-width: $tablet) {
+            &--data-row {
+
+                .el {
+                    margin-right: 70px;
+                }
+            }
+        }
+
+    }
+}
+
 .data-listing {
 
     &__row {
@@ -385,27 +505,5 @@
     &--tips {
         background-color: $inf-modl--bkg-yellow;
         color: $inf-modl--text-yellow;
-    }
-}
-
-// Going to an external new product
-.highlight_url {
-    display: inline-block;
-    font-family: $font-roboto;
-    text-transform: uppercase;
-    border: none;
-    background-color: #FFF0C4;
-    font-weight: 600;
-    color: $black;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 6px 10px;
-    border-radius: 50px;
-    line-height: 11px;
-    transition: all 125ms ease-in;
-    margin: 8px 0 16px 0;
-
-    &:hover {
-        transform: translateX(2px);
     }
 }

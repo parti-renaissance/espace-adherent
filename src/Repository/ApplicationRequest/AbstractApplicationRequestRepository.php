@@ -52,19 +52,32 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
      */
     public function findAllForInseeCodes(array $inseeCodes): array
     {
-        $qb = $this->createListQueryBuilder('r');
+        $this->addFavoriteCitiesCondition($inseeCodes, $qb = $this->createListQueryBuilder('r'));
 
-        $orExpression = new Orx();
+        return $qb->getQuery()->getResult();
+    }
 
-        foreach ($inseeCodes as $key => $code) {
-            $orExpression->add("FIND_IN_SET(:codes_$key, r.favoriteCities) > 0");
-            $qb->setParameter("codes_$key", $code);
-        }
+    public function countForInseeCodes(array $inseeCodes): int
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('COUNT(1)')
+            ->where('r.displayed = true')
+        ;
 
-        return $qb
-            ->andWhere($orExpression)
+        $this->addFavoriteCitiesCondition($inseeCodes, $qb);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function countTakenFor(array $inseeCodes): int
+    {
+        return $this->createQueryBuilder('r')
+            ->select('COUNT(1)')
+            ->where('r.displayed = true')
+            ->andWhere('r.takenForCity IN (:cities)')
+            ->setParameter('cities', $inseeCodes)
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
 
@@ -107,5 +120,17 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
             ->getQuery()
             ->execute()
         ;
+    }
+
+    private function addFavoriteCitiesCondition(array $inseeCodes, QueryBuilder $qb): void
+    {
+        $orExpression = new Orx();
+
+        foreach ($inseeCodes as $key => $code) {
+            $orExpression->add("FIND_IN_SET(:codes_$key, r.favoriteCities) > 0");
+            $qb->setParameter("codes_$key", $code);
+        }
+
+        $qb->andWhere($orExpression);
     }
 }

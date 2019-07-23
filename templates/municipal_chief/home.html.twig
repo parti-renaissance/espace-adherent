@@ -1,0 +1,92 @@
+{% extends 'municipal_chief/_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block municipal_chief_content %}
+    <div class="manager-overview">
+        <div class="manager-overview__row">
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Mes contacts</span>
+                <span class="manager-overview__case--value">{{ candidate_count }}</span>
+                <h1 class="manager-overview__case--title">Candidature{{ candidate_count > 1 ? 's' }}</h1>
+                <footer class="manager-overview__case--footer">
+                    <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}" class="btn btn btn--ghosting--blue">Analyser</a>
+                </footer>
+            </div>
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Mes contacts</span>
+                <span class="manager-overview__case--value">{{ team_member_count }}</span>
+                <h1 class="manager-overview__case--title">Membre{{ team_member_count > 1 ? 's' }} d'équipe</h1>
+                <footer class="manager-overview__case--footer">
+                    <a href="{{ path('app_municipal_chief_my_team_running_mate_list') }}" class="btn btn btn--ghosting--blue">Gérer</a>
+                </footer>
+            </div>
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                <span class="manager-overview__case--value">{{ event_count }}</span>
+                <h1 class="manager-overview__case--title">Événement{{ event_count > 1 ? 's' }}</h1>
+                <footer class="manager-overview__case--footer">
+                    <a href="{{ path('app_municipal_chief_event_manager_events') }}" class="btn btn btn--ghosting--blue">Voir</a>
+                </footer>
+            </div>
+        </div>
+
+        {% if last_sent_message %}
+            <!-- If no e-mail has been sent : disabled this row -->
+            <div class="manager-overview__row">
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                    <h1 class="manager-overview__case--title">Statistique du dernier e-mail :
+                        <a href="{{ path('app_message_municipal_chief_preview', {uuid: last_sent_message.uuid}) }}"
+                           class="link--no-decor text--blue--dark">{{ last_sent_message.subject }}</a>
+                    </h1>
+                    <div class="manager-overview__case--data-row b__nudge--top-large">
+                        <div class="el">
+                            <div class="text--data-label">Envoyé à</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.sent }}</span>
+                                <span class="text--dark">contacts</span>
+                            </div>
+                        </div>
+                        <div class="el">
+                            <div class="text--data-label">Taux d'ouverture</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.open_rate }}%</span>
+                                <span class="text--dark">({{ message_stats.opens }})</span>
+                            </div>
+                        </div>
+                        <div class="el">
+                            <div class="text--data-label">Taux de clic</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.click_rate }}%</span>
+                                <span class="text--dark">({{ message_stats.clicks }})</span>
+                            </div>
+                        </div>
+                        <div class="el">
+                            <div class="text--data-label">Taux de désabonnement</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.unsubscribe_rate }}%</span>
+                                <span class="text--dark">({{ message_stats.unsubscribe }})</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="manager-overview__row">
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                <h1 class="manager-overview__case--title">« Ce qui a changé près de chez vous »</h1>
+                <p class="manager-overview__case--baseline">Les 2 ans du quinquennat</p>
+                <footer class="manager-overview__case--footer">
+                    <a href="https://chezvous.en-marche.fr/" target="_blank" class="btn btn btn--ghosting--blue">Consulter</a>
+                </footer>
+            </div>
+            <div></div>
+        </div>
+    </div>
+{% endblock %}
