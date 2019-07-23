@@ -45,10 +45,13 @@ class UpdateLocalSurveysTagsCommand extends Command
 
         /** @var LocalSurvey $survey */
         foreach ($result as $survey) {
-            if ($survey->getAuthor()->isReferent()) {
-                $tags = $survey->getAuthor()->getManagedAreaTagCodes();
-            } else {
-                $tags = $survey->getAuthor()->getJecouteManagedArea()->getCodes();
+            $author = $survey->getAuthor();
+            $tags = [];
+
+            if ($author->isReferent()) {
+                $tags = $author->getManagedAreaTagCodes();
+            } elseif ($author->isJecouteManager()) {
+                $tags = $author->getJecouteManagedArea()->getCodes();
             }
 
             $survey->setTags($tags);
