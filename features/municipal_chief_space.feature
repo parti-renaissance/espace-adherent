@@ -124,31 +124,6 @@ Feature:
       | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
       | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 06d61c85-929a-4152-b46c-b94b6883b8d6 |
 
-  @javascript
-  Scenario Outline: I can define application request as added to my team
-    Given I am logged as "municipal-chief-3@en-marche-dev.fr"
-    When I am on "<url>"
-    And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I scroll element "table.datagrid__table-manager" into view
-    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
-    And I follow "Ajouter à mon équipe"
-    Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
-    And I should see "Retirer de mon équipe"
-
-    When I am on "/deconnexion"
-    And I am logged as "municipal-chief@en-marche-dev.fr"
-    And I am on "<url>"
-    And I wait 5 seconds until I see "TAGS DE CANDIDATURE"
-    And I press "OK"
-    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
-    Then I should see "Déjà pris dans une autre ville" in the "table.datagrid__table-manager tbody tr" element
-
-    Examples:
-      | url                                           |
-      | /espace-municipales-2020/candidature-benevoles  |
-      | /espace-municipales-2020/candidature-colistiers |
-
   Scenario Outline: I list adherent living in the cities I manage
     Given I am logged as "<user>"
     And I am on "/espace-municipales-2020/adherents"
