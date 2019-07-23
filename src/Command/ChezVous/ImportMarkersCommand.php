@@ -173,7 +173,7 @@ class ImportMarkersCommand extends AbstractImportCommand
                 break;
             case MissionBern::class:
                 $link = $metadata['link'];
-                $montant = \intval(str_replace(',', '', $metadata['montant']));
+                $montant = (int) preg_replace('/[^\d.]/', '', $metadata['montant']);
 
                 $montant = $montant > 200 ? $montant : null;
 
