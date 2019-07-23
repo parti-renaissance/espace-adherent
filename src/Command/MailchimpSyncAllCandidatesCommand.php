@@ -65,6 +65,8 @@ class MailchimpSyncAllCandidatesCommand extends Command
         return new Paginator($this->entityManager
             ->getRepository(VolunteerRequest::class)
             ->createQueryBuilder('candidate')
+            ->where('candidate.displayed = true')
+            ->orderBy('candidate.createdAt', 'ASC')
             ->setMaxResults(500)
         );
     }
@@ -74,6 +76,8 @@ class MailchimpSyncAllCandidatesCommand extends Command
         return new Paginator($this->entityManager
             ->getRepository(RunningMateRequest::class)
             ->createQueryBuilder('candidate')
+            ->where('candidate.displayed = true')
+            ->orderBy('candidate.createdAt', 'ASC')
             ->setMaxResults(500)
         );
     }
