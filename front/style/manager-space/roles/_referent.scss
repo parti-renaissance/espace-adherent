@@ -69,37 +69,6 @@
             }
         }
     }
-
-    &__menu-list-event {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-bottom: 40px;
-
-        .menu-items {
-            span.separator {
-                float: left;
-                font-weight: bold;
-                margin: 0 8px;
-            }
-
-            h3 {
-                float: left;
-
-                a {
-                    font-weight: normal;
-                    text-decoration: underline;
-                    border-bottom: none;
-
-                    &:hover {
-                        text-decoration: none;
-                    }
-                }
-            }
-
-        }
-    }
-
 }
 
 .message_referent__filter__search__col {

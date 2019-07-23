@@ -4,11 +4,6 @@
 
 {% block help_message_block '' %}
 
-{% block application_request_main_block %}
-
-    <div class="text--right">
-        <a class="btn-type-table" href="{{ path('app_message_municipal_chief_create') }}">+ Contacter mon équipe</a>
-    </div>
-
-    {{ parent() }}
+{% block cta_contact_team %}
+    <a class="btn-type-table m-auto--right" href="{{ path('app_message_municipal_chief_create') }}">+ Contacter mon équipe</a>
 {% endblock %}

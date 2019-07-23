@@ -494,6 +494,16 @@
     }
 }
 
+.m-auto {
+    &--left {
+        margin-left: auto;
+    }
+
+    &--right {
+        margin-right: auto;
+    }
+}
+
 .ui-dialog {
     top: 2% !important;
     height: 90% !important;

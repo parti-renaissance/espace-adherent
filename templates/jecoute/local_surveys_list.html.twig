@@ -59,10 +59,10 @@
 {% endblock %}
 
 {% block jecoute_content %}
-    <div class="referent__menu-list-event">
-        <div class="menu-items">
+    <div class="datagrid__table__tabs">
+        <div class="datagrid__table__tabs__items">
             <h3>Questionnaires locaux</h3>
-            <span class="separator">|</span>
+            <span class="separator"></span>
             <h3><a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}">Questionnaires nationaux</a></h3>
         </div>
         <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-type-table">
