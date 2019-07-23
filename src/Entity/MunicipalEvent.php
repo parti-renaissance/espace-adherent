@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"event_read"}},
- *         "order"={"beginAt": "DESC"},
+ *         "order": {"beginAt": "DESC"},
  *     },
  *     collectionOperations={"get"},
  *     itemOperations={"get"},
