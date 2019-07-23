@@ -2,9 +2,14 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+use AppBundle\AdherentMessage\StatisticsAggregator;
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
+use AppBundle\Entity\Adherent;
+use AppBundle\Repository\AdherentMessageRepository;
 use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\MunicipalEventRepository;
 use AppBundle\Security\Voter\MunicipalChiefVoter;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -25,9 +30,23 @@ class MunicipalChiefController extends Controller
     /**
      * @Route(name="_home", methods={"GET"})
      */
-    public function homeAction(): Response
-    {
-        return $this->render('municipal_chief/home.html.twig');
+    public function homeAction(
+        MunicipalEventRepository $eventRepository,
+        ApplicationRequestRepository $candidateRepository,
+        AdherentMessageRepository $messageRepository,
+        StatisticsAggregator $aggregator,
+        UserInterface $adherent
+    ): Response {
+        /** @var Adherent $adherent */
+        $codes = $adherent->getMunicipalChiefManagedArea()->getCodes();
+
+        return $this->render('municipal_chief/home.html.twig', [
+            'candidate_count' => $candidateRepository->countCandidates($codes),
+            'team_member_count' => $candidateRepository->countTeamMembers($codes),
+            'event_count' => $eventRepository->countEventForOrganizer($adherent),
+            'last_sent_message' => $message = $messageRepository->getLastSentMessage($adherent, AdherentMessageTypeEnum::MUNICIPAL_CHIEF),
+            'message_stats' => $message ? $aggregator->aggregateData($message) : null,
+        ]);
     }
 
     /**
@@ -50,7 +69,7 @@ class MunicipalChiefController extends Controller
             throw new BadRequestHttpException('This request is already on another team.');
         }
 
-        $request->setTakenForCity(current(array_intersect($request->getFavoriteCities(), $this->getUser()->getMunicipalChiefManagedArea->getCodes())));
+        $request->setTakenForCity(current(array_intersect($request->getFavoriteCities(), $this->getUser()->getMunicipalChiefManagedArea()->getCodes())));
         $manager->flush();
 
         $this->addFlash('info', 'application_request.taken_successfully');

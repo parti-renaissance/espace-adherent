@@ -10,67 +10,72 @@
         <div class="manager-overview__row">
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Mes contacts</span>
-                <span class="manager-overview__case--value">48</span>
-                <h1 class="manager-overview__case--title">Candidatures</h1>
+                <span class="manager-overview__case--value">{{ candidate_count }}</span>
+                <h1 class="manager-overview__case--title">Candidature{{ candidate_count > 1 ? 's' }}</h1>
                 <footer class="manager-overview__case--footer">
                     <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}" class="btn btn btn--ghosting--blue">Analyser</a>
                 </footer>
             </div>
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Mes contacts</span>
-                <span class="manager-overview__case--value">48</span>
-                <h1 class="manager-overview__case--title">Membres d'équipe</h1>
+                <span class="manager-overview__case--value">{{ team_member_count }}</span>
+                <h1 class="manager-overview__case--title">Membre{{ team_member_count > 1 ? 's' }} d'équipe</h1>
                 <footer class="manager-overview__case--footer">
                     <a href="{{ path('app_municipal_chief_my_team_running_mate_list') }}" class="btn btn btn--ghosting--blue">Gérer</a>
                 </footer>
             </div>
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Communication & Mobilisation</span>
-                <span class="manager-overview__case--value">48</span>
-                <h1 class="manager-overview__case--title">Événements</h1>
+                <span class="manager-overview__case--value">{{ event_count }}</span>
+                <h1 class="manager-overview__case--title">Événement{{ event_count > 1 ? 's' }}</h1>
                 <footer class="manager-overview__case--footer">
                     <a href="{{ path('app_municipal_chief_event_manager_events') }}" class="btn btn btn--ghosting--blue">Voir</a>
                 </footer>
             </div>
         </div>
 
-        <!-- If no e-mail has been sent : disabled this row -->
-        <div class="manager-overview__row">
-            <div class="manager-overview__case">
-                <span class="manager-overview__case--section">Communication & Mobilisation</span>
-                <h1 class="manager-overview__case--title">Statistique du dernier e-mail : <a href="" class="link--no-decor text--blue--dark">Une bouteille à la Mer (de guitz)</a></h1>
-                <div class="manager-overview__case--data-row b__nudge--top-large">
-                    <div class="el">
-                        <div class="text--data-label">Envoyé à</div>
-                        <div class="b__nudge--top-5">
-                            <span class="text--data-value">0</span>
-                            <span class="text--dark">contacts</span>
+        {% if last_sent_message %}
+            <!-- If no e-mail has been sent : disabled this row -->
+            <div class="manager-overview__row">
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                    <h1 class="manager-overview__case--title">Statistique du dernier e-mail :
+                        <a href="{{ path('app_message_municipal_chief_preview', {uuid: last_sent_message.uuid}) }}"
+                           class="link--no-decor text--blue--dark">{{ last_sent_message.subject }}</a>
+                    </h1>
+                    <div class="manager-overview__case--data-row b__nudge--top-large">
+                        <div class="el">
+                            <div class="text--data-label">Envoyé à</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.sent }}</span>
+                                <span class="text--dark">contacts</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="el">
-                        <div class="text--data-label">Taux d'ouverture</div>
-                        <div class="b__nudge--top-5">
-                            <span class="text--data-value">0%</span>
-                            <span class="text--dark">(0)</span>
+                        <div class="el">
+                            <div class="text--data-label">Taux d'ouverture</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.open_rate }}%</span>
+                                <span class="text--dark">({{ message_stats.opens }})</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="el">
-                        <div class="text--data-label">Taux de clique</div>
-                        <div class="b__nudge--top-5">
-                            <span class="text--data-value">0%</span>
-                            <span class="text--dark">(0)</span>
+                        <div class="el">
+                            <div class="text--data-label">Taux de clic</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.click_rate }}%</span>
+                                <span class="text--dark">({{ message_stats.clicks }})</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="el">
-                        <div class="text--data-label">Taux de désabonnement</div>
-                        <div class="b__nudge--top-5">
-                            <span class="text--data-value">0%</span>
-                            <span class="text--dark">(0)</span>
+                        <div class="el">
+                            <div class="text--data-label">Taux de désabonnement</div>
+                            <div class="b__nudge--top-5">
+                                <span class="text--data-value">{{ message_stats.unsubscribe_rate }}%</span>
+                                <span class="text--dark">({{ message_stats.unsubscribe }})</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="manager-overview__row">
             <div class="manager-overview__case">
