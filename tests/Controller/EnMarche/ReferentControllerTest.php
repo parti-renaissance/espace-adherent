@@ -148,10 +148,10 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Créer cet événement')->form(), $data);
 
-        $this->assertSame('Événement créé.', $this->client->getCrawler()->filter('.box-success h2')->text());
+        $this->assertSame('L\'événement « Premier événement » a bien été créé.', $this->client->getCrawler()->filter('.box-success h2')->text());
 
         $this->assertSame(
-            'Votre événement a bien été créé mais pas encore diffusé. Partagez le par e-mail à vos contacts en cliquant ci-dessous.',
+            'Votre événement est en ligne mais pas encore diffusé. Partagez-le par message en cliquant ci-dessous.',
             trim($this->client->getCrawler()->filter('.box-success .alert--tips')->text())
         );
 

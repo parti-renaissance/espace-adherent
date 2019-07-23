@@ -31,9 +31,9 @@
                 {% if message.recipientCount is not null %}
                     <div>
                         {% if message.recipientCount == 0 %}
-                            <p class="text--medium-small">Votre filtre ne correspond à aucun adhérent !</p>
+                            <p class="text--medium-small">Votre filtre ne correspond à aucun contact !</p>
                         {% else %}
-                            <p class="text--medium-small">Vous allez envoyer un message à <span class="text--bold text--blue--dark">{{ message.recipientCount }}</span> adhérent{{ message.recipientCount > 1 ? 's' : '' }} !</p>
+                            <p class="text--medium-small">Vous allez envoyer un message à <span class="text--bold text--blue--dark">{{ message.recipientCount }}</span> contact{{ message.recipientCount > 1 ? 's' : '' }} !</p>
                         {% endif %}
                     </div>
                 {% endif %}

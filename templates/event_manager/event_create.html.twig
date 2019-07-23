@@ -17,13 +17,11 @@
         <div class="box-success text--center l__wrapper--500 font-roboto">
             <img class="icn_success b__nudge--bottom" src="{{ asset('images/icons/icn_success.svg') }}" />
 
-            <h2 class="text--medium b__nudge--bottom-larger">Événement créé.</h2>
-
-            <p class="text--normal b__nudge--bottom ">Votre événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</p>
+            <h2 class="text--medium b__nudge--bottom-larger">L'événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</h2>
 
             {% if event.status == constant('STATUS_SCHEDULED', event) %}
                 <p class="alert alert--tips b__nudge--bottom-20">
-                    Votre événement a bien été créé mais pas encore diffusé.<br/> Partagez le par e-mail à vos contacts en cliquant ci-dessous.
+                    Votre événement est en ligne mais pas encore diffusé.<br/> Partagez-le par message en cliquant ci-dessous.
                 </p>
             {% endif %}
 
