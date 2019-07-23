@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Report\ReportableInterface;
+use AppBundle\Event\EventInterface;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,12 +33,11 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     "event": "AppBundle\Entity\Event",
  *     "citizen_action": "AppBundle\Entity\CitizenAction",
  *     "institutional_event": "AppBundle\Entity\InstitutionalEvent",
- *     "municipal_event": "AppBundle\Entity\MunicipalEvent",
  * })
  *
  * @Algolia\Index
  */
-abstract class BaseEvent implements GeoPointInterface, ReportableInterface, ReferentTaggableEntity
+abstract class BaseEvent implements EventInterface, GeoPointInterface, ReportableInterface, ReferentTaggableEntity
 {
     const EVENT_TYPE = 'event';
     const CITIZEN_ACTION_TYPE = 'citizen_action';

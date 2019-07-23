@@ -6,6 +6,7 @@ use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventCommandHandler;
+use AppBundle\Event\EventInterface;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationCommandHandler;
 use AppBundle\Form\EventCommandType;
@@ -63,10 +64,7 @@ abstract class AbstractEventManagerController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = $eventCommandHandler->handle($command, $this->getEventClassName());
-
-            $registrationCommand = new EventRegistrationCommand($event, $this->getUser());
-            $eventRegistrationCommandHandler->handle($registrationCommand);
+            $event = $this->handleCreationCommand($command);
 
             return $this->renderTemplate('event_manager/event_create.html.twig', [
                 'event' => $event,
@@ -83,6 +81,8 @@ abstract class AbstractEventManagerController extends Controller
     abstract protected function getEvents(string $type = null): array;
 
     abstract protected function getEventClassName(): string;
+
+    abstract protected function handleCreationCommand(EventCommand $command): EventInterface;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {

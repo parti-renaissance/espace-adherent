@@ -3,7 +3,10 @@
 namespace AppBundle\Controller\EnMarche\EventManager;
 
 use AppBundle\Entity\MunicipalEvent;
+use AppBundle\Event\EventCommand;
+use AppBundle\Event\EventInterface;
 use AppBundle\Event\EventManagerSpaceEnum;
+use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Repository\MunicipalEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,5 +38,16 @@ class EventManagerMunicipalChief extends AbstractEventManagerController
     protected function getEventClassName(): string
     {
         return MunicipalEvent::class;
+    }
+
+    protected function handleCreationCommand(EventCommand $command): EventInterface
+    {
+        $event = $this->eventCommandHandler->handle($command, $this->getEventClassName());
+
+        $this->eventRegistrationCommandHandler->handle(
+            new EventRegistrationCommand($event, $this->getUser())
+        );
+
+        return $event;
     }
 }

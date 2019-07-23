@@ -115,14 +115,9 @@ class EventFactory
         return $citizenAction;
     }
 
-    public function createFromEventCommand(EventCommand $command, string $eventClass): Event
+    public function createFromEventCommand(EventCommand $command): Event
     {
-        if (!is_a($eventClass, Event::class, true)) {
-            throw new \InvalidArgumentException(sprintf('Invalid Event type: "%s"', $eventClass));
-        }
-
-        /** @var Event $event */
-        $event = new $eventClass(
+        $event = new Event(
             $command->getUuid(),
             $command->getAuthor(),
             $command->getCommittee(),
