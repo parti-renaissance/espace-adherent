@@ -10,12 +10,11 @@ use AppBundle\Summary\Contract;
 use AppBundle\Summary\Contribution;
 use AppBundle\Summary\JobDuration;
 use AppBundle\Summary\JobLocation;
-use League\Glide\Signatures\SignatureFactory;
+use League\Flysystem\Filesystem;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
@@ -25,6 +24,11 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 class SummaryManagerControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+
+    /**
+     * @var Filesystem
+     */
+    private $storage;
 
     private const SECTION_HEADER = 'summary.header';
     private const SECTION_SYNTHESIS = 'summary.synthesis';
@@ -1221,15 +1225,15 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertFileInStorage('images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
-        unlink(__DIR__.'/../../../app/data/images/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg');
+        $this->assertFileInStorage('adherents/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg', true);
+        unlink(__DIR__.'/../../../app/data/storage/public/adherents/summaries/b4219d47-3138-5efd-9762-2ef9f9495084.jpg');
     }
 
     public function testAddProfilePictureToSummary()
     {
         // This adherent has a summary
         $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
-        $this->assertFileInStorage('images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
+        $this->assertFileInStorage('adherents/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', false);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/mon-profil/photo');
 
@@ -1251,8 +1255,8 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertFileInStorage('images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
-        unlink(__DIR__.'/../../../app/data/images/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
+        $this->assertFileInStorage('adherents/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg', true);
+        unlink(__DIR__.'/../../../app/data/storage/public/adherents/summaries/29461c49-6316-5be1-9ac3-17816bf2d819.jpg');
     }
 
     public function testShowHideRecentActivities()
@@ -1284,11 +1288,15 @@ class SummaryManagerControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init();
+
+        $this->storage = $this->getContainer()->get('app.storage');
     }
 
     protected function tearDown()
     {
         $this->kill();
+
+        $this->storage = null;
 
         parent::tearDown();
     }
@@ -1305,21 +1313,6 @@ class SummaryManagerControllerTest extends WebTestCase
 
     private function assertFileInStorage(string $path, bool $isPresent = true)
     {
-        $signature = SignatureFactory::create($this->client->getContainer()->getParameter('kernel.secret'))->generateSignature($path, []);
-
-        $path = $this->client->getContainer()->get('router')->generate('asset_url', [
-            'path' => $path,
-            's' => $signature,
-        ], UrlGeneratorInterface::ABSOLUTE_PATH);
-
-        ob_start();
-        $this->client->request(Request::METHOD_GET, $path);
-        ob_end_clean();
-
-        if ($isPresent) {
-            $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        } else {
-            $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
-        }
+        $this->assertSame($isPresent, $this->storage->has($path));
     }
 }

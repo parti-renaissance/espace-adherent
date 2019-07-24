@@ -91,6 +91,8 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     use EntityPostAddressTrait;
     use EntityReferentTagTrait;
 
+    public const PHOTO_DIRECTORY = 'committees';
+
     public const STATUSES_NOT_ALLOWED_TO_CREATE_ANOTHER = [
         self::PRE_REFUSED,
         self::PRE_APPROVED,
@@ -236,7 +238,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function getPhotoPath(): string
     {
-        return sprintf('images/committees/%s.jpg', $this->getUuid());
+        return sprintf('%s/%s.jpg', self::PHOTO_DIRECTORY, $this->getUuid());
     }
 
     public function hasPhotoUploaded(): bool

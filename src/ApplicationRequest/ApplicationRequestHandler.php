@@ -23,13 +23,13 @@ class ApplicationRequestHandler
     public function __construct(
         AdherentRepository $adherentRepository,
         EntityManagerInterface $manager,
-        Filesystem $storage,
+        Filesystem $privateStorage,
         EventDispatcherInterface $eventDispatcher,
         ReferentTagManager $referentTagManager
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->manager = $manager;
-        $this->storage = $storage;
+        $this->storage = $privateStorage;
         $this->eventDispatcher = $eventDispatcher;
         $this->referentTagManager = $referentTagManager;
     }

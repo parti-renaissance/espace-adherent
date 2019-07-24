@@ -14,6 +14,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 abstract class AbstractImportCommand extends Command
 {
+    public const ROOT_DIRECTORY = 'chez-vous';
+
     protected const BATCH_SIZE = 500;
 
     protected $em;

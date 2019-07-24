@@ -15,10 +15,11 @@ class FilesystemAdapterFactory
         string $localPath,
         $gcloudId,
         $gcloudKeyFilePath,
-        $gcloudBucket
+        $gcloudBucket,
+        string $pathPrefix = null
     ) {
         if ('prod' !== $environment) {
-            return new Local($localPath);
+            return new Local($localPath.'/'.$pathPrefix);
         }
 
         $storage = new StorageClient([
@@ -27,7 +28,7 @@ class FilesystemAdapterFactory
         ]);
 
         return new CachedAdapter(
-            new GoogleStorageAdapter($storage, $storage->bucket($gcloudBucket)),
+            new GoogleStorageAdapter($storage, $storage->bucket($gcloudBucket), $pathPrefix),
             new Memory()
         );
     }

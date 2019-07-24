@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TurnkeyProjectFile extends BaseFile
 {
+    public const DIRECTORY = 'turnkey_projects_files';
+
     /**
      * @var UploadedFile|null
      *
@@ -38,6 +40,6 @@ class TurnkeyProjectFile extends BaseFile
 
     public function getPrefixPath(): string
     {
-        return 'files/turnkey_projects_files';
+        return self::DIRECTORY;
     }
 }

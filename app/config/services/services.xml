@@ -8,6 +8,7 @@
             <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
             <bind key="$environment">%kernel.environment%</bind>
             <bind key="$mailchimpWebhookKey">%env(MAILCHIMP_WEBHOOK_KEY)%</bind>
+            <bind key="$privateStorage" type="service" id="app.storage.private" />
         </defaults>
 
         <!-- History -->
@@ -635,6 +636,9 @@
         <!-- Command -->
         <service id="AppBundle\Command\ImportAssessorsCommand" />
         <service id="AppBundle\Command\ImportVotePlacesCommand" />
+
+        <!-- To remove after execution -->
+        <service id="AppBundle\Command\StorageMigrateCommand" />
 
         <!-- ChezVous -->
         <prototype namespace="AppBundle\Command\ChezVous\" resource="../../../src/Command/ChezVous/*" />

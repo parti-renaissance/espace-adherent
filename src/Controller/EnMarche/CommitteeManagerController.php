@@ -16,6 +16,7 @@ use AppBundle\Form\EventCommandType;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Serializer\XlsxEncoder;
 use AppBundle\Utils\GroupUtils;
+use League\Flysystem\Filesystem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -300,6 +301,18 @@ class CommitteeManagerController extends Controller
             'committee' => $committee,
             'committee_hosts' => $committeeManager->getCommitteeHosts($committee),
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/photo", name="app_committee_photo", methods={"GET"})
+     *
+     * @Security("committee.isWaitingForApproval()")
+     */
+    public function photoAction(Committee $committee, Filesystem $privateStorage): Response
+    {
+        return new Response($privateStorage->read($committee->getPhotoPath()), Response::HTTP_OK, [
+            'Content-Type' => 'image/jpeg',
         ]);
     }
 }

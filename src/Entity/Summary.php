@@ -24,6 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Summary
 {
+    public const PROFILE_PICTURE_DIRECTORY = 'adherents/summaries';
+
     use SkillTrait;
 
     /**
@@ -576,7 +578,7 @@ class Summary
 
     public function getPicturePath(): string
     {
-        return sprintf('images/summaries/%s.jpg', $this->getMemberUuid());
+        return sprintf('%s/%s.jpg', self::PROFILE_PICTURE_DIRECTORY, $this->getMemberUuid());
     }
 
     public function setUrlProfilePicture(string $url): void

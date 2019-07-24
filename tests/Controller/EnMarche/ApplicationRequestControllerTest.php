@@ -93,7 +93,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         ], [
             'running_mate_request' => [
                 'curriculum' => new UploadedFile(
-                    __DIR__.'/../../../app/data/files/application_requests/curriculum/cv.pdf',
+                    __DIR__.'/../../../app/data/storage/private/application_requests/running_mates/cv.pdf',
                     'cv.pdf',
                     'application/pdf',
                     1234
@@ -133,7 +133,7 @@ class ApplicationRequestControllerTest extends WebTestCase
         static::assertSame('my favorite theme details', $runningMateRequest->getFavoriteThemeDetails());
         static::assertSame('my project details', $runningMateRequest->getProjectDetails());
         static::assertSame('my professional assets', $runningMateRequest->getProfessionalAssets());
-        static::assertTrue(file_exists(__DIR__.'/../../../app/data/'.$runningMateRequest->getPathWithDirectory()));
+        static::assertTrue(file_exists(__DIR__.'/../../../app/data/storage/private/'.$runningMateRequest->getPathWithDirectory()));
     }
 
     public function testVolunteerApplicationRequest(): void

@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RunningMateRequest extends ApplicationRequest
 {
+    public const CURRICULUM_DIRECTORY = 'application_requests/running_mates';
+
     /**
      * @var string|null
      *
@@ -116,6 +118,11 @@ class RunningMateRequest extends ApplicationRequest
     public function getCurriculum(): ?UploadedFile
     {
         return $this->curriculum;
+    }
+
+    public function hasCurriculumName(): bool
+    {
+        return null !== $this->curriculumName;
     }
 
     public function removeCurriculumName(): void
@@ -235,7 +242,7 @@ class RunningMateRequest extends ApplicationRequest
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/application_requests/curriculum', $this->curriculumName);
+        return sprintf('%s/%s', self::CURRICULUM_DIRECTORY, $this->curriculumName);
     }
 
     public function setCurriculumNameFromUploadedFile(UploadedFile $curriculum): void

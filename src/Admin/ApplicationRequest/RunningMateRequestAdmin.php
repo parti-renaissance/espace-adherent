@@ -7,6 +7,7 @@ use AppBundle\Entity\ApplicationRequest\Theme;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,24 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
 {
     private $storage;
-
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        parent::configureListFields($listMapper);
-
-        $listMapper
-            ->remove('_action')
-            ->add('_action', null, [
-                'actions' => [
-                    'curriculum' => [
-                        'template' => 'admin/running_mate/_action_curriculum.html.twig',
-                    ],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ])
-        ;
-    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -83,6 +66,13 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
                 ])
             ->end()
         ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        parent::configureRoutes($collection);
+
+        $collection->add('curriculum', $this->getRouterIdParameter().'/curriculum');
     }
 
     /**

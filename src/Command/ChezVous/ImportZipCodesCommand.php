@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportZipCodesCommand extends AbstractImportCommand
 {
-    private const CSV_DIRECTORY = 'chez-vous/zipcodes';
+    private const CSV_DIRECTORY = 'zipcodes';
     private const CSV_REGIONS = 'regions.csv';
     private const CSV_DEPARTMENTS = 'departments.csv';
     private const CSV_CITIES = 'cities.csv';
@@ -66,7 +66,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
     {
         $this->io->section('Starting regions import.');
 
-        $reader = $this->createReader(self::CSV_DIRECTORY.'/'.self::CSV_REGIONS);
+        $reader = $this->createReader(self::ROOT_DIRECTORY.'/'.self::CSV_DIRECTORY.'/'.self::CSV_REGIONS);
 
         $this->io->progressStart($total = $reader->count());
 
@@ -101,7 +101,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
     {
         $this->io->section('Starting departments import');
 
-        $reader = $this->createReader(self::CSV_DIRECTORY.'/'.self::CSV_DEPARTMENTS);
+        $reader = $this->createReader(self::ROOT_DIRECTORY.'/'.self::CSV_DIRECTORY.'/'.self::CSV_DEPARTMENTS);
 
         $this->io->progressStart($total = $reader->count());
 
@@ -145,7 +145,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
     {
         $this->io->section('Cities import.');
 
-        $reader = $this->createReader(self::CSV_DIRECTORY.'/'.self::CSV_CITIES);
+        $reader = $this->createReader(self::ROOT_DIRECTORY.'/'.self::CSV_DIRECTORY.'/'.self::CSV_CITIES);
 
         $this->io->progressStart($total = $reader->count());
 

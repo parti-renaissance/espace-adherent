@@ -19,13 +19,28 @@ class AssetsControllerTest extends WebTestCase
     /** @var Signature */
     private $signature;
 
-    public function testAssetWithSignatureIsFound()
+    /**
+     * @dataProvider provideInvalidAssetPaths
+     */
+    public function testAssetWithSignatureIsNotFound(string $path)
     {
-        $this->client->request(Request::METHOD_GET, '/assets/10decembre.jpg', [
-            's' => $this->signature->generateSignature('/assets/10decembre.jpg', []),
+        $this->client->request(Request::METHOD_GET, $path, [
+            's' => $this->signature->generateSignature($path, []),
         ]);
 
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+    }
+
+    /**
+     * @dataProvider provideValidAssetPaths
+     */
+    public function testAssetWithoutSignatureIsFound(string $path)
+    {
+        ob_start();
+        $this->client->request(Request::METHOD_GET, $path);
+        ob_end_clean();
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
     }
 
     public function testAssetWithoutSignatureIsNotFound()
@@ -158,5 +173,21 @@ class AssetsControllerTest extends WebTestCase
         $this->signature = null;
 
         parent::tearDown();
+    }
+
+    public function provideInvalidAssetPaths(): iterable
+    {
+        yield ['/assets/10decembre.jpg'];
+        yield ['/assets/images/committees/182d8586-8b05-4b70-a727-704fa701e816.jpg'];
+        yield ['/assets/files/application_requests/d90352c7c48596936ff6fb670ccgf5a6.jpg'];
+        yield ['/assets/free-movie.mp4'];
+        yield ['/assets/documents/adherents/dir1/document-adherent-a.pdf'];
+        yield ['/assets/documents/referents/document-referent-a.pdf'];
+    }
+
+    public function provideValidAssetPaths(): iterable
+    {
+        yield ['/assets/static/renaissance.png'];
+        yield ['/assets/static/bercy-banner.jpg'];
     }
 }

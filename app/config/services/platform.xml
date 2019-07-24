@@ -206,7 +206,7 @@
         </service>
 
         <service id="app.committee.photo.manager" class="AppBundle\Committee\PhotoManager">
-            <argument type="service" id="app.storage"/>
+            <argument type="service" id="app.storage.private"/>
             <argument type="service" id="app.glide"/>
         </service>
 

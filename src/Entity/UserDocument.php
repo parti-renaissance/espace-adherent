@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UserDocument
 {
+    public const DIRECTORY = 'user_documents';
+
     use EntityIdentityTrait;
 
     public const TYPE_COMMITTEE_CONTACT = 'committee_contact';
@@ -177,7 +179,13 @@ class UserDocument
 
     public function getPath(): string
     {
-        return sprintf('user_documents/%ss/%s.%s', $this->type, $this->getUuid()->toString(), $this->getExtension());
+        return sprintf(
+            '%s/%ss/%s.%s',
+            self::DIRECTORY,
+            $this->type,
+            $this->getUuid()->toString(),
+            $this->getExtension()
+        );
     }
 
     public static function allTypes(): array

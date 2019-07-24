@@ -11,7 +11,7 @@ use AppBundle\Entity\TurnkeyProjectFile;
 use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
 use AppBundle\Exception\CitizenProjectNotApprovedException;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
-use AppBundle\Storage\FileRequestHandler;
+use League\Flysystem\Filesystem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -221,8 +222,19 @@ class CitizenProjectController extends Controller
      * @Route("/kits/{slug}.{extension}", name="app_citizen_project_kit_file", methods={"GET"})
      * @Cache(maxage=900, smaxage=900)
      */
-    public function getKitFile(FileRequestHandler $fileRequestHandler, TurnkeyProjectFile $file): Response
+    public function getKitFile(TurnkeyProjectFile $file, Filesystem $privateStorage): Response
     {
-        return $fileRequestHandler->createResponse($file);
+        $response = new Response($privateStorage->read($file->getPath()), Response::HTTP_OK, [
+            'Content-Type' => $privateStorage->getMimetype($file->getPath()),
+        ]);
+
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $file->getSlug().'.'.$file->getExtension()
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
     }
 }

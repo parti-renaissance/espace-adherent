@@ -3,8 +3,8 @@
 {% block field %}
     <div style="text-align: center;">
         {% if object.isWaitingForApproval and object.hasPhotoUploaded %}
-            <a href="{{ path('asset_url', { path: object.photoPath }) }}" target="_blank">
-                <img src="{{ path('asset_url', { path: object.photoPath }) }}" style="max-height: 50px; max-width: 100px;" />
+            <a href="{{ path('app_admin_committee_photo', { id: object.id }) }}" target="_blank">
+                <img src="{{ path('app_admin_committee_photo', { id: object.id }) }}" style="max-height: 50px; max-width: 100px;" />
             </a>
         {% endif %}
     </div>

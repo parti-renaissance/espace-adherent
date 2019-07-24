@@ -162,18 +162,18 @@ class CommitteeManagerControllerTest extends WebTestCase
 
     public function testCommitteeHostCanEditCompletelyAddressOfPendingCommittee()
     {
-        $this->client->followRedirects();
-
         $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->client->click($crawler->selectLink('En Marche Marseille 3')->link());
+        $this->assertClientIsRedirectedTo('/comites/en-marche-marseille-3/editer', $this->client);
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         // Submit the committee form with new address
-        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
+        $this->client->submit($crawler->selectButton('Enregistrer')->form([
             'committee' => [
                 'address' => [
                     'country' => 'CH',
@@ -183,13 +183,33 @@ class CommitteeManagerControllerTest extends WebTestCase
                 ],
             ],
         ]));
+        $this->assertClientIsRedirectedTo('/comites/en-marche-marseille-3/editer', $this->client);
 
+        $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         // Address has been changed totally
         $this->assertSame('12 Pilgerweg', $crawler->filter('#committee_address_address')->attr('value'));
         $this->assertSame('8802', $crawler->filter('#committee_address_postalCode')->attr('value'));
         $this->assertSame('Kilchberg', $crawler->filter('#committee_address_cityName')->attr('value'));
         $this->assertSame('Suisse', $crawler->filter('#committee_address_country option:selected')->text());
+    }
+
+    public function testCommitteeHostCanSeeCommitteePhotoOfPendingCommittee()
+    {
+        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
+        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/editer');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertCount(1, $crawler->filter('#field-photo img[src="/comites/en-marche-marseille-3/photo"]'));
+
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/photo');
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+    }
+
+    public function testCommitteeHostCanNotSeeAnotherPendingCommitteePhoto()
+    {
+        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
+        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/photo');
+        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
     }
 
     public function testCommitteeFollowerIsNotAllowedToPublishNewEvent()

@@ -47,7 +47,9 @@
             <div class="data-listing__row b__nudge--bottom">
                 <div class="data-listing__item data-listing__item--label">CV</div>
                 <div class="data-listing__item data-listing__item--value">
-                    <a href="{{ path('asset_url', { path: request.getPathWithDirectory, mime_type: 'application/pdf' }) }}" class="text--blue--dark link--no-decor" target="_blank">Télécharger le CV</a>
+                    <a href="{{ path('app_municipal_chief_running_mate_curriculum', { uuid: request.uuid }) }}" class="text--blue--dark link--no-decor" target="_blank">
+                        Télécharger le CV
+                    </a>
                 </div>
             </div>
         {% endif %}

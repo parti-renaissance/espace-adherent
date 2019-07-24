@@ -19,11 +19,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class TimelineImportCommand extends Command
 {
-    private const BOOLEAN_CHOICES = ['oui' => true, 'non' => false];
-    private const CSV_DIRECTORY = 'timeline';
+    public const CSV_DIRECTORY = 'timeline';
+
     private const CSV_PROFILES = 'profiles.csv';
     private const CSV_THEMES = 'themes.csv';
     private const CSV_MEASURES = 'measures';
+    private const BOOLEAN_CHOICES = ['oui' => true, 'non' => false];
 
     private $em;
     private $factory;

@@ -60,28 +60,28 @@
                         {% if request.takenForCity in app.user.municipalChiefManagedArea.codes %}
                             {% set team_link_label = 'Retirer de mon équipe' %}
                             {% set team_link_class = 'text--error' %}
-                            {% set team_link_url = path("app_municipal_chief_#{request_type}_remove_from_my_team", {uuid: request.uuid}|merge(target_sub_space == 'my_team' ? {mtt: true} : {})) %}
+                            {% set team_link_url = path("app_municipal_chief_#{request_type}_remove_from_my_team", { uuid: request.uuid }|merge(target_sub_space == 'my_team' ? {mtt: true} : {})) %}
                         {% elseif not request.takenForCity %}
                             {% set team_link_label = 'Ajouter à mon équipe' %}
                             {% set team_link_class = 'text-dark' %}
-                            {% set team_link_url = path("app_municipal_chief_#{request_type}_add_to_my_team", {uuid: request.uuid}|merge(target_sub_space == 'my_team' ? {mtt: true} : {})) %}
+                            {% set team_link_url = path("app_municipal_chief_#{request_type}_add_to_my_team", { uuid: request.uuid }|merge(target_sub_space == 'my_team' ? {mtt: true} : {})) %}
                         {% endif %}
 
                         {% set menu = [
                             {
                                 label: 'Plus d\'infos',
-                                url: path("app_municipal_chief_candidate_#{request_type}_detail", {uuid: request.uuid})
+                                url: path("app_municipal_chief_candidate_#{request_type}_detail", { uuid: request.uuid })
                             },
                             {
                                 label: 'Taguer',
-                                url: path("app_municipal_chief_candidate_#{request_type}_tags", {uuid: request.uuid})
+                                url: path("app_municipal_chief_candidate_#{request_type}_tags", { uuid: request.uuid })
                             }
                         ] %}
 
                         {% if request_type == 'running_mate' %}
                             {% set menu = menu|merge([{
                                 label: 'Télécharger le CV',
-                                url: path('asset_url', {path: request.pathWithDirectory, mime_type: 'application/pdf'}),
+                                url: path('app_municipal_chief_running_mate_curriculum', { uuid: request.uuid }),
                                 targetBlank: true
                             }]) %}
                         {% endif %}

@@ -7,11 +7,13 @@ use AppBundle\AdherentMessage\StatisticsAggregator;
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Repository\AdherentMessageRepository;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MunicipalEventRepository;
 use AppBundle\Security\Voter\MunicipalChiefVoter;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Flysystem\Filesystem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,6 +108,18 @@ class MunicipalChiefController extends Controller
         $myTeamTarget = $httpRequest->query->has('mtt');
 
         return $this->redirectToRoute('app_municipal_chief_'.($myTeamTarget ? 'my_team' : 'candidate')."_${type}_list");
+    }
+
+    /**
+     * @Route("candidature-colistiers/{uuid}/curriculum", name="_running_mate_curriculum", requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
+     */
+    public function runningMateCurriculumAction(RunningMateRequest $runningMateRequest, Filesystem $privateStorage)
+    {
+        $this->denyAccessUnlessGranted(MunicipalChiefVoter::ROLE, $runningMateRequest);
+
+        return new Response($privateStorage->read($runningMateRequest->getPathWithDirectory()), Response::HTTP_OK, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 
     /**

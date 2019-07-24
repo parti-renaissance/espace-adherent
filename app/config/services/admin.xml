@@ -779,9 +779,10 @@
 
             <argument />
             <argument>AppBundle\Entity\ApplicationRequest\RunningMateRequest</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminRunningMateRequestController</argument>
+
             <call method="setStorage">
-                <argument type="service" id="app.storage" />
+                <argument type="service" id="app.storage.private" />
             </call>
         </service>
 

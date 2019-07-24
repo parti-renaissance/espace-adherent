@@ -20,6 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Media
 {
+    public const VIDEOS_DIRECTORY = 'videos';
+    public const IMAGES_DIRECTORY = 'images';
+
     /**
      * @var int
      *
@@ -319,6 +322,10 @@ class Media
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', $this->isVideo() ? 'videos' : 'images', $this->getPath());
+        return sprintf(
+            '%s/%s',
+            $this->isVideo() ? self::VIDEOS_DIRECTORY : self::IMAGES_DIRECTORY,
+            $this->getPath()
+        );
     }
 }

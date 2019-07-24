@@ -67,7 +67,7 @@
     <div class="form__row" id="field-photo">
         {{ form_label(form.photo, 'Ajoutez votre pièce d’identité recto-verso (passeport, permis de conduire ou carte nationale d’identité)', { label_attr: { class: 'text--bold' } }) }}<br />
         {% if committee and committee.hasPhotoUploaded %}
-            <img style="max-width: 100px" src="{{ path('asset_url', { path: committee.photoPath }) }}" />
+            <img style="max-width: 100px" src="{{ path('app_committee_photo', { slug: committee.slug }) }}" />
         {% endif %}
         {{ form_errors(form.photo) }}
         {{ form_widget(form.photo, { attr: { class: 'form--full' } }) }}

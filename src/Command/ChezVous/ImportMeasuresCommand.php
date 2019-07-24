@@ -26,7 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportMeasuresCommand extends AbstractImportCommand
 {
-    private const CSV_DIRECTORY = 'chez-vous/measures';
+    private const CSV_DIRECTORY = 'measures';
 
     protected static $defaultName = 'app:chez-vous:import-measures';
 
@@ -87,7 +87,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         $this->io->section("Importing measures of type \"$type\"");
 
-        $filename = sprintf('%s/%s.csv', self::CSV_DIRECTORY, $type);
+        $filename = sprintf('%s/%s/%s.csv', self::ROOT_DIRECTORY, self::CSV_DIRECTORY, $type);
 
         if (!$this->storage->has($filename)) {
             $this->io->comment("No CSV found ($filename).");

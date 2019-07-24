@@ -10,6 +10,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Form\Admin\CommitteeMergeType;
+use League\Flysystem\Filesystem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -150,6 +151,17 @@ class AdminCommitteeController extends Controller
 
         return $this->render('admin/committee/merge/request.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/photo", name="app_admin_committee_photo", methods={"GET"})
+     * @Security("has_role('ROLE_ADMIN_COMMITTEES')")
+     */
+    public function photoAction(Committee $committee, Filesystem $privateStorage): Response
+    {
+        return new Response($privateStorage->read($committee->getPhotoPath()), Response::HTTP_OK, [
+            'Content-Type' => 'image/jpeg',
         ]);
     }
 }

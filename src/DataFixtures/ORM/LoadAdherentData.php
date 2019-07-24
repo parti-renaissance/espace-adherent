@@ -703,6 +703,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'address' => PostAddress::createFrenchAddress('30 Boulevard Louis Guichoux', '13003-13203', null, 43.3256095, 5.374416),
             'phone' => '33 673643424',
         ]);
+        $committee2->setPhotoUploaded(true);
         $this->addReference('committee-2', $committee2);
 
         $committee3 = $committeeFactory->createFromArray([
