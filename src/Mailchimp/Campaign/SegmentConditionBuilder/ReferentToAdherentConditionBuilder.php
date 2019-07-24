@@ -101,7 +101,7 @@ class ReferentToAdherentConditionBuilder extends AbstractConditionBuilder
                 'condition_type' => 'TextMerge',
                 'op' => 'starts',
                 'field' => MemberRequest::MERGE_FIELD_CITY,
-                'value' => $campaign->getCity().' (',
+                'value' => $campaign->getCity(),
             ];
         }
 
