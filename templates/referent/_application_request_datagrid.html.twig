@@ -32,10 +32,22 @@
                     key: 'isAdherent',
                     name: 'Adhérent ?',
                 },
+                {
+                    key: 'menu',
+                    name: 'Actions',
+                    menu: true,
+                },
             ],
             [
                 {% for request in requests %}
-                    {% include "application_request/space/_application_request_row.js.twig" %},
+                    {% set menu = [
+                        {
+                            label: 'Plus d\'infos',
+                            url: path("app_referent_candidate_#{request_type}_detail", {uuid: request.uuid})
+                        }
+                    ] %}
+
+                    {% include "application_request/space/_application_request_row.js.twig" with { menu: menu } %},
                 {% endfor %}
             ]
         );

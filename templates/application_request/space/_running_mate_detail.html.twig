@@ -43,12 +43,14 @@
             <div class="data-listing__item data-listing__item--value text--justify">{{ request.favoriteThemeDetails }}</div>
         </div>
 
-        <div class="data-listing__row b__nudge--bottom">
-            <div class="data-listing__item data-listing__item--label">CV</div>
-            <div class="data-listing__item data-listing__item--value">
-                <a href="{{ path('asset_url', { path: request.getPathWithDirectory, mime_type: 'application/pdf' }) }}" class="text--blue--dark link--no-decor" target="_blank">Télécharger le CV</a>
+        {% if is_granted('ROLE_MUNICIPAL_CHIEF') %}
+            <div class="data-listing__row b__nudge--bottom">
+                <div class="data-listing__item data-listing__item--label">CV</div>
+                <div class="data-listing__item data-listing__item--value">
+                    <a href="{{ path('asset_url', { path: request.getPathWithDirectory, mime_type: 'application/pdf' }) }}" class="text--blue--dark link--no-decor" target="_blank">Télécharger le CV</a>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="data-listing__row">
             <div class="data-listing__item data-listing__item--label">Êtes-vous engagé(e) dans une/des association(s) locale(s) ?</div>
