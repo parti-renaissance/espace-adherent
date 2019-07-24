@@ -28,11 +28,6 @@ class ReferentSpaceController extends AbstractApplicationRequestController
 
     protected function checkAccess(ApplicationRequest $request = null): void
     {
-        // Block access to the individual application request
-        if ($request) {
-            throw $this->createNotFoundException();
-        }
-
         if (
             array_filter(
                 $this->getUser()->getManagedAreaTagCodes(),
