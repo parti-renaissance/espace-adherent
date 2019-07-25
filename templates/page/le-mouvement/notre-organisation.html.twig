@@ -48,7 +48,11 @@
                         {% if member %}
                             <li>
                                 <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
-                                    <div class="profile-pic"> <img src="{{ path('asset_url', { path: member.getImagePath }) }}"></div>
+                                    <div class="profile-pic">
+                                        {% if member.hasImageName %}
+                                            <img src="{{ path('asset_url', { path: member.getImagePath }) }}">
+                                        {% endif %}
+                                    </div>
                                     <div class="team__meta">
                                         <div class="b__nudge--bottom-large">
                                             <div class="text--bold">{{ member.lastName|upper }} {{ member.firstName }}</div>
@@ -74,7 +78,11 @@
                     {% for member in executiveOfficeMembers %}
                         <li>
                             <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
-                                <div class="profile-pic"> <img src="{{ path('asset_url', { path: member.getImagePath }) }}"></div>
+                                <div class="profile-pic">
+                                    {% if member.hasImageName %}
+                                        <img src="{{ path('asset_url', { path: member.getImagePath }) }}">
+                                    {% endif %}
+                                </div>
                                 <div class="team__meta">
                                     <div class="b__nudge--bottom-large">
                                         <div class="text--bold">{{ member.lastName|upper }} {{ member.firstName }}</div>
