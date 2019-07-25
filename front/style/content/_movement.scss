@@ -205,12 +205,11 @@
         color: $dark;
     }
 
-    .executive-officer {
+    .executive-office-leaders {
         .team {
-            justify-content: center;
 
             li {
-                width: 60%;
+                width: 48.5%;
 
                 @media (max-width: $mobile) {
                     width: 100%;
