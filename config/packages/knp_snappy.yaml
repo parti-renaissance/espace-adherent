@@ -1,0 +1,5 @@
+knp_snappy:
+    pdf:
+        binary: "%kernel.project_dir%/vendor/bin/wkhtmltopdf-amd64"
+    image:
+        binary: "%kernel.project_dir%/vendor/bin/wkhtmltoimage-amd64"

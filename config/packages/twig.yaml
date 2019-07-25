@@ -1,0 +1,28 @@
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    paths:
+        "%kernel.project_dir%/templates/TwigBundle": Twig
+        "%kernel.project_dir%/templates": ~
+    globals:
+        assets_hash:            "%assets_hash%"
+        sentry_dsn:             "%env(SENTRY_PUBLIC_DSN)%"
+        recaptcha_public_key:   "%env(RECAPTCHA_PUBLIC_KEY)%"
+        google_maps_api_key:    "%env(GMAPS_API_KEY)%"
+        algolia_app_id:         "%env(ALGOLIA_APP_ID)%"
+        algolia_api_key:        "%env(ALGOLIA_FRONT_API_KEY)%"
+        url_legacy:             "https://adherents.en-marche.fr"
+        legacy_adhesion:        "https://adherents.en-marche.fr/adherer.html"
+        legislatives_platform:  "%env(LEGISLATIVES_PLATFORM)%"
+        algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
+        url_help_en_marche:     "https://aide.en-marche.fr"
+        project_dir:            "%kernel.project_dir%"
+        mooc_host:              "%env(MOOC_BASE_URL)%"
+        em_api_host:            "%env(EM_API_HOST)%"
+        adherent_interests:     "%adherent_interests%"
+        dpt_api_host:           "%env(DPT_API_HOST)%"
+
+    form_themes:
+        - 'form_theme.html.twig'
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
+        - 'SonataCoreBundle:Form:colorpicker.html.twig'

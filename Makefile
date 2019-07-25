@@ -137,7 +137,7 @@ test-debug:                                                                     
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional
 
-tu: vendor app/config/assets_version.yml                                                               ## Run the PHP unit tests
+tu: vendor config/packages/assets_version.yaml                                                               ## Run the PHP unit tests
 	$(PHPUNIT) --exclude-group functional
 
 tf: tfp test-behat test-phpunit-functional                                                             ## Run the PHP functional tests
@@ -239,5 +239,5 @@ web-built-mac:
 	yarn install
 	yarn build-dev
 
-app/config/assets_version.yml:
+config/packages/assets_version.yaml:
 	 $(EXEC) yarn build-prod
