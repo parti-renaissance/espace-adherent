@@ -31,7 +31,7 @@ class SurveyExporter
                 'city' => $survey->getCity(),
                 'questionsCount' => $survey->questionsCount(),
                 'createdAt' => $survey->getCreatedAt()->format('d/m/Y'),
-                'author' => $survey->getAuthor()->getFullName(),
+                'author' => $survey->getAuthor() ? $survey->getAuthor()->getFullName() : 'Ancien adhérent',
                 'edit' => [
                     'label' => "<span id='survey-edit-$i' class='btn btn--default'><i class='fa fa-edit'></i></span>",
                     'url' => $this->urlGenerator->generate("app_jecoute_{$spaceName}_local_survey_edit", ['uuid' => $survey->getUuid()]),
