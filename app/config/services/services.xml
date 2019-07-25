@@ -68,7 +68,7 @@
 
         <!-- Biography -->
         <service id="AppBundle\Biography\BiographyManager" />
-        <service id="AppBundle\Validator\UniqueExecutiveOfficerValidator" />
+        <service id="AppBundle\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
 
         <!-- Controller -->
         <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">

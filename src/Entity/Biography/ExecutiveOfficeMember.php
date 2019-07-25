@@ -3,7 +3,7 @@
 namespace AppBundle\Entity\Biography;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\UniqueExecutiveOfficer;
+use AppBundle\Validator\UniqueExecutiveOfficeMemberRole;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @UniqueExecutiveOfficer
+ * @UniqueExecutiveOfficeMemberRole
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -36,6 +36,11 @@ class ExecutiveOfficeMember extends AbstractBiography
      */
     private $executiveOfficer = false;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $deputyGeneralDelegate = false;
+
     public function __construct(
         UuidInterface $uuid = null,
         string $firstName = null,
@@ -44,12 +49,14 @@ class ExecutiveOfficeMember extends AbstractBiography
         string $content = null,
         bool $published = null,
         string $job = null,
-        bool $executiveOfficer = null
+        bool $executiveOfficer = null,
+        bool $deputyGeneralDelegate = false
     ) {
         parent::__construct($uuid, $firstName, $lastName, $description, $content, $published);
 
         $this->job = $job;
         $this->executiveOfficer = $executiveOfficer;
+        $this->deputyGeneralDelegate = $deputyGeneralDelegate;
     }
 
     public function setExecutiveOfficer(bool $executiveOfficer): void
@@ -60,6 +67,16 @@ class ExecutiveOfficeMember extends AbstractBiography
     public function isExecutiveOfficer(): ?bool
     {
         return $this->executiveOfficer;
+    }
+
+    public function setDeputyGeneralDelegate(bool $deputyGeneralDelegate): void
+    {
+        $this->deputyGeneralDelegate = $deputyGeneralDelegate;
+    }
+
+    public function isDeputyGeneralDelegate(): ?bool
+    {
+        return $this->deputyGeneralDelegate;
     }
 
     public function getJob(): ?string

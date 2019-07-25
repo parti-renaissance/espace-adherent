@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class UniqueExecutiveOfficerValidator extends ConstraintValidator
+class UniqueExecutiveOfficeMemberRoleValidator extends ConstraintValidator
 {
     /**
      * @var ExecutiveOfficeMemberRepository
@@ -25,8 +25,8 @@ class UniqueExecutiveOfficerValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof UniqueExecutiveOfficer) {
-            throw new UnexpectedTypeException($constraint, UniqueExecutiveOfficer::class);
+        if (!$constraint instanceof UniqueExecutiveOfficeMemberRole) {
+            throw new UnexpectedTypeException($constraint, UniqueExecutiveOfficeMemberRole::class);
         }
 
         if (!$value instanceof ExecutiveOfficeMember) {
@@ -38,12 +38,33 @@ class UniqueExecutiveOfficerValidator extends ConstraintValidator
 
             if ($executiveOfficer && $value->getUuid() !== $executiveOfficer->getUuid()) {
                 $this->context
-                    ->buildViolation($constraint->message)
+                    ->buildViolation($constraint->uniqueExecutiveOfficerMessage)
                     ->setParameter('{{ fullName }}', $executiveOfficer->getFullName())
                     ->atPath('executiveOfficer')
                     ->addViolation()
                 ;
             }
+        }
+
+        if ($value->isDeputyGeneralDelegate()) {
+            $deputyGeneralDelegate = $this->executiveOfficeMemberRepository->findOneDeputyGeneralDelegateMember();
+
+            if ($deputyGeneralDelegate && $value->getUuid() !== $deputyGeneralDelegate->getUuid()) {
+                $this->context
+                    ->buildViolation($constraint->uniqueDeputyGeneralDelegateMessage)
+                    ->setParameter('{{ fullName }}', $deputyGeneralDelegate->getFullName())
+                    ->atPath('deputyGeneralDelegate')
+                    ->addViolation()
+                ;
+            }
+        }
+
+        if ($value->isExecutiveOfficer() && $value->isDeputyGeneralDelegate()) {
+            $this->context
+                ->buildViolation($constraint->uniqueRoleMessage)
+                ->atPath('executiveOfficer')
+                ->addViolation()
+            ;
         }
     }
 }

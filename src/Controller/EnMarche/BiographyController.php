@@ -21,6 +21,7 @@ class BiographyController extends Controller
         return $this->render('page/le-mouvement/notre-organisation.html.twig', [
             'executiveOfficeMembers' => $allMembers->getExecutiveOfficeMembers(),
             'executiveOfficer' => $allMembers->getExecutiveOfficer(),
+            'deputyGeneralDelegate' => $allMembers->getDeputyGeneralDelegate(),
         ]);
     }
 
