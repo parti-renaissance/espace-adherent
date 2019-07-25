@@ -89,7 +89,6 @@ class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureIn
             'Délégué général adjoint',
             false,
             true
-
         );
         $member5->setFacebookProfile('https://facebook.com/EnMarche');
         $member5->setTwitterProfile('https://twitter.com/enmarchefr');
