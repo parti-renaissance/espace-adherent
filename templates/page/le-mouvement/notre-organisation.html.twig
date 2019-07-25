@@ -39,50 +39,30 @@
 
 {% block mouvement_content %}
     <div id="biography">
-        {% if executiveOfficer %}
-            <div class="executive-officer">
-                <h2 class="text--center">Notre Délégué Général</h2>
-                <ul class="team">
-                    <li>
-                        <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: executiveOfficer.slug }) }}">
-                            <div class="image" style="background-image: url('{{ path('asset_url', { path: executiveOfficer.getImagePath }) }}')">
-                            </div>
-                            <div class="team__meta">
-                                <div class="b__nudge--bottom-large">
-                                    <div class="text--bold">{{ executiveOfficer.firstName }} {{ executiveOfficer.lastName|upper }}</div>
-                                    <div class="b__nudge--bottom-small">{{ executiveOfficer.job }}</div>
-                                    <div class="description">{{ executiveOfficer.description }}</div>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="social-networks">
-                            {{ include('social_share/social_networks.html.twig', { object: executiveOfficer }) }}
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
 
-        {% if deputyGeneralDelegate %}
-            <div class="executive-officer">
-                <h2 class="text--center">Notre Délégué Général Adjoint</h2>
+        {% if executiveOfficer or deputyGeneralDelegate %}
+            <div class="executive-office-leaders">
+                <h2 class="text--center">Nos délégués généraux</h2>
                 <ul class="team">
-                    <li>
-                        <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: deputyGeneralDelegate.slug }) }}">
-                            <div class="image" style="background-image: url('{{ path('asset_url', { path: deputyGeneralDelegate.getImagePath }) }}')">
-                            </div>
-                            <div class="team__meta">
-                                <div class="b__nudge--bottom-large">
-                                    <div class="text--bold">{{ deputyGeneralDelegate.firstName }} {{ deputyGeneralDelegate.lastName|upper }}</div>
-                                    <div class="b__nudge--bottom-small">{{ deputyGeneralDelegate.job }}</div>
-                                    <div class="description">{{ deputyGeneralDelegate.description }}</div>
+                    {% for member in [executiveOfficer, deputyGeneralDelegate] %}
+                        {% if member %}
+                            <li>
+                                <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: member.slug }) }}">
+                                    <div class="profile-pic"> <img src="{{ path('asset_url', { path: member.getImagePath }) }}"></div>
+                                    <div class="team__meta">
+                                        <div class="b__nudge--bottom-large">
+                                            <div class="text--bold">{{ member.lastName|upper }} {{ member.firstName }}</div>
+                                            <div class=" b__nudge--bottom-small">{{ member.job }}</div>
+                                            <div class="description">{{ member.description }}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="social-networks">
+                                    {{ include('social_share/social_networks.html.twig', { object: member }) }}
                                 </div>
-                            </div>
-                        </a>
-                        <div class="social-networks">
-                            {{ include('social_share/social_networks.html.twig', { object: deputyGeneralDelegate }) }}
-                        </div>
-                    </li>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
             </div>
         {% endif %}
