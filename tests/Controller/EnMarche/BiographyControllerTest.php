@@ -21,13 +21,18 @@ class BiographyControllerTest extends WebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $this->assertContains(
-            'Christophe CASTANER',
-            $crawler->filter('#biography .executive-officer > ul li')->text()
+            'CASTANER Christophe',
+            $crawler->filter('#biography .executive-office-leaders > ul li:nth-child(1)')->text()
         );
 
         $this->assertContains(
             "Secrétaire d'État auprès du Premier ministre, chargé des Relations avec le Parlement.",
-            $crawler->filter('#biography .executive-officer > ul li .description')->text()
+            $crawler->filter('#biography .executive-office-leaders > ul li:nth-child(1) .description')->text()
+        );
+
+        $this->assertContains(
+            'P. Pierre',
+            $crawler->filter('#biography .executive-office-leaders > ul li:nth-child(2)')->text()
         );
 
         $this->assertContains(
