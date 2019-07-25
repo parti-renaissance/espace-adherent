@@ -5,6 +5,7 @@ namespace AppBundle\Repository\Biography;
 use AppBundle\Collection\ExecutiveOfficeMemberCollection;
 use AppBundle\Entity\Biography\ExecutiveOfficeMember;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
@@ -16,9 +17,8 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
 
     public function findAllPublishedMembers(): ExecutiveOfficeMemberCollection
     {
-        $allMembers = $this->createQueryBuilder('executiveOfficeMember')
-            ->andWhere('executiveOfficeMember.published = :published')
-            ->setParameter('published', true)
+        $allMembers = $this
+            ->createPublishedQueryBuilder()
             ->orderBy('executiveOfficeMember.lastName', 'ASC')
             ->getQuery()
             ->getResult()
@@ -29,10 +29,19 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
 
     public function findOneExecutiveOfficerMember(bool $published = true): ?ExecutiveOfficeMember
     {
-        return $this->createQueryBuilder('executiveOfficer')
-            ->andWhere('executiveOfficer.published = :published')
-            ->andWhere('executiveOfficer.executiveOfficer = true')
-            ->setParameter('published', $published)
+        return $this
+            ->createPublishedQueryBuilder($published)
+            ->andWhere('executiveOfficeMember.executiveOfficer = true')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findOneDeputyGeneralDelegateMember(bool $published = true): ?ExecutiveOfficeMember
+    {
+        return $this
+            ->createPublishedQueryBuilder($published)
+            ->andWhere('executiveOfficeMember.deputyGeneralDelegate = true')
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -40,12 +49,21 @@ class ExecutiveOfficeMemberRepository extends ServiceEntityRepository
 
     public function findOnePublishedBySlug(string $slug): ?ExecutiveOfficeMember
     {
-        return $this->createQueryBuilder('executiveOfficeMember')
+        return $this
+            ->createPublishedQueryBuilder()
             ->andWhere('executiveOfficeMember.slug = :slug')
-            ->andWhere('executiveOfficeMember.published = true')
             ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    private function createPublishedQueryBuilder(bool $published = true): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('executiveOfficeMember')
+            ->andWhere('executiveOfficeMember.published = :published')
+            ->setParameter('published', $published)
         ;
     }
 

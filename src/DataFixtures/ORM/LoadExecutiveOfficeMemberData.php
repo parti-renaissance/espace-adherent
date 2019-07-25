@@ -19,7 +19,8 @@ class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureIn
             "Christophe Castaner, né le 3 janvier 1966 à Ollioules, est un juriste et homme politique français. Député pour les Alpes-de-Haute-Provence, tête de liste du Parti socialiste aux élections régionales de 2015 en Provence-Alpes-Côte d'Azur, il rejoint le mouvement En marche d'Emmanuel Macron en 2016",
             true,
             'Délégué général du mouvement',
-            true
+            true,
+            false
         );
 
         $member1->setFacebookProfile('https://www.facebook.com/christophe.castaner');
@@ -35,6 +36,7 @@ class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureIn
             "Députée LaREM de l'Isère, chargée d'animer la réflexion sur les libertés publiques, la justice, la défense et la sécurité intérieure, ainsi que sur les nouveaux risques. Déléguée adjointe : Marie-Hélène REGNIER, référente LaREM dans l'Aude.",
             true,
             'Déléguée à la Garantie des libertés et de la sécurité',
+            false,
             false
         );
 
@@ -51,6 +53,7 @@ class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureIn
             "47 ans, mariée, 3 enfants, référente LaREM en Moselle depuis octobre 2016. Elle est ingénieur en chef des travaux publics de l'Etat, directrice adjointe du Centre d'études et d'expertises sur l'Environnement, les Mobilités et l'Aménagement, Est. Elle est adjointe au Maire de Metz, vice-présidente de l'agence d'urbanisme d'Agglomérations de Moselle et conseillère communautaire de Metz Métropole.",
             true,
             'Référente',
+            false,
             false
         );
 
@@ -67,6 +70,7 @@ class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureIn
             "32 ans, députée de Paris. Engagée de la 1ère heure auprès d'Emmanuel Macron, Laetitia a été experte du programme Justice puis référente territoriale d'En Marche. Issue des quartiers populaires, engagée pour l'égalité des chances, elle est avocate au Barreau de Paris où elle a fondé son cabinet.",
             true,
             'Déléguée à la Communication',
+            false,
             false
         );
 
@@ -75,10 +79,28 @@ class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureIn
         $member4->setInstagramProfile('https://www.instagram.com/enmarchefr');
         $member4->setLinkedInProfile('https://fr.linkedin.com/company/en-marche');
 
+        $member5 = new ExecutiveOfficeMember(
+            null,
+            'Pierre',
+            'P.',
+            'Délégué général adjoint à LaREM',
+            'Délégué général adjoint à LaREM',
+            true,
+            'Délégué général adjoint',
+            false,
+            true
+
+        );
+        $member5->setFacebookProfile('https://facebook.com/EnMarche');
+        $member5->setTwitterProfile('https://twitter.com/enmarchefr');
+        $member5->setInstagramProfile('https://www.instagram.com/enmarchefr');
+        $member5->setLinkedInProfile('https://fr.linkedin.com/company/en-marche');
+
         $manager->persist($member1);
         $manager->persist($member2);
         $manager->persist($member3);
         $manager->persist($member4);
+        $manager->persist($member5);
 
         $manager->flush();
     }

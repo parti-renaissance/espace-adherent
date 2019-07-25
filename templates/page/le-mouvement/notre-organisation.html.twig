@@ -63,6 +63,30 @@
             </div>
         {% endif %}
 
+        {% if deputyGeneralDelegate %}
+            <div class="executive-officer">
+                <h2 class="text--center">Notre Délégué Général Adjoint</h2>
+                <ul class="team">
+                    <li>
+                        <a class="link--no-decor" href="{{ path('app_our_organization_show', { slug: deputyGeneralDelegate.slug }) }}">
+                            <div class="image" style="background-image: url('{{ path('asset_url', { path: deputyGeneralDelegate.getImagePath }) }}')">
+                            </div>
+                            <div class="team__meta">
+                                <div class="b__nudge--bottom-large">
+                                    <div class="text--bold">{{ deputyGeneralDelegate.firstName }} {{ deputyGeneralDelegate.lastName|upper }}</div>
+                                    <div class="b__nudge--bottom-small">{{ deputyGeneralDelegate.job }}</div>
+                                    <div class="description">{{ deputyGeneralDelegate.description }}</div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="social-networks">
+                            {{ include('social_share/social_networks.html.twig', { object: deputyGeneralDelegate }) }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+
         {% if executiveOfficeMembers %}
             <div class="executive-office-members">
                 <h2 class="text--center">Le Bureau Exécutif</h2>

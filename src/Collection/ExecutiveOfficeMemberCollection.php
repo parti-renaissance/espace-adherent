@@ -10,7 +10,7 @@ class ExecutiveOfficeMemberCollection extends ArrayCollection
     public function getExecutiveOfficeMembers(): self
     {
         return $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
-            return !$executiveOfficeMember->isExecutiveOfficer();
+            return !$executiveOfficeMember->isExecutiveOfficer() && !$executiveOfficeMember->isDeputyGeneralDelegate();
         });
     }
 
@@ -18,6 +18,15 @@ class ExecutiveOfficeMemberCollection extends ArrayCollection
     {
         $collection = $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
             return $executiveOfficeMember->isExecutiveOfficer();
+        });
+
+        return !$collection->isEmpty() ? $collection->first() : null;
+    }
+
+    public function getDeputyGeneralDelegate(): ?ExecutiveOfficeMember
+    {
+        $collection = $this->filter(function (ExecutiveOfficeMember $executiveOfficeMember) {
+            return $executiveOfficeMember->isDeputyGeneralDelegate();
         });
 
         return !$collection->isEmpty() ? $collection->first() : null;

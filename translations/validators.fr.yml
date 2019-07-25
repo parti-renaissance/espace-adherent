@@ -306,6 +306,8 @@ message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 # Biography
 #
 executive_office_member.executive_officer.unique: Le membre {{ fullName }} est déjà délégué général.
+executive_office_member.deputy_general_delegate.unique: Le membre {{ fullName }} est déjà délégué général adjoint.
+executive_office_member.role.unique: Un membre ne peut pas être délégué général et délégué général adjoint en même temps.
 
 #
 # Idea
