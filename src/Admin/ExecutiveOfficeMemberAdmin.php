@@ -58,6 +58,10 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
                     'label' => 'Délégué général',
                     'required' => false,
                 ])
+                ->add('deputyGeneralDelegate', CheckboxType::class, [
+                    'label' => 'Délégué général adjoint',
+                    'required' => false,
+                ])
                 ->add('description', TextType::class, [
                     'label' => 'Description',
                     'required' => false,
@@ -152,6 +156,10 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
             ])
             ->add('executiveOfficer', null, [
                 'label' => 'Délégué général',
+                'editable' => true,
+            ])
+            ->add('deputyGeneralDelegate', null, [
+                'label' => 'Délégué général adjoint',
                 'editable' => true,
             ])
             ->add('published', null, [
