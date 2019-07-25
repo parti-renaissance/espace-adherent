@@ -96,12 +96,17 @@ class ReferentToAdherentConditionBuilder extends AbstractConditionBuilder
             ];
         }
 
-        if ($campaign->getCity()) {
+        if ($city = $campaign->getCity()) {
+            $field = is_numeric(substr($city, 0, 1))
+                ? MemberRequest::MERGE_FIELD_ZIP_CODE
+                : MemberRequest::MERGE_FIELD_CITY
+            ;
+
             $conditions[] = [
                 'condition_type' => 'TextMerge',
                 'op' => 'starts',
-                'field' => MemberRequest::MERGE_FIELD_CITY,
-                'value' => $campaign->getCity(),
+                'field' => $field,
+                'value' => $city,
             ];
         }
 
