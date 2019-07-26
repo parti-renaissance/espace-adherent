@@ -757,7 +757,7 @@
        ######################################################
        -->
 
-        <service id="app.admin.application_request_technical_skill" class="AppBundle\Admin\ApplicationRequestTechnicalSkillAdmin">
+        <service id="app.admin.application_request_technical_skill" class="AppBundle\Admin\ApplicationRequest\TechnicalSkillAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Politique" />
 
             <argument />
@@ -765,7 +765,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.application_request_theme" class="AppBundle\Admin\ApplicationRequestThemeAdmin">
+        <service id="app.admin.application_request_theme" class="AppBundle\Admin\ApplicationRequest\ThemeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Thématiques" group="Politique" />
 
             <argument />
@@ -774,7 +774,7 @@
         </service>
 
         <!-- RunningMate manager-->
-        <service id="app.admin.application_request_running_mate_request" class="AppBundle\Admin\ApplicationRequestRunningMateRequestAdmin">
+        <service id="app.admin.application_request_running_mate_request" class="AppBundle\Admin\ApplicationRequest\RunningMateRequestAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Candidatures colistiers" group="Politique" />
 
             <argument />
@@ -785,7 +785,7 @@
             </call>
         </service>
 
-        <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequestVolunteerRequestAdmin">
+        <service id="app.admin.application_request_volunteer_request" class="AppBundle\Admin\ApplicationRequest\VolunteerRequestAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Candidatures bénévoles" group="Politique" />
 
             <argument />
@@ -793,7 +793,7 @@
             <argument />
         </service>
 
-        <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequestTagAdmin">
+        <service id="app.admin.application_request_tag" class="AppBundle\Admin\ApplicationRequest\TagAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Tags de candidature" group="Politique" />
 
             <argument />
