@@ -169,7 +169,7 @@ PublishIdeaForm.propTypes = {
         locality: PropTypes.object,
         author: PropTypes.array,
         difficulties: PropTypes.array,
-        legal: PropTypes.boolean,
+        legal: PropTypes.bool,
         committee: PropTypes.string,
     }),
     submitForm: PropTypes.func.isRequired,

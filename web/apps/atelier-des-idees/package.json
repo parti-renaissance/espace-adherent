@@ -23,7 +23,7 @@
     "react-redux": "^6.0.0",
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
+    "react-scripts": "^3.0.1",
     "react-select": "^2.1.2",
     "react-share": "^2.4.0",
     "react-slick": "^0.23.2",
@@ -37,26 +37,27 @@
     "build-css": "node-sass --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start": "npm-run-all -p watch-css start-js",
-    "build": "npm run build-css && react-scripts build",
+    "build": "echo 'SKIP_PREFLIGHT_CHECK=true' >> .env && npm run build-css && react-scripts build",
     "start-js": "react-scripts start",
     "build-js": "react-scripts build",
     "test": "react-scripts test --env=jsdom --json --outputFile=.jest-test-results.json",
-    "eject": "react-scripts eject",
-    "storybook": "npm-run-all -p watch-css start-storybook",
-    "start-storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "npm run build-css && build-storybook-only",
-    "build-storybook-only": "build-storybook -s public"
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
-    "@storybook/addon-actions": "^4.0.12",
-    "@storybook/addon-jest": "^4.0.12",
-    "@storybook/addon-links": "^4.0.12",
-    "@storybook/addons": "^4.0.12",
-    "@storybook/react": "^4.0.12",
-    "babel-loader": "^8.0.4",
     "node-sass": "^4.11.0",
-    "npm-run-all": "^4.1.5",
-    "storybook-react-router": "^1.0.2"
+    "npm-run-all": "^4.1.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -41,7 +41,7 @@ class SecondForm extends React.Component {
             const isRequired = Object.keys(this.state.errors).includes(curr);
             // check if it's an array
             const isArrayEmpty = Array.isArray(this.state.inputs[curr]) && !this.state.inputs[curr].length;
-            // check array is not empty and boolean is true
+            // check array is not empty and bool is true
             if (isRequired && (!this.state.inputs[curr] || isArrayEmpty)) {
                 acc[curr] = 'Information manquante';
                 if (!acc.form) {
@@ -253,8 +253,8 @@ SecondForm.propTypes = {
     defaultValues: PropTypes.shape({
         author: PropTypes.array,
         difficulties: PropTypes.array,
-        legal: PropTypes.boolean,
-        policy: PropTypes.boolean,
+        legal: PropTypes.bool,
+        policy: PropTypes.bool,
     }),
     authorOptions: PropTypes.arrayOf(
         PropTypes.shape({
