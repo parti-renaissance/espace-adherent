@@ -18,7 +18,10 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\Index(name="donation_duration_idx", columns={"duration"}),
  *     @ORM\Index(name="donation_status_idx", columns={"status"})
  * })
+ *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
+ *
+ * @ORM\EntityListeners({"AppBundle\EntityListener\DonationListener"})
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -109,6 +112,13 @@ class Donation implements GeoPointInterface
      */
     private $nationality;
 
+    /**
+     * @var Donator|null
+     *
+     * @ORM\ManyToOne(targetEntity="Donator", inversedBy="donations")
+     */
+    private $donator;
+
     public function __construct(
         UuidInterface $uuid,
         string $payboxOrderRef,
@@ -120,7 +130,8 @@ class Donation implements GeoPointInterface
         PostAddress $postAddress,
         string $clientIp,
         int $duration = PayboxPaymentSubscription::NONE,
-        string $nationality = null
+        string $nationality = null,
+        Donator $donator = null
     ) {
         $this->uuid = $uuid;
         $this->amount = $amount;
@@ -135,6 +146,7 @@ class Donation implements GeoPointInterface
         $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->payboxOrderRef = $payboxOrderRef;
         $this->nationality = $nationality;
+        $this->donator = $donator;
     }
 
     public function __toString(): string
@@ -306,5 +318,15 @@ class Donation implements GeoPointInterface
     public function setNationality(string $nationality): void
     {
         $this->nationality = $nationality;
+    }
+
+    public function getDonator(): ?Donator
+    {
+        return $this->donator;
+    }
+
+    public function setDonator(?Donator $donator): void
+    {
+        $this->donator = $donator;
     }
 }

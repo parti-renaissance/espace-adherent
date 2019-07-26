@@ -358,6 +358,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.donator" class="AppBundle\Admin\DonatorAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Donateurs" group="Finances" />
+
+            <argument />
+            <argument>AppBundle\Entity\Donator</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Tech

@@ -28,7 +28,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
   Scenario: A user can't donate more than 7500€ per year
     Given I freeze the clock to "2018-12-01"
     And the following fixtures are loaded:
-      | LoadDonationData |
+      | LoadDonationData          |
+      | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don/coordonnees?montant=7490&abonnement=0"
     And I press "Continuer"
@@ -37,7 +38,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
   @javascript
   Scenario: An anonymous user can donate successfully
-    Given I am on "/don"
+    Given the following fixtures are loaded:
+      | LoadDonatorIdentifierData |
+    And I am on "/don"
     And I press "OK"
     And wait 2 second until I see "Je donne chaque mois (paiement automatique)"
     When I press "Continuer"
@@ -73,7 +76,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
   @javascript
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
-    Given I am on "/don"
+    Given the following fixtures are loaded:
+      | LoadDonatorIdentifierData |
+    And I am on "/don"
     And I press "OK"
     And wait 2 seconds until I see "Je donne chaque mois (paiement automatique)"
     When I click the "donation-monthly_label" element
@@ -140,7 +145,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
   @javascript
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before
     Given the following fixtures are loaded:
-      | LoadAdherentData |
+      | LoadAdherentData          |
+      | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
     And I press "OK"
@@ -224,7 +230,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
   @javascript
   Scenario: The logged user can continue to donate punctually with a subscription currently running
     Given the following fixtures are loaded:
-      | LoadDonationData |
+      | LoadDonationData          |
+      | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
     And I press "OK"
