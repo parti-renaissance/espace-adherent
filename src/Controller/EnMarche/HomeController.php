@@ -4,6 +4,8 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\HomeBlock;
+use AppBundle\Entity\LiveLink;
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Exception\SitemapException;
 use AppBundle\Form\NewsletterSubscriptionType;
@@ -31,8 +33,8 @@ class HomeController extends Controller
         }
 
         return $this->render('home/index.html.twig', [
-            'blocks' => $this->getDoctrine()->getRepository('AppBundle:HomeBlock')->findHomeBlocks(),
-            'live_links' => $this->getDoctrine()->getRepository('AppBundle:LiveLink')->findHomeLiveLinks(),
+            'blocks' => $this->getDoctrine()->getRepository(HomeBlock::class)->findHomeBlocks(),
+            'live_links' => $this->getDoctrine()->getRepository(LiveLink::class)->findHomeLiveLinks(),
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, $newsletterSubscription)->createView(),
         ]);
     }

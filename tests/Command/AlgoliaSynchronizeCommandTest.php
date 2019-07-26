@@ -2,6 +2,8 @@
 
 namespace Tests\AppBundle\Command;
 
+use AppBundle\Entity\Event;
+use AppBundle\Entity\Timeline\Theme;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -28,11 +30,11 @@ class AlgoliaSynchronizeCommandTest extends WebTestCase
     {
         return [
             [
-                ['entityName' => 'AppBundle:Event'],
+                ['entityName' => Event::class],
                 ['Synchronizing entity AppBundle\Entity\Event ... done, 21 records indexed'],
             ],
             [
-                ['entityName' => 'AppBundle\Entity\Timeline\Theme'],
+                ['entityName' => Theme::class],
                 ['Synchronizing entity AppBundle\Entity\Timeline\Theme ... done, 5 records indexed'],
             ],
             [

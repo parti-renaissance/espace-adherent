@@ -42,5 +42,4 @@ return [
     Liip\FunctionalTestBundle\LiipFunctionalTestBundle::class => ['test' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Exporter\Bridge\Symfony\Bundle\SonataExporterBundle::class => ['all' => true],
-    AppBundle\AppBundle::class => ['all' => true],
 ];

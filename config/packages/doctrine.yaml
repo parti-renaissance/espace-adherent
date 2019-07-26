@@ -24,13 +24,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: false
         mappings:
-            AppBundle:
-                mapping: true
+            App:
+                is_bundle: false
                 type: annotation
-                dir: 'Entity'
-                alias: 'AppBundle'
+                dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'AppBundle\Entity'
-                is_bundle: true
+                alias: App
 
         filters:
             softdeleteable:

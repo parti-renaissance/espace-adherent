@@ -8,16 +8,16 @@
     {# Prerendering this block and saving it in a variable prevents extra SQL queries #}
     {% if has_role_adherent %}
         {% set adherent_committees %}
-            {{ render(controller('AppBundle:EnMarche/Adherent:listMyCommittees')) }}
+            {{ render(controller('AppBundle\\Controller\\EnMarche\\AdherentController:listMyCommitteesAction')) }}
         {% endset %}
         {% set al_committees %}
-            {{ render(controller('AppBundle:EnMarche/Adherent:listCommitteesAl')) }}
+            {{ render(controller('AppBundle\\Controller\\EnMarche\\AdherentController:listCommitteesAlAction')) }}
         {% endset %}
         {% set adherent_citizen_projects %}
-            {{ render(controller('AppBundle:EnMarche/Adherent:listMyCitizenProjects')) }}
+            {{ render(controller('AppBundle\\Controller\\EnMarche\\AdherentController:listMyCitizenProjectsAction')) }}
         {% endset %}
         {% set administrated_citizen_projects %}
-            {{ render(controller('AppBundle:EnMarche/Adherent:listMyAdministratedCitizenProjects')) }}
+            {{ render(controller('AppBundle\\Controller\\EnMarche\\AdherentController:listMyAdministratedCitizenProjectsAction')) }}
         {% endset %}
     {% endif %}
     <!--  Header / Navigation Desktop -->

@@ -2,6 +2,7 @@
 
 namespace AppBundle\React;
 
+use AppBundle\Controller\ReactController;
 use AppBundle\React\App\CitizenProjectApp;
 use AppBundle\React\App\IdeasWorkshopApp;
 use Symfony\Component\Routing\RouteCollection;
@@ -59,7 +60,7 @@ class ReactAppRegistry
         foreach ($this->apps as $appName => $app) {
             foreach ($app->getRoutes() as $routeName => $route) {
                 $route->setDefault('_react_app', $appName);
-                $route->setDefault('_controller', 'AppBundle:React:app');
+                $route->setDefault('_controller', ReactController::class);
 
                 $collection->add('react_app_'.$appName.'_'.$routeName, $route);
             }

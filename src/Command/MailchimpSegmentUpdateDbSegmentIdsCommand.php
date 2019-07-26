@@ -31,14 +31,14 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         ReferentTagRepository $referentTagRepository,
         CommitteeRepository $committeeRepository,
         CitizenProjectRepository $citizenProjectRepository,
-        ClientInterface $client,
+        ClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
         $this->referentTagRepository = $referentTagRepository;
         $this->committeeRepository = $committeeRepository;
         $this->citizenProjectRepository = $citizenProjectRepository;
-        $this->client = $client;
+        $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
         $this->mailchimpListId = $mailchimpListId;
 

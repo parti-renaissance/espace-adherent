@@ -25,12 +25,12 @@ class MailchimpCreateTagFromReferentTagCommand extends Command
 
     public function __construct(
         ReferentTagRepository $referentTagRepository,
-        ClientInterface $client,
+        ClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
         $this->referentTagRepository = $referentTagRepository;
-        $this->client = $client;
+        $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
         $this->mailchimpListId = $mailchimpListId;
 
