@@ -1,4 +1,3 @@
-/app/config/parameters.yml
 /config/packages/assets_version.yaml
 /app/data/images/
 /app/data/files/
@@ -28,3 +27,6 @@
 /docker-dev.lock
 node_modules
 /web/apps/atelier-des-idees/src/App.css
+/.env.local
+/.env.local.php
+/.env.*.local

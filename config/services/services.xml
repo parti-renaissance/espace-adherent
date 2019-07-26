@@ -13,7 +13,7 @@
         </defaults>
 
         <!-- History -->
-        <prototype namespace="AppBundle\History\" resource="../../../src/History/" />
+        <prototype namespace="AppBundle\History\" resource="../../src/History/" />
 
         <!-- Adherents -->
         <service id="AppBundle\Membership\AdherentManager" />
@@ -73,10 +73,10 @@
         <service id="AppBundle\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
 
         <!-- Controller -->
-        <prototype namespace="AppBundle\Controller\" resource="../../../src/Controller/">
+        <prototype namespace="AppBundle\Controller\" resource="../../src/Controller/">
             <tag name="controller.service_arguments" />
         </prototype>
-        <prototype namespace="AppBundle\Controller\Admin\" resource="../../../src/Controller/Admin" public="true">
+        <prototype namespace="AppBundle\Controller\Admin\" resource="../../src/Controller/Admin" public="true">
             <tag name="controller.service_arguments" />
         </prototype>
 
@@ -176,7 +176,7 @@
         <service id="AppBundle\EventListener\ControllerListener">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" priority="8" />
         </service>
-        <prototype namespace="AppBundle\EntityListener\" resource="../../../src/EntityListener/">
+        <prototype namespace="AppBundle\EntityListener\" resource="../../src/EntityListener/">
             <tag name="doctrine.orm.entity_listener" />
         </prototype>
         <service id="AppBundle\EventListener\RemoveEmojisListener">
@@ -203,7 +203,7 @@
         <service id="AppBundle\EventSubscriber\CommentsCguSubscriber"/>
 
         <!-- Exporter -->
-        <prototype namespace="AppBundle\Exporter\" resource="../../../src/Exporter/" />
+        <prototype namespace="AppBundle\Exporter\" resource="../../src/Exporter/" />
 
         <!-- Form -->
         <service id="AppBundle\Form\MyReferentTagChoiceType"/>
@@ -267,10 +267,10 @@
         <service id="AppBundle\Report\Listener\EnableSubjectForResolvingReportsListener" />
 
         <!-- Repository -->
-        <prototype namespace="AppBundle\Repository\" resource="../../../src/Repository/**" />
+        <prototype namespace="AppBundle\Repository\" resource="../../src/Repository/**" />
 
         <!-- Security -->
-        <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
+        <prototype namespace="AppBundle\Security\Voter\" resource="../../src/Security/Voter"/>
         <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
         <service id="AppBundle\Security\Http\Session\AnonymousFollowerSession" public="true" />
         <service id="AppBundle\Security\LoginFormAuthenticator">
@@ -465,7 +465,7 @@
         <service id="AppBundle\Statistics\Acquisition\Aggregator" />
 
         <!-- Statistics Calculators -->
-        <prototype namespace="AppBundle\Statistics\Acquisition\Calculator\" resource="../../../src/Statistics/Acquisition/Calculator/*Calculator.php">
+        <prototype namespace="AppBundle\Statistics\Acquisition\Calculator\" resource="../../src/Statistics/Acquisition/Calculator/*Calculator.php">
             <tag name="app.acquisition_statistics.calculator" />
         </prototype>
         <service id="AppBundle\Statistics\Acquisition\Calculator\AdherentCalculator">
@@ -618,7 +618,7 @@
             <tag name="container.service_locator" />
         </service>
 
-        <prototype namespace="AppBundle\Mailchimp\Campaign\ContentSection\" resource="../../../src/Mailchimp/Campaign/ContentSection/" />
+        <prototype namespace="AppBundle\Mailchimp\Campaign\ContentSection\" resource="../../src/Mailchimp/Campaign/ContentSection/" />
 
         <service id="app.mailchimp.content_section_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
@@ -711,13 +711,12 @@
         <service id="AppBundle\Command\ImportVotePlacesCommand" />
 
         <!-- ChezVous -->
-        <prototype namespace="AppBundle\Command\ChezVous\" resource="../../../src/Command/ChezVous/*" />
-        <prototype namespace="AppBundle\Form\Admin\ChezVous\" resource="../../../src/Form/Admin/ChezVous/*" />
-        <prototype namespace="AppBundle\ChezVous\" resource="../../../src/ChezVous/*" />
+        <prototype namespace="AppBundle\Command\ChezVous\" resource="../../src/Command/ChezVous/*" />
+        <prototype namespace="AppBundle\Form\Admin\ChezVous\" resource="../../src/Form/Admin/ChezVous/*" />
+        <prototype namespace="AppBundle\ChezVous\" resource="../../src/ChezVous/*" />
         <service id="AppBundle\ChezVous\EventSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
         </service>
-
         <service id="AppBundle\Validator\ChezVous\MeasurePayloadValidator" />
 
         <service id="AppBundle\EventListener\AdministratorExportHistoryListener" />

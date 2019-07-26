@@ -22,9 +22,9 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up app/config/parameters.yml db rabbitmq-fabric web/built assets-amp var/public.key perm  ## Install and start the project
+start: build up db rabbitmq-fabric web/built assets-amp var/public.key perm  ## Install and start the project
 
-start-mac: build up app/config/parameters.yml db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
+start-mac: build up db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
 
 stop:                                                                                                  ## Remove docker containers
 	$(DOCKER_COMPOSE) kill
@@ -167,7 +167,7 @@ lint: ls ly lt lj phpcs                                                         
 ls: ly lt                                                                                              ## Lint Symfony (Twig and YAML) files
 
 ly:
-	$(CONSOLE) lint:yaml app/config --parse-tags
+	$(CONSOLE) lint:yaml config --parse-tags
 
 lt:
 	$(CONSOLE) lint:twig templates
@@ -223,9 +223,6 @@ vendor: composer.lock
 
 composer.lock: composer.json
 	@echo composer.lock is not up to date.
-
-app/config/parameters.yml: app/config/parameters.yml.dist vendor
-	$(EXEC) composer -n run-script post-install-cmd
 
 node_modules: yarn.lock
 	$(EXEC) yarn install

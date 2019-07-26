@@ -1,14 +1,12 @@
-imports:
-    - { resource: config.yml }
-
 parameters:
-    env(PAYBOX_SITE): "1999888"
-    env(PAYBOX_RANK): "32"
-    env(PAYBOX_IDENTIFIER): "107904482"
-    env(PAYBOX_KEY): "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
     timeline_max_messages: 10
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     app.geocoder:
         class: 'Tests\AppBundle\Test\Geocoder\DummyGeocoder'
         public: false

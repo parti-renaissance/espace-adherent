@@ -426,8 +426,8 @@ class OAuthServerControllerTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->encryptionKey = $this->getContainer()->getParameter('env(SSL_ENCRYPTION_KEY)');
-        $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('env(SSL_PRIVATE_KEY)'));
+        $this->encryptionKey = $this->getContainer()->getParameter('ssl_encryption_key');
+        $this->privateCryptKey = new CryptKey($this->getContainer()->getParameter('ssl_private_key'));
 
         $this->init();
     }

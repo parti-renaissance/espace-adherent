@@ -4,7 +4,6 @@ services:
     app:
         image: ${APP_DOCKER_IMAGE_NAME}:${APP_DOCKER_IMAGE_MD5}
         environment:
-            - SYMFONY_ENV=test
             - APP_ENV=test
         build:
             cache_from:
