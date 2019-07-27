@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.phone %}
+        {{ object.phone|phone_number_format }}
+    {% endif %}
+{% endblock %}

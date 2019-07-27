@@ -1,0 +1,7 @@
+{% if object.hasCurriculumUploaded %}
+    <a href="{{ path('asset_url', { path: object.getPathWithDirectory, mime_type: 'application/pdf' }) }}" class="btn btn-sm btn-default view_link"
+       title="Prévisualiser" target="_blank" rel="noopener noreferrer">
+        <i class="fa fa-file" aria-hidden="true"></i>
+        Télécharger le CV
+    </a>
+{% endif %}

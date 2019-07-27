@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace AppBundle\Admin\ApplicationRequest;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class ApplicationRequestThemeAdmin extends AbstractAdmin
+class ThemeAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_sort_order' => 'ASC',

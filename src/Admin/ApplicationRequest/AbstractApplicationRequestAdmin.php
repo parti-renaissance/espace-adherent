@@ -1,26 +1,93 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace AppBundle\Admin\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
-use AppBundle\Entity\ApplicationRequest\Theme;
 use AppBundle\Form\GenderType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\BooleanType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
-class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
+class AbstractApplicationRequestAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
+
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter
+            ->add('lastName', null, [
+                'label' => 'Nom',
+                'show_filter' => true,
+            ])
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+                'show_filter' => true,
+            ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse e-mail',
+                'show_filter' => true,
+            ])
+            ->add('favoriteCities', CallbackFilter::class, [
+                'label' => 'Ville choisie (code INSEE)',
+                'show_filter' => true,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb->andWhere("FIND_IN_SET(:inseeCode, $alias.favoriteCities) > 0");
+                    $qb->setParameter('inseeCode', $value['value']);
+
+                    return true;
+                },
+            ])
+            ->add('isAdherent', CallbackFilter::class, [
+                'label' => 'Est adhérent ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    switch ($value['value']) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere("$alias.adherent IS NOT NULL");
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->andWhere("$alias.adherent IS NULL");
+
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('displayed', BooleanFilter::class, [
+                'label' => 'Est affiché ?',
+                'show_filter' => true,
+            ])
+            ->add('createdAt', DateRangeFilter::class, [
+                'label' => 'Date de candidature',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+        ;
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
@@ -38,7 +105,7 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'E-mail',
             ])
-            ->add('favoriteCitiesNames', null, [
+            ->add('favoriteCities', null, [
                 'label' => 'Ville(s) choisie(s)',
                 'template' => 'admin/application_request/show_favorite_cities.html.twig',
             ])
@@ -48,6 +115,9 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
             ->add('displayed', 'boolean', [
                 'label' => 'Affiché',
                 'editable' => true,
+            ])
+            ->add('createdAt', null, [
+                'label' => 'Candidaté le',
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -81,6 +151,9 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
                     'label' => 'Code postal',
                 ])
                 ->add('city', null, [
+                    'label' => 'Code INSEE',
+                ])
+                ->add('cityName', null, [
                     'label' => 'Ville',
                 ])
                 ->add('country', CountryType::class, [
@@ -95,47 +168,12 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('Candidature')
-                ->add('profession', null, [
-                    'label' => 'Quelle est votre profession ?',
-                ])
-                ->add('favoriteThemes', EntityType::class, [
-                    'label' => 'Vos thématique(s) de prédilection',
-                    'class' => Theme::class,
-                    'multiple' => true,
-                ])
-                ->add('customFavoriteTheme', null, [
-                    'label' => 'Autre(s) thématique(s) de prédilection',
-                ])
-                ->add('technicalSkills', EntityType::class, [
-                    'label' => 'Disposez-vous de compétences techniques spécifiques ?',
-                    'class' => TechnicalSkill::class,
-                    'multiple' => true,
-                ])
-                ->add('customTechnicalSkills', null, [
-                    'label' => 'Autres compétences techniques',
-                ])
-                ->add('isPreviousCampaignMember', BooleanType::class, [
-                    'label' => 'Avez-vous déjà participé à une campagne ?',
-                ])
-                ->add('previousCampaignDetails', null, [
-                    'label' => 'Si oui, n\'hésitez pas à préciser',
-                ])
-                ->add('shareAssociativeCommitment', BooleanType::class, [
-                    'label' => 'Souhaitez-vous nous faire part de vos engagements associatifs et/ou militants ?',
-                ])
-                ->add('associativeCommitmentDetails', null, [
-                    'label' => 'Si oui, n\'hésitez pas à préciser',
-                ])
-            ->end()
         ;
     }
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection
-            ->remove('create')
-        ;
+        $collection->remove('create');
     }
 
     public function getExportFields()
@@ -152,13 +190,8 @@ class ApplicationRequestVolunteerRequestAdmin extends AbstractAdmin
             'Code postal' => 'postalCode',
             'Ville' => 'cityName',
             'Pays' => 'country',
-            'Profession' => 'profession',
-            'Thématique(s) de prédilection' => 'getFavoriteThemesAsString',
-            'Compétences techniques' => 'getTechnicalSkillsAsString',
-            'Déjà participé à une campagne ?' => 'isPreviousCampaignMemberAsString',
-            'Précisions sur la dernière campagne' => 'previousCampaignDetails',
-            'Souhaite faire part de ses engagements' => 'shareAssociativeCommitmentAsString',
-            'Précisions sur les engagements' => 'associativeCommitmentDetails',
+            'Est adhérent ?' => 'isAdherent',
+            'Est affiché ?' => 'displayed',
         ];
     }
 }

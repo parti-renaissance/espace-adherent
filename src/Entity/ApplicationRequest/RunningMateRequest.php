@@ -108,6 +108,11 @@ class RunningMateRequest extends ApplicationRequest
      */
     private $professionalAssets;
 
+    public function hasCurriculumUploaded(): bool
+    {
+        return null !== $this->curriculumName;
+    }
+
     public function getCurriculum(): ?UploadedFile
     {
         return $this->curriculum;
