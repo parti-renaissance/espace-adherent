@@ -4,97 +4,17 @@ namespace AppBundle\Admin\ApplicationRequest;
 
 use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
 use AppBundle\Entity\ApplicationRequest\Theme;
-use AppBundle\Form\GenderType;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
-class VolunteerRequestAdmin extends AbstractAdmin
+class VolunteerRequestAdmin extends AbstractApplicationRequestAdmin
 {
-    protected $datagridValues = [
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'name',
-    ];
-
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-            ->add('gender', 'trans', [
-                'label' => 'Genre',
-                'format' => 'common.gender.%s',
-            ])
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('emailAddress', null, [
-                'label' => 'E-mail',
-            ])
-            ->add('favoriteCitiesNames', null, [
-                'label' => 'Ville(s) choisie(s)',
-                'template' => 'admin/application_request/show_favorite_cities.html.twig',
-            ])
-            ->add('isAdherent', 'boolean', [
-                'label' => 'Adhérent',
-            ])
-            ->add('displayed', 'boolean', [
-                'label' => 'Affiché',
-                'editable' => true,
-            ])
-            ->add('_action', null, [
-                'actions' => [
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ])
-        ;
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
+        parent::configureFormFields($formMapper);
+
         $formMapper
-            ->with('Informations personnelles')
-                ->add('gender', GenderType::class, [
-                    'label' => 'Genre',
-                ])
-                ->add('lastName', null, [
-                    'label' => 'Nom',
-                ])
-                ->add('firstName', null, [
-                    'label' => 'Prénom',
-                ])
-                ->add('emailAddress', null, [
-                    'label' => 'E-mail',
-                ])
-                ->add('address', null, [
-                    'label' => 'Adresse',
-                ])
-                ->add('postalCode', null, [
-                    'label' => 'Code postal',
-                ])
-                ->add('city', null, [
-                    'label' => 'Ville',
-                ])
-                ->add('country', CountryType::class, [
-                    'label' => 'Pays',
-                ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                ])
-                ->add('displayed', CheckboxType::class, [
-                    'label' => 'Affiché',
-                    'required' => false,
-                ])
-            ->end()
             ->with('Candidature')
                 ->add('profession', null, [
                     'label' => 'Quelle est votre profession ?',
@@ -131,27 +51,9 @@ class VolunteerRequestAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection
-            ->remove('create')
-        ;
-    }
-
     public function getExportFields()
     {
-        return [
-            'UUID' => 'uuid',
-            'Genre' => 'gender',
-            'Prénom' => 'firstName',
-            'Nom' => 'lastName',
-            'Email' => 'emailAddress',
-            'Ville(s) demandée(s)' => 'getFavoriteCitiesAsString',
-            'Téléphone' => 'phone',
-            'Adresse' => 'address',
-            'Code postal' => 'postalCode',
-            'Ville' => 'cityName',
-            'Pays' => 'country',
+        return array_merge(parent::getExportFields(), [
             'Profession' => 'profession',
             'Thématique(s) de prédilection' => 'getFavoriteThemesAsString',
             'Compétences techniques' => 'getTechnicalSkillsAsString',
@@ -159,6 +61,6 @@ class VolunteerRequestAdmin extends AbstractAdmin
             'Précisions sur la dernière campagne' => 'previousCampaignDetails',
             'Souhaite faire part de ses engagements' => 'shareAssociativeCommitmentAsString',
             'Précisions sur les engagements' => 'associativeCommitmentDetails',
-        ];
+        ]);
     }
 }
