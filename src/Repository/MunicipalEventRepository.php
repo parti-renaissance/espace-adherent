@@ -23,4 +23,21 @@ class MunicipalEventRepository extends EventRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function getAllCategories(): array
+    {
+        $results = $this->createQueryBuilder('event')
+            ->select('DISTINCT category.name')
+            ->innerJoin('event.category', 'category')
+            ->where('event.status = :scheduled')
+            ->andWhere('event.finishAt > :now')
+            ->setParameter('scheduled', MunicipalEvent::STATUS_SCHEDULED)
+            ->setParameter('now', new \DateTime())
+            ->orderBy('category.name', 'ASC')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return \array_column($results, 'name');
+    }
 }

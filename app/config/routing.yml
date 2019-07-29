@@ -28,18 +28,6 @@ app_documents:
     type:     "annotation"
 
 #
-# API Platform
-#
-api_platform:
-    resource: .
-    type: api_platform
-    prefix: "%api_path_prefix%"
-
-swagger_ui:
-    path: "%api_path_prefix%/swagger"
-    controller: api_platform.swagger.action.ui
-
-#
 # API
 #
 app_api:
@@ -52,6 +40,18 @@ app_api:
 
 api_login_check:
     path: "%api_path_prefix%/login_check"
+
+#
+# API Platform
+#
+api_platform:
+    resource: .
+    type: api_platform
+    prefix: "%api_path_prefix%"
+
+swagger_ui:
+    path: "%api_path_prefix%/swagger"
+    controller: api_platform.swagger.action.ui
 
 #
 # API Legislatives
