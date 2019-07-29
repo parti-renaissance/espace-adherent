@@ -2,10 +2,13 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Repository\ElectedRepresentativesRegisterRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ElectedRepresentativesRegisterAdmin extends AbstractAdmin
 {
@@ -15,6 +18,19 @@ class ElectedRepresentativesRegisterAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'id',
     ];
+
+    private $repository;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        ElectedRepresentativesRegisterRepository $repository
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->repository = $repository;
+    }
 
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -82,17 +98,41 @@ class ElectedRepresentativesRegisterAdmin extends AbstractAdmin
                 'label' => 'Prénom',
                 'show_filter' => true,
             ])
-            ->add('nuancePolitique', null, [
+            ->add('nuancePolitique', ChoiceFilter::class, [
                 'label' => 'Nuance politique',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->repository->findAllNuancePolitiqueValues(),
+                    'choice_label' => function (?string $choice) {
+                        return $choice;
+                    },
+                ],
             ])
-            ->add('typeElu', null, [
+            ->add('typeElu', ChoiceFilter::class, [
                 'label' => 'Mandat',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->repository->findAllTypeEluValues(),
+                    'choice_label' => function (?string $choice) {
+                        return $choice;
+                    },
+                ],
             ])
             ->add('communeNom', null, [
                 'label' => 'Ville',
             ])
             ->add('dptNom', null, [
                 'label' => 'Département',
+            ])
+            ->add('nomFonction', ChoiceFilter::class, [
+                'label' => 'Fonction',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => $this->repository->findAllNomFonctionValues(),
+                    'choice_label' => function (?string $choice) {
+                        return $choice;
+                    },
+                ],
             ])
         ;
     }
