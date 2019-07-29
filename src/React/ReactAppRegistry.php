@@ -41,7 +41,11 @@ class ReactAppRegistry
 
         $manifest = ['css' => [], 'js' => []];
 
-        foreach ($data["files"] as $file) {
+        if (!isset($data['files'])) {
+            return $manifest;
+        }
+
+        foreach ($data['files'] as $file) {
             if ('.css' === substr($file, -4)) {
                 $manifest['css'][] = 'apps/'.$app->getDirectory().'/build/'.$file;
             } elseif ('.js' === substr($file, -3)) {
