@@ -320,7 +320,7 @@
         <service id="App\Timeline\TimelineFactory" />
         <service id="App\Timeline\TimelineImageFactory" public="true">
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
-            <argument key="$webDirectory">%kernel.project_dir%/web</argument>
+            <argument key="$webDirectory">%kernel.project_dir%/public</argument>
         </service>
 
         <!-- UserDocument -->

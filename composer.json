@@ -162,11 +162,16 @@
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
+        "symfony-web-dir": "public",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "symfony": {
             "require": "3.4.*"
+        },
+        "endroid": {
+            "installer": {
+                "enabled": false
+            }
         }
     },
     "replace": {

@@ -22,7 +22,7 @@ help:
 ## Project setup
 ##---------------------------------------------------------------------------
 
-start: build up db rabbitmq-fabric web/built assets-amp var/public.key perm  ## Install and start the project
+start: build up db rabbitmq-fabric public/built assets-amp var/public.key perm  ## Install and start the project
 
 start-mac: build up db rabbitmq-fabric web-built-mac var/public.key perm  ## Install and start the project
 
@@ -38,7 +38,7 @@ clear: perm rm-docker-dev.lock                                                  
 	-$(EXEC) rm -rf supervisord.log supervisord.pid npm-debug.log .tmp
 	-$(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
-	rm -rf web/built
+	rm -rf public/built
 	rm var/.php_cs.cache
 
 clean: clear                                                                                           ## Clear and remove dependencies
@@ -192,7 +192,7 @@ security-check: vendor                                                          
 ## Dependencies
 ##---------------------------------------------------------------------------
 
-deps: vendor web/built                                                                                 ## Install the project PHP and JS dependencies
+deps: vendor public/built                                                                                 ## Install the project PHP and JS dependencies
 
 ##
 
@@ -230,7 +230,7 @@ node_modules: yarn.lock
 yarn.lock: package.json
 	@echo yarn.lock is not up to date.
 
-web/built: front node_modules
+public/built: front node_modules
 	$(EXEC) yarn build-dev
 
 web-built-mac:
