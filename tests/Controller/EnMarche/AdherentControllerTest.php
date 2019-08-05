@@ -747,6 +747,9 @@ class AdherentControllerTest extends WebTestCase
         );
     }
 
+    /**
+     * @group debug
+     */
     public function testCreateCitizenProjectSuccessful(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -771,6 +774,8 @@ class AdherentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
 
+        dump($this->client->getResponse()->getContent());
+        die;
         $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
         $this->assertTrue($this->seeDefaultCitizenProjectImage());

@@ -55,7 +55,7 @@ INSERT INTO adherent_referent_tag (adherent_id, referent_tag_id)
    INNER JOIN referent_tags tag
    INNER JOIN districts district ON district.referent_tag_id = tag.id
    INNER JOIN geo_data ON geo_data.id = district.geo_data_id
-   WHERE ST_Within(ST_GeomFromText(CONCAT('POINT (', adherent.address_longitude, ' ', adherent.address_latitude, ')')), geo_data.geo_shape) = 1
+   WHERE ST_Within(ST_GeomFromText(CONCAT('POINT (', adherent.address_longitude, ' ', adherent.address_latitude, ')')), geo_data.geo_shape) = true
 );
 SQL;
 

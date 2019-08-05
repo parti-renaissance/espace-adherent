@@ -7,7 +7,7 @@ PHPCSFIXER?=$(EXEC) php -d memory_limit=1024m vendor/bin/php-cs-fixer
 BEHAT=$(EXEC) vendor/bin/behat
 BEHAT_ARGS?=-vvv
 PHPUNIT=$(EXEC) vendor/bin/phpunit
-PHPUNIT_ARGS?=-v
+PHPUNIT_ARGS?=-vvvv --testdox
 DOCKER_FILES=$(shell find ./docker/dev/ -type f -name '*')
 
 .DEFAULT_GOAL := help
@@ -131,7 +131,7 @@ test-phpunit:                                                                   
 	$(PHPUNIT) $(PHPUNIT_ARGS)
 
 test-debug:                                                                                            ## Run tests with debug group/tags
-	$(PHPUNIT) -vvv --group debug
+	$(PHPUNIT) -vvvv --group debug
 
 test-phpunit-functional:                                                                               ## Run phpunit fonctional tests
 	$(PHPUNIT) --group functional

@@ -113,15 +113,15 @@ class AdminChezVousCityControllerTest extends WebTestCase
                 [
                     'type' => 'maison_service_accueil_public',
                     'coordinates' => [
-                        43.701,
-                        7.254,
+                        43.676,
+                        7.207,
                     ],
                 ],
                 [
                     'type' => 'maison_service_accueil_public',
                     'coordinates' => [
-                        43.676,
-                        7.207,
+                        43.701,
+                        7.254,
                     ],
                 ],
             ],

@@ -115,6 +115,24 @@ doctrine:
             point:          CrEOF\Spatial\DBAL\Types\Geometry\PointType
             polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
             multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+            jsonb: MartinGeorgiev\Doctrine\DBAL\Types\Jsonb
+            jsonb[]: MartinGeorgiev\Doctrine\DBAL\Types\JsonbArray
+            smallint[]: MartinGeorgiev\Doctrine\DBAL\Types\SmallIntArray
+            integer[]: MartinGeorgiev\Doctrine\DBAL\Types\IntegerArray
+            bigint[]: MartinGeorgiev\Doctrine\DBAL\Types\BigIntArray
+            text[]: MartinGeorgiev\Doctrine\DBAL\Types\TextArray
+        mapping_types:
+            jsonb: jsonb
+            jsonb[]: jsonb[]
+            _jsonb: jsonb[]
+            smallint[]: smallint[]
+            _int2: smallint[]
+            integer[]: integer[]
+            _int4: integer[]
+            bigint[]: bigint[]
+            _int8: bigint[]
+            text[]: text[]
+            _text: text[]
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
@@ -145,16 +163,22 @@ doctrine:
             numeric_functions:
                 st_distance_sphere: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistanceSphere
                 st_point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STPoint
+                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STWithin
+                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText
+            string_functions:
+                IN_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\InArray
+                ANY_OF: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Any
+                #IS_CONTAINED_BY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\IsContainedBy
+                STRING_TO_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\StringToArray
+                #UNNEST: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Unnest
             #     acos: DoctrineExtensions\Query\PostgreSQL\Acos
             #     cos: DoctrineExtensions\Query\PostgreSQL\Cos
             #     radians: DoctrineExtensions\Query\PostgreSQL\Radians
             #     sin: DoctrineExtensions\Query\PostgreSQL\Sin
-            #     st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\GeomFromText
-            #     st_within: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\STWithin
             #     point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSQL\Point
             # string_functions:
             #     json_contains: AppBundle\Query\PostgreSQL\JsonContains
-            #     find_in_set: DoctrineExtensions\Query\PostgreSQL\FindInSet
+            #     find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
             #     json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\PostgreSQL\JsonLength
             #     substring_index: DoctrineExtensions\Query\PostgreSQL\SubstringIndex
 

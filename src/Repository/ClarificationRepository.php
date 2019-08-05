@@ -28,8 +28,11 @@ class ClarificationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.slug = :slug')
-            ->andWhere('c.published = 1')
-            ->setParameter('slug', $slug)
+            ->andWhere('c.published = :published')
+            ->setParameters([
+                'slug' => $slug,
+                'published' => true,
+            ])
             ->getQuery()
             ->getOneOrNullResult()
         ;

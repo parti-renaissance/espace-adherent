@@ -9,7 +9,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
-class IdeaEndpointTest extends WebTestCase
+class IdeaEndpointsTest extends WebTestCase
 {
     use ControllerTestTrait;
 

@@ -32,8 +32,11 @@ class OrderArticleRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('o')
             ->where('o.slug = :slug')
-            ->andWhere('o.published = 1')
-            ->setParameter('slug', $slug)
+            ->andWhere('o.published = :published')
+            ->setParameters([
+                'slug' => $slug,
+                'published' => true,
+            ])
             ->getQuery()
             ->getOneOrNullResult()
         ;

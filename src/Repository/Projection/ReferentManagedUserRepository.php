@@ -83,7 +83,10 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $qb->orderBy("u.$sortColumn", $orderDirection);
 
         if ($onlyEmailSubscribers) {
-            $qb->andWhere('u.isMailSubscriber = 1');
+            $qb
+                ->andWhere('u.isMailSubscriber = :subscriber')
+                ->setParameter(':subscriber', true)
+            ;
         }
 
         $managedAreas = $referent->getManagedAreaTagCodes();
@@ -191,19 +194,28 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         }
 
         if ($filter->includeAdherentsInCommittee()) {
-            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = 1');
-            $qb->setParameter('type_aic', ReferentManagedUser::TYPE_ADHERENT);
+            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = :isCommitteeMember');
+            $qb->setParameters([
+                'type_aic' => ReferentManagedUser::TYPE_ADHERENT,
+                'isCommitteeMember' => true,
+            ]);
         }
 
         if ($filter->includeHosts()) {
-            $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = 1');
-            $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
+            $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = :isCommitteeHost');
+            $qb->setParameters([
+                'type_h' => ReferentManagedUser::TYPE_ADHERENT,
+                'isCommitteeHost' => true,
+            ]);
         }
 
         if ($filter->includeSupervisors()) {
             $and = new Andx();
-            $and->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
-            $qb->setParameter('type_s', ReferentManagedUser::TYPE_ADHERENT);
+            $and->add('u.type = :type_s AND u.isCommitteeSupervisor = :isCommitteeSupervisor');
+            $qb->setParameters([
+                'type_s' => ReferentManagedUser::TYPE_ADHERENT,
+                'isCommitteeSupervisor' => true,
+            ]);
 
             $supervisorExpression = $qb->expr()->orX();
             foreach ($referent->getManagedAreaTagCodes() as $key => $code) {

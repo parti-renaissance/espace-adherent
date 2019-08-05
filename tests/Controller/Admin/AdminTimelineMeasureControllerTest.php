@@ -186,16 +186,16 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
             'featured' => true,
             'image' => null,
             'measureIds' => $this->getMeasureIdsByTitles([
-                LoadTimelineData::MEASURES['TM001']['title']['fr'],
                 LoadTimelineData::MEASURES['TM005']['title']['fr'],
                 LoadTimelineData::MEASURES['TM014']['title']['fr'],
                 LoadTimelineData::MEASURES['TM017']['title']['fr'],
+                LoadTimelineData::MEASURES['TM001']['title']['fr'],
             ]),
             'profileIds' => $this->getProfileIdsByTitles([
-                LoadTimelineData::PROFILES['TP002']['title']['fr'],
-                LoadTimelineData::PROFILES['TP003']['title']['fr'],
                 LoadTimelineData::PROFILES['TP005']['title']['fr'],
                 LoadTimelineData::PROFILES['TP001']['title']['fr'],
+                LoadTimelineData::PROFILES['TP002']['title']['fr'],
+                LoadTimelineData::PROFILES['TP003']['title']['fr'],
             ]),
             'manifestoIds' => [
                 $this->getManifestoIdByTitle(LoadTimelineData::MANIFESTOS['TMA001']['title']['fr']),

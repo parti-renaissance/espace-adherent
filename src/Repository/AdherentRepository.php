@@ -72,7 +72,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return (int) $this
             ->createQueryBuilder('a')
             ->select('COUNT(a)')
-            ->andWhere('a.adherent = 1')
+            ->andWhere('a.adherent = :enabled')
+            ->setParameter('enabled', true)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -92,8 +93,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('adherent')
             ->select('COUNT(adherent)')
             ->where('adherent.emailAddress = :email')
-            ->andWhere('adherent.adherent = 1')
-            ->setParameter('email', $email)
+            ->andWhere('adherent.adherent = :enabled')
+            ->setParameters([
+                'email' => $email,
+                'enabled' => true,
+            ])
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -188,8 +192,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('a')
             ->select('COUNT(a.uuid)')
             ->where('a.status = :status')
-            ->andWhere('a.adherent = 1')
-            ->setParameter('status', Adherent::ENABLED)
+            ->andWhere('a.adherent = :enabled')
+            ->setParameters([
+                'status' => Adherent::ENABLED,
+                'enabled' => true,
+            ])
             ->getQuery()
         ;
 
@@ -273,11 +280,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function findCoordinatorsByCitizenProject(CitizenProject $citizenProject): AdherentCollection
     {
+        $expr = $this->_em->getExpressionBuilder();
+
         $qb = $this
             ->createQueryBuilder('a')
             ->innerJoin('a.coordinatorCitizenProjectArea', 'ccpa')
             ->where('ccpa.codes IS NOT NULL')
-            ->andWhere('FIND_IN_SET(:code, ccpa.codes) > 0')
+            ->andWhere(":code = ANY( string_to_array(ccpa.codes, ',') )")
             ->andWhere('LENGTH(ccpa.codes) > 0')
             ->orderBy('LOWER(ccpa.codes)', 'ASC')
             ->setParameter('code', CoordinatorManagedAreaUtils::getCodeFromCitizenProject($citizenProject))
@@ -550,9 +559,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('a', 'a.gender')
             ->select('a.gender, COUNT(a) AS count')
-            ->where('a.adherent = 1')
+            ->where('a.adherent = :enabled')
             ->andWhere('a.status = :status')
-            ->setParameter('status', Adherent::ENABLED)
+            ->setParameters([
+                'enabled' => true,
+                'status' => Adherent::ENABLED,
+            ])
             ->groupBy('a.gender')
             ->getQuery()
             ->getArrayResult()
@@ -567,10 +579,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('a.gender, COUNT(DISTINCT a) AS count')
             ->innerJoin('a.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
-            ->andWhere('a.adherent = 1')
+            ->andWhere('a.adherent = :enabled')
             ->andWhere('a.status = :status')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Adherent::ENABLED)
+            ->setParameters([
+                'tags' => $referent->getManagedArea()->getTags(),
+                'enabled' => true,
+                'status' => Adherent::ENABLED,
+            ])
             ->groupBy('a.gender')
             ->getQuery()
             ->getArrayResult()

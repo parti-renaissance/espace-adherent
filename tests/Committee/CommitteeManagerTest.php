@@ -246,12 +246,12 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertCount(8, $committees = $this->committeeManager->getAdherentCommittees($adherent));
         $this->assertSame('En Marche Paris 8', (string) $committees[0], 'Supervised committee must come first');
         $this->assertSame('En Marche Dammarie-les-Lys', (string) $committees[1], 'Hosted committee must come after supervised committees');
-        $this->assertSame('En Marche - Comité de Évry', (string) $committees[2], 'Followed committee - most popular one first');
-        $this->assertSame('En Marche - Comité de New York City', (string) $committees[3]);
-        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[4]);
-        $this->assertSame('En Marche - Comité de Rouen', (string) $committees[5]);
-        $this->assertSame('En Marche - Comité de Berlin', (string) $committees[6]);
-        $this->assertSame('En Marche - Comité de Singapour', (string) $committees[7], 'Followed committee - least popular one last');
+        $this->assertSame('En Marche - Comité de New York City', (string) $committees[2], 'Followed committee - most popular one first');
+        $this->assertSame('En Marche - Comité de Évry', (string) $committees[3]);
+        $this->assertSame('En Marche - Comité de Rouen', (string) $committees[4]);
+        $this->assertSame('En Marche - Comité de Berlin', (string) $committees[5]);
+        $this->assertSame('En Marche - Comité de Singapour', (string) $committees[6]);
+        $this->assertSame('Antenne En Marche de Fontainebleau', (string) $committees[7], 'Followed committee - least popular one last');
     }
 
     public function testChangePrivilegeNotDefinedPrivilege()
