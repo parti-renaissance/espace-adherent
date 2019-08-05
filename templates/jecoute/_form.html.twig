@@ -1,49 +1,50 @@
-<div class="form__row form__new">
+<div class="em-form__group">
     {{ form_errors(form.name) }}
-    {{ form_label(form.name, 'Nom du questionnaire', { label_attr: { class: 'label__header--large' } }) }}
-    {{ form_widget(form.name, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez le nom du questionnaire" } }) }}
+    {{ form_label(form.name, 'Nom du questionnaire', { label_attr: { class: 'em-form__label' } }) }}
+    {{ form_widget(form.name, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Entrez le nom du questionnaire" } }) }}
 </div>
 
+
 {% if form.concernedAreaChoice is defined %}
-    <div class="form__row form__new">
-        <label class="label__header--large form form__label required">Zone concernée</label>
-        {{ form_widget(form.concernedAreaChoice, { attr: { class: 'l__row--h-stretch form__radio-button' } }) }}
-        {{ form_widget(form.city, { attr: { class: 'form--full committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
+    <div class="em-form__group em-form__checkbox--inline">
+        <label class="em-form__label required">Zone concernée</label>
+        {{ form_widget(form.concernedAreaChoice, { attr: { class: 'form__radio' } }) }}
+        {{ form_widget(form.city, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Entrez la ville concernée" } }) }}
         {{ form_errors(form.city) }}
     </div>
 {% endif %}
 
-<div class="form__row form__new">
+<div class="">
     {{ form_errors(form.questions) }}
     {{ form_widget(form.questions) }}
 </div>
 
 {% if not form.vars.disabled %}
-    <div class="b__nudge--top">
-        <p class="text--gray text--small">
-            Vous pouvez choisir de créer librement une question et en collecter les réponses, mais son analyse ne pourra
-            pas être traitée par les équipes de LaREM. En choisissant une question suggérée, ses réponses pourront être
-            analysées à un niveau local comme national et être comparées aux données remontées par les autres référents.
-        </p>
+    <div class="information__modal inf-modl--pale-blue b__nudge--top-50 b__nudge--bottom-large">
+        Vous pouvez choisir de créer librement une question et en collecter les réponses, mais son analyse ne pourra
+        pas être traitée par les équipes de LaREM. En choisissant une question suggérée, ses réponses pourront être
+        analysées à un niveau local comme national et être comparées aux données remontées par les autres référents.
     </div>
 
     <div class="form__row b__nudge--top">
-        <span data-collection="{{ form.questions.vars.id }}" class="{{ form.questions.vars.id }}-question-add {{ form.questions.vars.id }}-question-action btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Créer une nouvelle question</span>
+        <span data-collection="{{ form.questions.vars.id }}" class="{{ form.questions.vars.id }}-question-add {{ form.questions.vars.id }}-question-action btn-type-table">+ Créer une nouvelle question</span>
     </div>
 
     <div class="form__row b__nudge--top">
-        <span id="suggested-questions-open-popin" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Sélectionner une question suggérée</span>
+        <span id="suggested-questions-open-popin" class="btn-type-table">+ Sélectionner une question suggérée</span>
     </div>
 
     <br/>
 
-    <div class="form__row form__new form__checkbox">
-        {{ form_errors(form.published) }}
-        {{ form_widget(form.published, { attr: { class: 'form--full committee_event__form__name' } }) }}
-        {{ form_label(form.published, 'Publier le questionnaire') }}
+    <div class="em-form__group em-form__group--cgu">
+        <div class="form__checkbox">
+            {{ form_errors(form.published) }}
+            {{ form_widget(form.published, { attr: { class: 'committee_event__form__name' } }) }}
+            {{ form_label(form.published, 'Publier le questionnaire') }}
+        </div>
     </div>
 
     <div class="form__row text--center b__nudge--top">
-        <button type="submit" class="btn btn--blue btn--medium b__nudge--bottom-huge">Enregistrer le questionnaire local</button>
+        <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top">Enregistrer le questionnaire local</button>
     </div>
 {% endif %}

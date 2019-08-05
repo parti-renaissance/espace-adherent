@@ -106,7 +106,14 @@
             border-color: $blue--dark;
             background: $blue--dark;
             content: $checkbox__mark;
+        }
 
+        &:disabled + label:before {
+            background-color: $pale-grey;
+
+            &:hover {
+                border-color: $lines-grey;
+            }
         }
     }
 }
@@ -122,6 +129,14 @@
             border: 8px solid $blue--dark;
             background: $white;
             content: '';
+        }
+
+        &:disabled + label:before {
+            background-color: $pale-grey;
+
+            &:hover {
+                border-color: $lines-grey;
+            }
         }
     }
 
@@ -300,6 +315,14 @@
             }
         }
 
+        &.em-form__checkbox--inline {
+            .form__checkbox {
+                display: inline-block;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+        }
+
         .checkb-cols {
             display: flex;
             flex-direction: row;
@@ -352,6 +375,57 @@
             &--1 { flex-grow: 1; }
             &--2 { flex-grow: 2; }
             &--3 { flex-grow: 3; }
+        }
+    }
+
+    .em-form__action-container {
+        display: flex;
+        flex-direction: row;
+        font-size: 0;
+
+        margin-top: 10px;
+        margin-bottom: 20px;
+
+        @media (min-width: $mobile) {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .em-form__action {
+            display: inline-flex;
+            width: 100%;
+            height: 60px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            border: solid 1px $lines-grey;
+            box-sizing: border-box;
+            font-size: 12px;
+            margin-right: 5px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &:hover {
+                border-color: $black;
+                color: $black;
+            }
+
+            &--remove {
+                color: $status-red;
+
+                &:hover {
+                    border-color: $status-red;
+                    color: $status-red;
+                }
+            }
+
+            @media (min-width: $mobile) {
+                width: 60px;
+                margin-right: 0;
+                margin-left: 5px;
+            }
         }
     }
 

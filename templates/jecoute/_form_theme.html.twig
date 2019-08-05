@@ -1,54 +1,50 @@
 {% block survey_question_form_widget %}
-    <div class="question-box {{ form.fromSuggestedQuestion.vars.value ? 'read-only' }} form__row b__nudge--bottom-large survey-question__widget">
-        <div class="question-header">
-            <div class="question-header__label l__row--h-stretch b__nudge--bottom-tiny">
-                {{ form_label(form.question, 'Question', { label_attr: { class: 'label__header--large' } }) }}
-            </div>
+    <div class="question-box {{ form.fromSuggestedQuestion.vars.value ? 'read-only' }}">
+        <div class="em-form__group">
+            {{ form_label(form.question, 'Question', { label_attr: { class: 'em-form__label' } }) }}
 
-            {% if not form.vars.disabled %}
-                <div class="question-header__management">
-                    <a href="#" class="question-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
-                    <a href="#" class="question-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
-                    <a href="#" class="question-remove btn btn-default"><i class="fa fa-trash"></i></a>
-                </div>
-            {% endif %}
+            <div class="em-form__row">
+                {{ form_widget(form.question.content,  { attr: { class: 'em-form__field em-form__width--1', placeholder: 'Écrivez votre question' } }) }}
+                {% if not form.vars.disabled %}
+                    <div class="em-form__action-container question-header__management">
+                        <a href="#" class="question-up em-form__action"><i class="fa fa-arrow-up"></i></a>
+                        <a href="#" class="question-down em-form__action"><i class="fa fa-arrow-down"></i></a>
+                        <a href="#" class="question-remove em-form__action em-form__action--remove"><i class="fa fa-trash"></i></a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
 
-        <div class="form__row">
-            {{ form_widget(form.question.content,  { attr: { class: 'form--full b__nudge--bottom-medium', placeholder: 'Ecrivez votre question' } }) }}
-        </div>
-
-        <div class="form__row">
-            <div class="survey-question-type l__row--h-stretch b__nudge--bottom-medium form__radio-button">
-                {{ form_widget(form.question.type, { attr: { class: 'register__form__gender b__nudge--bottom-small' } }) }}
+        <div class="">
+            <div class="survey-question-type em-form__group em-form__checkbox--inline">
+                {{ form_widget(form.question.type, { attr: { class: 'form__radio' } }) }}
             </div>
+
             <div class="l__row--h-stretch">
                 {{ form_errors(form.question.type) }}
             </div>
-            <div class="question-choices">
-                {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'label__header--large' } }) }}
+            <div class="em-form__group question-choices">
+                {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'em-form__label' } }) }}
                 {{ form_widget(form.question.choices) }}
             </div>
             {{ form_row(form.fromSuggestedQuestion) }}
             {{ form_row(form.position) }}
         </div>
     </div>
-
-    <hr/>
 {% endblock %}
 
 {% block choice_form_widget %}
-    <div class="form__row survey-question__choice_widget">
-        <div class="survey-question-type l__row--h-stretch form__radio-button choice-item">
-            {{ form_widget(form.content,  { attr: { class: 'form--full', placeholder: 'Saisissez un choix' } }) }}
+    <div class="em-form__row survey-question__choice_widget">
+        <div class="survey-question-type em-form__width--1 form__radio-button choice-item">
+            {{ form_widget(form.content,  { attr: { class: 'em-form__field', placeholder: 'Saisissez un choix' } }) }}
             {{ form_row(form.position) }}
         </div>
 
        {% if not form.vars.disabled %}
-            <div class="choice-management">
-                <a href="#" class="choice-up btn btn-default"><i class="fa fa-arrow-up"></i></a>
-                <a href="#" class="choice-down btn btn-default"><i class="fa fa-arrow-down"></i></a>
-                <a href="#" class="choice-remove btn btn-default"><i class="fa fa-trash"></i></a>
+            <div class="choice-management em-form__action-container">
+                <a href="#" class="choice-up em-form__action"><i class="fa fa-arrow-up"></i></a>
+                <a href="#" class="choice-down em-form__action"><i class="fa fa-arrow-down"></i></a>
+                <a href="#" class="choice-remove em-form__action em-form__action--remove"><i class="fa fa-trash"></i></a>
             </div>
         {% endif %}
     </div>

@@ -24,15 +24,12 @@
 
     {% form_theme form with ['jecoute/_form_theme.html.twig'] %}
 
-    <a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
-        {{ include('components/caret--left.html.twig') }}
-        Retour à la liste des questionnaires nationaux
+    <a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+        ⟵ Retour
     </a>
 
-    <hr />
-
     <div class="jecoute-survey l__wrapper--slim">
-        {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+        {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
         {{ include('jecoute/_form.html.twig') }}
         {{ form_end(form) }}
     </div>

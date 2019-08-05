@@ -86,9 +86,9 @@ class SurveyExporter
     private function getPublishAction(bool $isPublished): string
     {
         if ($isPublished) {
-            return "<i class='fa fa-check-square text--medium text--blue--soft'></i>";
+            return "<span class='status status__1'>Publié</span>";
         }
 
-        return "<i class='fa fa-square text--medium text--light-gray'></i>";
+        return "<span class='status status__2'>Non publié</span>";
     }
 }

@@ -12,14 +12,14 @@
         Kernel.onLoad(function() {
             $('.survey-questions-collection').collection({
                 init_with_n_elements: 1,
-                add: '<a href="#" class="question-add btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Créer une nouvelle question</a>',
+                add: '<a href="#" class="question-add btn-type-table">+ Créer une nouvelle question</a>',
                 prefix: 'question',
                 custom_add_location: true,
                 drag_drop: false,
                 position_field_selector: '.questions-position',
                 children: [{
                     init_with_n_elements: 0,
-                    add: '<a href="#" class="btn btn-default"><i class="fa fa-plus-circle"></i>&nbsp;Ajouter un choix</a>',
+                    add: '<a href="#" class="btn-type-table b__nudge--top-10">+ Ajouter un choix</a>',
                     selector: '.survey-questions-choices-collection',
                     prefix: 'choice',
                     add_at_the_end: true,
@@ -137,17 +137,15 @@
 {% block jecoute_content %}
 
     {% form_theme form with ['jquery.collection.html.twig','jecoute/_form_theme.html.twig'] %}
-    <a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}" class="back-to-list icon--with-text b__nudge--top-15 b__nudge--bottom">
-        {{ include('components/caret--left.html.twig') }}
-        Retour à la liste des questionnaires locaux
+    <a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+        ⟵ Retour
     </a>
 
-    <h3>Créer un questionnaire local</h3>
-
-    <hr />
-
     <div class="jecoute-survey l__wrapper--slim">
-        {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+        <div class="form__title b__nudge--bottom-larger">
+            <h3 class="text--medium">Créer un questionnaire local</h3>
+        </div>
+        {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
         {{ include('jecoute/_form.html.twig') }}
         {{ form_end(form) }}
     </div>

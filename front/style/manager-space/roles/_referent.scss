@@ -94,11 +94,17 @@
         }
     }
 
-    .question-choices {
-        margin-left: 30px;
+    .question-box {
+        border-top: solid 1px $lines-grey;
+        padding-top: 50px;
+        margin-top: 50px;
+    }
 
-        label {
-            font-size: 18px;
+    .question-choices {
+        margin-bottom: 50px;
+
+        .em-form__row {
+            margin-bottom: 10px;
         }
     }
 
@@ -125,18 +131,19 @@
             }
         }
 
-        &__choice_widget {
-            overflow: hidden;
-
-            .choice-item {
-                float:left;
-                width: 70%;
-            }
-
-            .choice-management {
-                float: right;
-            }
-        }
+        // &__choice_widget {
+        //     overflow: hidden;
+        //     display: flex;
+        //     justify-content: space-between;
+        //
+        //     .choice-item {
+        //         flex-grow: 1;
+        //     }
+        //
+        //     .choice-management {
+        //         font-size: 0;
+        //     }
+        // }
     }
 }
 
@@ -214,11 +221,11 @@
         overflow: hidden;
         width: 100%;
         display: flex;
+        flex-wrap: nowrap;
         align-items: center;
 
         .stats-percent {
-            width: 15%;
-            margin-right: 5px;
+            width: 95px;
             font-weight: bold;
         }
 
@@ -227,7 +234,7 @@
             display: block;
             height: 35px;
             width: 100%;
-            background: $blue--soft;
+            background: $blue--chart;
             transition: 0.4s linear;
             transition-property: width, background-color;
             color: $white;
@@ -251,7 +258,7 @@
                 height: 35px;
                 line-height: 35px;
                 width: 0;
-                background: $blue--chart;
+                background: $blue--soft;
             }
 
             &__answered {
