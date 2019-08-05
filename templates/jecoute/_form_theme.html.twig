@@ -15,21 +15,19 @@
             </div>
         </div>
 
-        <div class="">
-            <div class="survey-question-type em-form__group em-form__checkbox--inline">
-                {{ form_widget(form.question.type, { attr: { class: 'form__radio' } }) }}
-            </div>
-
-            <div class="l__row--h-stretch">
-                {{ form_errors(form.question.type) }}
-            </div>
-            <div class="em-form__group question-choices">
-                {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'em-form__label' } }) }}
-                {{ form_widget(form.question.choices) }}
-            </div>
-            {{ form_row(form.fromSuggestedQuestion) }}
-            {{ form_row(form.position) }}
+        <div class="survey-question-type em-form__group em-form__checkbox--inline">
+            {{ form_widget(form.question.type, { attr: { class: 'form__radio' } }) }}
         </div>
+
+        <div class="l__row--h-stretch">
+            {{ form_errors(form.question.type) }}
+        </div>
+        <div class="em-form__group question-choices">
+            {{ form_label(form.question.choices, 'Choix possibles', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_widget(form.question.choices) }}
+        </div>
+        {{ form_row(form.fromSuggestedQuestion) }}
+        {{ form_row(form.position) }}
     </div>
 {% endblock %}
 

@@ -83,17 +83,6 @@
 
     counter-reset: section;
 
-    .form {
-        &__radio-button {
-            input[type='radio'] {
-                &:checked + label:before {
-                    border-color: $blue--dark;
-                    background: $blue--dark;
-                }
-            }
-        }
-    }
-
     .question-box {
         border-top: solid 1px $lines-grey;
         padding-top: 50px;
@@ -130,20 +119,6 @@
                 }
             }
         }
-
-        // &__choice_widget {
-        //     overflow: hidden;
-        //     display: flex;
-        //     justify-content: space-between;
-        //
-        //     .choice-item {
-        //         flex-grow: 1;
-        //     }
-        //
-        //     .choice-management {
-        //         font-size: 0;
-        //     }
-        // }
     }
 }
 
@@ -168,29 +143,6 @@
         color: $black--half;
         border-color: $gray;
         cursor: not-allowed;
-    }
-
-    .form {
-        &__checkbox {
-            label {
-                cursor: not-allowed;
-            }
-
-            &:hover label:before {
-                background: $gray--light;
-            }
-        }
-
-        &__radio-button {
-            input[type='radio'] {
-                cursor: not-allowed;
-
-                &:checked + label:before {
-                    border-color: $gray;
-                    background: $gray;
-                }
-            }
-        }
     }
 }
 

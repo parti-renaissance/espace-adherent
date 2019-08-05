@@ -3,7 +3,7 @@
 {% block messages_main_block %}
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>{% block message_page_title %}Mes messages{% endblock %}</h3>
-        <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-type-table">
+        <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-secondary btn-secondary--blue">
             + Nouveau message
         </a>
 

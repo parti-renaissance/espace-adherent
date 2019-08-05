@@ -12,14 +12,14 @@
         Kernel.onLoad(function() {
             $('.survey-questions-collection').collection({
                 init_with_n_elements: 1,
-                add: '<a href="#" class="question-add btn-type-table">+ Créer une nouvelle question</a>',
+                add: '<a href="#" class="question-add btn-secondary btn-secondary--blue">+ Créer une nouvelle question</a>',
                 prefix: 'question',
                 custom_add_location: true,
                 drag_drop: false,
                 position_field_selector: '.questions-position',
                 children: [{
                     init_with_n_elements: 0,
-                    add: '<a href="#" class="btn-type-table b__nudge--top-10">+ Ajouter un choix</a>',
+                    add: '<a href="#" class="btn-secondary btn-secondary--blue b__nudge--top-10">+ Ajouter un choix</a>',
                     selector: '.survey-questions-choices-collection',
                     prefix: 'choice',
                     add_at_the_end: true,

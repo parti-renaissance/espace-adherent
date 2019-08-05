@@ -24,13 +24,13 @@
                     <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" id="members-contact-token" />
                     <input type="hidden" name="contacts" value="" id="members-contact-selection" />
 
-                    <button id="members-contact-button" class="btn-type-table" disabled="disabled">Contacter</button>
+                    <button id="members-contact-button" class="btn-secondary btn-secondary--blue" disabled="disabled">Contacter</button>
                 </form>
 
                 <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}" class="b__nudge--bottom b__nudge--left-small">
                     <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
                     <input type="hidden" name="exports" value="" id="members-export-selection" />
-                    <button id="members-export-button" disabled="disabled" class="btn-type-table">Exporter</button>
+                    <button id="members-export-button" disabled="disabled" class="btn-secondary btn-secondary--blue">Exporter</button>
                 </form>
             </div>
         </div>

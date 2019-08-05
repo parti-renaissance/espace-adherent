@@ -47,7 +47,7 @@
     &:disabled {
         background-color: $pale-grey;
         color: $silver-grey;
-        cursor: default;
+        cursor: not-allowed;
 
         &:hover {
             border-color: $lines-grey;
@@ -108,11 +108,15 @@
             content: $checkbox__mark;
         }
 
-        &:disabled + label:before {
-            background-color: $pale-grey;
+        &:disabled + label {
+            cursor: not-allowed;
 
-            &:hover {
-                border-color: $lines-grey;
+            &:before {
+                background-color: $pale-grey;
+
+                &:hover {
+                    border-color: $lines-grey;
+                }
             }
         }
     }
@@ -131,11 +135,15 @@
             content: '';
         }
 
-        &:disabled + label:before {
-            background-color: $pale-grey;
+        &:disabled + label {
+            cursor: not-allowed;
 
-            &:hover {
-                border-color: $lines-grey;
+            &:before {
+                background-color: $pale-grey;
+
+                &:hover {
+                    border-color: $lines-grey;
+                }
             }
         }
     }
@@ -475,7 +483,7 @@
         }
 
         &:hover {
-            label:before {
+            > label:before {
                 border-color: $blue--dark;
             }
         }
