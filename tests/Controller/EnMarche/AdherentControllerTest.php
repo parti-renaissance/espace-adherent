@@ -747,9 +747,6 @@ class AdherentControllerTest extends WebTestCase
         );
     }
 
-    /**
-     * @group debug
-     */
     public function testCreateCitizenProjectSuccessful(): void
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
