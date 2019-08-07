@@ -34,7 +34,7 @@ class ReferentManagedUser
      *
      * @ORM\Id
      * @ORM\Column(type="bigint", options={"unsigned": true})
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
