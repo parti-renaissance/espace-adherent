@@ -102,10 +102,11 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     {
         $this->_em->createQueryBuilder()
             ->update($this->_entityName, 'candidate')
+            ->set('candidate.displayed', ':displayed')
+            ->setParameter('displayed', false)
             ->where('candidate.id != :id')
             ->andWhere('candidate.emailAddress = :email')
             ->andWhere('candidate.displayed = true')
-            ->set('candidate.displayed', 0)
             ->setParameter('id', $request->getId())
             ->setParameter('email', $request->getEmailAddress())
             ->getQuery()

@@ -14,9 +14,6 @@ class ProcurationSendReminderCommandTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    /**
-     * @group debug
-     */
     public function testCommand()
     {
         $this->decorated = false;

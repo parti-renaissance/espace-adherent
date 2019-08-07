@@ -36,7 +36,7 @@ class DeputyManagedUsersMessage extends ManagedUsersMessage
         $this->subject = $subject;
         $this->content = $content;
         $this->district = $district;
-        $this->offset = $offset;
+        $this->offsetCount = $offset;
     }
 
     public static function createFromMessage(DeputyMessage $message): self

@@ -33,11 +33,11 @@ abstract class ManagedUsersMessage
     /**
      * @ORM\Column(type="bigint")
      */
-    protected $offset;
+    protected $offsetCount;
 
     public function incrementOffset(int $offset): void
     {
-        $this->offset += $offset;
+        $this->offsetCount += $offset;
     }
 
     public function getFrom(): Adherent
@@ -57,6 +57,6 @@ abstract class ManagedUsersMessage
 
     public function getOffset(): int
     {
-        return $this->offset;
+        return $this->offsetCount;
     }
 }

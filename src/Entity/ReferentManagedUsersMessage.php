@@ -135,7 +135,7 @@ class ReferentManagedUsersMessage extends ManagedUsersMessage
         $this->queryZone = $queryZone;
         $this->queryAreaCode = $queryAreaCode;
         $this->queryId = $queryId;
-        $this->offset = $offset;
+        $this->offsetCount = $offset;
         $this->interests = $interests;
         $this->gender = $gender;
         $this->firstName = $firstName;

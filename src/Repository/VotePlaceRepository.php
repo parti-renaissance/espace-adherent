@@ -25,13 +25,15 @@ class VotePlaceRepository extends AbstractAssessorRepository
             return [];
         }
 
-        $qb = $this->createQueryBuilder(self::ALIAS);
+        $qb = $this->createQueryBuilder($alias = self::ALIAS);
 
-        $filters->apply($qb, self::ALIAS);
+        $filters->apply($qb, $alias);
 
         self::addAndWhereManagedBy($qb, $manager);
 
         return $qb
+            ->addOrderBy("$alias.name", 'DESC')
+            ->addGroupBy("$alias.id, $alias.name")
             ->getQuery()
             ->getResult()
         ;
@@ -43,9 +45,9 @@ class VotePlaceRepository extends AbstractAssessorRepository
             return 0;
         }
 
-        $qb = $this->createQueryBuilder(self::ALIAS);
+        $qb = $this->createQueryBuilder($alias = self::ALIAS);
 
-        $filters->apply($qb, self::ALIAS);
+        $filters->apply($qb, $alias);
 
         self::addAndWhereManagedBy($qb, $manager);
 
@@ -58,12 +60,12 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     public function findMatchingVotePlaces(AssessorRequest $assessorRequest): array
     {
-        $qb = $this->createQueryBuilder(self::ALIAS);
+        $qb = $this->createQueryBuilder($alias = self::ALIAS);
 
-        self::addAndWhereAssessorRequestLocation($qb, $assessorRequest, self::ALIAS);
+        self::addAndWhereAssessorRequestLocation($qb, $assessorRequest, $alias);
         self::addAndWhereOfficeAvailability($qb, $assessorRequest);
 
-        $qb->addOrderBy('vp.name', 'ASC');
+        $qb->addOrderBy("$alias.name", 'ASC');
 
         if ($assessorRequest->getVotePlaceWishes()->count() > 0) {
             $votePlacesWishedIds = array_map(function ($votePlace) { return $votePlace->getId(); }, $assessorRequest->getVotePlaceWishes()->toArray());
@@ -79,7 +81,12 @@ class VotePlaceRepository extends AbstractAssessorRepository
             );
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb
+            ->addOrderBy("$alias.name", 'DESC')
+            ->addGroupBy("$alias.id, $alias.name")
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public static function addAndWhereOfficeAvailability(

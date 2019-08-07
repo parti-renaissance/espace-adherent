@@ -2,6 +2,7 @@
 
 namespace AppBundle\Doctrine\Hydrators;
 
+use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
@@ -87,7 +88,7 @@ class EventHydrator extends AbstractHydrator
             $row['event_slug'],
             $row['event_type'],
             [],
-            $row['timeZone']
+            $row['timeZone'] ?? GeoCoder::DEFAULT_TIME_ZONE
         );
 
         $result[] = $event;

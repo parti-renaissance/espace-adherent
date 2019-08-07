@@ -38,6 +38,7 @@ abstract class AbstractCoordinatorAreaFilter
             ->orderBy(sprintf('%s.createdAt', $alias), 'DESC')
             ->addOrderBy(sprintf('%s.name', $alias), 'ASC')
 
+            ->addGroupBy("$alias.id, $alias.createdAt, $alias.name")
             ->setFirstResult($this->offset)
             ->setMaxResults(static::PER_PAGE)
         ;

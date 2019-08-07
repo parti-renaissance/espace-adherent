@@ -81,12 +81,10 @@ class VotePlaceFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere("$alias.name LIKE :name")
+                    ->andWhere("ILIKE($alias.name, :name) = TRUE")
                     ->setParameter('name', '%'.strtolower($this->getVotePlace()).'%')
                 ;
             }
         }
-
-        $qb->addOrderBy("$alias.name", 'DESC');
     }
 }

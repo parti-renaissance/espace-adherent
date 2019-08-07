@@ -132,6 +132,7 @@ class AssessorRequestFilters extends AssessorFilters
             ->orderBy("$alias.processed", 'ASC')
             ->addOrderBy("$alias.createdAt", 'DESC')
             ->addOrderBy("$alias.lastName", 'ASC')
+            ->addGroupBy("$alias.id, $alias.processed, $alias.createdAt, $alias.lastName")
         ;
     }
 
