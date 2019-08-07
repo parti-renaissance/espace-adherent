@@ -193,7 +193,10 @@ SQL;
     {
         switch ($status) {
             case IdeaStatusEnum::UNPUBLISHED:
-                $queryBuilder->andWhere(sprintf('%s.enabled = 0', $alias));
+                $queryBuilder
+                    ->andWhere(sprintf('%s.enabled = :enabled', $alias))
+                    ->setParameter('enabled', false)
+                ;
                 break;
             case IdeaStatusEnum::DRAFT:
                 $queryBuilder->andWhere(sprintf('%s.publishedAt IS NULL', $alias));

@@ -143,8 +143,9 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         $qb
             ->select('COUNT(DISTINCT pp.id)')
             ->from('AppBundle:ProcurationProxy', 'pp')
-            ->andWhere('pp.disabled = 0')
+            ->andWhere('pp.disabled = :disabled')
             ->andWhere('pp.reliability >= 0')
+            ->setParameter('disabled', false)
         ;
 
         foreach ($requests as $key => $request) {
@@ -194,7 +195,8 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->andWhere('er.date > :now')
             ->setParameter('now', new \DateTime())
             ->andWhere('pr.processed = true')
-            ->andWhere('pr.reminded = 0')
+            ->andWhere('pr.reminded = :reminded')
+            ->setParameter('reminded', false)
             ->andWhere('pr.processedAt <= :matchDate')
             ->setParameter('matchDate', new \DateTime('-48 hours'))
             ->orderBy('pr.processedAt', 'ASC')
@@ -211,7 +213,8 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->select('COUNT(pr)')
             ->join('pr.foundProxy', 'pp')
             ->where('pr.processed = true')
-            ->andWhere('pr.reminded = 0')
+            ->andWhere('pr.reminded = :reminded')
+            ->setParameter('reminded', false)
             ->andWhere('pr.processedAt <= :matchDate')
             ->setParameter('matchDate', new \DateTime('-48 hours'))
             ->getQuery()

@@ -189,15 +189,18 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $typeExpression = $qb->expr()->orX();
 
         if ($filter->includeAdherentsNoCommittee()) {
-            $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = 0');
-            $qb->setParameter('type_anc', ReferentManagedUser::TYPE_ADHERENT);
+            $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = :isCommitteeMember');
+            $qb->setParameters([
+                'type_anc' => ReferentManagedUser::TYPE_ADHERENT,
+                'isCommitteeMember' => false,
+            ]);
         }
 
         if ($filter->includeAdherentsInCommittee()) {
-            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = :isCommitteeMember');
+            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = :isCommitteeMember_2');
             $qb->setParameters([
                 'type_aic' => ReferentManagedUser::TYPE_ADHERENT,
-                'isCommitteeMember' => true,
+                'isCommitteeMember_2' => true,
             ]);
         }
 
