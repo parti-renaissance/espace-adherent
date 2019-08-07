@@ -73,6 +73,7 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
             ->addOrderBy("$alias.createdAt", 'DESC')
             ->addOrderBy("$alias.lastName", 'ASC')
             ->andWhere("$alias.reliability >= 0")
+            ->groupBy("$alias.id, $alias.createdAt")
         ;
     }
 }
