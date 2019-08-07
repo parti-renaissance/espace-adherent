@@ -134,7 +134,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         $orExpression = new Orx();
 
         foreach ($inseeCodes as $key => $code) {
-            $orExpression->add("FIND_IN_SET(:codes_$key, r.favoriteCities) > 0");
+            $orExpression->add(":codes_$key = ANY_OF(string_to_array(r.favoriteCities, ','))");
             $qb->setParameter("codes_$key", $code);
         }
 

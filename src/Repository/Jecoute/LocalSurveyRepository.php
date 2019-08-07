@@ -69,7 +69,7 @@ class LocalSurveyRepository extends ServiceEntityRepository
         $expression = new Orx();
 
         foreach ($tags as $key => $tag) {
-            $expression->add("FIND_IN_SET(:tags_$key, survey.tags) > 0");
+            $expression->add(":tags_$key = ANY_OF(string_to_array(survey.tags, ','))");
             $qb->setParameter("tags_$key", $tag);
         }
 

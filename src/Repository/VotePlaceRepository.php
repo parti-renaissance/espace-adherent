@@ -132,7 +132,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
     {
         return  $this
             ->createQueryBuilder('votePlace')
-            ->andWhere('FIND_IN_SET(:postalCode, votePlace.postalCode) > 0')
+            ->andWhere(":postalCode = ANY_OF(string_to_array(votePlace.postalCode, ','))")
             ->setParameter('postalCode', $postalCode)
             ->getQuery()
             ->getResult()

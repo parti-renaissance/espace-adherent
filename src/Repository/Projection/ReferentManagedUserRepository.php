@@ -181,7 +181,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
         foreach (array_values($filter->getQueryInterests()) as $key => $interest) {
             $qb
-                ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
+                ->andWhere(":interest_$key = ANY_OF(string_to_array(u.interests, ','))")
                 ->setParameter('interest_'.$key, $interest)
             ;
         }
@@ -219,7 +219,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
             $supervisorExpression = $qb->expr()->orX();
             foreach ($referent->getManagedAreaTagCodes() as $key => $code) {
-                $supervisorExpression->add(sprintf('FIND_IN_SET(:code_%s, u.supervisorTags) > 0', $key));
+                $supervisorExpression->add(":code_$key = ANY_OF(string_to_array(u.supervisorTags, ','))");
                 $qb->setParameter('code_'.$key, $code);
             }
 
@@ -262,7 +262,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $tagsFilter = $qb->expr()->orX();
 
         foreach ($referentTags as $key => $tag) {
-            $tagsFilter->add("FIND_IN_SET(:tag_$key, $alias.subscribedTags) > 0");
+            $tagsFilter->add(":tag_$key = ANY_OF(string_to_array($alias.subscribedTags, ','))");
             $tagsFilter->add(
                 $qb->expr()->andX(
                     "$alias.country = 'FR'",

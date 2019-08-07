@@ -773,9 +773,6 @@ class AdherentControllerTest extends WebTestCase
         $data['citizen_project']['phone']['number'] = '31 359 21 11';
 
         $this->client->submit($this->client->getCrawler()->selectButton('Proposer mon projet')->form(), $data);
-
-        dump($this->client->getResponse()->getContent());
-        die;
         $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
         $this->assertTrue($this->seeDefaultCitizenProjectImage());
