@@ -55,7 +55,7 @@ class VotePlaceFilters extends AssessorFilters
         if ($this->getCity()) {
             if (is_numeric($this->getCity())) {
                 $qb
-                    ->andWhere("FIND_IN_SET(:postalCode, $alias.postalCode) > 0")
+                    ->andWhere(":postalCode = ANY_OF(string_to_array($alias.postalCode, ','))")
                     ->setParameter('postalCode', $this->getCity())
                 ;
             } else {

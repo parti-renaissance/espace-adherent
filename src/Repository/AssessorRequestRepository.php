@@ -61,13 +61,20 @@ class AssessorRequestRepository extends AbstractAssessorRepository
             return [];
         }
 
-        $qb = $this->createQueryBuilder(self::ALIAS);
+        $qb = $this->createQueryBuilder($alias = self::ALIAS);
 
-        $filters->apply($qb, self::ALIAS);
+        $filters->apply($qb, $alias);
 
         self::addAndWhereManagedBy($qb, $manager);
 
-        $requests = $qb->getQuery()->getResult();
+        $requests = $qb
+            ->orderBy("$alias.processed", 'ASC')
+            ->addOrderBy("$alias.createdAt", 'DESC')
+            ->addOrderBy("$alias.lastName", 'ASC')
+            ->addGroupBy("$alias.id, $alias.processed, $alias.createdAt, $alias.lastName")
+            ->getQuery()
+            ->getResult()
+        ;
 
         if ($filters->isStatusUnprocessed()) {
             return $this->findAssessorRequests($requests);

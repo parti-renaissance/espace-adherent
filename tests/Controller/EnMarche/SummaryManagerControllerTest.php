@@ -425,7 +425,7 @@ class SummaryManagerControllerTest extends WebTestCase
     }
 
     /**
-     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
+     * @dependse testActionsAreSuccessfulAsAdherentWithoutSummary
      */
     public function testDeleteTrainingChangesOrder()
     {
@@ -567,7 +567,7 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $this->assertCount(3, $crawler->filter('.cv__languages'));
         $this->assertSummaryCompletion(100, $crawler);
-        $this->assertSame('Espagnol - Maîtrise parfaite', $crawler->filter('.cv__languages > div')->eq(2)->text());
+        $this->assertSame('Espagnol - Maîtrise parfaite', $crawler->filter('.cv__languages > div')->eq(1)->text());
     }
 
     /**
@@ -715,8 +715,8 @@ class SummaryManagerControllerTest extends WebTestCase
 
         $this->assertSame('Vos modifications ont bien été enregistrées.', $crawler->filter('.flash__inner')->text());
         $this->assertCount(4, $skills = $crawler->filter('.cv__skills li'));
-        $this->assertSame($skill1, $skills->eq(1)->text());
-        $this->assertSame($skill2, $skills->eq(2)->text());
+        $this->assertSame($skill1, $skills->eq(2)->text());
+        $this->assertSame($skill2, $skills->eq(3)->text());
         $this->assertSummaryCompletion(100, $crawler);
     }
 
@@ -859,11 +859,12 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
-        $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[mission_type_wishes][5]' => '1',
-            'summary[mission_type_wishes][3]' => '3',
-            'summary[mission_type_wishes][1]' => '5',
-        ]));
+        $form = $crawler->selectButton('Enregistrer')->form();
+        $form['summary[mission_type_wishes][0]']->tick();
+        $form['summary[mission_type_wishes][2]']->tick();
+        $form['summary[mission_type_wishes][4]']->tick();
+
+        $this->client->submit($form);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);
@@ -902,11 +903,12 @@ class SummaryManagerControllerTest extends WebTestCase
         $this->assertCount(0, $crawler->filter('form[name=summary] select'));
         $this->assertCount(0, $crawler->filter('form[name=summary] textarea'));
 
-        $this->client->submit($crawler->filter('form[name=summary]')->form([
-            'summary[mission_type_wishes][2]' => '2',
-            'summary[mission_type_wishes][4]' => '4',
-            'summary[mission_type_wishes][7]' => '6',
-        ]));
+        $form = $crawler->selectButton('Enregistrer')->form();
+        $form['summary[mission_type_wishes][1]']->tick();
+        $form['summary[mission_type_wishes][3]']->tick();
+        $form['summary[mission_type_wishes][5]']->tick();
+
+        $this->client->submit($form);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-profil', $this->client);

@@ -92,8 +92,8 @@ class AssessorRequestFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere("LOWER($alias.assessorCity) LIKE :assessorCity")
-                    ->setParameter('assessorCity', '%'.strtolower($this->getCity()).'%')
+                    ->andWhere("ILIKE($alias.assessorCity, :assessorCity) = TRUE")
+                    ->setParameter('assessorCity', '%'.$this->getCity().'%')
                 ;
             }
         }
@@ -122,18 +122,11 @@ class AssessorRequestFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere('vp.name LIKE :name')
+                    ->andWhere('ILIKE(vp.name, :name) = TRUE')
                     ->setParameter('name', '%'.strtolower($this->getVotePlace()).'%')
                 ;
             }
         }
-
-        $qb
-            ->orderBy("$alias.processed", 'ASC')
-            ->addOrderBy("$alias.createdAt", 'DESC')
-            ->addOrderBy("$alias.lastName", 'ASC')
-            ->addGroupBy("$alias.id, $alias.processed, $alias.createdAt, $alias.lastName")
-        ;
     }
 
     public function isStatusUnprocessed(): bool

@@ -55,6 +55,7 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->setParameter('type', $type)
             ->orderBy('i.createdAt', 'DESC')
+            ->addGroupBy('i.id, a.id')
         ;
 
         if (null !== $published) {
@@ -67,6 +68,7 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
                 ->leftJoin('i.event', 'e')
                 ->having('e.published = :published_event')
                 ->setParameter('published_event', true)
+                ->addGroupBy('e.id')
             ;
         }
 
