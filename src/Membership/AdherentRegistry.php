@@ -4,6 +4,7 @@ namespace AppBundle\Membership;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
@@ -68,6 +69,7 @@ class AdherentRegistry
         $this->em->getRepository(EventRegistration::class)->anonymizeAdherentRegistrations($adherent);
         $this->em->getRepository(CommitteeFeedItem::class)->removeAuthorItems($adherent);
         $this->em->getRepository(Report::class)->anonymizeAuthorReports($adherent);
+        $this->em->getRepository(AbstractAdherentMessage::class)->removeAuthorItems($adherent);
 
         $this->em->getRepository(VolunteerRequest::class)->updateAdherentRelation($adherent->getEmailAddress(), null);
         $this->em->getRepository(RunningMateRequest::class)->updateAdherentRelation($adherent->getEmailAddress(), null);
