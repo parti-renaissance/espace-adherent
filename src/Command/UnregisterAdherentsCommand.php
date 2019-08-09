@@ -5,18 +5,23 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Membership\AdherentRegistry;
+use AppBundle\Membership\UserEvent;
+use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Reader;
+use League\Flysystem\FilesystemInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UnregisterAdherentsCommand extends ContainerAwareCommand
+class UnregisterAdherentsCommand extends Command
 {
-    const COMMAND_NAME = 'app:adherent:unregister';
+    protected static $defaultName = 'app:adherent:unregister';
 
     /**
      * @var EntityManager
@@ -39,10 +44,27 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
 
     private $citizenProjectAdministrators = [];
 
+    private $storage;
+
+    private $dispatcher;
+
+    public function __construct(
+        FilesystemInterface $storage,
+        EntityManagerInterface $em,
+        AdherentRegistry $adherentRegistry,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->storage = $storage;
+        $this->em = $em;
+        $this->adherentRegistry = $adherentRegistry;
+        $this->dispatcher = $eventDispatcher;
+
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
-            ->setName(self::COMMAND_NAME)
             ->addArgument('fileUrl', InputArgument::REQUIRED)
             ->setDescription('Unregister adherents from CSV file (only the fifth column "email" is taken into account)')
         ;
@@ -50,20 +72,12 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->adherentRepository = $this->em->getRepository(Adherent::class);
-        $this->adherentRegistry = $this->getContainer()->get(AdherentRegistry::class);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            $emails = $this->parseCSV($input->getArgument('fileUrl'), 'r');
-        } catch (FileNotFoundException $exception) {
-            $output->writeln($exception->getMessage());
-
-            return 1;
-        }
+        $emails = $this->parseCSV($input->getArgument('fileUrl'));
 
         $this->em->beginTransaction();
 
@@ -97,25 +111,12 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
 
     private function parseCSV(string $filename): array
     {
-        if (false === ($handle = fopen($filename, 'r'))) {
-            throw new FileNotFoundException(sprintf('% not found', $filename));
-        }
-
-        $isFirstRow = true;
-        $emails = [];
-        while (false !== ($data = fgetcsv($handle, 100000, ';'))) {
-            if (true === $isFirstRow) {
-                $isFirstRow = false;
-
-                continue;
-            }
-
-            $row = array_map('trim', $data);
-            $emails[] = $row[4];
-        }
-        fclose($handle);
-
-        return $emails;
+        return array_column(
+            iterator_to_array(
+                Reader::createFromStream($this->storage->readStream($filename))->setHeaderOffset(0)
+            ),
+            'email'
+        );
     }
 
     private function unregisterAdherents(array $emails, OutputInterface $output): void
@@ -145,8 +146,9 @@ class UnregisterAdherentsCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                $unregistration = Unregistration::createFromAdherent($adherent);
-                $this->adherentRegistry->unregister($adherent, $unregistration);
+                $this->adherentRegistry->unregister($adherent, Unregistration::createFromAdherent($adherent));
+
+                $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
             } catch (\Exception $ex) {
                 throw new \RuntimeException(\PHP_EOL.sprintf('An error occured while unregistering an adherent with email "%s".', $email), 0, $ex);
             }
