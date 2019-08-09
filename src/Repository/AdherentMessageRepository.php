@@ -30,6 +30,19 @@ class AdherentMessageRepository extends ServiceEntityRepository
         parent::__construct($registry, AbstractAdherentMessage::class);
     }
 
+    public function removeAuthorItems(Adherent $author): void
+    {
+        $queryBuilder = $this->createQueryBuilder('message');
+
+        $this->withAuthor($queryBuilder, $author);
+
+        foreach ($queryBuilder->getQuery()->iterate() as $message) {
+            $this->getEntityManager()->remove($message[0]);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
     public function getLastSentMessage(Adherent $adherent, string $type): ?AdherentMessageInterface
     {
         $queryBuilder = $this

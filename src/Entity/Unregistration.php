@@ -142,7 +142,7 @@ class Unregistration
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
             $adherent->isAdherent(),
-            $adherent->getReferentTags()
+            $adherent->getReferentTags()->toArray()
         );
     }
 
