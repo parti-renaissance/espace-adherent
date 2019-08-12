@@ -78,6 +78,10 @@
                                 <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
                                     <a href="{{ path('app_referent_candidate_running_mate_list') }}">Municipales</a>
                                 </li>
+                            {% else %}
+                                <li class="{{ is_active_route(app.request, 'app_referent_candidate_*') ? 'active' }}">
+                                    <a href="{{ path('app_referent_candidate_volunteer_list') }}">Municipales</a>
+                                </li>
                             {% endif %}
 
                             <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">

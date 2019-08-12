@@ -7,6 +7,7 @@ use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Security\Voter\MunicipalChiefVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -44,10 +45,10 @@ class MunicipalChiefSpaceController extends AbstractApplicationRequestController
         return self::SPACE_NAME;
     }
 
-    protected function checkAccess(ApplicationRequest $request = null): void
+    protected function checkAccess(Request $request, ApplicationRequest $applicationRequest = null): void
     {
-        if ($request) {
-            $this->denyAccessUnlessGranted(MunicipalChiefVoter::ROLE, $request);
+        if ($applicationRequest) {
+            $this->denyAccessUnlessGranted(MunicipalChiefVoter::ROLE, $applicationRequest);
         }
     }
 }

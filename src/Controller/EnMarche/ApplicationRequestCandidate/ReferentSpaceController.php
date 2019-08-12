@@ -3,8 +3,10 @@
 namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
 
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
+use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -26,10 +28,11 @@ class ReferentSpaceController extends AbstractApplicationRequestController
         return self::SPACE_NAME;
     }
 
-    protected function checkAccess(ApplicationRequest $request = null): void
+    protected function checkAccess(Request $request, ApplicationRequest $applicationRequest = null): void
     {
         if (
-            array_filter(
+            ApplicationRequestTypeEnum::VOLUNTEER !== $request->attributes->get('type')
+            && array_filter(
                 $this->getUser()->getManagedAreaTagCodes(),
                 function ($code) { return 0 === strpos($code, '75'); }
             )

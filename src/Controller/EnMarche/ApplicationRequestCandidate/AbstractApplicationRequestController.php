@@ -20,7 +20,7 @@ abstract class AbstractApplicationRequestController extends Controller
      */
     public function candidatesListAction(Request $request, ApplicationRequestRepository $repository): Response
     {
-        $this->checkAccess();
+        $this->checkAccess($request);
 
         return $this->renderTemplate('application_request/space/list.html.twig', [
             'requests' => $this->getApplicationRequests(
@@ -36,18 +36,19 @@ abstract class AbstractApplicationRequestController extends Controller
      * @Route("candidature-benevoles/{uuid}", name="_candidate_volunteer_detail", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, requirements={"uuid": "%pattern_uuid%"}, methods={"GET"})
      */
     public function candidateDetailShowAction(
+        Request $request,
         ApplicationRequestRepository $repository,
         string $uuid,
         string $type
     ): Response {
-        if (!$request = $repository->findOneByUuid($uuid, $type)) {
+        if (!$applicationRequest = $repository->findOneByUuid($uuid, $type)) {
             $this->createNotFoundException();
         }
 
-        $this->checkAccess($request);
+        $this->checkAccess($request, $applicationRequest);
 
         return $this->renderTemplate('application_request/space/detail.html.twig', [
-            'request' => $request,
+            'request' => $applicationRequest,
             'request_type' => $type,
         ]);
     }
@@ -67,7 +68,7 @@ abstract class AbstractApplicationRequestController extends Controller
             $this->createNotFoundException();
         }
 
-        $this->checkAccess($applicationRequest);
+        $this->checkAccess($request, $applicationRequest);
 
         $form = $this
             ->createForm(ApplicationRequestTagsType::class, $applicationRequest)
@@ -92,7 +93,7 @@ abstract class AbstractApplicationRequestController extends Controller
 
     abstract protected function getSpaceName(): string;
 
-    abstract protected function checkAccess(ApplicationRequest $request = null): void;
+    abstract protected function checkAccess(Request $request, ApplicationRequest $applicationRequest = null): void;
 
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
