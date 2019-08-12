@@ -37,9 +37,12 @@ class ReferentFilterType extends AbstractType
             ->add('interests', MemberInterestsChoiceType::class, ['required' => false, 'expanded' => false])
             ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
-            ->add('contactOnlyRunningMates', CheckboxType::class, ['required' => false])
             ->add('contactOnlyVolunteers', CheckboxType::class, ['required' => false])
         ;
+
+        if (false === $options['is_referent_from_paris']) {
+            $builder->add('contactOnlyRunningMates', CheckboxType::class, ['required' => false]);
+        }
 
         if (false === $options['single_zone']) {
             $builder->add('referentTags', MyReferentTagChoiceType::class, ['multiple' => true]);
@@ -52,8 +55,10 @@ class ReferentFilterType extends AbstractType
             ->setDefaults([
                 'data_class' => ReferentUserFilter::class,
                 'single_zone' => false,
+                'is_referent_from_paris' => false,
             ])
             ->setAllowedTypes('single_zone', ['bool'])
+            ->setAllowedTypes('is_referent_from_paris', ['bool'])
         ;
     }
 }
