@@ -27,7 +27,13 @@ class FilterFormFactory
                 return $this->formFactory->create(
                     ReferentFilterType::class,
                     $data,
-                    ['single_zone' => 1 === \count($adherent->getManagedAreaTagCodes())]
+                    [
+                        'single_zone' => 1 === \count($managedArea = $adherent->getManagedAreaTagCodes()),
+                        'is_referent_from_paris' => (bool) array_filter(
+                            $managedArea,
+                            function ($code) { return 0 === strpos($code, '75'); }
+                        ),
+                    ]
                 );
 
             case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
