@@ -578,6 +578,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
+        $municipalChief1->setChartAccepted(true);
         $municipalChiefArea1 = new MunicipalChiefManagedArea();
         $municipalChiefArea1->setCodes(['59350', '62637', '59560']);
         $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);

@@ -586,3 +586,5 @@ vote_place.availability:none: 'Aucune'
 application_request.tags.edited_successfully: Les tags ont bien été mis à jour
 application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
 application_request.removed_successfully: Le candidat a été retiré de votre équipe
+application_request.municipal_chief.popup.title: Charte de bonne utilisation des outils numériques
+application_request.municipal_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/Charte%20outils%20numeriques%20municipales%202020.pdf

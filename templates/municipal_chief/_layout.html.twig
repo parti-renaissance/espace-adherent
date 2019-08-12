@@ -5,6 +5,9 @@
 {% block banner '' %}
 
 {% block stylesheets %}
+    {% if not app.user.isChartAccepted %}
+        <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -18,7 +21,7 @@
                         </div>
                         <div class="el">
                             <p class="report">🐛 Bug ? Nouveau besoin ?
-                                <a href="mailto:techsupport&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                                <a href="mailto:cellule.technique.municipales&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
                             </p>
                         </div>
                     </div>
@@ -67,8 +70,28 @@
             </div>
         </section>
 
+        {% if not app.user.isChartAccepted %}
+            {% include 'chart_dialog.html.twig' with {
+                'title': 'application_request.municipal_chief.popup.title'|trans,
+                'fileUrl': 'application_request.municipal_chief.popup.file_url'|trans
+            } %}
+        {% endif %}
     </main>
 {% endblock %}
 
 {% block final_javascripts %}
+    {% if not app.user.isChartAccepted %}
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+        {% if js is not defined %}
+            {% import 'javascript.js.twig' as js %}
+        {% endif %}
+
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                {{ js.chart_acceptation('#chart_dialog') }}
+            });
+        </script>
+    {% endif %}
 {% endblock %}
