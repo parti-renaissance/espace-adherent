@@ -83,22 +83,17 @@
 
     counter-reset: section;
 
-    .form {
-        &__radio-button {
-            input[type='radio'] {
-                &:checked + label:before {
-                    border-color: $blue--dark;
-                    background: $blue--dark;
-                }
-            }
-        }
+    .question-box {
+        border-top: solid 1px $lines-grey;
+        padding-top: 50px;
+        margin-top: 50px;
     }
 
     .question-choices {
-        margin-left: 30px;
+        margin-bottom: 50px;
 
-        label {
-            font-size: 18px;
+        .em-form__row {
+            margin-bottom: 10px;
         }
     }
 
@@ -122,19 +117,6 @@
                 &__management {
                     float: right;
                 }
-            }
-        }
-
-        &__choice_widget {
-            overflow: hidden;
-
-            .choice-item {
-                float:left;
-                width: 70%;
-            }
-
-            .choice-management {
-                float: right;
             }
         }
     }
@@ -161,29 +143,6 @@
         color: $black--half;
         border-color: $gray;
         cursor: not-allowed;
-    }
-
-    .form {
-        &__checkbox {
-            label {
-                cursor: not-allowed;
-            }
-
-            &:hover label:before {
-                background: $gray--light;
-            }
-        }
-
-        &__radio-button {
-            input[type='radio'] {
-                cursor: not-allowed;
-
-                &:checked + label:before {
-                    border-color: $gray;
-                    background: $gray;
-                }
-            }
-        }
     }
 }
 
@@ -214,11 +173,11 @@
         overflow: hidden;
         width: 100%;
         display: flex;
+        flex-wrap: nowrap;
         align-items: center;
 
         .stats-percent {
-            width: 15%;
-            margin-right: 5px;
+            width: 95px;
             font-weight: bold;
         }
 
@@ -227,7 +186,7 @@
             display: block;
             height: 35px;
             width: 100%;
-            background: $blue--soft;
+            background: $blue--chart;
             transition: 0.4s linear;
             transition-property: width, background-color;
             color: $white;
@@ -251,7 +210,7 @@
                 height: 35px;
                 line-height: 35px;
                 width: 0;
-                background: $blue--chart;
+                background: $blue--soft;
             }
 
             &__answered {

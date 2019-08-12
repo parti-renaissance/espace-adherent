@@ -50,6 +50,9 @@
                     {
                         key: 'publish',
                         name: "Publication",
+                        style: {
+                            width: 100,
+                        }
                     },
                 ],
                 {{ surveysListJson|raw }}
@@ -65,8 +68,8 @@
             <span class="separator"></span>
             <h3><a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}">Questionnaires nationaux</a></h3>
         </div>
-        <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-type-table">
-            Créer un questionnaire local
+        <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
+            + Créer un questionnaire local
         </a>
     </div>
 
