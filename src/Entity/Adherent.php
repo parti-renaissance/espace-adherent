@@ -1700,4 +1700,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
     }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\Groups({"user_profile"})
+     */
+    public function getDetailedRoles(): array
+    {
+        $roles = [];
+
+        if ($this->isMunicipalChief()) {
+            $roles[] = [
+                'label' => 'ROLE_MUNICIPAL_CHIEF',
+                'codes' => $this->municipalChiefManagedArea->getCodes(),
+            ];
+        }
+
+        return $roles;
+    }
 }
