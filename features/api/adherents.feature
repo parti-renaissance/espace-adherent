@@ -122,7 +122,8 @@ Feature:
       "use_nickname": false,
       "elected": false,
       "larem": false,
-      "comments_cgu_accepted": false
+      "comments_cgu_accepted": false,
+      "detailed_roles": []
     }
     """
 
@@ -144,7 +145,8 @@ Feature:
       "use_nickname":true,
       "elected": false,
       "larem": true,
-      "comments_cgu_accepted": false
+      "comments_cgu_accepted": false,
+      "detailed_roles": []
     }
     """
 
