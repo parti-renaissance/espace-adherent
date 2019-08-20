@@ -16,6 +16,10 @@
     {% block filter_content '' %}
 
     <div id="message-actions-block" class="l__wrapper--slim b__nudge--top-40 text--center"></div>
+
+    <div class="l__wrapper--slim text--center">
+        <a class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15" href="{{ path("app_message_#{message_type}_test", route_params|default({})|merge({uuid: message.uuid})) }}">M'envoyer un message test</a>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
