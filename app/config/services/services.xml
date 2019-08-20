@@ -272,6 +272,7 @@
 
         <!-- Normalizer -->
         <service id="AppBundle\Normalizer\ItemCollectionNormalizer" />
+        <service id="AppBundle\Normalizer\MunicipalEventNormalizer" />
         <service id="AppBundle\Normalizer\IdeaNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item" />
         </service>

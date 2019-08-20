@@ -5,7 +5,9 @@
 {% block application_request_main_block %}
     <div class="datagrid__table__tabs">
         <div class="datagrid__table__tabs__items">
-            {% if space_name == 'referent' and 0 == app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
+            {% if space_name == 'referent' and 0 < app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
+                <h3>Candidats bénévoles</h3>
+            {% else %}
                 {% if request_type == constant('AppBundle\\ApplicationRequest\\ApplicationRequestTypeEnum::RUNNING_MATE') %}
                     <h3>Candidats colistiers</h3>
                     <span class="separator"></span>
@@ -15,8 +17,6 @@
                     <span class="separator"></span>
                     <h3>Candidats bénévoles</h3>
                 {% endif %}
-            {% else %}
-                <h3>Candidats bénévoles</h3>
             {% endif %}
         </div>
 
