@@ -1,0 +1,32 @@
+{% spaceless %}
+    {% set row = {
+        id: event.id,
+        name: {
+            label: event.name,
+            url: path('app_event_show', {slug: event.slug}),
+        },
+        status: event.status|trans([], 'forms'),
+        beginAt: event.beginAt|date('d/m/Y H:i'),
+        category: event.categoryName,
+        postalCode: event.postalCode,
+        organizer: event.organizer ? event.organizer.fullName : 'un ancien adhérent',
+        participants: event.participantsCount,
+        menu: [
+            {
+                label: 'Modifier',
+                url: path('app_event_edit', {slug: event.slug}),
+            },
+            {
+                label: 'Écrire aux participants',
+                url: path('app_event_members', {slug: event.slug}),
+            },
+            {
+                label: 'Annuler',
+                url: path('app_event_cancel', {slug: event.slug}),
+                className: 'row-action text--error',
+            }
+        ]
+    } %}
+
+    {{ row|json_encode|raw }}
+{% endspaceless %}

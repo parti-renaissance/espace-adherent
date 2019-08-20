@@ -9,7 +9,6 @@ use AppBundle\Event\EventCommandHandler;
 use AppBundle\Event\EventRegistrationCommand;
 use AppBundle\Event\EventRegistrationCommandHandler;
 use AppBundle\Form\EventCommandType;
-use AppBundle\Referent\ManagedEventsExporter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,10 +35,10 @@ abstract class AbstractEventManagerController extends Controller
      *     methods={"GET"}
      * )
      */
-    public function eventsAction(ManagedEventsExporter $eventsExporter, string $type): Response
+    public function eventsAction(string $type): Response
     {
         return $this->renderTemplate('event_manager/events_list.html.twig', [
-            'eventsAsJson' => $eventsExporter->exportAsJson($this->getEvents($type)),
+            'events' => $this->getEvents($type),
         ]);
     }
 

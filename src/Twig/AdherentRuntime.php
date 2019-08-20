@@ -57,6 +57,43 @@ class AdherentRuntime implements RuntimeExtensionInterface
         return $adherent->isFemale() ? 'Adhérente 😍' : 'Adhérent 😍';
     }
 
+    public function getAdherentRoleLabels(Adherent $adherent): array
+    {
+        $labels = [];
+
+        if ($adherent->isAdherent()) {
+            $labels[] = $adherent->isFemale() ? 'Adhérente 😍' : 'Adhérent 😍';
+        } else {
+            $labels[] = 'Non-adhérent(e)';
+        }
+
+        if ($adherent->isReferent()) {
+            $labels[] = $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
+        }
+
+        if ($adherent->isCoReferent()) {
+            $labels[] = 'Équipe du référent 🥈';
+        }
+
+        if ($adherent->isDeputy()) {
+            $labels[] = $adherent->isFemale() ? 'Députée 🏛' : 'Député 🏛';
+        }
+
+        if ($adherent->isSupervisor()) {
+            $labels[] = $adherent->isFemale() ? 'Animatrice 🏅' : 'Animateur 🏅';
+        }
+
+        if ($adherent->isHost()) {
+            $labels[] = $adherent->isFemale() ? 'Co-animatrice 🏅' : 'Co-animateur 🏅';
+        }
+
+        if ($adherent->isMunicipalChief()) {
+            $labels[] = 'Chef municipal';
+        }
+
+        return $labels;
+    }
+
     public function getReferentPreviousVisitDate(Adherent $adherent): ?\DateTimeInterface
     {
         /** @var ReferentSpaceAccessInformation $accessInformation */
