@@ -283,23 +283,33 @@ export default class DataGrid extends React.Component {
                             className={columns[j].className || ''}>
                             <a target={targetBlank ? '_blank' : '_self'}
                                href={result[columns[j].key].url}
-                               dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}>
-                            </a>
+                               dangerouslySetInnerHTML={{ __html: result[columns[j].key].label }}
+                            />
                         </td>
                     );
                 } else if ('undefined' !== typeof columns[j].menu && columns[j].menu) {
                     const links = [];
 
                     result[columns[j].key].forEach((link, index) => {
-                        const targetBlank = 'undefined' !== typeof link.targetBlank && link.targetBlank;
-
                         links.push(
-                            <a target={targetBlank ? '_blank' : '_self'}
-                               key={`result${i}-column${j}-link${index}`}
-                               href={link.url}
-                               className={link.className || ''}
-                               dangerouslySetInnerHTML={{ __html: link.label }}>
-                            </a>
+                            <a
+                                {...(
+                                    'boolean' === typeof link.targetBlank && link.targetBlank ?
+                                        { target: '_blank' } :
+                                        {}
+                                )}
+                                {...('string' === typeof link.className ? { className: link.className } : {})}
+                                {...('object' === typeof link.data ? link.data : {})}
+                                {...(
+                                    'string' === typeof link.callbackName
+                                    && 'function' === typeof document[link.callbackName] ?
+                                        { onClick: document[link.callbackName] } :
+                                        {}
+                                )}
+                                key={`result${i}-column${j}-link${index}`}
+                                href={'undefined' !== typeof link.url ? link.url : '#'}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
                         );
                     });
 
@@ -342,7 +352,7 @@ export default class DataGrid extends React.Component {
 
         if (0 === resultsList.length) {
             resultsList.push(
-                <tr>
+                <tr key={'no-result'}>
                     <td colSpan={columns.length + 1}>
                         <img src={noResultImg} className="icn--no-result" width="30" />
                         Aucun résultat

@@ -57,6 +57,22 @@
                 ]
             );
         });
+
+        document.sendEventLinkByMessage = function (event) {
+            event.preventDefault();
+
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ path("app_message_#{space_name}_create") }}';
+
+            var messageElement = document.createElement('input');
+            messageElement.name = 'message_content';
+            messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + event.target.dataset.url + '">ici</a>';
+
+            form.appendChild(messageElement);
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 {% endblock %}
 
