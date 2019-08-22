@@ -37,7 +37,7 @@ Feature:
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-colistiers"
-    And I wait 5 seconds until I see NOM
+    And I wait 5 seconds until I see "IDENTITÉ"
     And I should see "Banner"
     And I should see "Bruce"
     And I should see "+33 6 06 06 06 06"
@@ -49,7 +49,7 @@ Feature:
   Scenario: I can see volunteer request for the zones I manage and I can see the detail
     Given I am logged as "referent@en-marche-dev.fr"
     When I am on "/espace-referent/candidature-benevoles"
-    And I wait 5 seconds until I see NOM
+    And I wait 5 seconds until I see "IDENTITÉ"
     And I should see "Stark"
     And I should see "Tony"
     And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"

@@ -32,7 +32,7 @@
                     <li>
                         <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
                             <div class="text--bold">{{ app.user.firstName }}</div>
-                            <div class="text--small text--gray">{{ get_user_level_label(app.user) }}</div>
+                            <div class="text--small text--gray">{{ get_adherent_role_labels(app.user)|join(', ') }}</div>
                         </a>
                     </li>
                 </ul>

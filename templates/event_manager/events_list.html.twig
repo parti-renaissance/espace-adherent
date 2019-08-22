@@ -19,6 +19,10 @@
                         },
                     },
                     {
+                        key: 'status',
+                        name: 'Statut'
+                    },
+                    {
                         key: 'postalCode',
                         name: 'Code postal',
                         style: {
@@ -39,11 +43,36 @@
                         style: {
                             width: 100
                         },
-                    }
+                    },
+                    {
+                        key: 'menu',
+                        name: 'Actions',
+                        menu: true,
+                    },
                 ],
-                    {{ eventsAsJson|raw }}
+                [
+                    {% for event in events %}
+                        {% include 'event_manager/_event_row.js.twig' %},
+                    {% endfor %}
+                ]
             );
         });
+
+        document.sendEventLinkByMessage = function (event) {
+            event.preventDefault();
+
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ path("app_message_#{space_name}_create") }}';
+
+            var messageElement = document.createElement('input');
+            messageElement.name = 'message_content';
+            messageElement.value = 'Inscrivez-vous à l\'événement <a href="' + event.target.dataset.url + '">ici</a>';
+
+            form.appendChild(messageElement);
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 {% endblock %}
 

@@ -142,7 +142,7 @@
                             <li class="nav-dropdown__section__name">
                                 <a href="{{ has_role_adherent ? path('app_user_profile') }}" class="icon--with-text">
                                     <div>{{ app.user }}</div>
-                                    <div class="text--small text--gray text--normal">{{ get_user_level_label(app.user) }}</div>
+                                    <div class="text--small text--gray text--normal">{{ get_adherent_role_labels(app.user)|join(', ') }}</div>
                                 </a>
                             </li>
                         </ul>
