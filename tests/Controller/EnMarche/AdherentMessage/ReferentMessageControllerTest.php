@@ -70,14 +70,12 @@ class ReferentMessageControllerTest extends WebTestCase
 
         $buttons = $crawler->filter('div.text--center a.btn--ghosting--blue');
 
-        self::assertSame(3, $buttons->count());
+        self::assertSame(2, $buttons->count());
         self::assertSame('Editer le message', $buttons->eq(0)->text());
         self::assertSame('Modifier les filtres', $buttons->eq(1)->text());
-        self::assertSame('M\'envoyer un e-mail test', $buttons->eq(2)->text());
 
         self::assertSame(sprintf('/espace-referent/messagerie/%s/modifier', $uuid), $buttons->eq(0)->attr('href'));
         self::assertSame(sprintf('/espace-referent/messagerie/%s/filtrer', $uuid), $buttons->eq(1)->attr('href'));
-        self::assertSame(sprintf('/espace-referent/messagerie/%s/tester', $uuid), $buttons->eq(2)->attr('href'));
     }
 
     protected function setUp()
