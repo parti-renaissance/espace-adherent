@@ -6,6 +6,7 @@ use AppBundle\Exception\InvalidAdherentTypeException;
 use AppBundle\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
 use AppBundle\RepublicanSilence\TagExtractor\CommitteeReferentTagExtractor;
 use AppBundle\RepublicanSilence\TagExtractor\DistrictReferentTagExtractor;
+use AppBundle\RepublicanSilence\TagExtractor\MunicipalChefReferentTagExtractor;
 use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractor;
 use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
 
@@ -25,6 +26,9 @@ abstract class ReferentTagExtractorFactory
 
             case ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY:
                 return new DistrictReferentTagExtractor();
+
+            case ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF:
+                return new MunicipalChefReferentTagExtractor();
         }
 
         throw new InvalidAdherentTypeException(sprintf('Adherent type [%d] is invalid', $type));
