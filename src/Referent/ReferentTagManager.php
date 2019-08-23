@@ -7,6 +7,7 @@ use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\ReferentTaggableEntity;
 use AppBundle\Repository\ReferentTagRepository;
+use AppBundle\Utils\AreaUtils;
 
 class ReferentTagManager
 {
@@ -35,12 +36,20 @@ class ReferentTagManager
         $applicationRequest->clearReferentTags();
 
         $codes = [];
-        foreach ($applicationRequest->getFavoriteCities() as $city) {
-            $localCode = ManagedAreaUtils::getCodeFromPostalCode($city);
+        foreach ($applicationRequest->getFavoriteCities() as $inseeCode) {
+            $localCode = [ManagedAreaUtils::getCodeFromPostalCode($inseeCode)];
 
-            $relatedCodes = ManagedAreaUtils::getRelatedCodes($localCode);
+            $relatedCodes = ManagedAreaUtils::getRelatedCodes($localCode[0]);
 
-            $codes = array_merge($codes, [$localCode], $relatedCodes);
+            if (\in_array(AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS, $relatedCodes, true)) {
+                /*
+                 * convert Paris Insee Code to Paris postal code
+                 * ex.: 75110 -> 75010
+                 */
+                $localCode[] = $inseeCode - 100;
+            }
+
+            $codes = array_merge($codes, $localCode, $relatedCodes);
         }
 
         foreach ($this->referentTagRepository->findByCodes(array_unique($codes)) as $referentTag) {
