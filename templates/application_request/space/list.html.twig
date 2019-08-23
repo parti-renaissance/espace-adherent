@@ -3,7 +3,7 @@
 {% set target_sub_space = target_sub_space|default('candidate') %}
 
 {% block application_request_main_block %}
-    <div class="datagrid__table__tabs">
+    <div class="datagrid__table__tabs datagrid__pre-table">
         <div class="datagrid__table__tabs__items">
             {% if space_name == 'referent' and 0 < app.user.managedAreaTagCodes|filter(code => code starts with '75')|length %}
                 <h3>Candidats bénévoles</h3>
@@ -21,6 +21,71 @@
         </div>
 
         {% block cta_contact_team '' %}
+
+        <span class="datagrid__count"><span>{{ requests|length }}</span> candidat(s)</span>
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            <div class="manager__filters__row">
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            {{ form_row(form.gender, {label_attr: {class: 'filter__label'}, attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            {{ form_row(form.lastName, {label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            {{ form_row(form.firstName, {label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            {{ form_row(form.theme, {label: 'Thématiques', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            {{ form_row(form.isAdherent, {label: 'Adhérent ?'}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        {% if form.tag is defined %}
+                            <div class="filter__row">
+                                {{ form_row(form.tag, {label_attr: {class: 'filter__label'}, attr: {class: 'filter__field'}}) }}
+                            </div>
+                        {% endif %}
+
+                        {% if form.isInMyTeam is defined %}
+                            <div class="filter__row">
+                                {{ form_row(form.isInMyTeam, {label: 'Équipier ?', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field'}}) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                <a href="" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
     </div>
 
     {% block help_message_block %}

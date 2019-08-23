@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository\ApplicationRequest;
 
+use AppBundle\ApplicationRequest\Filter\ListFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
@@ -13,24 +14,14 @@ use Doctrine\ORM\QueryBuilder;
 
 abstract class AbstractApplicationRequestRepository extends ServiceEntityRepository
 {
-    private function createListQueryBuilder(string $alias): QueryBuilder
-    {
-        return $this->createQueryBuilder($alias)
-            ->addSelect('tag')
-            ->where("$alias.displayed = true")
-            ->leftJoin("$alias.tags", 'tag')
-            ->orderBy("$alias.createdAt", 'DESC')
-        ;
-    }
-
     /**
      * @var ReferentTag[]
      *
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findForReferentTags(array $referentTags): array
+    public function findForReferentTags(array $referentTags, ListFilter $filter = null): array
     {
-        return $this->createListQueryBuilder('r')
+        return $this->createListQueryBuilder('r', $filter)
             ->innerJoin('r.referentTags', 'refTag')
             ->andWhere('refTag IN (:tags)')
             ->setParameter('tags', $referentTags)
@@ -50,9 +41,9 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findAllForInseeCodes(array $inseeCodes): array
+    public function findAllForInseeCodes(array $inseeCodes, ListFilter $filter = null): array
     {
-        $this->addFavoriteCitiesCondition($inseeCodes, $qb = $this->createListQueryBuilder('r'));
+        $this->addFavoriteCitiesCondition($inseeCodes, $qb = $this->createListQueryBuilder('r', $filter));
 
         return $qb->getQuery()->getResult();
     }
@@ -84,9 +75,9 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findAllTakenFor(array $inseeCodes): array
+    public function findAllTakenFor(array $inseeCodes, ListFilter $filter = null): array
     {
-        return $this->createListQueryBuilder('r')
+        return $this->createListQueryBuilder('r', $filter)
             ->andWhere('r.takenForCity IN (:cities)')
             ->setParameter('cities', $inseeCodes)
             ->getQuery()
@@ -122,6 +113,22 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         ;
     }
 
+    private function createListQueryBuilder(string $alias, ListFilter $filter = null): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder($alias)
+            ->addSelect('tag')
+            ->where("$alias.displayed = true")
+            ->leftJoin("$alias.tags", 'tag')
+            ->orderBy("$alias.createdAt", 'DESC')
+        ;
+
+        if ($filter) {
+            $this->applyListFilter($qb, $filter);
+        }
+
+        return $qb;
+    }
+
     private function addFavoriteCitiesCondition(array $inseeCodes, QueryBuilder $qb): void
     {
         $orExpression = new Orx();
@@ -132,5 +139,65 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         }
 
         $qb->andWhere($orExpression);
+    }
+
+    private function applyListFilter(QueryBuilder $qb, ListFilter $filter): void
+    {
+        $alias = $qb->getRootAliases()[0];
+
+        if ($filter->getFirstName()) {
+            $qb
+                ->andWhere("${alias}.firstName = :first_name")
+                ->setParameter('first_name', $filter->getFirstName())
+            ;
+        }
+
+        if ($filter->getLastName()) {
+            $qb
+                ->andWhere("${alias}.lastName = :last_name")
+                ->setParameter('last_name', $filter->getLastName())
+            ;
+        }
+
+        if ($filter->getGender()) {
+            $qb
+                ->andWhere("${alias}.gender = :gender")
+                ->setParameter('gender', $filter->getGender())
+            ;
+        }
+
+        if ($filter->isAdherent()) {
+            $qb->andWhere("${alias}.adherent IS NOT NULL");
+        }
+
+        if ($filter->getIsInMyTeam()) {
+            // `No` value, free candidate
+            if (2 === $filter->getIsInMyTeam()) {
+                $qb->andWhere("${alias}.takenForCity IS NULL");
+            } else {
+                // `Yes` or `Taken for another city` values
+                $sign = 1 === $filter->getIsInMyTeam() ? 'IN' : 'NOT IN';
+                $qb
+                    ->andWhere("${alias}.takenForCity ${sign}(:insee_codes)")
+                    ->setParameter('insee_codes', $filter->getInseeCodes())
+                ;
+            }
+        }
+
+        if ($filter->getTag()) {
+            $qb
+                ->leftJoin("${alias}.tags", 'tag_for_search')
+                ->andWhere('tag_for_search = :tag')
+                ->setParameter('tag', $filter->getTag())
+            ;
+        }
+
+        if ($filter->getTheme()) {
+            $qb
+                ->innerJoin("${alias}.favoriteThemes", 'theme')
+                ->andWhere('theme = :theme')
+                ->setParameter('theme', $filter->getTheme())
+            ;
+        }
     }
 }

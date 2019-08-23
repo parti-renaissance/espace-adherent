@@ -24,6 +24,7 @@ common.committees_count: "%count% comité|%count% comités"
 common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
 common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
+common.all: Tous
 pending: En attente
 approved: Approuvé
 group: un groupe
@@ -33,6 +34,10 @@ global.no: Non
 Choices: Choix possibles
 Survey List: Liste des questionnaires locaux
 number_of_days: '%days% jour|%days% jours'
+
+First name: Prénom
+Last name: Nom
+Theme: Théme
 
 #
 # Adherent
@@ -273,7 +278,6 @@ referent.popup.title: Charte de bonne utilisation des outils numériques
 referent.popup.subtitle: à l’usage des référents
 referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
 referent.filter.interests: Choisissez des centres d'intérêt
-referent.adherent.all: Tous
 referent.adherent.subscribed: Abonné(e)
 referent.adherent.unsubscribed: Non-abonné(e)
 referent.status.email: Statut (e-mail)

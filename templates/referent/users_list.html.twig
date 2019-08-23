@@ -42,7 +42,7 @@
                                 <div class="filter__row">
                                     <label class="filter__label">{{ 'referent.managed_area'|trans }}</label>
                                     <select class="filter__field" name="{{ constant('PARAMETER_QUERY_ZONE', filter) }}">
-                                        <option value="">{{ 'referent.adherent.all'|trans }}</option>
+                                        <option value="">{{ 'common.all'|trans }}</option>
                                         {% for tag in managedArea.tags %}
                                             <option value="{{ tag.code }}" {{ filter.queryZone ? tag.code is same as(filter.queryZone) ? 'selected' : '' }}>{{ tag.name }}</option>
                                         {% endfor %}
@@ -189,7 +189,7 @@
                             <div class="filter__row">
                                 <label class="filter__label">{{ 'referent.status.email'|trans }}</label>
                                 <select class="filter__field" name="{{ constant('PARAMETER_EMAIL_SUBSCRIPTION', filter) }}">
-                                    <option value="">{{ 'referent.adherent.all'|trans }}</option>
+                                    <option value="">{{ 'common.all'|trans }}</option>
                                     <option value="1" {{ filter.onlyEmailSubscribers is same as(true) ? 'selected' }}>{{ 'referent.adherent.subscribed'|trans }}</option>
                                     <option value="0" {{ filter.onlyEmailSubscribers is same as(false) ? 'selected' }}>{{ 'referent.adherent.unsubscribed'|trans }}</option>
                                 </select>
