@@ -51,7 +51,7 @@ class DonationRequestHandler
 
         $donator->addDonation($donation);
 
-        $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation, $donationRequest));
+        $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation));
 
         $this->manager->persist($donator);
         $this->manager->persist($donation);
