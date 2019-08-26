@@ -28,7 +28,7 @@ class Question implements EnabledInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @SymfonySerializer\Groups({"guideline_read", "idea_read", "with_answers"})
      */

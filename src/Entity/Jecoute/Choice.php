@@ -21,7 +21,7 @@ class Choice
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @JMS\Groups({"survey_list"})
      */

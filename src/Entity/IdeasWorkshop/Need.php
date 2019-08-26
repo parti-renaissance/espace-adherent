@@ -41,7 +41,7 @@ class Need implements EnabledInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @SymfonySerializer\Groups({"need_read", "idea_read", "idea_list_read"})
      */

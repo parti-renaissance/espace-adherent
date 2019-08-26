@@ -23,7 +23,7 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

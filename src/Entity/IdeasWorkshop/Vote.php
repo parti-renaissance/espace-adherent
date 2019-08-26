@@ -52,7 +52,7 @@ class Vote implements AuthorInterface
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @SymfonySerializer\Groups({"idea_list_read", "vote_read"})
      */

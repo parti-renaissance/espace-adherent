@@ -41,7 +41,7 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      *
      * @ORM\Column(type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      *
      * @Algolia\Attribute
      */

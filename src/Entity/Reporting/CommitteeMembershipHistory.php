@@ -31,7 +31,7 @@ class CommitteeMembershipHistory
      *
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
