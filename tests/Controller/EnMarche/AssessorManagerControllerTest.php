@@ -625,7 +625,7 @@ class AssessorManagerControllerTest extends WebTestCase
                 '15, Rue Auguste Blanqui',
                 'France',
                 'Titulaire',
-                'Masculin',
+                'Homme',
                 'Luc',
                 'Luc',
                 'Ratif',
