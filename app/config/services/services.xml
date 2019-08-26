@@ -106,6 +106,7 @@
         </service>
 
         <service id="AppBundle\Donation\PayboxFormFactory" />
+        <service id="AppBundle\Donation\DonatorSubscriber" />
 
         <!-- Membership -->
         <service id="AppBundle\Command\RemindUnconfirmedMembershipCommand"/>

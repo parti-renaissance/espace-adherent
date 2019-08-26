@@ -168,6 +168,11 @@ security:
             - ROLE_APP_ADMIN_DONATION_LIST
             - ROLE_APP_ADMIN_DONATION_VIEW
 
+        ROLE_ADMIN_DONATORS:
+            - ROLE_APP_ADMIN_DONATOR_EXPORT
+            - ROLE_APP_ADMIN_DONATOR_LIST
+            - ROLE_APP_ADMIN_DONATOR_VIEW
+
         ROLE_ADMIN_EMAIL:
             - ROLE_APP_ADMIN_EMAIL_EXPORT
             - ROLE_APP_ADMIN_EMAIL_LIST
@@ -303,6 +308,7 @@ security:
             - ROLE_ADMIN_IDEAS_WORKSHOP
             - ROLE_ADMIN_APPLICATION_REQUEST
             - ROLE_ADMIN_CHEZ_VOUS
+            - ROLE_ADMIN_DONATORS
 
     access_decision_manager:
         strategy: unanimous

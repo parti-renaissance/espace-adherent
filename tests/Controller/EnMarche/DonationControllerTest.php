@@ -4,9 +4,12 @@ namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Donator;
 use AppBundle\Entity\Transaction;
 use AppBundle\Mailer\Message\DonationMessage;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\DonatorIdentifierRepository;
+use AppBundle\Repository\DonatorRepository;
 use AppBundle\Repository\TransactionRepository;
 use Goutte\Client as PayboxClient;
 use GuzzleHttp\Client;
@@ -28,10 +31,19 @@ class DonationControllerTest extends WebTestCase
 
     /* @var PayboxClient */
     private $payboxClient;
+
     /* @var DonationRepository */
     private $donationRepository;
+
     /* @var TransactionRepository */
     private $transactionRepository;
+
+    /* @var DonatorRepository */
+    private $donatorRepository;
+
+    /* @var DonatorIdentifierRepository */
+    private $donatorIdentifierRepository;
+
     /* @var PayboxProvider */
     private $payboxProvider;
 
@@ -71,6 +83,9 @@ class DonationControllerTest extends WebTestCase
         $appClient = $this->client;
         // There should not be any donation for the moment
         $this->assertCount(0, $this->donationRepository->findAll());
+
+        $lastAccountId = $this->donatorIdentifierRepository->findLastIdentifier()->getIdentifier();
+        $this->assertSame('000052', $lastAccountId);
 
         $crawler = $appClient->request(Request::METHOD_GET, sprintf('/don/coordonnees?montant=30&abonnement=%d', $duration));
 
@@ -205,6 +220,13 @@ class DonationControllerTest extends WebTestCase
         $transaction = $transactions[0];
         self::assertSame('00000', $transaction->getPayboxResultCode());
         self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
+
+        $donator = $donation->getDonator();
+        $this->assertInstanceOf(Donator::class, $donator);
+        $this->assertSame($donator->getEmailAddress(), $donation->getEmailAddress());
+        $this->assertEquals($donator->getLastDonationAt(), $donation->getCreatedAt());
+        $this->assertSame('000053', $donator->getIdentifier());
+
         // Email should have been sent
         $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationMessage::class));
     }
@@ -415,6 +437,8 @@ class DonationControllerTest extends WebTestCase
 
         $this->payboxClient = new PayboxClient();
         $this->donationRepository = $this->getDonationRepository();
+        $this->donatorRepository = $this->getDonatorRepository();
+        $this->donatorIdentifierRepository = $this->getDonatorIdentifierRepository();
         $this->transactionRepository = $this->getTransactionRepository();
         $this->payboxProvider = $this->get(PayboxProvider::class);
     }
@@ -423,9 +447,12 @@ class DonationControllerTest extends WebTestCase
     {
         $this->kill();
 
-        $this->transactionRepository = null;
         $this->payboxClient = null;
         $this->donationRepository = null;
+        $this->donatorRepository = null;
+        $this->donatorIdentifierRepository = null;
+        $this->transactionRepository = null;
+        $this->payboxProvider = null;
 
         parent::tearDown();
     }

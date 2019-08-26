@@ -6,6 +6,7 @@ use AppBundle\Address\Address;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Donator;
 use AppBundle\Entity\Transaction;
 use Cake\Chronos\Chronos;
 use Cocur\Slugify\Slugify;
@@ -53,6 +54,10 @@ class LoadDonationData extends Fixture
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
 
+        $donator0 = $this->createDonator($donationNormal, '000050', $adherent0);
+        $donator1 = $this->createDonator($donation0, '000051', $adherent1);
+        $donator2 = $this->createDonator($donation4, '000052', $adherent2);
+
         $manager->persist($donationNormal);
         $manager->persist($donationMonthly);
         $manager->persist($donation0);
@@ -68,6 +73,10 @@ class LoadDonationData extends Fixture
         $manager->persist($transaction2);
         $manager->persist($transaction3);
         $manager->persist($transaction4);
+
+        $manager->persist($donator0);
+        $manager->persist($donator1);
+        $manager->persist($donator2);
 
         $manager->flush();
     }
@@ -92,6 +101,27 @@ class LoadDonationData extends Fixture
         );
 
         return $donation;
+    }
+
+    public function createDonator(Donation $donation, string $accountId, ?Adherent $adherent): Donator
+    {
+        $donator = new Donator(
+            $donation->getLastName(),
+            $donation->getFirstName(),
+            $donation->getCity(),
+            $donation->getCountry(),
+            $donation->getEmailAddress()
+        );
+
+        $donator->setLastDonationAt($donation->getCreatedAt());
+        $donator->setIdentifier($accountId);
+        $donator->addDonation($donation);
+
+        if ($adherent) {
+            $donator->setAdherent($adherent);
+        }
+
+        return $donator;
     }
 
     public function createTransaction(Donation $donation): Transaction
@@ -119,6 +149,7 @@ class LoadDonationData extends Fixture
     {
         return [
             LoadAdherentData::class,
+            LoadDonatorIdentifierData::class,
         ];
     }
 }

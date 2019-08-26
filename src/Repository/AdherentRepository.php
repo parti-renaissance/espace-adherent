@@ -786,4 +786,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
         ));
     }
+
+    public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Adherent
+    {
+        return $this
+            ->createQueryBuilder('adherent')
+            ->andWhere('adherent.emailAddress = :emailAddress')
+            ->andWhere('adherent.firstName = :firstName')
+            ->andWhere('adherent.lastName = :lastName')
+            ->andWhere('adherent.status = :status')
+            ->setParameter('emailAddress', $emailAddress)
+            ->setParameter('firstName', $firstName)
+            ->setParameter('lastName', $lastName)
+            ->setParameter('status', Adherent::ENABLED)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

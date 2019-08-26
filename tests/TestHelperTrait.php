@@ -14,6 +14,8 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Donator;
+use AppBundle\Entity\DonatorIdentifier;
 use AppBundle\Entity\Email;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventRegistration;
@@ -51,6 +53,8 @@ use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Repository\DonatorIdentifierRepository;
+use AppBundle\Repository\DonatorRepository;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\EmailSubscriptionHistoryRepository;
 use AppBundle\Repository\EventRegistrationRepository;
@@ -215,6 +219,16 @@ trait TestHelperTrait
     public function getDonationRepository(): DonationRepository
     {
         return $this->getRepository(Donation::class);
+    }
+
+    public function getDonatorRepository(): DonatorRepository
+    {
+        return $this->getRepository(Donator::class);
+    }
+
+    public function getDonatorIdentifierRepository(): DonatorIdentifierRepository
+    {
+        return $this->getRepository(DonatorIdentifier::class);
     }
 
     public function getTransactionRepository(): TransactionRepository
