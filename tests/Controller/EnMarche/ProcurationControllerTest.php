@@ -109,7 +109,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
         $this->assertSame('Vous devez choisir au moins une élection.', $error->text());
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [3]]));
 
         $this->assertClientIsRedirectedTo('/procuration/je-demande/'.ProcurationRequest::STEP_URI_VOTE, $this->client);
         $this->assertTrue(
@@ -152,7 +152,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount(1, $error = $crawler->filter('.form__error'));
         $this->assertSame('Vous devez choisir au moins une élection.', $error->text());
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [3]]));
 
         $this->assertClientIsRedirectedTo('/procuration/je-propose', $this->client);
         $this->assertTrue(
@@ -499,7 +499,7 @@ class ProcurationControllerTest extends WebTestCase
                 'voteCity' => '92110-92024',
                 'voteCityName' => '',
                 'voteOffice' => 'TestOfficeName',
-                'electionRounds' => ['9'],
+                'electionRounds' => ['5'],
                 'conditions' => true,
                 'authorization' => true,
                 'proxiesCount' => 2,
@@ -530,7 +530,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('Lyon 1er', $proposal->getCityName());
         $this->assertSame('6 rue Neyret', $proposal->getAddress());
         $this->assertSame(true, $proposal->isReachable());
-        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(9)], $proposal->getElectionRounds()->toArray());
+        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(5)], $proposal->getElectionRounds()->toArray());
     }
 
     public function testProcurationRequestNotUniqueEmailBirthDate()
@@ -732,7 +732,7 @@ class ProcurationControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, "/procuration/choisir/$action");
 
-        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [5]]));
+        $this->client->submit($crawler->selectButton('Continuer')->form(['election_context[elections]' => [3]]));
 
         $path = ElectionContext::ACTION_REQUEST === $action ? 'je-demande/'.ProcurationRequest::STEP_URI_VOTE : 'je-propose';
 

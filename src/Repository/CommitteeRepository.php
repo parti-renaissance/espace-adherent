@@ -211,10 +211,6 @@ class CommitteeRepository extends ServiceEntityRepository
         $filter->setCoordinator($coordinator);
         $filter->apply($qb, 'c');
 
-        $qb
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC')
-        ;
 
         return $qb->getQuery()->getResult();
     }

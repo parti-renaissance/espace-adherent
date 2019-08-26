@@ -120,10 +120,7 @@ class CitizenProjectRepository extends AbstractGroupRepository
             return [];
         }
 
-        $qb = $this->createQueryBuilder('cp')
-            ->orderBy('cp.name', 'ASC')
-            ->orderBy('cp.createdAt', 'DESC')
-        ;
+        $qb = $this->createQueryBuilder('cp');
 
         $filter->setCoordinator($coordinator);
         $filter->apply($qb, 'cp');
