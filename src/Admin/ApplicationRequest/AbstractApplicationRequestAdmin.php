@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DateRangePickerType;
@@ -35,6 +36,13 @@ class AbstractApplicationRequestAdmin extends AbstractAdmin
             ->add('firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,
+            ])
+            ->add('gender', ChoiceFilter::class, [
+                'show_filter' => true,
+                'field_type' => GenderType::class,
+                'field_options' => [
+                    'placeholder' => '',
+                ],
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
