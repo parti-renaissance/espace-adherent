@@ -34,7 +34,11 @@ abstract class AbstractCoordinatorAreaFilter
         $qb
             ->andWhere(sprintf('%s.status = :status', $alias))
             ->setParameter('status', $this->getStatus())
+        ;
 
+        $this->updateCount($qb, $alias);
+
+        $qb
             ->orderBy(sprintf('%s.createdAt', $alias), 'DESC')
             ->addOrderBy(sprintf('%s.name', $alias), 'ASC')
 
@@ -42,8 +46,6 @@ abstract class AbstractCoordinatorAreaFilter
             ->setFirstResult($this->offset)
             ->setMaxResults(static::PER_PAGE)
         ;
-
-        $this->updateCount($qb, $alias);
     }
 
     public function __toString()
@@ -180,8 +182,6 @@ abstract class AbstractCoordinatorAreaFilter
 
         $count = $qbCount
             ->select(sprintf('count(%s)', $alias))
-            ->setMaxResults(null)
-            ->setFirstResult(null)
             ->getQuery()
             ->getSingleScalarResult()
         ;
