@@ -229,7 +229,6 @@
 
         <!-- J'écoute -->
         <service id="AppBundle\Command\ImportJecouteSurveysCommand" />
-        <service id="AppBundle\Command\UpdateLocalSurveysTagsCommand" />
         <service id="AppBundle\Form\Jecoute\DataSurveyFormType" />
         <service id="AppBundle\Form\Jecoute\SurveyFormType" />
         <service id="AppBundle\Validator\SurveyQuestionTypeChoiceValidator" />
