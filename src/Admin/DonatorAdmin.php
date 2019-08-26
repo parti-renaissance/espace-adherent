@@ -6,7 +6,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonatorAdmin extends AbstractAdmin
 {
@@ -20,16 +19,21 @@ class DonatorAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
-                'filter_emojis' => true,
+            ->add('identifier', null, [
+                'label' => 'Numéro donateur',
             ])
-            ->add('lastName', TextType::class, [
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastName', null, [
                 'label' => 'Nom',
-                'filter_emojis' => true,
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
+            ])
+            ->add('donations', null, [
+                'label' => 'Dons',
+                'template' => 'admin/donator/show_donations.html.twig',
             ])
         ;
     }
