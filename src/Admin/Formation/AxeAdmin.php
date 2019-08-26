@@ -3,6 +3,7 @@
 namespace AppBundle\Admin\Formation;
 
 use AppBundle\Admin\MediaSynchronisedAdminTrait;
+use AppBundle\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -33,6 +34,9 @@ class AxeAdmin extends AbstractAdmin
                 ])
                 ->add('description', TextareaType::class, [
                     'label' => 'description',
+                ])
+                ->add('position', PositionType::class, [
+                    'label' => 'Position sur la page',
                 ])
             ->end()
             ->with('Média', ['class' => 'col-md-6'])
@@ -76,6 +80,9 @@ class AxeAdmin extends AbstractAdmin
             ])
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
+            ])
+            ->add('position', null, [
+                'label' => 'Position',
             ])
             ->add('slug', null, [
                 'label' => 'URL',

@@ -26,6 +26,7 @@ class SocialShare
     ];
 
     use EntityTimestampableTrait;
+    use PositionTrait;
 
     /**
      * @ORM\Column(type="bigint")
@@ -55,11 +56,6 @@ class SocialShare
      * @Assert\Choice({"image", "video", "pdf"})
      */
     private $type;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $position;
 
     /**
      * @ORM\Column(type="text")
@@ -143,16 +139,6 @@ class SocialShare
     public function getSlug(): ?string
     {
         return $this->slug;
-    }
-
-    public function getPosition(): int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(?int $position)
-    {
-        $this->position = $position;
     }
 
     public function getDescription(): ?string

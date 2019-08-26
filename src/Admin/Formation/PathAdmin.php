@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin\Formation;
 
+use AppBundle\Form\PositionType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -25,6 +26,9 @@ class PathAdmin extends AbstractAdmin
                 ->add('description', TextareaType::class, [
                     'label' => 'description',
                 ])
+                ->add('position', PositionType::class, [
+                    'label' => 'Position sur la page',
+                ])
             ->end()
         ;
     }
@@ -34,6 +38,9 @@ class PathAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
+            ])
+            ->add('position', null, [
+                'label' => 'Position',
             ])
             ->add('description', null, [
                 'label' => 'description',

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Formation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\PositionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Path
 {
+    use PositionTrait;
+
     /**
      * @var int|null
      *

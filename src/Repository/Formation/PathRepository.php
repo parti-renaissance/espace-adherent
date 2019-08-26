@@ -18,12 +18,16 @@ class PathRepository extends ServiceEntityRepository
      */
     public function findAllWithAxesAndModules(): array
     {
-        return $this->createQueryBuilder('p')
+        return $this->createQueryBuilder('path')
             ->addSelect('axes', 'modules')
-            ->innerJoin('p.axes', 'axes')
+            ->innerJoin('path.axes', 'axes')
             ->innerJoin('axes.modules', 'modules')
-            ->orderBy('p.id', 'ASC')
-            ->getQuery()->getResult()
+            ->orderBy('path.position', 'ASC')
+            ->addOrderBy('path.id', 'ASC')
+            ->addOrderBy('axes.position', 'ASC')
+            ->addOrderBy('modules.position', 'ASC')
+            ->getQuery()
+            ->getResult()
         ;
     }
 }
