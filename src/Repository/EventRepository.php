@@ -255,6 +255,7 @@ class EventRepository extends ServiceEntityRepository
         return (int) $this
             ->createUpcomingEventsQueryBuilder()
             ->select('COUNT(e.id)')
+            ->resetDQLPart('orderBy')
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -341,7 +342,7 @@ class EventRepository extends ServiceEntityRepository
                 ->createNearbyQueryBuilder($coordinates)
                 ->andWhere($this->getNearbyExpression().' < :distance_max')
                 ->andWhere('n.beginAt > :today')
-                ->setParameter('distance_max', $search->getRadius())
+                ->setParameter('distance_max', $search->getRadiusInMeters())
                 ->setParameter('today', new \DateTime('today'))
                 ->orderBy('n.beginAt', 'asc')
                 ->addOrderBy('distance_between', 'asc')
