@@ -44,6 +44,14 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $filters->apply($qb, 'pp');
 
+
+        $qb
+            ->addOrderBy("pp.createdAt", 'DESC')
+            ->addOrderBy("pp.lastName", 'ASC')
+            ->andWhere("pp.reliability >= 0")
+            ->groupBy("pp.id, pp.createdAt")
+        ;
+
         return $this->addAndWhereManagedBy($qb, $manager)
             ->getQuery()
             ->getResult()

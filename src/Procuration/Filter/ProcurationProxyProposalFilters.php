@@ -68,12 +68,5 @@ class ProcurationProxyProposalFilters extends ProcurationFilters
                 ->setParameter('disabled', true)
             ;
         }
-
-        $qb
-            ->addOrderBy("$alias.createdAt", 'DESC')
-            ->addOrderBy("$alias.lastName", 'ASC')
-            ->andWhere("$alias.reliability >= 0")
-            ->groupBy("$alias.id, $alias.createdAt")
-        ;
     }
 }

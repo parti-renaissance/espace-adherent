@@ -93,6 +93,14 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
         $filters->apply($qb, 'pr');
 
+        $qb
+            ->leftJoin('pr.electionRounds', 'er')
+            ->addSelect('er')
+            ->orderBy("pr.processed", 'ASC')
+            ->addOrderBy("pr.createdAt", 'DESC')
+            ->addOrderBy("pr.lastName", 'ASC')
+        ;
+
         $requests = $this->addAndWhereManagedBy($qb, $manager)
             ->getQuery()
             ->getArrayResult()

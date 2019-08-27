@@ -45,12 +45,6 @@ class ProcurationRequestFilters extends ProcurationFilters
                 ->setParameter('flag', 1)
             ;
         }
-
-        $qb
-            ->orderBy("$alias.processed", 'ASC')
-            ->addOrderBy("$alias.createdAt", 'DESC')
-            ->addOrderBy("$alias.lastName", 'ASC')
-        ;
     }
 
     public function matchUnprocessedRequests(): bool

@@ -318,7 +318,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
-                'electionRounds' => ['9'],
+                'electionRounds' => ['5'],
                 'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
                 'reachable' => true,
@@ -596,7 +596,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->client->submit($crawler->selectButton('Je continue')->form([
             'g-recaptcha-response' => 'dummy',
             'app_procuration_request' => [
-                'electionRounds' => ['9'],
+                'electionRounds' => ['5'],
                 'reason' => ProcurationRequest::REASON_HEALTH,
                 'authorization' => true,
             ],
@@ -650,7 +650,7 @@ class ProcurationControllerTest extends WebTestCase
                 'voteCity' => '75018-75120',
                 'voteCityName' => '',
                 'voteOffice' => 'Mairie',
-                'electionRounds' => ['9'],
+                'electionRounds' => ['5'],
                 'conditions' => true,
                 'authorization' => true,
                 'proxiesCount' => 2,
