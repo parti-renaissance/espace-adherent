@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class SkillRepository extends ServiceEntityRepository
 {
-    const FIND_FOR_SUMMARY = 'summaries';
+    public const FIND_FOR_SUMMARY = 'summaries';
 
     public function __construct(RegistryInterface $registry)
     {
@@ -43,28 +43,6 @@ class SkillRepository extends ServiceEntityRepository
             ->setParameters([
                 'slug' => $term.'%',
                 'user' => $user,
-            ])
-        ;
-
-        $skills = $qb->getQuery()->getArrayResult();
-
-        foreach ($skills as $skill) {
-            $names[] = $skill['name'];
-        }
-
-        return $names ?? [];
-    }
-
-    /**
-     * Finds all skills for autocomplete.
-     */
-    public function findAvailableSkillsForAdmin(string $term): array
-    {
-        $qb = $this->createQueryBuilder('s');
-        $qb
-            ->where('s.slug LIKE :slug')
-            ->setParameters([
-                'slug' => $term.'%',
             ])
         ;
 

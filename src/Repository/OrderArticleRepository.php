@@ -32,11 +32,8 @@ class OrderArticleRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('o')
             ->where('o.slug = :slug')
-            ->andWhere('o.published = :published')
-            ->setParameters([
-                'slug' => $slug,
-                'published' => true,
-            ])
+            ->andWhere('o.published = true')
+            ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -45,8 +42,7 @@ class OrderArticleRepository extends ServiceEntityRepository
     public function findAllPublished(): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.published = :published')
-            ->setParameter('published', true)
+            ->andWhere('a.published = true')
             ->getQuery()
             ->getResult()
         ;

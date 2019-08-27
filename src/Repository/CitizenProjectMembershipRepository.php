@@ -86,21 +86,6 @@ class CitizenProjectMembershipRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
     }
 
-    public function countAdministratorMembers(CitizenProject $citizenProject): int
-    {
-        return $this->createQueryBuilder('cpm')
-            ->select('COUNT(cpm.uuid)')
-            ->where('cpm.citizenProject = :citizenProject')
-            ->andWhere('cpm.privilege = :privilege')
-            ->setParameters([
-                'citizenProject' => $citizenProject,
-                'privilege' => CitizenProjectMembership::CITIZEN_PROJECT_ADMINISTRATOR,
-            ])
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     /**
      * Returns the list of all administrator memberships of a citizen project.
      */

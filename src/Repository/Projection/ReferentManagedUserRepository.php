@@ -189,36 +189,24 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $typeExpression = $qb->expr()->orX();
 
         if ($filter->includeAdherentsNoCommittee()) {
-            $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = :isCommitteeMember');
-            $qb->setParameters([
-                'type_anc' => ReferentManagedUser::TYPE_ADHERENT,
-                'isCommitteeMember' => false,
-            ]);
+            $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = false');
+            $qb->setParameter('type_anc', ReferentManagedUser::TYPE_ADHERENT);
         }
 
         if ($filter->includeAdherentsInCommittee()) {
-            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = :isCommitteeMember_2');
-            $qb->setParameters([
-                'type_aic' => ReferentManagedUser::TYPE_ADHERENT,
-                'isCommitteeMember_2' => true,
-            ]);
+            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = true');
+            $qb->setParameter('type_aic', ReferentManagedUser::TYPE_ADHERENT);
         }
 
         if ($filter->includeHosts()) {
-            $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = :isCommitteeHost');
-            $qb->setParameters([
-                'type_h' => ReferentManagedUser::TYPE_ADHERENT,
-                'isCommitteeHost' => true,
-            ]);
+            $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = true');
+            $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
         }
 
         if ($filter->includeSupervisors()) {
             $and = new Andx();
-            $and->add('u.type = :type_s AND u.isCommitteeSupervisor = :isCommitteeSupervisor');
-            $qb->setParameters([
-                'type_s' => ReferentManagedUser::TYPE_ADHERENT,
-                'isCommitteeSupervisor' => true,
-            ]);
+            $and->add('u.type = :type_s AND u.isCommitteeSupervisor = true');
+            $qb->setParameter('type_s', ReferentManagedUser::TYPE_ADHERENT);
 
             $supervisorExpression = $qb->expr()->orX();
             foreach ($referent->getManagedAreaTagCodes() as $key => $code) {
@@ -231,7 +219,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         }
 
         if ($filter->includeCitizenProject()) {
-            $typeExpression->add('json_length(u.citizenProjectsOrganizer) > 0');
+            $typeExpression->add('u.citizenProjectsOrganizer IS NOT NULL');
         }
 
         $qb->andWhere($typeExpression);

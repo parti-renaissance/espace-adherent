@@ -222,15 +222,11 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.organizer', 'o')
             ->innerJoin(District::class, 'd', Join::WITH, 'd.id = :district_id')
             ->innerJoin('d.geoData', 'gd')
-            ->where('e.published = :published')
-            ->andWhere("ST_Within(ST_GeomFromText(CONCAT('POINT(',e.postAddress.longitude,' ',e.postAddress.latitude,')')), gd.geoShape) = :within")
-            ->setParameters([
-                'district_id' => $district->getId(),
-                'within' => true,
-            ])
+            ->where('e.published = true')
+            ->andWhere("ST_Within(ST_GeomFromText(CONCAT('POINT(',e.postAddress.longitude,' ',e.postAddress.latitude,')')), gd.geoShape) = true")
+            ->setParameter('district_id', $district->getId())
             ->orderBy('e.beginAt', 'DESC')
             ->addOrderBy('e.name', 'ASC')
-            ->setParameter('published', true)
             ->getQuery()
             ->getResult()
         ;

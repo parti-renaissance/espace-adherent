@@ -93,11 +93,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('adherent')
             ->select('COUNT(adherent)')
             ->where('adherent.emailAddress = :email')
-            ->andWhere('adherent.adherent = :enabled')
-            ->setParameters([
-                'email' => $email,
-                'enabled' => true,
-            ])
+            ->andWhere('adherent.adherent = true')
+            ->setParameter('email', $email)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -192,34 +189,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('a')
             ->select('COUNT(a.uuid)')
             ->where('a.status = :status')
-            ->andWhere('a.adherent = :enabled')
-            ->setParameters([
-                'status' => Adherent::ENABLED,
-                'enabled' => true,
-            ])
+            ->andWhere('a.adherent = true')
+            ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
         ;
 
         return (int) $query->getSingleScalarResult();
-    }
-
-    /**
-     * Finds the list of adherent matching the given list of UUIDs.
-     */
-    public function findList(array $uuids): AdherentCollection
-    {
-        if (!$uuids) {
-            return new AdherentCollection();
-        }
-
-        $qb = $this->createQueryBuilder('a');
-
-        $query = $qb
-            ->where($qb->expr()->in('a.uuid', $uuids))
-            ->getQuery()
-        ;
-
-        return new AdherentCollection($query->getResult());
     }
 
     /**
@@ -557,12 +532,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('a', 'a.gender')
             ->select('a.gender, COUNT(a) AS count')
-            ->where('a.adherent = :enabled')
+            ->where('a.adherent = true')
             ->andWhere('a.status = :status')
-            ->setParameters([
-                'enabled' => true,
-                'status' => Adherent::ENABLED,
-            ])
+            ->setParameter('status', Adherent::ENABLED)
             ->groupBy('a.gender')
             ->getQuery()
             ->getArrayResult()
@@ -577,11 +549,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('a.gender, COUNT(DISTINCT a) AS count')
             ->innerJoin('a.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
-            ->andWhere('a.adherent = :enabled')
+            ->andWhere('a.adherent = true')
             ->andWhere('a.status = :status')
             ->setParameters([
                 'tags' => $referent->getManagedArea()->getTags(),
-                'enabled' => true,
                 'status' => Adherent::ENABLED,
             ])
             ->groupBy('a.gender')

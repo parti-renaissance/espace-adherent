@@ -71,21 +71,19 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('project')
-            ->where('project.isPinned = :pinned')
-            ->andWhere('project.isApproved = :approved')
-            ->setParameters([
-                'pinned' => true,
-                'approved' => true,
-            ])
+            ->where('project.isPinned = true')
+            ->andWhere('project.isApproved = true')
         ;
 
         if ($excludedProjectId) {
-            $qb->andWhere('project.id != :id')
+            $qb
+                ->andWhere('project.id != :id')
                 ->setParameter('id', $excludedProjectId)
             ;
         }
 
-        return $qb->getQuery()
+        return $qb
+            ->getQuery()
             ->getOneOrNullResult()
         ;
     }
