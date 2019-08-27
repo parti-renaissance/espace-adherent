@@ -96,9 +96,9 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         $qb
             ->leftJoin('pr.electionRounds', 'er')
             ->addSelect('er')
-            ->orderBy("pr.processed", 'ASC')
-            ->addOrderBy("pr.createdAt", 'DESC')
-            ->addOrderBy("pr.lastName", 'ASC')
+            ->orderBy('pr.processed', 'ASC')
+            ->addOrderBy('pr.createdAt', 'DESC')
+            ->addOrderBy('pr.lastName', 'ASC')
         ;
 
         $requests = $this->addAndWhereManagedBy($qb, $manager)

@@ -211,7 +211,6 @@ class CommitteeRepository extends ServiceEntityRepository
         $filter->setCoordinator($coordinator);
         $filter->apply($qb, 'c');
 
-
         return $qb->getQuery()->getResult();
     }
 
