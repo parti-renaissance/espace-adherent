@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SocialShareCategory
 {
+    use PositionTrait;
+
     /**
      * @ORM\Column(type="bigint")
      * @ORM\Id
@@ -37,11 +39,6 @@ class SocialShareCategory
      */
     private $slug;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $position;
-
     public function __construct(string $name = '', int $position = 1)
     {
         $this->name = $name;
@@ -63,7 +60,7 @@ class SocialShareCategory
         return $this->name;
     }
 
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = (string) $name;
     }
@@ -71,15 +68,5 @@ class SocialShareCategory
     public function getSlug(): string
     {
         return $this->slug;
-    }
-
-    public function getPosition(): int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(?int $position)
-    {
-        $this->position = $position;
     }
 }
