@@ -9,7 +9,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -104,13 +105,19 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
                 'label' => "Prénom de l'auteur",
                 'show_filter' => true,
             ])
-            ->add('author.referentTags', ModelAutocompleteFilter::class, [
+            ->add('tags', CallbackFilter::class, [
                 'label' => 'Zones',
                 'show_filter' => true,
-                'field_options' => [
-                    'property' => 'name',
-                    'minimum_input_length' => 2,
-                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb->andWhere("FIND_IN_SET(:tag, $alias.tags) > 0");
+                    $qb->setParameter('tag', $value['value']);
+
+                    return true;
+                },
             ])
         ;
     }
@@ -127,7 +134,7 @@ class JecouteLocalSurveyAdmin extends AbstractAdmin
             ->add('getQuestionsCount', null, [
                 'label' => 'Nombre de questions',
             ])
-            ->add('author.referentTags', null, [
+            ->add('tags', 'array', [
                 'label' => 'Zone',
             ])
             ->add('city', null, [
