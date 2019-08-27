@@ -350,7 +350,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertSame('Lyon 1er', $request->getCityName());
         $this->assertSame('6 rue Neyret', $request->getAddress());
         $this->assertSame(true, $request->isReachable());
-        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(9)], $request->getElectionRounds()->toArray());
+        $this->assertEquals([$this->getRepository(ElectionRound::class)->find(5)], $request->getElectionRounds()->toArray());
         $this->assertSame(ProcurationRequest::REASON_HEALTH, $request->getReason());
     }
 
