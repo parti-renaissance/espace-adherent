@@ -33,7 +33,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent(
             [
-                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => 'CH']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
             ],
             '1.123456',
@@ -48,7 +48,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent(
             [
-                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => 'CH']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
             ],
             '1.123456',
@@ -69,7 +69,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent(
             [
-                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => 'CH']),
                 $this->referentTagRepository->findOneBy(['code' => '77']),
             ],
             '1.123456',

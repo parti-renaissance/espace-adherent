@@ -34,7 +34,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
             'is_mail_subscriber' => 0,
-            'subscribedTags' => 'ch',
+            'subscribedTags' => 'CH',
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
         ]);
@@ -55,7 +55,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
             'is_mail_subscriber' => 1,
-            'subscribedTags' => 'ch',
+            'subscribedTags' => 'CH',
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
         ]);
