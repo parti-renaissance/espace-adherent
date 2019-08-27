@@ -468,8 +468,8 @@ class CommitteeRepository extends ServiceEntityRepository
     ): array {
         $this->checkReferent($referent);
 
-        $result = $this->createQueryBuilder('committee')
-            ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as participants')
+        return $this->createQueryBuilder('committee')
+            ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as HIDDEN participants')
             ->join(Event::class, 'event', Join::WITH, 'event.committee = committee.id')
             ->join('committee.referentTags', 'tag')
             ->where('tag.id IN (:tags)')
@@ -488,16 +488,5 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult()
         ;
-
-        return $this->removeParticipantionsCountAndId($result);
-    }
-
-    private function removeParticipantionsCountAndId(array $committees): array
-    {
-        array_walk($committees, function (&$item) {
-            unset($item['participants']);
-        });
-
-        return $committees;
     }
 }

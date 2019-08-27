@@ -66,7 +66,7 @@ class StatisticsParametersFilter
 
     public function setCountryCode(string $countryCode): void
     {
-        $this->countryCode = trim($countryCode);
+        $this->countryCode = mb_strtoupper(trim($countryCode));
     }
 
     public function getCountryCode(): ?string

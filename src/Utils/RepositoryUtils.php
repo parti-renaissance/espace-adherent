@@ -15,19 +15,22 @@ class RepositoryUtils
         string $aliasForPostAddress = 'event'
     ): QueryBuilder {
         if ($filter->getCommittee()) {
-            $query->andWhere("$aliasForCommittee.committee = :committee")
+            $query
+                ->andWhere("$aliasForCommittee.committee = :committee")
                 ->setParameter('committee', $filter->getCommittee())
             ;
         }
 
         if ($filter->getCityName()) {
-            $query->andWhere("$aliasForPostAddress.postAddress.cityName = :city")
+            $query
+                ->andWhere("$aliasForPostAddress.postAddress.cityName = :city")
                 ->setParameter('city', $filter->getCityName())
             ;
         }
 
         if ($filter->getCountryCode()) {
-            $query->andWhere("$aliasForPostAddress.postAddress.country = :country")
+            $query
+                ->andWhere("$aliasForPostAddress.postAddress.country = :country")
                 ->setParameter('country', $filter->getCountryCode())
             ;
         }
