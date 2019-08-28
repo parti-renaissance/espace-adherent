@@ -375,7 +375,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
         if ($value) {
             $qb
-                ->andWhere('committee.name LIKE :searchedName')
+                ->andWhere('ILIKE(committee.name, :searchedName) = TRUE')
                 ->setParameter('searchedName', $value.'%')
                 ->setMaxResults(70)
             ;
@@ -402,7 +402,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
         if ($value) {
             $qb
-                ->andWhere('committee.postAddress.cityName LIKE :searchedCityName')
+                ->andWhere('ILIKE(committee.postAddress.cityName, :searchedCityName) = TRUE')
                 ->setParameter('searchedCityName', $value.'%')
             ;
         }
