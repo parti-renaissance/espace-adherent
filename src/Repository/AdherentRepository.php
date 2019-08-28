@@ -72,8 +72,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return (int) $this
             ->createQueryBuilder('a')
             ->select('COUNT(a)')
-            ->andWhere('a.adherent = :enabled')
-            ->setParameter('enabled', true)
+            ->andWhere('a.adherent = true')
             ->getQuery()
             ->getSingleScalarResult()
         ;

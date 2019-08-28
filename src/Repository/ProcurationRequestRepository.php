@@ -151,9 +151,8 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         $qb
             ->select('COUNT(DISTINCT pp.id)')
             ->from('AppBundle:ProcurationProxy', 'pp')
-            ->andWhere('pp.disabled = :disabled')
+            ->andWhere('pp.disabled = false')
             ->andWhere('pp.reliability >= 0')
-            ->setParameter('disabled', false)
         ;
 
         foreach ($requests as $key => $request) {

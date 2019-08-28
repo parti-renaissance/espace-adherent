@@ -18,8 +18,7 @@ class ThemeRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('t')
-            ->andWhere('t.display = :display')
-            ->setParameter('display', true)
+            ->andWhere('t.display = true')
             ->orderBy('t.name', 'ASC')
         ;
     }

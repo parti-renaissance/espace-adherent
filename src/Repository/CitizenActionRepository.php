@@ -70,9 +70,8 @@ class CitizenActionRepository extends EventRepository
             ->leftJoin('e.category', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.slug = :slug')
+            ->andWhere('e.published = true')
             ->setParameter('slug', $slug)
-            ->andWhere('e.published = :published')
-            ->setParameter('published', true)
         ;
     }
 

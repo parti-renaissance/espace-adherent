@@ -66,8 +66,7 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
             $qb
                 ->addSelect('e')
                 ->leftJoin('i.event', 'e')
-                ->having('e.published = :published_event')
-                ->setParameter('published_event', true)
+                ->having('e.published = true')
                 ->addGroupBy('e.id')
             ;
         }
@@ -90,15 +89,13 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
         $qb
             ->select('i, a, e')
             ->leftJoin('i.author', 'a')
-            ->leftJoin('i.event', 'e', Join::WITH, 'e.id = :e_null OR e.published = :e_published')
+            ->leftJoin('i.event', 'e', Join::WITH, 'e.id = :e_null OR e.published = true')
             ->leftJoin('i.committee', 'c')
             ->where('c.uuid = :committee')
-            ->andWhere('i.published = :published')
+            ->andWhere('i.published = true')
             ->orderBy('i.id', 'DESC')
             ->setParameter('committee', $committeeUuid)
-            ->setParameter('published', true)
             ->setParameter('e_null', null)
-            ->setParameter('e_published', true)
         ;
 
         return $qb;

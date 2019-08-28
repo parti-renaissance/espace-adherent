@@ -34,9 +34,8 @@ class MeasureRepository extends ServiceEntityRepository
             ->createQueryBuilder('measure')
             ->select('COUNT(measure)')
             ->andWhere('measure.status = :status')
+            ->andWhere('measure.major = true')
             ->setParameter('status', $status)
-            ->andWhere('measure.major = :major')
-            ->setParameter('major', true)
             ->getQuery()
             ->getSingleScalarResult()
         ;

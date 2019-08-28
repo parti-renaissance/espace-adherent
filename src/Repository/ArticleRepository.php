@@ -19,8 +19,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->select('COUNT(a)')
-            ->andWhere('a.published = :published')
-            ->setParameter('published', true)
+            ->andWhere('a.published = true')
         ;
 
         if (!ArticleCategory::isDefault($category)) {
@@ -45,10 +44,8 @@ class ArticleRepository extends ServiceEntityRepository
             ->leftJoin('a.media', 'm')
             ->innerJoin('a.category', 'category')
             ->addSelect('category')
-            ->andWhere('a.published = :published')
-            ->andWhere('category.display = :display')
-            ->setParameter('published', true)
-            ->setParameter('display', true)
+            ->andWhere('a.published = true')
+            ->andWhere('category.display = true')
             ->orderBy('a.publishedAt', 'DESC')
             ->setMaxResults($perPage)
             ->setFirstResult(($page - 1) * $perPage)
@@ -99,10 +96,9 @@ class ArticleRepository extends ServiceEntityRepository
             ->leftJoin('a.media', 'm')
             ->leftJoin('a.category', 'c')
             ->where('a.slug = :articleSlug')
-            ->setParameter('articleSlug', $articleSlug)
-            ->andWhere('a.published = :published')
-            ->setParameter('published', true)
+            ->andWhere('a.published = true')
             ->andWhere('c.slug = :categorySlug')
+            ->setParameter('articleSlug', $articleSlug)
             ->setParameter('categorySlug', $categorySlug)
             ->getQuery()
             ->getOneOrNullResult()
@@ -158,8 +154,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->select('a', 'm', 'c')
             ->leftJoin('a.media', 'm')
             ->leftJoin('a.category', 'c')
-            ->andWhere('a.published = :published')
-            ->setParameter('published', true)
+            ->andWhere('a.published = true')
         ;
     }
 }

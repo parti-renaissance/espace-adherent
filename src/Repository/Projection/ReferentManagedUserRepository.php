@@ -83,10 +83,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $qb->orderBy("u.$sortColumn", $orderDirection);
 
         if ($onlyEmailSubscribers) {
-            $qb
-                ->andWhere('u.isMailSubscriber = :subscriber')
-                ->setParameter(':subscriber', true)
-            ;
+            $qb->andWhere('u.isMailSubscriber = true');
         }
 
         $managedAreas = $referent->getManagedAreaTagCodes();

@@ -23,8 +23,7 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
             ->createQueryBuilder('project')
             ->where('project.slug = :slug')
             ->setParameter('slug', $slug)
-            ->andWhere('project.isApproved = :approved')
-            ->setParameter('approved', true)
+            ->andWhere('project.isApproved = true')
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -59,8 +58,7 @@ class TurnkeyProjectRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('projects')
-            ->where('projects.isApproved = :approved')
-            ->setParameter('approved', true)
+            ->where('projects.isApproved = true')
             ->orderBy('projects.position', 'ASC')
             ->getQuery()
             ->getResult()

@@ -35,15 +35,9 @@ class ProcurationRequestFilters extends ProcurationFilters
         parent::apply($qb, $alias);
 
         if ($this->matchUnprocessedRequests()) {
-            $qb
-                ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NULL")
-                ->setParameter('flag', 0)
-            ;
+            $qb->andWhere("$alias.processed = false AND $alias.processedAt IS NULL");
         } else {
-            $qb
-                ->andWhere("$alias.processed = :flag AND $alias.processedAt IS NOT NULL")
-                ->setParameter('flag', 1)
-            ;
+            $qb->andWhere("$alias.processed = true AND $alias.processedAt IS NOT NULL");
         }
     }
 

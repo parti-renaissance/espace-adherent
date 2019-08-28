@@ -61,18 +61,14 @@ class AssessorRequestFilters extends AssessorFilters
 
         if ($this->isStatusUnprocessed()) {
             $qb
-                ->andWhere("$alias.processed = :processed AND $alias.processedAt IS NULL")
-                ->setParameter('processed', false)
+                ->andWhere("$alias.processed = false AND $alias.processedAt IS NULL")
                 ->setParameter('enabled', true)
             ;
         } elseif (self::DISABLED === $this->getStatus()) {
-            $qb
-                ->setParameter('enabled', false)
-            ;
+            $qb->setParameter('enabled', false);
         } else {
             $qb
-                ->andWhere("$alias.processed = :processed AND $alias.processedAt IS NOT NULL")
-                ->setParameter('processed', true)
+                ->andWhere("$alias.processed = true AND $alias.processedAt IS NOT NULL")
                 ->setParameter('enabled', true)
             ;
         }

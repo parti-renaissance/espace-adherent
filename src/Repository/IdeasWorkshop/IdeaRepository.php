@@ -124,7 +124,7 @@ SQL;
             ->innerJoin('idea.votes', 'vote')
             ->where('idea = :idea')
             ->setParameter('idea', $idea)
-            ->groupBy('vote.type', 'vote.id')
+            ->groupBy('vote.type')
             ->getQuery()
             ->getArrayResult()
         ;
@@ -193,10 +193,7 @@ SQL;
     {
         switch ($status) {
             case IdeaStatusEnum::UNPUBLISHED:
-                $queryBuilder
-                    ->andWhere(sprintf('%s.enabled = :enabled', $alias))
-                    ->setParameter('enabled', false)
-                ;
+                $queryBuilder->andWhere(sprintf('%s.enabled = false', $alias));
                 break;
             case IdeaStatusEnum::DRAFT:
                 $queryBuilder->andWhere(sprintf('%s.publishedAt IS NULL', $alias));

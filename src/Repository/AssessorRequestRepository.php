@@ -18,18 +18,6 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         parent::__construct($registry, AssessorRequest::class);
     }
 
-    public function findOneEnabledByUuid(string $uuid): ?AssessorRequest
-    {
-        return $this->createQueryBuilder(self::ALIAS)
-            ->where(self::ALIAS.'.enabled :enabled')
-            ->setParameter(':enabled', true)
-            ->andWhere(self::ALIAS.'.uuid :uuid')
-            ->setParameter(':uuid', $uuid)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
     /**
      * @return AssessorRequest[]
      */

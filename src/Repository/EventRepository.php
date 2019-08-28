@@ -52,14 +52,15 @@ class EventRepository extends ServiceEntityRepository
         ;
 
         if ($onlyPublished) {
-            $qb->where('e.published = :published')
+            $qb
+                ->where('e.published = true')
                 ->andWhere('ec.status = :enabled')
-                ->setParameter('published', true)
                 ->setParameter('enabled', BaseEventCategory::ENABLED)
             ;
         }
 
-        return (int) $qb->getQuery()
+        return (int) $qb
+            ->getQuery()
             ->getSingleScalarResult()
         ;
     }
@@ -73,10 +74,9 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('e.slug = :slug')
-            ->andWhere('e.published = :published')
+            ->andWhere('e.published = true')
             ->andWhere('c.status = :status')
             ->setParameter('slug', $slug)
-            ->setParameter('published', true)
             ->setParameter('status', Committee::APPROVED)
             ->getQuery()
         ;
@@ -170,8 +170,7 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.organizer', 'o')
             ->where('e.slug = :slug')
             ->setParameter('slug', $slug)
-            ->andWhere('e.published = :published')
-            ->setParameter('published', true)
+            ->andWhere('e.published = true')
         ;
     }
 
@@ -187,10 +186,9 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
-            ->where('e.published = :published')
+            ->where('e.published = true')
             ->orderBy('e.beginAt', 'DESC')
             ->addOrderBy('e.name', 'ASC')
-            ->setParameter('published', true)
         ;
 
         $this->applyReferentGeoFilter($qb, $referent, 'e');
@@ -265,12 +263,11 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.category', 'ec')
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
-            ->where('e.published = :published')
+            ->where('e.published = true')
             ->andWhere($qb->expr()->in('e.status', Event::ACTIVE_STATUSES))
             ->andWhere('e.beginAt >= :today')
             ->andWhere('ec.status = :status')
             ->orderBy('e.beginAt', 'ASC')
-            ->setParameter('published', true)
             ->setParameter('today', date('Y-m-d'))
             ->setParameter('status', BaseEventCategory::ENABLED)
         ;
@@ -308,9 +305,8 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.committee', 'c')
             ->leftJoin('e.organizer', 'o')
             ->where('c.status = :status')
-            ->andWhere('e.published = :published')
+            ->andWhere('e.published = true')
             ->setParameter('status', Committee::APPROVED)
-            ->setParameter('published', true)
         ;
     }
 
@@ -354,7 +350,7 @@ WHERE (events.address_latitude IS NOT NULL
     AND events.address_longitude IS NOT NULL 
     AND (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) < :distance_max 
     AND events.begin_at > :today 
-    AND events.published = :published
+    AND events.published = true
     AND events.status = :scheduled
     AND (event_category.id IS NOT NULL OR citizen_action_category.id IS NOT NULL)
     )
@@ -419,7 +415,6 @@ SQL;
         }
         $query->setParameter('latitude', $search->getCityCoordinates()->getLatitude());
         $query->setParameter('longitude', $search->getCityCoordinates()->getLongitude());
-        $query->setParameter('published', 1, \PDO::PARAM_INT);
         $query->setParameter('scheduled', BaseEvent::STATUS_SCHEDULED);
         $query->setParameter('event_type', BaseEvent::EVENT_TYPE);
         $query->setParameter('citizen_action_type', BaseEvent::CITIZEN_ACTION_TYPE);
@@ -607,11 +602,10 @@ SQL;
             ->andWhere($this->getNearbyExpression().' < :distance_max')
             ->andWhere('n.beginAt > :date')
             ->andWhere('n.status = :status')
-            ->andwhere('n.published = :published')
+            ->andwhere('n.published = true')
             ->setParameter('distance_max', $radius)
             ->setParameter('date', $event->getBeginAt())
             ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
-            ->setParameter('published', true)
             ->addOrderBy('n.beginAt', 'ASC')
             ->setMaxResults($max)
             ->getQuery()

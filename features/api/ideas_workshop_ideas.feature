@@ -92,9 +92,9 @@ Feature:
                     "slug": "en-marche-paris-8"
                 },
                 "votes_count": {
-                    "important": "7",
-                    "feasible": "5",
-                    "innovative": "5",
+                    "important": 7,
+                    "feasible": 5,
+                    "innovative": 5,
                     "total": 17
                 },
                 "author_category": "COMMITTEE",

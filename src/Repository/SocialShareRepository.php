@@ -12,14 +12,16 @@ class SocialShareRepository extends EntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select('s', 'c')
             ->leftJoin('s.socialShareCategory', 'c')
-            ->where('s.published = :published')
-            ->setParameter('published', true)
+            ->where('s.published = true')
             ->orderBy('s.position', 'ASC')
             ->addOrderBy('s.createdAt', 'DESC')
         ;
 
         if ($category) {
-            $qb->andWhere('c = :category')->setParameter('category', $category);
+            $qb
+                ->andWhere('c = :category')
+                ->setParameter('category', $category)
+            ;
         }
 
         return $qb->getQuery()->getResult();
