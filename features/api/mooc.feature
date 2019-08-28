@@ -126,10 +126,10 @@ Feature:
     Then the response status code should be 200
     And the response should be in XML
     And the XML element "//urlset" should have 5 element
-    And the XML element "//url[1]/loc" should be equal to "http://mooc.enmarche.code/la-rentree-des-territoires"
-    And the XML element "//url[1]/changefreq" should be equal to "monthly"
-    And the XML element "//url[1]/priority" should be equal to "0.1"
-    And the XML element "//url[2]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique"
-    And the XML element "//url[3]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-premiere-video"
-    And the XML element "//url[4]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-deuxieme-video"
-    And the XML element "//url[5]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/le-test-de-votre-vie"
+    And the XML element "//url[1]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique"
+    And the XML element "//url[2]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-premiere-video"
+    And the XML element "//url[3]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/les-produits-transformes-dans-une-deuxieme-video"
+    And the XML element "//url[4]/loc" should be equal to "http://mooc.enmarche.code/faire-de-sa-fourchette-un-acte-politique/le-test-de-votre-vie"
+    And the XML element "//url[5]/loc" should be equal to "http://mooc.enmarche.code/la-rentree-des-territoires"
+    And the XML element "//url[5]/changefreq" should be equal to "monthly"
+    And the XML element "//url[5]/priority" should be equal to "0.1"
