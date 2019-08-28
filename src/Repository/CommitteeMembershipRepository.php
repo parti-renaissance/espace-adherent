@@ -95,7 +95,8 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('committee.status = :status')
             ->setParameter('adherent', $adherent)
             ->setParameter('status', Committee::APPROVED)
-            ->addOrderBy('cm.privilege', 'DESC')
+            ->orderBy('cm.privilege', 'DESC')
+            ->addOrderBy('committee.id', 'ASC')
             ->getQuery()
         ;
 

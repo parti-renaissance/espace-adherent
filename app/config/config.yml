@@ -159,7 +159,6 @@ doctrine:
 
         dql:
             # datetime_functions:
-            #     year_month: DoctrineExtensions\Query\PostgreSQL\YearMonth
             numeric_functions:
                 st_distance_sphere: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistanceSphere
                 st_point: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STPoint
@@ -171,6 +170,8 @@ doctrine:
                 #IS_CONTAINED_BY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\IsContainedBy
                 STRING_TO_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\StringToArray
                 ILIKE: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Ilike
+            datetime_functions:
+                DATE_FORMAT: DoctrineExtensions\Query\Postgresql\DateFormat
                 #UNNEST: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Unnest
             #     acos: DoctrineExtensions\Query\PostgreSQL\Acos
             #     cos: DoctrineExtensions\Query\PostgreSQL\Cos

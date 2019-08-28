@@ -40,12 +40,16 @@ class RepositoryUtils
 
     public static function aggregateCountByMonth(array $itemsCount, int $months = 6): array
     {
+        $countByMonth = [];
+
         foreach (range(0, $months - 1) as $month) {
             $until = (new Chronos("first day of -$month month"));
-            $countByMonth[$until->format('Y-m')] = ['date' => $until->format('Y-m'), 'count' => 0];
+            $yearMonth = $until->format('Y-m');
+            $countByMonth[$yearMonth] = ['date' => $yearMonth, 'count' => 0];
+
             foreach ($itemsCount as $count) {
                 if ($until->format('Ym') === $count['yearmonth']) {
-                    $countByMonth[$until->format('Y-m')]['count'] += $count['count'];
+                    $countByMonth[$yearMonth]['count'] += $count['count'];
                 }
             }
         }

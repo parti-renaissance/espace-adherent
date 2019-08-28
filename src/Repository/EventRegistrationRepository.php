@@ -204,7 +204,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
         int $months
     ): QueryBuilder {
         return $this->createQueryBuilder('eventRegistrations')
-            ->select('DISTINCT eventRegistrations.emailAddress, COUNT(DISTINCT eventRegistrations) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
+            ->select("eventRegistrations.emailAddress, COUNT(DISTINCT eventRegistrations) AS count, DATE_FORMAT(event.beginAt, 'YYYYMM') as yearmonth")
             ->join(Event::class, 'event', Join::WITH, 'eventRegistrations.event = event.id')
             ->join('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
@@ -216,6 +216,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
             ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 000))
             ->groupBy('yearmonth')
+            ->addGroupBy('eventRegistrations.emailAddress')
         ;
     }
 

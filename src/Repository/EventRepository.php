@@ -84,20 +84,6 @@ class EventRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findMostRecentEvent(): ?Event
-    {
-        $query = $this
-            ->createQueryBuilder('ce')
-            ->where('ce.published = :published')
-            ->setParameter('published', true)
-            ->orderBy('ce.createdAt', 'DESC')
-            ->setMaxResults(1)
-            ->getQuery()
-        ;
-
-        return $query->getOneOrNullResult();
-    }
-
     public function findOneByUuid(string $uuid): ?BaseEvent
     {
         return $this->findOneByValidUuid($uuid);
@@ -328,51 +314,6 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @return Event[]
-     */
-    public function searchEvents(SearchParametersFilter $search): array
-    {
-        if ($coordinates = $search->getCityCoordinates()) {
-            $qb = $this
-                ->createNearbyQueryBuilder($coordinates)
-                ->andWhere($this->getNearbyExpression().' < :distance_max')
-                ->andWhere('n.beginAt > :today')
-                ->setParameter('distance_max', $search->getRadiusInMeters())
-                ->setParameter('today', new \DateTime('today'))
-                ->orderBy('n.beginAt', 'asc')
-                ->addOrderBy('distance_between', 'asc')
-            ;
-        } else {
-            $qb = $this->createQueryBuilder('n');
-        }
-
-        $qb->andWhere('n.published = :published')
-            ->setParameter('published', true)
-        ;
-
-        if (!empty($query = $search->getQuery())) {
-            $qb->andWhere('n.name like :query');
-            $qb->setParameter('query', '%'.$query.'%');
-        }
-
-        if ($category = $search->getEventCategory()) {
-            $qb->andWhere('n.category = :category');
-            $qb->setParameter('category', $category);
-        }
-
-        if ($search->getReferentEvents()) {
-            $qb->andWhere('n.committee IS NULL AND n.citizenProject IS NULL');
-        }
-
-        return $qb
-            ->setFirstResult($search->getOffset())
-            ->setMaxResults($search->getMaxResults())
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function searchAllEvents(SearchParametersFilter $search): array
     {
         $sql = <<<'SQL'
@@ -560,7 +501,7 @@ SQL;
     public function queryCountByMonth(Adherent $referent, int $months = 5): QueryBuilder
     {
         return $this->createQueryBuilder('event')
-            ->select('COUNT(DISTINCT event.id) AS count, YEAR_MONTH(event.beginAt) AS yearmonth')
+            ->select("COUNT(DISTINCT event.id) AS count, DATE_FORMAT(event.beginAt, 'YYYYMM') AS yearmonth")
             ->innerJoin('event.referentTags', 'tag')
             ->where('tag IN (:tags)')
             ->setParameter('tags', $referent->getManagedArea()->getTags())
@@ -570,31 +511,6 @@ SQL;
             ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
             ->groupBy('yearmonth')
         ;
-    }
-
-    public function countParticipantsInReferentManagedAreaByMonthForTheLastSixMonths(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        $eventsCount = $this->createQueryBuilder('event')
-            ->select('YEAR_MONTH(event.beginAt) AS yearmonth, event.participantsCount as count')
-            ->innerJoin('event.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->andWhere('event.committee IS NOT NULL')
-            ->andWhere("event.status = '".Event::STATUS_SCHEDULED."'")
-            ->andWhere('event.participantsCount > 0')
-            ->andWhere('event.beginAt >= :from')
-            ->andWhere('event.beginAt <= :until')
-            ->setParameter('from', (new Chronos('first day of -5 months'))->setTime(0, 0, 0, 000))
-            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->groupBy('event.id')
-            ->getQuery()
-            ->useResultCache(true, 3600)
-            ->getArrayResult()
-        ;
-
-        return RepositoryUtils::aggregateCountByMonth($eventsCount);
     }
 
     public function countParticipantsInReferentManagedArea(Adherent $referent): int

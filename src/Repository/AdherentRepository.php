@@ -613,7 +613,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->checkReferent($referent);
 
         $query = $this->createQueryBuilder('adherent', 'adherent.gender')
-            ->select('COUNT(DISTINCT adherent.id) AS count, YEAR_MONTH(event.beginAt) as yearmonth')
+            ->select("COUNT(DISTINCT adherent.id) AS count, DATE_FORMAT(event.beginAt, 'YYYYMM') as yearmonth")
             ->join('adherent.memberships', 'membership')
             ->join('membership.committee', 'committee')
             ->innerJoin('committee.referentTags', 'tag')
