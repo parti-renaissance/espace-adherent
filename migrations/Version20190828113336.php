@@ -2,12 +2,12 @@
 
 namespace Migrations;
 
+use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190828113336 extends AbstractMigration
 {
-    public function up(Schema $schema): void
+    public function up(Schema $schema)
     {
         $this->addSql('CREATE EXTENSION IF NOT EXISTS postgis');
         $this->addSql('CREATE SEQUENCE timeline_profile_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
