@@ -123,15 +123,3 @@ Feature:
       | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               | missing-city           | missing-tag | forbidden-uuid                       |
       | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
       | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 06d61c85-929a-4152-b46c-b94b6883b8d6 |
-
-  Scenario Outline: I list adherent living in the cities I manage
-    Given I am logged as "<user>"
-    And I am on "/espace-municipales-2020/adherents"
-    And I wait 10 seconds until I see "Identité"
-    Then I should see "<shouldSee>"
-    And I should not see "<shouldNotSee>"
-
-    Examples:
-      | user                               | shouldSee         | shouldNotSee      |
-      | municipal-chief@en-marche-dev.fr   | Dusse Jean-Claude | Morin Bernard     |
-      | municipal-chief-3@en-marche-dev.fr | Morin Bernard     | Dusse Jean-Claude |

@@ -8,7 +8,6 @@ use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentMessageRepository;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\MunicipalEventRepository;
 use AppBundle\Security\Voter\MunicipalChiefVoter;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -106,21 +105,5 @@ class MunicipalChiefController extends Controller
         $myTeamTarget = $httpRequest->query->has('mtt');
 
         return $this->redirectToRoute('app_municipal_chief_'.($myTeamTarget ? 'my_team' : 'candidate')."_${type}_list");
-    }
-
-    /**
-     * @Route(path="/adherents", name="_adherents_list", methods={"GET"})
-     */
-    public function adherentsListAction(
-        Request $request,
-        UserInterface $municipalChief,
-        AdherentRepository $adherentRepository
-    ): Response {
-        return $this->render('municipal_chief/adherent/list.html.twig', [
-            'results' => $adherentRepository->findPaginatedForInseeCodes(
-                $municipalChief->getMunicipalChiefManagedArea()->getCodes(),
-                $request->query->getInt('page')
-            ),
-        ]);
     }
 }
