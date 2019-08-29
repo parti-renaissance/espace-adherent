@@ -62,7 +62,7 @@ Feature: Merge committees from admin panel
     And "api_sync" should have messages below:
       | routing_key       | body                                                                                                                                                                                                                                                                                                                 |
       | committee.updated | {"uuid":"b0cd0e52-a5a4-410b-bba3-37afdd326a0a","status":"REFUSED","membersCount":2,"name":"En Marche Dammarie-les-Lys","slug":"en-marche-dammarie-les-lys","tags":["77"],"longitude":2.624205,"latitude":48.5182194,"country":"FR","address":"824 Avenue du Lys","zipCode":"77190","city":"Dammarie-les-Lys"}     |
-      | committee.updated | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","status":"APPROVED","membersCount":5,"name":"En Marche Paris 8","slug":"en-marche-paris-8","tags":["75008","75"],"longitude":2.3132432,"latitude":48.8705073,"country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e"} |
+      | committee.updated | {"uuid":"515a56c0-bde8-56ef-b90c-4745b1c93818","status":"APPROVED","membersCount":5,"name":"En Marche Paris 8","slug":"en-marche-paris-8","tags":"@array@.count(2).inArray('75').inArray('75008')","longitude":2.3132432,"latitude":48.8705073,"country":"FR","address":"60 avenue des Champs-\u00c9lys\u00e9es","zipCode":"75008","city":"Paris 8e"} |
     Then I am on "/admin/app/committee/3/members"
     And I should not see "Animateur principal"
     And I should not see "Co-animateur"
