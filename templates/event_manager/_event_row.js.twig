@@ -1,4 +1,33 @@
 {% spaceless %}
+
+    {% set menu = [
+        {
+            label: 'Partager par e-mail',
+            callbackName: 'sendEventLinkByMessage',
+            data: {
+                'data-url': url('app_event_show', {slug: event.slug}),
+            }
+        }
+    ] %}
+
+    {% if is_granted('HOST_EVENT', event) %}
+        {% set menu = menu|merge([
+            {
+                label: 'Modifier',
+                url: path('app_event_edit', {slug: event.slug}),
+            },
+            {
+                label: 'Écrire aux participants',
+                url: path('app_event_members', {slug: event.slug}),
+            },
+            {
+                label: 'Annuler',
+                url: path('app_event_cancel', {slug: event.slug}),
+                className: 'row-action text--error',
+            },
+        ]) %}
+    {% endif %}
+
     {% set row = {
         id: event.id,
         name: {
@@ -11,28 +40,7 @@
         postalCode: event.postalCode,
         organizer: event.organizer ? event.organizer.fullName : 'un ancien adhérent',
         participants: event.participantsCount,
-        menu: [
-            {
-                label: 'Modifier',
-                url: path('app_event_edit', {slug: event.slug}),
-            },
-            {
-                label: 'Écrire aux participants',
-                url: path('app_event_members', {slug: event.slug}),
-            },
-            {
-                label: 'Partager par e-mail',
-                callbackName: 'sendEventLinkByMessage',
-                data: {
-                    'data-url': url('app_event_show', {slug: event.slug}),
-                },
-            },
-            {
-                label: 'Annuler',
-                url: path('app_event_cancel', {slug: event.slug}),
-                className: 'row-action text--error',
-            },
-        ]
+        menu: menu
     } %}
 
     {{ row|json_encode|raw }}
