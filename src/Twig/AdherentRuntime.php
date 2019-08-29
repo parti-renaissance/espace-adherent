@@ -88,7 +88,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         if ($adherent->isMunicipalChief()) {
-            $labels[] = 'Chef municipal';
+            $labels[] = 'Candidat Municipales 2020 🇫🇷';
         }
 
         return $labels;

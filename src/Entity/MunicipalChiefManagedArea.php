@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MunicipalChiefManagedArea extends ManagedArea
 {
-    /** @Assert\IsTrue(message="Au moins une des valeurs saisies dans le champ Chef municipal n'est pas un code INSEE de ville valide.") */
+    /** @Assert\IsTrue(message="Au moins une des valeurs saisies dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.") */
     public function isValidFrenchCodes(): bool
     {
         return empty(array_diff($this->getCodes(), array_keys(FranceCitiesBundle::getCityByInseeCode())));

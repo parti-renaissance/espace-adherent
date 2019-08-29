@@ -184,7 +184,7 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'coordinator.label.codes.cp',
                 ])
                 ->add('municipalChiefManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'Chef municipal',
+                    'label' => 'Candidat Municipales 2020 🇫🇷',
                     'required' => false,
                 ])
                 ->add('isJecouteManager', 'boolean', [
@@ -346,7 +346,7 @@ class AdherentAdmin extends AbstractAdmin
                     'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
                 ])
                 ->add('municipalChiefManagedAreaCodesAsString', TextType::class, [
-                    'label' => 'Chef municipal',
+                    'label' => 'Candidat Municipales 2020 🇫🇷',
                     'required' => false,
                     'help' => "Laisser vide si l'adhérent n'est pas chef municipal. Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC).",
                 ])
