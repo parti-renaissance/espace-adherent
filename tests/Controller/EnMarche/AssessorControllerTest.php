@@ -91,7 +91,7 @@ class AssessorControllerTest extends WebTestCase
         $this->assertContains('Récapitulatif', $crawler->filter('.title h1')->text());
         $this->assertContains('3/3', $crawler->filter('span.step')->text());
 
-        $this->assertContains('Masculin', $crawler->filter('.summary-bloc tr.gender td:last-child')->text());
+        $this->assertContains('Homme', $crawler->filter('.summary-bloc tr.gender td:last-child')->text());
         $this->assertContains('Ernestino', $crawler->filter('.summary-bloc tr.firstname td:last-child')->text());
         $this->assertContains('Bonsoirini', $crawler->filter('.summary-bloc tr.lastname td:last-child')->text());
         $this->assertContains('39 rue du Welsh', $crawler->filter('.summary-bloc tr.address td:last-child')->text());
