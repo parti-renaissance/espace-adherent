@@ -247,7 +247,7 @@ class EventRepository extends ServiceEntityRepository
             ->createQueryBuilder('e')
             ->andWhere('e.organizer = :organizer')
             ->setParameter('organizer', $organizer)
-            ->orderBy('e.createdAt', 'DESC')
+            ->orderBy('e.id', 'DESC')
             ->getQuery()
         ;
 
