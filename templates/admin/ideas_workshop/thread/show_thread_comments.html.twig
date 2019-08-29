@@ -3,7 +3,7 @@
 {% block field %}
     {% for threadComment in object.comments %}
         Auteur: {{ threadComment.author }}<br>
-        Date: {{ threadComment.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM Y HH:MM") }}<br>
+        Date: {{ threadComment.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM Y HH:mm") }}<br>
         Approuvé:
         {% if threadComment.approved %}
             <span class="label label-success">{{ 'global.yes'|trans|lower }}</span>
