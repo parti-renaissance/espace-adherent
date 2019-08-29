@@ -108,7 +108,7 @@ class LoadDonationData extends Fixture
         $donator = new Donator(
             $donation->getLastName(),
             $donation->getFirstName(),
-            $donation->getCity(),
+            $donation->getCityName(),
             $donation->getCountry(),
             $donation->getEmailAddress()
         );
