@@ -99,8 +99,8 @@ Feature:
     """
     {
       "countries":[
-        {"ES":"Espagne"},
-        {"CH":"Suisse"}
+        {"CH":"Suisse"},
+        {"ES":"Espagne"}
       ]
     }
     """

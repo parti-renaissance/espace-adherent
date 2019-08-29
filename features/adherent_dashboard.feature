@@ -52,7 +52,7 @@ Feature:
     And I should see an "img" element
 
     # As a referent, I can see information about my department
-    Then I should see "Département 13, Département 59, Département 76, Département 77, Département 92, Espagne, Suisse"
+    Then I should see "Département 13, Département 59, Département 76, Département 77, Département 92, Suisse, Espagne"
     And I should see "10 adhérents dans ce département, 10 acceptent de recevoir des e-mails."
     And I should see "Envoyer un e-mail"
     And I should see "Créer un événement"
