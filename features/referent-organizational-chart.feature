@@ -13,7 +13,7 @@ Feature: Make sure we can see and interact with organizational chart
     And I am on "/espace-referent/utilisateurs"
     When I follow "Mon équipe"
     Then I should see "Référent départemental"
-    And I should see "Responsable logistique Nom du responsable"
+    And I should see "Nom du responsable Responsable logistique"
     And I should see "Jean Dupont Co-Référent"
 
   Scenario: As a child referent I can't see and click to access to organizational chart page
