@@ -55,7 +55,7 @@ Feature:
     And I should see "<cities-tr-1>"
     And I should see "<cities-tr-2>"
     And I should not see "<missing-city>"
-    And I should not see "<missing-tag>"
+    And I should not see "<missing-tag>" in the "#datagrid" element
 
     When I am on "/espace-municipales-2020/candidature-colistiers/<forbidden-uuid>"
     Then I should see "403"
@@ -111,7 +111,7 @@ Feature:
     And I should see "<cities-tr-1>"
     And I should see "<cities-tr-2>"
     And I should not see "<missing-city>"
-    And I should not see "<missing-tag>"
+    And I should not see "<missing-tag>" in the "#datagrid" element
 
     When I am on "/espace-municipales-2020/candidature-benevoles/<forbidden-uuid>"
     Then I should see "403"

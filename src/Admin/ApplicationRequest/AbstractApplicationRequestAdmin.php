@@ -38,6 +38,7 @@ class AbstractApplicationRequestAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
             ->add('gender', ChoiceFilter::class, [
+                'label' => 'Genre',
                 'show_filter' => true,
                 'field_type' => GenderType::class,
                 'field_options' => [

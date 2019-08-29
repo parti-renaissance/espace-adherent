@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
 
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
+use AppBundle\ApplicationRequest\Filter\ListFilter;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +19,16 @@ class ReferentSpaceController extends AbstractApplicationRequestController
 {
     private const SPACE_NAME = 'referent';
 
-    protected function getApplicationRequests(ApplicationRequestRepository $repository, string $type): array
-    {
-        return $repository->findAllForReferentTags($this->getUser()->getManagedArea()->getTags()->toArray(), $type);
+    protected function getApplicationRequests(
+        ApplicationRequestRepository $repository,
+        string $type,
+        ListFilter $filter
+    ): array {
+        return $repository->findAllForReferentTags(
+            $this->getUser()->getManagedArea()->getTags()->toArray(),
+            $type,
+            $filter
+        );
     }
 
     protected function getSpaceName(): string

@@ -4,7 +4,9 @@ namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
 
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
+use AppBundle\ApplicationRequest\Filter\ListFilter;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use AppBundle\Form\ApplicationRequest\ApplicationRequestListFilterType;
 use AppBundle\Form\ApplicationRequest\ApplicationRequestTagsType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,19 +17,31 @@ use Symfony\Component\Routing\Annotation\Route;
 abstract class AbstractApplicationRequestController extends Controller
 {
     /**
-     * @Route("candidature-colistiers", name="_candidate_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, methods={"GET"})
-     * @Route("candidature-benevoles", name="_candidate_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, methods={"GET"})
+     * @Route("candidature-colistiers", name="_candidate_running_mate_list", defaults={"type": ApplicationRequestTypeEnum::RUNNING_MATE}, methods={"GET", "POST"})
+     * @Route("candidature-benevoles", name="_candidate_volunteer_list", defaults={"type": ApplicationRequestTypeEnum::VOLUNTEER}, methods={"GET", "POST"})
      */
-    public function candidatesListAction(Request $request, ApplicationRequestRepository $repository): Response
-    {
+    public function candidatesListAction(
+        Request $request,
+        ApplicationRequestRepository $repository,
+        string $type
+    ): Response {
         $this->checkAccess($request);
 
+        $form = $this
+            ->createForm(ApplicationRequestListFilterType::class, null, ['extended' => $this->isExtendedFilterForm()])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $filter = $form->getData();
+        } else {
+            $filter = new ListFilter();
+        }
+
         return $this->renderTemplate('application_request/space/list.html.twig', [
-            'requests' => $this->getApplicationRequests(
-                $repository,
-                $type = $request->attributes->get('type', ApplicationRequestTypeEnum::RUNNING_MATE)
-            ),
+            'requests' => $this->getApplicationRequests($repository, $type, $filter),
             'request_type' => $type,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -89,7 +103,11 @@ abstract class AbstractApplicationRequestController extends Controller
         ]);
     }
 
-    abstract protected function getApplicationRequests(ApplicationRequestRepository $repository, string $type): array;
+    abstract protected function getApplicationRequests(
+        ApplicationRequestRepository $repository,
+        string $type,
+        ListFilter $filter
+    ): array;
 
     abstract protected function getSpaceName(): string;
 
@@ -109,5 +127,10 @@ abstract class AbstractApplicationRequestController extends Controller
     protected function redirectToSpaceRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_{$this->getSpaceName()}_${subName}", $parameters);
+    }
+
+    protected function isExtendedFilterForm(): bool
+    {
+        return false;
     }
 }

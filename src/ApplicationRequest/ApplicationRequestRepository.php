@@ -2,6 +2,7 @@
 
 namespace AppBundle\ApplicationRequest;
 
+use AppBundle\ApplicationRequest\Filter\ListFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
@@ -30,31 +31,31 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findOneByUuid($uuid);
     }
 
-    public function findAllForInseeCodes(array $inseeCodes, string $type): array
+    public function findAllForInseeCodes(array $inseeCodes, string $type, ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
-            return $this->runningMateRepository->findAllForInseeCodes($inseeCodes);
+            return $this->runningMateRepository->findAllForInseeCodes($inseeCodes, $filter);
         }
 
-        return $this->volunteerRepository->findAllForInseeCodes($inseeCodes);
+        return $this->volunteerRepository->findAllForInseeCodes($inseeCodes, $filter);
     }
 
-    public function findAllTakenFor(array $inseeCodes, string $type): array
+    public function findAllTakenFor(array $inseeCodes, string $type, ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
-            return $this->runningMateRepository->findAllTakenFor($inseeCodes);
+            return $this->runningMateRepository->findAllTakenFor($inseeCodes, $filter);
         }
 
-        return $this->volunteerRepository->findAllTakenFor($inseeCodes);
+        return $this->volunteerRepository->findAllTakenFor($inseeCodes, $filter);
     }
 
-    public function findAllForReferentTags(array $referentTags, string $type): array
+    public function findAllForReferentTags(array $referentTags, string $type, ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
-            return $this->runningMateRepository->findForReferentTags($referentTags);
+            return $this->runningMateRepository->findForReferentTags($referentTags, $filter);
         }
 
-        return $this->volunteerRepository->findForReferentTags($referentTags);
+        return $this->volunteerRepository->findForReferentTags($referentTags, $filter);
     }
 
     public function updateAdherentRelation(string $email, Adherent $adherent): void
