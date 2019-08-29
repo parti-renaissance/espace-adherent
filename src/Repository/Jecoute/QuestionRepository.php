@@ -29,7 +29,7 @@ class QuestionRepository extends ServiceEntityRepository
             ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
             ->andWhere('question = :q')
             ->setParameter('q', $question)
-            ->groupBy('choices.id')
+            ->groupBy('choices.id, question.type')
             ->getQuery()
             ->getArrayResult()
         ;
