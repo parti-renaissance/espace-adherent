@@ -1166,7 +1166,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
 
         $actualReferentTags = $unregistration->getReferentTags();
-        $this->assertCount(\count($referentTagsBeforeUnregistration), $actualReferentTags->count());
+        $this->assertCount(\count($referentTagsBeforeUnregistration), $actualReferentTags);
         foreach ($referentTagsBeforeUnregistration as $referentTagBeforeUnregistration) {
             $this->assertContains($referentTagBeforeUnregistration, $actualReferentTags);
         }
