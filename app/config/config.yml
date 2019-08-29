@@ -171,6 +171,7 @@ doctrine:
                 STRING_TO_ARRAY: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\StringToArray
                 ILIKE: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Ilike
                 SPLIT_PART: AppBundle\Doctrine\Query\Postgresql\SplitPart
+                UNACCENT: AppBundle\Doctrine\Query\Postgresql\Unaccent
             datetime_functions:
                 DATE_FORMAT: DoctrineExtensions\Query\Postgresql\DateFormat
                 #UNNEST: MartinGeorgiev\Doctrine\ORM\Query\AST\Functions\Unnest

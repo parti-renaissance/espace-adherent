@@ -10,6 +10,7 @@ final class Version20190828113336 extends AbstractMigration
     public function up(Schema $schema)
     {
         $this->addSql('CREATE EXTENSION IF NOT EXISTS postgis');
+        $this->addSql('CREATE EXTENSION IF NOT EXISTS unaccent');
         $this->addSql('CREATE SEQUENCE timeline_profile_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE timeline_manifesto_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE timeline_measure_translations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
