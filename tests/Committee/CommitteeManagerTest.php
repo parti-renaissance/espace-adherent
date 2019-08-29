@@ -190,7 +190,11 @@ class CommitteeManagerTest extends WebTestCase
         $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
         $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
         $this->assertSame('leave', $membershipHistory->getAction());
-        $this->assertEquals(['75008', '75'], $this->getReferentTagCodes($membershipHistory));
+
+        $referentTagCodes = $this->getReferentTagCodes($membershipHistory);
+        $this->assertCount(2, $referentTagCodes);
+        $this->assertContains('75', $referentTagCodes);
+        $this->assertContains('75008', $referentTagCodes);
     }
 
     private function getReferentTagCodes(CommitteeMembershipHistory $history): array

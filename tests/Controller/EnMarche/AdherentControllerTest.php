@@ -1164,7 +1164,12 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
-        $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
+
+        $actualReferentTags = $unregistration->getReferentTags();
+        $this->assertCount(\count($referentTagsBeforeUnregistration), $actualReferentTags->count());
+        foreach ($referentTagsBeforeUnregistration as $referentTagBeforeUnregistration) {
+            $this->assertContains($referentTagBeforeUnregistration, $actualReferentTags);
+        }
 
         if (LoadAdherentData::ADHERENT_13_UUID === $uuid) {
             $draftIdea = $this->getRepository(Idea::class)->findOneBy(['uuid' => LoadIdeaData::IDEA_05_UUID]);

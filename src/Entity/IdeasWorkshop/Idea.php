@@ -190,12 +190,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
- *     "themes.name": "exact",
- *     "authorCategory": "exact",
- *     "author.uuid": "exact",
- *     "category.name": "exact",
- *     "needs.name": "exact"
+ *     "name": "ipartial",
+ *     "themes.name": "iexact",
+ *     "authorCategory": "iexact",
+ *     "author.uuid": "iexact",
+ *     "category.name": "iexact",
+ *     "needs.name": "iexact"
  * })
  * @ApiFilter(OrderFilter::class, properties={"publishedAt", "votesCount", "commentsCount"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"name"})
@@ -337,6 +337,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="idea", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OrderBy({"id": "ASC"})
      *
      * @Assert\Valid
      *

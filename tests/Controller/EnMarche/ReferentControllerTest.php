@@ -494,8 +494,8 @@ class ReferentControllerTest extends WebTestCase
         self::assertSame('Département 76', $crawlerOptions->getNode(2)->nodeValue);
         self::assertSame('Département 77', $crawlerOptions->getNode(3)->nodeValue);
         self::assertSame('Département 92', $crawlerOptions->getNode(4)->nodeValue);
-        self::assertSame('Espagne', $crawlerOptions->getNode(5)->nodeValue);
-        self::assertSame('Suisse', $crawlerOptions->getNode(6)->nodeValue);
+        self::assertSame('Suisse', $crawlerOptions->getNode(5)->nodeValue);
+        self::assertSame('Espagne', $crawlerOptions->getNode(6)->nodeValue);
 
         $crawler = $this->client->submit(
             $crawler->selectButton('Filtrer')->form([
