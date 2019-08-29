@@ -27,6 +27,7 @@ final class ContributorsCountFilter extends AbstractFilter
         $alias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
+            ->select($alias)
             ->addSelect('COUNT(adherent) as HIDDEN contributorsCount')
             ->leftJoin($alias.'.answers', 'answer')
             ->leftJoin('answer.threads', 'thread')
