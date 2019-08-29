@@ -45,7 +45,11 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     {
         $this->addFavoriteCitiesCondition($inseeCodes, $qb = $this->createListQueryBuilder('r', $filter));
 
-        return $qb->getQuery()->getResult();
+        return $qb
+            ->addOrderBy('r.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     public function countForInseeCodes(array $inseeCodes): int
