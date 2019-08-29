@@ -193,7 +193,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "ipartial",
  *     "themes.name": "iexact",
  *     "authorCategory": "iexact",
- *     "author.uuid": "iexact",
+ *     "author.uuid": "exact",
  *     "category.name": "iexact",
  *     "needs.name": "iexact"
  * })
