@@ -12,6 +12,7 @@ trait EntityReferentTagTrait
      * @var Collection|ReferentTag[]
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\OrderBy({"code": "ASC"})
      */
     protected $referentTags;
 

@@ -26,7 +26,7 @@ class ReferentManagedArea
      * @var ReferentTag[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
-     * @ORM\OrderBy({"name": "ASC"})
+     * @ORM\OrderBy({"code": "ASC"})
      * @ORM\JoinTable(
      *     name="referent_managed_areas_tags",
      *     joinColumns={
