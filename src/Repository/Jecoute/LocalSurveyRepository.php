@@ -42,6 +42,7 @@ class LocalSurveyRepository extends ServiceEntityRepository
 
         return $qb
             ->andWhere($this->createOrExpressionForSurveyTags($qb, $tags))
+            ->orderBy('survey.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
