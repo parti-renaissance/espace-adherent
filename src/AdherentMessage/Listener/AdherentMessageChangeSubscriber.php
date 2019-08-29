@@ -69,8 +69,6 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
 
-        $needRecompute = false;
-
         foreach ($uow->getScheduledEntityUpdates() as $object) {
             if (!$object instanceof AdherentMessageFilterInterface && !$object instanceof AdherentMessageInterface) {
                 continue;
@@ -83,12 +81,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
                 || ($object instanceof AdherentMessageInterface && array_intersect($changeSet, ['content', 'subject', 'filter']))
             ) {
                 $object->setSynchronized(false);
-                $needRecompute = true;
             }
-        }
-
-        if ($needRecompute) {
-            $uow->computeChangeSets();
         }
     }
 
