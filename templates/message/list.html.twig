@@ -1,6 +1,8 @@
 {% extends 'message/_layout.html.twig' %}
 
 {% block messages_main_block %}
+    <div class="alert alert--error b__nudge--bottom-larger l__wrapper--wide">Nous rencontrons actuellement un problème technique avec le système de mail. Il ne vous est donc pas possible d’en envoyer un depuis votre espace pour le moment. Nous mettons tout en oeuvre pour trouver une solution rapidement, merci pour votre compréhension !</div>
+
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>{% block message_page_title %}Mes messages{% endblock %}</h3>
         <a href="{{ path("app_message_#{message_type}_create", route_params|default({})) }}" class="btn-secondary btn-secondary--blue">

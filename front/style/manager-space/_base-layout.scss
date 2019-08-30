@@ -506,4 +506,9 @@
         background-color: $inf-modl--bkg-yellow;
         color: $inf-modl--text-yellow;
     }
+
+    &--error {
+        background-color: $inf-modl--bkg-red-lighter;
+        color: $error;
+    }
 }
