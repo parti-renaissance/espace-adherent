@@ -59,35 +59,20 @@ class DonatorSynchronizeCommand extends Command
         $this->io->text('Starting synchronization.');
         $this->io->progressStart($this->getCount());
 
-        $cacheDonators = [];
-
         foreach ($this->getIterableDonations() as $chunk) {
             /** @var Donation $donation */
             $donation = $chunk[0];
 
-            $cacheKey = Urlizer::unaccent(implode([
+            $donator = $this->donatorRepository->findOneForMatching(
                 $donation->getEmailAddress(),
                 $donation->getFirstName(),
-                $donation->getLastName(),
-            ], '.'));
+                $donation->getLastName()
+            );
 
-            /** @var Donator $donator */
-            if (isset($cacheDonators[$cacheKey])) {
-                $donator = $cacheDonators[$cacheKey];
-            } else {
-                $donator = $this->donatorRepository->findOneForMatching(
-                    $donation->getEmailAddress(),
-                    $donation->getFirstName(),
-                    $donation->getLastName()
-                );
+            if (!$donator) {
+                $donator = $this->createDonatorByDonation($donation);
 
-                if (!$donator) {
-                    $donator = $this->createDonatorByDonation($donation);
-
-                    $this->manager->persist($donator);
-                }
-
-                $cacheDonators[$cacheKey] = $donator;
+                $this->manager->persist($donator);
             }
 
             $donator->addDonation($donation);
@@ -97,13 +82,14 @@ class DonatorSynchronizeCommand extends Command
                 $donator->setLastDonationAt($donation->getCreatedAt());
             }
 
+            $this->manager->flush();
+
             $this->io->progressAdvance();
 
             ++$this->counter;
 
             if (0 === ($this->counter % self::BATCH_SIZE)) {
-                $this->manager->flush();
-                $this->manager->clear(Donation::class);
+                $this->manager->clear();
             }
         }
 
