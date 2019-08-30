@@ -29,20 +29,16 @@ class EventCanceledHandler
 
     public function handle(BaseEvent $event): BaseEvent
     {
-        $className = \get_class($event);
-
-        if (!array_key_exists($className, self::EVENTS_MAPPING)) {
-            throw new \InvalidArgumentException(sprintf('[%s] Invalid Event type [%s]', self::class, $className));
-        }
-
         $event->cancel();
 
         $this->manager->flush();
 
-        $this->dispatcher->dispatch(
-            self::EVENTS_MAPPING[$className],
-            $this->createDispatchedEvent($event)
-        );
+        if (array_key_exists($className = \get_class($event), self::EVENTS_MAPPING)) {
+            $this->dispatcher->dispatch(
+                self::EVENTS_MAPPING[$className],
+                $this->createDispatchedEvent($event)
+            );
+        }
 
         return $event;
     }

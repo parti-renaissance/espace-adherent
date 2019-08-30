@@ -318,7 +318,7 @@ export default class DataGrid extends React.Component {
                             style={columns[j].style || null}
                             className={columns[j].className || ''}>
 
-                            <div className="action-menu-oval">
+                            {links.length ? <div className="action-menu-oval">
                                 <a href="#">
                                     <span className="oval" />
                                     <span className="oval" />
@@ -329,7 +329,7 @@ export default class DataGrid extends React.Component {
                                         {links}
                                     </div>
                                 </div>
-                            </div>
+                            </div> : ''}
                         </td>
                     );
                 } else {
