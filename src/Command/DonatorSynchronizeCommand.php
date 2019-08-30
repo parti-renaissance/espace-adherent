@@ -9,6 +9,7 @@ use AppBundle\Repository\DonatorRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;
+use Gedmo\Sluggable\Util\Urlizer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -64,7 +65,11 @@ class DonatorSynchronizeCommand extends Command
             /** @var Donation $donation */
             $donation = $chunk[0];
 
-            $cacheKey = $donation->getFirstName().'.'.$donation->getLastName().'.'.$donation->getEmailAddress();
+            $cacheKey = Urlizer::unaccent(implode([
+                $donation->getEmailAddress(),
+                $donation->getFirstName(),
+                $donation->getLastName(),
+            ], '.'));
 
             /** @var Donator $donator */
             if (isset($cacheDonators[$cacheKey])) {
