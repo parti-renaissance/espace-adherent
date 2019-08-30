@@ -5,7 +5,6 @@ namespace AppBundle\Command;
 use AppBundle\Donation\DonatorManager;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\DonatorRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -20,7 +19,6 @@ class DonatorSyncronizeCommand extends Command
     private const BATCH_SIZE = 200;
 
     private $manager;
-    private $adherentRepository;
     private $donatorRepository;
     private $donatorManager;
     private $counter = 0;
@@ -32,12 +30,10 @@ class DonatorSyncronizeCommand extends Command
 
     public function __construct(
         ObjectManager $manager,
-        AdherentRepository $adherentRepository,
         DonatorRepository $donatorRepository,
         DonatorManager $donatorManager
     ) {
         $this->manager = $manager;
-        $this->adherentRepository = $adherentRepository;
         $this->donatorRepository = $donatorRepository;
         $this->donatorManager = $donatorManager;
 
@@ -152,11 +148,6 @@ class DonatorSyncronizeCommand extends Command
         );
 
         $donator->setIdentifier($this->donatorManager->incrementeIdentifier());
-        $donator->setAdherent($this->adherentRepository->findOneForMatching(
-            $donation->getEmailAddress(),
-            $donation->getFirstName(),
-            $donation->getLastName()
-        ));
 
         return $donator;
     }
