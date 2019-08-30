@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class DonatorSyncronizeCommand extends Command
+class DonatorSynchronizeCommand extends Command
 {
     private const BATCH_SIZE = 200;
 
@@ -98,7 +98,7 @@ class DonatorSyncronizeCommand extends Command
 
             if (0 === ($this->counter % self::BATCH_SIZE)) {
                 $this->manager->flush();
-                $this->manager->clear();
+                $this->manager->clear(Donation::class);
             }
         }
 

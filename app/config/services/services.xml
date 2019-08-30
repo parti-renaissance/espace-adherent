@@ -338,7 +338,7 @@
             <argument type="service" key="$client" id="csa_guzzle.client.mailchimp_api" />
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
         </service>
-        <service id="AppBundle\Command\DonatorSyncronizeCommand" />
+        <service id="AppBundle\Command\DonatorSynchronizeCommand" />
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
