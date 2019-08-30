@@ -82,12 +82,13 @@ class DonatorSynchronizeCommand extends Command
                 $donator->setLastDonationAt($donation->getCreatedAt());
             }
 
+            $this->manager->flush();
+
             $this->io->progressAdvance();
 
             ++$this->counter;
 
             if (0 === ($this->counter % self::BATCH_SIZE)) {
-                $this->manager->flush();
                 $this->manager->clear();
             }
         }
