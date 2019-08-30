@@ -166,8 +166,12 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
             ;
         }
 
-        if ($filter->isAdherent()) {
-            $qb->andWhere("${alias}.adherent IS NOT NULL");
+        if (null !== $filter->isAdherent()) {
+            if ($filter->isAdherent()) {
+                $qb->andWhere("${alias}.adherent IS NOT NULL");
+            } else {
+                $qb->andWhere("${alias}.adherent IS NULL");
+            }
         }
 
         if ($filter->getIsInMyTeam()) {

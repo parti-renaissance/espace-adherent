@@ -8,7 +8,6 @@ use AppBundle\Form\GenderType;
 use AppBundle\Repository\ApplicationRequest\ThemeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,12 +25,17 @@ class ApplicationRequestListFilterType extends AbstractType
                 'required' => false,
             ])
             ->add('gender', GenderType::class, [
-                'placeholder' => 'Tous',
+                'placeholder' => 'common.all',
                 'expanded' => true,
                 'required' => false,
             ])
-            ->add('isAdherent', CheckboxType::class, [
+            ->add('isAdherent', ChoiceType::class, [
                 'required' => false,
+                'placeholder' => 'common.all',
+                'choices' => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
             ])
             ->add('theme', EntityType::class, [
                 'class' => Theme::class,
