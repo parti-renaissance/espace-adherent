@@ -40,7 +40,7 @@
         postalCode: event.postalCode,
         organizer: event.organizer ? event.organizer.fullName : 'un ancien adhérent',
         participants: event.participantsCount,
-        menu: menu
+        menu: event.active ? menu : []
     } %}
 
     {{ row|json_encode|raw }}

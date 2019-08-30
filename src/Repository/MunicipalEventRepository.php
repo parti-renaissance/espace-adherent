@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\MunicipalEvent;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,8 +18,10 @@ class MunicipalEventRepository extends EventRepository
     {
         return $this->createQueryBuilder('e')
             ->select('COUNT(1)')
-            ->where('e.organizer = :organizer')
+            ->where('e.status = :status')
+            ->andWhere('e.organizer = :organizer')
             ->setParameter('organizer', $organizer)
+            ->setParameter('status', Event::STATUS_SCHEDULED)
             ->getQuery()
             ->getSingleScalarResult()
         ;
