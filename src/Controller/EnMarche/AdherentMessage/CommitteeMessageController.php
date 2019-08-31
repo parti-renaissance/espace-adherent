@@ -117,7 +117,7 @@ class CommitteeMessageController extends Controller
     public function updateMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
-        ObjectManager $manager,
+        AdherentMessageManager $manager,
         Committee $committee
     ): Response {
         if ($message->isSent()) {
@@ -133,9 +133,7 @@ class CommitteeMessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message->updateFromDataObject($dataObject);
-
-            $manager->flush();
+            $manager->updateMessage($message, $dataObject);
 
             $this->addFlash('info', 'adherent_message.updated_successfully');
 

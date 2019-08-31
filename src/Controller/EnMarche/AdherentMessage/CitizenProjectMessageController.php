@@ -112,7 +112,7 @@ class CitizenProjectMessageController extends Controller
     public function updateMessageAction(
         Request $request,
         CitizenProjectAdherentMessage $message,
-        ObjectManager $manager,
+        AdherentMessageManager $manager,
         CitizenProject $citizenProject
     ): Response {
         if ($message->isSent()) {
@@ -125,9 +125,7 @@ class CitizenProjectMessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message->updateFromDataObject($dataObject);
-
-            $manager->flush();
+            $manager->updateMessage($message, $dataObject);
 
             $this->addFlash('info', 'adherent_message.updated_successfully');
 

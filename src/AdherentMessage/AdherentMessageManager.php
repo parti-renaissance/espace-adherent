@@ -31,9 +31,27 @@ class AdherentMessageManager
 
     public function updateFilter(AdherentMessageInterface $message, ?AdherentMessageFilterInterface $filter): void
     {
+        if ($message->getFilter() !== $filter) {
+            $message->setSynchronized(false);
+        }
+
         $message->setFilter($filter);
 
         $this->eventDispatcher->dispatch(Events::MESSAGE_FILTER_PRE_EDIT, new MessageEvent($message));
+
+        $this->em->flush();
+    }
+
+    public function updateMessage(AdherentMessageInterface $message, AdherentMessageDataObject $dataObject): void
+    {
+        if (
+            $message->getContent() !== $dataObject->getContent()
+            || $message->getSubject() !== $dataObject->getSubject()
+        ) {
+            $message->setSynchronized(false);
+        }
+
+        $message->updateFromDataObject($dataObject);
 
         $this->em->flush();
     }
