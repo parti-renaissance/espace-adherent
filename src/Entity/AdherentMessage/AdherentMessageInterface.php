@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\AdherentMessage;
 
+use AppBundle\AdherentMessage\AdherentMessageDataObject;
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AuthoredInterface;
 use Ramsey\Uuid\UuidInterface;
@@ -20,7 +21,7 @@ interface AdherentMessageInterface extends AuthoredInterface
 
     public function getFilter(): ?AdherentMessageFilterInterface;
 
-    public function setFilter(AdherentMessageFilterInterface $filter): void;
+    public function setFilter(?AdherentMessageFilterInterface $filter): void;
 
     public function getFromName(): ?string;
 
@@ -54,4 +55,6 @@ interface AdherentMessageInterface extends AuthoredInterface
     public function setMailchimpCampaigns(array $campaigns): void;
 
     public function resetFilter(): void;
+
+    public function updateFromDataObject(AdherentMessageDataObject $dataObject): AdherentMessageInterface;
 }

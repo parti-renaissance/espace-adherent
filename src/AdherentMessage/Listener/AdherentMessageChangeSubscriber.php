@@ -56,10 +56,7 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
 
         if ($object instanceof AdherentMessageInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object);
-        } elseif (
-            ($object instanceof AdherentMessageFilterInterface || $object instanceof MailchimpCampaign)
-            && false === $object->isSynchronized()
-        ) {
+        } elseif ($object instanceof AdherentMessageFilterInterface && false === $object->isSynchronized()) {
             $this->dispatchMessage($object->getMessage());
         }
     }
@@ -70,16 +67,13 @@ class AdherentMessageChangeSubscriber implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $object) {
-            if (!$object instanceof AdherentMessageFilterInterface && !$object instanceof AdherentMessageInterface) {
+            if (!$object instanceof AdherentMessageFilterInterface) {
                 continue;
             }
 
             $changeSet = array_keys($uow->getEntityChangeSet($object));
 
-            if (
-                ($object instanceof AdherentMessageFilterInterface && $changeSet !== ['synchronized'])
-                || ($object instanceof AdherentMessageInterface && array_intersect($changeSet, ['content', 'subject', 'filter']))
-            ) {
+            if ($changeSet !== ['synchronized']) {
                 $object->setSynchronized(false);
             }
         }

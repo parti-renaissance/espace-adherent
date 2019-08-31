@@ -100,7 +100,7 @@ abstract class AbstractMessageController extends Controller
     public function updateMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
-        ObjectManager $manager
+        AdherentMessageManager $manager
     ): Response {
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
@@ -112,9 +112,7 @@ abstract class AbstractMessageController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $message->updateFromDataObject($dataObject);
-
-            $manager->flush();
+            $manager->updateMessage($message, $dataObject);
 
             $this->addFlash('info', 'adherent_message.updated_successfully');
 
