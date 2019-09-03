@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ChezVous\MeasureRepository")
  * @ORM\Table(name="chez_vous_measures", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="chez_vous_measures_city_type_unique", columns={"city_id", "type"}),
+ *     @ORM\UniqueConstraint(name="chez_vous_measures_city_type_unique", columns={"city_id", "type_id"}),
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -32,19 +32,6 @@ class Measure
     private $id;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
-     * @Assert\Choice(callback={"AppBundle\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
-     *
-     * @Algolia\Attribute
-     */
-    private $type;
-
-    /**
      * @var array
      *
      * @ORM\Column(type="json_array", nullable=true)
@@ -63,11 +50,23 @@ class Measure
      */
     private $city;
 
-    public function __construct(City $city = null, string $type = null, array $payload = null)
+    /**
+     * @var MeasureType|null
+     *
+     * @ORM\ManyToOne(targetEntity=MeasureType::class)
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
+     *
+     * @Algolia\Attribute
+     */
+    private $type;
+
+    public function __construct(City $city = null, MeasureType $type = null, array $payload = null)
     {
+        $this->city = $city;
         $this->type = $type;
         $this->payload = $payload;
-        $this->city = $city;
     }
 
     public function getId(): ?int
@@ -75,12 +74,12 @@ class Measure
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getType(): ?MeasureType
     {
         return $this->type;
     }
 
-    public function setType(?string $type): void
+    public function setType(?MeasureType $type): void
     {
         $this->type = $type;
     }
