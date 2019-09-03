@@ -63,6 +63,11 @@ class LoadSubscriptionTypeData extends Fixture
                 'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL,
                 'externalId' => null,
             ],
+            [
+                'label' => 'Recevoir les e-mails de votre candidat aux municipales 2020',
+                'code' => SubscriptionTypeEnum::MUNICIPAL_EMAIL,
+                'externalId' => null,
+            ],
         ];
     }
 }
