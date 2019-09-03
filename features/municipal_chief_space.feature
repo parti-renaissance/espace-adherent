@@ -1,3 +1,4 @@
+@javascript
 Feature:
   As a municipal chief
   In order to see application request of my managed area
@@ -9,7 +10,6 @@ Feature:
       | LoadApplicationRequestRunningMateRequestData |
       | LoadApplicationRequestVolunteerRequestData   |
 
-  @javascript
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-municipales-2020/candidature-colistiers"
@@ -46,7 +46,6 @@ Feature:
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.municipal-candidate-tags" element
 
-  @javascript
   Scenario Outline: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
     When I am on "/espace-municipales-2020/candidature-colistiers"
@@ -68,7 +67,6 @@ Feature:
       | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | b1f336d8-5a33-4e79-bf02-ae03d1101093 |
       | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 23db4b50-dbe3-4b7f-9bd8-f3eaba8367de |
 
-  @javascript
   Scenario: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-municipales-2020/candidature-benevoles"
@@ -102,7 +100,6 @@ Feature:
     Then I wait 5 seconds until I see "TAGS DE CANDIDATURE"
     And I should see "Tag 4" in the "table.datagrid__table-manager tbody tr td.municipal-candidate-tags" element
 
-  @javascript
   Scenario Outline: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "<user>"
     When I am on "/espace-municipales-2020/candidature-benevoles"
@@ -123,3 +120,18 @@ Feature:
       | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               | missing-city           | missing-tag | forbidden-uuid                       |
       | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
       | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 06d61c85-929a-4152-b46c-b94b6883b8d6 |
+
+  Scenario: If I have JEcoute access I can view/create a local survey
+    Given I am logged as "municipal-chief@en-marche-dev.fr"
+    When I am on "/espace-municipales-2020/jecoute"
+    Then I should see "J'écoute"
+
+    Given I am on "/espace-municipales-2020/jecoute/questionnaire/creer"
+    And I press "OK"
+    When I fill in the following:
+      | survey_form[name]                            | Un questionnaire jecoute chef |
+      | survey_form[questions][0][question][content] | Une question ?                |
+    And I wait 10 seconds until I see "Champ libre"
+    And I click the "#survey_form_questions_0_question_type .form__checkbox:nth-child(3) > label" selector
+    And I press "Enregistrer le questionnaire local"
+    Then I should see "Le questionnaire a bien été enregistré."

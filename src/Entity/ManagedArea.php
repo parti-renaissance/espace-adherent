@@ -30,7 +30,7 @@ abstract class ManagedArea
         return $this->id;
     }
 
-    public function getCodes(): array
+    public function getCodes(): ?array
     {
         return $this->codes;
     }
@@ -48,5 +48,10 @@ abstract class ManagedArea
     public function setCodesAsString(?string $codes): void
     {
         $this->codes = $codes ? array_map('trim', explode(',', $codes)) : [];
+    }
+
+    public function __toString(): string
+    {
+        return $this->getCodesAsString();
     }
 }

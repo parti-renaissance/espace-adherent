@@ -25,6 +25,8 @@ common.citizen_projects_count: "%count% projet citoyen|%count% projets citoyens"
 common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 common.all: Tous
+common.jecoute_manager: Accès J'écoute
+
 pending: En attente
 approved: Approuvé
 group: un groupe
@@ -286,7 +288,6 @@ referent.managed_area: Zone gérée
 referent.checkbox.co_referent: Donner un accès à l'onglet&nbsp;<i>Adhérents</i>
 referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>J'écoute</i>
 referent.coreferent_access: Accès adhérents
-referent.jecoute_manager: Accès J'écoute
 referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <i>Adhérents</i> et sauvegarder la modification.
 referent.save: Enregistrer
 

@@ -581,6 +581,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalChief1->setChartAccepted(true);
         $municipalChiefArea1 = new MunicipalChiefManagedArea();
         $municipalChiefArea1->setCodes(['59350', '62637', '59560']);
+        $municipalChiefArea1->setJecouteAccess(true);
         $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);
         $this->addReference('municipal-chief-1', $municipalChief1);
 
