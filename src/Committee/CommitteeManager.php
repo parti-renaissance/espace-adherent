@@ -439,11 +439,6 @@ class CommitteeManager
         return $committees;
     }
 
-    public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
-    {
-        return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
-    }
-
     public function getCommitteeSupervisor(Committee $committee): ?Adherent
     {
         return $this->getMembershipRepository()->findSupervisor($committee);

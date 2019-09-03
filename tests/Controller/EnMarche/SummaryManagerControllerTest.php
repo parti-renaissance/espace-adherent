@@ -425,7 +425,7 @@ class SummaryManagerControllerTest extends WebTestCase
     }
 
     /**
-     * @dependse testActionsAreSuccessfulAsAdherentWithoutSummary
+     * @depends testActionsAreSuccessfulAsAdherentWithoutSummary
      */
     public function testDeleteTrainingChangesOrder()
     {

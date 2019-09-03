@@ -1085,7 +1085,6 @@ class AdherentControllerTest extends WebTestCase
     public function testAdherentTerminatesMembership(
         string $userEmail,
         string $uuid,
-        int $nbComments,
         string $committee,
         int $nbFollowers
     ): void {
@@ -1190,8 +1189,8 @@ class AdherentControllerTest extends WebTestCase
     public function provideAdherentCredentials(): array
     {
         return [
-            'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 2, 'en-marche-suisse', 3],
-            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 1, 'en-marche-paris-8', 4],
+            'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],
+            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 'en-marche-paris-8', 4],
         ];
     }
 

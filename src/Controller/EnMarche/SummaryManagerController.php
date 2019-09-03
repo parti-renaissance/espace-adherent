@@ -61,13 +61,8 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/experience/{id}", defaults={"id": null}, name="app_summary_manager_handle_experience", methods={"GET", "POST"})
      */
-    public function handleExperienceAction(Request $request, ?int $id)
+    public function handleExperienceAction(Request $request, ?JobExperience $experience)
     {
-        $experience = $id
-            ? $this->getDoctrine()->getManager()->getRepository(JobExperience::class)->findOneBy(['id' => $id])
-            : null
-        ;
-
         $summaryManager = $this->get(SummaryManager::class);
         $summary = $summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(JobExperienceType::class, $experience, [
@@ -109,13 +104,8 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/formation/{id}", defaults={"id": null}, name="app_summary_manager_handle_training", methods={"GET", "POST"})
      */
-    public function handleTrainingAction(Request $request, ?int $id)
+    public function handleTrainingAction(Request $request, ?Training $training)
     {
-        $training = $id
-            ? $this->getDoctrine()->getManager()->getRepository(Training::class)->findOneBy(['id' => $id])
-            : null
-        ;
-
         $summaryManager = $this->get(SummaryManager::class);
         $summary = $summaryManager->getForAdherent($this->getUser());
         $form = $this->createForm(TrainingType::class, $training, [
@@ -157,13 +147,8 @@ class SummaryManagerController extends Controller
     /**
      * @Route("/langue/{id}", defaults={"id": null}, name="app_summary_manager_handle_language", methods={"GET", "POST"})
      */
-    public function handleLanguageAction(Request $request, ?int $id)
+    public function handleLanguageAction(Request $request, ?Language $language)
     {
-        $language = $id
-            ? $this->getDoctrine()->getManager()->getRepository(Language::class)->findOneBy(['id' => $id])
-            : null
-        ;
-
         $form = $this->createForm(LanguageType::class, $language);
 
         if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
