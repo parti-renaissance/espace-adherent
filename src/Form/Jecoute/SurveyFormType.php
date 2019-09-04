@@ -96,8 +96,11 @@ class SurveyFormType extends AbstractType
     {
         $form = $event->getForm();
 
-        if (null === $form->get('city')->getData() &&
-            self::CITY_CHOICE === $form->get('concernedAreaChoice')->getData()) {
+        if (
+            $form->has('city')
+            && null === $form->get('city')->getData()
+            && self::CITY_CHOICE === $form->get('concernedAreaChoice')->getData()
+        ) {
             $form->get('city')->addError(new FormError($this->translator->trans('survey.city.required')));
         }
     }

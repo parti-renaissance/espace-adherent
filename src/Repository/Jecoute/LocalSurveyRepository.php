@@ -75,4 +75,17 @@ class LocalSurveyRepository extends ServiceEntityRepository
 
         return $expression;
     }
+
+    public function findAllByAuthor(Adherent $adherent): array
+    {
+        return $this
+            ->createQueryBuilder('survey')
+            ->addSelect('questions')
+            ->innerJoin('survey.questions', 'questions')
+            ->where('survey.author = :author')
+            ->setParameter('author', $adherent)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

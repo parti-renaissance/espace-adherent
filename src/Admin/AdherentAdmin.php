@@ -14,6 +14,7 @@ use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
+use AppBundle\Form\Admin\MunicipalChiefManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
 use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\RevokeManagedAreaSubscriber;
@@ -183,7 +184,7 @@ class AdherentAdmin extends AbstractAdmin
                 ->add('coordinatorCitizenProjectArea', null, [
                     'label' => 'coordinator.label.codes.cp',
                 ])
-                ->add('municipalChiefManagedAreaCodesAsString', TextType::class, [
+                ->add('municipalChiefManagedArea', null, [
                     'label' => 'Candidat Municipales 2020 🇫🇷',
                     'required' => false,
                 ])
@@ -345,9 +346,8 @@ class AdherentAdmin extends AbstractAdmin
                     'label' => 'coordinator.label.codes.cp',
                     'sector' => CoordinatorAreaSectors::CITIZEN_PROJECT_SECTOR,
                 ])
-                ->add('municipalChiefManagedAreaCodesAsString', TextType::class, [
+                ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
                     'label' => 'Candidat Municipales 2020 🇫🇷',
-                    'required' => false,
                     'help' => "Laisser vide si l'adhérent n'est pas chef municipal. Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC).",
                 ])
                 ->add('jecouteManagedAreaCodesAsString', TextType::class, [

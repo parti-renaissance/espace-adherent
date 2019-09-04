@@ -15,6 +15,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MunicipalChiefManagedArea extends ManagedArea
 {
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $jecouteAccess = false;
+
+    public function hasJecouteAccess(): bool
+    {
+        return $this->jecouteAccess;
+    }
+
+    public function setJecouteAccess(bool $jecouteAccess): void
+    {
+        $this->jecouteAccess = $jecouteAccess;
+    }
+
     /** @Assert\IsTrue(message="Au moins une des valeurs saisies dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.") */
     public function isValidFrenchCodes(): bool
     {

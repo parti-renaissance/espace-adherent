@@ -1673,24 +1673,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->municipalChiefManagedArea = $municipalChiefManagedArea;
     }
 
-    public function getMunicipalChiefManagedAreaCodesAsString(): ?string
-    {
-        if (!$this->municipalChiefManagedArea) {
-            return '';
-        }
-
-        return $this->municipalChiefManagedArea->getCodesAsString();
-    }
-
-    public function setMunicipalChiefManagedAreaCodesAsString(string $codes = null): void
-    {
-        if (!$this->municipalChiefManagedArea) {
-            $this->municipalChiefManagedArea = new MunicipalChiefManagedArea();
-        }
-
-        $this->municipalChiefManagedArea->setCodesAsString($codes);
-    }
-
     public function revokeMunicipalChiefManagedArea(): void
     {
         $this->municipalChiefManagedArea = null;

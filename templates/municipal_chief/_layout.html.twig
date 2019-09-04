@@ -52,6 +52,12 @@
                                 <a href="{{ path('app_municipal_chief_my_team_running_mate_list') }}">Mon équipe</a>
                             </li>
 
+                            {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
+                                <li class="{{ is_active_route(app.request, 'app_jecoute_municipal_chief_*') ? 'active' }}">
+                                    <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}">J'écoute</a>
+                                </li>
+                            {% endif %}
+
                             <li class="{{ is_active_route(app.request, 'app_message_municipal_chief_*') ? 'active' }}">
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
                             </li>

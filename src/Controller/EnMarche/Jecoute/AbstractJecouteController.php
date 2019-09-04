@@ -19,6 +19,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,17 +35,11 @@ abstract class AbstractJecouteController extends Controller
      */
     public function jecouteLocalSurveysListAction(
         LocalSurveyRepository $localSurveyRepository,
-        SurveyExporter $surveyExporter,
-        UserInterface $user
+        SurveyExporter $surveyExporter
     ): Response {
-        /** @var Adherent $user */
-        $tags = $user->isJecouteManager() ? $user->getJecouteManagedArea()->getCodes() :
-            $user->getManagedAreaTagCodes()
-        ;
-
         return  $this->renderTemplate('jecoute/local_surveys_list.html.twig', [
             'surveysListJson' => $surveyExporter->exportLocalSurveysAsJson(
-                $localSurveyRepository->findAllByTags($tags),
+                $this->getLocalSurveys($localSurveyRepository),
                 $this->getSpaceName()
             ),
         ]);
@@ -86,16 +81,12 @@ abstract class AbstractJecouteController extends Controller
         $localSurvey = new LocalSurvey($user);
 
         $form = $this
-            ->createForm(SurveyFormType::class, $localSurvey)
+            ->createSurveyForm($localSurvey)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tags = $user->isJecouteManager() ? $user->getJecouteManagedArea()->getCodes() :
-                $user->getManagedArea()->getReferentTagCodes()
-            ;
-
-            $localSurvey->setTags($tags);
+            $localSurvey->setTags($this->getSurveyTags());
 
             $manager->persist($form->getData());
             $manager->flush();
@@ -130,7 +121,7 @@ abstract class AbstractJecouteController extends Controller
         SuggestedQuestionRepository $suggestedQuestionRepository
     ): Response {
         $form = $this
-            ->createForm(SurveyFormType::class, $survey)
+            ->createSurveyForm($survey)
             ->handleRequest($request)
         ;
 
@@ -260,6 +251,13 @@ abstract class AbstractJecouteController extends Controller
 
     abstract protected function getSpaceName(): string;
 
+    /**
+     * @return LocalSurvey[]|array
+     */
+    abstract protected function getLocalSurveys(LocalSurveyRepository $localSurveyRepository): array;
+
+    abstract protected function getSurveyTags(): array;
+
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
         return $this->render($template, array_merge(
@@ -274,5 +272,10 @@ abstract class AbstractJecouteController extends Controller
     protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_${subName}", $parameters);
+    }
+
+    protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
+    {
+        return $this->createForm(SurveyFormType::class, $localSurvey);
     }
 }
