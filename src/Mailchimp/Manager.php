@@ -164,10 +164,10 @@ class Manager implements LoggerAwareInterface
 
         if (!$this->driver->editCampaignContent(
             $campaign->getExternalId(),
-            $contentRequestBuilder->createContentRequest($message = $campaign->getMessage())
+            $contentRequestBuilder->createContentRequest($campaign)
         )) {
             $this->logger->warning(
-                sprintf('Campaign content of "%s" message has not been modified', $message->getUuid()->toString())
+                sprintf('Campaign content of "%s" message has not been modified', $campaign->getMessage()->getUuid()->toString())
             );
 
             return false;

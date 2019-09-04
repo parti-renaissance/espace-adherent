@@ -2,16 +2,20 @@
 
 namespace AppBundle\Mailchimp\Campaign\ContentSection;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use AppBundle\Utils\StringCleaner;
 
 class MunicipalChiefMessageSectionBuilder implements ContentSectionBuilderInterface
 {
-    public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
+    public function build(MailchimpCampaign $campaign, EditCampaignContentRequest $request): void
     {
+        $message = $campaign->getMessage();
+        $adherent = $message->getAuthor();
+
         $request
-            ->addSection('first_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFirstName()))
+            ->addSection('first_name', StringCleaner::htmlspecialchars($adherent->getFirstName()))
+            ->addSection('city_name', $campaign->getLabel())
             ->addSection('reply_to_link', sprintf(
                 '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $message->getAuthor()->getEmailAddress()

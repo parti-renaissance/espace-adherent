@@ -371,7 +371,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     public function testMunicipalChiefMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
-        $message->setFilter($filter = new MunicipalChiefFilter(['12345', '56788']));
+        $message->setFilter($filter = new MunicipalChiefFilter([75101, 75102]));
         $filter->setContactRunningMateTeam(true);
 
         (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
@@ -386,7 +386,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '5',
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'title' => 'Full Name - '.date('d/m/Y').' - Paris 1er',
                         'reply_to' => 'jemarche@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -399,13 +399,13 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'TextMerge',
                                     'op' => 'contains',
                                     'field' => 'FVR_CITIES',
-                                    'value' => '12345',
+                                    'value' => '75101',
                                 ],
                                 [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'is',
                                     'field' => 'MUNIC_TEAM',
-                                    'value' => '12345',
+                                    'value' => '75101',
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -424,6 +424,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'content' => 'Content',
                             'first_name' => 'First Name',
                             'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
                         ],
                     ],
                 ]]],
@@ -433,7 +434,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '5',
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'title' => 'Full Name - '.date('d/m/Y').' - Paris 2e',
                         'reply_to' => 'jemarche@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -446,13 +447,13 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'TextMerge',
                                     'op' => 'contains',
                                     'field' => 'FVR_CITIES',
-                                    'value' => '56788',
+                                    'value' => '75102',
                                 ],
                                 [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'is',
                                     'field' => 'MUNIC_TEAM',
-                                    'value' => '56788',
+                                    'value' => '75102',
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
@@ -471,6 +472,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'content' => 'Content',
                             'first_name' => 'First Name',
                             'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 2e',
                         ],
                     ],
                 ]]]

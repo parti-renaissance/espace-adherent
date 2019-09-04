@@ -3,6 +3,7 @@
 namespace AppBundle\Mailchimp\Campaign;
 
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Campaign\ContentSection\ContentSectionBuilderInterface;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use Psr\Container\ContainerInterface;
@@ -18,15 +19,17 @@ class CampaignContentRequestBuilder
         $this->sectionBuildersLocator = $sectionBuildersLocator;
     }
 
-    public function createContentRequest(AdherentMessageInterface $message): EditCampaignContentRequest
+    public function createContentRequest(MailchimpCampaign $campaign): EditCampaignContentRequest
     {
+        $message = $campaign->getMessage();
+
         $request = new EditCampaignContentRequest(
             $this->objectIdMapping->getTemplateIdByType($message->getType()),
             $message->getContent()
         );
 
         if ($sectionBuilder = $this->getSectionBuilder($message)) {
-            $sectionBuilder->build($message, $request);
+            $sectionBuilder->build($campaign, $request);
         }
 
         return $request;

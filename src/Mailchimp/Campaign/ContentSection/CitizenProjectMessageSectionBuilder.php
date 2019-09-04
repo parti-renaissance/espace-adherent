@@ -2,8 +2,8 @@
 
 namespace AppBundle\Mailchimp\Campaign\ContentSection;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use AppBundle\Utils\StringCleaner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -17,8 +17,9 @@ class CitizenProjectMessageSectionBuilder implements ContentSectionBuilderInterf
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
+    public function build(MailchimpCampaign $campaign, EditCampaignContentRequest $request): void
     {
+        $message = $campaign->getMessage();
         $filter = $message->getFilter();
 
         if (!$filter instanceof CitizenProjectFilter || !($citizenProject = $filter->getCitizenProject())) {
