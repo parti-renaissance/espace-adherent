@@ -159,7 +159,7 @@ class DataSurvey
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): void
+    public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
     }
@@ -169,7 +169,7 @@ class DataSurvey
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): void
+    public function setLastName(?string $lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -179,7 +179,7 @@ class DataSurvey
         return $this->emailAddress;
     }
 
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmailAddress(?string $emailAddress): void
     {
         $this->emailAddress = $emailAddress;
     }
@@ -219,7 +219,7 @@ class DataSurvey
         return $this->postalCode;
     }
 
-    public function setPostalCode(string $postalCode): void
+    public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
@@ -229,7 +229,7 @@ class DataSurvey
         return $this->profession;
     }
 
-    public function setProfession(string $profession): void
+    public function setProfession(?string $profession): void
     {
         $this->profession = $profession;
     }
