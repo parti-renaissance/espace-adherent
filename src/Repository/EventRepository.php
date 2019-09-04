@@ -485,7 +485,7 @@ SQL;
 
         if ($value) {
             $qb
-                ->andWhere('ILIKE(event.postAddress.cityName, :searchedCityName) = TRUE')
+                ->andWhere('ILIKE(event.postAddress.cityName, :searchedCityName) = true')
                 ->setParameter('searchedCityName', $value.'%')
             ;
         }

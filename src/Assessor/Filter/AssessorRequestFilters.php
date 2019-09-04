@@ -88,7 +88,7 @@ class AssessorRequestFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere("ILIKE($alias.assessorCity, :assessorCity) = TRUE")
+                    ->andWhere("ILIKE($alias.assessorCity, :assessorCity) = true")
                     ->setParameter('assessorCity', '%'.$this->getCity().'%')
                 ;
             }
@@ -118,7 +118,7 @@ class AssessorRequestFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere('ILIKE(vp.name, :name) = TRUE')
+                    ->andWhere('ILIKE(vp.name, :name) = true')
                     ->setParameter('name', '%'.strtolower($this->getVotePlace()).'%')
                 ;
             }

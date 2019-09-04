@@ -81,7 +81,7 @@ class VotePlaceFilters extends AssessorFilters
                 ;
             } else {
                 $qb
-                    ->andWhere("ILIKE($alias.name, :name) = TRUE")
+                    ->andWhere("ILIKE($alias.name, :name) = true")
                     ->setParameter('name', '%'.strtolower($this->getVotePlace()).'%')
                 ;
             }
