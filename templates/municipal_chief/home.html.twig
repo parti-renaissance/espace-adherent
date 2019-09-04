@@ -86,7 +86,21 @@
                     <a href="https://chezvous.en-marche.fr/" target="_blank" class="btn btn btn--ghosting--blue">Consulter</a>
                 </footer>
             </div>
-            <div></div>
+            {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                    <h1 class="manager-overview__case--title">J'écoute</h1>
+                    <p class="manager-overview__case--baseline">Application disponible sur
+                        <a class="text--blue--dark link--no-decor" target="_blank" href="https://play.google.com/store/apps/details?id=fr.en_marche.jecoute">Google Play</a>
+                        et sur l'<a class="text--blue--dark link--no-decor" target="_blank" href="https://apps.apple.com/fr/app/j%C3%A9coute/id1441973895">App Store</a>.
+                    </p>
+                    <footer class="manager-overview__case--footer">
+                        <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
+                    </footer>
+                </div>
+                {% else %}
+                <div></div>
+            {% endif %}
         </div>
         <div class="b__nudge--top-large text--center">
             <a href="https://storage.googleapis.com/en-marche-fr/TECH/Charte%20outils%20numeriques%20municipales%202020.pdf" class="text--small" target="_blank">Consulter la Charte de bonne utilisation des outils numériques</a>
