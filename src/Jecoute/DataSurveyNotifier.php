@@ -43,13 +43,18 @@ class DataSurveyNotifier implements EventSubscriberInterface
 
     public function canNotify(DataSurvey $dataSurvey): bool
     {
-        if (null !== $this->adherentRepository->findOneByEmail($dataSurvey->getEmailAddress())) {
+        if (!$email = $dataSurvey->getEmailAddress()) {
+            return false;
+        }
+
+        if (null !== $this->adherentRepository->findOneByEmail($email)) {
             return false;
         }
 
         if ($this->dataSurveyRepository->countByEmailAnsweredForOneMonth(
             $dataSurvey->getEmailAddress(),
-            $dataSurvey->getPostedAt())) {
+            $dataSurvey->getPostedAt())
+        ) {
             return false;
         }
 
