@@ -15,7 +15,7 @@ class MunicipalChiefMessageSectionBuilder implements ContentSectionBuilderInterf
 
         $request
             ->addSection('first_name', StringCleaner::htmlspecialchars($adherent->getFirstName()))
-            ->addSection('city_name', $campaign->getLabel())
+            ->addSection('city_name', (string) $campaign->getLabel())
             ->addSection('reply_to_link', sprintf(
                 '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $message->getAuthor()->getEmailAddress()
