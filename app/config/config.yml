@@ -65,6 +65,7 @@ framework:
             app.cache.redirection:
                 adapter: cache.adapter.doctrine
             app.cache.republican_silence: ~
+            app.cache.municipal_site: ~
 
 twig:
     debug:            "%kernel.debug%"
@@ -86,6 +87,7 @@ twig:
         url_help_en_marche:     "https://aide.en-marche.fr"
         project_dir:            "%kernel.project_dir%"
         em_api_host:            "%env(EM_API_HOST)%"
+        dpt_api_host:           "%env(DPT_API_HOST)%"
         adherent_interests:     "%adherent_interests%"
 
     form_themes:
@@ -216,6 +218,10 @@ csa_guzzle:
                 headers:
                     Content-Type: 'application/json'
                     Authorization: 'Bearer %env(MAILCHIMP_API_KEY)%'
+        dpt_api:
+            config:
+                base_uri: '%env(DPT_API_HOST)%'
+                timeout: 15.0
 
 scheb_two_factor:
     google:

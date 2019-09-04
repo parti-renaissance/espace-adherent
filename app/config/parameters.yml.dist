@@ -62,6 +62,7 @@ parameters:
     env(MOOC_BASE_URL): http://mooc.enmarche.code
     env(EM_API_HOST): http://api.enmarche.code
     env(API_PATH_PREFIX): /api
+    env(DPT_API_HOST): http://dpt-api.enmarche.code
 
     env(SSL_PRIVATE_KEY): 'file://%kernel.project_dir%/var/private.key'
     env(SSL_PUBLIC_KEY): 'file://%kernel.project_dir%/var/public.key'
