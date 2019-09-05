@@ -615,6 +615,10 @@
             <argument />
             <argument>AppBundle\Entity\ChezVous\MeasureType</argument>
             <argument />
+
+            <call method="setAlgoliaProducer">
+                <argument type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
+            </call>
         </service>
 
         <!--

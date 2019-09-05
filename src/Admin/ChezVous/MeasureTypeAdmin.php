@@ -13,18 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class MeasureTypeAdmin extends AbstractAdmin
 {
+    /**
+     * @var AlgoliaProducer
+     */
     private $algoliaProducer;
-
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        AlgoliaProducer $algoliaProducer
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->algoliaProducer = $algoliaProducer;
-    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -86,5 +78,10 @@ class MeasureTypeAdmin extends AbstractAdmin
     public function postUpdate($object)
     {
         $this->algoliaProducer->dispatchMeasureTypeUpdate($object);
+    }
+
+    public function setAlgoliaProducer(AlgoliaProducer $algoliaProducer): void
+    {
+        $this->algoliaProducer = $algoliaProducer;
     }
 }
