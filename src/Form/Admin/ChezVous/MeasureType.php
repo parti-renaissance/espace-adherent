@@ -4,9 +4,10 @@ namespace AppBundle\Form\Admin\ChezVous;
 
 use AppBundle\ChezVous\MeasureChoiceLoader;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType as MeasureTypeEntity;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,11 +23,10 @@ class MeasureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', ChoiceType::class, [
+            ->add('type', EntityType::class, [
                 'label' => 'Type',
-                'choices' => $this->measureChoiceLoader->getTypeChoices(),
+                'class' => MeasureTypeEntity::class,
                 'placeholder' => 'Selectionnez un type',
-                'choice_translation_domain' => 'forms',
                 'attr' => [
                     'class' => 'measure-type-select',
                 ],

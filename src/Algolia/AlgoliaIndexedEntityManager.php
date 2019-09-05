@@ -29,6 +29,11 @@ class AlgoliaIndexedEntityManager
         $this->unIndex($entity);
     }
 
+    public function batch(array $entities): void
+    {
+        $this->algolia->index($entities);
+    }
+
     private function index(AlgoliaIndexedEntityInterface $entity): void
     {
         $this->algolia->index($entity);

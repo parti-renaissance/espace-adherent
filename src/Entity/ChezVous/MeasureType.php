@@ -64,6 +64,8 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
+     *
+     * @Algolia\Attribute
      */
     private $sourceLink;
 
@@ -73,6 +75,8 @@ class MeasureType
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
+     *
+     * @Algolia\Attribute
      */
     private $sourceLabel;
 
@@ -83,6 +87,11 @@ class MeasureType
         $this->sourceLink = $sourceLink;
         $this->sourceLabel = $sourceLabel;
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function __toString()
+    {
+        return $this->label;
     }
 
     public function getId(): ?int
@@ -138,5 +147,13 @@ class MeasureType
     public function setSourceLabel(?string $sourceLabel): void
     {
         $this->sourceLabel = $sourceLabel;
+    }
+
+    /**
+     * @Algolia\Attribute(algoliaName="updatedAt")
+     */
+    public function exportUpdatedAt(): string
+    {
+        return $this->updatedAt->format('Y/m/d H:i:s');
     }
 }

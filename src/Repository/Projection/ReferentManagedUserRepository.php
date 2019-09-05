@@ -10,7 +10,6 @@ use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Repository\ReferentTrait;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -43,7 +42,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         ));
     }
 
-    public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
+    public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): ²
     {
         $qb = $this->createFilterQueryBuilder($referent, $filter, true);
 

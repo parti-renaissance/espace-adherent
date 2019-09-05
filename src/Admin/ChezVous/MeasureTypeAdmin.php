@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin\ChezVous;
 
+use AppBundle\Producer\ChezVous\AlgoliaProducer;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,6 +13,19 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class MeasureTypeAdmin extends AbstractAdmin
 {
+    private $algoliaProducer;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        AlgoliaProducer $algoliaProducer
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->algoliaProducer = $algoliaProducer;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -71,5 +85,6 @@ class MeasureTypeAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
+        $this->algoliaProducer->dispatchMeasureTypeUpdate($object);
     }
 }
