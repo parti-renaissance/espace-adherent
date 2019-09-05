@@ -61,9 +61,14 @@
                             <li class="{{ is_active_route(app.request, 'app_message_municipal_chief_*') ? 'active' }}">
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
                             </li>
+
+                            {% if municipal_site_is_enabled(app.user) %}
+                                <li>
+                                    <a href="{{ dpt_api_host }}/admin/auth/login" rel="noopener noreferrer" target="_blank">Mon site</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </nav>
-
                 </div>
             </header>
 

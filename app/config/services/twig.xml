@@ -46,6 +46,15 @@
             <tag name="twig.runtime" />
         </service>
 
+        <service id="AppBundle\Twig\MunicipalSiteRuntime">
+            <argument type="service" key="$cache">
+                <service class="Symfony\Component\Cache\Simple\Psr6Cache">
+                    <argument type="service" id="app.cache.municipal_site" />
+                </service>
+            </argument>
+            <tag name="twig.runtime" />
+        </service>
+
         <service id="AppBundle\Twig\ReportRuntime">
             <tag name="twig.runtime" />
         </service>
