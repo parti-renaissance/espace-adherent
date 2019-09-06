@@ -44,14 +44,17 @@ class LoadChezVousData extends AbstractFixture implements DependentFixtureInterf
         '06' => [
             'region_code' => '93',
             'name' => 'Alpes-Maritimes',
+            'label' => 'Dans les Alpes-Maritimes',
         ],
         '44' => [
             'region_code' => '52',
             'name' => 'Loire-Atlantique',
+            'label' => 'En Loire-Atlantique',
         ],
         '59' => [
             'region_code' => '32',
             'name' => 'Nord',
+            'label' => 'Dans le Nord',
         ],
     ];
 
@@ -177,6 +180,7 @@ class LoadChezVousData extends AbstractFixture implements DependentFixtureInterf
             $department = new Department(
                 $this->getReference(sprintf('chez-vous-region-%s', $departmentMetadatas['region_code'])),
                 $departmentMetadatas['name'],
+                $departmentMetadatas['label'],
                 $code
             );
 
