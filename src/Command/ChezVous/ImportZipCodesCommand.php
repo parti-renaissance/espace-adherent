@@ -110,6 +110,7 @@ class ImportZipCodesCommand extends AbstractImportCommand
             $regionCode = $row['region_code'];
             $code = $row['code'];
             $name = $row['name'];
+            $label = $row['label'];
 
             if (empty($regionCode)) {
                 throw new \RuntimeException("No region_code found for department. (line $line)");
@@ -127,7 +128,11 @@ class ImportZipCodesCommand extends AbstractImportCommand
                 throw new \RuntimeException("No name found for department \"$code\". (line $line)");
             }
 
-            $this->em->persist(new Department($region, $name, $code));
+            if (empty($label)) {
+                $label = $name;
+            }
+
+            $this->em->persist(new Department($region, $name, $label, $code));
 
             $this->io->progressAdvance();
             ++$line;

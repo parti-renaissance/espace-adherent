@@ -43,6 +43,18 @@ class Department
     /**
      * @var string|null
      *
+     * @ORM\Column(length=100, nullable=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(max="100")
+     *
+     * @Algolia\Attribute
+     */
+    private $label;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(length=10, unique=true)
      *
      * @Assert\NotBlank
@@ -69,9 +81,10 @@ class Department
      */
     private $cities;
 
-    public function __construct(Region $region = null, string $name = null, string $code = null)
+    public function __construct(Region $region = null, string $name = null, string $label = null, string $code = null)
     {
         $this->name = $name;
+        $this->label = $label;
         $this->code = $code;
         $this->region = $region;
         $this->cities = new ArrayCollection();
@@ -95,6 +108,16 @@ class Department
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
     }
 
     public function getCode(): ?string

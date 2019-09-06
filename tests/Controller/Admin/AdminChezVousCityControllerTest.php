@@ -90,6 +90,7 @@ class AdminChezVousCityControllerTest extends WebTestCase
             'slug' => '06088-nice',
             'department' => [
                 'name' => 'Alpes-Maritimes',
+                'label' => 'Dans les Alpes-Maritimes',
                 'code' => '06',
                 'region' => [
                     'name' => 'Provence-Alpes-Côte d\'Azur',
