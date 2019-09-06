@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 abstract class AbstractMeasure
 {
@@ -14,8 +15,8 @@ abstract class AbstractMeasure
         return [];
     }
 
-    public static function createMeasure(City $city): Measure
+    public static function createMeasure(City $city, MeasureType $type): Measure
     {
-        return new Measure($city, static::getType());
+        return new Measure($city, $type);
     }
 }

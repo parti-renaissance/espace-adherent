@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 class ChequeEnergie extends AbstractMeasure
 {
@@ -22,9 +23,9 @@ class ChequeEnergie extends AbstractMeasure
         ];
     }
 
-    public static function create(City $city, int $nombreBeneficiaires): Measure
+    public static function create(City $city, MeasureType $type, int $nombreBeneficiaires): Measure
     {
-        $measure = self::createMeasure($city);
+        $measure = self::createMeasure($city, $type);
         $measure->setPayload(self::createPayload($nombreBeneficiaires));
 
         return $measure;

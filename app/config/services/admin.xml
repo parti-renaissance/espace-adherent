@@ -609,6 +609,18 @@
             </call>
         </service>
 
+        <service id="app.admin.chez_vous_measure_type" class="AppBundle\Admin\ChezVous\MeasureTypeAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Chez vous » Indices" group="Idées" />
+
+            <argument />
+            <argument>AppBundle\Entity\ChezVous\MeasureType</argument>
+            <argument />
+
+            <call method="setAlgoliaProducer">
+                <argument type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
+            </call>
+        </service>
+
         <!--
         ######################################################
         # Formation

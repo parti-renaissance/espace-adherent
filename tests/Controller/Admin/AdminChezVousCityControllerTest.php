@@ -98,15 +98,35 @@ class AdminChezVousCityControllerTest extends WebTestCase
             ],
             'measures' => [
                 [
-                    'type' => 'baisse_nombre_chomeurs',
+                    'type' => [
+                        'code' => 'quartier_reconquete_republicaine',
+                        'label' => "Création d'un quartier de reconquête républicaine",
+                        'sourceLink' => 'https://www.interieur.gouv.fr/Espace-presse/Dossiers-de-presse/Un-an-de-la-police-de-securite-du-quotidien',
+                        'sourceLabel' => 'interieur.gouv.fr',
+                        'updatedAt' => (new \DateTime('now'))->format('Y/m/d'),
+                        'oldolfLink' => 'https://transformer.en-marche.fr/fr/results?theme=securite',
+                        'eligibilityLink' => null,
+                        'citizenProjectsLink' => 'https://en-marche.fr/projets-citoyens',
+                        'ideasWorkshopLink' => 'https://en-marche.fr/atelier-des-idees/proposer',
+                    ],
+                    'payload' => null,
+                ],
+                [
+                    'type' => [
+                        'code' => 'baisse_nombre_chomeurs',
+                        'label' => 'Baisse du nombre de chômeurs',
+                        'sourceLink' => 'https://statistiques.pole-emploi.org/stmt/trsl?fa=M&lb=0',
+                        'sourceLabel' => 'pole-emploi.org',
+                        'updatedAt' => (new \DateTime('now'))->format('Y/m/d'),
+                        'oldolfLink' => 'https://transformer.en-marche.fr/fr/results?theme=fiscalite,travail,entreprises,industrie,apprentissage,dialogue-social',
+                        'eligibilityLink' => null,
+                        'citizenProjectsLink' => 'https://en-marche.fr/projets-citoyens',
+                        'ideasWorkshopLink' => 'https://en-marche.fr/atelier-des-idees/proposer',
+                    ],
                     'payload' => [
                         'baisse_ville' => 300,
                         'baisse_departement' => 4000,
                     ],
-                ],
-                [
-                    'type' => 'quartier_reconquete_republicaine',
-                    'payload' => null,
                 ],
             ],
             'markers' => [

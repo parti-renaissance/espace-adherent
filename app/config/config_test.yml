@@ -20,6 +20,9 @@ services:
     old_sound_rabbit_mq.deputy_message_dispatcher_producer:
         class: 'Tests\AppBundle\Test\Producer\DeputyMessageNullProducer'
 
+    old_sound_rabbit_mq.chezvous_algolia_producer:
+        class: 'Tests\AppBundle\Test\Producer\ChezVous\AlgoliaNullProducer'
+
     Tests\AppBundle\Consumer\DummyConsumer: ~
 
     Tests\AppBundle\Test\Payment\PayboxProvider:

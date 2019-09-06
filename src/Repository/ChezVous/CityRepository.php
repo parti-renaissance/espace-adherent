@@ -3,7 +3,9 @@
 namespace AppBundle\Repository\ChezVous;
 
 use AppBundle\Entity\ChezVous\City;
+use AppBundle\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CityRepository extends ServiceEntityRepository
@@ -16,5 +18,18 @@ class CityRepository extends ServiceEntityRepository
     public function findOneByInseeCode(string $inseeCode): ?City
     {
         return $this->findOneBy(['inseeCode' => City::normalizeCode($inseeCode)]);
+    }
+
+    public function findAllByMeasureType(MeasureType $measureType): IterableResult
+    {
+        return $this
+            ->createQueryBuilder('c')
+            ->select('c')
+            ->innerJoin('c.measures', 'm')
+            ->andWhere('m.type = :type')
+            ->setParameter('type', $measureType)
+            ->getQuery()
+            ->iterate()
+        ;
     }
 }

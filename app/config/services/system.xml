@@ -99,6 +99,19 @@
             </call>
         </service>
 
+        <service id="AppBundle\Consumer\ChezVous\AlgoliaConsumer" parent="app_abstract_consumer">
+            <argument type="service" id="app.consumer.service_locator" />
+            <call method="setCityRepository">
+                <argument type="service" id="AppBundle\Repository\ChezVous\CityRepository"/>
+            </call>
+            <call method="setMeasureTypeRepository">
+                <argument type="service" id="AppBundle\Repository\ChezVous\MeasureTypeRepository"/>
+            </call>
+            <call method="setAlgoliaIndexer">
+                <argument type="service" id="AppBundle\Algolia\AlgoliaIndexedEntityManager"/>
+            </call>
+        </service>
+
         <!-- Redirections from old website -->
         <service id="app.legacy_redirections_subscriber" class="AppBundle\Redirection\LegacyRedirectionsSubscriber">
             <tag name="kernel.event_subscriber" />

@@ -27,7 +27,7 @@ class MeasurePayloadValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, MeasurePayload::class);
         }
 
-        $type = $value->getType();
+        $type = $value->getType()->getCode();
         $payload = $value->getPayload();
 
         $typeChoices = $this->measureChoiceLoader->getTypeChoices();

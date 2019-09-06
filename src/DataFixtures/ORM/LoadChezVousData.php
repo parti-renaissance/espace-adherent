@@ -13,9 +13,10 @@ use AppBundle\Entity\ChezVous\Measure;
 use AppBundle\Entity\ChezVous\Region;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadChezVousData extends AbstractFixture
+class LoadChezVousData extends AbstractFixture implements DependentFixtureInterface
 {
     private const REGIONS = [
         '1' => 'Guadeloupe',
@@ -200,7 +201,7 @@ class LoadChezVousData extends AbstractFixture
                 foreach ($cityMetadatas['measures'] as $measureMetadatas) {
                     $measure = new Measure(
                         $city,
-                        $measureMetadatas['type'],
+                        $this->getReference(sprintf('chez-vous-measure-type-%s', $measureMetadatas['type'])),
                         $measureMetadatas['payload'] ?? null
                     );
 
@@ -225,5 +226,12 @@ class LoadChezVousData extends AbstractFixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            LoadChezVousMeasureTypeData::class,
+        ];
     }
 }

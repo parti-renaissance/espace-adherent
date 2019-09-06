@@ -305,6 +305,11 @@ old_sound_rabbit_mq:
             exchange_options: { name: 'deputy-message-dispatcher', type: direct }
             class:            AppBundle\Producer\DeputyMessageDispatcherProducer
 
+        chezvous_algolia:
+            connection:       default
+            exchange_options: { name: 'chezvous_algolia', type: direct }
+            class:            AppBundle\Producer\ChezVous\AlgoliaProducer
+
         project_citizen_creation_notification:
             connection: default
             exchange_options: { name: 'project_citizen_creation_notification', type: direct }
@@ -340,6 +345,13 @@ old_sound_rabbit_mq:
             exchange_options:  { name: 'deputy-message-dispatcher', type: direct }
             queue_options:     { name: 'deputy-message-dispatcher', durable: false }
             callback:          AppBundle\Consumer\DeputyMessageDispatcherConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        chezvous_algolia:
+            connection:        default
+            exchange_options:  { name: 'chezvous_algolia', type: direct }
+            queue_options:     { name: 'chezvous_algolia', durable: false }
+            callback:          AppBundle\Consumer\ChezVous\AlgoliaConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
         project_citizen_creation_notification:
