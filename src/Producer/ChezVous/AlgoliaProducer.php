@@ -5,7 +5,7 @@ namespace AppBundle\Producer\ChezVous;
 use AppBundle\Entity\ChezVous\MeasureType;
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
 
-class AlgoliaProducer extends Producer
+class AlgoliaProducer extends Producer implements AlgoliaProducerInterface
 {
     public function dispatchMeasureTypeUpdate(MeasureType $measureType): void
     {

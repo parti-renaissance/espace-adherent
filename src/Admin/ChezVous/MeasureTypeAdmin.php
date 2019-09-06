@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin\ChezVous;
 
-use AppBundle\Producer\ChezVous\AlgoliaProducer;
+use AppBundle\Producer\ChezVous\AlgoliaProducerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 class MeasureTypeAdmin extends AbstractAdmin
 {
     /**
-     * @var AlgoliaProducer
+     * @var AlgoliaProducerInterface
      */
     private $algoliaProducer;
 
@@ -96,7 +96,7 @@ class MeasureTypeAdmin extends AbstractAdmin
         $this->algoliaProducer->dispatchMeasureTypeUpdate($object);
     }
 
-    public function setAlgoliaProducer(AlgoliaProducer $algoliaProducer): void
+    public function setAlgoliaProducer(AlgoliaProducerInterface $algoliaProducer): void
     {
         $this->algoliaProducer = $algoliaProducer;
     }
