@@ -16,6 +16,7 @@ use AppBundle\ChezVous\Measure\SuppressionTaxeHabitation;
 use AppBundle\ChezVous\MeasureChoiceLoader;
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 use AppBundle\Repository\ChezVous\CityRepository;
 use AppBundle\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -85,6 +86,8 @@ class ImportMeasuresCommand extends AbstractImportCommand
             ));
         }
 
+        $measureType = $this->measureFactory->getMeasureType($type);
+
         $this->io->section("Importing measures of type \"$type\"");
 
         $filename = sprintf('%s/%s.csv', self::CSV_DIRECTORY, $type);
@@ -103,7 +106,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         $count = 0;
         foreach ($reader as $row) {
-            $this->loadMeasure($type, $row);
+            $this->loadMeasure($measureType, $row);
 
             $this->em->flush();
 
@@ -111,73 +114,75 @@ class ImportMeasuresCommand extends AbstractImportCommand
             ++$count;
 
             if (0 === ($count % self::BATCH_SIZE)) {
-                $this->em->clear();
+                $this->em->clear(Measure::class);
+                $this->em->clear(City::class);
             }
         }
 
-        $this->em->clear();
+        $this->em->clear(Measure::class);
+        $this->em->clear(City::class);
 
         $this->io->progressFinish();
 
         $this->io->comment("Processed $total measures of type \"$type\".");
     }
 
-    private function loadMeasure(string $type, array $metadata): void
+    private function loadMeasure(MeasureType $measureType, array $metadata): void
     {
-        switch ($type) {
+        switch ($measureType->getCode()) {
             case BaisseNombreChomeurs::getType():
-                $this->loadMeasureBaisseNombreChomeurs($metadata);
+                $this->loadMeasureBaisseNombreChomeurs($measureType, $metadata);
 
                 break;
             case ChequeEnergie::getType():
-                $this->loadMeasureChequeEnergie($metadata);
+                $this->loadMeasureChequeEnergie($measureType, $metadata);
 
                 break;
             case ConversionSurfaceAgricoleBio::getType():
-                $this->loadMeasureConversionSurfaceAgricoleBio($metadata);
+                $this->loadMeasureConversionSurfaceAgricoleBio($measureType, $metadata);
 
                 break;
             case CouvertureFibre::getType():
-                $this->loadMeasureCouvertureFibre($metadata);
+                $this->loadMeasureCouvertureFibre($measureType, $metadata);
 
                 break;
             case CreationEntreprise::getType():
-                $this->loadMeasureCreationEntreprises($metadata);
+                $this->loadMeasureCreationEntreprises($measureType, $metadata);
 
                 break;
             case QuartierReconqueteRepublicaine::getType():
-                $this->loadMeasureWithEmptyPayload(QuartierReconqueteRepublicaine::class, $metadata);
+                $this->loadMeasureWithEmptyPayload(QuartierReconqueteRepublicaine::class, $measureType, $metadata);
 
                 break;
             case EmploisFrancs::getType():
-                $this->loadMeasureWithEmptyPayload(EmploisFrancs::class, $metadata);
+                $this->loadMeasureWithEmptyPayload(EmploisFrancs::class, $measureType, $metadata);
 
                 break;
             case MaisonServiceAccueilPublic::getType():
-                $this->loadMeasureWithEmptyPayload(MaisonServiceAccueilPublic::class, $metadata);
+                $this->loadMeasureWithEmptyPayload(MaisonServiceAccueilPublic::class, $measureType, $metadata);
 
                 break;
             case PassCulture::getType():
-                $this->loadMeasureWithEmptyPayload(PassCulture::class, $metadata);
+                $this->loadMeasureWithEmptyPayload(PassCulture::class, $measureType, $metadata);
 
                 break;
             case PrimeConversionAutomobile::getType():
-                $this->loadMeasurePrimeConversionAutomobile($metadata);
+                $this->loadMeasurePrimeConversionAutomobile($measureType, $metadata);
 
                 break;
             case SuppressionTaxeHabitation::getType():
-                $this->loadMeasureSuppressionTaxeHabitation($metadata);
+                $this->loadMeasureSuppressionTaxeHabitation($measureType, $metadata);
 
                 break;
         }
     }
 
-    private function findMeasure(City $city, string $type): ?Measure
+    private function findMeasure(City $city, MeasureType $type): ?Measure
     {
         return $this->measureRepository->findOneByCityAndType($city, $type);
     }
 
-    private function loadMeasureBaisseNombreChomeurs(array $metadata): void
+    private function loadMeasureBaisseNombreChomeurs(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $baisseVille = $metadata[BaisseNombreChomeurs::KEY_BAISSE_VILLE];
@@ -215,16 +220,16 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($measure = $this->findMeasure($city, BaisseNombreChomeurs::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(BaisseNombreChomeurs::createPayload($baisseVille, $baisseDepartement));
 
             return;
         }
 
-        $this->em->persist(BaisseNombreChomeurs::create($city, $baisseVille, $baisseDepartement));
+        $this->em->persist(BaisseNombreChomeurs::create($city, $measureType, $baisseVille, $baisseDepartement));
     }
 
-    private function loadMeasureChequeEnergie(array $metadata): void
+    private function loadMeasureChequeEnergie(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $nombreBeneficiaires = $metadata[ChequeEnergie::KEY_NOMBRE_BENEFICIAIRES];
@@ -251,16 +256,16 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($measure = $this->findMeasure($city, ChequeEnergie::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(ChequeEnergie::createPayload($nombreBeneficiaires));
 
             return;
         }
 
-        $this->em->persist(ChequeEnergie::create($city, $nombreBeneficiaires));
+        $this->em->persist(ChequeEnergie::create($city, $measureType, $nombreBeneficiaires));
     }
 
-    private function loadMeasureConversionSurfaceAgricoleBio(array $metadata): void
+    private function loadMeasureConversionSurfaceAgricoleBio(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $hectaresBio = $metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO];
@@ -305,16 +310,16 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($measure = $this->findMeasure($city, ConversionSurfaceAgricoleBio::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(ConversionSurfaceAgricoleBio::createPayload($hectaresBio, $progression));
 
             return;
         }
 
-        $this->em->persist(ConversionSurfaceAgricoleBio::create($city, $hectaresBio, $progression));
+        $this->em->persist(ConversionSurfaceAgricoleBio::create($city, $measureType, $hectaresBio, $progression));
     }
 
-    private function loadMeasureCouvertureFibre(array $metadata): void
+    private function loadMeasureCouvertureFibre(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $nombreLocauxRaccordesVille = $metadata[CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE];
@@ -357,7 +362,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($measure = $this->findMeasure($city, CouvertureFibre::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(CouvertureFibre::createPayload(
                 $nombreLocauxRaccordesVille,
                 $hausseDepuis2017Ville,
@@ -370,6 +375,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
 
         $this->em->persist(CouvertureFibre::create(
             $city,
+            $measureType,
             $nombreLocauxRaccordesVille,
             $hausseDepuis2017Ville,
             $nombreLocauxRaccordesDepartement,
@@ -377,7 +383,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         ));
     }
 
-    private function loadMeasureCreationEntreprises(array $metadata): void
+    private function loadMeasureCreationEntreprises(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $entreprises = $metadata[CreationEntreprise::KEY_ENTREPRISES];
@@ -423,16 +429,16 @@ class ImportMeasuresCommand extends AbstractImportCommand
             $microEntreprises = null;
         }
 
-        if ($measure = $this->findMeasure($city, CreationEntreprise::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(CreationEntreprise::createPayload($entreprises, $microEntreprises));
 
             return;
         }
 
-        $this->em->persist(CreationEntreprise::create($city, $entreprises, $microEntreprises));
+        $this->em->persist(CreationEntreprise::create($city, $measureType, $entreprises, $microEntreprises));
     }
 
-    private function loadMeasurePrimeConversionAutomobile(array $metadata): void
+    private function loadMeasurePrimeConversionAutomobile(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $nombreBeneficiaires = $metadata[PrimeConversionAutomobile::KEY_NOMBRE_BENEFICIAIRES];
@@ -458,16 +464,16 @@ class ImportMeasuresCommand extends AbstractImportCommand
             }
         }
 
-        if ($measure = $this->findMeasure($city, PrimeConversionAutomobile::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(PrimeConversionAutomobile::createPayload($nombreBeneficiaires, $montantMoyen));
 
             return;
         }
 
-        $this->em->persist(PrimeConversionAutomobile::create($city, $nombreBeneficiaires, $montantMoyen));
+        $this->em->persist(PrimeConversionAutomobile::create($city, $measureType, $nombreBeneficiaires, $montantMoyen));
     }
 
-    private function loadMeasureSuppressionTaxeHabitation(array $metadata): void
+    private function loadMeasureSuppressionTaxeHabitation(MeasureType $measureType, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
         $nombreFoyers = $metadata[SuppressionTaxeHabitation::KEY_NOMBRE_FOYERS];
@@ -495,7 +501,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
             }
         }
 
-        if ($measure = $this->findMeasure($city, SuppressionTaxeHabitation::getType())) {
+        if ($measure = $this->findMeasure($city, $measureType)) {
             $measure->setPayload(SuppressionTaxeHabitation::createPayload(
                 $nombreFoyers,
                 $baisse2018,
@@ -506,10 +512,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        $this->em->persist(SuppressionTaxeHabitation::create($city, $nombreFoyers, $baisse2018, $baisse2019, $baisseTotal));
+        $this->em->persist(SuppressionTaxeHabitation::create($city, $measureType, $nombreFoyers, $baisse2018, $baisse2019, $baisseTotal));
     }
 
-    private function loadMeasureWithEmptyPayload(string $measureClass, array $metadata): void
+    private function loadMeasureWithEmptyPayload(string $measureClass, MeasureType $type, array $metadata): void
     {
         $inseeCode = $metadata['insee_code'];
 
@@ -525,10 +531,10 @@ class ImportMeasuresCommand extends AbstractImportCommand
             return;
         }
 
-        if ($this->findMeasure($city, $measureClass::getType())) {
+        if ($this->findMeasure($city, $type)) {
             return;
         }
 
-        $this->em->persist($measureClass::createMeasure($city));
+        $this->em->persist($measureClass::createMeasure($city, $type));
     }
 }

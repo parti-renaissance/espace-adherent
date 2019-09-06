@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 class CouvertureFibre extends AbstractMeasure
 {
@@ -30,12 +31,13 @@ class CouvertureFibre extends AbstractMeasure
 
     public static function create(
         City $city,
+        MeasureType $type,
         ?int $nombreLocauxRaccordesVille,
         ?int $hausseDepuis2017Ville,
         ?int $nombreLocauxRaccordesDepartement,
         ?int $hausseDepuis2017Departement
     ): Measure {
-        $measure = self::createMeasure($city);
+        $measure = self::createMeasure($city, $type);
         $measure->setPayload(self::createPayload(
             $nombreLocauxRaccordesVille,
             $hausseDepuis2017Ville,

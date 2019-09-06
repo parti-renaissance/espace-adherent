@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 class SuppressionTaxeHabitation extends AbstractMeasure
 {
@@ -30,12 +31,13 @@ class SuppressionTaxeHabitation extends AbstractMeasure
 
     public static function create(
         City $city,
+        MeasureType $type,
         int $nombreFoyers,
         int $baisse2018,
         int $baisse2019,
         int $baisseTotal
     ): Measure {
-        $measure = self::createMeasure($city);
+        $measure = self::createMeasure($city, $type);
         $measure->setPayload(self::createPayload($nombreFoyers, $baisse2018, $baisse2019, $baisseTotal));
 
         return $measure;

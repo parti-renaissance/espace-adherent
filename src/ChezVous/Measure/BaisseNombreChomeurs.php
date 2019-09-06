@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 class BaisseNombreChomeurs extends AbstractMeasure
 {
@@ -24,9 +25,9 @@ class BaisseNombreChomeurs extends AbstractMeasure
         ];
     }
 
-    public static function create(City $city, ?int $baisseVille, ?int $baisseDepartement): Measure
+    public static function create(City $city, MeasureType $type, ?int $baisseVille, ?int $baisseDepartement): Measure
     {
-        $measure = self::createMeasure($city);
+        $measure = self::createMeasure($city, $type);
         $measure->setPayload(self::createPayload($baisseVille, $baisseDepartement));
 
         return $measure;

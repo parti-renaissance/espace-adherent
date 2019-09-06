@@ -6,5 +6,7 @@ use AppBundle\Entity\ChezVous\MeasureType;
 
 interface AlgoliaProducerInterface
 {
-    public function dispatchMeasureTypeUpdate(MeasureType $measureType): void;
+    public function dispatchMeasureTypeUpdated(MeasureType $measureType): void;
+
+    public function dispatchMeasureTypeDeleted(MeasureType $measureType): void;
 }

@@ -3,14 +3,22 @@
 namespace AppBundle\Consumer\ChezVous;
 
 use AppBundle\Algolia\AlgoliaIndexedEntityManager;
-use AppBundle\Consumer\AbstractConsumer;
+use AppBundle\Entity\ChezVous\MeasureType;
+use AppBundle\Producer\ChezVous\AlgoliaProducer;
 use AppBundle\Repository\ChezVous\CityRepository;
 use AppBundle\Repository\ChezVous\MeasureTypeRepository;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AlgoliaConsumer extends AbstractConsumer
+class AlgoliaConsumer implements ConsumerInterface
 {
+    use LoggerAwareTrait;
+
+    protected $logger;
+
     /**
      * @var CityRepository
      */
@@ -33,8 +41,18 @@ class AlgoliaConsumer extends AbstractConsumer
         ];
     }
 
-    public function doExecute(array $data): int
+    public function execute(AMQPMessage $msg)
     {
+        try {
+            $data = \GuzzleHttp\json_decode($msg->getBody(), true);
+        } catch (\Exception $e) {
+            $this->getLogger()->error('Message is not valid JSON', [
+                'message' => $msg->getBody(),
+            ]);
+
+            return ConsumerInterface::MSG_ACK;
+        }
+
         try {
             if (!$measureType = $this->measureTypeRepository->find($data['id'])) {
                 $this->getLogger()->error('MeasureType not found', $data);
@@ -43,19 +61,15 @@ class AlgoliaConsumer extends AbstractConsumer
                 return ConsumerInterface::MSG_ACK;
             }
 
-            $cities = [];
+            switch ($msg->get('routing_key')) {
+                case AlgoliaProducer::KEY_MEASURE_TYPE_UPDATED:
+                    $this->measureTypeUpdated($measureType);
 
-            foreach ($this->cityRepository->findAllByMeasureType($measureType) as $city) {
-                $cities[] = current($city);
+                    break;
+                case AlgoliaProducer::KEY_MEASURE_TYPE_DELETED:
+                    $this->measureTypeDeleted($measureType);
 
-                if (0 === (\count($cities) % 1000)) {
-                    $this->algoliaIndexer->batch($cities);
-                    $cities = [];
-                }
-            }
-
-            if (!empty($cities)) {
-                $this->algoliaIndexer->batch($cities);
+                    break;
             }
 
             return ConsumerInterface::MSG_ACK;
@@ -79,5 +93,33 @@ class AlgoliaConsumer extends AbstractConsumer
     public function setAlgoliaIndexer(AlgoliaIndexedEntityManager $algoliaIndexer): void
     {
         $this->algoliaIndexer = $algoliaIndexer;
+    }
+
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    public function writeln($name, $message): void
+    {
+        echo $name.' | '.$message.\PHP_EOL;
+    }
+
+    private function measureTypeUpdated(MeasureType $measureType): void
+    {
+        $cities = [];
+
+        foreach ($this->cityRepository->findAllByMeasureType($measureType) as $city) {
+            $cities[] = current($city);
+
+            if (0 === (\count($cities) % 1000)) {
+                $this->algoliaIndexer->batch($cities);
+                $cities = [];
+            }
+        }
+
+        if (!empty($cities)) {
+            $this->algoliaIndexer->batch($cities);
+        }
     }
 }

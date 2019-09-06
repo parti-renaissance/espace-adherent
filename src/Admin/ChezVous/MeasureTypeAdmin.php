@@ -93,7 +93,12 @@ class MeasureTypeAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
-        $this->algoliaProducer->dispatchMeasureTypeUpdate($object);
+        $this->algoliaProducer->dispatchMeasureTypeUpdated($object);
+    }
+
+    public function postRemove($object)
+    {
+        $this->algoliaProducer->dispatchMeasureTypeDeleted($object);
     }
 
     public function setAlgoliaProducer(AlgoliaProducerInterface $algoliaProducer): void

@@ -4,6 +4,7 @@ namespace AppBundle\Repository\ChezVous;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -14,7 +15,7 @@ class MeasureRepository extends ServiceEntityRepository
         parent::__construct($registry, Measure::class);
     }
 
-    public function findOneByCityAndType(City $city, string $type): ?Measure
+    public function findOneByCityAndType(City $city, MeasureType $type): ?Measure
     {
         return $this->findOneBy([
             'city' => $city,

@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 class DedoublementClasses extends AbstractMeasure
 {
@@ -22,9 +23,9 @@ class DedoublementClasses extends AbstractMeasure
         ];
     }
 
-    public static function create(City $city, int $totalCpCe1): Measure
+    public static function create(City $city, MeasureType $type, int $totalCpCe1): Measure
     {
-        $measure = self::createMeasure($city);
+        $measure = self::createMeasure($city, $type);
         $measure->setPayload(self::createPayload($totalCpCe1));
 
         return $measure;

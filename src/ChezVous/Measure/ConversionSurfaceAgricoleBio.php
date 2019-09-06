@@ -4,6 +4,7 @@ namespace AppBundle\ChezVous\Measure;
 
 use AppBundle\Entity\ChezVous\City;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 
 class ConversionSurfaceAgricoleBio extends AbstractMeasure
 {
@@ -24,9 +25,9 @@ class ConversionSurfaceAgricoleBio extends AbstractMeasure
         ];
     }
 
-    public static function create(City $city, int $hectaresBio, string $progression): Measure
+    public static function create(City $city, MeasureType $type, int $hectaresBio, string $progression): Measure
     {
-        $measure = self::createMeasure($city);
+        $measure = self::createMeasure($city, $type);
         $measure->setPayload(self::createPayload($hectaresBio, $progression));
 
         return $measure;

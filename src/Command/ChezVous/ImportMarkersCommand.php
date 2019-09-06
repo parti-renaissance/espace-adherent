@@ -8,8 +8,11 @@ use AppBundle\ChezVous\Marker\MissionBern;
 use AppBundle\ChezVous\MarkerChoiceLoader;
 use AppBundle\ChezVous\Measure\DedoublementClasses as MeasureDedoublementClasses;
 use AppBundle\ChezVous\Measure\MissionBern as MeasureMissionBern;
+use AppBundle\ChezVous\MeasureChoiceLoader;
 use AppBundle\Entity\ChezVous\City;
+use AppBundle\Entity\ChezVous\Marker;
 use AppBundle\Entity\ChezVous\Measure;
+use AppBundle\Entity\ChezVous\MeasureType;
 use AppBundle\Repository\ChezVous\CityRepository;
 use AppBundle\Repository\ChezVous\MarkerRepository;
 use AppBundle\Repository\ChezVous\MeasureRepository;
@@ -27,6 +30,7 @@ class ImportMarkersCommand extends AbstractImportCommand
 
     private $markerRepository;
     private $markerChoiceLoader;
+    private $measureChoiceLoader;
     private $measureRepository;
 
     protected function configure()
@@ -43,12 +47,14 @@ class ImportMarkersCommand extends AbstractImportCommand
         Filesystem $storage,
         MarkerRepository $markerRepository,
         MarkerChoiceLoader $markerChoiceLoader,
+        MeasureChoiceLoader $measureChoiceLoader,
         MeasureRepository $measureRepository
     ) {
         parent::__construct($em, $cityRepository, $storage);
 
         $this->markerRepository = $markerRepository;
         $this->markerChoiceLoader = $markerChoiceLoader;
+        $this->measureChoiceLoader = $measureChoiceLoader;
         $this->measureRepository = $measureRepository;
     }
 
@@ -109,11 +115,15 @@ class ImportMarkersCommand extends AbstractImportCommand
             ++$count;
 
             if (0 === ($count % self::BATCH_SIZE)) {
-                $this->em->clear();
+                $this->em->clear(Marker::class);
+                $this->em->clear(Measure::class);
+                $this->em->clear(City::class);
             }
         }
 
-        $this->em->clear();
+        $this->em->clear(Marker::class);
+        $this->em->clear(Measure::class);
+        $this->em->clear(City::class);
 
         $this->io->progressFinish();
 
@@ -162,13 +172,15 @@ class ImportMarkersCommand extends AbstractImportCommand
             case DedoublementClasses::class:
                 $totalCpCe1 = $metadata['total_cp_ce1'];
 
-                if ($measure = $this->findMeasure($city, MeasureDedoublementClasses::getType())) {
+                $measureType = $this->measureChoiceLoader->getMeasureType(DedoublementClasses::getType());
+
+                if ($measure = $this->findMeasure($city, $measureType)) {
                     $measure->setPayload(MeasureDedoublementClasses::createPayload($totalCpCe1));
 
                     break;
                 }
 
-                $this->em->persist(MeasureDedoublementClasses::create($city, $totalCpCe1));
+                $this->em->persist(MeasureDedoublementClasses::create($city, $measureType, $totalCpCe1));
 
                 break;
             case MissionBern::class:
@@ -177,19 +189,21 @@ class ImportMarkersCommand extends AbstractImportCommand
 
                 $montant = $montant > 200 ? $montant : null;
 
-                if ($measure = $this->findMeasure($city, MeasureMissionBern::getType())) {
+                $measureType = $this->measureChoiceLoader->getMeasureType(MissionBern::getType());
+
+                if ($measure = $this->findMeasure($city, $measureType)) {
                     $measure->setPayload(MeasureMissionBern::createPayload($link, $montant));
 
                     break;
                 }
 
-                $this->em->persist(MeasureMissionBern::create($city, $link, $montant));
+                $this->em->persist(MeasureMissionBern::create($city, $measureType, $link, $montant));
 
                 break;
         }
     }
 
-    private function findMeasure(City $city, string $type): ?Measure
+    private function findMeasure(City $city, MeasureType $type): ?Measure
     {
         return $this->measureRepository->findOneByCityAndType($city, $type);
     }

@@ -15,9 +15,19 @@ use AppBundle\ChezVous\Measure\PassCulture;
 use AppBundle\ChezVous\Measure\PrimeConversionAutomobile;
 use AppBundle\ChezVous\Measure\QuartierReconqueteRepublicaine;
 use AppBundle\ChezVous\Measure\SuppressionTaxeHabitation;
+use AppBundle\Entity\ChezVous\MeasureType;
+use AppBundle\Repository\ChezVous\MeasureTypeRepository;
 
 class MeasureChoiceLoader
 {
+    private $measureTypeRepository;
+    private $cachedMeasureTypes = [];
+
+    public function __construct(MeasureTypeRepository $measureTypeRepository)
+    {
+        $this->measureTypeRepository = $measureTypeRepository;
+    }
+
     private const TYPES = [
         DedoublementClasses::class,
         MaisonServiceAccueilPublic::class,
@@ -64,5 +74,21 @@ class MeasureChoiceLoader
         }
 
         return $choices;
+    }
+
+    public function getMeasureType(string $code): ?MeasureType
+    {
+        if (!array_key_exists($code, $this->cachedMeasureTypes)) {
+            if (!$measureType = $this->measureTypeRepository->findOneByCode($code)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'There is no MeasureType with code "%s" found in database.',
+                    $type
+                ));
+            }
+
+            $this->cachedMeasureTypes[$code] = $measureType;
+        }
+
+        return $this->cachedMeasureTypes[$code];
     }
 }

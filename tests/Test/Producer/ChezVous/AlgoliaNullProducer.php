@@ -7,7 +7,11 @@ use AppBundle\Producer\ChezVous\AlgoliaProducerInterface;
 
 class AlgoliaNullProducer implements AlgoliaProducerInterface
 {
-    public function dispatchMeasureTypeUpdate(MeasureType $measureType): void
+    public function dispatchMeasureTypeUpdated(MeasureType $measureType): void
+    {
+    }
+
+    public function dispatchMeasureTypeDeleted(MeasureType $measureType): void
     {
     }
 }

@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadChezVousMeasureTypeData extends AbstractFixture
 {
-    private const TYPES = [
+    public const TYPES = [
         [
             'code' => 'mission_bern',
             'label' => 'Mission Bern',
