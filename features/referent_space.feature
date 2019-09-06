@@ -41,8 +41,8 @@ Feature:
     And I should see "Banner"
     And I should see "Bruce"
     And I should see "+33 6 06 06 06 06"
-    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
-    And I should see "Seclin"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Pévèle"
+    And I should see "Lille"
     And I should see "Oui"
 
   @javascript
@@ -52,8 +52,8 @@ Feature:
     And I wait 5 seconds until I see "IDENTITÉ"
     And I should see "Stark"
     And I should see "Tony"
-    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
-    And I should see "Seclin"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Pévèle"
+    And I should see "Lille"
     And I should see "Oui"
 
   @javascript

@@ -27,7 +27,7 @@ class MunicipalSiteRuntime
 
         $cacheKey = sprintf(
             self::CACHE_KEY_PATTERN,
-            $inseeCode = current($user->getMunicipalChiefManagedArea()->getCodes())
+            $inseeCode = $user->getMunicipalChiefManagedArea()->getInseeCode()
         );
 
         if ($this->cache->has($cacheKey)) {

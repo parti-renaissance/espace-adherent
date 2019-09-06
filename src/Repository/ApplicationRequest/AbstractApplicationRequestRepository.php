@@ -75,11 +75,11 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findAllTakenFor(array $inseeCodes, ListFilter $filter = null): array
+    public function findAllTakenFor(string $inseeCode, ListFilter $filter = null): array
     {
         return $this->createListQueryBuilder('r', $filter)
-            ->andWhere('r.takenForCity IN (:cities)')
-            ->setParameter('cities', $inseeCodes)
+            ->andWhere('r.takenForCity = :insee_code')
+            ->setParameter('insee_code', $inseeCode)
             ->getQuery()
             ->getResult()
         ;

@@ -17,7 +17,7 @@
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="el manager-information">
-                            <p>Vous gérez : <span>{{ get_cities_names_from_insee_code(app.user.municipalChiefManagedArea.codes)|join(', ') }}</span></p>
+                            <p>Vous gérez : <span>{{ app.user.municipalChiefManagedArea.cityName }}</span></p>
                         </div>
                         <div class="el">
                             <p class="report">🐛 Bug ? Nouveau besoin ?

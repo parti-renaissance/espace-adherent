@@ -1660,7 +1660,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isMunicipalChief(): bool
     {
-        return $this->municipalChiefManagedArea instanceof MunicipalChiefManagedArea && !empty($this->municipalChiefManagedArea->getCodes());
+        return $this->municipalChiefManagedArea instanceof MunicipalChiefManagedArea
+            && $this->municipalChiefManagedArea->getInseeCode();
     }
 
     public function getMunicipalChiefManagedArea(): ?MunicipalChiefManagedArea
@@ -1671,11 +1672,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setMunicipalChiefManagedArea(MunicipalChiefManagedArea $municipalChiefManagedArea = null): void
     {
         $this->municipalChiefManagedArea = $municipalChiefManagedArea;
-    }
-
-    public function revokeMunicipalChiefManagedArea(): void
-    {
-        $this->municipalChiefManagedArea = null;
     }
 
     public function __clone()
@@ -1694,7 +1690,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         if ($this->isMunicipalChief()) {
             $roles[] = [
                 'label' => 'ROLE_MUNICIPAL_CHIEF',
-                'codes' => $this->municipalChiefManagedArea->getCodes(),
+                'codes' => [$this->municipalChiefManagedArea->getInseeCode()],
             ];
         }
 

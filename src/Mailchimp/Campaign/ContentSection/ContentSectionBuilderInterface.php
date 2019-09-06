@@ -2,10 +2,10 @@
 
 namespace AppBundle\Mailchimp\Campaign\ContentSection;
 
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 
 interface ContentSectionBuilderInterface
 {
-    public function build(MailchimpCampaign $campaign, EditCampaignContentRequest $request): void;
+    public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void;
 }

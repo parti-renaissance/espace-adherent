@@ -580,7 +580,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         ]);
         $municipalChief1->setChartAccepted(true);
         $municipalChiefArea1 = new MunicipalChiefManagedArea();
-        $municipalChiefArea1->setCodes(['59350', '62637', '59560']);
+        $municipalChiefArea1->setInseeCode('59350');
         $municipalChiefArea1->setJecouteAccess(true);
         $municipalChief1->setMunicipalChiefManagedArea($municipalChiefArea1);
         $this->addReference('municipal-chief-1', $municipalChief1);
@@ -599,7 +599,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $municipalChiefArea2 = new MunicipalChiefManagedArea();
-        $municipalChiefArea2->setCodes(['59124', '59123']);
+        $municipalChiefArea2->setInseeCode('59124');
         $municipalChief2->setMunicipalChiefManagedArea($municipalChiefArea2);
         $this->addReference('municipal-chief-2', $municipalChief2);
 
@@ -617,7 +617,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $municipalChiefArea3 = new MunicipalChiefManagedArea();
-        $municipalChiefArea3->setCodes(['59411', '59410']);
+        $municipalChiefArea3->setInseeCode('59411');
         $municipalChief3->setMunicipalChiefManagedArea($municipalChiefArea3);
         $this->addReference('municipal-chief-3', $municipalChief3);
 

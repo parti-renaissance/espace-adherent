@@ -42,7 +42,7 @@ class MunicipalChiefSpaceController extends AbstractApplicationRequestController
 
         return $this->renderTemplate('application_request/space/my_team.html.twig', [
             'requests' => $repository->findAllTakenFor(
-                $this->getUser()->getMunicipalChiefManagedArea()->getCodes(),
+                $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode(),
                 $type,
                 $filter
             ),
@@ -56,9 +56,10 @@ class MunicipalChiefSpaceController extends AbstractApplicationRequestController
         string $type,
         ListFilter $filter
     ): array {
-        $filter->setInseeCodes($inseeCodes = $this->getUser()->getMunicipalChiefManagedArea()->getCodes());
+        $inseeCode = (array) $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode();
+        $filter->setInseeCodes($inseeCode);
 
-        return $repository->findAllForInseeCodes($inseeCodes, $type, $filter);
+        return $repository->findAllForInseeCodes($inseeCode, $type, $filter);
     }
 
     protected function getSpaceName(): string

@@ -3,7 +3,6 @@
 namespace AppBundle\Form\Admin;
 
 use AppBundle\Entity\MunicipalChiefManagedArea;
-use AppBundle\Form\DataTransformer\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,7 +16,7 @@ class MunicipalChiefManagedAreaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('codes', TextType::class, [
+            ->add('inseeCode', TextType::class, [
                 'label' => false,
             ])
             ->add('jecouteAccess', CheckboxType::class, [
@@ -28,14 +27,13 @@ class MunicipalChiefManagedAreaType extends AbstractType
 
         $builder
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+                /** @var MunicipalChiefManagedArea $data */
                 $data = $event->getData();
 
-                if ($data instanceof MunicipalChiefManagedArea && empty(array_filter($data->getCodes()))) {
+                if ($data instanceof MunicipalChiefManagedArea && !$data->getInseeCode()) {
                     $event->setData(null);
                 }
             })
-            ->get('codes')
-            ->addModelTransformer(new StringToArrayTransformer())
         ;
     }
 

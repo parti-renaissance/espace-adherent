@@ -7,6 +7,7 @@ use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 
 class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {
@@ -14,6 +15,7 @@ class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterfa
         DeputyAdherentMessage::class,
         CommitteeAdherentMessage::class,
         CitizenProjectAdherentMessage::class,
+        MunicipalChiefAdherentMessage::class,
     ];
 
     public function handle(AdherentMessageInterface $message): void

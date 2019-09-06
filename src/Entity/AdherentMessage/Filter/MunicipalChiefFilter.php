@@ -36,13 +36,13 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
     private $lastName;
 
     /**
-     * @var string[]
+     * @var string
      *
-     * @ORM\Column(type="simple_array", nullable=true)
+     * @ORM\Column(nullable=true)
      *
      * @Assert\NotBlank
      */
-    private $cities;
+    private $inseeCode;
 
     /**
      * @var bool
@@ -79,9 +79,9 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
      */
     private $contactAdherents = false;
 
-    public function __construct(array $cities)
+    public function __construct(string $inseeCode)
     {
-        $this->cities = $cities;
+        $this->inseeCode = $inseeCode;
     }
 
     public function getGender(): ?string
@@ -114,14 +114,14 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
         $this->lastName = $lastName;
     }
 
-    public function getCities(): array
+    public function getInseeCode(): string
     {
-        return $this->cities;
+        return $this->inseeCode;
     }
 
-    public function setCities(array $cities): void
+    public function setInseeCode(string $inseeCode): void
     {
-        $this->cities = $cities;
+        $this->inseeCode = $inseeCode;
     }
 
     public function getContactVolunteerTeam(): bool
@@ -172,5 +172,18 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
     public function setContactAdherents(bool $contactAdherents): void
     {
         $this->contactAdherents = $contactAdherents;
+    }
+
+    /**
+     * @Assert\IsTrue(message="adherent_message.filter.municipal_chief.empty_contact_type")
+     */
+    public function isValid(): bool
+    {
+        return $this->getContactRunningMateTeam()
+            || $this->getContactVolunteerTeam()
+            || $this->getContactOnlyRunningMates()
+            || $this->getContactOnlyVolunteers()
+            || $this->getContactAdherents()
+        ;
     }
 }
