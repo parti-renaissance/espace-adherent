@@ -26,6 +26,8 @@ final class Events
     public const CITIZEN_PROJECT_APPROVED = 'citizen_project.approved';
     public const CITIZEN_PROJECT_FOLLOWER_ADDED = 'citizen_project_follower_added';
     public const CITIZEN_PROJECT_FOLLOWER_REMOVED = 'citizen_project_follower_removed';
+    public const CHEZVOUS_MEASURE_TYPE_UPDATED = 'chezvous_measure_type.updated';
+    public const CHEZVOUS_MEASURE_TYPE_DELETED = 'chezvous_measure_type.deleted';
 
     private function __construct()
     {

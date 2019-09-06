@@ -643,6 +643,10 @@
         <prototype namespace="AppBundle\Command\ChezVous\" resource="../../../src/Command/ChezVous/*" />
         <prototype namespace="AppBundle\Form\Admin\ChezVous\" resource="../../../src/Form/Admin/ChezVous/*" />
         <prototype namespace="AppBundle\ChezVous\" resource="../../../src/ChezVous/*" />
+        <service id="AppBundle\ChezVous\EventSubscriber">
+            <argument key="$producer" type="service" id="old_sound_rabbit_mq.chezvous_algolia_producer" />
+        </service>
+
         <service id="AppBundle\Validator\ChezVous\MeasurePayloadValidator" />
 
         <service id="AppBundle\EventListener\AdministratorExportHistoryListener" />

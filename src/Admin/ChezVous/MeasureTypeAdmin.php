@@ -2,21 +2,31 @@
 
 namespace AppBundle\Admin\ChezVous;
 
-use AppBundle\Producer\ChezVous\AlgoliaProducerInterface;
+use AppBundle\ChezVous\MeasureTypeEvent;
+use AppBundle\Events;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 class MeasureTypeAdmin extends AbstractAdmin
 {
-    /**
-     * @var AlgoliaProducerInterface
-     */
-    private $algoliaProducer;
+    private $dispatcher;
+
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        EventDispatcherInterface $dispatcher
+    ) {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->dispatcher = $dispatcher;
+    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -93,16 +103,11 @@ class MeasureTypeAdmin extends AbstractAdmin
 
     public function postUpdate($object)
     {
-        $this->algoliaProducer->dispatchMeasureTypeUpdated($object);
+        $this->dispatcher->dispatch(Events::CHEZVOUS_MEASURE_TYPE_UPDATED, new MeasureTypeEvent($object));
     }
 
     public function postRemove($object)
     {
-        $this->algoliaProducer->dispatchMeasureTypeDeleted($object);
-    }
-
-    public function setAlgoliaProducer(AlgoliaProducerInterface $algoliaProducer): void
-    {
-        $this->algoliaProducer = $algoliaProducer;
+        $this->dispatcher->dispatch(Events::CHEZVOUS_MEASURE_TYPE_UPDATED, new MeasureTypeEvent($object));
     }
 }

@@ -11,7 +11,7 @@ class LoadChezVousMeasureTypeData extends AbstractFixture
     public const TYPES = [
         [
             'code' => 'mission_bern',
-            'label' => 'Mission Bern',
+            'label' => 'Projet de rénovation du patrimoine financé par la mission Bern',
             'sourceLink' => 'https://www.missionbern.fr/projets/',
             'sourceLabel' => 'missionbern.fr',
             'oldolfLink' => 'https://transformer.en-marche.fr/fr/results?theme=culture',
