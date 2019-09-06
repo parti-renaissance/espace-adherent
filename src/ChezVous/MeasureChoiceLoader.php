@@ -10,6 +10,7 @@ use AppBundle\ChezVous\Measure\CreationEntreprise;
 use AppBundle\ChezVous\Measure\DedoublementClasses;
 use AppBundle\ChezVous\Measure\EmploisFrancs;
 use AppBundle\ChezVous\Measure\MaisonServiceAccueilPublic;
+use AppBundle\ChezVous\Measure\MissionBern;
 use AppBundle\ChezVous\Measure\PassCulture;
 use AppBundle\ChezVous\Measure\PrimeConversionAutomobile;
 use AppBundle\ChezVous\Measure\QuartierReconqueteRepublicaine;
@@ -30,6 +31,7 @@ class MeasureChoiceLoader
         ChequeEnergie::class,
         ConversionSurfaceAgricoleBio::class,
         QuartierReconqueteRepublicaine::class,
+        MissionBern::class,
     ];
 
     public static function getTypeKeysMap(): array

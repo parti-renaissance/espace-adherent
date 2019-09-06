@@ -29,7 +29,7 @@ class MeasureType
     /**
      * @var string|null
      *
-     * @ORM\Column
+     * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
@@ -80,12 +80,54 @@ class MeasureType
      */
     private $sourceLabel;
 
-    public function __construct(string $code, string $label, string $sourceLink, string $sourceLabel)
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @Algolia\Attribute
+     */
+    private $oldolfLink;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @Algolia\Attribute
+     */
+    private $eligibilityLink;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @Algolia\Attribute
+     */
+    private $citizenProjectsLink;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Url
+     *
+     * @Algolia\Attribute
+     */
+    private $ideasWorkshopLink;
+
+    public function __construct(string $code, string $label)
     {
         $this->code = $code;
         $this->label = $label;
-        $this->sourceLink = $sourceLink;
-        $this->sourceLabel = $sourceLabel;
         $this->updatedAt = new \DateTimeImmutable();
     }
 
@@ -149,11 +191,51 @@ class MeasureType
         $this->sourceLabel = $sourceLabel;
     }
 
+    public function getOldolfLink(): ?string
+    {
+        return $this->oldolfLink;
+    }
+
+    public function setOldolfLink(?string $oldolfLink): void
+    {
+        $this->oldolfLink = $oldolfLink;
+    }
+
+    public function getEligibilityLink(): ?string
+    {
+        return $this->eligibilityLink;
+    }
+
+    public function setEligibilityLink(?string $eligibilityLink): void
+    {
+        $this->eligibilityLink = $eligibilityLink;
+    }
+
+    public function getCitizenProjectsLink(): ?string
+    {
+        return $this->citizenProjectsLink;
+    }
+
+    public function setCitizenProjectsLink(?string $citizenProjectsLink): void
+    {
+        $this->citizenProjectsLink = $citizenProjectsLink;
+    }
+
+    public function getIdeasWorkshopLink(): ?string
+    {
+        return $this->ideasWorkshopLink;
+    }
+
+    public function setIdeasWorkshopLink(?string $ideasWorkshopLink): void
+    {
+        $this->ideasWorkshopLink = $ideasWorkshopLink;
+    }
+
     /**
      * @Algolia\Attribute(algoliaName="updatedAt")
      */
     public function exportUpdatedAt(): string
     {
-        return $this->updatedAt->format('Y/m/d H:i:s');
+        return $this->updatedAt->format('Y/m/d');
     }
 }

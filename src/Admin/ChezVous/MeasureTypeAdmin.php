@@ -38,6 +38,22 @@ class MeasureTypeAdmin extends AbstractAdmin
                 'label' => 'Source (label)',
                 'required' => false,
             ])
+            ->add('oldolfLink', UrlType::class, [
+                'label' => 'Lien vers transformer.en-marcher.fr (URL)',
+                'required' => false,
+            ])
+            ->add('eligibilityLink', UrlType::class, [
+                'label' => 'Lien d\'éligibilité (URL)',
+                'required' => false,
+            ])
+            ->add('citizenProjectsLink', UrlType::class, [
+                'label' => 'Lien vers les projets citoyens (URL)',
+                'required' => false,
+            ])
+            ->add('ideasWorkshopLink', UrlType::class, [
+                'label' => 'Lien vers l\'atelier des idées (URL)',
+                'required' => false,
+            ])
         ;
     }
 
