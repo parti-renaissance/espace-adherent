@@ -23,6 +23,11 @@ class MemberTagsRequest implements MemberRequestInterface
         $this->tags[$tagName] = $active;
     }
 
+    public function hasTags(): bool
+    {
+        return !empty($this->tags);
+    }
+
     public function toArray(): array
     {
         $result = [];

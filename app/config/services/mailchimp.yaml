@@ -48,3 +48,6 @@ services:
 
     AppBundle\AdherentMessage\Handler\:
         resource: ../../../src/AdherentMessage/Handler/
+
+    AppBundle\Newsletter\Handler\:
+        resource: ../../../src/Newsletter/Handler/

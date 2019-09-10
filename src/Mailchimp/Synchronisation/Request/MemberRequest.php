@@ -17,6 +17,8 @@ class MemberRequest implements MemberRequestInterface
     public const MERGE_FIELD_FAVORITE_CITIES = 'FVR_CITIES';
     public const MERGE_FIELD_MUNICIPAL_TEAM = 'MUNIC_TEAM';
     public const MERGE_FIELD_REFERENT_TAGS = 'REF_TAGS';
+    public const MERGE_FIELD_INSEE_CODE = 'INSEE_CODE';
+    public const MERGE_FIELD_DEPARTMENTAL_CODE = 'DPT_CODE';
 
     private $memberIdentifier;
 

@@ -2,8 +2,8 @@
 
 namespace AppBundle\Newsletter\Listener;
 
-use AppBundle\Mailchimp\Synchronisation\Command\AddNewsletterMemberCommand;
 use AppBundle\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
+use AppBundle\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use AppBundle\Newsletter\Events;
 use AppBundle\Newsletter\NewsletterEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,7 +28,9 @@ class MailchimpSyncSubscriber implements EventSubscriberInterface
 
     public function onSubscribe(NewsletterEvent $event): void
     {
-        $this->bus->dispatch(new AddNewsletterMemberCommand($event->getNewsletter()->getId()));
+        $this->bus->dispatch(new MailchimpSyncNewsletterSubscriptionEntityCommand(
+            $event->getNewsletter()->getId()
+        ));
     }
 
     public function onUnsubscribe(NewsletterEvent $event): void

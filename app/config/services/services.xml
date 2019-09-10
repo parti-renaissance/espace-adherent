@@ -278,6 +278,7 @@
         </service>
         <service id="AppBundle\Normalizer\IdeaDenormalizer" />
         <service id="AppBundle\Normalizer\AuthorDenormalizer" />
+        <service id="AppBundle\Normalizer\DptSiteNewsletterCommandDenormalizer" />
         <service id="AppBundle\Normalizer\AuthorNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
         </service>
@@ -547,6 +548,7 @@
 
         <service id="app.mailchimp.request_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
+                <argument key="AppBundle\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" type="service" id="AppBundle\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" />
                 <argument key="AppBundle\Mailchimp\Synchronisation\RequestBuilder" type="service" id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" />
                 <argument key="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" type="service" id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
                 <argument key="AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder" type="service" id="AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder" />
@@ -590,6 +592,7 @@
         </service>
 
         <service id="AppBundle\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
+        <service id="AppBundle\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
         <service id="AppBundle\Mailchimp\Campaign\CampaignRequestBuilder" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber" />
         <service id="AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber" />

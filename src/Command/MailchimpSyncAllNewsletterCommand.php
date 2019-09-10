@@ -2,7 +2,7 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Mailchimp\Synchronisation\Command\AddNewsletterMemberCommand;
+use AppBundle\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -59,7 +59,7 @@ class MailchimpSyncAllNewsletterCommand extends Command
 
         do {
             foreach ($paginator->getIterator() as $newsletter) {
-                $this->bus->dispatch(new AddNewsletterMemberCommand($newsletter->getId()));
+                $this->bus->dispatch(new MailchimpSyncNewsletterSubscriptionEntityCommand($newsletter->getId()));
 
                 $this->io->progressAdvance();
 

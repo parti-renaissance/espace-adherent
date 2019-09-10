@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Command;
+namespace AppBundle\Newsletter\Command;
 
 use AppBundle\Mailchimp\SynchronizeMessageInterface;
 
-class AddNewsletterMemberCommand implements SynchronizeMessageInterface
+class MailchimpSyncNewsletterSubscriptionEntityCommand implements SynchronizeMessageInterface
 {
     private $newsletterSubscriptionId;
 
