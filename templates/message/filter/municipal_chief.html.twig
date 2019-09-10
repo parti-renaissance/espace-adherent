@@ -19,7 +19,7 @@
 
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
-                    <div class="manager__filters__group">
+                    <div class="manager__filters__group newsletter-incompatible">
                         <div class="filter__row">
                             <label class="filter__label">Nom</label>
                             {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
@@ -54,6 +54,10 @@
                         <div class="filter__row">
                             <label class="filter__label">ADHÉRENTS</label>
                             {{ form_row(form.contactAdherents, {label: 'Adhérents de ma commune'}) }}
+                        </div>
+                        <div class="filter__row" id="newsletter-checkbox">
+                            <label class="filter__label">SITE MUNICIPAL</label>
+                            {{ form_row(form.contactNewsletter, {label: 'Abonnés à ma newsletter'}) }}
                         </div>
                     </div>
                 </div>
@@ -100,6 +104,15 @@
                     });
                 }
             });
+
+            var newsletterChangeHandler = function () {
+                var disable = $('#newsletter-checkbox input').is(':checked');
+                $('input,select', '.newsletter-incompatible').prop('disabled', disable).val('');
+            };
+
+            newsletterChangeHandler();
+
+            $('#newsletter-checkbox input').on('change', newsletterChangeHandler);
         });
     </script>
 {% endblock %}

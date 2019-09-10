@@ -12,10 +12,10 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(AdherentMessageFilterInterface $filter): bool
     {
-        return \in_array(\get_class($filter), [
-            MunicipalChiefFilter::class,
-            ReferentUserFilter::class,
-        ], true);
+        return
+            $filter instanceof ReferentUserFilter
+            || ($filter instanceof MunicipalChiefFilter && !$filter->getContactNewsletter())
+        ;
     }
 
     public function build(MailchimpCampaign $campaign): array

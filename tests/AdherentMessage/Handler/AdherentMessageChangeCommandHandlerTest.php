@@ -504,6 +504,11 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     [
                         'running_mate' => 123,
                         'volunteer' => 345,
+                    ],
+                    [
+                        'site_departmental' => 123,
+                        'site_municipal' => 456,
+                        'main_site' => 789,
                     ]
                 ),
                 new SegmentConditionsBuilder($this->mailchimpMapping, [
