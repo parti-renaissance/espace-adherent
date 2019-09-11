@@ -114,7 +114,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
-                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -185,7 +186,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
-                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]],
@@ -232,7 +234,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
-                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -357,7 +360,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'citizen_project_link' => '<a target="_blank" href="https://citizen_project_url" title="Voir le projet citoyen">CP name</a>',
-                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -423,7 +427,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
-                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                             'city_name' => 'Paris 1er',
                         ],
                     ],
@@ -471,7 +476,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'sections' => [
                             'content' => 'Content',
                             'first_name' => 'First Name',
-                            'reply_to_link' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                             'city_name' => 'Paris 2e',
                         ],
                     ],
