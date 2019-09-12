@@ -1,15 +1,16 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace AppBundle\Newsletter\Handler;
 
 use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Command\AddNewsletterMemberCommand;
+use AppBundle\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
+use AppBundle\Newsletter\NewsletterValueObject;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class AddNewsletterMemberCommandHandler implements MessageHandlerInterface
+class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements MessageHandlerInterface
 {
     private $manager;
     private $entityManager;
@@ -25,7 +26,7 @@ class AddNewsletterMemberCommandHandler implements MessageHandlerInterface
         $this->repository = $repository;
     }
 
-    public function __invoke(AddNewsletterMemberCommand $command): void
+    public function __invoke(MailchimpSyncNewsletterSubscriptionEntityCommand $command): void
     {
         /** @var NewsletterSubscription|null $newsletter */
         $newsletter = $this->repository->find($command->getNewsletterSubscriptionId());
@@ -40,7 +41,7 @@ class AddNewsletterMemberCommandHandler implements MessageHandlerInterface
             return;
         }
 
-        $this->manager->editNewsletterMember($newsletter);
+        $this->manager->editNewsletterMember(NewsletterValueObject::createFromNewsletterSubscription($newsletter));
 
         $this->entityManager->clear();
     }

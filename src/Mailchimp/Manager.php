@@ -6,13 +6,14 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
 use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
+use AppBundle\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
 use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
+use AppBundle\Newsletter\NewsletterValueObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -76,18 +77,26 @@ class Manager implements LoggerAwareInterface
         }
     }
 
-    public function editNewsletterMember(NewsletterSubscription $newsletter): bool
+    public function editNewsletterMember(NewsletterValueObject $newsletter): void
     {
-        return $this
-            ->driver
-            ->editMember(
-                $this->requestBuildersLocator
-                    ->get(RequestBuilder::class)
-                    ->updateFromNewsletterSubscription($newsletter)
-                    ->buildMemberRequest($newsletter->getEmail()),
-                $this->mailchimpObjectIdMapping->getNewsletterListId()
-            )
-        ;
+        $listId = $this->mailchimpObjectIdMapping->getNewsletterListId();
+        $requestBuilder = $this->requestBuildersLocator->get(NewsletterMemberRequestBuilder::class);
+
+        $result = $this->driver->editMember(
+            $requestBuilder
+                ->updateFromValueObject($newsletter)
+                ->build($newsletter->getEmail()),
+            $listId
+        );
+
+        if ($result) {
+            $request = $requestBuilder->createMemberTagsRequest($newsletter->getEmail());
+
+            if ($request->hasTags()) {
+                // Active/Inactive member's tags
+                $this->driver->updateMemberTags($request, $listId);
+            }
+        }
     }
 
     public function editApplicationRequestCandidate(ApplicationRequest $applicationRequest): void

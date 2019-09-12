@@ -6,7 +6,6 @@ use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Manager;
@@ -56,15 +55,6 @@ class RequestBuilder
             ->setInterests($this->buildInterestArray($adherent))
             ->setActiveTags($adherent->getReferentTagCodes())
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
-        ;
-    }
-
-    public function updateFromNewsletterSubscription(NewsletterSubscription $newsletter): self
-    {
-        return $this
-            ->setEmail($newsletter->getEmail())
-            ->setZipCode($newsletter->getPostalCode())
-            ->setCountryName($newsletter->getCountryName())
         ;
     }
 
