@@ -19,9 +19,10 @@ class MunicipalChiefVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return !empty(array_intersect(
+        return \in_array(
+            $adherent->getMunicipalChiefManagedArea()->getInseeCode(),
             $subject->getFavoriteCities(),
-            $adherent->getMunicipalChiefManagedArea()->getCodes()
-        ));
+            true
+        );
     }
 }

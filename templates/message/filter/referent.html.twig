@@ -12,7 +12,11 @@
     <div class="manager__filters">
         <div class="manager__filters__form">
             {{ form_start(form) }}
+
             <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            {{ form_errors(form) }}
+
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">

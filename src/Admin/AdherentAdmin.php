@@ -609,7 +609,7 @@ class AdherentAdmin extends AbstractAdmin
                     // Municipal chief
                     if (\in_array(AdherentRoleEnum::MUNICIPAL_CHIEF, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.municipalChiefManagedArea', $alias), 'municipalChiefManagedArea');
-                        $where->add('municipalChiefManagedArea IS NOT NULL AND municipalChiefManagedArea.codes IS NOT NULL');
+                        $where->add('municipalChiefManagedArea IS NOT NULL');
                     }
 
                     if ($where->count()) {

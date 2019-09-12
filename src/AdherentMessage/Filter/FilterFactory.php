@@ -52,6 +52,6 @@ abstract class FilterFactory
 
     private static function createMunicipalChiefFilter(Adherent $adherent): MunicipalChiefFilter
     {
-        return new MunicipalChiefFilter($adherent->getMunicipalChiefManagedArea()->getCodes());
+        return new MunicipalChiefFilter($adherent->getMunicipalChiefManagedArea()->getInseeCode());
     }
 }

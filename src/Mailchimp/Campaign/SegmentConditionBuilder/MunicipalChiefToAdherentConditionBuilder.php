@@ -18,17 +18,20 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
 
     public function build(MailchimpCampaign $campaign): array
     {
-        if (!$campaign->getCity()) {
+        /** @var MunicipalChiefFilter $filter */
+        $filter = $campaign->getMessage()->getFilter();
+
+        if (!$filter->getInseeCode()) {
             throw new InvalidFilterException(
                 $campaign->getMessage(),
                 '[MunicipalChiefMessage] Message does not have a valid city value'
             );
         }
 
-        if (!$cityName = FranceCitiesBundle::getCityNameFromInseeCode($campaign->getCity())) {
+        if (!$cityName = FranceCitiesBundle::getCityNameFromInseeCode($filter->getInseeCode())) {
             throw new InvalidFilterException(
                 $campaign->getMessage(),
-                sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $campaign->getCity())
+                sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $filter->getInseeCode())
             );
         }
 

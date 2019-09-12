@@ -29,11 +29,11 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $volunteerRequest1->setEmailAddress('tony.stark@stark-industries.com');
 
         $volunteerRequest1->setFavoriteCities([
-            $municipal1->municipalChiefManagedArea()->getCodes()[0],
-            $municipal2->municipalChiefManagedArea()->getCodes()[1],
+            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
+            $municipal2->getMunicipalChiefManagedArea()->getInseeCode(),
         ]);
 
-        $volunteerRequest1->setTakenForCity($municipal2->municipalChiefManagedArea()->getCodes()[1]);
+        $volunteerRequest1->setTakenForCity($municipal2->getMunicipalChiefManagedArea()->getInseeCode());
 
         $volunteerRequest2 = new VolunteerRequest(Uuid::fromString(self::UUID_2));
         $volunteerRequest2->setGender(Genders::FEMALE);
@@ -42,9 +42,9 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $volunteerRequest2->setEmailAddress('damien.schmidt@example.ch');
 
         $volunteerRequest2->setFavoriteCities([
-            $municipal1->municipalChiefManagedArea()->getCodes()[0],
-            $municipal2->municipalChiefManagedArea()->getCodes()[0],
-            $municipal3->municipalChiefManagedArea()->getCodes()[1],
+            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
+            $municipal2->getMunicipalChiefManagedArea()->getInseeCode(),
+            $municipal3->getMunicipalChiefManagedArea()->getInseeCode(),
         ]);
 
         $volunteerRequest2->setAdherent($this->getReference('adherent-14'));
@@ -56,8 +56,8 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $volunteerRequest3->setEmailAddress('tony.stark@stark-industries.com');
 
         $volunteerRequest3->setFavoriteCities([
-            $municipal1->municipalChiefManagedArea()->getCodes()[2],
-            $municipal3->municipalChiefManagedArea()->getCodes()[0],
+            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
+            $municipal3->getMunicipalChiefManagedArea()->getInseeCode(),
         ]);
 
         $volunteerRequest4 = new VolunteerRequest(Uuid::fromString(self::UUID_4));
@@ -67,7 +67,7 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture
         $volunteerRequest4->setEmailAddress('damien.schmidt@example.ch');
 
         $volunteerRequest4->setFavoriteCities([
-            $municipal1->municipalChiefManagedArea()->getCodes()[2],
+            $municipal1->getMunicipalChiefManagedArea()->getInseeCode(),
         ]);
 
         $volunteerRequest4->setAdherent($this->getReference('adherent-14'));

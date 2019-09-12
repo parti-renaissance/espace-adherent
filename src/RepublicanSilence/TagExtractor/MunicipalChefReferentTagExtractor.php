@@ -10,9 +10,6 @@ class MunicipalChefReferentTagExtractor implements ReferentTagExtractorInterface
     {
         $area = $adherent->getMunicipalChiefManagedArea();
 
-        return $area ?
-            array_unique(array_map(static function (string $code) { return substr($code, 0, 2); }, $area->getCodes())) :
-            []
-        ;
+        return $area ? (array) $area->getDepartmentalCode() : [];
     }
 }

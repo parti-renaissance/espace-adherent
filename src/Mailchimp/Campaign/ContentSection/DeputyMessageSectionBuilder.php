@@ -2,16 +2,14 @@
 
 namespace AppBundle\Mailchimp\Campaign\ContentSection;
 
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
 use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use AppBundle\Utils\StringCleaner;
 
 class DeputyMessageSectionBuilder implements ContentSectionBuilderInterface
 {
-    public function build(MailchimpCampaign $campaign, EditCampaignContentRequest $request): void
+    public function build(AdherentMessageInterface $message, EditCampaignContentRequest $request): void
     {
-        $message = $campaign->getMessage();
-
         $request
             ->addSection('full_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFullName()))
             ->addSection('first_name', StringCleaner::htmlspecialchars($message->getAuthor()->getFirstName()))

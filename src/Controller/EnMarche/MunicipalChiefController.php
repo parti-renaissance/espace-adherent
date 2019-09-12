@@ -37,7 +37,7 @@ class MunicipalChiefController extends Controller
         UserInterface $adherent
     ): Response {
         /** @var Adherent $adherent */
-        $codes = $adherent->getMunicipalChiefManagedArea()->getCodes();
+        $codes = (array) $adherent->getMunicipalChiefManagedArea()->getInseeCode();
 
         return $this->render('municipal_chief/home.html.twig', [
             'candidate_count' => $candidateRepository->countCandidates($codes),
@@ -68,7 +68,10 @@ class MunicipalChiefController extends Controller
             throw new BadRequestHttpException('This request is already on another team.');
         }
 
-        $request->setTakenForCity(current(array_intersect($request->getFavoriteCities(), $this->getUser()->getMunicipalChiefManagedArea()->getCodes())));
+        $request->setTakenForCity(current(array_intersect(
+            $request->getFavoriteCities(),
+            (array) $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode())
+        ));
         $manager->flush();
 
         $this->addFlash('info', 'application_request.taken_successfully');

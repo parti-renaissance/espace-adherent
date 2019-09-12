@@ -55,10 +55,8 @@ export default class MessageStatusLoader extends React.Component {
             return <div>
                 <p className="text--medium-small">
                     Vous allez envoyer un message à&nbsp;
-                    <span className="text--bold text--blue--dark">
-                        {numberFormat(this.state.recipientCount)}
-                    </span>&nbsp;
-                    contact{1 < this.state.recipientCount ? 's' : ''} !
+                    <span className="text--bold text--blue--dark">{numberFormat(this.state.recipientCount)}</span>
+                    &nbsp;contact{1 < this.state.recipientCount ? 's' : ''} !
                 </p>
                 <p>
                     <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
@@ -67,6 +65,9 @@ export default class MessageStatusLoader extends React.Component {
                         className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
                     >
                         Prévisualiser avant envoi
+                    </a>
+                    <a href="./tester" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                        M'envoyer un message test
                     </a>
                 </p>
             </div>;
@@ -78,6 +79,9 @@ export default class MessageStatusLoader extends React.Component {
                 <p>
                     <a href="./filtrer" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top">
                         RECHARGER
+                    </a>
+                    <a href="./tester" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                        M'envoyer un message test
                     </a>
                 </p>
                 : ''

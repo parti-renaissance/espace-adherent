@@ -13,12 +13,12 @@ Feature:
   Scenario: I can see running mate request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-municipales-2020/candidature-colistiers"
-    Then I should see "Vous gérez : Lille, Oignies, Seclin"
+    Then I should see "Vous gérez : Lille"
     And I should see 4 "tr" in the 1st "table.datagrid__table-manager tbody"
-    And I should see "Camphin-en-Carembault, Lille"
-    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Baroeul"
-    And I should see "Mons-en-Pévèle, Seclin"
-    And I should see "Seclin"
+    And I should see "Lille"
+    And I should see "Camphin-en-Pévèle, Lille"
+    And I should see "Lille, Mons-en-Pévèle"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Pévèle"
 
     When I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Plus d'infos"
@@ -63,18 +63,19 @@ Feature:
     Then I should see "403"
 
     Examples:
-      | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               | missing-city           | missing-tag | forbidden-uuid                       |
-      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | b1f336d8-5a33-4e79-bf02-ae03d1101093 |
-      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 23db4b50-dbe3-4b7f-9bd8-f3eaba8367de |
+      | user                               | managed-cities                 | cities-tr-1              | cities-tr-2                              | missing-city          | missing-tag | forbidden-uuid                       |
+      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Pévèle | Camphin-en-Pévèle, Lille | Camphin-en-Pévèle, Lille, Mons-en-Pévèle | Seclin                | Tag 4       | b1f336d8-5a33-4e79-bf02-ae03d1101093 |
+      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Pévèle    | Lille, Mons-en-Pévèle    | Camphin-en-Pévèle, Lille, Mons-en-Pévèle | Camphin-en-Carembault | Tag 1       | 23db4b50-dbe3-4b7f-9bd8-f3eaba8367de |
 
   Scenario: I can see volunteer request for the zones I manage, I can see the detail and I can add tags
     Given I am logged as "municipal-chief@en-marche-dev.fr"
     When I am on "/espace-municipales-2020/candidature-benevoles"
-    Then I should see "Vous gérez : Lille, Oignies, Seclin"
+    Then I should see "Vous gérez : Lille"
     And I should see 4 "tr" in the 1st "table.datagrid__table-manager tbody"
-    And I should see "Camphin-en-Carembault, Lille"
-    And I should see "Mons-en-Pévèle, Seclin"
-    And I should see "Seclin"
+    And I should see "Camphin-en-Pévèle, Lille"
+    And I should see "Lille, Mons-en-Pévèle"
+    And I should see "Camphin-en-Pévèle, Lille, Mons-en-Pévèle"
+    And I should see "Lille"
 
     When I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
     And I follow "Plus d'infos"
@@ -117,9 +118,9 @@ Feature:
     Then I should see "403"
 
     Examples:
-      | user                               | managed-cities                                        | cities-tr-1                               | cities-tr-2                               | missing-city           | missing-tag | forbidden-uuid                       |
-      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Carembault, Camphin-en-Pévèle | Camphin-en-Carembault, Lille              | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Seclin                 | Tag 4       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
-      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Baroeul, Mons-en-Pévèle          | Camphin-en-Pévèle, Lille, Mons-en-Baroeul | Mons-en-Pévèle, Seclin                    | Camphin-en-Carembault  | Tag 1       | 06d61c85-929a-4152-b46c-b94b6883b8d6 |
+      | user                               | managed-cities                 | cities-tr-1                              | cities-tr-2                              | missing-city           | missing-tag | forbidden-uuid                       |
+      | municipal-chief-2@en-marche-dev.fr | Vous gérez : Camphin-en-Pévèle | Camphin-en-Pévèle, Lille                 | Camphin-en-Pévèle, Lille, Mons-en-Pévèle | Seclin                 | Tag 4       | 5ca5fc5c-b6f4-4edf-bb8e-111aa9222696 |
+      | municipal-chief-3@en-marche-dev.fr | Vous gérez : Mons-en-Pévèle    | Camphin-en-Pévèle, Lille, Mons-en-Pévèle | Lille, Mons-en-Pévèle                    | Camphin-en-Carembault  | Tag 1       | 06d61c85-929a-4152-b46c-b94b6883b8d6 |
 
   Scenario: If I have JEcoute access I can view/create a local survey
     Given I am logged as "municipal-chief@en-marche-dev.fr"

@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche\Jecoute;
 
 use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Jecoute\JecouteSpaceEnum;
 use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -30,11 +29,7 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
     protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
     {
         if (!$localSurvey->getCity()) {
-            $localSurvey->setCity(
-                FranceCitiesBundle::getCityNameFromInseeCode(
-                    current($this->getUser()->getMunicipalChiefManagedArea()->getCodes())
-                )
-            );
+            $localSurvey->setCity($this->getUser()->getMunicipalChiefManagedArea()->getCityName());
         }
 
         return parent::createSurveyForm($localSurvey)
@@ -45,6 +40,6 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
 
     protected function getSurveyTags(): array
     {
-        return (array) substr(current($this->getUser()->getMunicipalChiefManagedArea()->getCodes()), 0, 2);
+        return (array) $this->getUser()->getMunicipalChiefManagedArea()->getDepartmentalCode();
     }
 }

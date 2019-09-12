@@ -13,8 +13,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class MunicipalChiefManagedArea extends ManagedArea
+class MunicipalChiefManagedArea
 {
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $inseeCode;
+
     /**
      * @var bool
      *
@@ -32,9 +48,26 @@ class MunicipalChiefManagedArea extends ManagedArea
         $this->jecouteAccess = $jecouteAccess;
     }
 
-    /** @Assert\IsTrue(message="Au moins une des valeurs saisies dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.") */
-    public function isValidFrenchCodes(): bool
+    public function setInseeCode(string $inseeCode): void
     {
-        return empty(array_diff($this->getCodes(), array_keys(FranceCitiesBundle::getCityByInseeCode())));
+        $this->inseeCode = $inseeCode;
+    }
+
+    public function getInseeCode(): ?string
+    {
+        return $this->inseeCode;
+    }
+
+    /**
+     * @Assert\NotNull(message="La valeur saisie dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.")
+     */
+    public function getCityName(): ?string
+    {
+        return FranceCitiesBundle::getCityNameFromInseeCode((string) $this->inseeCode);
+    }
+
+    public function getDepartmentalCode(): string
+    {
+        return substr($this->inseeCode, 0, 2);
     }
 }

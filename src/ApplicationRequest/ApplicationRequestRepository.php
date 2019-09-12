@@ -40,13 +40,13 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findAllForInseeCodes($inseeCodes, $filter);
     }
 
-    public function findAllTakenFor(array $inseeCodes, string $type, ListFilter $filter = null): array
+    public function findAllTakenFor(string $inseeCode, string $type, ListFilter $filter = null): array
     {
         if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
-            return $this->runningMateRepository->findAllTakenFor($inseeCodes, $filter);
+            return $this->runningMateRepository->findAllTakenFor($inseeCode, $filter);
         }
 
-        return $this->volunteerRepository->findAllTakenFor($inseeCodes, $filter);
+        return $this->volunteerRepository->findAllTakenFor($inseeCode, $filter);
     }
 
     public function findAllForReferentTags(array $referentTags, string $type, ListFilter $filter = null): array

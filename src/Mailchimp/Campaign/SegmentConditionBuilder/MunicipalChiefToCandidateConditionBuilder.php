@@ -18,21 +18,21 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
 
     public function build(MailchimpCampaign $campaign): array
     {
-        if (!$campaign->getCity()) {
+        /** @var MunicipalChiefFilter $filter */
+        $filter = $campaign->getMessage()->getFilter();
+
+        if (!$filter->getInseeCode()) {
             throw new InvalidFilterException(
                 $campaign->getMessage(),
                 '[MunicipalChiefMessage] Message does not have a valid city value'
             );
         }
 
-        /** @var MunicipalChiefFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
-
         $conditions[] = [
             'condition_type' => 'TextMerge',
             'op' => 'contains',
             'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES,
-            'value' => $campaign->getCity(),
+            'value' => $filter->getInseeCode(),
         ];
 
         if ($filter->getContactRunningMateTeam() || $filter->getContactVolunteerTeam()) {
@@ -40,7 +40,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
                 'condition_type' => 'TextMerge',
                 'op' => 'is',
                 'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
-                'value' => $campaign->getCity(),
+                'value' => $filter->getInseeCode(),
             ];
 
             if ($filter->getContactRunningMateTeam() ^ $filter->getContactVolunteerTeam()) {
@@ -57,7 +57,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
                 'condition_type' => 'TextMerge',
                 'op' => 'not',
                 'field' => MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM,
-                'value' => $campaign->getCity(),
+                'value' => $filter->getInseeCode(),
             ];
 
             if ($filter->getContactOnlyRunningMates() ^ $filter->getContactOnlyVolunteers()) {
