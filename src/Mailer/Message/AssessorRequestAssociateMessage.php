@@ -12,10 +12,9 @@ final class AssessorRequestAssociateMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '775346',
             $assessorRequest->getEmailAddress(),
             null,
-            '',
+            'Félicitations ! Vous avez été sélectionné(e) pour être assesseur(e)',
             [
                 'firstname' => $assessorRequest->getFirstName(),
                 'assessor_function' => $officeName,

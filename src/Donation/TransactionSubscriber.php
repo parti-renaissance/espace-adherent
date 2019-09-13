@@ -4,7 +4,7 @@ namespace AppBundle\Donation;
 
 use AppBundle\Entity\Donation;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DonationMessage;
+use AppBundle\Mailer\Message\DonationThanksMessage;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\TransactionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -76,7 +76,7 @@ class TransactionSubscriber implements EventSubscriberInterface
         $this->manager->flush();
 
         if ($transaction->isSuccessful()) {
-            $this->mailer->sendMessage(DonationMessage::createFromTransaction($transaction));
+            $this->mailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
         }
     }
 

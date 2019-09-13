@@ -4,7 +4,8 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\IdeaFinalizeMessage;
+use AppBundle\Mailer\Message\IdeaFinalizeNotificationMessage;
+use AppBundle\Mailer\Message\IdeaFinalizePreNotificationMessage;
 use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -91,7 +92,7 @@ class NotifyIdeaAuthorCommand extends Command
     private function sendMail(Idea $idea, bool $isCautionMode): void
     {
         if ($isCautionMode) {
-            $message = IdeaFinalizeMessage::createPreNotification(
+            $message = IdeaFinalizePreNotificationMessage::create(
                 $idea->getAuthor(),
                 $this->urlGenerator->generate(
                     'react_app_ideas_workshop_proposition',
@@ -100,7 +101,7 @@ class NotifyIdeaAuthorCommand extends Command
                 )
             );
         } else {
-            $message = IdeaFinalizeMessage::createNotification(
+            $message = IdeaFinalizeNotificationMessage::create(
                 $idea->getAuthor(),
                 $this->urlGenerator->generate(
                     'react_app_ideas_workshop_proposition',

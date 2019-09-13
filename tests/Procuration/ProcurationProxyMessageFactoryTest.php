@@ -6,7 +6,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Mailer\Message\ProcurationProxyCancelledMessage;
-use AppBundle\Mailer\Message\ProcurationProxyFoundMessage;
 use AppBundle\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
 use AppBundle\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
 use AppBundle\Procuration\ProcurationProxyMessageFactory;
@@ -110,7 +109,6 @@ class ProcurationProxyMessageFactoryTest extends TestCase
 
         $message = $this->factory->createProxyFoundMessage($request);
 
-        $this->assertInstanceOf(ProcurationProxyFoundMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
         $this->assertSame('Votre procuration', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
@@ -118,7 +116,6 @@ class ProcurationProxyMessageFactoryTest extends TestCase
         $this->assertSame('La République En Marche !', $message->getSenderName());
         $this->assertSame(
             [
-                'target_firstname' => 'Marie Bénédicte',
                 'info_link' => $url,
                 'elections' => '',
                 'voter_first_name' => 'Monique',

@@ -27,7 +27,6 @@ final class CitizenActionCancellationMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '308754',
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
             '[Action citoyenne] Une action citoyenne à laquelle vous participez vient d\'être annulée.',

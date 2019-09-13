@@ -11,7 +11,6 @@ final class CitizenProjectApprovalConfirmationMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '244444',
             $citizenProject->getCreator() ? $citizenProject->getCreator()->getEmailAddress() : '',
             $citizenProject->getCreator() ? $citizenProject->getCreator()->getFullName() : '',
             'Votre projet citoyen a été publié. À vous de jouer !',

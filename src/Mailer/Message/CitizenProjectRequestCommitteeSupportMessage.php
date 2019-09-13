@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use Ramsey\Uuid\Uuid;
 
-class CitizenProjectRequestCommitteeSupportMessage extends Message
+final class CitizenProjectRequestCommitteeSupportMessage extends Message
 {
     public static function create(
         CitizenProject $citizenProject,
@@ -15,7 +15,6 @@ class CitizenProjectRequestCommitteeSupportMessage extends Message
     ): self {
         $message = new self(
             Uuid::uuid4(),
-            '263222',
             $committeeSupervisor->getEmailAddress(),
             $committeeSupervisor->getFullName(),
             'Un projet citoyen a besoin du soutien de votre comité !',

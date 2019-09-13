@@ -11,7 +11,6 @@ final class AdherentChangeEmailMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '465792',
             $newEmail,
             $adherent->getFullName(),
             'Validez votre nouvelle adresse e-mail',

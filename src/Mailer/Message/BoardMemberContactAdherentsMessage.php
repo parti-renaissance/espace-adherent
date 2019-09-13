@@ -6,12 +6,12 @@ use AppBundle\BoardMember\BoardMemberMessage as BoardMemberMessageModel;
 use AppBundle\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class BoardMemberMessage extends Message
+final class BoardMemberContactAdherentsMessage extends Message
 {
     /**
      * @param Adherent[] $recipients
      *
-     * @return BoardMemberMessage
+     * @return BoardMemberContactAdherentsMessage
      */
     public static function createFromModel(BoardMemberMessageModel $model, array $recipients): self
     {
@@ -24,7 +24,6 @@ final class BoardMemberMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '233701',
             $first->getEmailAddress(),
             $first->getFullName(),
             $model->getSubject(),

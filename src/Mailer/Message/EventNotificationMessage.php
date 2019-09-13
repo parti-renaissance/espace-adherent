@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Event;
 use Ramsey\Uuid\Uuid;
 
-class EventNotificationMessage extends Message
+final class EventNotificationMessage extends Message
 {
     /**
      * Creates a new message instance for a list of recipients.
@@ -20,7 +20,6 @@ class EventNotificationMessage extends Message
         Adherent $host,
         Event $event,
         string $eventLink,
-        string $eventOkLink,
         \Closure $recipientVarsGenerator
     ): self {
         if (!$recipients) {
@@ -43,13 +42,12 @@ class EventNotificationMessage extends Message
             ),
             $event->getInlineFormattedAddress(),
             $eventLink,
-            $eventOkLink,
-            $event->getDescription()
+            $event->getDescription(),
+            $event->getCommittee()->getName()
         );
 
         $message = new static(
             Uuid::uuid4(),
-            '54917',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             sprintf(
@@ -83,8 +81,8 @@ class EventNotificationMessage extends Message
         string $eventHour,
         string $eventAddress,
         string $eventLink,
-        string $eventOkLink,
-        string $eventDescription
+        string $eventDescription,
+        string $committeeName
     ): array {
         return [
             // Global common variables
@@ -94,13 +92,8 @@ class EventNotificationMessage extends Message
             'event_hour' => $eventHour,
             'event_address' => self::escape($eventAddress),
             'event_slug' => $eventLink,
-            'event-slug' => $eventLink,
-            'event_ok_link' => $eventOkLink,
-            'event_ko_link' => $eventLink,
             'event_description' => $eventDescription,
-
-            // Recipient specific template variables
-            'target_firstname' => '',
+            'committee_name' => $committeeName,
         ];
     }
 
@@ -109,19 +102,5 @@ class EventNotificationMessage extends Message
         return [
             'target_firstname' => self::escape($firstName),
         ];
-    }
-
-    private static function formatDate(\DateTime $date, string $format): string
-    {
-        $formatter = new \IntlDateFormatter(
-            'fr_FR',
-            \IntlDateFormatter::NONE,
-            \IntlDateFormatter::NONE,
-            $date->getTimezone(),
-            \IntlDateFormatter::GREGORIAN,
-            $format
-        );
-
-        return $formatter->format($date);
     }
 }

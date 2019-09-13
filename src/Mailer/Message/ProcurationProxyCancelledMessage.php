@@ -12,7 +12,6 @@ final class ProcurationProxyCancelledMessage extends Message
         $proxy = $request->getFoundProxy();
         $message = new self(
             Uuid::uuid4(),
-            '120189',
             $request->getEmailAddress(),
             null,
             'Annulation de la mise en relation',

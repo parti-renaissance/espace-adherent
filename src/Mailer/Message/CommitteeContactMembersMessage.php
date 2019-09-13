@@ -18,7 +18,6 @@ final class CommitteeContactMembersMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '63337',
             $first->getEmailAddress(),
             $first->getFullName(),
             "[Comité local] $subject",

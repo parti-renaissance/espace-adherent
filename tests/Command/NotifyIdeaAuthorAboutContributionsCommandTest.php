@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Command;
 
-use AppBundle\Mailer\Message\IdeaContributionsMessage;
+use AppBundle\Mailer\Message\IdeaNotificationWithoutContributionsMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -17,7 +17,7 @@ class NotifyIdeaAuthorAboutContributionsCommandTest extends WebTestCase
     {
         $this->runCommand('idea-workshop:notification:contributions');
 
-        $this->assertCountMails(1, IdeaContributionsMessage::class, 'michel.vasseur@example.ch');
+        $this->assertCountMails(1, IdeaNotificationWithoutContributionsMessage::class, 'michel.vasseur@example.ch');
     }
 
     public function setUp()

@@ -21,7 +21,6 @@ final class CommitteeNewFollowerMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '54904',
             $host->getEmailAddress(),
             $host->getFullName(),
             'Un nouveau membre vient de suivre votre comité',
@@ -49,6 +48,7 @@ final class CommitteeNewFollowerMessage extends Message
             'member_firstname' => self::escape($newFollower->getFirstName()),
             'member_lastname' => $newFollower->getLastNameInitial(),
             'member_age' => $newFollower->getAge() ?? 'n/a',
+            'member_city' => $newFollower->getCityName() ?? 'n/a',
         ];
     }
 

@@ -24,7 +24,6 @@ final class DeputyMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '552765',
             $first->getEmailAddress(),
             $first->getFullName() ?: '',
             $model->getSubject(),

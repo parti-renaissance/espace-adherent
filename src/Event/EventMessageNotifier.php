@@ -85,7 +85,6 @@ class EventMessageNotifier implements EventSubscriberInterface
             $host,
             $event,
             $this->generateUrl('app_event_show', $params),
-            $this->generateUrl('app_event_attend', $params),
             function (Adherent $adherent) {
                 return EventNotificationMessage::getRecipientVars($adherent->getFirstName());
             }

@@ -12,10 +12,9 @@ final class AssessorRequestConfirmationMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '769755',
             $assessorRequest->getEmailAddress(),
             null,
-            '',
+            'Vous avez candidaté au poste d\'assesseur(e)',
             [
                 'firstname' => $assessorRequest->getFirstName(),
                 'city_name_candidacy' => (string) $assessorRequest->getAssessorCity(),

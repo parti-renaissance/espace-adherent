@@ -140,21 +140,35 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     Given I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "jp@test.com",
-          "Name": "Jean-Pierre d'Artagnan",
-          "Vars": {
-            "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
+      "template_name": "adherent-account-activation",
+      "template_content": [],
+      "message": {
+        "subject": "Confirmez votre compte En-Marche.fr",
+        "from_email": "contact@en-marche.fr",
+        "merge_vars": [
+          {
+            "rcpt": "jp@test.com",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jean-Pierre"
+              },
+              {
+                "name": "activation_link",
+                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@/@string@?redirect_uri=https%3A\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
+              }
+            ]
           }
-        }
-      ]
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "jp@test.com",
+            "type": "to",
+            "name": "Jean-Pierre d'Artagnan"
+          }
+        ]
+      }
     }
     """
     When I click on the email link "activation_link"

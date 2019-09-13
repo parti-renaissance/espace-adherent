@@ -196,12 +196,11 @@ csa_guzzle:
     profiler: "%kernel.debug%"
     logger: true
     clients:
-        mailjet_api:
+        mandrill_api:
             config:
-                base_uri: 'https://api.mailjet.com/v3/'
+                api_key: '%env(MANDRILL_API_KEY)%'
+                base_uri: 'https://mandrillapp.com/api/1.0/'
                 timeout: 10.0
-                headers:
-                    Content-Type: 'application/json'
 
         google_maps_static_api:
             config:
@@ -218,6 +217,7 @@ csa_guzzle:
                 base_uri: 'https://us16.api.mailchimp.com'
                 timeout: 60.0
                 headers:
+                    User-Agent: 'En-Marche!'
                     Content-Type: 'application/json'
                     Authorization: 'Bearer %env(MAILCHIMP_API_KEY)%'
         dpt_api:

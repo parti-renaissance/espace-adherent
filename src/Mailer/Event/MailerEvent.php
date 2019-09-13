@@ -2,7 +2,7 @@
 
 namespace AppBundle\Mailer\Event;
 
-use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailTemplate;
 use AppBundle\Mailer\Exception\MailerException;
 use AppBundle\Mailer\Message\Message;
 use Symfony\Component\EventDispatcher\Event;
@@ -13,7 +13,7 @@ class MailerEvent extends Event
     private $email;
     private $exception;
 
-    public function __construct(Message $message, EmailTemplate $email, MailerException $exception = null)
+    public function __construct(Message $message, AbstractEmailTemplate $email, MailerException $exception = null)
     {
         $this->message = $message;
         $this->email = $email;
@@ -25,7 +25,7 @@ class MailerEvent extends Event
         return $this->message;
     }
 
-    public function getEmail(): EmailTemplate
+    public function getEmail(): AbstractEmailTemplate
     {
         return $this->email;
     }

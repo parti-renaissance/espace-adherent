@@ -69,7 +69,19 @@ class EmailContext extends RawMinkContext
             throw new \RuntimeException('No email was previously read');
         }
 
-        $link = $this->currentEmailPayload['Recipients'][0]['Vars'][$emailVariableName] ?? null;
+        $link = null;
+
+        $vars = array_merge(
+            isset($this->currentEmailPayload['message']['merge_vars'][0]['vars']) ? $this->currentEmailPayload['message']['merge_vars'][0]['vars'] : [],
+            isset($this->currentEmailPayload['message']['global_merge_vars']) ? $this->currentEmailPayload['message']['global_merge_vars'] : []
+        );
+
+        foreach ($vars as $var) {
+            if ($var['name'] === $emailVariableName) {
+                $link = $var['content'];
+                break;
+            }
+        }
 
         if (!$link) {
             throw new \RuntimeException(sprintf('There is no variable or no data called %s. Variables availables are %s.', $emailVariableName, implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))));

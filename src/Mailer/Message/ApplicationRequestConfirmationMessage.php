@@ -11,7 +11,6 @@ final class ApplicationRequestConfirmationMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '875384',
             $applicationRequest->getEmailAddress(),
             $applicationRequest->getFullName(),
             'Merci pour votre candidature !',

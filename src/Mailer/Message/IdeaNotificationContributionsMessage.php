@@ -5,38 +5,20 @@ namespace AppBundle\Mailer\Message;
 use AppBundle\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class IdeaContributionsMessage extends Message
+final class IdeaNotificationContributionsMessage extends Message
 {
-    public static function createWithContributions(
+    public static function create(
         Adherent $adherent,
         string $ideaName,
         string $ideaLink,
         int $contributorsCount,
         int $commentsCount
     ): self {
-        return static::createMessage($adherent, $ideaName, $ideaLink, '693036', "Il est temps d'enrichir votre proposition !", $contributorsCount, $commentsCount);
-    }
-
-    public static function createWithoutContributions(Adherent $adherent, string $ideaName, string $ideaLink): self
-    {
-        return static::createMessage($adherent, $ideaName, $ideaLink, '693728', 'Il est temps de partager votre proposition !');
-    }
-
-    private static function createMessage(
-        Adherent $adherent,
-        string $ideaName,
-        string $ideaLink,
-        string $templateId,
-        string $subject,
-        int $contributorsCount = 0,
-        int $commentsCount = 0
-    ): self {
         $message = new self(
             Uuid::uuid4(),
-            $templateId,
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            $subject,
+            "Il est temps d'enrichir votre proposition !",
             [
                 'first_name' => $adherent->getFirstName(),
                 'idea_link' => $ideaLink,

@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenAction;
 use Ramsey\Uuid\Uuid;
 
-class CitizenActionNotificationMessage extends Message
+final class CitizenActionNotificationMessage extends Message
 {
     public static function create(
         array $recipients,
@@ -25,7 +25,6 @@ class CitizenActionNotificationMessage extends Message
 
         $message = new static(
             Uuid::uuid4(),
-            '326404',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             '[Projets citoyens] Une nouvelle action citoyenne au sein de votre projet citoyen !',
@@ -74,19 +73,5 @@ class CitizenActionNotificationMessage extends Message
         return [
             'first_name' => self::escape($recipient->getFirstName()),
         ];
-    }
-
-    private static function formatDate(\DateTimeInterface $date, string $format): string
-    {
-        $formatter = new \IntlDateFormatter(
-            'fr_FR',
-            \IntlDateFormatter::NONE,
-            \IntlDateFormatter::NONE,
-            $date->getTimezone(),
-            \IntlDateFormatter::GREGORIAN,
-            $format
-        );
-
-        return $formatter->format($date);
     }
 }

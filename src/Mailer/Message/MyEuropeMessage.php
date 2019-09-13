@@ -11,17 +11,18 @@ final class MyEuropeMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '135119',
             $invitation->getFriendEmailAddress(),
             null,
             $invitation->getMailSubject(),
             [
                 'message' => $invitation->getMailBody(),
                 'first_name_sender' => self::escape($invitation->getAuthorFirstName()),
-            ]
+            ],
+            [],
+            $invitation->getAuthorEmailAddress(),
+            'basic-message'
         );
 
-        $message->setReplyTo($invitation->getAuthorEmailAddress());
         $message->setSenderName($invitation->getAuthorFirstName().' '.$invitation->getAuthorLastName());
         $message->addCC($invitation->getAuthorEmailAddress());
 

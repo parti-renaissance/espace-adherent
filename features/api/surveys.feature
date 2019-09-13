@@ -158,19 +158,25 @@ Feature:
     And I should have 1 email "DataSurveyAnsweredMessage" for "ernestino@bonsoirini.fr" with payload:
     """
     {
-      "FromEmail":"contact@en-marche.fr",
-      "FromName":"En Marche !",
-      "Subject":"",
-      "MJ-TemplateID":"665490",
-      "MJ-TemplateLanguage":true,
-      "Recipients": [
+      "template_name": "data-survey-answered",
+      "template_content": [],
+      "message": {
+        "subject": "Votre adhésion à La République En Marche !",
+        "from_email": "contact@en-marche.fr",
+        "global_merge_vars": [
           {
-            "Email":"ernestino@bonsoirini.fr",
-            "Vars": {
-              "first_name":"Ernestino"
-            }
-         }
-      ]
+            "name": "first_name",
+            "content": "Ernestino"
+          }
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "ernestino@bonsoirini.fr",
+            "type": "to"
+          }
+        ]
+      }
     }
     """
 
@@ -225,19 +231,25 @@ Feature:
     And I should have 1 email "DataSurveyAnsweredMessage" for "ernestino@bonsoirini.fr" with payload:
     """
     {
-      "FromEmail":"contact@en-marche.fr",
-      "FromName":"En Marche !",
-      "Subject":"",
-      "MJ-TemplateID":"665490",
-      "MJ-TemplateLanguage":true,
-      "Recipients": [
+      "template_name": "data-survey-answered",
+      "template_content": [],
+      "message": {
+        "subject": "Votre adhésion à La République En Marche !",
+        "from_email": "contact@en-marche.fr",
+        "global_merge_vars": [
           {
-            "Email":"ernestino@bonsoirini.fr",
-            "Vars": {
-              "first_name":"Ernestino"
-            }
-         }
-      ]
+            "name": "first_name",
+            "content": "Ernestino"
+          }
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "ernestino@bonsoirini.fr",
+            "type": "to"
+          }
+        ]
+      }
     }
     """
 

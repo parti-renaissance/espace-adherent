@@ -43,12 +43,13 @@ class MailerConsumer extends AbstractConsumer
 
         $message = new Message(
             Uuid::uuid4(),
-            $data['templateKey'],
             $firstRecipient['email'],
             $firstRecipient['name'],
             $data['subject'],
             $data['templateVars'] ?? [],
-            $firstRecipient['templateVars'] ?? []
+            $firstRecipient['templateVars'] ?? [],
+            null,
+            $data['templateKey']
         );
 
         $message->setSenderEmail($data['fromEmail']);

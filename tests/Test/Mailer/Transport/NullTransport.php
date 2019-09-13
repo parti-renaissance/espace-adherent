@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Test\Mailer\Transport;
 
-use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailTemplate;
 use AppBundle\Mailer\Transport\TransportInterface;
 use Psr\Log\LoggerInterface;
 
@@ -15,7 +15,7 @@ class NullTransport implements TransportInterface
         $this->logger = $logger;
     }
 
-    public function sendTemplateEmail(EmailTemplate $email): void
+    public function sendTemplateEmail(AbstractEmailTemplate $email): void
     {
         if ($this->logger) {
             $this->logger->info('[mailer] sending email.', [

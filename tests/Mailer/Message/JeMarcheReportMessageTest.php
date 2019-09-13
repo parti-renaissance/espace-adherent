@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Mailer\Message;
 use AppBundle\Entity\JeMarcheReport;
 use AppBundle\Mailer\Message\JeMarcheReportMessage;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 
 class JeMarcheReportMessageTest extends TestCase
 {
@@ -20,9 +19,6 @@ class JeMarcheReportMessageTest extends TestCase
 
         $message = JeMarcheReportMessage::createFromJeMarcheReport($jeMarcheReport);
 
-        $this->assertInstanceOf(JeMarcheReportMessage::class, $message);
-        $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
-        $this->assertSame('133783', $message->getTemplate());
         $this->assertSame('Merci pour votre compte-rendu d\'action.', $message->getSubject());
         $this->assertCount(4, $message->getVars());
         $this->assertSame(

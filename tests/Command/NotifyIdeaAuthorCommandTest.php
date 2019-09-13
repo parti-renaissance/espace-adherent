@@ -4,7 +4,8 @@ namespace Tests\AppBundle\Command;
 
 use AppBundle\DataFixtures\ORM\LoadIdeaData;
 use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Mailer\Message\IdeaFinalizeMessage;
+use AppBundle\Mailer\Message\IdeaFinalizeNotificationMessage;
+use AppBundle\Mailer\Message\IdeaFinalizePreNotificationMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
 
@@ -21,7 +22,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
 
         $this->runCommand('idea-workshop:notification:idea-author');
 
-        $this->assertCountMails(1, IdeaFinalizeMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, IdeaFinalizeNotificationMessage::class, 'jacques.picard@en-marche.fr');
     }
 
     public function testSendMailWhenNoteWillBeFinishedIn3Days(): void
@@ -30,7 +31,7 @@ class NotifyIdeaAuthorCommandTest extends WebTestCase
 
         $this->runCommand('idea-workshop:notification:idea-author', ['--caution' => null]);
 
-        $this->assertCountMails(1, IdeaFinalizeMessage::class, 'jacques.picard@en-marche.fr');
+        $this->assertCountMails(1, IdeaFinalizePreNotificationMessage::class, 'jacques.picard@en-marche.fr');
     }
 
     public function setUp()

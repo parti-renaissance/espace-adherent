@@ -4,7 +4,6 @@ namespace Tests\AppBundle\Mailer\Message;
 
 use AppBundle\Entity\EventRegistration;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use Ramsey\Uuid\UuidInterface;
 
 class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 {
@@ -22,9 +21,7 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 
         $message = EventRegistrationConfirmationMessage::createFromRegistration($registration, self::EVENT_LINK);
 
-        $this->assertInstanceOf(EventRegistrationConfirmationMessage::class, $message);
-        $this->assertInstanceOf(UuidInterface::class, $message->getUuid());
-        $this->assertSame('118620', $message->getTemplate());
+        $this->assertSame('event-registration-confirmation', $message->generateTemplateName());
         $this->assertSame('john@bar.com', $message->getRecipient(0)->getEmailAddress());
         $this->assertSame('John', $message->getRecipient(0)->getFullName());
         $this->assertSame('Confirmation de participation à un événement En Marche !', $message->getSubject());
@@ -39,14 +36,6 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTest
 
         $recipient = $message->getRecipient(0);
 
-        $this->assertSame(
-            [
-                'event_name' => 'Grand Meeting de Paris',
-                'event_organiser' => 'Michelle',
-                'event_link' => self::EVENT_LINK,
-                'prenom' => 'John',
-            ],
-            $recipient->getVars()
-        );
+        $this->assertSame(['prenom' => 'John'], $recipient->getVars());
     }
 }

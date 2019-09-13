@@ -9,17 +9,12 @@ final class DataSurveyAnsweredMessage extends Message
 {
     public static function create(DataSurvey $dataSurvey): self
     {
-        $message = new self(
+        return new self(
             Uuid::uuid4(),
-            '665490',
             $dataSurvey->getEmailAddress(),
             null,
-            '',
-            [
-                'first_name' => (string) $dataSurvey->getFirstName(),
-            ]
+            'Votre adhésion à La République En Marche !',
+            ['first_name' => (string) $dataSurvey->getFirstName()]
         );
-
-        return $message;
     }
 }

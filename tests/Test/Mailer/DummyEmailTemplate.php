@@ -2,9 +2,9 @@
 
 namespace Tests\AppBundle\Test\Mailer;
 
-use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailTemplate;
 
-class DummyEmailTemplate extends EmailTemplate
+class DummyEmailTemplate extends AbstractEmailTemplate
 {
     public function addRecipient(string $email, string $name = null, array $vars = [])
     {

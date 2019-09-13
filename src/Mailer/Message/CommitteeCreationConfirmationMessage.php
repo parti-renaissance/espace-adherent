@@ -11,7 +11,6 @@ class CommitteeCreationConfirmationMessage extends Message
     {
         return new self(
             Uuid::uuid4(),
-            '54689',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre comité sera bientôt en ligne',

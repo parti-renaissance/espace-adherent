@@ -8,6 +8,7 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\AppBundle\Mandrill\MailAssertTrait;
 
 /**
  * @group functional
@@ -16,6 +17,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 class LegislativesControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+    use MailAssertTrait;
 
     /**
      * @var EmailRepository
@@ -86,24 +88,22 @@ class LegislativesControllerTest extends WebTestCase
         $emails = $this->emailRepository->findRecipientMessages(LegislativeCampaignContactMessage::class, $expectedRecipient);
         $this->assertCount(1, $emails);
 
-        $payload = $emails[0]->getRequestPayload();
+        $email = $emails[0];
 
-        $this->assertSame('Marc Dupont', $payload['FromName']);
-        $this->assertSame('Élections Législatives - Nouvelle demande de contact', $payload['Subject']);
-        $this->assertSame('143247', $payload['MJ-TemplateID']);
-        $this->assertSame(
-            [
-                'email' => 'marc1337@gmail.tld',
-                'first_name' => 'Marc',
-                'last_name' => 'Dupont',
-                'department_number' => '92',
-                'electoral_district_number' => '3',
-                'role' => 'Responsable communication',
-                'subject' => 'Avez-vous pensez aux réseaux sociaux ?',
-                'message' => 'Puis-je avoir accès aux comptes Twitter  et Facebook  svp ?',
-            ],
-            $payload['Vars']
-        );
+        self::assertMailSubject('Élections Législatives - Nouvelle demande de contact', $email);
+        self::assertMailFromName('Marc Dupont', $email);
+        self::assertMailTemplateName('legislative-campaign-contact', $email);
+
+        self::assertMailVars([
+            'email' => 'marc1337@gmail.tld',
+            'first_name' => 'Marc',
+            'last_name' => 'Dupont',
+            'department_number' => '92',
+            'electoral_district_number' => '3',
+            'role' => 'Responsable communication',
+            'subject' => 'Avez-vous pensez aux réseaux sociaux ?',
+            'message' => 'Puis-je avoir accès aux comptes Twitter  et Facebook  svp ?',
+        ], $email);
 
         $crawler = $this->client->followRedirect();
 

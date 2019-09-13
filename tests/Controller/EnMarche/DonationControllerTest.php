@@ -6,7 +6,7 @@ use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
 use AppBundle\Entity\Transaction;
-use AppBundle\Mailer\Message\DonationMessage;
+use AppBundle\Mailer\Message\DonationThanksMessage;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\DonatorIdentifierRepository;
 use AppBundle\Repository\DonatorRepository;
@@ -128,7 +128,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationThanksMessage::class));
 
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
@@ -230,7 +230,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame('000053', $donator->getIdentifier());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(DonationThanksMessage::class));
     }
 
     /**
@@ -282,7 +282,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame($duration, $donation->getDuration());
 
         // Email should not have been sent
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationThanksMessage::class));
 
         // We should be redirected to payment
         $this->assertClientIsRedirectedTo(sprintf('/don/%s/paiement', $donation->getUuid()->toString()), $appClient);
@@ -353,7 +353,7 @@ class DonationControllerTest extends WebTestCase
         self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
         $this->assertNull($transaction->getPayboxTransactionId());
         // Email should not have been sent
-        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationMessage::class));
+        $this->assertCount(0, $this->getEmailRepository()->findMessages(DonationThanksMessage::class));
 
         $retryUrl = $crawler->selectLink('Je souhaite réessayer')->attr('href');
         $retryUrlRegExp = '/don/coordonnees\?donation_retry_payload=(.*)&montant=30';
