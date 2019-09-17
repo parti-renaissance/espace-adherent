@@ -54,8 +54,12 @@ class SegmentConditionsBuilder
     private function getListId(AdherentMessageInterface $message): string
     {
         if ($filter = $message->getFilter()) {
-            if ($filter instanceof MunicipalChiefFilter && $filter->getContactAdherents()) {
-                return $this->mailchimpObjectIdMapping->getMainListId();
+            if ($filter instanceof MunicipalChiefFilter && ($filter->getContactAdherents() || $filter->getContactNewsletter())) {
+                if ($filter->getContactAdherents()) {
+                    return $this->mailchimpObjectIdMapping->getMainListId();
+                }
+
+                return $this->mailchimpObjectIdMapping->getNewsletterListId();
             }
 
             if ($filter instanceof ReferentUserFilter && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())) {

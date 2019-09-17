@@ -79,6 +79,13 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
      */
     private $contactAdherents = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $contactNewsletter = false;
+
     public function __construct(string $inseeCode)
     {
         $this->inseeCode = $inseeCode;
@@ -174,6 +181,16 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
         $this->contactAdherents = $contactAdherents;
     }
 
+    public function getContactNewsletter(): bool
+    {
+        return $this->contactNewsletter;
+    }
+
+    public function setContactNewsletter(bool $contactNewsletter): void
+    {
+        $this->contactNewsletter = $contactNewsletter;
+    }
+
     /**
      * @Assert\IsTrue(message="adherent_message.filter.municipal_chief.empty_contact_type")
      */
@@ -184,6 +201,7 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
             || $this->getContactOnlyRunningMates()
             || $this->getContactOnlyVolunteers()
             || $this->getContactAdherents()
+            || $this->getContactNewsletter()
         ;
     }
 }

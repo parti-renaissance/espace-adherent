@@ -16,6 +16,7 @@ class MailchimpObjectIdMapping
     private $memberInterestInterestGroupId;
     private $subscriptionTypeInterestGroupId;
     private $applicationRequestTagIds;
+    private $newsletterTagIds;
 
     public function __construct(
         string $mainListId,
@@ -27,7 +28,8 @@ class MailchimpObjectIdMapping
         string $memberGroupInterestGroupId,
         string $memberInterestInterestGroupId,
         string $subscriptionTypeInterestGroupId,
-        array $applicationRequestTagIds
+        array $applicationRequestTagIds,
+        array $newsletterTagIds
     ) {
         $this->mainListId = $mainListId;
         $this->newsletterListId = $newsletterListId;
@@ -39,6 +41,7 @@ class MailchimpObjectIdMapping
         $this->memberInterestInterestGroupId = $memberInterestInterestGroupId;
         $this->subscriptionTypeInterestGroupId = $subscriptionTypeInterestGroupId;
         $this->applicationRequestTagIds = $applicationRequestTagIds;
+        $this->newsletterTagIds = $newsletterTagIds;
     }
 
     public function getFolderIdByType(string $messageType): ?string
@@ -98,5 +101,10 @@ class MailchimpObjectIdMapping
     public function getApplicationRequestTagIds(): array
     {
         return $this->applicationRequestTagIds;
+    }
+
+    public function getNewsletterTagIds(): array
+    {
+        return $this->newsletterTagIds;
     }
 }

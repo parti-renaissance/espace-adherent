@@ -13,7 +13,14 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
 {
     public function support(AdherentMessageFilterInterface $filter): bool
     {
-        return $filter instanceof MunicipalChiefFilter && false === $filter->getContactAdherents();
+        return
+            $filter instanceof MunicipalChiefFilter
+            && (
+                $filter->getContactOnlyRunningMates()
+                || $filter->getContactOnlyVolunteers()
+                || $filter->getContactRunningMateTeam()
+                || $filter->getContactVolunteerTeam()
+            );
     }
 
     public function build(MailchimpCampaign $campaign): array
