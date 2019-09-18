@@ -80,12 +80,23 @@
         <div class="manager-overview__row">
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                <h1 class="manager-overview__case--title">Mes tracts</h1>
+                <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour créer vos tracts de campagne.</p>
+                <footer class="manager-overview__case--footer">
+                    <a href="https://muni2020.lamaisondesimpressions.fr/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
+                </footer>
+            </div>
+            <div class="manager-overview__case">
+                <span class="manager-overview__case--section">Communication & Mobilisation</span>
                 <h1 class="manager-overview__case--title">Ce qui a changé près de chez vous</h1>
                 <p class="manager-overview__case--baseline">Les 2 ans du quinquennat</p>
                 <footer class="manager-overview__case--footer">
                     <a href="https://chezvous.en-marche.fr/" target="_blank" class="btn btn btn--ghosting--blue">Consulter</a>
                 </footer>
             </div>
+        </div>
+
+        <div class="manager-overview__row">
             {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
@@ -96,6 +107,18 @@
                     </p>
                     <footer class="manager-overview__case--footer">
                         <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
+                    </footer>
+                </div>
+                {% else %}
+                <div></div>
+            {% endif %}
+            {% if municipal_site_is_enabled(app.user) %}
+                <div class="manager-overview__case">
+                    <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                    <h1 class="manager-overview__case--title">Mon site</h1>
+                    <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour gérer votre site de campagne.</p>
+                    <footer class="manager-overview__case--footer">
+                        <a href="{{ dpt_api_host }}/admin/auth/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
                 </div>
                 {% else %}

@@ -119,6 +119,28 @@
                 }
             }
         }
+
+        h3.tab__item {
+            &--volunteer,
+            &--volunteer a {
+                color: $red--nation;
+                opacity: 0.75;
+
+                &.active {
+                    opacity: 1;
+                }
+            }
+
+            &--running_mate,
+            &--running_mate a {
+                color: $blue--nation;
+                opacity: 0.75;
+
+                &.active {
+                    opacity: 1;
+                }
+            }
+        }
     }
 }
 
