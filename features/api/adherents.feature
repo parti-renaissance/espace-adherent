@@ -123,7 +123,17 @@ Feature:
       "elected": false,
       "larem": false,
       "comments_cgu_accepted": false,
-      "detailed_roles": []
+      "detailed_roles": [
+        {
+          "label": "ROLE_REFERENT",
+          "codes": [
+            "75008",
+            "75009",
+            "75",
+            "77"
+          ]
+        }
+      ]
     }
     """
 
