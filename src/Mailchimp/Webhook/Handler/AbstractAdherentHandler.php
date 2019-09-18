@@ -45,7 +45,7 @@ abstract class AbstractAdherentHandler implements WebhookHandlerInterface
     {
         foreach (MailchimpSubscriptionLabelMapping::getMapping() as $label => $code) {
             if (\in_array($label, $mcLabels, true) && !\in_array($code, $adherentSubscriptionTypeCodes, true)) {
-                $userSubscriptionTypeCodes[] = $code;
+                $adherentSubscriptionTypeCodes[] = $code;
             } elseif (!\in_array($label, $mcLabels, true) && \in_array($code, $adherentSubscriptionTypeCodes, true)) {
                 unset($adherentSubscriptionTypeCodes[array_search($code, $adherentSubscriptionTypeCodes, true)]);
             }

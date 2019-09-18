@@ -30,4 +30,9 @@ final class MailchimpSubscriptionLabelMapping
     {
         return static::$mapping;
     }
+
+    public static function getMailchimpLabels(array $subscriptionTypeCodes): array
+    {
+        return array_keys(array_intersect(static::$mapping, $subscriptionTypeCodes));
+    }
 }

@@ -22,6 +22,8 @@ class AdherentUnsubscribeHandler extends AbstractAdherentHandler
     public function handle(array $data): void
     {
         if ($adherent = $this->getAdherent($data['email'])) {
+            $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+
             $adherent->setEmailUnsubscribed(true);
 
             $newSubscriptionTypes = $this->calculateNewSubscriptionTypes(
