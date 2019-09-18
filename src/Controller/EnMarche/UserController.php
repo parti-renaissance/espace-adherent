@@ -138,6 +138,8 @@ class UserController extends Controller
         $adherent = $this->getUser();
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
 
+        $dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
+
         $form = $this
             ->createForm(AdherentEmailSubscriptionType::class, $adherent, ['is_adherent' => $adherent->isAdherent()])
             ->handleRequest($request)
