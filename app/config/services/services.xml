@@ -80,6 +80,7 @@
 
         <!-- Donation -->
         <service id="AppBundle\Command\DonationUpdateReferenceCommand" />
+        <service id="AppBundle\Command\ImportDonationsCommand" />
         <service id="AppBundle\Command\ImportDonationCoordinatesCommand" />
         <service id="AppBundle\Validator\PayboxSubscriptionValidator" />
         <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />

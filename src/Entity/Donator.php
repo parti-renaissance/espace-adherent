@@ -13,8 +13,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     name="donators",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="donator_identifier_unique", columns="identifier"),
- *     *   @ORM\UniqueConstraint(name="donator_unique_matching", columns={"email_address", "first_name", "last_name"}),
- *     }
+ *     },
+ *     indexes={
+ *         @ORM\Index(columns={"email_address", "first_name", "last_name"}),
+ *     },
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonatorRepository")
  *
@@ -80,9 +82,8 @@ class Donator
     private $country = 'FR';
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      *
-     * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
@@ -103,7 +104,7 @@ class Donator
         ?string $firstName,
         ?string $city,
         string $country,
-        string $emailAddress
+        ?string $emailAddress = null
     ) {
         $this->lastName = $lastName;
         $this->firstName = $firstName;

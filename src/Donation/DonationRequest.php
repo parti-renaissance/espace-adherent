@@ -4,6 +4,7 @@ namespace AppBundle\Donation;
 
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Donation;
 use AppBundle\Form\DonationRequestType;
 use AppBundle\Validator\MaxFiscalYearDonation;
 use AppBundle\Validator\MaxMonthDonation;
@@ -123,11 +124,14 @@ class DonationRequest
      */
     private $confirmSubscriptionAmount;
 
+    private $type;
+
     public function __construct(
         UuidInterface $uuid,
         string $clientIp,
         float $amount = self::DEFAULT_AMOUNT,
-        int $duration = PayboxPaymentSubscription::NONE
+        int $duration = PayboxPaymentSubscription::NONE,
+        string $type = Donation::TYPE_CB
     ) {
         $this->uuid = $uuid;
         $this->clientIp = $clientIp;
@@ -135,6 +139,7 @@ class DonationRequest
         $this->country = Address::FRANCE;
         $this->setAmount($amount);
         $this->duration = $duration;
+        $this->type = $type;
     }
 
     public static function createFromAdherent(
@@ -354,5 +359,10 @@ class DonationRequest
     public function setNationality(string $nationality): void
     {
         $this->nationality = $nationality;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

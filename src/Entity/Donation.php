@@ -39,6 +39,17 @@ class Donation implements GeoPointInterface
     public const STATUS_FINISHED = 'finished';
     public const STATUS_ERROR = 'error';
 
+    public const TYPE_CB = 'cb';
+    public const TYPE_CHECK = 'check';
+    public const TYPE_TRANSFER = 'transfer';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $type;
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -55,7 +66,7 @@ class Donation implements GeoPointInterface
     private $gender;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $emailAddress;
 
@@ -121,19 +132,22 @@ class Donation implements GeoPointInterface
 
     public function __construct(
         UuidInterface $uuid,
-        string $payboxOrderRef,
+        string $type,
         int $amount,
         string $gender,
         string $firstName,
         string $lastName,
-        string $emailAddress,
+        ?string $emailAddress,
         PostAddress $postAddress,
-        string $clientIp,
+        ?string $clientIp,
         int $duration = PayboxPaymentSubscription::NONE,
+        string $payboxOrderRef = null,
         string $nationality = null,
-        Donator $donator = null
+        Donator $donator = null,
+        \DateTimeInterface $createdAt = null
     ) {
         $this->uuid = $uuid;
+        $this->type = $type;
         $this->amount = $amount;
         $this->gender = $gender;
         $this->firstName = $firstName;
@@ -141,10 +155,10 @@ class Donation implements GeoPointInterface
         $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
-        $this->createdAt = new Chronos();
+        $this->createdAt = $createdAt ?? new Chronos();
         $this->duration = $duration;
-        $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->payboxOrderRef = $payboxOrderRef;
+        $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->nationality = $nationality;
         $this->donator = $donator;
     }
@@ -174,6 +188,11 @@ class Donation implements GeoPointInterface
     {
         $this->subscriptionEndedAt = new \DateTimeImmutable();
         $this->status = self::STATUS_CANCELED;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function getAmount(): int
@@ -290,7 +309,7 @@ class Donation implements GeoPointInterface
         return self::STATUS_SUBSCRIPTION_IN_PROGRESS === $this->getStatus();
     }
 
-    public function getPayboxOrderRef(): string
+    public function getPayboxOrderRef(): ?string
     {
         return $this->payboxOrderRef;
     }

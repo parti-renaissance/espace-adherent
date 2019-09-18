@@ -84,11 +84,12 @@ class LoadDonationData extends Fixture
     public function createDonation(
         Adherent $adherent,
         float $amount = 50.0,
-        int $duration = PayboxPaymentSubscription::NONE
+        int $duration = PayboxPaymentSubscription::NONE,
+        string $type = Donation::TYPE_CB
     ): Donation {
         $donation = new Donation(
             $uuid = Uuid::uuid4(),
-            $uuid->toString().'_'.$this->slugify->slugify($adherent->getFullName()),
+            $type,
             $amount * 100,
             $adherent->getGender(),
             $adherent->getFirstName(),
@@ -97,6 +98,7 @@ class LoadDonationData extends Fixture
             $adherent->getPostAddress(),
             '127.0.0.1',
             $duration,
+            $uuid->toString().'_'.$this->slugify->slugify($adherent->getFullName()),
             Address::FRANCE
         );
 

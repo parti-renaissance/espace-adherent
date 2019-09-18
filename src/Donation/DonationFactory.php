@@ -20,10 +20,7 @@ class DonationFactory
     {
         return new Donation(
             $request->getUuid(),
-            $this->donationRequestUtils->buildDonationReference(
-                $request->getUuid(),
-                $request->getFirstName().' '.$request->getLastName()
-            ),
+            $request->getType(),
             $request->getAmount() * 100,
             $request->getGender(),
             $request->getFirstName(),
@@ -37,6 +34,10 @@ class DonationFactory
             ),
             $request->getClientIp(),
             $request->getDuration(),
+            $this->donationRequestUtils->buildDonationReference(
+                $request->getUuid(),
+                $request->getFirstName().' '.$request->getLastName()
+            ),
             $request->getNationality()
         );
     }
