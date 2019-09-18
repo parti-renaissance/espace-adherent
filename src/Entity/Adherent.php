@@ -1687,6 +1687,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $roles = [];
 
+        if ($this->isReferent()) {
+            $roles[] = [
+                'label' => 'ROLE_REFERENT',
+                'codes' => $this->getManagedAreaTagCodes(),
+            ];
+        }
+
         if ($this->isMunicipalChief()) {
             $roles[] = [
                 'label' => 'ROLE_MUNICIPAL_CHIEF',
