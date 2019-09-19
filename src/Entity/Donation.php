@@ -225,7 +225,7 @@ class Donation implements GeoPointInterface
         return $this->gender;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
