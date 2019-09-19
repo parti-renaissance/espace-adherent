@@ -475,11 +475,11 @@ timeline.measure.status.upcoming: à venir
 document.upload.success: Le document a été uploadé avec succès.
 
 #
-# Transactions
+# Donation
 #
-transaction.type.cb: Carte bleue
-transaction.type.check: Chèque
-transaction.type.transfer: Virement
+donation.type.cb: Carte bleue
+donation.type.check: Chèque
+donation.type.transfer: Virement
 
 silence_republican.referent_tags.label: Zones concernées par le silence républicain
 silence_republican.help: L'heure du silence se déclare sur l'heure de Paris. Si un silence a lieu à New-York de 12h à 16h, vous devez le déclarer de 18h à 22h car il y a -6h entre les 2 fuseaux horaires.
