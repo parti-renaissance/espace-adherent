@@ -21,8 +21,6 @@ class WebhookHandler
         foreach ($this->handlers as $handler) {
             if ($handler->support($type, $listId)) {
                 $handler->handle($data);
-
-                return;
             }
         }
     }
