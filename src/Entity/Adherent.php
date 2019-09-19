@@ -624,6 +624,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_MUNICIPAL_CHIEF';
         }
 
+        if ($this->hasPrintPrivilege()) {
+            $roles[] = 'ROLE_PRINT_PRIVILEGE';
+        }
+
         return array_merge($roles, $this->roles);
     }
 
