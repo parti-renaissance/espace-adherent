@@ -355,6 +355,10 @@ class AdherentAdmin extends AbstractAdmin
                     'required' => false,
                     'help' => "Laisser vide si l'adhérent n'est pas responsable J'écoute. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.",
                 ])
+                ->add('printPrivilege', null, [
+                    'label' => 'Accès à "La maison des impressions"',
+                    'required' => false,
+                ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
                 ->add('managedDistrict', 'sonata_type_model', [
@@ -610,6 +614,12 @@ class AdherentAdmin extends AbstractAdmin
                     if (\in_array(AdherentRoleEnum::MUNICIPAL_CHIEF, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.municipalChiefManagedArea', $alias), 'municipalChiefManagedArea');
                         $where->add('municipalChiefManagedArea IS NOT NULL');
+                    }
+
+                    // Print privilege
+                    if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value['value'], true)) {
+                        $where->add("$alias.printPrivilege = :printPrivilege");
+                        $qb->setParameter('printPrivilege', true);
                     }
 
                     if ($where->count()) {

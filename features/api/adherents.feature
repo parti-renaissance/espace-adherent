@@ -132,6 +132,9 @@ Feature:
             "75",
             "77"
           ]
+        },
+        {
+          "label": "ROLE_PRINT_PRIVILEGE"
         }
       ]
     }

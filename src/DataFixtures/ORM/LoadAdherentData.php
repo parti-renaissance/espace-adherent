@@ -463,6 +463,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             -1.6743,
             48.112
         );
+        $referent75and77->setPrintPrivilege(true);
         $referent75and77->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent75and77->addReferentTag($this->getReference('referent_tag_75'));
         $this->addReference('adherent-19', $referent75and77);
