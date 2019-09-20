@@ -25,8 +25,8 @@ export default class DonationAmountChooser extends React.Component {
     render() {
         return (
             <div className="donation__amount-chooser">
-                <div className="amount-chooser__monthly form__radio">
-                    <div>
+                <div className="amount-chooser__monthly">
+                    <div className="form__radio">
                         <input
                             type="radio"
                             name="abonnement"
@@ -39,7 +39,7 @@ export default class DonationAmountChooser extends React.Component {
                             Je donne une fois
                         </label>
                     </div>
-                    <div>
+                    <div className="form__radio">
                         <input
                             type="radio"
                             name="abonnement"
