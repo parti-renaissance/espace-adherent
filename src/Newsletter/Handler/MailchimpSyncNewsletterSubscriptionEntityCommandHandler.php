@@ -29,7 +29,10 @@ class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements Message
     public function __invoke(MailchimpSyncNewsletterSubscriptionEntityCommand $command): void
     {
         /** @var NewsletterSubscription|null $newsletter */
-        $newsletter = $this->repository->find($command->getNewsletterSubscriptionId());
+        $newsletter = $this->repository
+            ->disableSoftDeleteableFilter()
+            ->find($command->getNewsletterSubscriptionId())
+        ;
 
         if (!$newsletter) {
             return;
@@ -37,12 +40,10 @@ class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements Message
 
         $this->entityManager->refresh($newsletter);
 
-        if ($newsletter->isDeleted()) {
-            return;
-        }
-
         $this->manager->editNewsletterMember(NewsletterValueObject::createFromNewsletterSubscription($newsletter));
 
         $this->entityManager->clear();
+
+        $this->repository->enableSoftDeleteableFilter();
     }
 }

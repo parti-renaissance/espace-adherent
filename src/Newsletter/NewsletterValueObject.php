@@ -12,6 +12,7 @@ class NewsletterValueObject
     private $countryName;
     private $siteCode;
     private $type;
+    private $subscribed = true;
 
     public function getEmail(): ?string
     {
@@ -21,6 +22,16 @@ class NewsletterValueObject
     public function setEmail(?string $email): void
     {
         $this->email = $email;
+    }
+
+    public function isSubscribed(): bool
+    {
+        return $this->subscribed;
+    }
+
+    public function setSubscribed(bool $subscribed): void
+    {
+        $this->subscribed = $subscribed;
     }
 
     public function getZipCode(): ?string
@@ -71,6 +82,7 @@ class NewsletterValueObject
         $object->zipCode = $newsletter->getPostalCode();
         $object->countryName = $newsletter->getCountryName();
         $object->type = NewsletterTypeEnum::MAIN_SITE;
+        $object->subscribed = $newsletter->isNotDeleted();
 
         return $object;
     }

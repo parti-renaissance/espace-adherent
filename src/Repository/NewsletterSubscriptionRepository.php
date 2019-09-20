@@ -76,4 +76,22 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['email' => $email]);
     }
+
+    public function disableSoftDeleteableFilter(): self
+    {
+        if ($this->_em->getFilters()->has('softdeleteable') && $this->_em->getFilters()->isEnabled('softdeleteable')) {
+            $this->_em->getFilters()->disable('softdeleteable');
+        }
+
+        return $this;
+    }
+
+    public function enableSoftDeleteableFilter(): self
+    {
+        if ($this->_em->getFilters()->has('softdeleteable')) {
+            $this->_em->getFilters()->enable('softdeleteable');
+        }
+
+        return $this;
+    }
 }

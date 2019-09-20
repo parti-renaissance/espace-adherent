@@ -50,6 +50,7 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
             ->setCountryName($newsletter->getCountryName())
             ->setType($newsletter->getType())
             ->setSiteCode($newsletter->getSiteCode())
+            ->setIsSubscribeRequest($newsletter->isSubscribed())
         ;
     }
 
