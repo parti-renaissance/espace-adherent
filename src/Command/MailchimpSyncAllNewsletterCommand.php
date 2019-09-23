@@ -77,8 +77,8 @@ class MailchimpSyncAllNewsletterCommand extends Command
     private function getPaginator(): Paginator
     {
         $queryBuilder = $this->repository
+            ->disableSoftDeleteableFilter()
             ->createQueryBuilder('newsletter')
-            ->where('newsletter.deletedAt IS NULL')
             ->setMaxResults(500)
         ;
 
