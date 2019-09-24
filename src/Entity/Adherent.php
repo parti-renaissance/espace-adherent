@@ -429,6 +429,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $municipalChiefManagedArea;
 
+    /**
+     * Access to external services regarding printing
+     *
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $printPrivilege = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -613,6 +622,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isMunicipalChief()) {
             $roles[] = 'ROLE_MUNICIPAL_CHIEF';
+        }
+
+        if ($this->hasPrintPrivilege()) {
+            $roles[] = 'ROLE_PRINT_PRIVILEGE';
         }
 
         return array_merge($roles, $this->roles);
@@ -1701,6 +1714,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             ];
         }
 
+        if ($this->hasPrintPrivilege()) {
+            $roles[] = [
+                'label' => 'ROLE_PRINT_PRIVILEGE',
+            ];
+        }
+
         return $roles;
+    }
+
+    public function hasPrintPrivilege(): bool
+    {
+        return $this->printPrivilege;
+    }
+
+    public function setPrintPrivilege(bool $printPrivilege): void
+    {
+        $this->printPrivilege = $printPrivilege;
     }
 }
