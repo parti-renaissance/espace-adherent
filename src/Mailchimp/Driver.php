@@ -98,11 +98,11 @@ class Driver implements LoggerAwareInterface
         ]);
     }
 
-    public function createStaticSegment(string $name): array
+    public function createStaticSegment(string $name, array $emails = []): array
     {
         $response = $this->send('POST', sprintf('/lists/%s/segments', $this->listId), [
             'name' => $name,
-            'static_segment' => [],
+            'static_segment' => $emails,
         ]);
 
         return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];

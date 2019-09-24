@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\AdherentMessage\Filter;
 
+use AppBundle\Entity\AdherentSegment;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class ReferentUserFilter extends AbstractAdherentMessageFilter
+class ReferentUserFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface
 {
     /**
      * @var bool
@@ -139,6 +140,14 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $contactOnlyRunningMates = false;
+
+    /**
+     * @var AdherentSegment|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AdherentSegment")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $adherentSegment;
 
     public function __construct(array $referentTags)
     {
@@ -332,5 +341,15 @@ class ReferentUserFilter extends AbstractAdherentMessageFilter
     public function setContactOnlyRunningMates(bool $contactOnlyRunningMates): void
     {
         $this->contactOnlyRunningMates = $contactOnlyRunningMates;
+    }
+
+    public function getAdherentSegment(): ?AdherentSegment
+    {
+        return $this->adherentSegment;
+    }
+
+    public function setAdherentSegment(?AdherentSegment $adherentSegment): void
+    {
+        $this->adherentSegment = $adherentSegment;
     }
 }

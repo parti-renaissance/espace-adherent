@@ -196,6 +196,7 @@
         <service id="AppBundle\Form\EventRegistrationType"/>
         <service id="AppBundle\Form\ColorChoiceType"/>
         <service id="AppBundle\Form\DonationRequestType"/>
+        <service id="AppBundle\Form\AdherentSegmentType"/>
         <service id="AppBundle\Form\PurifiedTextareaType">
             <argument type="collection">
                 <argument key="default" type="service" id="app.html_purifier.default"/>

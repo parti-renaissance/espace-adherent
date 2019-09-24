@@ -67,7 +67,7 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('createdAt', DateRangeFilter::class, [
+            ->add('date', DateRangeFilter::class, [
                 'label' => 'Date de fusion',
                 'show_filter' => true,
                 'field_type' => DateRangePickerType::class,

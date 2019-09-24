@@ -237,6 +237,17 @@ export default class ReqwestApiClient {
         this._createRequest(callback, {
             url: '/adherent-message/' + uuid + '/statistics',
             type: 'json',
-        })
+        });
+    }
+
+    createUserSegmentList(data, callback) {
+        this._createRequest(callback, {
+            method: 'post',
+            contentType: 'application/json',
+            url: '/api/adherent-segments',
+            type: 'json',
+            data: JSON.stringify(data),
+            processData: false,
+        });
     }
 }

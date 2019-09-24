@@ -199,6 +199,12 @@ class App {
         });
     }
 
+    runManageUserSegment(wrapperSelector, checkboxSelector) {
+        System.import('pages/manage_user_segment').catch((error) => { throw error; }).then((module) => {
+            module.default(wrapperSelector, checkboxSelector, this.get('api'));
+        });
+    }
+
     runGrandeMarcheEurope() {
         System.import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
             module.default();

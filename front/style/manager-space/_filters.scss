@@ -197,7 +197,6 @@
         }
 
         .form__checkbox {
-
             input:disabled + .form__label {
                 color: rgba(123,136,155,0.5);
                 cursor: not-allowed;
@@ -207,6 +206,5 @@
                 }
             }
         }
-
     }
 }

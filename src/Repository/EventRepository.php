@@ -498,12 +498,11 @@ SQL;
                 ->setParameter('new_value', null)
             ;
         } else {
-            $qb->delete()
-                ->set('e.organizer', $qb->expr()->literal(null))
-            ;
+            $qb->delete();
         }
 
-        $qb->where('e.organizer = :organizer')
+        $qb
+            ->where('e.organizer = :organizer')
             ->setParameter('organizer', $organizer)
         ;
 

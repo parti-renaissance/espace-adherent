@@ -43,6 +43,13 @@
             color: $white;
         }
     }
+
+    &--disabled {
+        background-color: white;
+        border: 1px solid $lines-grey;
+        color: $lines-grey;
+        cursor: not-allowed;
+    }
 }
 
 
