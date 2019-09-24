@@ -78,16 +78,16 @@
         {% endif %}
 
         <div class="manager-overview__row">
-            {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
-                <div class="manager-overview__case">
+            <div class="manager-overview__case">
+                {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
                     <h1 class="manager-overview__case--title">Mes tracts</h1>
                     <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour créer vos tracts de campagne.</p>
                     <footer class="manager-overview__case--footer">
                         <a href="https://muni2020.lamaisondesimpressions.fr/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
             <div class="manager-overview__case">
                 <span class="manager-overview__case--section">Communication & Mobilisation</span>
                 <h1 class="manager-overview__case--title">Ce qui a changé près de chez vous</h1>
