@@ -33,7 +33,7 @@ class FranceCitiesBundle
      */
     public static function getCity(string $postalCode, string $inseeCode)
     {
-        return self::$cities[$postalCode][$inseeCode] ?? null;
+        return self::$cities[$postalCode][$inseeCode] ?? self::$cities[$postalCode][ltrim($inseeCode, '0')] ?? null;
     }
 
     /**
@@ -46,7 +46,7 @@ class FranceCitiesBundle
         if (empty($citiesByInsee)) {
             foreach (self::$cities as $cityByPostalCode) {
                 foreach ($cityByPostalCode as $inseeCode => $city) {
-                    $citiesByInsee[$inseeCode] = $city;
+                    $citiesByInsee[str_pad($inseeCode, 5, '0', \STR_PAD_LEFT)] = $city;
                 }
             }
         }
