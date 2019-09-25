@@ -25,32 +25,36 @@ export default class DonationAmountChooser extends React.Component {
     render() {
         return (
             <div className="donation__amount-chooser">
-                <div className="amount-chooser__monthly">
-                    <div className="form__radio">
-                        <input
-                            type="radio"
-                            name="abonnement"
-                            id="donation-one-time"
-                            value="0"
-                            defaultChecked={!this.state.abonnement}
-                            onChange={() => this.setState({ abonnement: false })}
-                        />
-                        <label htmlFor="donation-one-time" id="donation-one-time_label">
-                            Je donne une fois
-                        </label>
-                    </div>
-                    <div className="form__radio">
-                        <input
-                            type="radio"
-                            name="abonnement"
-                            id="donation-monthly"
-                            value="1"
-                            defaultChecked={this.state.abonnement}
-                            onChange={() => this.setState({ abonnement: true })}
-                        />
-                        <label htmlFor="donation-monthly" id="donation-monthly_label">
-                            Je donne chaque mois (paiement automatique)
-                        </label>
+                <div className="amount-chooser__monthly em-form__row">
+                    <div className="em-form__group em-form__radio--inline">
+                        <div className="flex-top">
+                            <div className="form__radio">
+                                <input
+                                    type="radio"
+                                    name="abonnement"
+                                    id="donation-one-time"
+                                    value="0"
+                                    defaultChecked={!this.state.abonnement}
+                                    onChange={() => this.setState({ abonnement: false })}
+                                />
+                                <label htmlFor="donation-one-time" id="donation-one-time_label">
+                                    Je donne une fois
+                                </label>
+                            </div>
+                            <div className="form__radio">
+                                <input
+                                    type="radio"
+                                    name="abonnement"
+                                    id="donation-monthly"
+                                    value="1"
+                                    defaultChecked={this.state.abonnement}
+                                    onChange={() => this.setState({ abonnement: true })}
+                                />
+                                <label htmlFor="donation-monthly" id="donation-monthly_label">
+                                    Je donne chaque mois <br />(paiement automatique)
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
