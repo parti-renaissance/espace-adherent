@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CitizenActionControllerTest extends AbstractEventControllerTest
 {
+    /**
+     * @var \AppBundle\Repository\EventRegistrationRepository
+     */
+    private $repository;
+
     public function testAnonymousUserCanRegisterToCitizenAction()
     {
         $registrations = $this->getEventRegistrationRepository()->findAll();
@@ -35,7 +40,6 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
             'event_registration[lastName]' => 'Guest',
             'event_registration[emailAddress]' => 'anonymous.guest@exemple.org',
             'event_registration[acceptTerms]' => '1',
-            'event_registration[personalDataCollection]' => true,
         ]));
 
         /** @var EventRegistration[] $registrations */
@@ -66,9 +70,7 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         // Adherent is already subscribed to mails
         $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
 
-        $form = $crawler->selectButton("Je m'inscris")->form();
-        $form['event_registration[personalDataCollection]']->tick();
-        $this->client->submit($form);
+        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findGuestRegistration(LoadCitizenActionData::CITIZEN_ACTION_3_UUID, 'benjyd@aol.com'));
 

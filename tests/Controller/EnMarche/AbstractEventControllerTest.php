@@ -76,7 +76,6 @@ abstract class AbstractEventControllerTest extends WebTestCase
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form([
             'event_registration[acceptTerms]' => '1',
-            'event_registration[personalDataCollection]' => '1',
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
