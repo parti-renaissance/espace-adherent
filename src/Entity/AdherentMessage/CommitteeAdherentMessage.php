@@ -29,11 +29,6 @@ class CommitteeAdherentMessage extends AbstractAdherentMessage
         return AdherentMessageTypeEnum::COMMITTEE;
     }
 
-    public function hasReadOnlyFilter(): bool
-    {
-        return true;
-    }
-
     public function updateFromDataObject(AdherentMessageDataObject $dataObject): AdherentMessageInterface
     {
         parent::updateFromDataObject($dataObject);

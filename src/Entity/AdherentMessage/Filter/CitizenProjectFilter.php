@@ -9,8 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class CitizenProjectFilter extends AbstractAdherentMessageFilter
+class CitizenProjectFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface
 {
+    use AdherentSegmentAwareFilterTrait;
+
     /**
      * @var CitizenProject
      *

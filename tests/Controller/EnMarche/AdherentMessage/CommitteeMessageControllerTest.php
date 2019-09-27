@@ -33,8 +33,8 @@ class CommitteeMessageControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         self::assertSame(
-            'Message aux membres du comité En Marche - Suisse',
-            trim($crawler->filter('main section div.text--center')->text())
+            'Message aux membres du comité:',
+            trim($crawler->filter('main .manager__filters__row .filter__label')->text())
         );
     }
 

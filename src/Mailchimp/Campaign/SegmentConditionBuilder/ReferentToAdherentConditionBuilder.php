@@ -97,7 +97,7 @@ class ReferentToAdherentConditionBuilder extends AbstractConditionBuilder
         }
 
         if ($city = $campaign->getCity()) {
-            $field = is_numeric(substr($city, 0, 1))
+            $field = is_numeric($city[0])
                 ? MemberRequest::MERGE_FIELD_ZIP_CODE
                 : MemberRequest::MERGE_FIELD_CITY
             ;

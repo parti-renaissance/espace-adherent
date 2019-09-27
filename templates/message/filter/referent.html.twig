@@ -106,6 +106,12 @@
                             {{ form_widget(form.city, {attr: {class: 'filter__field candidate-incompatible', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
                             {{ form_errors(form.city) }}
                         </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Liste de diffusion</label>
+                            {{ form_widget(form.adherentSegment, {attr: {class: 'filter__field candidate-incompatible'}}) }}
+                            {{ form_errors(form.adherentSegment) }}
+                        </div>
                     </div>
                 </div>
             </div>

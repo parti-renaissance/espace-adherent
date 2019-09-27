@@ -13,7 +13,7 @@ use AppBundle\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class UpdateCommitteeStaticSegmentHandler implements MessageHandlerInterface
+class UpdateStaticSegmentHandler implements MessageHandlerInterface
 {
     private $mailchimpManager;
     private $adherentRepository;
@@ -33,6 +33,7 @@ class UpdateCommitteeStaticSegmentHandler implements MessageHandlerInterface
     {
         /** @var Adherent $adherent */
         $adherent = $this->adherentRepository->findOneByUuid($command->getAdherentUuid()->toString());
+
         /** @var StaticSegmentInterface $object */
         $object = $this->entityManager
             ->getRepository($command->getEntityClass())
@@ -48,7 +49,11 @@ class UpdateCommitteeStaticSegmentHandler implements MessageHandlerInterface
 
         if (!$object->getMailchimpId()) {
             throw new StaticSegmentIdMissingException(
-                sprintf('Committee "%s" does not have Mailchimp static segment id', $object->getUuid()->toString())
+                sprintf(
+                    '%s "%s" does not have Mailchimp static segment id',
+                    $object->getUuid()->toString(),
+                    basename(str_replace('\\', '/', \get_class($object)))
+                )
             );
         }
 

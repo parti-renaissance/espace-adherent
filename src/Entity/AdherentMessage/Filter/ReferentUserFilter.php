@@ -11,8 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class ReferentUserFilter extends AbstractAdherentMessageFilter
+class ReferentUserFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface
 {
+    use AdherentSegmentAwareFilterTrait;
+
     /**
      * @var bool
      *

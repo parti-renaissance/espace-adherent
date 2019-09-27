@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
 use AppBundle\Entity\AdherentResetPasswordToken;
+use AppBundle\Entity\AdherentSegment;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\CitizenAction;
@@ -70,6 +71,7 @@ class AdherentRegistry
         $this->em->getRepository(CommitteeFeedItem::class)->removeAuthorItems($adherent);
         $this->em->getRepository(Report::class)->anonymizeAuthorReports($adherent);
         $this->em->getRepository(AbstractAdherentMessage::class)->removeAuthorItems($adherent);
+        $this->em->getRepository(AdherentSegment::class)->removeAuthorItems($adherent);
 
         $this->em->getRepository(VolunteerRequest::class)->updateAdherentRelation($adherent->getEmailAddress(), null);
         $this->em->getRepository(RunningMateRequest::class)->updateAdherentRelation($adherent->getEmailAddress(), null);

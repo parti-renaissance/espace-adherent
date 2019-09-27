@@ -17,6 +17,8 @@
                     theme: 'default em-filters'
                 });
             }
+
+            App.runManageUserSegment('.user-segment-manager-wrapper', 'input[name="members[]"]');
         });
     </script>
 {% endblock %}
@@ -257,10 +259,14 @@
     </div>
 
     <div class="datagrid">
+
+        <div class="user-segment-manager-wrapper"></div>
+
         <div class="b__nudge--bottom-larger">
             <table class="datagrid__table-manager">
                 <thead>
                     <tr>
+                        <td width="50" class="space--20"><input type="checkbox" id="members-check-all" /></td>
                         {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
                         <th style="width: 100px;">
                             <a
@@ -287,6 +293,7 @@
                 <tbody>
                 {% for user in results %}
                     <tr class="referent__item referent__item--{{ user.styleType }}">
+                        <td><input type="checkbox" name="members[]" value="{{ user.originalId }}" /></td>
                         <td class="adherent-identity">
                             <div class="adherent-name">
                                 {{ user.lastName }} {{ user.firstName }}

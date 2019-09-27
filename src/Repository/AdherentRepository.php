@@ -787,4 +787,17 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getOneOrNullResult()
         ;
     }
+
+    public function findIdByUuids(array $uuids): array
+    {
+        return array_column(
+            $this->createQueryBuilder('a')
+                ->select('a.id')
+                ->where('a.uuid IN (:uuids)')
+                ->setParameter('uuids', $uuids)
+                ->getQuery()
+                ->getResult(),
+            'id'
+        );
+    }
 }

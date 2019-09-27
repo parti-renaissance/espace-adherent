@@ -6,6 +6,8 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runManageParticipants();
+
+            App.runManageUserSegment('.user-segment-manager-wrapper', 'input[name="members[]"]');
         });
     </script>
 {% endblock %}
@@ -20,12 +22,7 @@
 
         <div class="committee__members__nav">
             <div>
-                <form method="post" action="{{ path('app_committee_contact_members', {slug: committee.slug}) }}">
-                    <input type="hidden" name="token" value="{{ csrf_token('committee.contact_members') }}" id="members-contact-token" />
-                    <input type="hidden" name="contacts" value="" id="members-contact-selection" />
-
-                    <button id="members-contact-button" class="btn-secondary btn-secondary--blue" disabled="disabled">Contacter</button>
-                </form>
+                <div class="user-segment-manager-wrapper"></div>
 
                 <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}" class="b__nudge--bottom b__nudge--left-small">
                     <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
@@ -34,6 +31,7 @@
                 </form>
             </div>
         </div>
+
         <table class="datagrid__table-manager" cellpadding="10">
             <thead>
                 <tr>
