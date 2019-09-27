@@ -279,6 +279,7 @@
         </service>
         <service id="AppBundle\Normalizer\IdeaDenormalizer" />
         <service id="AppBundle\Normalizer\AuthorDenormalizer" />
+        <service id="AppBundle\Normalizer\AdherentSegmentDenormalizer" />
         <service id="AppBundle\Normalizer\DptSiteNewsletterCommandDenormalizer" />
         <service id="AppBundle\Normalizer\AuthorNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>

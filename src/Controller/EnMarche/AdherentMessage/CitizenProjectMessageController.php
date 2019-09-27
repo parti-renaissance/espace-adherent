@@ -7,6 +7,7 @@ use AppBundle\AdherentMessage\AdherentMessageFactory;
 use AppBundle\AdherentMessage\AdherentMessageManager;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
@@ -146,19 +147,54 @@ class CitizenProjectMessageController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/filtrer", name="filter", methods={"GET"})
+     * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
     public function filterMessageAction(
+        Request $request,
         CitizenProjectAdherentMessage $message,
-        CitizenProject $citizenProject
+        CitizenProject $citizenProject,
+        FilterFormFactory $formFactory,
+        AdherentMessageManager $manager,
+        UserInterface $adherent
     ): Response {
         if ($message->isSent()) {
-            throw new BadRequestHttpException('This message has already been sent.');
+            throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        return $this->renderTemplate('message/filter/citizen_project.html.twig', $citizenProject, ['message' => $message]);
+        // Reset Filter object
+        if ($request->query->has('reset') && $message->getFilter()) {
+            $manager->updateFilter($message, null);
+
+            return $this->redirectToRoute('app_message_citizen_project_filter', [
+                'uuid' => $message->getUuid()->toString(),
+                'citizen_project_slug' => $citizenProject->getSlug(),
+            ]);
+        }
+
+        $data = $message->getFilter() ?? new CitizenProjectFilter($citizenProject);
+
+        $form = $formFactory
+            ->createForm($message->getType(), $data, $adherent)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->updateFilter($message, $form->getData());
+
+            $this->addFlash('info', 'adherent_message.filter_updated');
+
+            return $this->redirectToRoute('app_message_citizen_project_filter', [
+                'uuid' => $message->getUuid()->toString(),
+                'citizen_project_slug' => $citizenProject->getSlug(),
+            ]);
+        }
+
+        return $this->renderTemplate('message/filter/citizen_project.html.twig', $citizenProject, [
+            'message' => $message,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

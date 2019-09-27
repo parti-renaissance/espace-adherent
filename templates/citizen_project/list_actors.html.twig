@@ -8,7 +8,7 @@
     {% if is_cp_administrator %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                App.runManageParticipants();
+                App.runManageUserSegment('.user-segment-manager-wrapper', 'input[name="members[]"]');
             });
         </script>
     {% endif %}
@@ -20,10 +20,13 @@
     <div class="datagrid__pre-table b__nudge--bottom-larger">
         <h3>Adhérents</h3>
     </div>
-
+    <div class="user-segment-manager-wrapper"></div>
     <table class="datagrid__table-manager">
         <thead>
             <tr>
+                {% if is_cp_administrator %}
+                    <th><input type="checkbox" id="members-check-all" /></th>
+                {% endif %}
                 <th>Prénom</th>
                 <th>Nom</th>
                 {% if is_cp_administrator %}
@@ -44,6 +47,9 @@
                 {% set member = actor.adherent %}
                 {% set is_promotable_host = actor.promotableAdministrator %}
                 <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
+                    {% if is_cp_administrator %}
+                        <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
+                    {% endif %}
                     <td class="member-first-name">{{ member.firstName|default('~')|capitalize }}</td>
                     <td class="member-last-name">
                         {{ not is_cp_administrator ? member.lastNameInitial|upper : member.lastName}}

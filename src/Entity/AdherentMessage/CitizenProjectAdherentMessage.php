@@ -14,9 +14,4 @@ class CitizenProjectAdherentMessage extends AbstractAdherentMessage
     {
         return AdherentMessageTypeEnum::CITIZEN_PROJECT;
     }
-
-    public function hasReadOnlyFilter(): bool
-    {
-        return true;
-    }
 }
