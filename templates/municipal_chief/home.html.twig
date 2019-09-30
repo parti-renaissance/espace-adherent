@@ -111,9 +111,10 @@
                         <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
                 </div>
-                {% else %}
+            {% else %}
                 <div></div>
             {% endif %}
+
             {% if municipal_site_is_enabled(app.user) %}
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
