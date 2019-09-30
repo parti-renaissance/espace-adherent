@@ -48,7 +48,7 @@
                         <li>
                             <a href="{{ path('app_user_profile_donation') }}">Mes dons</a>
                         </li>
-                        {% if app.user.isHost or app.user.isMunicipalChief %}
+                        {% if is_granted('ROLE_FORMATION_SPACE') %}
                             <li class="visually-hidden">
                                 <a href="{{ path('app_formation_home') }}" class="is-new">Je me forme</a>
                             </li>
