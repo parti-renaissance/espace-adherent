@@ -404,6 +404,8 @@
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
 
+        <service id="AppBundle\Event\EventListener\EventRegistrationNewsletterSubscriber" />
+
         <!-- CitizenProject subscriber -->
         <service id="AppBundle\CitizenProject\EventListener\CitizenProjectSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>

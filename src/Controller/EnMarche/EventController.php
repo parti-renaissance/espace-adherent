@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/evenements/{slug}")
@@ -57,24 +58,33 @@ class EventController extends Controller
      * @Route("/inscription", name="app_event_attend", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
-    public function attendAction(Request $request, Event $event): Response
+    public function attendAction(Request $request, Event $event, ?UserInterface $adherent): Response
     {
         if ($event->isFinished()) {
             throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
 
-        if ($this->isGranted('IS_ANONYMOUS')
+        if ($event->isFull()) {
+            $this->addFlash('info', 'L\'événement est complet');
+
+            return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
+        }
+
+        if (
+            $this->isGranted('IS_ANONYMOUS')
             && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
         ) {
             return $authenticate;
         }
 
-        $command = new EventRegistrationCommand($event, $this->getUser());
-        $form = $this->createForm(EventRegistrationType::class, $command)
+        $command = new EventRegistrationCommand($event, $adherent);
+
+        $form = $this
+            ->createForm(EventRegistrationType::class, $command)
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($adherent || ($form->isSubmitted() && $form->isValid())) {
             $this->get('app.event.registration_handler')->handle($command);
             $this->addFlash('info', 'committee.event.registration.success');
 

@@ -68,15 +68,7 @@ abstract class AbstractEventControllerTest extends WebTestCase
 
         $this->assertCount(1, $registerLink = $crawler->selectLink('S’inscrire'));
 
-        $crawler = $this->register($this->client, $this->client->click($registerLink->link()), $eventRegistrationUrl);
-
-        $this->assertSame('Paul', $crawler->filter('#event_registration_firstName')->attr('value'));
-        $this->assertSame('Dupont', $crawler->filter('#event_registration_lastName')->attr('value'));
-        $this->assertSame('paul@dupont.tld', $crawler->filter('#event_registration_emailAddress')->attr('value'));
-
-        $this->client->submit($crawler->selectButton("Je m'inscris")->form([
-            'event_registration[acceptTerms]' => '1',
-        ]));
+        $this->register($this->client, $this->client->click($registerLink->link()), $eventRegistrationUrl);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 

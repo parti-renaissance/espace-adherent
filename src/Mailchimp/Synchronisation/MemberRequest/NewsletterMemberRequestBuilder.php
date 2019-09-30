@@ -88,6 +88,11 @@ class NewsletterMemberRequestBuilder extends AbstractMemberRequestBuilder
                 $request->addTag('EM!');
                 break;
 
+            case NewsletterTypeEnum::MAIN_SITE_FROM_EVENT:
+                $request->addTag('EM!');
+                $request->addTag('Ajouté depuis un événement');
+                break;
+
             case NewsletterTypeEnum::SITE_DEPARTMENTAL:
                 $request->addTag('Site départemental');
                 break;
