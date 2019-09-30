@@ -146,6 +146,10 @@ class UserController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($adherent->isEmailUnsubscribed() && array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions)) {
+                $adherent->setEmailUnsubscribed(false);
+            }
+
             $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
             $dispatcher->dispatch(UserEvents::USER_UPDATE_SUBSCRIPTIONS, new UserEvent($adherent, null, null, $oldEmailsSubscriptions));
 
