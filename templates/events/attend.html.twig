@@ -60,7 +60,11 @@
                     {{ form_widget(form.acceptTerms) }}
                     {{ form_errors(form.acceptTerms) }}
                     <label for="{{ form.acceptTerms.vars.id }}">
-                        En participant à cet événement, vous acceptez de partager vos nom et prénom à l'organisateur.
+                        {{ 'event.personal_data_collect'|trans({'%organisator_name%':
+                            event.organizer ?
+                                (has_role_adherent ? event.organizer.fullName : event.organizer.partialName)
+                                : ''
+                        }) }}
                     </label>
                 </div>
 
@@ -69,21 +73,17 @@
                         {{ form_widget(form.newsletterSubscriber) }}
                         {{ form_errors(form.newsletterSubscriber) }}
                         <label for="{{ form.newsletterSubscriber.vars.id }}">
-                            J'accepte de recevoir les e-mails En Marche !
+                            Je souhaite être informé(e) de l'actualité de La République En Marche par e-mail (optionnel)
                         </label>
                     </div>
                 {% endif %}
-
-                <div class="form__checkbox">
-                    {{ form_row(form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous" }) }}
-                </div>
 
                 <div class="text--center">
                     {{ form_rest(form) }}
                     <button type="submit" class="btn btn--blue" id="attend-committee-event">
                         Je m'inscris
                     </button>
-                    <a  href="{{ path('app_event_show', {'slug': event.slug}) }}"
+                    <a  href="{{ path('app_event_show', {slug: event.slug}) }}"
                         class="btn">
                         Annuler
                     </a>

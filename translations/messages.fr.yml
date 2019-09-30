@@ -373,6 +373,7 @@ event.edit: Modifier l'événement
 event.cancel: Annuler l'événement
 event.manage_participants: Gérer les participants
 event.back_to_list: Retour à la liste des événements
+event.personal_data_collect: J’accepte que LaREM traite mes données personnelles ci-dessus et les partage avec l’organisateur de l’événement %organisator_name%
 
 #
 # Board Member

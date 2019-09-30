@@ -54,11 +54,10 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(4, $crawler->filter('.form__errors')->count());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
-        $this->assertSame('L\'acceptation des mentions d\'information est obligatoire pour donner suite à votre demande.', $crawler->filter('#event_registration_personalDataCollection_errors li.form__error')->text());
+        self::assertSame(3, $crawler->filter('.form__errors')->count());
+        self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-first-name .form__errors > li')->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-last-name .form__errors > li')->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $crawler->filter('#field-email-address .form__errors > li')->text());
 
         $this->client->submit($crawler->selectButton("Je m'inscris")->form([
             'event_registration' => [
@@ -67,7 +66,6 @@ class EventControllerTest extends AbstractEventControllerTest
                 'lastName' => '75001',
                 'newsletterSubscriber' => true,
                 'acceptTerms' => true,
-                'personalDataCollection' => true,
             ],
         ]));
 
@@ -105,16 +103,14 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Député', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('PARIS I', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('deputy@en-marche-dev.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
-        $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
+        self::assertSame('Député', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
+        self::assertSame('PARIS I', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
+        self::assertSame('deputy@en-marche-dev.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
+        self::assertSame(1, $crawler->filter('#field-accept-terms')->count());
         // Adherent is already subscribed to mails
-        $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
+        self::assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
 
-        $form = $crawler->selectButton("Je m'inscris")->form();
-        $form['event_registration[personalDataCollection]']->tick();
-        $this->client->submit($form);
+        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
