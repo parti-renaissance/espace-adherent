@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/espace-formation", name="app_formation_")
- * @Security("is_granted('ROLE_HOST') or is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @Security("is_granted('ROLE_FORMATION_SPACE')")
  */
 class FormationController extends Controller
 {

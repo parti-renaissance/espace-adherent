@@ -572,6 +572,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_MESSAGE_REDACTOR';
         }
 
+        if ($this->hasFormationSpaceAccess()) {
+            $roles[] = 'ROLE_FORMATION_SPACE';
+        }
+
         if ($this->isCoordinator()) {
             $roles[] = 'ROLE_COORDINATOR';
         }
@@ -1731,5 +1735,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setPrintPrivilege(bool $printPrivilege): void
     {
         $this->printPrivilege = $printPrivilege;
+    }
+
+    public function hasFormationSpaceAccess(): bool
+    {
+        return
+            $this->isHost()
+            || $this->isSupervisor()
+            || $this->isReferent()
+            || $this->isMunicipalChief()
+        ;
     }
 }
