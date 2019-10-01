@@ -102,15 +102,7 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame('Député', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        self::assertSame('PARIS I', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        self::assertSame('deputy@en-marche-dev.fr', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
-        self::assertSame(1, $crawler->filter('#field-accept-terms')->count());
-        // Adherent is already subscribed to mails
-        self::assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
-
-        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
@@ -144,18 +136,12 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertContains('1 inscrit', $headerText);
         $this->assertNotContains('JE VEUX PARTICIPER', $headerText);
 
-        $crawler = $this->client->request('GET', $eventUrl.'/inscription');
+        $this->client->request('GET', $eventUrl.'/inscription');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $crawler = $this->client->followRedirect();
 
-        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
-
-        $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertContains("L'événement est complet.", $crawler->filter('.form__errors')->text());
+        $this->assertSame("L'événement est complet", $crawler->filter('.flash .flash__inner')->text());
     }
 
     public function testAdherentCanInviteToEvent()
@@ -366,8 +352,6 @@ class EventControllerTest extends AbstractEventControllerTest
 
     public function testEventWithSpecialCharInTitle()
     {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-
         $event = $this->getEventRepository()->findOneByUuid(LoadEventData::EVENT_14_UUID);
         $eventUrl = sprintf('/evenements/%s/inscription', $event->getSlug());
         $crawler = $this->client->request('GET', $eventUrl);

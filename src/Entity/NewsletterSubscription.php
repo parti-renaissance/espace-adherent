@@ -67,11 +67,23 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
      */
     private $country;
 
-    public function __construct(?string $email = null, ?string $postalCode = null, ?string $country = null)
-    {
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $fromEvent;
+
+    public function __construct(
+        string $email = null,
+        string $postalCode = null,
+        string $country = null,
+        bool $fromEvent = false
+    ) {
         $this->email = $email;
         $this->postalCode = $postalCode;
         $this->country = $country;
+        $this->fromEvent = $fromEvent;
     }
 
     public function __toString()
@@ -122,5 +134,10 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
     public function getCountryName(): ?string
     {
         return $this->country ? Intl::getRegionBundle()->getCountryName($this->country) : null;
+    }
+
+    public function isFromEvent(): bool
+    {
+        return $this->fromEvent;
     }
 }

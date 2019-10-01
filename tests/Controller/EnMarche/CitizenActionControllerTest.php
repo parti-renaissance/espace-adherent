@@ -60,18 +60,9 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('1 inscrit', trim($crawler->filter('#members h3')->text()));
 
-        $crawler = $this->client->click($crawler->selectLink("S'inscrire")->link());
+        $this->client->click($crawler->selectLink("S'inscrire")->link());
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Benjamin', $crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
-        $this->assertSame('Duroc', $crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
-        $this->assertSame('benjyd@aol.com', $crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
-        $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
-        // Adherent is already subscribed to mails
-        $this->assertSame(0, $crawler->filter('#field-newsletter-subscriber')->count());
-
-        $this->client->submit($crawler->selectButton("Je m'inscris")->form());
-
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findGuestRegistration(LoadCitizenActionData::CITIZEN_ACTION_3_UUID, 'benjyd@aol.com'));
 
         $crawler = $this->client->followRedirect();
@@ -83,7 +74,7 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 inscrits', trim($crawler->filter('#members h3')->text()));
+        self::assertSame('2 inscrits', trim($crawler->filter('#members h3')->text()));
     }
 
     public function testExportIcalAction(): void

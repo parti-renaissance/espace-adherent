@@ -64,8 +64,11 @@ class MemberRequest implements MemberRequestInterface
             'email_address' => $this->emailAddress ?? $this->memberIdentifier,
             'email_type' => $this->emailType,
             'status' => $this->status,
-            'merge_fields' => $this->mergeFields,
         ];
+
+        if ($this->mergeFields) {
+            $data['merge_fields'] = $this->mergeFields;
+        }
 
         if ($this->interests) {
             $data['interests'] = $this->interests;

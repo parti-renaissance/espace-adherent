@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/action-citoyenne")
@@ -44,7 +45,7 @@ class CitizenActionController extends Controller
     /**
      * @Route("/{slug}/inscription", name="app_citizen_action_attend", methods={"GET", "POST"})
      */
-    public function attendAction(Request $request, CitizenAction $citizenAction): Response
+    public function attendAction(Request $request, CitizenAction $citizenAction, ?UserInterface $adherent): Response
     {
         if ($citizenAction->isFinished()) {
             throw $this->createNotFoundException(sprintf('CitizenAction "%s" is finished and does not accept registrations anymore', $citizenAction->getUuid()));
@@ -54,18 +55,27 @@ class CitizenActionController extends Controller
             throw $this->createNotFoundException(sprintf('CitizenAction "%s" is cancelled and does not accept registrations anymore', $citizenAction->getUuid()));
         }
 
-        if ($this->isGranted('IS_ANONYMOUS')
+        if ($citizenAction->isFull()) {
+            $this->addFlash('info', 'L\'événement est complet');
+
+            return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
+        }
+
+        if (
+            $this->isGranted('IS_ANONYMOUS')
             && $authenticate = $this->get(AnonymousFollowerSession::class)->start($request)
         ) {
             return $authenticate;
         }
 
-        $command = new EventRegistrationCommand($citizenAction, $this->getUser());
-        $form = $this->createForm(EventRegistrationType::class, $command)
+        $command = new EventRegistrationCommand($citizenAction, $adherent);
+
+        $form = $this
+            ->createForm(EventRegistrationType::class, $command)
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($adherent || ($form->isSubmitted() && $form->isValid())) {
             $this->get(CitizenActionRegistrationCommandHandler::class)->handle($command);
             $this->addFlash('info', 'citizen_action.registration.success');
 
