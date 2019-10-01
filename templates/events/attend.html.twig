@@ -23,7 +23,7 @@
                 </p>
             {% endif %}
 
-            <form action="{{ path("app_#{event.type}_attend", { slug: event.slug }) }}" method="post" id="committee-event-registration-form" class="em-form">
+            <form action="{{ path("app_#{event.type}_attend", { slug: event.slug }) }}" method="post" id="committee-event-registration-form">
                 {{ form_errors(form) }}
 
                 <div class="form__row" id="field-first-name">
@@ -73,7 +73,7 @@
                         {{ form_widget(form.newsletterSubscriber) }}
                         {{ form_errors(form.newsletterSubscriber) }}
                         <label for="{{ form.newsletterSubscriber.vars.id }}">
-                            Je souhaite être informé(e) de l'actualité de La République En Marche par e-mail <i>(optionnel)</i>
+                            Je souhaite recevoir la newsletter hebdomadaire de LaREM&nbsp;<i> (optionnel)</i>
                         </label>
                     </div>
                 {% endif %}
