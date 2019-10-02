@@ -97,11 +97,12 @@ export default class UserSegmentManager extends React.Component {
 
         if (this.state.isSuccess) {
             return (
-                <div>
+                <div className="text--center">
                     <img className="modal-content__success" src={successImage} alt={'success image'}/>
                     <div className="text--bold text--default-large text--center b__nudge--top">
-                        Votre liste a bien été créée
+                        Votre liste a bien été créée !
                     </div>
+                    <p>Retrouvez-la après l’étape de rédaction de votre message.</p>
                 </div>
             );
         }
