@@ -8,6 +8,7 @@ use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -77,12 +78,21 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
      */
     public function findAllTakenFor(string $inseeCode, ListFilter $filter = null): array
     {
-        return $this->createListQueryBuilder('r', $filter)
-            ->andWhere('r.takenForCity = :insee_code')
-            ->setParameter('insee_code', $inseeCode)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createListQueryBuilder('r', $filter);
+
+        if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode])) {
+            $qb
+                ->andWhere("CONCAT('#', r.takenForCity) LIKE :insee_code")
+                ->setParameter('insee_code', sprintf('%%#%s%%', rtrim($inseeCode, '0')))
+            ;
+        } else {
+            $qb
+                ->andwhere('r.takenForCity = :insee_code')
+                ->setParameter('insee_code', $inseeCode)
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     public function updateAdherentRelation(string $email, ?Adherent $adherent): void
@@ -134,8 +144,13 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         $orExpression = new Orx();
 
         foreach ($inseeCodes as $key => $code) {
-            $orExpression->add("FIND_IN_SET(:codes_$key, r.favoriteCities) > 0");
-            $qb->setParameter("codes_$key", $code);
+            if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$code])) {
+                $orExpression->add("CONCAT('#', REPLACE(r.favoriteCities, ',', '#')) LIKE :code_${key}");
+                $qb->setParameter("code_$key", sprintf('%%#%s%%', rtrim($code, '0')));
+            } else {
+                $orExpression->add("FIND_IN_SET(:code_$key, r.favoriteCities) > 0");
+                $qb->setParameter("code_$key", $code);
+            }
         }
 
         $qb->andWhere($orExpression);

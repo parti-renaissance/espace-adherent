@@ -21,17 +21,20 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
         /** @var MunicipalChiefFilter $filter */
         $filter = $campaign->getMessage()->getFilter();
 
-        if (!$filter->getInseeCode()) {
+        if (!$inseeCode = $filter->getInseeCode()) {
             throw new InvalidFilterException(
                 $campaign->getMessage(),
                 '[MunicipalChiefMessage] Message does not have a valid city value'
             );
         }
 
-        if (!$cityName = FranceCitiesBundle::getCityNameFromInseeCode($filter->getInseeCode())) {
+        $cityName = FranceCitiesBundle::getCityNameFromInseeCode($inseeCode) ??
+            FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode] ?? null;
+
+        if (!$cityName) {
             throw new InvalidFilterException(
                 $campaign->getMessage(),
-                sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $filter->getInseeCode())
+                sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $inseeCode)
             );
         }
 
@@ -39,7 +42,7 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
             'condition_type' => 'TextMerge',
             'op' => 'starts',
             'field' => MemberRequest::MERGE_FIELD_CITY,
-            'value' => $cityName.' (',
+            'value' => isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode]) ? $cityName : $cityName.' (',
         ]];
     }
 }

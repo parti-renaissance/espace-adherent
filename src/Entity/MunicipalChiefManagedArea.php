@@ -59,15 +59,21 @@ class MunicipalChiefManagedArea
     }
 
     /**
-     * @Assert\NotNull(message="La valeur saisie dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.")
+     * @Assert\NotNull(message="municipal_chief.invalid_city")
      */
     public function getCityName(): ?string
     {
-        return FranceCitiesBundle::getCityNameFromInseeCode((string) $this->inseeCode);
+        return FranceCitiesBundle::getCityNameFromInseeCode((string) $this->inseeCode)
+            ?? FranceCitiesBundle::SPECIAL_CITY_ZONES[$this->inseeCode] ?? null;
     }
 
     public function getDepartmentalCode(): string
     {
         return substr($this->inseeCode, 0, 2);
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s (%s)', $this->getCityName(), $this->inseeCode);
     }
 }

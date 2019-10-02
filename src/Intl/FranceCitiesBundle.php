@@ -18,6 +18,16 @@ class FranceCitiesBundle
         '988' => 'Nouvelle-Calédonie',
     ];
 
+    public const CUSTOM_CITY_CODE_PARIS = '75100';
+    public const CUSTOM_CITY_CODE_MARSEILLE = '13200';
+    public const CUSTOM_CITY_CODE_LYON = '69380';
+
+    public const SPECIAL_CITY_ZONES = [
+        self::CUSTOM_CITY_CODE_PARIS => 'Paris',
+        self::CUSTOM_CITY_CODE_MARSEILLE => 'Marseille',
+        self::CUSTOM_CITY_CODE_LYON => 'Lyon',
+    ];
+
     /**
      * Returns the list of cities for a given french postal code.
      */

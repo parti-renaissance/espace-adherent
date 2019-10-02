@@ -154,6 +154,7 @@ doctrine:
             string_functions:
                 json_contains: AppBundle\Query\Mysql\JsonContains
                 find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
+                replace: DoctrineExtensions\Query\Mysql\Replace
                 json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
 

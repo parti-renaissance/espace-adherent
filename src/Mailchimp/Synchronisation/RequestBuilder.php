@@ -30,6 +30,7 @@ class RequestBuilder
     private $activeTags = [];
     private $inactiveTags = [];
     private $favoriteCities;
+    private $favoriteCitiesCodes;
     private $takenForCity = false;
     private $mailchimpObjectIdMapping;
     private $isSubscribeRequest = true;
@@ -73,7 +74,8 @@ class RequestBuilder
             ->setGender($applicationRequest->getGender())
             ->setFirstName($applicationRequest->getFirstName())
             ->setLastName($applicationRequest->getLastName())
-            ->setFavoriteCities($applicationRequest->getFavoriteCities())
+            ->setFavoriteCities($applicationRequest->getFavoriteCitiesNames())
+            ->setFavoriteCitiesCodes($applicationRequest->getFavoriteCityPrefixedCodes())
             ->setReferentTagCodes($applicationRequest->getReferentTagsCodes())
             ->setTakenForCity($applicationRequest->getTakenForCity())
             ->setActiveTags($activeTags)
@@ -178,6 +180,13 @@ class RequestBuilder
         return $this;
     }
 
+    public function setFavoriteCitiesCodes(array $favoriteCitiesCodes): self
+    {
+        $this->favoriteCitiesCodes = $favoriteCitiesCodes;
+
+        return $this;
+    }
+
     public function setReferentTagCodes(array $codes): self
     {
         $this->referentTagsCodes = $codes;
@@ -266,6 +275,7 @@ class RequestBuilder
 
         if ($this->favoriteCities) {
             $mergeFields[MemberRequest::MERGE_FIELD_FAVORITE_CITIES] = implode(',', $this->favoriteCities);
+            $mergeFields[MemberRequest::MERGE_FIELD_FAVORITE_CITIES_CODES] = implode(',', $this->favoriteCitiesCodes);
         }
 
         if ($this->referentTagsCodes) {

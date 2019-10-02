@@ -258,6 +258,11 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
         return $this->favoriteCities;
     }
 
+    public function getFavoriteCityPrefixedCodes(): array
+    {
+        return array_map(static function (string $code) {return '#'.$code; }, $this->getFavoriteCities());
+    }
+
     public function getFavoriteCitiesNames(): array
     {
         return FranceCitiesBundle::searchCitiesByInseeCodes($this->getFavoriteCities());
