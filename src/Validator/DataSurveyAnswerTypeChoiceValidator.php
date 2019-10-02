@@ -31,13 +31,6 @@ class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
                     $this->processViolation($constraint->simpleFieldAnswerMessage, $surveyQuestion->getId());
                 }
 
-                if (!$answer->getTextField()) {
-                    $this->processViolation(
-                        $constraint->simpleFieldAnswerWithoutTextFieldMessage,
-                        $surveyQuestion->getId()
-                    );
-                }
-
                 break;
             case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
                 if (1 !== $answer->getSelectedChoices()->count()) {
