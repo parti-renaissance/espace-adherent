@@ -334,11 +334,6 @@ Feature:
           "Cette valeur n'est pas valide."
         ],
         "answers":{
-          "0":{
-            "surveyQuestion":[
-              "La question 1 est un champ libre et doit contenir un champ texte."
-            ]
-          },
           "2":{
             "surveyQuestion":[
               "La question 3 est une question à choix unique et doit contenir un seul choix sélectionné.",
