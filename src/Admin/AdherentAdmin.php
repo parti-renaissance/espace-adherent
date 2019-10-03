@@ -348,7 +348,13 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('municipalChiefManagedArea', MunicipalChiefManagedAreaType::class, [
                     'label' => 'Candidat Municipales 2020 🇫🇷',
-                    'help' => "Laisser vide si l'adhérent n'est pas chef municipal. Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC).",
+                    'help' => <<<HELP
+Laisser vide si l'adhérent n'est pas chef municipal. 
+Utiliser les codes INSEE des villes (54402 pour NORROY-LE-SEC). <br/> 
+Utiliser <strong>75100</strong> pour la ville de Paris, 
+<strong>13200</strong> - Marseille, <strong>69380</strong> - Lyon
+HELP
+,
                 ])
                 ->add('jecouteManagedAreaCodesAsString', TextType::class, [
                     'label' => 'jecoute_manager',

@@ -400,8 +400,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                 [
                                     'condition_type' => 'TextMerge',
                                     'op' => 'contains',
-                                    'field' => 'FVR_CITIES',
-                                    'value' => '75101',
+                                    'field' => 'FVR_CODES',
+                                    'value' => '#75101',
                                 ],
                                 [
                                     'condition_type' => 'TextMerge',

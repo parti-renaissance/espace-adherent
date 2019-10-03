@@ -55,10 +55,12 @@
                             <label class="filter__label">ADHÉRENTS</label>
                             {{ form_row(form.contactAdherents, {label: 'Adhérents de ma commune'}) }}
                         </div>
-                        <div class="filter__row" id="newsletter-checkbox">
-                            <label class="filter__label">SITE MUNICIPAL</label>
-                            {{ form_row(form.contactNewsletter, {label: 'Abonnés à ma newsletter'}) }}
-                        </div>
+                        {% if form.contactNewsletter is defined %}
+                            <div class="filter__row" id="newsletter-checkbox">
+                                <label class="filter__label">SITE MUNICIPAL</label>
+                                {{ form_row(form.contactNewsletter, {label: 'Abonnés à ma newsletter'}) }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -105,14 +107,17 @@
                 }
             });
 
-            var newsletterChangeHandler = function () {
-                var disable = $('#newsletter-checkbox input').is(':checked');
-                $('input,select', '.newsletter-incompatible').prop('disabled', disable).val('');
-            };
+            {% if form.contactNewsletter is defined %}
+                var newsletterChangeHandler = function () {
+                    if ($('#newsletter-checkbox input').is(':checked')) {
+                        $('input,select', '.newsletter-incompatible').prop('disabled', true).val('');
+                    }
+                };
 
-            newsletterChangeHandler();
+                newsletterChangeHandler();
 
-            $('#newsletter-checkbox input').on('change', newsletterChangeHandler);
+                $('#newsletter-checkbox input').on('change', newsletterChangeHandler);
+            {% endif %}
         });
     </script>
 {% endblock %}

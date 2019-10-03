@@ -382,3 +382,5 @@ path.description.min_length: La description doit faire au moins {{ limit }} cara
 
 module.title.unique_entity: Il existe déjà un module avec ce titre pour cet axe de formation.
 module.slug.unique_entity: Il existe déjà un module avec cette URL pour cet axe de formation.
+
+municipal_chief.invalid_city: La valeur saisie dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.
