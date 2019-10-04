@@ -201,15 +201,6 @@
                                     <option value="0" {{ filter.onlyEmailSubscribers is same as(false) ? 'selected' }}>{{ 'referent.adherent.unsubscribed'|trans }}</option>
                                 </select>
                             </div>
-
-                            <div class="filter__row">
-                                <label class="filter__label">Centres d'intérêt</label>
-                                <select id="referent_filter_interests" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" class="filter__field" multiple="multiple">
-                                    {% for key, value in adherent_interests %}
-                                        <option value="{{ key }}" {{ key in filter.queryInterests ? 'selected' }}>{{ value }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
                         </div>
                     </div>
 
@@ -240,6 +231,15 @@
                                        value="{{ filter.queryAreaCode }}"
                                        class="filter__field"
                                        placeholder="Exemple : 59300, Valenciennes, Tourcoing"/>
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Centres d'intérêt</label>
+                                <select id="referent_filter_interests" name="{{ constant('PARAMETER_INTEREST', filter) }}[]" class="filter__field" multiple="multiple">
+                                    {% for key, value in adherent_interests %}
+                                        <option value="{{ key }}" {{ key in filter.queryInterests ? 'selected' }}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
                     </div>

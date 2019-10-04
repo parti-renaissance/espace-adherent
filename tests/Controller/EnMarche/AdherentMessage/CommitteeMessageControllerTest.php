@@ -30,12 +30,9 @@ class CommitteeMessageControllerTest extends WebTestCase
         $this->assertResponseStatusCode(302, $this->client->getResponse());
         $this->assertMessageIsDispatched(AdherentMessageChangeCommand::class);
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
-        self::assertSame(
-            'Message aux membres du comité:',
-            trim($crawler->filter('main .manager__filters__row .filter__label')->text())
-        );
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
     }
 
     protected function setUp()

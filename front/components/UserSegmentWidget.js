@@ -83,7 +83,7 @@ export default class UserSegmentManager extends React.Component {
 
                 {0 < length ?
                     <a href="#" className="btn-secondary btn-secondary--black b__nudge--left-small"
-                       onClick={this.handleResetClick}>Annuler</a> : ''}
+                       onClick={this.handleResetClick}>Effacer la sélection</a> : ''}
             </div>
         );
     }
