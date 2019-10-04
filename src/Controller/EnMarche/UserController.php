@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\AdherentCharter\AdherentCharterFactory;
+use AppBundle\AdherentCharter\AdherentCharterTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Form\AdherentChangeEmailType;
@@ -28,7 +30,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/parametres/mon-compte")
@@ -206,15 +210,23 @@ class UserController extends Controller
      *     methods={"PUT"}
      * )
      */
-    public function chartAcceptationAction(ObjectManager $manager): JsonResponse
-    {
-        $this->getUser()->setChartAccepted(true);
+    public function chartAcceptationAction(
+        Request $request,
+        ObjectManager $manager,
+        UserInterface $adherent
+    ): JsonResponse {
+        $charterType = $request->request->all()['charterType'] ?? null;
 
-        $manager->flush();
+        if (!AdherentCharterTypeEnum::isValid($charterType)) {
+            throw new BadRequestHttpException('Invalid charter type');
+        }
 
-        return new JsonResponse(
-            $this->getUser()->isChartAccepted(),
-            Response::HTTP_OK
-        );
+        /** @var Adherent $adherent */
+        if (!$adherent->getCharters()->hasCharterAcceptedForType($charterType)) {
+            $adherent->addCharter(AdherentCharterFactory::create($charterType));
+            $manager->flush();
+        }
+
+        return new JsonResponse('OK', Response::HTTP_OK);
     }
 }

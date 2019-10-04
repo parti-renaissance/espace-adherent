@@ -4,8 +4,10 @@
 
 {% block banner '' %}
 
+{% set hasCharterAccepted = app.user.charters.hasMunicipalChiefCharterAccepted %}
+
 {% block stylesheets %}
-    {% if not app.user.isChartAccepted %}
+    {% if not hasCharterAccepted %}
         <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
     {% endif %}
 {% endblock %}
@@ -77,7 +79,7 @@
             </div>
         </section>
 
-        {% if not app.user.isChartAccepted %}
+        {% if not hasCharterAccepted %}
             {% include 'chart_dialog.html.twig' with {
                 'title': 'application_request.municipal_chief.popup.title'|trans,
                 'fileUrl': 'application_request.municipal_chief.popup.file_url'|trans
@@ -87,7 +89,7 @@
 {% endblock %}
 
 {% block final_javascripts %}
-    {% if not app.user.isChartAccepted %}
+    {% if not hasCharterAccepted %}
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
 
@@ -97,7 +99,7 @@
 
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                {{ js.chart_acceptation('#chart_dialog') }}
+                {{ js.chart_acceptation('#chart_dialog', constant('AppBundle\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_MUNICIPAL_CHIEF')) }}
             });
         </script>
     {% endif %}

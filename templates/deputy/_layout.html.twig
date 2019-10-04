@@ -3,8 +3,10 @@
 {% block page_title 'Espace député' %}
 {% block canonical_url url('app_deputy_users_message') %}
 
+{% set hasCharterAccepted = app.user.charters.hasDeputyCharterAccepted %}
+
 {% block stylesheets %}
-    {% if not app.user.isChartAccepted %}
+    {% if not hasCharterAccepted %}
         <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
     {% endif %}
 {% endblock %}
@@ -39,7 +41,7 @@
             </div>
         </section>
 
-        {% if not app.user.isChartAccepted %}
+        {% if not hasCharterAccepted %}
             {% include 'chart_dialog.html.twig' with {
                 'title': 'deputy.popup.title'|trans,
                 'subtitle': 'deputy.popup.subtitle'|trans,
@@ -50,7 +52,7 @@
 {% endblock %}
 
 {% block final_javascripts %}
-    {% if not app.user.isChartAccepted %}
+    {% if not hasCharterAccepted %}
         {% if js is not defined %}
             {% import 'javascript.js.twig' as js %}
         {% endif %}
@@ -59,7 +61,7 @@
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                {{ js.chart_acceptation('#chart_dialog') }}
+                {{ js.chart_acceptation('#chart_dialog', constant('AppBundle\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_DEPUTY')) }}
             } );
         </script>
     {% endif %}
