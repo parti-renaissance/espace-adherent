@@ -8,7 +8,12 @@
     {% if is_cp_administrator %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                App.runManageUserSegment('.user-segment-manager-wrapper', 'input[name="members[]"]');
+                App.runManageUserSegment(
+                    '{{ constant('AppBundle\\AdherentSegment\\AdherentSegmentTypeEnum::TYPE_CITIZEN_PROJECT') }}',
+                    '.user-segment-manager-wrapper',
+                    'input[name="members[]"]',
+                    {{ actors|length }}
+                );
             });
         </script>
     {% endif %}

@@ -10,12 +10,14 @@ export default class UserSegmentManager extends React.Component {
     constructor(props) {
         super(props);
 
+        this.segmentType = props.segmentType;
         this.api = props.api;
 
         this.checkboxes = props.checkboxes;
         this.mainCheckbox = props.mainCheckbox;
+        this.countMembers = props.countMembers || 0;
 
-        let item = localStorage.getItem(STORAGE_KEY);
+        let item = localStorage.getItem(this.getStorageKey());
 
         if (item) {
             item = item.split(',');
@@ -59,7 +61,7 @@ export default class UserSegmentManager extends React.Component {
     }
 
     componentDidUpdate() {
-        localStorage.setItem(STORAGE_KEY, this.state.checked);
+        localStorage.setItem(this.getStorageKey(), this.state.checked);
     }
 
     render() {
@@ -76,7 +78,7 @@ export default class UserSegmentManager extends React.Component {
                    onClick={this.handleOpenModal}
                 >
                     Créer ma liste
-                    ({0 < length ? <span>{length}</span> : '0'})
+                    ({0 < length ? <span>{this.getCreateButtonCounter(length)}</span> : '0'})
                 </a>
 
                 {0 < length ?
@@ -148,6 +150,7 @@ export default class UserSegmentManager extends React.Component {
         });
 
         this.api.createUserSegmentList({
+            segmentType: this.segmentType,
             label: this.state.segmentName,
             member_ids: this.state.checked,
         }, (data) => {
@@ -245,10 +248,26 @@ export default class UserSegmentManager extends React.Component {
             });
         }
     }
+
+    getCreateButtonCounter(count) {
+        if (this.countMembers) {
+            return `${count} adhérent${1 < count ? 's' : ''} sélectionné${1 < count ? 's' : ''} sur ${
+                this.countMembers
+            } au total`;
+        }
+
+        return count;
+    }
+
+    getStorageKey() {
+        return `_${STORAGE_KEY}_${this.segmentType}`;
+    }
 }
 
 UserSegmentManager.propsType = {
+    segmentType: PropTypes.string.isRequired,
     api: PropTypes.object.isRequired,
     checkboxes: PropTypes.element.isRequired,
     mainCheckbox: PropTypes.element,
+    countMembers: PropTypes.number,
 };

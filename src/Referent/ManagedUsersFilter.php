@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ManagedUsersFilter
 {
-    public const PER_PAGE = 50;
+    public const PER_PAGE = 100;
 
     public const PARAMETER_QUERY_ZONE = 'qz';
     public const PARAMETER_INCLUDE_ADHERENTS_NO_COMMITTEE = 'anc';
