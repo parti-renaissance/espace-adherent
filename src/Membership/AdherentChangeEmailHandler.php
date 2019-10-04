@@ -50,10 +50,13 @@ class AdherentChangeEmailHandler
     {
         $this->dispatcher->dispatch(UserEvents::USER_BEFORE_UPDATE, new UserEvent($adherent));
 
+        $oldEmail = $adherent->getEmailAddress();
+
         $adherent->changeEmail($token);
         $this->manager->flush();
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));
+        $this->dispatcher->dispatch(UserEvents::USER_EMAIL_UPDATED, new UserEmailEvent($adherent, $oldEmail));
     }
 
     public function sendValidationEmail(Adherent $adherent, AdherentChangeEmailToken $token): void

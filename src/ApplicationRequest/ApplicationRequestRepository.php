@@ -58,7 +58,7 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findForReferentTags($referentTags, $filter);
     }
 
-    public function updateAdherentRelation(string $email, Adherent $adherent): void
+    public function updateAdherentRelation(string $email, ?Adherent $adherent): void
     {
         $this->runningMateRepository->updateAdherentRelation($email, $adherent);
         $this->volunteerRepository->updateAdherentRelation($email, $adherent);
