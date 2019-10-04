@@ -13,13 +13,13 @@
 {% block event_content %}
     <section class="l__wrapper--500 space--30-0 b__nudge--bottom-huge">
         <div class="committee-event-registration">
-            <h2 class="b__nudge--bottom text--normal">Participer</h2>
+            <h2 class="b__nudge--bottom text--normal">Participer à l'événement</h2>
             {% if not has_role_adherent %}
                 <p>
-                    Avez-vous déjà un compte En Marche ?
                     <a href="{{ login_path_for_anonymous_follower("app_#{event.type}_attend", { slug: event.slug }) }}">
                         Connectez-vous
-                    </a>.
+                    </a>
+                    avec votre compte En Marche pour vous inscrire plus rapidement.
                 </p>
             {% endif %}
 
