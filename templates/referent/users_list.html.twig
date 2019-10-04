@@ -18,7 +18,12 @@
                 });
             }
 
-            App.runManageUserSegment('.user-segment-manager-wrapper', 'input[name="members[]"]');
+            App.runManageUserSegment(
+                '{{ constant('AppBundle\\AdherentSegment\\AdherentSegmentTypeEnum::TYPE_REFERENT') }}',
+                '.user-segment-manager-wrapper',
+                'input[name="members[]"]',
+                {{ total_count }}
+            );
         });
     </script>
 {% endblock %}

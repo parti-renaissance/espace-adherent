@@ -199,9 +199,9 @@ class App {
         });
     }
 
-    runManageUserSegment(wrapperSelector, checkboxSelector) {
+    runManageUserSegment(segmentType, wrapperSelector, checkboxSelector, countMembers) {
         System.import('pages/manage_user_segment').catch((error) => { throw error; }).then((module) => {
-            module.default(wrapperSelector, checkboxSelector, this.get('api'));
+            module.default(segmentType, wrapperSelector, checkboxSelector, this.get('api'), countMembers);
         });
     }
 

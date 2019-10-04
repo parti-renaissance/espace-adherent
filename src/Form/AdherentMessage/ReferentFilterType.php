@@ -2,11 +2,13 @@
 
 namespace AppBundle\Form\AdherentMessage;
 
+use AppBundle\AdherentSegment\AdherentSegmentTypeEnum;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Form\AdherentSegmentType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MemberInterestsChoiceType;
 use AppBundle\Form\MyReferentTagChoiceType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -14,9 +16,17 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class ReferentFilterType extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,7 +49,19 @@ class ReferentFilterType extends AbstractType
             ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('contactOnlyVolunteers', CheckboxType::class, ['required' => false])
-            ->add('adherentSegment', AdherentSegmentType::class, ['required' => false])
+            ->add('adherentSegment', AdherentSegmentType::class, [
+                'required' => false,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('segment')
+                        ->where('segment.author = :author')
+                        ->andWhere('segment.segmentType = :type')
+                        ->setParameters([
+                            'author' => $this->security->getUser(),
+                            'type' => AdherentSegmentTypeEnum::TYPE_REFERENT,
+                        ])
+                    ;
+                },
+            ])
         ;
 
         if (false === $options['is_referent_from_paris']) {

@@ -7,7 +7,12 @@
         Kernel.onLoad(function() {
             App.runManageParticipants();
 
-            App.runManageUserSegment('.user-segment-manager-wrapper', 'input[name="members[]"]');
+            App.runManageUserSegment(
+                '{{ constant('AppBundle\\AdherentSegment\\AdherentSegmentTypeEnum::TYPE_COMMITTEE') }}',
+                '.user-segment-manager-wrapper',
+                'input[name="members[]"]',
+                {{ members.count }}
+            );
         });
     </script>
 {% endblock %}

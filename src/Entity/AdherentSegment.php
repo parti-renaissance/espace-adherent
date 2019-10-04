@@ -22,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "iri": true,
  *                 "groups": {"public"}
- *             }
+ *             },
+ *             "denormalization_context": {"groups": {"write"}}
  *         }
  *     },
  *     itemOperations={}
@@ -39,7 +40,7 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      *
      * @Assert\NotBlank
      *
-     * @Groups({"public"})
+     * @Groups({"public", "write"})
      */
     private $label;
 
@@ -50,8 +51,22 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      *
      * @Assert\NotBlank
      * @Assert\Count(min=1)
+     *
+     * @Groups({"write"})
      */
     private $memberIds = [];
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(callback={"AppBundle\AdherentSegment\AdherentSegmentTypeEnum", "toArray"}, strict=true)
+     *
+     * @Groups({"write"})
+     */
+    private $segmentType;
 
     /**
      * @var Adherent|null
@@ -130,5 +145,15 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     public function setSynchronized(bool $synchronized): void
     {
         $this->synchronized = $synchronized;
+    }
+
+    public function getSegmentType(): ?string
+    {
+        return $this->segmentType;
+    }
+
+    public function setSegmentType(string $segmentType): void
+    {
+        $this->segmentType = $segmentType;
     }
 }
