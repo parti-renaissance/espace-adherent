@@ -16,6 +16,7 @@ final class UserEvents
 
     public const USER_DELETED = 'user.deleted';
     public const USER_SWITCH_TO_ADHERENT = 'user.switch_to_adherent';
+    public const USER_EMAIL_UPDATED = 'user.email_updated';
 
     private function __construct()
     {
