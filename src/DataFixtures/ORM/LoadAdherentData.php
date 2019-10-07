@@ -7,6 +7,8 @@ use AppBundle\Coordinator\CoordinatorAreaSectors;
 use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
+use AppBundle\Entity\AdherentCharter\MunicipalChiefCharter;
+use AppBundle\Entity\AdherentCharter\ReferentCharter;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
@@ -437,7 +439,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addReferentTag($this->getReference('referent_tag_77'));
-        $referent->setChartAccepted(true);
+        $referent->addCharter(new ReferentCharter());
         $this->addReference('adherent-8', $referent);
 
         $referent75and77 = $adherentFactory->createFromArray([
@@ -579,7 +581,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
             'registered_at' => '2019-06-10 09:19:00',
         ]);
-        $municipalChief1->setChartAccepted(true);
+        $municipalChief1->addCharter(new MunicipalChiefCharter());
         $municipalChiefArea1 = new MunicipalChiefManagedArea();
         $municipalChiefArea1->setInseeCode('59350');
         $municipalChiefArea1->setJecouteAccess(true);

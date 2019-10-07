@@ -5,8 +5,10 @@
 
 {% block banner '' %}
 
+{% set hasCharterAccepted = app.user.charters.hasReferentCharterAccepted %}
+
 {% block stylesheets %}
-    {% if not app.user.isChartAccepted %}
+    {% if not hasCharterAccepted %}
         <link rel="stylesheet" href="{{ asset('bundles/sonataadmin/vendor/jqueryui/themes/base/minified/jquery-ui.min.css') }}" />
     {% endif %}
 {% endblock %}
@@ -121,7 +123,7 @@
             </div>
         </section>
 
-        {% if not app.user.isChartAccepted %}
+        {% if not hasCharterAccepted %}
             {% include 'chart_dialog.html.twig' with {
                 'title': 'referent.popup.title'|trans,
                 'subtitle': 'referent.popup.subtitle'|trans,
@@ -138,10 +140,10 @@
         {% import 'javascript.js.twig' as js %}
     {% endif %}
 
-    {% if not app.user.isChartAccepted %}
+    {% if not hasCharterAccepted %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                {{ js.chart_acceptation('#chart_dialog') }}
+                {{ js.chart_acceptation('#chart_dialog', constant('AppBundle\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_REFERENT')) }}
             });
         </script>
     {% endif %}

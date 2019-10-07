@@ -4,8 +4,10 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
+use AppBundle\Collection\AdherentCharterCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
+use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
 use AppBundle\Exception\AdherentException;
@@ -333,11 +335,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $chartAccepted = false;
-
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
      *
      * @JMS\Groups({"user_profile"})
      */
@@ -438,6 +435,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $printPrivilege = false;
 
+    /**
+     * @var Collection|AdherentCharterInterface[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AdherentCharter\AbstractAdherentCharter", mappedBy="adherent", cascade={"all"})
+     */
+    private $charters;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -445,6 +449,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->subscriptionTypes = new ArrayCollection();
         $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->charters = new AdherentCharterCollection();
     }
 
     public static function create(
@@ -1576,16 +1581,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->remindSent = $remindSent;
     }
 
-    public function isChartAccepted(): bool
-    {
-        return $this->chartAccepted;
-    }
-
-    public function setChartAccepted(bool $chartAccepted): void
-    {
-        $this->chartAccepted = $chartAccepted;
-    }
-
     public function getMandates(): ?array
     {
         return $this->mandates;
@@ -1745,5 +1740,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isReferent()
             || $this->isMunicipalChief()
         ;
+    }
+
+    public function getCharters(): AdherentCharterCollection
+    {
+        if (!$this->charters instanceof AdherentCharterCollection) {
+            $this->charters = new AdherentCharterCollection($this->charters->toArray());
+        }
+
+        return $this->charters;
+    }
+
+    public function addCharter(AdherentCharterInterface $charter): void
+    {
+        if (!$this->charters->contains($charter)) {
+            $charter->setAdherent($this);
+            $this->charters->add($charter);
+        }
     }
 }

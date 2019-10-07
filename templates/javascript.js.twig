@@ -550,7 +550,7 @@ $(document).ready(function() {
     });
 {% endmacro %}
 
-{% macro chart_acceptation(selector) %}
+{% macro chart_acceptation(selector, charterType) %}
 $(document).ready(function() {
     var element = $("{{ selector }}");
 
@@ -564,7 +564,10 @@ $(document).ready(function() {
             "{{ 'referent.button.accept'|trans }}": function () {
                 $.ajax({
                     url: "{{ path('app_user_set_accept_chart')|e('js') }}",
-                    type: 'PUT'
+                    type: 'PUT',
+                    data: {
+                        charterType: '{{ charterType|e('js') }}'
+                    }
                 });
 
                 element.remove();
