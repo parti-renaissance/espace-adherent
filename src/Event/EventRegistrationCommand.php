@@ -5,10 +5,14 @@ namespace AppBundle\Event;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BaseEvent;
 use AppBundle\Subscription\SubscriptionTypeEnum;
+use AppBundle\Validator\EventRegistration;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @EventRegistration
+ */
 class EventRegistrationCommand
 {
     /**
@@ -59,7 +63,7 @@ class EventRegistrationCommand
         $this->firstName = $adherent->getFirstName();
         $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
-        $this->newsletterSubscriber = $adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL);
+        $this->newsletterSubscriber = $adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL);
     }
 
     public function getEvent(): BaseEvent

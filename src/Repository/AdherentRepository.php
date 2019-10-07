@@ -92,8 +92,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('adherent')
             ->select('COUNT(adherent)')
             ->where('adherent.emailAddress = :email')
-            ->andWhere('adherent.adherent = 1')
-            ->setParameter('email', $email)
+            ->andWhere('adherent.adherent = :true')
+            ->andWhere('adherent.status = :status')
+            ->setParameters([
+                'email' => $email,
+                'true' => true,
+                'status' => Adherent::ENABLED,
+            ])
             ->getQuery()
             ->getSingleScalarResult()
         ;

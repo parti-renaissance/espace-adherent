@@ -360,6 +360,7 @@
 
         <!-- Validators -->
         <service id="AppBundle\Validator\DateRangeValidator" />
+        <service id="AppBundle\Validator\EventRegistrationValidator" />
 
         <!-- History -->
         <service id="AppBundle\History\EmailSubscriptionHistoryHandler" />
