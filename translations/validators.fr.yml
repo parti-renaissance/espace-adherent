@@ -233,6 +233,7 @@ procuration.postal_code.not_empty: Pour la France, la saisie du code postal est 
 event.full: L'événement est complet.
 event.invitation.message.max_length: Le message contient {{ limit }} caractères mais ne doit pas excéder 200.
 event.invitation.guests.min: Merci de saisir au moins une adresse e-mail.
+event.registration.already_exists: Vous êtes déjà inscrit(e) à l'événement
 
 #
 # Institutional event
