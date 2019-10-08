@@ -19,7 +19,7 @@ final class Version20190919134908 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE donation_transactions ADD type VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
+        $this->addSql('ALTER TABLE donation_transactions ADD type VARCHAR(255) NOT NULL DEFAULT \'cb\' COLLATE utf8_unicode_ci');
         $this->addSql('ALTER TABLE donations DROP type, CHANGE email_address email_address VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci, DROP check_number, DROP transfer_number');
         $this->addSql('ALTER TABLE donators DROP INDEX IDX_A902FDD7B08E074EA9D1C132C808BA5A, ADD UNIQUE INDEX donator_unique_matching (email_address, first_name, last_name)');
         $this->addSql('ALTER TABLE donators CHANGE email_address email_address VARCHAR(255) NOT NULL COLLATE utf8_unicode_ci');
