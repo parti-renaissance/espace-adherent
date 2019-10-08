@@ -88,24 +88,21 @@ class Transaction
      */
     private $donation;
 
-    public function __construct(Donation $donation, ?array $payboxPayload, ?\DateTimeInterface $donatedAt = null)
+    public function __construct(Donation $donation, array $payboxPayload)
     {
         $this->donation = $donation;
-        $this->createdAt = $donatedAt ?? new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
         $this->payboxPayload = $payboxPayload;
+        $this->payboxResultCode = $payboxPayload['result'];
+        $this->payboxAuthorizationCode = $payboxPayload['authorization'] ?: null;
+        $this->payboxSubscriptionId = $payboxPayload['subscription'] ?: null;
+        $this->payboxTransactionId = $payboxPayload['transaction'] ?: null;
 
-        if ($payboxPayload) {
-            $this->payboxResultCode = $payboxPayload['result'];
-            $this->payboxAuthorizationCode = $payboxPayload['authorization'] ?: null;
-            $this->payboxSubscriptionId = $payboxPayload['subscription'] ?: null;
-            $this->payboxTransactionId = $payboxPayload['transaction'] ?: null;
-
-            if (isset($payboxPayload['date'], $payboxPayload['time'])) {
-                $this->payboxDateTime = \DateTimeImmutable::createFromFormat(
-                    'dmYH:i:s',
-                    $payboxPayload['date'].str_replace('%3A', ':', $payboxPayload['time'])
-                );
-            }
+        if (isset($payboxPayload['date'], $payboxPayload['time'])) {
+            $this->payboxDateTime = \DateTimeImmutable::createFromFormat(
+                'dmYH:i:s',
+                $payboxPayload['date'].str_replace('%3A', ':', $payboxPayload['time'])
+            );
         }
     }
 
