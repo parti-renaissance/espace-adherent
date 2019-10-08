@@ -135,6 +135,8 @@ class ImportDonationsCommand extends Command
             $country = mb_strtolower(trim($row['country']));
             $type = $row['type'];
             $amount = $row['amount'];
+            $transferNumber = $row['transfer_number'];
+            $checkNumber = $row['check_number'];
             $donatedAt = \DateTimeImmutable::createFromFormat('m/d/Y', $row['date']);
 
             if (!array_key_exists($type, self::TYPES_MAP)) {
@@ -166,7 +168,7 @@ class ImportDonationsCommand extends Command
 
             $donation = new Donation(
                 Uuid::uuid4(),
-                $type,
+                self::TYPES_MAP[$type],
                 $amount,
                 self::GENDERS_MAP[$gender],
                 $firstName,
@@ -185,6 +187,14 @@ class ImportDonationsCommand extends Command
                 $donator,
                 $donatedAt
             );
+
+            if (Donation::TYPE_TRANSFER === self::TYPES_MAP[$type] && !empty($transferNumber)) {
+                $donation->setTransferNumber($transferNumber);
+            }
+
+            if (Donation::TYPE_CHECK === self::TYPES_MAP[$type] && !empty($checkNumber)) {
+                $donation->setCheckNumber($checkNumber);
+            }
 
             $this->em->persist($donator);
             $this->em->persist($donation);

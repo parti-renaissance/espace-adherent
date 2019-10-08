@@ -119,6 +119,16 @@ class Donation implements GeoPointInterface
     private $payboxOrderRef;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private $checkNumber;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $transferNumber;
+
+    /**
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
@@ -317,6 +327,26 @@ class Donation implements GeoPointInterface
     public function setPayboxOrderRef(string $payboxOrderRef): void
     {
         $this->payboxOrderRef = $payboxOrderRef;
+    }
+
+    public function getCheckNumber(): ?string
+    {
+        return $this->checkNumber;
+    }
+
+    public function setCheckNumber(?string $checkNumber): void
+    {
+        $this->checkNumber = $checkNumber;
+    }
+
+    public function getTransferNumber(): ?string
+    {
+        return $this->transferNumber;
+    }
+
+    public function setTransferNumber(?string $transferNumber): void
+    {
+        $this->transferNumber = $transferNumber;
     }
 
     public function getPayboxOrderRefWithSuffix(): string
