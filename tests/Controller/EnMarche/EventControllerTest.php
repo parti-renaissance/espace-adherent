@@ -31,12 +31,12 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
+        self::assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
 
         $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        self::assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
 
@@ -48,8 +48,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertEmpty($crawler->filter('#field-first-name > input[type="text"]')->attr('value'));
         $this->assertEmpty($crawler->filter('#field-last-name > input[type="text"]')->attr('value'));
         $this->assertEmpty($crawler->filter('#field-email-address > input[type="email"]')->attr('value'));
-        $this->assertSame(1, $crawler->filter('#field-accept-terms')->count());
-        $this->assertSame(1, $crawler->filter('#field-newsletter-subscriber')->count());
+        self::assertSame(1, $crawler->filter('#field-accept-terms')->count());
+        self::assertSame(1, $crawler->filter('#field-newsletter-subscriber')->count());
 
         $crawler = $this->client->submit($crawler->selectButton("Je m'inscris")->form());
 
@@ -89,20 +89,21 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Rejoindre un comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
+        self::assertSame('En Marche Paris 8', trim($crawler->filter('.search__results__meta > h2')->text()));
 
         $crawler = $this->client->click($crawler->filter('.search__committee__box')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        self::assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $crawler = $this->client->click($crawler->filter('.committee-event-more')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Je veux participer')->link());
+        $this->client->click($crawler->selectLink('Je veux participer')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->client->followRedirect();
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
@@ -116,7 +117,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $crawler = $this->client->click($crawler->selectLink('Retour')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
+        self::assertSame('2 inscrits', trim($crawler->filter('.committee-event-attendees')->text()));
 
         $this->client->click($crawler->selectLink('Mes activités')->link());
 
@@ -139,9 +140,11 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->client->request('GET', $eventUrl.'/inscription');
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->client->followRedirect();
+
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame("L'événement est complet", $crawler->filter('.flash .flash__inner')->text());
+        self::assertSame("L'événement est complet", $crawler->filter('.flash .flash__inner')->text());
     }
 
     public function testAdherentCanInviteToEvent()
@@ -179,10 +182,10 @@ class EventControllerTest extends AbstractEventControllerTest
         /** @var EventInvite $invite */
         $invite = $invitations[0];
 
-        $this->assertSame('carl999@example.fr', $invite->getEmail());
-        $this->assertSame('Carl Mirabeau', $invite->getFullName());
-        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
-        $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
+        self::assertSame('carl999@example.fr', $invite->getEmail());
+        self::assertSame('Carl Mirabeau', $invite->getFullName());
+        self::assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
+        self::assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
         $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
@@ -198,7 +201,7 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertContains('Les événements à proximité', $crawler->filter('.committee-event-nearby')->text());
-        $this->assertSame(3, $crawler->filter('.committee-event-nearby ul li')->count());
+        self::assertSame(3, $crawler->filter('.committee-event-nearby ul li')->count());
         $this->assertContains($name, $crawler->filter('.committee-event-nearby ul')->text());
         $this->assertContains($cityName, $crawler->filter('.committee-event-nearby ul')->text());
     }
@@ -247,10 +250,10 @@ class EventControllerTest extends AbstractEventControllerTest
         /** @var EventInvite $invite */
         $invite = $invitations[0];
 
-        $this->assertSame('titouan@en-marche.fr', $invite->getEmail());
-        $this->assertSame('Titouan Galopin', $invite->getFullName());
-        $this->assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
-        $this->assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
+        self::assertSame('titouan@en-marche.fr', $invite->getEmail());
+        self::assertSame('Titouan Galopin', $invite->getFullName());
+        self::assertSame('hugo.hamon@clichy-beach.com', $invite->getGuests()[0]);
+        self::assertSame('jules.pietri@clichy-beach.com', $invite->getGuests()[1]);
 
         // Email should have been sent
         $this->assertCount(1, $messages = $this->getEmailRepository()->findMessages(EventInvitationMessage::class));
@@ -395,8 +398,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $crawler = $this->client->request(Request::METHOD_GET, $eventUrl);
 
-        $this->assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
-        $this->assertSame('Je ne peux plus participer', trim($crawler->filter('.unregister-event')->text()));
+        self::assertSame('1 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        self::assertSame('Je ne peux plus participer', trim($crawler->filter('.unregister-event')->text()));
 
         $unregistrationButton = $this->client->getCrawler()->filter('.unregister-event');
 
@@ -408,8 +411,8 @@ class EventControllerTest extends AbstractEventControllerTest
 
         $crawler = $this->client->request(Request::METHOD_GET, $eventUrl);
 
-        $this->assertSame('0 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
-        $this->assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
+        self::assertSame('0 inscrit', trim($crawler->filter('.committee-event-attendees')->text()));
+        self::assertSame('Je veux participer', trim($crawler->filter('.register-event')->text()));
     }
 
     protected function setUp()

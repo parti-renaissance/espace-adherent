@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/action-citoyenne")
@@ -43,10 +44,57 @@ class CitizenActionController extends Controller
     }
 
     /**
+     * @Route("/{slug}/inscription-adherent", name="app_citizen_action_attend_adherent", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_ADHERENT')")
+     */
+    public function attendAdherentAction(
+        CitizenAction $citizenAction,
+        UserInterface $adherent,
+        ValidatorInterface $validator,
+        CitizenActionRegistrationCommandHandler $handler
+    ): Response {
+        if ($citizenAction->isFinished()) {
+            throw $this->createNotFoundException(sprintf('CitizenAction "%s" is finished and does not accept registrations anymore', $citizenAction->getUuid()));
+        }
+
+        if ($citizenAction->isCancelled()) {
+            throw $this->createNotFoundException(sprintf('CitizenAction "%s" is cancelled and does not accept registrations anymore', $citizenAction->getUuid()));
+        }
+
+        if ($citizenAction->isFull()) {
+            $this->addFlash('info', 'L\'événement est complet');
+
+            return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
+        }
+
+        $command = new EventRegistrationCommand($citizenAction, $adherent);
+        $errors = $validator->validate($command);
+
+        if (0 === $errors->count()) {
+            $handler->handle($command);
+            $this->addFlash('info', 'citizen_action.registration.success');
+
+            return $this->redirectToRoute('app_citizen_action_attend_confirmation', [
+                'slug' => $citizenAction->getSlug(),
+                'registration' => (string) $command->getRegistrationUuid(),
+            ]);
+        }
+
+        $this->addFlash('info', $errors[0]->getMessage());
+
+        return $this->redirectToRoute('app_citizen_action_show', ['slug' => $citizenAction->getSlug()]);
+    }
+
+    /**
      * @Route("/{slug}/inscription", name="app_citizen_action_attend", methods={"GET", "POST"})
      */
     public function attendAction(Request $request, CitizenAction $citizenAction, ?UserInterface $adherent): Response
     {
+        if ($adherent) {
+            return $this->redirectToRoute('app_citizen_action_attend_adherent', ['slug' => $citizenAction->getSlug()]);
+        }
+
         if ($citizenAction->isFinished()) {
             throw $this->createNotFoundException(sprintf('CitizenAction "%s" is finished and does not accept registrations anymore', $citizenAction->getUuid()));
         }
@@ -68,14 +116,12 @@ class CitizenActionController extends Controller
             return $authenticate;
         }
 
-        $command = new EventRegistrationCommand($citizenAction, $adherent);
-
         $form = $this
-            ->createForm(EventRegistrationType::class, $command)
+            ->createForm(EventRegistrationType::class, $command = new EventRegistrationCommand($citizenAction))
             ->handleRequest($request)
         ;
 
-        if ($adherent || ($form->isSubmitted() && $form->isValid())) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->get(CitizenActionRegistrationCommandHandler::class)->handle($command);
             $this->addFlash('info', 'citizen_action.registration.success');
 
