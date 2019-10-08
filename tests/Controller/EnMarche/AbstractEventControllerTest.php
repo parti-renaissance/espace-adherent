@@ -54,7 +54,7 @@ abstract class AbstractEventControllerTest extends WebTestCase
 
         $eventRegistrationUrl = "$eventUrl/inscription";
 
-        $this->assertSame($eventRegistrationUrl, $registrationLink->attr('href'));
+        self::assertSame($eventRegistrationUrl, $registrationLink->attr('href'));
 
         $crawler = $this->client->click($registrationLink->link());
 
@@ -71,6 +71,8 @@ abstract class AbstractEventControllerTest extends WebTestCase
         $this->register($this->client, $this->client->click($registerLink->link()), $eventRegistrationUrl);
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+
+        $this->client->followRedirect();
 
         $redirectUrl = $this->client->getResponse()->headers->get('location');
         $registration = $this->manager->getRepository(EventRegistration::class)->findOneBy([

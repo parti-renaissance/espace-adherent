@@ -62,6 +62,8 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
 
         $this->client->click($crawler->selectLink("S'inscrire")->link());
 
+        $this->client->followRedirect();
+
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertInstanceOf(EventRegistration::class, $this->getEventRegistrationRepository()->findGuestRegistration(LoadCitizenActionData::CITIZEN_ACTION_3_UUID, 'benjyd@aol.com'));
 

@@ -13,6 +13,7 @@ use AppBundle\Form\EventRegistrationType;
 use AppBundle\Repository\EventRepository;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/evenements/{slug}")
@@ -55,11 +57,51 @@ class EventController extends Controller
     }
 
     /**
+     * @Route("/inscription-adherent", name="app_event_attend_adherent", methods={"GET"})
+     * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
+     *
+     * @Security("is_granted('ROLE_ADHERENT')")
+     */
+    public function attendAdherentAction(Event $event, UserInterface $adherent, ValidatorInterface $validator): Response
+    {
+        if ($event->isFinished()) {
+            throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
+        }
+
+        if ($event->isFull()) {
+            $this->addFlash('info', 'L\'événement est complet');
+
+            return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
+        }
+
+        $command = new EventRegistrationCommand($event, $adherent);
+        $errors = $validator->validate($command);
+
+        if (0 === $errors->count()) {
+            $this->get('app.event.registration_handler')->handle($command);
+            $this->addFlash('info', 'committee.event.registration.success');
+
+            return $this->redirectToRoute('app_event_attend_confirmation', [
+                'slug' => $event->getSlug(),
+                'registration' => (string) $command->getRegistrationUuid(),
+            ]);
+        }
+
+        $this->addFlash('info', $errors[0]->getMessage());
+
+        return $this->redirectToRoute('app_event_show', ['slug' => $event->getSlug()]);
+    }
+
+    /**
      * @Route("/inscription", name="app_event_attend", methods={"GET", "POST"})
      * @Entity("event", expr="repository.findOneActiveBySlug(slug)")
      */
     public function attendAction(Request $request, Event $event, ?UserInterface $adherent): Response
     {
+        if ($adherent) {
+            return $this->redirectToRoute('app_event_attend_adherent', ['slug' => $event->getSlug()]);
+        }
+
         if ($event->isFinished()) {
             throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
@@ -77,14 +119,12 @@ class EventController extends Controller
             return $authenticate;
         }
 
-        $command = new EventRegistrationCommand($event, $adherent);
-
         $form = $this
-            ->createForm(EventRegistrationType::class, $command)
+            ->createForm(EventRegistrationType::class, $command = new EventRegistrationCommand($event))
             ->handleRequest($request)
         ;
 
-        if ($adherent || ($form->isSubmitted() && $form->isValid())) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->get('app.event.registration_handler')->handle($command);
             $this->addFlash('info', 'committee.event.registration.success');
 
