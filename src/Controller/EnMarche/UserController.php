@@ -12,6 +12,7 @@ use AppBundle\Form\AdherentEmailSubscriptionType;
 use AppBundle\Form\AdherentType;
 use AppBundle\Form\UnregistrationType;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
+use AppBundle\Mailchimp\SignUp\SignUpHandler;
 use AppBundle\Membership\AdherentChangeEmailHandler;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
@@ -136,7 +137,8 @@ class UserController extends Controller
         Request $request,
         EmailSubscriptionHistoryHandler $historyManager,
         SubscriptionTypeRepository $subscriptionTypeRepository,
-        EventDispatcher $dispatcher
+        EventDispatcher $dispatcher,
+        SignUpHandler $signUpHandler
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -151,7 +153,7 @@ class UserController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($adherent->isEmailUnsubscribed() && array_diff($adherent->getSubscriptionTypes(), $oldEmailsSubscriptions)) {
-                $adherent->setEmailUnsubscribed(false);
+                $adherent->setEmailUnsubscribed(!$signUpHandler->signUpAdherent($adherent));
             }
 
             $historyManager->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);

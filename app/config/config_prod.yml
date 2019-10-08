@@ -15,7 +15,6 @@ monolog:
         main:
             type:                   fingers_crossed
             action_level:           error
-            activation_strategy:    app.logging.activation_strategy
             handler:                nested
         nested:
             type:                   group
