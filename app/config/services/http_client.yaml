@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    app.http_client.mailchimp_signup:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory:
+            - Symfony\Component\HttpClient\HttpClient
+            - create
+        arguments:
+            -
+                base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%'

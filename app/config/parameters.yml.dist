@@ -119,3 +119,17 @@ parameters:
     env(MAILCHIMP_TEMPLATE_IDS): '{}'
     env(MAILCHIMP_APPLICATION_REQUEST_TAG_IDS): '{}'
     env(MAILCHIMP_NEWSLETTER_TAG_IDS): '{}'
+    env(MAILCHIMP_SIGNUP_HOST): 'https://mailchimp.com'
+    env(MAILCHIMP_SIGNUP_SUBSCRIPTION_GROUP_ID): 123
+    env(MAILCHIMP_SIGNUP_FORM_ID): 123
+    env(MAILCHIMP_SIGNUP_SUBSCRIPTION_IDS): |
+        {
+            "subscribed_emails_movement_information": 1,
+            "subscribed_emails_weekly_letter": 2,
+            "deputy_email": 4,
+            "subscribed_emails_local_host": 8,
+            "subscribed_emails_referents": 16,
+            "citizen_project_host_email": 32,
+            "militant_action_sms": 64,
+            "municipal_email": 128
+        }
