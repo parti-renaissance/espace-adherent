@@ -13,24 +13,25 @@ doctrine:
 monolog:
     handlers:
         main:
-            type:                   fingers_crossed
-            action_level:           error
-            handler:                nested
+            type: fingers_crossed
+            action_level: error
+            handler: nested
+            excluded_http_codes: [400, 403, 404, 405]
         nested:
-            type:                   group
-            members:                [file, buffer]
+            type: group
+            members: [file, buffer]
         file:
-            type:                   stream
-            path:                   "%kernel.logs_dir%/%kernel.environment%.log"
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
         buffer:
-            type:                   buffer
-            handler:                sentry
+            type: buffer
+            handler: sentry
         sentry:
-            type:                   service
-            id:                     app.logging.sentry_handler
+            type: service
+            id: app.logging.sentry_handler
 
         console:
-            type:                   console
+            type: console
 
 lexik_paybox:
     parameters:

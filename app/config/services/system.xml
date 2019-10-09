@@ -228,16 +228,6 @@
             </call>
         </service>
 
-        <service id="app.logging.activation_strategy" class="AppBundle\Logging\ActivationStrategy" public="false">
-            <argument type="constant">Monolog\Logger::ERROR</argument>
-            <argument type="collection">
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND</argument>
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN</argument>
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_METHOD_NOT_ALLOWED</argument>
-                <argument type="constant">Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST</argument>
-            </argument>
-        </service>
-
         <service id="app.logging.user_processor" class="AppBundle\Logging\CurrentUserProcessor" public="false">
             <argument type="service">
                 <service>
