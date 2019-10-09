@@ -44,10 +44,7 @@ class AttendEventVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $isRegistered = (bool) $this->registrationRepository->findByRegisteredEmailAndEvent(
-            $adherent->getEmailAddress(),
-            $subject
-        );
+        $isRegistered = $this->registrationRepository->isAlreadyRegistered($adherent->getEmailAddress(), $subject);
 
         if (EventPermissions::UNREGISTER === $attribute || CitizenActionPermissions::UNREGISTER === $attribute) {
             return $isRegistered;

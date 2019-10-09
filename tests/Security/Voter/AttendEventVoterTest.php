@@ -5,7 +5,6 @@ namespace Tests\AppBundle\Security\Voter;
 use AppBundle\CitizenAction\CitizenActionPermissions;
 use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\EventRegistration;
 use AppBundle\Event\EventPermissions;
 use AppBundle\Repository\EventRegistrationRepository;
 use AppBundle\Security\Voter\AbstractAdherentVoter;
@@ -49,13 +48,17 @@ class AttendEventVoterTest extends AbstractAdherentVoterTest
     public function testAdherentIsGrantedToUnregisterIfRegistered(bool $granted, string $attribute, $subject)
     {
         $adherent = $this->createAdherentMock();
-        $adherent->expects($this->once())
+        $email = $adherent->getEmailAddress();
+
+        $adherent
+            ->expects($this->once())
             ->method('getEmailAddress')
         ;
+
         $this->registrationRepository->expects($this->once())
-            ->method('findByRegisteredEmailAndEvent')
-            ->with($adherent, $subject)
-            ->willReturn($granted ? $this->createMock(EventRegistration::class) : null)
+            ->method('isAlreadyRegistered')
+            ->with($email, $subject)
+            ->willReturn($granted ? true : false)
         ;
 
         $this->assertGrantedForAdherent($granted, true, $adherent, $attribute, $subject);

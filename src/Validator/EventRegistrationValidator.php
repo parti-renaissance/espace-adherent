@@ -26,7 +26,7 @@ class EventRegistrationValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, EventRegistration::class);
         }
 
-        if ($this->repository->findByRegisteredEmailAndEvent($value->getEmailAddress(), $value->getEvent())) {
+        if ($this->repository->isAlreadyRegistered($value->getEmailAddress(), $value->getEvent())) {
             $this->context->buildViolation($constraint->errorAlreadyExists)->addViolation();
         }
     }

@@ -23,7 +23,7 @@ class EventRuntime
             return false;
         }
 
-        return (bool) $this->eventRegistrationRepository->findGuestRegistration($event->getUuid(), $user->getEmailAddress());
+        return $this->eventRegistrationRepository->isAlreadyRegistered($user->getEmailAddress(), $event);
     }
 
     public function offsetTimeZone(string $timeZone = GeoCoder::DEFAULT_TIME_ZONE): string
