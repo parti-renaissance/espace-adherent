@@ -4,6 +4,7 @@ namespace AppBundle\ApplicationRequest\Listener;
 
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
+use AppBundle\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -23,6 +24,7 @@ class ApplicationRequestChangeSubscriber implements EventSubscriber
         return [
             Events::postPersist,
             Events::postUpdate,
+            Events::postRemove,
         ];
     }
 
@@ -42,6 +44,11 @@ class ApplicationRequestChangeSubscriber implements EventSubscriber
         if ($object instanceof ApplicationRequest) {
             $this->dispatchMessage($object);
         }
+    }
+
+    public function postRemove(LifecycleEventArgs $args): void
+    {
+        $this->bus->dispatch(new RemoveApplicationRequestCandidateCommand($args->getObject()->getEmailAddress()));
     }
 
     private function dispatchMessage(ApplicationRequest $object): void
