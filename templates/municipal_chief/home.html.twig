@@ -78,16 +78,16 @@
         {% endif %}
 
         <div class="manager-overview__row">
-            {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
+            <!-- {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
               <div class="manager-overview__case">
                   <span class="manager-overview__case--section">Communication & Mobilisation</span>
                   <h1 class="manager-overview__case--title">Mes tracts</h1>
                   <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour créer vos tracts de campagne.</p>
                   <footer class="manager-overview__case--footer">
-                      <a href="https://muni2020.lamaisondesimpressions.fr/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
+                      <a href="" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                   </footer>
               </div>
-            {% endif %}
+            {% endif %} -->
 
             {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
                 <div class="manager-overview__case">
@@ -101,12 +101,7 @@
                         <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
                 </div>
-            {% else %}
-                <div></div>
             {% endif %}
-        </div>
-
-        <div class="manager-overview__row">
             {% if municipal_site_is_enabled(app.user) %}
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
@@ -116,8 +111,9 @@
                         <a href="{{ dpt_api_host }}/admin/auth/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
                 </div>
+                {% else %}
+                <div></div>
             {% endif %}
-            <div></div>
         </div>
         <div class="b__nudge--top-large text--center">
             <a href="https://storage.googleapis.com/en-marche-fr/TECH/Charte%20outils%20numeriques%20municipales%202020.pdf" class="text--small" target="_blank">Consulter la Charte de bonne utilisation des outils numériques</a>
