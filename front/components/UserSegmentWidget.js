@@ -13,7 +13,15 @@ export default class UserSegmentManager extends React.Component {
         this.segmentType = props.segmentType;
         this.api = props.api;
 
-        this.checkboxes = props.checkboxes;
+        this.checkboxSelector = props.checkboxSelector;
+        this.checkboxes = findAll(document, props.checkboxSelector);
+
+        if (0 === this.checkboxes.length) {
+            throw new Error('Checkbox list is empty');
+        }
+
+        this.table = this.checkboxes[0].closest('table');
+
         this.mainCheckbox = props.mainCheckbox;
         this.countMembers = props.countMembers || 0;
 
@@ -41,9 +49,11 @@ export default class UserSegmentManager extends React.Component {
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleResetClick = this.handleResetClick.bind(this);
+        this.handleTableUpdate = this.handleTableUpdate.bind(this);
         this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
         this.handleMainCheckboxChange = this.handleMainCheckboxChange.bind(this);
         this.updateCheckboxState = this.updateCheckboxState.bind(this);
+        this.bindCheckboxListener = this.bindCheckboxListener.bind(this);
     }
 
     componentDidMount() {
@@ -51,13 +61,11 @@ export default class UserSegmentManager extends React.Component {
             on(this.mainCheckbox, 'change', this.handleMainCheckboxChange);
         }
 
-        this.checkboxes.forEach((element) => {
-            on(element, 'change', this.handleCheckboxChange);
+        if (this.table) {
+            on(this.table, 'table_update', this.handleTableUpdate);
+        }
 
-            if (-1 !== this.state.checked.indexOf(element.value)) {
-                element.checked = true;
-            }
-        });
+        this.bindCheckboxListener();
     }
 
     componentDidUpdate() {
@@ -136,6 +144,12 @@ export default class UserSegmentManager extends React.Component {
                         onClick={this.handleSaveSegmentClick}>OK</button>
             </div>
         );
+    }
+
+    handleTableUpdate() {
+        this.checkboxes = findAll(document, this.checkboxSelector);
+
+        this.bindCheckboxListener();
     }
 
     handleSaveSegmentClick() {
@@ -262,12 +276,22 @@ export default class UserSegmentManager extends React.Component {
     getStorageKey() {
         return `_${STORAGE_KEY}_${this.segmentType}`;
     }
+
+    bindCheckboxListener() {
+        this.checkboxes.forEach((element) => {
+            on(element, 'change', this.handleCheckboxChange);
+
+            if (-1 !== this.state.checked.indexOf(element.value)) {
+                element.checked = true;
+            }
+        });
+    }
 }
 
 UserSegmentManager.propsType = {
     segmentType: PropTypes.string.isRequired,
     api: PropTypes.object.isRequired,
-    checkboxes: PropTypes.element.isRequired,
+    checkboxSelector: PropTypes.string.isRequired,
     mainCheckbox: PropTypes.element,
     countMembers: PropTypes.number,
 };
