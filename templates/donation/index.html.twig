@@ -2,49 +2,156 @@
 
 {% block javascripts %}
     {% import 'javascript.js.twig' as js %}
+    <script type="text/javascript" src="{{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runDonation();
         });
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+          var letsFlip = '.js-flip';
+
+          $(letsFlip).click(function() {
+            $('.donation-box__flip').toggleClass('flipped');
+            return false;
+          });
+
+        });
+    </script>
+
 {% endblock %}
 
 {% block donation_content %}
-    <ul class="donation__form-steps">
-        <li class="active"><span>Montant</span></li>
-        <li>Coordonnées</li>
-        <li>Paiement</li>
-        <li>Confirmation</li>
-    </ul>
+    <div class="donation__landing">
 
-    <div class="donation__amount">
-        <form method="get" action="{{ path('donation_index') }}" class="em-form">
-            <h2>Je soutiens<br>La République En Marche !</h2>
-            <span class="fluo">Vous êtes une majorité à donner 50€</span>
+        <section class="donation-header">
 
-            <p class="montant">
-                Nous pouvons faire avancer les projets de <em>La République En Marche&nbsp;!</em> grâce à VOUS !<br><br>
-                Ensemble, nous avons lancé et soutenu des centaines de projets citoyens, développé des formations et lancé des initiatives comme «Actions Quartiers» et «Actions Ruralités».<br><br>
-                De nombreuses batailles électorales nous attendent, <br>notamment les municipales en 2020.<br><br>
-                Bien plus qu’un apport financier, votre don nous permet de développer des actions concrètes dans toute la France et de structurer notre Mouvement dans les territoires.<br> <br>
-
-                Nous avons besoin de VOUS !<br><br>
-                Merci pour votre soutien et continuons à transformer notre pays ensemble !
-            </p>
-
-            <input name="montant"
-                   id="donation-amount"
-                   class="form form__field form--full"
-                   type="number" min="0.01" max="7500" step="0.01" value="{{ amount }}" />
-
-            <input name="abonnement" id="donation-abonnement" {% if abonnement is same as(true) %} checked{% endif %} />
-
-            <button class="btn btn--large-and-medium btn--primary" type="submit">
-                Continuer
-            </button>
-            <div class="b__nudge--top-10">
-                <p>OU je donne par chèque en <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">téléchargeant un bulletin de don</a></p>  
+        </section>
+        <section class="section donation-hero">
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+        </section>
+        <section class="donation-box__container l__wrapper">
+            <div class="donation-box">
+                <div class="donation-box__flip">
+                    <div class="donation-box__front">
+                        front
+                        <button class="js-flip">flip</button>
+                    </div>
+                    <div class="donation-box__back">
+                        back
+                        <button class="js-flip">flip</button>
+                    </div>
+                </div>
             </div>
-        </form>
+        </section>
+        <section class="section donation-distribution">
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+        </section>
+        <section class="section donation-distribution">
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+        </section>
+        <section class="section donation-distribution">
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+            Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<br>
+        </section>
+
+        <!-- <ul class="donation__form-steps">
+            <li class="active"><span>Montant</span></li>
+            <li>Coordonnées</li>
+            <li>Paiement</li>
+            <li>Confirmation</li>
+        </ul> -->
+
+        <!-- <div class="donation__amount">
+            <form method="get" action="{{ path('donation_index') }}" class="em-form">
+                <h2>Je soutiens<br>La République En Marche !</h2>
+                <span class="fluo">Vous êtes une majorité à donner 50€</span>
+
+                <p class="montant">
+                    Nous pouvons faire avancer les projets de <em>La République En Marche&nbsp;!</em> grâce à VOUS !<br><br>
+                    Ensemble, nous avons lancé et soutenu des centaines de projets citoyens, développé des formations et lancé des initiatives comme «Actions Quartiers» et «Actions Ruralités».<br><br>
+                    De nombreuses batailles électorales nous attendent, <br>notamment les municipales en 2020.<br><br>
+                    Bien plus qu’un apport financier, votre don nous permet de développer des actions concrètes dans toute la France et de structurer notre Mouvement dans les territoires.<br> <br>
+
+                    Nous avons besoin de VOUS !<br><br>
+                    Merci pour votre soutien et continuons à transformer notre pays ensemble !
+                </p>
+
+                <input name="montant"
+                       id="donation-amount"
+                       class="form form__field form--full"
+                       type="number" min="0.01" max="7500" step="0.01" value="{{ amount }}" />
+
+                <input name="abonnement" id="donation-abonnement" {% if abonnement is same as(true) %} checked{% endif %} />
+
+                <button class="btn btn--large-and-medium btn--primary" type="submit">
+                    Continuer
+                </button>
+                <div class="b__nudge--top-10">
+                    <p>OU je donne par chèque en <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">téléchargeant un bulletin de don</a></p>
+                </div>
+            </form>
+        </div> -->
     </div>
+
+
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br>
+
 {% endblock %}
