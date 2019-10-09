@@ -48,7 +48,11 @@ class ApplicationRequestChangeSubscriber implements EventSubscriber
 
     public function postRemove(LifecycleEventArgs $args): void
     {
-        $this->bus->dispatch(new RemoveApplicationRequestCandidateCommand($args->getObject()->getEmailAddress()));
+        $object = $args->getObject();
+
+        if ($object instanceof ApplicationRequest) {
+            $this->bus->dispatch(new RemoveApplicationRequestCandidateCommand($object->getEmailAddress()));
+        }
     }
 
     private function dispatchMessage(ApplicationRequest $object): void

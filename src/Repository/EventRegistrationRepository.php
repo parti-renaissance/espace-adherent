@@ -75,6 +75,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->andWhere('r.emailAddress = :email_address')
             ->setParameter('email_address', $emailAddress)
             ->getQuery()
+            ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
     }
@@ -149,16 +150,17 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return $this->createEventRegistrationCollection($this->findBy(['event' => $event]));
     }
 
-    public function findByRegisteredEmailAndEvent(string $email, BaseEvent $event): ?EventRegistration
+    public function isAlreadyRegistered(string $email, BaseEvent $event): bool
     {
-        return $this
+        return (bool) $this
             ->createQueryBuilder('er')
+            ->select('COUNT(1)')
             ->where('er.emailAddress = :email')
             ->andWhere('er.event = :event')
             ->setParameter('email', $email)
             ->setParameter('event', $event)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
         ;
     }
 
