@@ -1,95 +1,65 @@
 {% extends 'donation/layout.html.twig' %}
 
 {% block donation_content %}
-    <ul class="donation__form-steps">
-        <li>Montant</li>
-        <li>Coordonnées</li>
-        <li>Paiement</li>
-        <li class="active">Confirmation</li>
-    </ul>
-
     <div class="donation__result {{ successful ? 'donation__result--successful' : 'donation__result--failure' }}">
+
+        <!-- Need to dynamise this -->
+        <section class="donation__header with-bkg">
+            <div class="l__wrapper">
+                <div class="donation__header__content">
+                    <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
+                    <div class="donation__header__steps right">
+                        <ul>
+                            <li><a href="{{ path('homepage') }}">Aller sur la page d'accueil</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         {% if successful %}
-            <div class="donation__result--successful__amount">
-                Votre don de<br />
-                <h3>{{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h3>
-                est validé !
-            </div>
-            <div class="donation__result--successful__thankyou">
-                {% if is_registration %}
-                    <span>Nous sommes heureux de vous compter parmi nous.</span>
-                    <span>
-                        Nous venons de vous envoyer un email pour confirmer votre adhésion.<br/>
-                        Rendez-vous sur votre boîte email.
-                    </span>
-                {% else %}
-                    Les dons sont une ressource vitale pour La République En Marche&nbsp;!
-                {% endif %}
-            </div>
-
-            <div class="text--body text--left">
-                Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes.
-            </div>
-
-            {% if not is_adherent %}
-                <div class="text--body b__nudge--top">
-                    <strong>Vous n'êtes pas encore adhérent(e) ?</strong><br/>
-                    Rejoignez nos {{ nb_adherent|number_format(0, ',', ' ') }} adhérents dès maintenant :
-                </div>
-                <p class="b__nudge--bottom-large">
-                    <a href="{{ path('app_membership_join') }}" class="btn btn--primary btn-medium">
-                        J'adhère à La République En Marche !
-                    </a>
-                </p>
-            {% endif %}
-
-            {% if is_adherent and not is_newsletter_subscribed %}
-                <div class="newsletter l__row l__row--h-stretch space--20-30 l__row--wrap l__tablet--col b__nudge--top b__nudge--bottom-5">
-                    <div class="text--body text--bold">
-                        Tenez-vous au courant des actualités du mouvement et du gouvernement en vous abonnant à notre newsletter hebdomadaire !
-                    </div>
-                    {{ form_start(newsletter_form, { action: path('newsletter_subscription'), attr: { class: 'l__row l__row--wrap'} }) }}
-                        <div class="form__row">
-                            {{ form_widget(newsletter_form.email, {
-                                attr: {
-                                    title: 'common.email_address',
-                                    placeholder: 'common.email_address',
-                                    class: 'form--full'
-                                }
-                            }) }}
-                        </div>
-                        <div class="form__row">
-                            {{ form_widget(newsletter_form.postalCode, {
-                                attr: {
-                                    title: 'common.zip_code',
-                                    placeholder: 'common.zip_code',
-                                    class: 'form--mid'
-                                }
-                            }) }}
-                            {{ form_widget(newsletter_form.country, { placeholder: 'common.country', attr: { class: 'form--mid' } }) }}
-                        </div>
-                        <div class="form__row">
-                            {{ form_row(newsletter_form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous", label_attr: { class: 'text--gray text--smallest' }}) }}
-                        </div>
-                        <div class="form--full">
-                            <button title="Je m'inscris à la newsletter" type="submit" class="form btn btn--primary">Je m'inscris</button>
-                        </div>
-                    {{ form_end(newsletter_form) }}
-                    <div class="text--gray text--small text--left">
-                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
-                        Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
-                        Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+            <section class="donation__result__intro text--center">
+                <div class="l__wrapper">
+                    <div class="donation__result__into--title">
+                        <h1 class="text--larger b__nudge--bottom-larger b__nudge--top-40">Votre don de {{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }} est validé, merci !</h1>
                     </div>
                 </div>
+                <div class="l__wrapper--narrow">
+                    <p class="donation__result__intro--text">
+                        Continuons à transformer notre pays ensemble ! Les dons sont une ressource vitale pour La République En Marche !
+                        Chaque don, quel que soit le montant, nous permet d’engager une action concrète pour réussir ensemble la transformation du pays.
+                        <br /><br />
+                        <strong>C’est votre engagement qui fait vivre cette promesse !</strong>
+                    </p>
+                </div>
+            </section>
 
-            {% endif %}
+            <section class="donation__result__opportunities">
+                <div class="l__wrapper--medium">
+                    <div class="opportunities-list">
+                        <div class="opportunity">
+                            <h2><strong>J'invite</strong> mes amis à donner</h2>
+                            <p class="text--body">Invitez par e-mail votre entourage à faire un don à La République En Marche !</p>
+                            <a href="mailto:?{{ {subject: 'Je viens de donner à La République En Marche, pourquoi pas toi ?', body: "Je t'invite à lire leur brochure, elle donne envie de transformer le pays !\r\rLa brochure : https://en-marche.fr/brochure-don\rLa page de don : https://en-marche.fr/don"}|url_encode }}" class="btn btn--yellow">J'invite un(e) ami(e)</a>
+                        </div>
 
-            <p>
-                <a href="{{ path('homepage') }}" class="text--summary">
-                    Retour à l'accueil
-                </a>
-            </p>
+                        <div class="opportunity">
+                            <h2><strong>Je m'abonne</strong> à la newsletter</h2>
+                            <p class="text--body">Quelques secondes suffisent pour s'inscrire gratuitement à notre newsletter hebdomadaire !</p>
+                            <a href="{{ path('newsletter_subscription') }}" target="_blank" class="btn btn--green--apple">Je m'abonne</a>
+                        </div>
+
+                        {% if not is_adherent %}
+                        <div class="opportunity large">
+                            <h2><strong>Rejoignez</strong> les 418 423 adhérents de La République En Marche !<br />C'est facile, gratuit et 3 minutes suffiront.</h2>
+                            <p class="text--body">Invitez par e-mail votre entourage à faire un don à La République En Marche !</p>
+                            <a href="{{ path('app_membership_join') }}" target="_blank" class="btn btn--blue--sky">J'adhère maintenant</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
         {% else %}
             <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 

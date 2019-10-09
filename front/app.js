@@ -74,7 +74,7 @@ class App {
 
     runDonation() {
         System.import('pages/donation').catch((error) => { throw error; }).then((module) => {
-            module.default();
+            module.default('.donation-widget-wrapper');
         });
     }
 

@@ -11,28 +11,38 @@
 {% endblock %}
 
 {% block donation_content %}
-    <ul class="donation__form-steps">
-        <li>Montant</li>
-        <li>Coordonnées</li>
-        <li class="active">Paiement</li>
-        <li>Confirmation</li>
-    </ul>
-
     <div class="donation__payment">
-        <div class="donation__loader" id="app-donation-redirect-loader">
-            <p class="donation__loader__text">
-                Veuillez patienter pendant que nous vous redirigons vers votre banque ...
-            </p>
+        <!-- Need to dynamise this -->
+        <section class="donation__header with-bkg">
+            <div class="l__wrapper">
+                <div class="donation__header__content">
+                    <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
+                    <div class="donation__header__steps">
+                        <ul>
+                            <li>1. Montant</li>
+                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
+                            <li>2. Informations</li>
+                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
+                            <li>3. Paiement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="l__wrapper text--center b__nudge--top-50">
+            <div class="donation__loader" id="app-donation-redirect-loader">
+                <p class="donation__loader__text text--medium">
+                    Veuillez patienter pendant que nous vous redirigons vers votre banque...
+                </p>
+            </div>
+            <form class="donation__nojs" action="{{ url }}" method="post" name="app_donation_payment" id="app-donation-redirect-form">
+                {% for field in form %}
+                    <input type="{{ field.vars.block_prefixes[1] }}"
+                           name="{{ field.vars.name }}"
+                           {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
+                {% endfor %}
+                <input type="submit" class="form btn btn--red text--center" value="Continuer vers ma banque" />
+            </form>
         </div>
-
-        <form class="donation__nojs" action="{{ url }}" method="post" name="app_donation_payment" id="app-donation-redirect-form">
-            {% for field in form %}
-                <input type="{{ field.vars.block_prefixes[1] }}"
-                       name="{{ field.vars.name }}"
-                       {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
-            {% endfor %}
-
-            <input type="submit" class="form btn btn--primary text--center" value="Continuer vers ma banque" />
-        </form>
     </div>
 {% endblock %}

@@ -21,36 +21,3 @@ window.insertAfter = (element, newElement) => {
 window.remove = (element) => {
     element.parentNode.removeChild(element);
 };
-
-window.toggleCLass = (element, className) => {
-    if (element.classList) {
-        element.classList.toggle(className);
-    } else {
-        const classes = element.className.split(' ');
-        const index = classes.indexOf(className);
-
-        if (-1 !== index) {
-            classes.splice(index, 1);
-        } else {
-            classes.push(className);
-        }
-
-        element.className = classes.join(' ');
-    }
-};
-
-window.removeClass = (element, className) => {
-    if (element.classList) {
-        element.classList.remove(className);
-    } else {
-        element.className.replace(className, '');
-    }
-};
-
-window.addClass = (element, className) => {
-    if (element.classList) {
-        element.classList.add(className);
-    } else {
-        element.className += className;
-    }
-};

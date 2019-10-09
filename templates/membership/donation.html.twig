@@ -13,23 +13,14 @@
 {% endblock %}
 
 {% block content %}
-    <section class="donation__content l__wrapper l__row space--60-0">
+    <section class="donation__content l__wrapper--medium l__row b__nudge--bottom-50">
         <div class="donation__form donate-adhesion">
-            <div class="donation__amount">
-                <form method="get" action="{{ path('donation_index', { adhesion: true }) }}">
-                    <h2>Je soutiens<br>En Marche !</h2>
-                    <span class="fluo">Vous êtes une majorité à donner 50€</span>
-
-                    <p class="montant">
-                        La création de « La République En Marche ! » a été rendue possible, grâce à VOUS !<br><br>
-                        Ensemble, nous avons lancé et soutenu des centaines de projets citoyens, développé des formations et organisé
-                        la Grande Marche pour l’Europe. De nombreuses batailles électorales nous attendent : les européennes et les municipales.<br><br>
-                        Bien plus qu’un apport financier, votre don nous permet de développer des actions concrètes dans toute la France
-                        et de structurer notre Mouvement dans les territoires.<br><br>
-                        Nous avons besoin de VOUS !<br><br>
-                        Merci pour votre soutien et continuons à transformer notre pays ensemble !
-                    </p>
-
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large">Vous êtes une majorité<br /> à donner <span>50 €</span></h1>
+            </header>
+            <hr class="l__wrapper b__nudge--bottom b__nudge--top">
+            <div class="donation__amount l__wrapper--slim">
+                <form method="get" action="{{ path('donation_index', { adhesion: true }) }}" class="em-form">
                     <input name="montant"
                            id="donation-amount"
                            class="form form__field form--full"
@@ -37,13 +28,15 @@
 
                     <input name="abonnement" id="donation-abonnement"/>
 
-                    <div class="form--full text--center space--30">
+                    <div class="text--center b__nudge--bottom b__nudge--top-large">
                         <a href="{{ path('app_membership_complete') }}" id="skip-donation" class="form btn">Passer cette étape</a>
-                        <button class="btn--primary form btn" type="submit">continuer</button>
+                        <button class="btn btn--primary form" type="submit">Je donne</button>
                     </div>
-                    <div class="b__nudge--top-10">
-                        <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">Je donne par
-                            chèque</a>
+
+                    <div class="b__nudge--top-large b__nudge--bottom-large">
+                        <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">
+                            Je donne par chèque
+                        </a>
                     </div>
                 </form>
             </div>

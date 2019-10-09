@@ -15,9 +15,6 @@
         footer.footer--slim {
             display: initial;
         }
-        body {
-            background-color: #1D5FD1;
-        }
     </style>
 {% endblock %}
 
@@ -26,23 +23,35 @@
 
 {% block content %}
 
-    <video class="donation__video" src="https://storage.googleapis.com/en-marche-prod/static/videos/donation.mp4" autoplay muted loop></video>
-    <div class="donation__video--overlay">
-    </div>
-    <div class="donation">
-        <div>
-            <section class="donation__header l__wrapper l__row l__row--h-stretch list__links--nav">
-                <h1><a href="{{ path('homepage') }}" class="link--no-decor">EM!</a></h1>
-                <div class="text--uppercase"><i class="fa fa-lock text--medium-small"></i> Page Sécurisée</div>
-            </section>
+    <div class="donation__page">
 
-            <section class="donation__content l__wrapper l__row space--60-0">
-                <div class="donation__form">
-                    {% block donation_content %}{% endblock %}
+        <section class="donation__content">
+            {% block donation_content %}{% endblock %}
+        </section>
+
+        <section class="donation__footer">
+            <div class="l__wrapper">
+                <div class="donation__footer__sections">
+                    <div class="footer__section text--body">
+                        <h5>Une question ? Contactez-nous.</h5>
+                        <p>01 86 95 09 15  / <a class="text--blue--dark link--no-decor" href="mailto:dons@en-marche.fr">dons@en-marche.fr</a></p>
+                    </div>
+                    <div class="footer__section text--body">
+                        <h5>Suivez La République En Marche !</h5>
+                        <ul class="list__links list__links--no-decor list__links--svgs">
+                            <li><a href="https://www.facebook.com/EnMarche/" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook-square"></i></a></li>
+                            <li><a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-square"></i></a></li>
+                            <li><a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin-square"></i></a></li>
+                            <li><a href="https://www.flickr.com/photos/enmarchefr/albums" rel="noopener noreferrer" target="_blank"><i class="fa fa-flickr"></i></a></li>
+                            <li><a href="https://t.me/enmarchefr" rel="noopener noreferrer" target="_blank"><i class="fa fa-telegram"></i></a></li>
+                            <li><a href="{{ url('articles_feed') }}" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss"></i></a></li>
+                        </ul>
+                    </div>
                 </div>
-            </section>
-        </div>
-        {{ include('components/footer--slim.html.twig') }}
+            </div>
+        </section>
     </div>
 
 {% endblock %}

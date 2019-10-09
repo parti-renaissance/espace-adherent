@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const defaultAmounts = [500, 200, 100, 70, 50, 20, 10];
+const defaultAmounts = [20, 50, 120, 500];
 
 export default class AmountChooser extends React.Component {
     constructor(props) {
@@ -56,14 +56,14 @@ export default class AmountChooser extends React.Component {
 
         return (
             <div className="amount-chooser">
-                <input type="hidden" name={this.props.name} value={state} />
+                <input type="hidden" name={this.props.name} value={state} key={`selected_amount_${state}`}/>
 
-                {defaultAmounts.map(amount => (
+                {this.props.amounts.map(amount => (
                     <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
                             type="button"
                             onClick={() => this.handleButtonClicked(amount)}
                             key={`amount_${amount}`}>
-                        {amount}€
+                        {amount} €
                     </button>
                 ))}
 
@@ -72,7 +72,7 @@ export default class AmountChooser extends React.Component {
                         type="number"
                         className="amount-chooser__other__input"
                         id="amount-chooser__other__input"
-                        placeholder="Autre"
+                        placeholder="Autre montant"
                         min="0.01"
                         max={this.props.maxValue}
                         step="0.01"
@@ -80,7 +80,7 @@ export default class AmountChooser extends React.Component {
                         onFocus={this.handleInputChange}
                         onChange={this.handleInputChange}
                         onKeyPress={this.handleInputKeyPress}
-                        defaultValue={-1 < defaultAmounts.indexOf(this.props.value) ? null : this.props.value}
+                        defaultValue={-1 < this.props.amounts.indexOf(this.props.value) ? null : this.props.value}
                     />
 
                     <label htmlFor="amount-chooser__other__input" className="amount-chooser__other__label">
@@ -94,10 +94,12 @@ export default class AmountChooser extends React.Component {
 
 AmountChooser.defaultProps = {
     maxValue: 7500,
+    amounts: defaultAmounts,
 };
 
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
+    amounts: PropTypes.arrayOf(PropTypes.number),
     value: PropTypes.number,
     maxValue: PropTypes.number,
     onChange: PropTypes.func,

@@ -7,17 +7,37 @@ window.hide = (element) => {
 };
 
 window.addClass = (element, className) => {
-    element.classList.add(className);
+    if (element.classList) {
+        element.classList.add(className);
+    } else {
+        element.className += ` ${className}`;
+    }
 };
 
 window.hasClass = (element, className) => {
-    element.classList.contains(className);
-};
+    if (element.classList) {
+        return element.classList.contains(className);
+    }
 
-window.toggleClass = (element, className) => {
-    element.classList.toggle(className);
+    return -1 !== element.className.indexOf(className);
 };
 
 window.removeClass = (element, className) => {
-    element.classList.remove(className);
+    if (element.classList) {
+        element.classList.remove(className);
+    } else {
+        element.className.replace(className, '');
+    }
+};
+
+window.toggleClass = (element, className) => {
+    if (element.classList) {
+        return element.classList.toggle(className);
+    }
+
+    if (hasClass(element, className)) {
+        return removeClass(element, className);
+    }
+
+    return addClass(element, className);
 };
