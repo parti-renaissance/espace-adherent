@@ -38,7 +38,7 @@ export default class DonationAmountChooser extends React.Component {
                                     onChange={() => this.setState({ abonnement: false })}
                                 />
                                 <label htmlFor="donation-one-time" id="donation-one-time_label">
-                                    Je donne une fois
+                                    Une fois
                                 </label>
                             </div>
                             <div className="form__radio">
@@ -51,7 +51,7 @@ export default class DonationAmountChooser extends React.Component {
                                     onChange={() => this.setState({ abonnement: true })}
                                 />
                                 <label htmlFor="donation-monthly" id="donation-monthly_label">
-                                    Je donne chaque mois <br />(paiement automatique)
+                                    Tous les mois
                                 </label>
                             </div>
                         </div>
@@ -75,8 +75,9 @@ export default class DonationAmountChooser extends React.Component {
                 }
 
                 <div className="donation__amount-chooser__after-taxes">
-                    <h3>{App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)}€</h3>
-                    <p>après réduction d'impôt</p>
+                    soit <span className="after-taxes-amount">
+                        {App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)}
+                    €</span> après réduction d’impôt
                 </div>
             </div>
         );
