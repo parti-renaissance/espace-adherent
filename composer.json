@@ -99,7 +99,7 @@
         "symfony/inflector": "3.4.*",
         "symfony/intl": "3.4.*",
         "symfony/messenger": "4.2",
-        "symfony/monolog-bridge": "^4.1",
+        "symfony/monolog-bridge": "3.4.*",
         "symfony/monolog-bundle": "^3.3",
         "symfony/polyfill-apcu": "^1.10",
         "symfony/property-info": "3.4.*",
