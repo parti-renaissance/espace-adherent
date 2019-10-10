@@ -7,24 +7,27 @@
     &__button,
     &__other {
         border: 0;
-        font-family: $font-gillsans;
+        font-family: $font-roboto;
         cursor: pointer;
         width: 24%;
-        height: 47px;
-        padding: 13px 0;
-        margin-bottom: 5px;
+        height: 56px;
+        line-height: 56px;
+        margin-bottom: 8px;
         box-sizing: border-box;
-        background: #9b9b9b;
-        color: white;
-        transition: background .2s;
+        background: $white;
+        border: 1px solid $lines-grey;
+        border-radius: 2px;
+        color: $dark;
+        transition: background-color .2s, border .2s;
 
         &:hover {
-            background: $black--half;
+            background: $pink;
+            border-color: $pink;
+            color: $white;
         }
 
-        font-size: $text--size-medium--small;
+        font-size: 16px;
         text-align: center;
-        letter-spacing: 1.9px;
 
         @media (max-width: 450px) {
             width: 47%;
@@ -70,16 +73,13 @@
         &--selected {
             background-color: $pink;
             color: white;
-
-            &:hover {
-                background: $pink-hover;
-            }
+            border-color: $pink;
+            font-weight: bold;
         }
     }
 
     &__other {
         position: relative;
-        background: $gray--light;
         width: 100%;
 
         &:hover {
@@ -90,7 +90,6 @@
             box-sizing: border-box;
             width: 100%;
             background: transparent;
-            top: -11px;
             position: relative;
             font-family: $font-roboto;
             font-size: $text--size-smallest;
@@ -98,7 +97,7 @@
             border: none;
             cursor: text;
             text-align: left;
-            padding: 16px 26px 13px 18px;
+            padding: 0 12px;
 
             &:hover {
                 background: transparent;
@@ -125,7 +124,7 @@
     }
 }
 
-// Module page statiques
+// Module page statiques & HP
 .donate {
     &__text {
         max-width: 285px;
