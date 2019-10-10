@@ -79,8 +79,8 @@
 
     &__other {
         position: relative;
-        float: left;
         background: $gray--light;
+        width: 100%;
 
         &:hover {
             background: $gray--light;
@@ -125,6 +125,7 @@
     }
 }
 
+// Module page statiques
 .donate {
     &__text {
         max-width: 285px;
@@ -456,20 +457,28 @@
     }
 
     &__amount-chooser {
-        margin-bottom: 30px;
 
         &__after-taxes {
-            margin: 25px 0 35px;
+            margin: 15px 0 20px;
+            font-size: 15px;
+            color: $dark;
+            font-family: $font-roboto;
 
-            h3 {
-                font-size: 26px;
+            .after-taxes-amount {
+                font-size: 22px;
                 font-weight: bold;
+                color: $black;
             }
 
-            p {
-                margin: 5px 0 0 0;
-                padding: 0;
-            }
+            // h3 {
+            //     font-size: 26px;
+            //     font-weight: bold;
+            // }
+            //
+            // p {
+            //     margin: 5px 0 0 0;
+            //     padding: 0;
+            // }
         }
 
         input[type="checkbox"]:checked + label:before {
@@ -583,36 +592,123 @@
 ========================================================
 ========================================================
 */
+@mixin content-mw {
+    max-width: 100%;
 
-.donation {
-    &__landing {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
+    @media (min-width: $tablet) {
+        max-width: calc((100% - 440px) - 10%);
     }
 }
 
-.donation-header {
+.donation-reassurance {
+    font-size: 0;
 
+    &__item {
+        display: inline-block;
+        font-size: 12px;
+        color: white;
+        border: 1px solid rgba(0,0,0,0.5);
+        border-radius: 2px;
+        padding: 6px;
+        text-transform: uppercase;
+        margin-right: 8px;
+        line-height: normal;
+    }
+
+    &.dark {
+        .donation-reassurance__item {
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+    }
+}
+
+.donation__landing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.donation-header {
+    position: relative;
+    color: $white;
+    background-color: red;
+
+    @media (min-width: $tablet) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: transparent;
+    }
+
+    &__content {
+        height: 100px;
+        display: flex;
+        align-items: center;
+    }
 }
 
 .donation-hero {
     width: 100%;
     height: 670px;
-    background-color: #383346;
+    background-color: black;
+    order: 2;
+
+    @media (min-width: $tablet) {
+        order: 1;
+    }
+
+    &__container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        color: $white;
+    }
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+        padding-bottom: 70px;
+
+        h1 {
+            line-height: normal;
+            margin-bottom: 30px;
+        }
+
+        p {
+            margin-bottom: 40px;
+        }
+    }
 }
 
+/* DONATION-BOX */
 .donation-box__container {
-    display: flex;
-    justify-content: flex-end;
-    position: sticky;
-    position: -webkit-sticky;
-    position: -moz-sticky;
-    position: -ms-sticky;
-    position: -o-sticky;
-    top: 60px;
-    margin-top: -530px;
+    position: relative;
+    background-color: #383346;
     pointer-events: none;
+
+    @media (min-width: $tablet) {
+        background-color: transparent;
+        margin-top: -530px;
+        position: sticky;
+        position: -webkit-sticky;
+        position: -moz-sticky;
+        position: -ms-sticky;
+        position: -o-sticky;
+        top: 60px;
+        order: 2;
+    }
+
+    .l__wrapper {
+        display: flex;
+        justify-content: center;
+
+        @media (min-width: $tablet) {
+            justify-content: flex-end;
+        }
+    }
 }
 
 .donation-box,
@@ -622,6 +718,7 @@
     height: 640px;
     width: 100%;
     max-width: 440px;
+    box-sizing: border-box;
 }
 
 .donation-box,
@@ -635,6 +732,13 @@
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     backface-visibility: hidden;
+    border-radius: 3px;
+    padding: 50px 50px 0;
+    pointer-events: all;
+
+    &.disable {
+        pointer-events: none;
+    }
 }
 
 .donation-box {
@@ -643,13 +747,16 @@
     -webkit-perspective: 1500px;
     perspective: 1500px;
 
-    border: 1px solid red;
-
     &__flip {
         transition: all 0.5s ease-out;
         -webkit-transform-style: preserve-3d;
         -moz-transform-style: preserve-3d;
         transform-style: preserve-3d;
+        border-radius: 3px;
+
+        &.with-shadow {
+            box-shadow: 0 2px 5px 0 rgba(35, 50, 65, 0.12);
+        }
 
         &.flipped {
           -webkit-transform: rotateY(-180deg);
@@ -659,10 +766,9 @@
         }
     }
 
-
-
     &__front {
         background-color: white;
+        text-align: center;
     }
 
     &__back {
@@ -671,5 +777,147 @@
         -moz-transform: rotateY(180deg);
         -ms-transform: rotateY(180deg);
         transform: rotateY(180deg);
+    }
+
+    &__head {
+
+        h1 {
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        span {
+            background-color: $lighter-pink;
+            font-weight: 700;
+        }
+    }
+
+    &__sending-address {
+        background-color: $gray--pale;
+        border-radius: 3px;
+        padding: 20px;
+        margin: 20px 0 30px;
+    }
+
+    .donation-button {
+        width: 100%;
+    }
+
+    .donation-button-separator {
+        width: 100%;
+        height: 1px;
+        background-color: $lines-grey;
+        margin: 20px 0;
+        position: relative;
+
+        &::before {
+            content: 'ou';
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: bold;
+            background-color: $white;
+            position: absolute;
+            top: -10px;
+            left: calc(50% - 25px);
+            font-family: $font-roboto;
+            width: 50px;
+            text-align: center;
+        }
+    }
+}
+
+.others-sections {
+    order: 3;
+}
+
+/* DONATION DISTRIBUTION */
+.donation-distribution {
+    padding-top: 50px;
+
+    @media (min-width: $mobile) {
+        padding-top: 75px;
+    }
+
+    @media (min-width: $tablet) {
+        padding-top: 0;
+    }
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+    }
+
+    &__items-list {
+        display: inline;
+        font-size: 0;
+    }
+
+    &__item {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 15px;
+        width: 100%;
+        margin-top: 50px;
+        margin-right: 0;
+
+        @media (min-width: $mobile) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+
+        @media (min-width: $tablet) {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        @media (min-width: 1200px) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+
+        &:last-child {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        &--head {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        &--amount {
+            display: block;
+            width: 68px;
+            min-width: 68px;
+            height: 68px;
+            text-align: center;
+            line-height: 68px;
+            background-color: $lighter-pink;
+            margin-right: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        &--title {
+            font-family: $font-roboto;
+            line-height: normal;
+        }
+
+        &:first-child .donation-distribution__item--amount {
+            background-color: $black;
+            color: $white;
+        }
+
+        p {
+            color: $silver-grey;
+            margin: 20px 0 0;
+        }
     }
 }

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const defaultAmounts = [500, 200, 100, 70, 50, 20, 10];
+const defaultAmounts = [20, 50, 120, 500];
 
 export default class AmountChooser extends React.Component {
     constructor(props) {

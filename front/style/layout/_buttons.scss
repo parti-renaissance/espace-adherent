@@ -34,6 +34,27 @@
     }
 }
 
+@mixin btn-fat {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    padding: 20px;
+    font-family: $font-gillsans;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    transition: all 0.45s;
+    -webkit-transition: all 0.45s;
+    box-sizing: border-box;
+    outline: 0;
+
+    &:hover,
+    &:focus {
+        border: none;
+    }
+}
+
 @mixin newbtn {
     cursor: pointer;
     display: inline-flex;
@@ -165,6 +186,16 @@
         color: $white;
         background: $pink-hover;
         border-color: $pink-hover;
+    }
+}
+
+@mixin btn--gray {
+    color: $black;
+    background: $btn--gray;
+
+    &:hover {
+        color: $black;
+        background: $btn--gray--hover;
     }
 }
 
@@ -578,5 +609,17 @@ button.btn {
             color: black;
             background-color: $gray--lighter;
         }
+    }
+}
+
+.btn-fat {
+    @include btn-fat;
+
+    &--pink {
+        @include btn--pink;
+    }
+
+    &--gray {
+        @include btn--gray;
     }
 }
