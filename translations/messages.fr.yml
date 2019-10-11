@@ -503,10 +503,10 @@ deputy.popup.title: Charte de bonne utilisation des outils numériques
 deputy.popup.subtitle: à l’usage des députés
 deputy.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/deputes/charte_deputes.pdf
 
-subscription_type.group.communication_mobile: SMS/MMS de communication
-subscription_type.group.communication_emails: E-mails de communication
-subscription_type.group.territories_emails: E-mails Territoires
-subscription_type.group.citizen_project_emails: E-mails Projets Citoyens
+subscription_type.group.communication_mobile: SMS/MMS
+subscription_type.group.communication_emails: Informations nationales
+subscription_type.group.territories_emails: Informations locales
+subscription_type.group.citizen_project_emails: Informations spécifiques
 
 #
 # Actualités

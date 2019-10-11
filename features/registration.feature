@@ -232,20 +232,20 @@ Feature:
     And the "adherent[birthdate][month]" field should contain "1"
     And the "adherent[birthdate][year]" field should contain "1980"
 
-    Given I follow "Notifications"
+    Given I follow "communications"
     Then I should be on "/parametres/mon-compte/preferences-des-emails"
     And the "Recevoir les informations sur les actions militantes du mouvement par SMS ou MMS" checkbox should be unchecked
-    And the "Recevoir les informations du mouvement" checkbox should be unchecked
-    And the "Recevoir la newsletter hebdomadaire de LaREM" checkbox should be unchecked
-    And I should not see an "Recevoir les e-mails de votre animateur local" element
-    And I should not see an "Recevoir les e-mails de votre référent territorial" element
-    And I should not see an "Recevoir les e-mails de votre porteur de projet" element
-    And I should not see an "Être notifié\(e\) de la création de nouveaux projets citoyens" element
+    And the "Recevoir les e-mails nationaux" checkbox should be unchecked
+    And the "Recevoir la newsletter hebdomadaire nationale" checkbox should be unchecked
+    And I should not see an "Recevoir les e-mails de mon animateur\(trice\) local\(e\) de comité" element
+    And I should not see an "Recevoir les e-mails de mon\/ma référent\(e\) territorial\(e\)" element
+    And I should not see an "Recevoir les e-mails de mon porteur de projet" element
+    And I should not see an "Être notifié\(e\) de la création de nouveaux projets citoyens dans un rayon de autour de chez moi" element
 
-    When I check "Recevoir les informations du mouvement"
-    When I check "Recevoir la newsletter hebdomadaire de LaREM"
-    And the "Recevoir les informations du mouvement" checkbox should be checked
-    And the "Recevoir la newsletter hebdomadaire de LaREM" checkbox should be checked
+    When I check "Recevoir les e-mails nationaux"
+    When I check "Recevoir la newsletter hebdomadaire nationale"
+    And the "Recevoir les e-mails nationaux" checkbox should be checked
+    And the "Recevoir la newsletter hebdomadaire nationale" checkbox should be checked
     And I press "Enregistrer les modifications"
     Then the response status code should be 200
     And I should see "Vos préférences d'e-mails ont bien été mises à jour."

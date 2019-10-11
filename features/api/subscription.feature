@@ -9,7 +9,7 @@ Feature:
       | LoadAdherentData  |
     When I am logged as "jacques.picard@en-marche.fr"
     And I am on "/parametres/mon-compte/preferences-des-emails"
-    Then the "Recevoir les informations du mouvement" checkbox should be checked
+    Then the "Recevoir les e-mails nationaux" checkbox should be checked
 
     When I send a "POST" request to "/api/email-subscriptions/change?secret=mailchimp_secret" with parameters:
       | key           | value                       |
@@ -29,7 +29,7 @@ Feature:
 
     When I am logged as "jacques.picard@en-marche.fr"
     And I am on "/parametres/mon-compte/preferences-des-emails"
-    Then the "Recevoir les informations du mouvement" checkbox should be unchecked
+    Then the "Recevoir les e-mails nationaux" checkbox should be unchecked
 
     When I send a "POST" request to "/api/email-subscriptions/change?secret=mailchimp_secret" with parameters:
       | key           | value                       |
@@ -41,7 +41,7 @@ Feature:
 
     When I am logged as "jacques.picard@en-marche.fr"
     And I am on "/parametres/mon-compte/preferences-des-emails"
-    Then the "Recevoir les informations du mouvement" checkbox should be checked
+    Then the "Recevoir les e-mails nationaux" checkbox should be checked
 
   Scenario: The platform doesn't save email subscription modification if no secret
     When I send a "POST" request to "/api/email-subscriptions/change" with parameters:

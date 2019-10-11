@@ -2,12 +2,12 @@
 
 {% block adherent_profile_form %}
     {{ form_start(form, { attr: { class: 'form' } }) }}
-        <h2 class="b__nudge--bottom-large">Notifications via e-mail et mobile</h2>
+        <h2 class="b__nudge--bottom-large">Mes communications via e-mail et mobile</h2>
 
         {{ form_errors(form) }}
 
         {% set help_messages = {
-            (constant('AppBundle\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
+            (constant('AppBundle\\Subscription\\SubscriptionTypeEnum::REFERENT_EMAIL')): 'Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées. Ils y ont la charge de l\'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec les instances nationales. Découvrez le/la vôtre en cliquant <a href="' ~ path('our_referents_homepage') ~ '" target="_blank" rel="noopener noreferrer">ici</a>.'
         } %}
 
         {% for group_choices in form.subscriptionTypes.vars.choices %}
