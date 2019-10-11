@@ -67,10 +67,8 @@ export default class DonationAmountChooser extends React.Component {
 
                 { this.state.abonnement && this.state.amount > maxAbonnementAmount &&
                     <div className="amount-chooser__help">
-                        <p>
-                            Votre don mensuel ne peut dépasser {maxAbonnementAmount} euros.
-                            Si vous souhaitez donner plus, vous pourrez compléter avec un don ponctuel.
-                        </p>
+                        Votre don mensuel ne peut dépasser {maxAbonnementAmount} euros.
+                        Si vous souhaitez donner plus, vous pourrez compléter avec un don ponctuel.
                     </div>
                 }
 
