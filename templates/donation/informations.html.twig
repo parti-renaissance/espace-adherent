@@ -12,124 +12,138 @@
 {% endblock %}
 
 {% block donation_content %}
-    <ul class="donation__form-steps">
-        <li><a href="{{ path('donation_index') }}">Montant</a></li>
-        <li class="active">Coordonnées</li>
-        <li>Paiement</li>
-        <li>Confirmation</li>
-    </ul>
+
     <div class="donation__informations">
-        {{ form_start(form, { attr: { class: 'form join__form' } }) }}
-        {{ form_errors(form, { error_raw: true }) }}
-        <div class="donation__informations__amount">
-            Je donne<br />
-            <div>{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</div>
-            {% if form.confirmDonationType is defined %}
-                <p class="text--left">Vous vous apprêtez à faire un don important, <strong>soutenez durablement la transformation du pays en donnant mensuellement</strong> :</p>
-                {{ form_row(form.confirmDonationType) }}
-            {% endif %}
-        </div>
 
-        <div class="b__nudge--top-15">
-            <h3 class="text--left">Informations personnelles</h3>
-            <div class="text--left text--body b__nudge--bottom-medium">
-                Toutes ces informations sont obligatoires pour que votre don soit validé par la commission des comptes.
-            </div>
-            <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
-                {{ form_widget(form.gender, { attr: { class: 'register__form__gender b__nudge--bottom-small' } }) }}
-                {{ form_errors(form.gender) }}
-            </div>
-
-            <div class="form__row form__row--stretch">
-                <div class="form--mid">
-                    {{ form_errors(form.firstName) }}
-                    {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
-                </div>
-                <div class="form--mid">
-                    {{ form_errors(form.lastName) }}
-                    {{ form_widget(form.lastName, { attr: { class: 'form--full', placeholder: 'Nom' } }) }}
+        <!-- Need to dynamise this -->
+        <section class="donation__header">
+            <div class="l__wrapper">
+                <div class="donation__header__content">
+                    <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
+                    <div class="donation__header__steps">
+                        <ul>
+                            <li>1. Montant du don</li>
+                            <li>2. Informations personnelles</li>
+                            <li class="next">3. Paiement sécurisé</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="form__row">
-                {{ form_errors(form.firstName) }}
-                {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
+        <div class="l__wrapper--600">
+            {{ form_start(form, { attr: { class: 'form join__form' } }) }}
+            {{ form_errors(form, { error_raw: true }) }}
+            <div class="donation__informations__amount">
+                Je donne<br />
+                <div>{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</div>
+                {% if form.confirmDonationType is defined %}
+                    <p class="text--left">Vous vous apprêtez à faire un don important, <strong>soutenez durablement la transformation du pays en donnant mensuellement</strong> :</p>
+                    {{ form_row(form.confirmDonationType) }}
+                {% endif %}
             </div>
 
-            <div class="form__row">
-                {{ form_errors(form.nationality) }}
-                {{ form_widget(form.nationality, { attr: { class: 'form--full'} }) }}
-            </div>
-
-            <div class="form__row">
-                {{ form_errors(form.emailAddress) }}
-                {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse email' } }) }}
-            </div>
-        </div>
-
-        <div>
-            {{ form_errors(form.address) }}
-
-            <div class="form__row">
-                <div class="address-autocomplete"></div>
-                <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
-                    Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
-                </p>
-            </div>
-
-            <div class="address-block">
-                <div class="form__row">
-                    {{ form_errors(form.address) }}
-                    {{ form_widget(form.address, { attr: { class: 'form--full', placeholder: 'Adresse postale' } }) }}
+            <div class="b__nudge--top-15">
+                <h3 class="text--left">Informations personnelles</h3>
+                <div class="text--left text--body b__nudge--bottom-medium">
+                    Toutes ces informations sont obligatoires pour que votre don soit validé par la commission des comptes.
                 </div>
-
-                <div class="form__row">
-                    {{ form_errors(form.country) }}
-                    {{ form_widget(form.country, { attr: { class: 'form--full' } }) }}
+                <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
+                    {{ form_widget(form.gender, { attr: { class: 'register__form__gender b__nudge--bottom-small' } }) }}
+                    {{ form_errors(form.gender) }}
                 </div>
 
                 <div class="form__row form__row--stretch">
                     <div class="form--mid">
-                        {{ form_errors(form.postalCode) }}
-                        {{ form_widget(form.postalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
+                        {{ form_errors(form.firstName) }}
+                        {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
                     </div>
                     <div class="form--mid">
-                        {{ form_errors(form.cityName) }}
-                        {{ form_widget(form.cityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
+                        {{ form_errors(form.lastName) }}
+                        {{ form_widget(form.lastName, { attr: { class: 'form--full', placeholder: 'Nom' } }) }}
+                    </div>
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.firstName) }}
+                    {{ form_widget(form.firstName, { attr: { class: 'form--full', placeholder: 'Prénom' } }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.nationality) }}
+                    {{ form_widget(form.nationality, { attr: { class: 'form--full'} }) }}
+                </div>
+
+                <div class="form__row">
+                    {{ form_errors(form.emailAddress) }}
+                    {{ form_widget(form.emailAddress, { attr: { class: 'form--full', placeholder: 'Adresse email' } }) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_errors(form.address) }}
+
+                <div class="form__row">
+                    <div class="address-autocomplete"></div>
+                    <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+                        Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+                    </p>
+                </div>
+
+                <div class="address-block">
+                    <div class="form__row">
+                        {{ form_errors(form.address) }}
+                        {{ form_widget(form.address, { attr: { class: 'form--full', placeholder: 'Adresse postale' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_errors(form.country) }}
+                        {{ form_widget(form.country, { attr: { class: 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row form__row--stretch">
+                        <div class="form--mid">
+                            {{ form_errors(form.postalCode) }}
+                            {{ form_widget(form.postalCode, { attr: { class: 'form--full', placeholder: 'Code postal' } }) }}
+                        </div>
+                        <div class="form--mid">
+                            {{ form_errors(form.cityName) }}
+                            {{ form_widget(form.cityName, { attr: { class: 'form--full', placeholder: 'Ville' } }) }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="b__nudge--top-large b__nudge--bottom-large">
-            <div class="form__row form__checkbox form__checkbox--large">
-                {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel", label_attr: { id: 'donation_check_label' } }) }}
+            <div class="b__nudge--top-large b__nudge--bottom-large">
+                <div class="form__row form__checkbox form__checkbox--large">
+                    {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel", label_attr: { id: 'donation_check_label' } }) }}
+                </div>
+
+                <div class="form__row form__checkbox form__checkbox--large">
+                    {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France.', label_attr: { id: 'donation_check_nationality_label' } }) }}
+                </div>
             </div>
 
             <div class="form__row form__checkbox form__checkbox--large">
-                {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France.', label_attr: { id: 'donation_check_nationality_label' } }) }}
+                {{ form_row(form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous" }) }}
             </div>
+
+            {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
+
+            <p class="text--summary text--smallest text--gray text--left">
+                Les données recueillies sur ce formulaire sont traitées par LaREM afin de gérer les informations relatives aux donateurs du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
+                Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France et <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>
+                <br /><br />
+                Ces dons sont versés à l’AFEMA (Association de financement de l’association La République En Marche agréée le 7 Mars 2016 sous le n°1158) au bénéfice du parti politique La République En Marche EMA (Numéro RNA W943004354).
+                <br /><br />
+                Aux termes de l’article 11-4 de la loi n° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique modifiée par la loi n° 2017-286 du 6 mars 2017 : « les dons consentis et les cotisations versées en qualité d’adhérent d’un ou de plusieurs partis politiques par une personne physique dûment identifiée à une ou plusieurs associations agréées en qualité d’association de financement ou à un ou plusieurs mandataires financiers d’un ou de plusieurs partis politiques ne peuvent annuellement excéder 7 500 euros. […] Les personnes morales à l’exception des partis ou groupements politiques ne peuvent contribuer au financement des partis ou groupements politiques, ni en consentant des dons, sous quelque forme que ce soit, à leurs associations de financement ou à leurs mandataires financiers, ni en leur fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués. ».
+                L'article 11-5 de la même loi précise que les personnes qui ont versé un don ou consenti un prêt à un ou plusieurs partis ou groupements politiques en violation des articles 11-3-1 et 11-4 sont punies de trois ans d'emprisonnement et de 45 000 euros d'amende.
+            </p>
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
         </div>
-
-        <div class="form__row form__checkbox form__checkbox--large">
-            {{ form_row(form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous" }) }}
-        </div>
-
-        {{ form_widget(form.submit, { 'attr': { 'class': 'btn--large-and-medium btn--primary' } }) }}
-
-        <p class="text--summary text--smallest text--gray text--left">
-            Les données recueillies sur ce formulaire sont traitées par LaREM afin de gérer les informations relatives aux donateurs du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
-            Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
-            Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-            Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France et <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>
-            <br /><br />
-            Ces dons sont versés à l’AFEMA (Association de financement de l’association La République En Marche agréée le 7 Mars 2016 sous le n°1158) au bénéfice du parti politique La République En Marche EMA (Numéro RNA W943004354).
-            <br /><br />
-            Aux termes de l’article 11-4 de la loi n° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique modifiée par la loi n° 2017-286 du 6 mars 2017 : « les dons consentis et les cotisations versées en qualité d’adhérent d’un ou de plusieurs partis politiques par une personne physique dûment identifiée à une ou plusieurs associations agréées en qualité d’association de financement ou à un ou plusieurs mandataires financiers d’un ou de plusieurs partis politiques ne peuvent annuellement excéder 7 500 euros. […] Les personnes morales à l’exception des partis ou groupements politiques ne peuvent contribuer au financement des partis ou groupements politiques, ni en consentant des dons, sous quelque forme que ce soit, à leurs associations de financement ou à leurs mandataires financiers, ni en leur fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués. ».
-            L'article 11-5 de la même loi précise que les personnes qui ont versé un don ou consenti un prêt à un ou plusieurs partis ou groupements politiques en violation des articles 11-3-1 et 11-4 sont punies de trois ans d'emprisonnement et de 45 000 euros d'amende.
-        </p>
-
-        {{ form_rest(form) }}
-        {{ form_end(form) }}
     </div>
 {% endblock %}

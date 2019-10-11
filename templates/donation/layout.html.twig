@@ -24,12 +24,14 @@
 {% block content %}
 
     <div class="donation__page">
-            <section class="donation__content">
-                    {% block donation_content %}{% endblock %}
-            </section>
-            <div class="donation__footer">
-                <div class="l__wrapper"></div>
-            </div>
+
+        <section class="donation__content">
+            {% block donation_content %}{% endblock %}
+        </section>
+
+        <section class="donation__footer">
+            <div class="l__wrapper"></div>
+        </section>
     </div>
 
 {% endblock %}
