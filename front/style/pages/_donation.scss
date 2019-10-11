@@ -300,32 +300,32 @@
         }
     }
 
-    &__header {
-        padding: 30px 0;
-        color: white;
-
-        h1 a {
-            @include text--logo;
-            color: white;
-
-            @media (max-width: $mobile) {
-                font-size: $text--size-medium;
-                color: black;
-            }
-        }
-
-        @media (max-width: $mobile) {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 30px 6% 0;
-            font-size: $text--size-smallest;
-            color: black;
-
-            .fa {
-                font-size: $text--size-smallest;
-            }
-        }
-    }
+    // &__header {
+    //     padding: 30px 0;
+    //     color: white;
+    //
+    //     h1 a {
+    //         @include text--logo;
+    //         color: white;
+    //
+    //         @media (max-width: $mobile) {
+    //             font-size: $text--size-medium;
+    //             color: black;
+    //         }
+    //     }
+    //
+    //     @media (max-width: $mobile) {
+    //         width: 100%;
+    //         box-sizing: border-box;
+    //         padding: 30px 6% 0;
+    //         font-size: $text--size-smallest;
+    //         color: black;
+    //
+    //         .fa {
+    //             font-size: $text--size-smallest;
+    //         }
+    //     }
+    // }
 
     // &__content {
     //     width: 100%;
@@ -554,50 +554,50 @@
         padding-top: 50px;
     }
 
-    &__result {
-        min-height: 450px;
-        padding: 30px 40px;
-
-        &--failure h3 {
-            margin-bottom: 40px;
-        }
-
-        &--successful {
-            &__amount {
-                font-size: 14px;
-                font-family: $font-roboto;
-                margin-bottom: 32px;
-
-                h3 {
-                    font-size: 30px;
-                    font-weight: bold;
-                }
-            }
-
-            &__thankyou {
-                @include text--medium-large;
-                font-weight: bold;
-                font-style: italic;
-                line-height: 0.97;
-                letter-spacing: -0.5px;
-                margin-bottom: 16px;
-            }
-
-            &__share-pride {
-                font-size: 24px;
-                font-weight: bold;
-                font-style: italic;
-                line-height: 1.08;
-                letter-spacing: -0.3px;
-                margin-top: 45px;
-                margin-bottom: 10px;
-            }
-
-            &__sharer {
-                margin-bottom: 30px;
-            }
-        }
-    }
+    // &__result {
+    //     min-height: 450px;
+    //     padding: 30px 40px;
+    //
+    //     &--failure h3 {
+    //         margin-bottom: 40px;
+    //     }
+    //
+    //     &--successful {
+    //         &__amount {
+    //             font-size: 14px;
+    //             font-family: $font-roboto;
+    //             margin-bottom: 32px;
+    //
+    //             h3 {
+    //                 font-size: 30px;
+    //                 font-weight: bold;
+    //             }
+    //         }
+    //
+    //         &__thankyou {
+    //             @include text--medium-large;
+    //             font-weight: bold;
+    //             font-style: italic;
+    //             line-height: 0.97;
+    //             letter-spacing: -0.5px;
+    //             margin-bottom: 16px;
+    //         }
+    //
+    //         &__share-pride {
+    //             font-size: 24px;
+    //             font-weight: bold;
+    //             font-style: italic;
+    //             line-height: 1.08;
+    //             letter-spacing: -0.3px;
+    //             margin-top: 45px;
+    //             margin-bottom: 10px;
+    //         }
+    //
+    //         &__sharer {
+    //             margin-bottom: 30px;
+    //         }
+    //     }
+    // }
 }
 
 .donation-result {
@@ -645,25 +645,12 @@
     }
 }
 
-.donation__landing {
+// Donation Header
+.donation__header {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.donation-header {
-    position: relative;
+    z-index: 20;
     color: $white;
-    background-color: red;
-
-    @media (min-width: $tablet) {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        background-color: transparent;
-    }
+    background-color: #383346;
 
     &__content {
         height: 100px;
@@ -686,7 +673,30 @@
                 &.next {
                     opacity: 0.5;
                 }
+
+                a {
+                    color: $white;
+                    border-color: $white;
+                }
             }
+        }
+    }
+}
+
+.donation__landing {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .donation__header {
+
+        @media (min-width: $tablet) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: transparent;
         }
     }
 }
@@ -961,6 +971,15 @@
             color: $silver-grey;
             margin: 20px 0 0;
         }
+    }
+}
+
+
+// Donation result page
+.donation__result {
+
+    &__intro {
+        padding-top: 100px;
     }
 }
 
