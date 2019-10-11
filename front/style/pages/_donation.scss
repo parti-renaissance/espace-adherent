@@ -629,8 +629,8 @@
     &__item {
         display: inline-block;
         font-size: 12px;
-        color: white;
-        border: 1px solid rgba(0,0,0,0.5);
+        color: $black;
+        border: 1px solid $lines-grey;
         border-radius: 2px;
         padding: 6px;
         text-transform: uppercase;
@@ -640,6 +640,7 @@
 
     &.dark {
         .donation-reassurance__item {
+            color: white;
             border: 1px solid rgba(255,255,255,0.5);
         }
     }
@@ -699,41 +700,42 @@
             background-color: transparent;
         }
     }
-}
 
-.donation-hero {
-    width: 100%;
-    height: 670px;
-    background-color: black;
-    order: 2;
-
-    @media (min-width: $tablet) {
-        order: 1;
-    }
-
-    &__container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        color: $white;
-    }
-
-    &__content {
+    .donation-hero {
         width: 100%;
-        @include content-mw;
-        padding-bottom: 70px;
+        height: 670px;
+        background-color: black;
+        order: 2;
 
-        h1 {
-            line-height: normal;
-            margin-bottom: 30px;
+        @media (min-width: $tablet) {
+            order: 1;
         }
 
-        p {
-            margin-bottom: 40px;
+        &__container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            color: $white;
+        }
+
+        &__content {
+            width: 100%;
+            @include content-mw;
+            padding-bottom: 70px;
+
+            h1 {
+                line-height: normal;
+                margin-bottom: 30px;
+            }
+
+            p {
+                margin-bottom: 40px;
+            }
         }
     }
 }
+
 
 /* DONATION-BOX */
 .donation-box__container {
@@ -971,6 +973,20 @@
             color: $silver-grey;
             margin: 20px 0 0;
         }
+    }
+}
+
+// Donation information (form) page
+.donation__informations {
+
+    &__form {
+        padding: 0 25px;
+    }
+
+    &__recap {
+        padding: 50px 0 30px;
+        border-bottom: 1px solid $lines-grey;
+        margin-bottom: 30px;
     }
 }
 
