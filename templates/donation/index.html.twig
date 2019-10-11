@@ -33,7 +33,14 @@
         <section class="donation-header">
             <div class="l__wrapper">
                 <div class="donation-header__content">
-                    <a href="#" class="text--logo-white">EM!</a>
+                    <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
+                    <div class="donation-header__steps">
+                        <ul>
+                            <li>1. Montant du don</li>
+                            <li class="next">2. Informations personnelles</li>
+                            <li class="next">3. Paiement sécurisé</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -182,10 +189,4 @@
             </form>
         </div> -->
     </div>
-
-
-    <br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br>
-
 {% endblock %}

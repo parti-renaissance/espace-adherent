@@ -21,9 +21,7 @@
         transition: background-color .2s, border .2s;
 
         &:hover {
-            background: $pink;
             border-color: $pink;
-            color: $white;
         }
 
         font-size: 16px;
@@ -56,6 +54,25 @@
             align-items: flex-start;
             flex-wrap: wrap;
         }
+
+        // Custom em-form for donation box
+        .em-form__group {
+            margin-bottom: 10px;
+
+            .form__radio {
+
+                input[type='radio']:checked + label:before {
+                    border-color: $pink;
+                }
+
+                &:hover {
+                    > label:before {
+                        border-color: $pink;
+                    }
+                }
+            }
+        }
+
     }
 
     &__help {
@@ -63,16 +80,16 @@
         font-family: $font-roboto;
         text-align: left;
         margin-top: 5px;
-        color: $black--half;
-        @include text--small;
+        font-size: 12px;
+        line-height: normal;
+        color: $neutral-grey;
     }
 
     &__button {
         outline: 0;
 
         &--selected {
-            background-color: $pink;
-            color: white;
+            color: $pink;
             border-color: $pink;
             font-weight: bold;
         }
@@ -83,21 +100,25 @@
         width: 100%;
 
         &:hover {
-            background: $gray--light;
+
         }
 
         &__input {
             box-sizing: border-box;
             width: 100%;
             background: transparent;
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             font-family: $font-roboto;
-            font-size: $text--size-smallest;
-            letter-spacing: 0.2px;
+            font-size: 16px;
             border: none;
             cursor: text;
             text-align: left;
-            padding: 0 12px;
+            padding: 0 20px 0 12px;
+            outline: 0;
 
             &:hover {
                 background: transparent;
@@ -112,10 +133,13 @@
 
         &__label {
             position: absolute;
-            top: 11px;
-            right: 20px;
-            font-size: $text--size-medium--small;
-            color: black;
+            height: 56px;
+            line-height: 56px;
+            margin: 0;
+            top: 0;
+            right: 15px;
+            font-size: 16px;
+            color: $dark;
 
             span {
                 display: none;
@@ -646,6 +670,25 @@
         display: flex;
         align-items: center;
     }
+
+    &__steps {
+        margin: 0 auto;
+
+        ul {
+            li {
+                display: inline-block;
+                text-transform: uppercase;
+                font-family: $font-gillsans;
+                font-size: 14px;
+                color: $white;
+                margin: 0 10px;
+
+                &.next {
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
 }
 
 .donation-hero {
@@ -690,13 +733,13 @@
 
     @media (min-width: $tablet) {
         background-color: transparent;
-        margin-top: -530px;
+        margin-top: -550px;
         position: sticky;
         position: -webkit-sticky;
         position: -moz-sticky;
         position: -ms-sticky;
         position: -o-sticky;
-        top: 60px;
+        top: 6vh;
         order: 2;
     }
 
@@ -714,7 +757,7 @@
 .donation-box__flip,
 .donation-box__front,
 .donation-box__back {
-    height: 640px;
+    height: 620px;
     width: 100%;
     max-width: 440px;
     box-sizing: border-box;
@@ -919,4 +962,12 @@
             margin: 20px 0 0;
         }
     }
+}
+
+.donation__footer {
+    display: block;
+    width: 100%;
+    margin-top: 175px;
+    background-color: $pale-grey;
+    height: 150px;
 }

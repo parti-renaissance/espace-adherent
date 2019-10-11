@@ -72,7 +72,7 @@ export default class AmountChooser extends React.Component {
                         type="number"
                         className="amount-chooser__other__input"
                         id="amount-chooser__other__input"
-                        placeholder="Autre"
+                        placeholder="Autre montant"
                         min="0.01"
                         max={this.props.maxValue}
                         step="0.01"
