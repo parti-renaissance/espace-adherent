@@ -343,6 +343,7 @@
             <argument type="string" key="$mailchimpListId">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
         </service>
         <service id="AppBundle\Command\DonatorSynchronizeCommand" />
+        <service id="AppBundle\Command\MailchimpSignUpEmailsCommand" />
 
         <!-- UserDocument -->
         <service id="AppBundle\UserDocument\UserDocumentManager" public="true" />
