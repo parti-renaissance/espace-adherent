@@ -6,13 +6,6 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runManageParticipants();
-
-            App.runManageUserSegment(
-                '{{ constant('AppBundle\\AdherentSegment\\AdherentSegmentTypeEnum::TYPE_COMMITTEE') }}',
-                '.user-segment-manager-wrapper',
-                'input[name="members[]"]',
-                {{ members.count }}
-            );
         });
     </script>
 {% endblock %}
@@ -27,8 +20,6 @@
 
         <div class="committee__members__nav">
             <div>
-                <div class="user-segment-manager-wrapper"></div>
-
                 <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}" class="b__nudge--bottom b__nudge--left-small">
                     <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
                     <input type="hidden" name="exports" value="" id="members-export-selection" />

@@ -3,10 +3,8 @@
 namespace AppBundle\AdherentMessage\Filter;
 
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentSegment\AdherentSegmentTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Exception\InvalidAdherentMessageType;
-use AppBundle\Form\AdherentMessage\AdherentSegmentFilterType;
 use AppBundle\Form\AdherentMessage\MunicipalChiefFilterType;
 use AppBundle\Form\AdherentMessage\ReferentFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -39,16 +37,6 @@ class FilterFormFactory
 
             case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
                 return $this->formFactory->create(MunicipalChiefFilterType::class, $data);
-
-            case AdherentMessageTypeEnum::COMMITTEE:
-                return $this->formFactory->create(AdherentSegmentFilterType::class, $data, [
-                    'segment_type' => AdherentSegmentTypeEnum::TYPE_COMMITTEE,
-                ]);
-
-            case AdherentMessageTypeEnum::CITIZEN_PROJECT:
-                return $this->formFactory->create(AdherentSegmentFilterType::class, $data, [
-                    'segment_type' => AdherentSegmentTypeEnum::TYPE_CITIZEN_PROJECT,
-                ]);
         }
 
         throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));

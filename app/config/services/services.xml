@@ -328,6 +328,7 @@
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllAdherentsCommand" />
         <service id="AppBundle\Command\MailchimpReportDownloadCommand" />
+        <service id="AppBundle\Command\MailchimpDeleteStaticSegmentCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllMembershipsCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllNewsletterCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllCandidatesCommand" />
