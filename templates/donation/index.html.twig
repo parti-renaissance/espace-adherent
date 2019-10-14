@@ -29,7 +29,7 @@
 
 {% block donation_content %}
     <div class="donation__landing">
-        
+
         <!-- Need to dynamise this -->
         <section class="donation__header">
             <div class="l__wrapper">
@@ -37,7 +37,7 @@
                     <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
                     <div class="donation__header__steps">
                         <ul>
-                            <li>1. Montant du don</li>
+                            <li class="active">1. Montant du don</li>
                             <li class="next">2. Informations personnelles</li>
                             <li class="next">3. Paiement sécurisé</li>
                         </ul>
@@ -47,6 +47,7 @@
         </section>
 
         <section class="donation-hero">
+            <div class="donation-hero__overlay"></div>
             <div class="donation-hero__container l__wrapper">
                 <div class="donation-hero__content">
                     <h1 class="text--larger">Nous avons <br />besoin de vous !</h1>
