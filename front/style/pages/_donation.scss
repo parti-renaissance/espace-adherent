@@ -626,21 +626,33 @@
     font-size: 0;
 
     &__item {
-        display: inline-block;
-        font-size: 12px;
+        display: inline-flex;
         color: $black;
         border: 1px solid $lines-grey;
         border-radius: 2px;
-        padding: 4px 6px;
+        padding: 0 6px 0 3px;
         text-transform: uppercase;
         margin-right: 8px;
         line-height: normal;
+
+        span {
+            line-height: 26px;
+            font-size: 12px;
+        }
+
+        svg {
+            opacity: 0.35;
+        }
     }
 
     &.dark {
         .donation-reassurance__item {
             color: white;
             border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        svg {
+            fill: white;
         }
     }
 }
@@ -662,7 +674,7 @@
     position: relative;
     z-index: 20;
     color: $white;
-    background-color: #383346;
+    background-color: #3A3241;
 
     &.with-bkg {
         background-image: url('https://storage.cloud.google.com/en-marche-prod/static/donation-background.jpg');
@@ -790,8 +802,9 @@
 /* DONATION-BOX */
 .donation-box__container {
     position: relative;
-    background-color: #383346;
+    background-color: #3A3241;
     pointer-events: none;
+    padding-bottom: 30px;
 
     @media (min-width: $tablet) {
         background-color: transparent;
@@ -803,6 +816,7 @@
         position: -o-sticky;
         top: 6vh;
         order: 2;
+        padding-bottom: 0;
     }
 
     .l__wrapper {
