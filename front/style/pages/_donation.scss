@@ -681,6 +681,10 @@
                 }
             }
         }
+
+        &.right {
+            margin: 0 0 0 auto;
+        }
     }
 }
 
@@ -996,9 +1000,58 @@
 
     &__intro {
         padding-top: 100px;
+
+        &--text {
+            font-family: $font-roboto;
+            color: $dark;
+            font-size: 18px;
+            line-height: 28px;
+        }
+    }
+
+    &__opportunities {
+        margin-top: 100px;
+
+        .opportunities-list {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .opportunity {
+                flex-basis: 100%;
+                padding: 30px;
+                border: 1px solid $lines-grey;
+                text-align: center;
+                box-sizing: border-box;
+                margin-bottom: 24px;
+
+                &.large {
+                    flex-basis: 100%;
+                }
+
+                h2 {
+                    font-weight: normal;
+                }
+
+                p {
+                    margin-bottom: 22px;
+                }
+
+                .btn {
+                    font-weight: 500;
+                }
+
+                @media (min-width: $tablet) {
+                    flex-basis: calc(50% - 12px);
+                    padding: 50px;
+                }
+            }
+        }
     }
 }
 
+// Donation footer
 .donation__footer {
     display: block;
     width: 100%;
