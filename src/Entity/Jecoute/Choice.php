@@ -39,7 +39,7 @@ class Choice
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=80)
      *
      * @JMS\Groups({"survey_list"})
      */

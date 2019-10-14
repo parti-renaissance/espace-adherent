@@ -32,6 +32,7 @@
 {% endblock %}
 
 {% block choice_form_widget %}
+    <div>{{ form_errors(form.content) }}</div>
     <div class="em-form__row survey-question__choice_widget">
         <div class="survey-question-type em-form__width--1 form__radio-button choice-item">
             {{ form_widget(form.content,  { attr: { class: 'em-form__field', placeholder: 'Saisissez un choix' } }) }}
