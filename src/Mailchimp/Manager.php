@@ -225,6 +225,11 @@ class Manager implements LoggerAwareInterface
         return $this->driver->createStaticSegment($name)['id'] ?? null;
     }
 
+    public function deleteStaticSegment(int $id): bool
+    {
+        return $this->driver->deleteStaticSegment($id);
+    }
+
     public function addMemberToStaticSegment(int $segmentId, string $mail): void
     {
         $this->driver->pushSegmentMember($segmentId, $mail);

@@ -29,13 +29,6 @@
                         {% endif %}
 
                         <div class="filter__row">
-                            <label class="filter__label">Liste de diffusion</label>
-                            {{ form_widget(form.adherentSegment, {attr: {class: 'filter__field candidate-incompatible'}}) }}
-                            <span class="filter__compl-info">Créez une liste depuis l'onglet <i>Adhérents</i></span>
-                            {{ form_errors(form.adherentSegment) }}
-                        </div>
-
-                        <div class="filter__row">
                             <label class="filter__label">Rôles</label>
                             {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité', attr: {class: 'candidate-incompatible'}}) }}
                             {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)', attr: {class: 'candidate-incompatible'}}) }}

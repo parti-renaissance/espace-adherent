@@ -108,6 +108,11 @@ class Driver implements LoggerAwareInterface
         return $this->isSuccessfulResponse($response) ? $this->toArray($response) : [];
     }
 
+    public function deleteStaticSegment(int $id): bool
+    {
+        return $this->sendRequest('DELETE', sprintf('/lists/%s/segments/%d', $this->listId, $id));
+    }
+
     public function pushSegmentMember(int $segmentId, string $mail): bool
     {
         return $this->sendRequest('POST', sprintf('/lists/%s/segments/%d/members', $this->listId, $segmentId), [

@@ -1,46 +1,7 @@
 {% extends 'message/filter.html.twig' %}
 
 {% block filter_content %}
-    <div class="form__title b__nudge--bottom-larger">
-        <h3 class="text--medium  text--center">Filtrer mon message</h3>
-        <div class="form__step">
-            <span class="active">2</span> / 2
-        </div>
-    </div>
-
-    <div class="manager__filters">
-        <div class="manager__filters__form">
-            {{ form_start(form) }}
-
-            <h4 class="manager__filters__subtitle">Filtrer par</h4>
-
-            {{ form_errors(form) }}
-
-            <div class="manager__filters__row">
-                <div class="manager__filters__section">
-                    <div class="filter__row">
-                        <label class="filter__label">Liste de diffusion</label>
-                        {{ form_widget(form.adherentSegment, {attr: {class: 'filter__field'}}) }}
-                        <span class="filter__compl-info">Créez une liste depuis l'onglet <i>Adhérents</i></span>
-                        {{ form_errors(form.adherentSegment) }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="manager__filters__actions b__nudge--top">
-                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
-                {% if message.filter %}
-                    <a
-                        href="{{ path(app.request.attributes.get('_route'), {
-                            uuid: message.uuid,
-                            committee_slug: committee.slug,
-                            reset: true
-                        }) }}"
-                        class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
-                    >Réinitialiser le filtre</a>
-                {% endif %}
-            </div>
-            {{ form_end(form) }}
-        </div>
+    <div class="text--center text--medium-small">
+        Message aux membres du comité <strong>{{ message.filter.committee.name }}</strong>
     </div>
 {% endblock %}
