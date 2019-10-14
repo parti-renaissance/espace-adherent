@@ -190,13 +190,15 @@ workflows:
 
             - deployment:
                 requires:
-                    - phpunit
-                    - behat
-                    - lint
+                    - build
+#                    - phpunit
+#                    - behat
+#                    - lint
                 filters:
                     branches:
                         only:
                             - master
+                            - enzo/parcours-don/ch9818
 
     prod_deploy:
         jobs:

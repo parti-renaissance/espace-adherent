@@ -5,7 +5,7 @@ set -xe
 perl -pi -e "s/default/$CIRCLE_SHA1/g" ./app/config/app_version.yml
 
 VERSION=${CIRCLE_TAG:-$CIRCLE_BRANCH}
-DOCKER_IMAGE_TAG="eu.gcr.io/$GCLOUD_PROJECT/app:$VERSION-$CIRCLE_SHA1"
+DOCKER_IMAGE_TAG="eu.gcr.io/$GCLOUD_PROJECT/app:enzo-dons-$CIRCLE_SHA1"
 DOCKER_IMAGE_CACHE_TAG="eu.gcr.io/$GCLOUD_PROJECT/app:master"
 
 # Build the image
