@@ -31,6 +31,10 @@
             </div>
         </section>
 
+        <div class="l__wrapper b__nudge--bottom-50 b__nudge--top-50">
+            <a href="#" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
+        </div>
+
         <div class="l__wrapper--600">
             {{ form_start(form, { attr: { class: 'em-form donation__informations__form' } }) }}
             {{ form_errors(form, { error_raw: true }) }}
@@ -38,7 +42,7 @@
             </div> -->
 
             <section class="donation__informations__recap">
-                <h3>Vous faite un don de :</h3>
+                <h3 class="donation-subtitle">Vous faite <span>un don</span> de :</h3>
                 <h1 class="text--larger b__nudge--top-large">{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</h1>
                 <div class="text--body">soit XXX après réduction d’impôt</div>
                 <div class="information__modal inf-modl--pale-blue b__nudge--top-large b__nudge--bottom-large">Votre don sera versé à l’Association de financement de La République En Marche (AFEMA), unique mandataire financier au bénéfice du Mouvement.</div>
@@ -95,29 +99,35 @@
                 {{ form_errors(form.address) }}
 
                 <div class="em-form__group">
-                    <div class="address-autocomplete"></div>
-                    <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+                    <div class="address-autocomplete">
+                        <label class="em-form__label">Adresse postale</label>
+                    </div>
+                    <p class="em-form__legend visually-hidden" id="address-autocomplete-help-message">
                         Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
                     </p>
                 </div>
 
                 <div class="address-block">
-                    <div class="form__row">
+                    <div class="em-form__group">
+                        <label class="em-form__label">Adresse postale</label>
                         {{ form_errors(form.address) }}
                         {{ form_widget(form.address, { attr: { class: 'em-form__field', placeholder: 'Adresse postale' } }) }}
                     </div>
 
-                    <div class="form__row">
+                    <div class="em-form__group">
+                        <label class="em-form__label">Pays</label>
                         {{ form_errors(form.country) }}
                         {{ form_widget(form.country, { attr: { class: 'em-form__field' } }) }}
                     </div>
 
-                    <div class="form__row form__row--stretch">
-                        <div class="form--mid">
+                    <div class="em-form__row">
+                        <div class="em-form__group">
+                            <label class="em-form__label">Code postal</label>
                             {{ form_errors(form.postalCode) }}
                             {{ form_widget(form.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
                         </div>
-                        <div class="form--mid">
+                        <div class="em-form__group">
+                            <label class="em-form__label">Ville</label>
                             {{ form_errors(form.cityName) }}
                             {{ form_widget(form.cityName, { attr: { class: 'em-form__field', placeholder: 'Ville' } }) }}
                         </div>
