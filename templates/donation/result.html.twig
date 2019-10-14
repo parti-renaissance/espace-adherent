@@ -4,7 +4,7 @@
     <div class="donation__result {{ successful ? 'donation__result--successful' : 'donation__result--failure' }}">
 
         <!-- Need to dynamise this -->
-        <section class="donation__header">
+        <section class="donation__header with-bkg">
             <div class="l__wrapper">
                 <div class="donation__header__content">
                     <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
@@ -21,8 +21,8 @@
             <section class="donation__result__intro text--center">
                 <div class="l__wrapper">
                     <div class="donation__result__into--title">
-                        <h3 class="donation-subtitle">Votre don est </span>validé</span></h3>
-                        <h1 class="text--larger b__nudge--bottom-larger">Merci pour votre don de {{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h1>
+                        <h3 class="donation-subtitle">Votre don est <span>validé</span></h3>
+                        <h1 class="text--larger b__nudge--bottom-larger b__nudge--top-40">Merci pour votre don de {{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h1>
                     </div>
                 </div>
                 <div class="l__wrapper--narrow">
