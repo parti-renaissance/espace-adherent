@@ -145,6 +145,11 @@
         <div class="form__title b__nudge--bottom-larger">
             <h3 class="text--medium">Créer un questionnaire local</h3>
         </div>
+
+        {% if not form.vars.valid %}
+            <p class="text--error">Le formulaire est invalide</p>
+        {% endif %}
+
         {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
         {{ include('jecoute/_form.html.twig') }}
         {{ form_end(form) }}
