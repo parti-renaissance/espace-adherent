@@ -615,6 +615,9 @@
 ========================================================
 ========================================================
 */
+
+
+// Donation - Global elements
 @mixin content-mw {
     max-width: 100%;
 
@@ -632,7 +635,7 @@
         color: $black;
         border: 1px solid $lines-grey;
         border-radius: 2px;
-        padding: 6px;
+        padding: 4px 6px;
         text-transform: uppercase;
         margin-right: 8px;
         line-height: normal;
@@ -643,6 +646,18 @@
             color: white;
             border: 1px solid rgba(255,255,255,0.5);
         }
+    }
+}
+
+.donation-subtitle {
+    font-family: $font-roboto;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 28px;
+    color: black;
+
+    span {
+        background-color: $lighter-pink;
     }
 }
 
@@ -988,7 +1003,7 @@
     }
 
     &__recap {
-        padding: 50px 0 30px;
+        padding: 0 0 30px;
         border-bottom: 1px solid $lines-grey;
         margin-bottom: 30px;
     }
