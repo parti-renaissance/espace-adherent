@@ -8,7 +8,7 @@
             <div class="l__wrapper">
                 <div class="donation__header__content">
                     <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
-                    <div class="donation__header__steps">
+                    <div class="donation__header__steps right">
                         <ul>
                             <li><a href="{{ path('homepage') }}">Aller sur la page d'accueil</a></li>
                         </ul>
@@ -21,11 +21,11 @@
             <section class="donation__result__intro text--center">
                 <div class="l__wrapper">
                     <div class="donation__result__into--title">
-                        <h1 class="text--larger">Merci pour votre don de {{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h1>
+                        <h1 class="text--larger b__nudge--bottom-larger">Merci pour votre don de {{ (donation.amount/100)|localizedcurrency('EUR')|replace({',00' : ''}) }}</h1>
                     </div>
                 </div>
                 <div class="l__wrapper--narrow">
-                    <p class="donation__result--intro--text text--body">
+                    <p class="donation__result__intro--text">
                         Continuons à transformer notre pays ensemble ! Les dons sont une ressource vitale pour La République En Marche !
                         Chaque don, quel que soit le montant, nous permet d’engager une action concrète pour réussir ensemble la
                         transformation du paysage politique français.
@@ -35,18 +35,26 @@
                 </div>
             </section>
 
-            <section class="donation__result__actions">
+            <section class="donation__result__opportunities">
                 <div class="l__wrapper--medium">
-                    <div class="">
-                        <div class="">J'invite un ami'</div>
-                        <div class="">Je m'abonne</div>
+                    <div class="opportunities-list">
+                        <div class="opportunity">
+                            <h2><strong>J'invite</strong> mes amis à donner</h2>
+                            <p class="text--body">Invitez par e-mail votre entourage à faire un don à La République En Marche !</p>
+                            <a href="#" class="btn btn--yellow">J'invite un ami</a>
+                        </div>
+
+                        <div class="opportunity">
+                            <h2><strong>Je m'abonne</strong> à la newsletter</h2>
+                            <p class="text--body">Invitez par e-mail votre entourage à faire un don à La République En Marche !</p>
+                            <a href="#" class="btn btn--green--apple">Je m'abonne</a>
+                        </div>
+
                         {% if not is_adherent %}
-                        <div class="">
-                            Je m'abonne
-                            <p>Rejoignez nos {{ nb_adherent|number_format(0, ',', ' ') }} adhérents dès maintenant :</p>
-                            <a href="{{ path('app_membership_join') }}" class="btn btn--primary btn-medium">
-                                J'adhère à La République En Marche !
-                            </a>
+                        <div class="opportunity large">
+                            <h2><strong>Je rejoins</strong> les {{ nb_adherent|number_format(0, ',', ' ') }} adhérents dès maintenant</h2>
+                            <p class="text--body">Invitez par e-mail votre entourage à faire un don à La République En Marche !</p>
+                            <a href="#" class="btn btn--blue--sky">J'adhère maintenant</a>
                         </div>
                         {% endif %}
                     </div>

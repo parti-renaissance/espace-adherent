@@ -222,6 +222,17 @@
     }
 }
 
+@mixin btn--blue--sky {
+    color: black;
+    background: $blue;
+    border-color: $blue;
+
+    &:hover {
+        background-color: $blue-hover;
+        border-color: $blue-hover;
+    }
+}
+
 @mixin btn--ghosting--blue {
     color: $blue--dark;
     background: transparent;
@@ -389,12 +400,20 @@ button.btn {
         @include btn--green;
     }
 
+    &--yellow {
+        @include btn--yellow;
+    }
+
     &--green--apple {
         @include btn--green--apple;
     }
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--blue--sky {
+        @include btn--blue--sky;
     }
 
     &--ghosting--blue {
