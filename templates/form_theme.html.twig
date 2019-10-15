@@ -251,6 +251,10 @@
     {{ block('choice_tab_widget') }}
 {% endblock %}
 
+{% block _committee_user_filter_gender_widget %}
+    {{ block('choice_tab_widget') }}
+{% endblock %}
+
 {% block choice_tab_widget %}
     <div {{ block('widget_container_attributes') }}>
         {%- for child in form %}

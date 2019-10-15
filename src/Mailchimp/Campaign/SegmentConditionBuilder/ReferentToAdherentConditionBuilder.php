@@ -7,7 +7,6 @@ use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ReferentToAdherentConditionBuilder extends AbstractConditionBuilder
 {
@@ -56,58 +55,6 @@ class ReferentToAdherentConditionBuilder extends AbstractConditionBuilder
             }
 
             $conditions[] = $this->buildInterestCondition($interestKeys, $this->mailchimpObjectIdMapping->getMemberGroupInterestGroupId(), false);
-        }
-
-        $now = new \DateTimeImmutable('now');
-
-        if ($minAge = $filter->getAgeMin()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'less',
-                'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($maxAge = $filter->getAgeMax()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'greater',
-                'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => $now->modify(sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($registeredSince = $filter->getRegisteredSince()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'greater',
-                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => $registeredSince->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($registeredUntil = $filter->getRegisteredUntil()) {
-            $conditions[] = [
-                'condition_type' => 'DateMerge',
-                'op' => 'less',
-                'field' => MemberRequest::MERGE_FIELD_ADHESION_DATE,
-                'value' => $registeredUntil->format(MemberRequest::DATE_FORMAT),
-            ];
-        }
-
-        if ($city = $campaign->getCity()) {
-            $field = is_numeric($city[0])
-                ? MemberRequest::MERGE_FIELD_ZIP_CODE
-                : MemberRequest::MERGE_FIELD_CITY
-            ;
-
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'starts',
-                'field' => $field,
-                'value' => $city,
-            ];
         }
 
         if ($filter->getInterests()) {
