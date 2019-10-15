@@ -9,10 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class CommitteeFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface
+class CommitteeFilter extends AbstractUserFilter
 {
-    use AdherentSegmentAwareFilterTrait;
-
     /**
      * @var Committee
      *

@@ -7,6 +7,7 @@ use AppBundle\AdherentMessage\AdherentMessageManager;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
+use AppBundle\AdherentMessage\Filter\FilterFormFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
@@ -87,8 +88,6 @@ class CommitteeMessageController extends Controller
                 $command = $form->getData(),
                 AdherentMessageTypeEnum::COMMITTEE
             );
-            $message->setFilter(new CommitteeFilter($committee));
-
             $manager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
@@ -154,17 +153,54 @@ class CommitteeMessageController extends Controller
     }
 
     /**
-     * @Route("/{uuid}/filtrer", name="filter", methods={"GET"})
+     * @Route("/{uuid}/filtrer", name="filter", methods={"GET", "POST"})
      *
      * @Security("is_granted('IS_AUTHOR_OF', message)")
      */
-    public function filterMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
-    {
+    public function filterMessageAction(
+        Request $request,
+        CommitteeAdherentMessage $message,
+        Committee $committee,
+        AdherentMessageManager $manager,
+        UserInterface $adherent,
+        FilterFormFactory $formFactory
+    ): Response {
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has been already sent.');
         }
 
-        return $this->renderTemplate('message/filter/committee.html.twig', $committee, ['message' => $message]);
+        // Reset Filter object
+        if ($request->query->has('reset') && $message->getFilter()) {
+            $manager->updateFilter($message, null);
+
+            return $this->redirectToRoute('app_message_committee_filter', [
+                'uuid' => $message->getUuid()->toString(),
+                'committee_slug' => $committee->getSlug(),
+            ]);
+        }
+
+        $filter = $message->getFilter() ?? new CommitteeFilter($committee);
+
+        $form = $formFactory
+            ->createForm($message->getType(), $filter, $adherent)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->updateFilter($message, $filter);
+
+            $this->addFlash('info', 'adherent_message.filter_updated');
+
+            return $this->redirectToRoute('app_message_committee_filter', [
+                'uuid' => $message->getUuid()->toString(),
+                'committee_slug' => $committee->getSlug(),
+            ]);
+        }
+
+        return $this->renderTemplate('message/filter/committee.html.twig', $committee, [
+            'message' => $message,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
