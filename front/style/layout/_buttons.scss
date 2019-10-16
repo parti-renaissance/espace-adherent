@@ -192,10 +192,12 @@
 @mixin btn--gray {
     color: $black;
     background: $btn--gray;
+    border-color: $btn--gray;
 
     &:hover {
         color: $black;
         background: $btn--gray--hover;
+        border-color: $btn--gray--hover;
     }
 }
 
@@ -398,6 +400,10 @@ button.btn {
 
     &--green {
         @include btn--green;
+    }
+
+    &--gray {
+        @include btn--gray;
     }
 
     &--yellow {
@@ -640,5 +646,14 @@ button.btn {
 
     &--gray {
         @include btn--gray;
+    }
+
+    &--blue {
+        @include btn--blue;
+    }
+
+    &--orange {
+        @include btn--orange;
+        color: $white;
     }
 }

@@ -21,7 +21,7 @@
         transition: background-color .2s, border .2s;
 
         &:hover {
-            border-color: $pink;
+            border-color: $blue--dark;
         }
 
         font-size: 16px;
@@ -55,18 +55,18 @@
         .em-form__group {
             margin-bottom: 10px;
 
-            .form__radio {
-
-                input[type='radio']:checked + label:before {
-                    border-color: $pink;
-                }
-
-                &:hover {
-                    > label:before {
-                        border-color: $pink;
-                    }
-                }
-            }
+            // .form__radio {
+            //
+            //     input[type='radio']:checked + label:before {
+            //         border-color: $pink;
+            //     }
+            //
+            //     &:hover {
+            //         > label:before {
+            //             border-color: $pink;
+            //         }
+            //     }
+            // }
         }
 
     }
@@ -85,8 +85,8 @@
         outline: 0;
 
         &--selected {
-            color: $pink;
-            border-color: $pink;
+            color: $blue--dark;
+            border-color: $blue--dark;
             font-weight: bold;
         }
     }
@@ -198,6 +198,7 @@
             &__other {
                 width: 23%;
                 margin-bottom: 10px;
+                border: none;
 
                 @media (max-width: $mobile) {
                     width: 48%;
@@ -213,17 +214,18 @@
                 }
 
                 &--selected {
-                    background: $pink;
+                    background: $blue--dark;
                     color: white;
 
                     &:hover {
-                        background: $pink-hover;
+                        background: $blue--dark--hover;
                     }
                 }
             }
 
             &__other {
                 background: white;
+                width: 100%;
             }
 
             &__monthly {
@@ -256,82 +258,46 @@
 }
 
 .donation {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    height: 100vh;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-position: center;
-    position: relative;
-    width: 100%;
-
-    @media (max-height: 1000px) {
-        justify-content: flex-start;
-        height: auto;
-    }
-
-    @media (max-width: $mobile) {
-        background-color: white;
-        background-position: 0 0;
-        background-size: 100%;
-    }
-
-    &__video {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        min-width: 100%;
-        min-height: 100%;
-
-        &--overlay {
-            background: rgba(0, 0, 0, .5);
-            top: 0;
-            height: 100vh;
-            width: 100%;
-            box-sizing: border-box;
-            position: fixed;
-        }
-    }
-
-    // &__header {
-    //     padding: 30px 0;
-    //     color: white;
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // background-attachment: fixed;
+    // height: 100vh;
+    // min-height: 100%;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
+    // background-position: center;
+    // position: relative;
+    // width: 100%;
     //
-    //     h1 a {
-    //         @include text--logo;
-    //         color: white;
+    // @media (max-height: 1000px) {
+    //     justify-content: flex-start;
+    //     height: auto;
+    // }
     //
-    //         @media (max-width: $mobile) {
-    //             font-size: $text--size-medium;
-    //             color: black;
-    //         }
-    //     }
+    // @media (max-width: $mobile) {
+    //     background-color: white;
+    //     background-position: 0 0;
+    //     background-size: 100%;
+    // }
     //
-    //     @media (max-width: $mobile) {
+    // &__video {
+    //     position: fixed;
+    //     right: 0;
+    //     bottom: 0;
+    //     min-width: 100%;
+    //     min-height: 100%;
+    //
+    //     &--overlay {
+    //         background: rgba(0, 0, 0, .5);
+    //         top: 0;
+    //         height: 100vh;
     //         width: 100%;
     //         box-sizing: border-box;
-    //         padding: 30px 6% 0;
-    //         font-size: $text--size-smallest;
-    //         color: black;
-    //
-    //         .fa {
-    //             font-size: $text--size-smallest;
-    //         }
+    //         position: fixed;
     //     }
     // }
 
-    // &__content {
-    //     width: 100%;
-    //     display: flex;
-    //     align-items: baseline;
-    //
-    //     @media (max-width: $mobile) {
-    //         padding: 0;
-    //     }
-    // }
 
     &__form {
         width: 550px;
@@ -352,7 +318,7 @@
         form {
             font-family: $font-roboto;
             @include text--small;
-            padding: 40px;
+            padding: 20px;
         }
 
         h2 {
@@ -422,11 +388,6 @@
         }
     }
 
-    &__form-steps {
-        @include steps;
-        display: none; /* Hiding the steps to see if it increases conversion */
-    }
-
     &__frequency {
         input {
             visibility: hidden;
@@ -478,26 +439,78 @@
     &__amount-chooser {
 
         &__after-taxes {
+            position: relative;
             margin: 15px 0 20px;
             font-size: 15px;
             color: $dark;
             font-family: $font-roboto;
 
             .after-taxes-amount {
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: bold;
                 color: $black;
             }
 
-            // h3 {
-            //     font-size: 26px;
-            //     font-weight: bold;
-            // }
-            //
-            // p {
-            //     margin: 5px 0 0 0;
-            //     padding: 0;
-            // }
+            .infos-taxe-reduction {
+                width: 18px;
+                min-width: 18px;
+                height: 18px;
+                display: inline-block;
+                box-sizing: border-box;
+                vertical-align: middle;
+                line-height: 15px;
+                font-size: 13px;
+                border-radius: 20px;
+                border: 2px solid $lines-grey;
+                font-weight: bold;
+                color: $dark;
+                cursor: pointer;
+
+                &__content {
+                    opacity: 0;
+                    pointer-events: none;
+                    z-index: 15;
+                    box-sizing: border-box;
+                    background: #d3e2f0;
+                    padding: 20px;
+                    text-align: left;
+                    border-radius: 3px;
+                    color: $dark;
+                    position: absolute;
+                    left: 0px;
+                    right: 0px;
+                    bottom: 35px;
+                    transition: 0.125s opacity ease-in-out;
+                    -webkit-transition: 0.125s opacity ease-in-out;
+
+                    @media (min-width: $tablet) {
+                        width: 480px;
+                        padding: 30px;
+                        right: -20px;
+                        left: auto;
+                    }
+
+                    div {
+                        font-size: 18px;
+                        color: $black;
+                        margin-bottom: 15px;
+                    }
+
+                    p {
+                        font-weight: normal;
+                        font-size: 14px;
+                        line-height: 20px;
+                        margin: 0;
+                    }
+                }
+
+                &:hover {
+                    .infos-taxe-reduction__content {
+                        opacity: 1;
+                        pointer-events: all;
+                    }
+                }
+            }
         }
 
         input[type="checkbox"]:checked + label:before {
@@ -507,111 +520,34 @@
     }
 
     &__informations {
-        form {
-            background: transparent;
-            width: auto;
-        }
-
-        .register__form__gender label {
-            @include text--default;
-        }
-
-        input[type="radio"]:checked + label:before {
-            background: $green--apple;
-            border-color: $green--apple;
-        }
-
-        &__amount {
-            @include text--default;
-            font-family: $font-roboto;
-            padding-bottom: 20px;
-
-            div {
-                margin-top: 5px;
-                font-size: 30px;
-                font-weight: bold;
-            }
-
-            input[type="text"] {
-                width: 70px;
-                height: auto;
-                text-align: center;
-                margin: 0 10px;
-            }
-
-            label {
-                @include text--default;
-            }
-        }
+        // form {
+        //     background: transparent;
+        //     width: auto;
+        // }
+        //
+        // .register__form__gender label {
+        //     @include text--default;
+        // }
+        //
+        // input[type="radio"]:checked + label:before {
+        //     background: $green--apple;
+        //     border-color: $green--apple;
+        // }
     }
 
     &__payment {
-        min-height: 450px;
-        padding-top: 50px;
+        min-height: 100vh;
     }
 
-    // &__result {
-    //     min-height: 450px;
-    //     padding: 30px 40px;
-    //
-    //     &--failure h3 {
-    //         margin-bottom: 40px;
-    //     }
-    //
-    //     &--successful {
-    //         &__amount {
-    //             font-size: 14px;
-    //             font-family: $font-roboto;
-    //             margin-bottom: 32px;
-    //
-    //             h3 {
-    //                 font-size: 30px;
-    //                 font-weight: bold;
-    //             }
-    //         }
-    //
-    //         &__thankyou {
-    //             @include text--medium-large;
-    //             font-weight: bold;
-    //             font-style: italic;
-    //             line-height: 0.97;
-    //             letter-spacing: -0.5px;
-    //             margin-bottom: 16px;
-    //         }
-    //
-    //         &__share-pride {
-    //             font-size: 24px;
-    //             font-weight: bold;
-    //             font-style: italic;
-    //             line-height: 1.08;
-    //             letter-spacing: -0.3px;
-    //             margin-top: 45px;
-    //             margin-bottom: 10px;
-    //         }
-    //
-    //         &__sharer {
-    //             margin-bottom: 30px;
-    //         }
-    //     }
-    // }
-}
-
-.donation-result {
-    text-align: center;
-    padding: 100px 0;
-
-    &__support {
-        margin-top: 50px;
+    &__loader {
+        margin: auto auto;
     }
 }
 
 /*
-========================================================
-========================================================
-========================================================
-========================================================
+===================================================================================
+===================================================================================
 */
-
 
 // Donation - Global elements
 @mixin content-mw {
@@ -622,37 +558,47 @@
     }
 }
 
+.donation-highlight {
+    color: $blue--dark;
+    font-weight: bold;
+}
+
 .donation-reassurance {
     font-size: 0;
 
     &__item {
         display: inline-flex;
-        color: $black;
-        border: 1px solid $lines-grey;
+        align-items: center;
+        color: $silver-grey;
         border-radius: 2px;
-        padding: 0 6px 0 3px;
         text-transform: uppercase;
-        margin-right: 8px;
+        margin-right: 20px;
         line-height: normal;
 
         span {
             line-height: 26px;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         svg {
-            opacity: 0.35;
+            margin-right: 5px;
+            padding: 2px;
+            border-radius: 30px;
+            margin-right: 8px;
+            background-color: $blue--extra-light;
+            fill: $inf-modl--text-blue;
         }
     }
 
     &.dark {
         .donation-reassurance__item {
             color: white;
-            border: 1px solid rgba(255,255,255,0.5);
         }
 
         svg {
             fill: white;
+            background-color: transparent;
+            border: 1px solid rgba(255,255,255,0.25);
         }
     }
 }
@@ -665,7 +611,8 @@
     color: black;
 
     span {
-        background-color: $lighter-pink;
+        background-color: $blue--extra-light;
+        color: $blue--dark;
     }
 }
 
@@ -691,13 +638,22 @@
         margin: 0 auto;
 
         ul {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
             li {
-                display: none;
+                display: inline-block;
                 text-transform: uppercase;
                 font-family: $font-gillsans;
-                font-size: 14px;
+                font-size: 12px;
                 color: $white;
-                margin: 0 10px;
+                margin: 0 6px;
+                vertical-align: middle;
+
+                &.chevron {
+                    display: none;
+                }
 
                 &.active {
                     display: inline-block;
@@ -712,6 +668,19 @@
                     border-color: $white;
                 }
 
+                img {
+                    vertical-align: middle;
+                }
+
+                @media (min-width: $mobile) {
+                    font-size: 14px;
+                    margin: 0 10px;
+
+                    &.chevron {
+                        display: inline-block;
+                    }
+                }
+
                 @media (min-width: $tablet) {
                     display: inline-block;
                 }
@@ -724,6 +693,11 @@
     }
 }
 
+/*
+=====================================================================
+*/
+
+// Donation landing page
 .donation__landing {
     position: relative;
     display: flex;
@@ -741,6 +715,7 @@
         }
     }
 
+    // Donation landing hero
     .donation-hero {
         position: relative;
         width: 100%;
@@ -799,7 +774,7 @@
 }
 
 
-/* DONATION-BOX */
+// Donation box
 .donation-box__container {
     position: relative;
     background-color: #3A3241;
@@ -851,7 +826,7 @@
     -moz-backface-visibility: hidden;
     backface-visibility: hidden;
     border-radius: 3px;
-    padding: 50px 30px 0;
+    padding: 50px 20px 0;
     pointer-events: all;
 
     &.disable {
@@ -870,6 +845,7 @@
     perspective: 1500px;
 
     &__flip {
+        background-color: white;
         transition: all 0.5s ease-out;
         -webkit-transform-style: preserve-3d;
         -moz-transform-style: preserve-3d;
@@ -877,7 +853,7 @@
         border-radius: 3px;
 
         &.with-shadow {
-            box-shadow: 0 2px 5px 0 rgba(35, 50, 65, 0.12);
+            box-shadow: 10px 10px 36px 0 rgba(18, 48, 100, 0.15);
         }
 
         &.flipped {
@@ -909,8 +885,8 @@
         }
 
         span {
-            background-color: $lighter-pink;
             font-weight: 700;
+            color: $blue--dark;
         }
     }
 
@@ -950,9 +926,21 @@
 
 .others-sections {
     order: 3;
+
+    .section {
+        margin-top: 50px;
+
+        @media (min-width: $mobile) {
+            margin-top: 100px;
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
 }
 
-/* DONATION DISTRIBUTION */
+// Donation section - Distribution
 .donation-distribution {
     padding-top: 50px;
 
@@ -1006,6 +994,7 @@
         &:last-child {
             width: 100%;
             margin-right: 0;
+            max-width: 420px;
         }
 
         &--head {
@@ -1021,7 +1010,8 @@
             height: 68px;
             text-align: center;
             line-height: 68px;
-            background-color: $lighter-pink;
+            background-color: $blue--extra-light;
+            color: $blue--dark;
             margin-right: 20px;
             font-size: 22px;
             font-weight: bold;
@@ -1030,25 +1020,152 @@
         &--title {
             font-family: $font-roboto;
             line-height: normal;
+            font-size: 18px;
         }
 
         &:first-child .donation-distribution__item--amount {
-            background-color: $black;
+            background-color: $blue--dark;
             color: $white;
         }
 
         p {
-            color: $silver-grey;
+            color: $silver-dark;
+            letter-spacing: 0.3px;
             margin: 20px 0 0;
         }
     }
 }
 
+// Donation section - Why donate ?
+.donation-why {
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+
+        p {
+            color: $silver-dark;
+            letter-spacing: 0.3px;
+            font-size: 18px;
+        }
+    }
+
+    &__cols {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &__col {
+        width: 100%;
+
+        @media (min-width: $mobile) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+    }
+}
+
+// Donation section - Transparence
+.donation-transparence {
+    background-color: $blue--dark;
+    padding: 50px 0;
+    color: $white;
+
+    @media (min-width: $mobile) {
+        padding: 80px 0;
+    }
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+
+        p {
+            font-size: 18px;
+            letter-spacing: 0.3px;
+        }
+    }
+}
+
+// Donation section - Reduction ?
+.donation-reduction {
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+
+        p {
+            color: $silver-dark;
+            letter-spacing: 0.3px;
+            font-size: 18px;
+        }
+    }
+
+    &__cols {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    &__col {
+        width: 100%;
+
+        @media (min-width: $mobile) {
+            width: calc(50% - 12px);
+
+            &:nth-child(2n+1) {
+                margin-right: 24px;
+            }
+        }
+    }
+}
+
+// Donation section - Brochure
+.donation-brochure {
+    margin-top: 50px;
+
+    &__content {
+        width: 100%;
+        @include content-mw;
+        border-top: 1px solid $lines-grey;
+        padding-top: 60px;
+
+        p {
+            font-family: $font-roboto;
+            margin: 0;
+        }
+    }
+
+    &__new {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: bold;
+        line-height: normal;
+        font-family: $font-roboto;
+        color: $blue--dark;
+    }
+
+    &__open {
+        position: relative;
+        top: 5px;
+    }
+}
+
+/*
+=====================================================================
+*/
+
 // Donation information (form) page
 .donation__informations {
 
     &__form {
-        padding: 0 25px;
+
+        @media (min-width: $mobile) {
+            padding: 0 25px;
+        }
     }
 
     &__recap {
@@ -1056,8 +1173,22 @@
         border-bottom: 1px solid $lines-grey;
         margin-bottom: 30px;
     }
+
+    &__amount {
+        font-size: 50px;
+        font-family: $font-gillsans;
+        line-height: normal;
+        letter-spacing: -.5px;
+
+        span {
+            font-size: 20px;
+        }
+    }
 }
 
+/*
+=====================================================================
+*/
 
 // Donation result page
 .donation__result {
@@ -1067,7 +1198,7 @@
 
         &--text {
             font-family: $font-roboto;
-            color: $dark;
+            color: $silver-dark;
             font-size: 18px;
             line-height: 28px;
         }
@@ -1115,11 +1246,47 @@
     }
 }
 
+/*
+=====================================================================
+*/
+
 // Donation footer
 .donation__footer {
     display: block;
     width: 100%;
-    margin-top: 175px;
+    margin-top: 100px;
     background-color: $pale-grey;
-    height: 150px;
+    padding: 50px 0 10px 0;
+
+    &__sections {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+
+    .footer__section {
+        flex-grow: 1;
+        margin-right: 30px;
+        margin-bottom: 40px;
+
+        h5 {
+            margin: 0 0 10px 0;
+            font-family: $font-roboto;
+            color: $black;
+            font-size: 16px;
+            line-height: normal;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .list__links--svgs li {
+            padding: 0 20px 0 0 !important;
+
+            .fa {
+                font-size: 20px;
+            }
+        }
+    }
 }
