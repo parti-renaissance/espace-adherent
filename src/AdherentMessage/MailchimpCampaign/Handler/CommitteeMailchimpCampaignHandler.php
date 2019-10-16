@@ -19,14 +19,30 @@ class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
      */
     protected function getCampaignFilters(AdherentMessageFilterInterface $filter): array
     {
+        $committee = $filter->getCommittee();
+        $committeeLabel = substr($committee->getUuidAsString(), 0, 8);
+
         $filters = [];
 
-        foreach ($filter->getCityAsArray() as $city) {
-            $filters[] = [[
-                'type' => 'text_merge',
-                'value' => $city,
-                'label' => $city,
-            ]];
+        $staticSegmentCondition = [
+            'type' => 'static_segment',
+            'value' => $committee->getMailchimpId(),
+            'label' => $committeeLabel,
+        ];
+
+        if ($cities = $filter->getCityAsArray()) {
+            foreach ($cities as $city) {
+                $filters[] = [
+                    $staticSegmentCondition,
+                    [
+                        'type' => 'text_merge',
+                        'value' => $city,
+                        'label' => $committeeLabel.' - '.$city,
+                    ],
+                ];
+            }
+        } else {
+            $filters[] = [$staticSegmentCondition];
         }
 
         return $filters;

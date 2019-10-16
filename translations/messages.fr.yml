@@ -26,6 +26,9 @@ common.members_count: "%count% membre|%count% membres"
 common.i.am: Je suis
 common.all: Tous
 common.jecoute_manager: Accès J'écoute
+common.adherent.subscribed: Abonné(e)
+common.adherent.unsubscribed: Non-abonné(e)
+common.adherent.status_email: Statut (e-mail)
 
 pending: En attente
 approved: Approuvé
@@ -282,9 +285,6 @@ referent.popup.title: Charte de bonne utilisation des outils numériques
 referent.popup.subtitle: à l’usage des référents
 referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
 referent.filter.interests: Choisissez des centres d'intérêt
-referent.adherent.subscribed: Abonné(e)
-referent.adherent.unsubscribed: Non-abonné(e)
-referent.status.email: Statut (e-mail)
 referent.managed_area: Zone gérée
 referent.checkbox.co_referent: Donner un accès à l'onglet&nbsp;<i>Adhérents</i>
 referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>J'écoute</i>

@@ -21,28 +21,6 @@
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
                         <div class="filter__row">
-                            <label class="filter__label">Genre</label>
-                            {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
-                        </div>
-
-                        <div class="filter__row">
-                            <label class="filter__label">Âge</label>
-                            <div class="filter__multi">
-                                <label style="width: 45%">
-                                    {{ form_widget(form.ageMin, {label: false, attr: {class: 'filter__field candidate-incompatible', placeholder: 18}}) }}
-                                </label>
-                                à
-                                <label style="width: 45%">
-                                    {{ form_widget(form.ageMax, {label: false, attr: {class: 'filter__field candidate-incompatible', placeholder: 99}}) }}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="manager__filters__section">
-                    <div class="manager__filters__group">
-                        <div class="filter__row">
                             <label class="filter__label">Prénom</label>
                             {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
                             {{ form_errors(form.firstName) }}
@@ -67,6 +45,19 @@
                                 à
                                 <label style="width: 45%">
                                     {{ form_widget(form.registeredUntil, {label: false, attr: {class: 'filter__field candidate-incompatible'}}) }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Âge</label>
+                            <div class="filter__multi">
+                                <label style="width: 45%">
+                                    {{ form_widget(form.ageMin, {label: false, attr: {class: 'filter__field candidate-incompatible', placeholder: 18}}) }}
+                                </label>
+                                à
+                                <label style="width: 45%">
+                                    {{ form_widget(form.ageMax, {label: false, attr: {class: 'filter__field candidate-incompatible', placeholder: 99}}) }}
                                 </label>
                             </div>
                         </div>

@@ -12,7 +12,7 @@
             <td class="member-city-name">{{ member.cityName|default('~') }}</td>
             <td>
                 <span class="status status__{{ member.hasSubscribedLocalHostEmails ? '1' : '2' }}">
-                    {{ member.hasSubscribedLocalHostEmails ? 'Abonné(e)' : 'Non-abonné(e)' }}
+                    {{ (member.hasSubscribedLocalHostEmails ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
                 </span>
             </td>
             <td>

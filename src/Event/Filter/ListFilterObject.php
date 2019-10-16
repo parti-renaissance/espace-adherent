@@ -7,11 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ListFilterObject
 {
     /**
-     * @var string|null
-     */
-    private $gender;
-
-    /**
      * @var int|null
      */
     private $ageMin;
@@ -70,15 +65,10 @@ class ListFilterObject
      */
     private $order;
 
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?string $gender): void
-    {
-        $this->gender = $gender;
-    }
+    /**
+     * @var bool|null
+     */
+    private $subscribed;
 
     public function getAgeMin(): ?int
     {
@@ -190,6 +180,16 @@ class ListFilterObject
         $this->order = $order;
     }
 
+    public function isSubscribed(): ?bool
+    {
+        return $this->subscribed;
+    }
+
+    public function setSubscribed(?bool $subscribed): void
+    {
+        $this->subscribed = $subscribed;
+    }
+
     public static function getSortableFields(): array
     {
         return [
@@ -199,8 +199,13 @@ class ListFilterObject
 
     public function toArray(): array
     {
-        return array_filter(get_object_vars($this), static function ($value) {
-            return null !== $value;
-        });
+        return array_map(
+            static function ($value) {
+                return $value instanceof \DateTimeInterface ? $value->format('Y-m-d') : $value;
+            },
+            array_filter(get_object_vars($this), static function ($value) {
+                return null !== $value;
+            })
+        );
     }
 }
