@@ -356,33 +356,24 @@
     &__row {
         display: flex;
         flex-direction: column;
-
-        > div {
-            flex-grow: 1;
-            flex-basis: 100%;
-        }
+        flex-wrap: wrap;
+        justify-content: space-between;
 
         @media (min-width: $tablet) {
             flex-direction: row;
-
-            > div {
-                flex-basis: 50%;
-            }
         }
     }
 
     &__case {
+        box-sizing: border-box;
         background-color: $pale-grey;
         box-shadow: 0 1px 0 0 rgba(229, 233, 238, 1);
         padding: 20px;
         margin-bottom: 26px;
+        flex-basis: 100%;
 
         @media (min-width: $tablet) {
-            margin-right: 26px;
-
-            &:last-child {
-                margin-right: 0;
-            }
+            flex-basis: calc(33% - 12px);
         }
 
         &--section {
@@ -467,6 +458,13 @@
             }
         }
 
+        &.case-half {
+            flex-basis: calc(50% - 12px);
+        }
+
+        &.case-full {
+            flex-basis: 100%;
+        }
     }
 }
 
