@@ -2,16 +2,19 @@
 
 namespace AppBundle\Repository;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPlatformPaginator;
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Event\Filter\ListFilterObject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -323,18 +326,109 @@ SQL
         );
     }
 
-    public function getCommitteeMembershipsPaginator(Committee $committee, int $page = 1, int $limit = 50): Paginator
-    {
-        return new Paginator(
-            $this
-                ->createCommitteeMembershipsQueryBuilder($committee)
-                ->addSelect('a')
-                ->addSelect('st')
-                ->leftJoin('a.subscriptionTypes', 'st')
-                ->setMaxResults($limit)
-                ->setFirstResult(($offset = ($page - 1) * $limit) < 0 ? 0 : $offset)
-                ->getQuery()
-        );
+    /**
+     * @return CommitteeMembership[]|PaginatorInterface|iterable
+     */
+    public function getCommitteeMembershipsPaginator(
+        Committee $committee,
+        ListFilterObject $filter = null,
+        int $page = 1,
+        ?int $limit = 30
+    ): iterable {
+        $qb = $this
+            ->createCommitteeMembershipsQueryBuilder($committee, 'cm')
+            ->addSelect('a')
+            ->addSelect('st')
+            ->leftJoin('a.subscriptionTypes', 'st')
+            ->setMaxResults($limit)
+            ->setFirstResult(($offset = ($page - 1) * $limit) < 0 ? 0 : $offset)
+        ;
+
+        if ($filter) {
+            if ($filter->getAgeMin() || $filter->getAgeMax()) {
+                $now = new \DateTimeImmutable();
+
+                if ($filter->getAgeMin()) {
+                    $qb
+                        ->andWhere('a.birthdate <= :min_birth_date')
+                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $filter->getAgeMin()))))
+                    ;
+                }
+
+                if ($filter->getAgeMax()) {
+                    $qb
+                        ->andWhere('a.birthdate >= :min_birth_date')
+                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $filter->getAgeMax()))))
+                    ;
+                }
+            }
+
+            if ($filter->getGender()) {
+                $qb
+                    ->andWhere('a.gender = :gender')
+                    ->setParameter('gender', $filter->getGender())
+                ;
+            }
+
+            if ($filter->getFirstName()) {
+                $qb
+                    ->andWhere('a.firstName = :first_name')
+                    ->setParameter('first_name', $filter->getFirstName())
+                ;
+            }
+
+            if ($filter->getLastName()) {
+                $qb
+                    ->andWhere('a.lastName = :last_name')
+                    ->setParameter('last_name', $filter->getLastName())
+                ;
+            }
+
+            if ($filter->getRegisteredSince()) {
+                $qb
+                    ->andWhere('a.registeredAt >= :registered_since')
+                    ->setParameter('registered_since', $filter->getRegisteredSince())
+                ;
+            }
+
+            if ($filter->getRegisteredUntil()) {
+                $qb
+                    ->andWhere('a.registeredAt <= :registered_until')
+                    ->setParameter('registered_until', $filter->getRegisteredUntil())
+                ;
+            }
+
+            if ($filter->getJoinedSince()) {
+                $qb
+                    ->andWhere('cm.joinedAt >= :joined_since')
+                    ->setParameter('joined_since', $filter->getJoinedSince())
+                ;
+            }
+
+            if ($filter->getJoinedUntil()) {
+                $qb
+                    ->andWhere('cm.joinedAt <= :joined_until')
+                    ->setParameter('joined_until', $filter->getJoinedUntil())
+                ;
+            }
+
+            if ($filter->getCity()) {
+                $qb
+                    ->andWhere('(a.postAddress.cityName = :city OR a.postAddress.postalCode = :city)')
+                    ->setParameter('city', $filter->getCity())
+                ;
+            }
+
+            if ($filter->getSort()) {
+                $qb->orderBy('cm.'.$filter->getSort(), $filter->getOrder() ?? 'ASC');
+            }
+        }
+
+        if (!$limit) {
+            return $qb->getQuery()->getResult();
+        }
+
+        return new ApiPlatformPaginator(new DoctrinePaginator($qb));
     }
 
     /**

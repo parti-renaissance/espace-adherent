@@ -5,7 +5,7 @@ namespace AppBundle\AdherentMessage\Filter;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Exception\InvalidAdherentMessageType;
-use AppBundle\Form\AdherentMessage\CommitteeUserFilterType;
+use AppBundle\Form\AdherentMessage\CommitteeFilterType;
 use AppBundle\Form\AdherentMessage\MunicipalChiefFilterType;
 use AppBundle\Form\AdherentMessage\ReferentFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -40,7 +40,7 @@ class FilterFormFactory
                 return $this->formFactory->create(MunicipalChiefFilterType::class, $data);
 
             case AdherentMessageTypeEnum::COMMITTEE:
-                return $this->formFactory->create(CommitteeUserFilterType::class, $data);
+                return $this->formFactory->create(CommitteeFilterType::class, $data);
         }
 
         throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));

@@ -568,42 +568,14 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
         $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
-        $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
-
-        $token = $crawler->filter('#members-export-token')->attr('value');
-        $uuids = (array) $crawler->filter('input[name="members[]"]')->attr('value');
-
-        $exportUrl = $this->client->getRequest()->getPathInfo().'/export';
-
-        $this->client->request(Request::METHOD_POST, $exportUrl, [
-            'token' => $token,
-            'exports' => json_encode($uuids),
-        ]);
+        $this->client->click($crawler->selectLink('Adhérents')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $lines = $this->transformToArray($this->client->getResponse()->getContent());
-        $this->assertCount(2, $lines);
 
-        // Try to illegally export an adherent data
-        $uuids[] = LoadAdherentData::ADHERENT_1_UUID;
-
-        $this->client->request(Request::METHOD_POST, $exportUrl, [
-            'token' => $token,
-            'exports' => json_encode($uuids),
-        ]);
+        $this->client->request(Request::METHOD_GET, $this->client->getRequest()->getPathInfo().'?export=1');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $lines = $this->transformToArray($this->client->getResponse()->getContent());
-        $this->assertCount(2, $lines);
-
-        $this->client->request(Request::METHOD_POST, $exportUrl, [
-            'token' => $token,
-            'exports' => json_encode([]),
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $lines = $this->transformToArray($this->client->getResponse()->getContent());
-        $this->assertCount(1, $lines);
+        $this->assertCount(5, $this->transformToArray($this->client->getResponse()->getContent()));
     }
 
     public function testAllowToCreateCommmitee()

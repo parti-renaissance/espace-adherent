@@ -10,7 +10,9 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventRegistrationCommand;
+use AppBundle\Event\Filter\ListFilterObject;
 use AppBundle\Form\CommitteeCommandType;
+use AppBundle\Form\CommitteeMemberFilterType;
 use AppBundle\Form\ContactMembersType;
 use AppBundle\Form\EventCommandType;
 use AppBundle\Repository\CommitteeMembershipRepository;
@@ -24,7 +26,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -34,8 +35,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class CommitteeManagerController extends Controller
 {
-    public const MAX_MEMBER_PER_PAGE = 50;
-
     /**
      * @Route("/editer", name="app_committee_manager_edit", methods={"GET", "POST"})
      */
@@ -98,87 +97,70 @@ class CommitteeManagerController extends Controller
      *
      * @Security("committee.isApproved()")
      */
-    public function listMembersAction(Committee $committee, CommitteeMembershipRepository $repository): Response
-    {
-        return $this->render('committee_manager/list_members.html.twig', [
-            'committee' => $committee,
-            'committee_hosts' => $repository->findHostMembers($committee),
-            'members' => $repository->getCommitteeMembershipsPaginator($committee, 1, self::MAX_MEMBER_PER_PAGE),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     "/membres/{page}",
-     *     condition="request.isXmlHttpRequest()",
-     *     requirements={"page": "\d+"},
-     *     name="app_committee_manager_members_segment",
-     *     methods={"GET"}
-     * )
-     *
-     * @Security("committee.isApproved()")
-     */
-    public function getMembersSegmentAction(
-        int $page,
-        UserInterface $adherent,
-        Committee $committee,
-        CommitteeMembershipRepository $repository
-    ): Response {
-        return $this->render(
-            'committee_manager/_member_rows.html.twig',
-            [
-                'committee' => $committee,
-                'members' => $repository->getCommitteeMembershipsPaginator($committee, $page, self::MAX_MEMBER_PER_PAGE),
-                'is_supervisor' => $adherent->isSupervisor(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/membres/export", name="app_committee_manager_export_members", methods={"POST"})
-     *
-     * @Security("committee.isApproved()")
-     */
-    public function exportMembersAction(
+    public function listMembersAction(
         Request $request,
         Committee $committee,
+        CommitteeMembershipRepository $repository,
         SerializerInterface $serializer
     ): Response {
-        if (!$this->isCsrfTokenValid('committee.export_members', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to export members.');
+        $form = $this
+            ->createForm(CommitteeMemberFilterType::class, $filter = new ListFilterObject(), [
+                'method' => 'GET',
+                'csrf_protection' => false,
+            ])
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('info', 'Le formulaire est invalide');
+
+            return $this->redirectToRoute('app_committee_manager_list_members', ['slug' => $committee->getSlug()]);
         }
 
-        $committeeManager = $this->get('app.committee.manager');
-
-        $uuids = GroupUtils::getUuidsFromJson($request->request->get('exports', ''));
-
-        $memberships = $committeeManager->getCommitteeMemberships($committee)->filter(
-            static function (CommitteeMembership $membership) use ($uuids) {
-                return \in_array($membership->getAdherentUuid(), $uuids);
-            }
-        );
-
-        return new Response(
-            $serializer->serialize(
-                $memberships,
-                XlsxEncoder::FORMAT,
+        if ($request->query->has('export')) {
+            return new Response(
+                $serializer->serialize(
+                    $repository->getCommitteeMembershipsPaginator(
+                        $committee,
+                        $filter,
+                        $request->query->getInt('page', 1),
+                        null // without limit
+                    ),
+                    XlsxEncoder::FORMAT,
+                    [
+                        'groups' => ['export'],
+                        DateTimeNormalizer::FORMAT_KEY => 'd/m/Y',
+                        XlsxEncoder::HEADERS_KEY => [
+                            'adherent.first_name' => 'Prénom',
+                            'adherent.last_name_initial' => 'Nom',
+                            'adherent.age' => 'Age',
+                            'adherent.postal_code' => 'Code postal',
+                            'adherent.city_name' => 'Ville',
+                            'adherent.registered_at' => "Date d'adhesion",
+                            'subscriptionDate' => 'A rejoint le comité le',
+                        ],
+                    ]
+                ),
+                Response::HTTP_OK,
                 [
-                    'groups' => ['export'],
-                    DateTimeNormalizer::FORMAT_KEY => 'd/m/Y',
-                    XlsxEncoder::HEADERS_KEY => [
-                        'adherent.first_name' => 'Prénom',
-                        'adherent.last_name_initial' => 'Nom',
-                        'adherent.age' => 'Age',
-                        'adherent.postal_code' => 'Code postal',
-                        'adherent.city_name' => 'Ville',
-                        'adherent.registered_at' => "Date d'adhesion",
-                        'subscriptionDate' => 'A rejoint le comité le',
-                    ],
+                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'Content-Disposition' => 'attachment;filename="membres-du-comite.xlsx"',
+                    'Cache-Control' => 'max-age=0',
                 ]
-            ), Response::HTTP_OK, [
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment;filename="membres-du-comite.xlsx"',
-            'Cache-Control' => 'max-age=0',
+            );
+        }
+
+        return $this->render('committee_manager/list_members.html.twig', [
+            'form' => $form->createView(),
+            'committee' => $committee,
+            'filter' => $filter,
+            'total_member_count' => $repository->countMembers($committee, CommitteeMembership::PRIVILEGES),
+            'committee_hosts' => $repository->findHostMembers($committee),
+            'members' => $repository->getCommitteeMembershipsPaginator(
+                $committee,
+                $filter,
+                $request->query->getInt('page', 1)
+            ),
         ]);
     }
 
