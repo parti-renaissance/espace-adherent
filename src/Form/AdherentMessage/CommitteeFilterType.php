@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CommitteeUserFilterType extends AbstractType
+class CommitteeFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

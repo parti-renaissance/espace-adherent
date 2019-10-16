@@ -2,47 +2,137 @@
 
 {% block page_title 'Membres de mon comité' %}
 
-{% block javascripts %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            App.runManageParticipants();
-        });
-    </script>
-{% endblock %}
-
 {% block committee_content %}
     {% set is_supervisor = is_supervisor(committee) %}
 
     <section>
         <div class="datagrid__pre-table b__nudge--bottom">
             <h3>Adhérents</h3>
+
+            {% if total_member_count %}
+                <span class="datagrid__count">
+                    <span>{{ members.totalItems|number_format(0, ',', ' ') }}</span> sur {{ total_member_count|number_format(0, ',', ' ') }} résultat{{ total_member_count > 1 ? 's' : '' }}
+                </span>
+            {% endif %}
         </div>
 
-        <div class="committee__members__nav">
-            <div>
-                <form method="post" action="{{ path('app_committee_manager_export_members', {slug: committee.slug}) }}" class="b__nudge--bottom b__nudge--left-small">
-                    <input type="hidden" name="token" value="{{ csrf_token('committee.export_members') }}" id="members-export-token" />
-                    <input type="hidden" name="exports" value="" id="members-export-selection" />
-                    <button id="members-export-button" disabled="disabled" class="btn-secondary btn-secondary--blue">Exporter</button>
-                </form>
+        <div class="manager__filters">
+            <div class="manager__filters__form">
+                {{ form_start(form) }}
+
+                <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+                {{ form_errors(form) }}
+
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Genre</label>
+                                {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Âge</label>
+                                <div class="filter__multi">
+                                    <label style="width: 45%">
+                                        {{ form_widget(form.ageMin, {label: false, attr: {class: 'filter__field', placeholder: 18}}) }}
+                                    </label>
+                                    à
+                                    <label style="width: 45%">
+                                        {{ form_widget(form.ageMax, {label: false, attr: {class: 'filter__field', placeholder: 99}}) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Prénom</label>
+                                {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                                {{ form_errors(form.firstName) }}
+                            </div>
+
+                            <div class="filter__row">
+                                <label class="filter__label">Ville ou code postal</label>
+                                {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
+                                {{ form_errors(form.city) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Date d'adhésion</label>
+                                <div class="filter__multi">
+                                    <label style="width: 45%">
+                                        {{ form_widget(form.registeredSince, {label: false, attr: {class: 'filter__field'}}) }}
+                                    </label>
+                                    à
+                                    <label style="width: 45%">
+                                        {{ form_widget(form.registeredUntil, {label: false, attr: {class: 'filter__field'}}) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label class="filter__label">Rejoint le comité</label>
+                                <div class="filter__multi">
+                                    <label style="width: 45%">
+                                        {{ form_widget(form.joinedSince, {label: false, attr: {class: 'filter__field'}}) }}
+                                    </label>
+                                    à
+                                    <label style="width: 45%">
+                                        {{ form_widget(form.joinedUntil, {label: false, attr: {class: 'filter__field'}}) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                    <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}"
+                        class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset"
+                    >Réinitialiser le filtre</a>
+                </div>
+
+                {{ form_end(form) }}
             </div>
         </div>
+
+        {% if members.count %}
+            <div class="committee__members__nav">
+                <a href="{{ path('app_committee_manager_list_members', {committee_member_filter: filter.toArray}|merge({slug: committee.slug, export: true})) }}" id="members-export-button" class="btn-secondary btn-secondary--blue">Exporter tout</a>
+            </div>
+        {% endif %}
+
+        {% set order = filter.order and filter.order == 'DESC' ? 'ASC' : 'DESC' %}
 
         <table class="datagrid__table-manager" cellpadding="10">
             <thead>
                 <tr>
-                    <th width="50px"><input type="checkbox" id="members-check-all" /></th>
                     <th width="150px">Prénom</th>
                     <th width="150px">Nom</th>
-                    <th width="75px">Âge</th>
-                    <th width="100px">CP</th>
+                    <th width="50px">Âge</th>
+                    <th width="75px">CP</th>
                     <th width="150px">Ville</th>
                     <th width="150px">Statut</th>
                     <th width="100px">Rôle</th>
                     <th width="100px">Adhérent depuis le</th>
-                    <th width="100px">A rejoint le comité le</th>
+                    <th width="120px">
+                        <a href="{{ path('app_committee_manager_list_members', {committee_member_filter: filter.toArray}|merge({slug: committee.slug, committee_member_filter: {sort: 'joinedAt', order: order}})) }}"
+                            class="sort-link sort-link--order-{{ filter.sort == 'joinedAt' ? (filter.order == 'DESC' ? 'd' : 'a') : 'a' }}"
+                        >A rejoint le comité le</a>
+                    </th>
                     {% if is_supervisor %}
-                        <th style="min-width: 200px;">Actions</th>
+                        <th style="min-width: 150px;">Actions</th>
                     {% endif %}
                 </tr>
             </thead>
@@ -51,46 +141,12 @@
             </tbody>
         </table>
 
-        {% if members.count / constant('AppBundle\\Controller\\EnMarche\\CommitteeManagerController::MAX_MEMBER_PER_PAGE') > 1 %}
-            <div class="text--center">
-                <div class="spin-loader" style="display: none;"></div>
-                <a href="javascript:void(0);" class="text--blue--dark link--no-decor" id="read-more-button">Voir plus</a>
-            </div>
+        {% if members.count %}
+            {% include 'components/_modern_pagination.html.twig' with {
+                current_page: members.currentPage,
+                total_pages: members.lastPage,
+                pagination_route_params: {committee_member_filter: filter.toArray}|merge({slug: committee.slug})
+            } %}
         {% endif %}
     </section>
-{% endblock %}
-
-{% block final_javascripts %}
-    {{ parent() }}
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            const readMoreButton = $('#read-more-button');
-
-            if (!readMoreButton.length) {
-                return;
-            }
-
-            let currentPage = 1;
-            const table = dom('.datagrid__table-manager');
-
-            readMoreButton.on('click', function () {
-                readMoreButton.hide();
-                readMoreButton.prev().show();
-
-                $.ajax({
-                    'url': '{{ path('app_committee_manager_members_segment', {slug: committee.slug, page: 1}) }}'.replace('/1', '/'+ (++currentPage))
-                }).then(function (html) {
-                    readMoreButton.prev().hide();
-
-                    if (html) {
-                        readMoreButton.show();
-
-                        $('tbody', table).append(html);
-                        table.dispatchEvent(new Event('table_update'));
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock %}

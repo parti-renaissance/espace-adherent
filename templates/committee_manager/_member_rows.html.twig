@@ -5,7 +5,6 @@
         {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
 
         <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
-            <td><input type="checkbox" name="members[]" value="{{ member.uuid }}" /></td>
             <td class="member-first-name">{{ member.firstName|default('~')|capitalize }}</td>
             <td class="member-last-name">{{ member.lastNameInitial|default('~') }}</td>
             <td class="member-age">{{ member.age|default('~') }}</td>
@@ -48,6 +47,13 @@
                     {% endif %}
                 </td>
             {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="{{ is_supervisor ? 10 : 9 }}" class="text--center">
+                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                La liste est vide
+            </td>
         </tr>
     {% endfor %}
 {% endspaceless %}
