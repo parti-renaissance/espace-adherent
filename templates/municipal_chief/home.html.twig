@@ -37,7 +37,7 @@
         {% if last_sent_message %}
             <!-- If no e-mail has been sent : disabled this row -->
             <div class="manager-overview__row">
-                <div class="manager-overview__case">
+                <div class="manager-overview__case case-full">
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
                     <h1 class="manager-overview__case--title">Statistique du dernier e-mail :
                         <a href="{{ path('app_message_municipal_chief_preview', {uuid: last_sent_message.uuid}) }}"
@@ -78,19 +78,19 @@
         {% endif %}
 
         <div class="manager-overview__row">
-            <!-- {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
-              <div class="manager-overview__case">
+            {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
+              <div class="manager-overview__case case-half">
                   <span class="manager-overview__case--section">Communication & Mobilisation</span>
                   <h1 class="manager-overview__case--title">Mes tracts</h1>
                   <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour créer vos tracts de campagne.</p>
                   <footer class="manager-overview__case--footer">
-                      <a href="" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
+                      <a href="https://muni2020.lamaisondesimpressions.fr/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                   </footer>
               </div>
-            {% endif %} -->
+            {% endif %}
 
             {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
-                <div class="manager-overview__case">
+                <div class="manager-overview__case case-half">
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
                     <h1 class="manager-overview__case--title">J'écoute</h1>
                     <p class="manager-overview__case--baseline">Application disponible sur
@@ -103,7 +103,7 @@
                 </div>
             {% endif %}
             {% if municipal_site_is_enabled(app.user) %}
-                <div class="manager-overview__case">
+                <div class="manager-overview__case case-half">
                     <span class="manager-overview__case--section">Communication & Mobilisation</span>
                     <h1 class="manager-overview__case--title">Mon site</h1>
                     <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour gérer votre site de campagne.</p>
