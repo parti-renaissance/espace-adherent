@@ -125,7 +125,7 @@
                     <th width="100px">Rôle</th>
                     <th width="100px">Adhérent depuis le</th>
                     <th width="120px">
-                        <a href="{{ path('app_committee_manager_list_members', {filter: filter.toArray}|merge({slug: committee.slug, committee_member_filter: {sort: 'joinedAt', order: order}})) }}"
+                        <a href="{{ path('app_committee_manager_list_members', {filter: filter.toArray|merge({sort: 'joinedAt', order: order})}|merge({slug: committee.slug})) }}"
                             class="sort-link sort-link--order-{{ filter.sort == 'joinedAt' ? (filter.order == 'DESC' ? 'd' : 'a') : 'a' }}"
                         >A rejoint le comité le</a>
                     </th>
