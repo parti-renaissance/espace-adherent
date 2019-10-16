@@ -187,11 +187,11 @@
                             </div>
 
                             <div class="filter__row">
-                                <label class="filter__label">{{ 'referent.status.email'|trans }}</label>
+                                <label class="filter__label">{{ 'common.adherent.status_email'|trans }}</label>
                                 <select class="filter__field" name="{{ constant('PARAMETER_EMAIL_SUBSCRIPTION', filter) }}">
                                     <option value="">{{ 'common.all'|trans }}</option>
-                                    <option value="1" {{ filter.onlyEmailSubscribers is same as(true) ? 'selected' }}>{{ 'referent.adherent.subscribed'|trans }}</option>
-                                    <option value="0" {{ filter.onlyEmailSubscribers is same as(false) ? 'selected' }}>{{ 'referent.adherent.unsubscribed'|trans }}</option>
+                                    <option value="1" {{ filter.onlyEmailSubscribers is same as(true) ? 'selected' }}>{{ 'common.adherent.subscribed'|trans }}</option>
+                                    <option value="0" {{ filter.onlyEmailSubscribers is same as(false) ? 'selected' }}>{{ 'common.adherent.unsubscribed'|trans }}</option>
                                 </select>
                             </div>
                         </div>
@@ -282,7 +282,7 @@
                                 Adhésion le
                             </a>
                         </th>
-                        <th style="width: 100px;">{{ 'referent.status.email'|trans }}</th>
+                        <th style="width: 100px;">{{ 'common.adherent.status_email'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -330,7 +330,7 @@
                         </td>
                         <td>
                             <span class="status status__{{ user.isMailSubscriber ? '1' : '2' }}">
-                                {{ (user.isMailSubscriber ? 'referent.adherent.subscribed' : 'referent.adherent.unsubscribed')|trans }}
+                                {{ (user.isMailSubscriber ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
                             </span>
                         </td>
                     </tr>

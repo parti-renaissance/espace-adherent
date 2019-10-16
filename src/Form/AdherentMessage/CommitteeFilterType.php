@@ -3,7 +3,6 @@
 namespace AppBundle\Form\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Form\GenderType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -16,11 +15,6 @@ class CommitteeFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('gender', GenderType::class, [
-                'placeholder' => 'Tous',
-                'expanded' => true,
-                'required' => false,
-            ])
             ->add('ageMin', IntegerType::class, ['required' => false])
             ->add('ageMax', IntegerType::class, ['required' => false])
             ->add('firstName', TextType::class, ['required' => false])

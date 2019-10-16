@@ -44,7 +44,7 @@
                     {% endif %}
                     <td>
                         <span class="status status__{{ member.hasCitizenProjectHostEmailSubscription ? '1' : '2' }}">
-                            {{ member.hasCitizenProjectHostEmailSubscription ? 'Abonné(e)' : 'Non-abonné(e)' }}
+                            {{ (member.hasCitizenProjectHostEmailSubscription ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
                         </span>
                     </td>
                     <td>

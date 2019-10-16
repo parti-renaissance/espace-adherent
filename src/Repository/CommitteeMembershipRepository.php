@@ -10,6 +10,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Event\Filter\ListFilterObject;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -336,10 +337,11 @@ SQL
         ?int $limit = 30
     ): iterable {
         $qb = $this
-            ->createCommitteeMembershipsQueryBuilder($committee, 'cm')
+            ->createCommitteeMembershipsQueryBuilder($committee)
             ->addSelect('a')
-            ->addSelect('st')
+            ->addSelect('GROUP_CONCAT(st.code) AS HIDDEN st_codes')
             ->leftJoin('a.subscriptionTypes', 'st')
+            ->groupBy('a.id')
             ->setMaxResults($limit)
             ->setFirstResult(($offset = ($page - 1) * $limit) < 0 ? 0 : $offset)
         ;
@@ -363,10 +365,10 @@ SQL
                 }
             }
 
-            if ($filter->getGender()) {
+            if (null !== $filter->isSubscribed()) {
                 $qb
-                    ->andWhere('a.gender = :gender')
-                    ->setParameter('gender', $filter->getGender())
+                    ->having('st_codes '.($filter->isSubscribed() ? '' : 'NOT').' LIKE :subscription_code')
+                    ->setParameter('subscription_code', '%'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL.'%')
                 ;
             }
 
