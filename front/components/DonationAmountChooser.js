@@ -74,8 +74,25 @@ export default class DonationAmountChooser extends React.Component {
 
                 <div className="donation__amount-chooser__after-taxes">
                     soit <span className="after-taxes-amount">
-                        {App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)}
-                    €</span> après réduction d’impôt
+                        {App.get('donation.tax_return_provider').getAmountAfterTaxReturn(this.state.amount)} €
+                    </span> après réduction d’impôt <div className="infos-taxe-reduction">
+                    ?
+                        <div className="infos-taxe-reduction__content">
+                            <div>La réduction fiscale</div>
+                            <p>
+                                66 % de votre don vient en déduction de votre impôt sur
+                                le revenu (dans la limite de 20 % du revenu imposable).
+                                <br /><br />
+                                <strong>Par exemple :</strong> un don de 100 € vous revient
+                                en réalité à 34 € et vous fait bénéficier
+                                d’une réduction d’impôt de 66 €. Le montant annuel de votre
+                                don ne peut pas excéder 7500 € par personne physique.
+                                <br /><br />
+                                Le reçu fiscal pour votre don de l’année N vous sera envoyé
+                                au 2e trimestre de l’année N+1.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

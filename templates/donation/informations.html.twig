@@ -22,9 +22,11 @@
                     <a href="{{ path('homepage') }}" class="text--logo-white">EM!</a>
                     <div class="donation__header__steps">
                         <ul>
-                            <li>1. Montant du don</li>
-                            <li class="active">2. Informations personnelles</li>
-                            <li class="next">3. Paiement sécurisé</li>
+                            <li>1. Montant</li>
+                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
+                            <li class="active">2. Informations</li>
+                            <li class="chevron"><img src="{{ asset('images/icons/donation-journey-chevron.svg') }}" /></li>
+                            <li class="next">3. Paiement</li>
                         </ul>
                     </div>
                 </div>
@@ -32,19 +34,20 @@
         </section>
 
         <div class="l__wrapper b__nudge--bottom-50 b__nudge--top-50">
-            <a href="#" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
+            <a href="{{ path('donation_index') }}" class="text--body text--blue--dark link--no-decor">⟵ Retour</a>
         </div>
 
         <div class="l__wrapper--600">
             {{ form_start(form, { attr: { class: 'em-form donation__informations__form' } }) }}
-            {{ form_errors(form, { error_raw: true }) }}
-            <!-- <div class="donation__informations__amount">
-            </div> -->
 
             <section class="donation__informations__recap">
                 <h3 class="donation-subtitle">Vous faite <span>un don</span> de :</h3>
-                <h1 class="text--larger b__nudge--top-large">{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' / mois' }}</h1>
-                <div class="text--body">soit XXX après réduction d’impôt</div>
+                <h1 class="donation__informations__amount b__nudge--top-large">{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' <span>/ mois</span>' }}</h1>
+                <div class="donation__amount-chooser">
+                    <div class="donation__amount-chooser__after-taxes">
+                        soit <span class="after-taxes-amount">XXX</span> après réduction d’impôt
+                    </div>
+                </div>
                 <div class="information__modal inf-modl--pale-blue b__nudge--top-large b__nudge--bottom-large">Votre don sera versé à l’Association de financement de La République En Marche (AFEMA), unique mandataire financier au bénéfice du Mouvement.</div>
                 <div class="donation-reassurance">
                     <div class="donation-reassurance__item">
@@ -67,14 +70,14 @@
             </section>
 
             <div class="b__nudge--top-15">
-                <h3 class="text--left">Informations personnelles</h3>
-                <div class="text--left text--body b__nudge--bottom-medium">
+                <h3 class="text--medium-small b__nudge--bottom">Informations personnelles</h3>
+                <div class="text--body text--dark b__nudge--bottom-medium">
                     Toutes ces informations sont obligatoires pour que votre don soit validé par la commission des comptes.
                 </div>
 
                 <div class="em-form__row">
-                    <div class="em-form__group em-form__radio--inline">
-                        {{ form_widget(form.gender, { attr: { class: 'em-form__radio'} }) }}
+                    <div class="em-form__group em-form__checkbox--inline">
+                        {{ form_widget(form.gender, { attr: { class: 'form__radio'} }) }}
                         {{ form_errors(form.gender) }}
                     </div>
                 </div>
@@ -159,7 +162,8 @@
                 </div>
             </div>
 
-            {{ form_widget(form.submit, { 'attr': { 'class': 'btn-fat btn-fat--pink btn--full b__nudge--top' } }) }}
+            {{ form_errors(form, { error_raw: true }) }}
+            {{ form_widget(form.submit, { 'attr': { 'class': 'btn-fat btn-fat--orange btn--full b__nudge--top' } }) }}
 
             <div class="em-form__group">
                 <p class="em-form__cgu b__nudge--top-40">

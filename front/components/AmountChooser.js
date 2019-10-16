@@ -63,7 +63,7 @@ export default class AmountChooser extends React.Component {
                             type="button"
                             onClick={() => this.handleButtonClicked(amount)}
                             key={`amount_${amount}`}>
-                        {amount}€
+                        {amount} €
                     </button>
                 ))}
 
