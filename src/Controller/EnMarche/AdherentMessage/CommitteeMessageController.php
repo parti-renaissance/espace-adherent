@@ -88,6 +88,7 @@ class CommitteeMessageController extends Controller
                 $command = $form->getData(),
                 AdherentMessageTypeEnum::COMMITTEE
             );
+            $message->setFilter(new CommitteeFilter($committee));
             $manager->saveMessage($message);
 
             $this->addFlash('info', 'adherent_message.created_successfully');
@@ -171,7 +172,7 @@ class CommitteeMessageController extends Controller
 
         // Reset Filter object
         if ($request->query->has('reset') && $message->getFilter()) {
-            $manager->updateFilter($message, null);
+            $manager->updateFilter($message, new CommitteeFilter($committee));
 
             return $this->redirectToRoute('app_message_committee_filter', [
                 'uuid' => $message->getUuid()->toString(),
