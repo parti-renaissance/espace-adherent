@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\ReferentTaggableEntity;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Repository\ReferentTagRepository;
 use AppBundle\Utils\AreaUtils;
 
@@ -42,11 +43,7 @@ class ReferentTagManager
             $relatedCodes = ManagedAreaUtils::getRelatedCodes($localCode[0]);
 
             if (\in_array(AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS, $relatedCodes, true)) {
-                /*
-                 * convert Paris Insee Code to Paris postal code
-                 * ex.: 75110 -> 75010
-                 */
-                $localCode[] = $inseeCode - 100;
+                $localCode[] = FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[FranceCitiesBundle::CUSTOM_CITY_CODE_PARIS][$inseeCode];
             }
 
             $codes = array_merge($codes, $localCode, $relatedCodes);

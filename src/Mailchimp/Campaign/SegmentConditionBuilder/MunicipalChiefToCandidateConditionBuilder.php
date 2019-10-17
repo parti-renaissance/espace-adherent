@@ -105,6 +105,22 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
             }
         }
 
+        if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode]) && $postalCode = $filter->getPostalCode()) {
+            if (false === ($matchedInseeCode = array_search($postalCode, FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode], true))) {
+                throw new InvalidFilterException(
+                    $campaign->getMessage(),
+                    sprintf('[MunicipalChiefMessage] Postal code "%s" not found for the city "%s"', $postalCode, $inseeCode)
+                );
+            }
+
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'contains',
+                'field' => MemberRequest::MERGE_FIELD_FAVORITE_CITIES_CODES,
+                'value' => "#${matchedInseeCode}",
+            ];
+        }
+
         return $conditions;
     }
 

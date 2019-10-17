@@ -196,7 +196,7 @@
         <service id="AppBundle\Form\EventRegistrationType"/>
         <service id="AppBundle\Form\ColorChoiceType"/>
         <service id="AppBundle\Form\DonationRequestType"/>
-        <service id="AppBundle\Form\AdherentMessage\ReferentFilterType"/>
+        <service id="AppBundle\Form\AdherentMessage\MunicipalChiefFilterType"/>
         <service id="AppBundle\Form\AdherentMessage\AdherentSegmentFilterType"/>
         <service id="AppBundle\Form\PurifiedTextareaType">
             <argument type="collection">
