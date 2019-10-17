@@ -38,11 +38,22 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
             );
         }
 
-        return [[
+        $conditions = [[
             'condition_type' => 'TextMerge',
             'op' => 'starts',
             'field' => MemberRequest::MERGE_FIELD_CITY,
             'value' => isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode]) ? $cityName : $cityName.' (',
         ]];
+
+        if ($filter->getPostalCode()) {
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => 'starts',
+                'field' => MemberRequest::MERGE_FIELD_ZIP_CODE,
+                'value' => $filter->getPostalCode(),
+            ];
+        }
+
+        return $conditions;
     }
 }

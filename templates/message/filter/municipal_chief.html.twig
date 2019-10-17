@@ -21,20 +21,21 @@
                 <div class="manager__filters__section">
                     <div class="manager__filters__group newsletter-incompatible">
                         <div class="filter__row">
-                            <label class="filter__label">Nom</label>
+                            {{ form_label(form.lastName, 'Nom', {label_attr: {class: 'filter__label'}}) }}
                             {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
                             {{ form_errors(form.lastName) }}
                         </div>
 
                         <div class="filter__row">
-                            <label class="filter__label">Prénom</label>
+                            {{ form_label(form.firstName, 'Prénom', {label_attr: {class: 'filter__label'}}) }}
                             {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
                             {{ form_errors(form.firstName) }}
                         </div>
 
                         <div class="filter__row">
-                            <label class="filter__label">Genre</label>
+                            {{ form_label(form.gender, 'Genre', {label_attr: {class: 'filter__label'}}) }}
                             {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                            {{ form_errors(form.gender) }}
                         </div>
                     </div>
                 </div>
@@ -63,6 +64,17 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if form.postalCode is defined %}
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group newsletter-incompatible">
+                            <div class="filter__row">
+                                {{ form_label(form.postalCode, 'Code postal', {label_attr: {class: 'filter__label'}}) }}
+                                {{ form_widget(form.postalCode, {attr: {class: 'filter__field', placeholder: 'Saisissez un code postal'}}) }}
+                                {{ form_errors(form.postalCode) }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="manager__filters__actions b__nudge--top">

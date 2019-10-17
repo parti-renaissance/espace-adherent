@@ -86,6 +86,15 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
      */
     private $contactNewsletter = false;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=10, nullable=true)
+     *
+     * @Assert\Length(min=5, max=5)
+     */
+    private $postalCode;
+
     public function __construct(string $inseeCode)
     {
         $this->inseeCode = $inseeCode;
@@ -189,6 +198,16 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
     public function setContactNewsletter(bool $contactNewsletter): void
     {
         $this->contactNewsletter = $contactNewsletter;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
     }
 
     /**
