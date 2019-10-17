@@ -43,7 +43,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am on "/don"
     And I press "OK"
     And wait 2 second until I see "Une fois"
-    When I press "Continuer"
+    And I press "50 €"
+    When I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=0"
 
     When I fill in the following:
@@ -72,7 +73,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
+    Then I should see "Continuons à transformer notre pays ensemble !"
 
   @javascript
   Scenario: The user can subscribe to donate each month successfully but can't have a second subscription
@@ -80,9 +81,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonatorIdentifierData |
     And I am on "/don"
     And I press "OK"
-    And wait 2 seconds until I see "Une fois"
+    And wait 2 second until I see "Une fois"
+    And I press "50 €"
     When I click the "donation-monthly_label" element
-    And I press "Continuer"
+    And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
@@ -111,12 +113,13 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click on the "1" "img" element
     And I simulate IPN call with "00000" code for the last donation of "jean.dupont@en-marche.fr"
-    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
+    Then I should see "Continuons à transformer notre pays ensemble !"
 
     Given I am on "/don"
-    And wait 2 seconds until I see "Une fois"
+    And wait 2 second until I see "Une fois"
+    And I press "50 €"
     And I click the "donation-monthly_label" element
-    When I press "Continuer"
+    When I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
@@ -133,9 +136,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
-    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau Une fois."
+    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau don unique."
 
-    When I follow "faire un nouveau Une fois"
+    When I follow "faire un nouveau don unique"
     Then I should be on "/don/coordonnees?montant=50"
     And the "app_donation[gender]" field should contain "female"
     And the "Nom" field should contain "Jean"
@@ -150,9 +153,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
     And I press "OK"
-    And wait 2 seconds until I see "Une fois"
+    And wait 2 second until I see "Une fois"
+    And I press "50 €"
     When I click the "donation-monthly_label" element
-    And I press "Continuer"
+    And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
@@ -175,13 +179,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     When I click on the "1" "img" element
     And I simulate IPN call with "00000" code for the last donation of "jacques.picard@en-marche.fr"
-    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
+    Then I should see "Continuons à transformer notre pays ensemble !"
 
     # Check if I can't continue create a new subscription and then can cancel a subscription
     Given I am on "/don"
-    And wait 2 seconds until I see "Une fois"
+    And wait 2 second until I see "Une fois"
+    And I press "50 €"
     And I click the "donation-monthly_label" element
-    When I press "Continuer"
+    When I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I fill in the following:
@@ -191,7 +196,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
-    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau Une fois."
+    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
     When I follow "vous rendre sur votre profil"
     Then I should be on "/parametres/mon-compte"
@@ -203,9 +208,10 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     # Check if I can create a new subscription after cancel subscription
     Given I am on "/don"
-    And wait 2 seconds until I see "Une fois"
+    And wait 2 second until I see "Une fois"
+    And I press "50 €"
     When I click the "donation-monthly_label" element
-    And I press "Continuer"
+    And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I click the "donation_check_label" element
@@ -225,7 +231,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
+    Then I should see "Continuons à transformer notre pays ensemble !"
 
   @javascript
   Scenario: The logged user can continue to donate punctually with a subscription currently running
@@ -235,7 +241,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don"
     And I press "OK"
-    And wait 1 second until I see "Je donne maintenant"
+    And wait 2 second until I see "Une fois"
+    And I press "50 €"
     When I click the "donation-monthly_label" element
     And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
@@ -247,9 +254,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "field-personal-data-collection" element
     And I press "Continuer"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
-    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau Une fois."
+    And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
-    When I follow "faire un nouveau Une fois"
+    When I follow "faire un nouveau don unique"
     Then I should be on "/don/coordonnees?montant=50"
     And I should not see "200€ / mois"
 
@@ -270,4 +277,4 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I should see "Paiement accepté"
 
     When I click on the "1" "img" element
-    Then I should see "Votre soutien financier est donc essentiel pour le mouvement ! Il nous permet de fournir à nos militants, nos élus et nos territoires les outils nécessaires au renouvellement de notre vie politique et au rayonnement des idées progressistes."
+    Then I should see "Continuons à transformer notre pays ensemble !"

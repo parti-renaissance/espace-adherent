@@ -41,7 +41,7 @@ Feature:
     Given I press "Continuer"
     Then I should be on "/inscription/don"
     And the response status code should be 200
-    And I should see "Vous êtes une majorité à donner 50€"
+    And I should see "Vous êtes une majorité à donner 50 €"
 
     When I click the "skip-donation" element
     Then the response status code should be 200
