@@ -29,7 +29,7 @@
                 </div>
             </div>
         </section>
-        <div class="l__wrapper text--center">
+        <div class="l__wrapper text--center b__nudge--top-50">
             <div class="donation__loader" id="app-donation-redirect-loader">
                 <p class="donation__loader__text text--medium">
                     Veuillez patienter pendant que nous vous redirigons vers votre banque...
@@ -41,7 +41,7 @@
                            name="{{ field.vars.name }}"
                            {% if field.vars.value is not empty %}value="{{ field.vars.value }}" {% endif %} />
                 {% endfor %}
-                <input type="submit" class="form btn btn--orange text--center" value="Continuer vers ma banque" />
+                <input type="submit" class="form btn btn--red text--center" value="Continuer vers ma banque" />
             </form>
         </div>
     </div>

@@ -144,13 +144,13 @@
 }
 
 @mixin btn--red {
-    background: $red--nation;
-    border-color: $red--nation;
+    background: $red--spike;
+    border-color: $red--spike;
 
     &:hover {
         color: white;
-        background: $red--nation;
-        border-color: $red--nation;
+        background: #DA2323;
+        border-color: #DA2323;
     }
 }
 

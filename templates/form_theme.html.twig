@@ -226,9 +226,9 @@
 {% block _app_donation_confirmDonationType_row %}
     {{ form_errors(form.parent.children.confirmSubscriptionAmount) }}
     {%- for child in form %}
-        <div class="text--left form__radio-button">
+        <div class="form__radio">
             {{- form_widget(child) -}}
-             <label class="text--normal" for="{{ child.vars.id }}">
+             <label for="{{ child.vars.id }}">
                 {% if child.vars.value == constant('AppBundle\\Form\\DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE') %}
                     Je fais un don unique de {{ form.parent.children.amount.vars.value|localizedcurrency('EUR')|replace({',00' : ''})  }}
                 {% else %}

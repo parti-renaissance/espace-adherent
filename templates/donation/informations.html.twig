@@ -40,7 +40,9 @@
         <div class="l__wrapper--600">
             {{ form_start(form, { attr: { class: 'em-form donation__informations__form' } }) }}
 
-            {{ form_errors(form, { error_raw: true }) }}
+            <div class="b__nudge--bottom">
+                {{ form_errors(form, { error_raw: true }) }}
+            </div>
 
             <section class="donation__informations__recap">
                 <h3 class="donation-subtitle">Vous faites <span>un don</span> de :</h3>
@@ -84,15 +86,18 @@
                     </div>
                 </div>
                 {% if form.confirmDonationType is defined %}
-                    <p class="text--left">Vous vous apprêtez à faire un don important, <strong>soutenez durablement la transformation du pays en donnant mensuellement</strong> :</p>
-                    {{ form_row(form.confirmDonationType) }}
+                    <p class="text--body">Vous vous apprêtez à faire un don important, <strong>soutenez durablement la transformation du pays en donnant mensuellement</strong> :</p>
+                    <div class="em-form__group">
+                        {{ form_row(form.confirmDonationType) }}
+                    </div>
+
                 {% endif %}
             </section>
 
             <div class="b__nudge--top-15">
                 <h3 class="text--medium-small b__nudge--bottom">Informations personnelles</h3>
                 <div class="text--body text--dark b__nudge--bottom-medium">
-                    Toutes ces informations sont obligatoires pour que votre don soit validé par la commission des comptes.
+                    Toutes ces informations sont obligatoires pour que votre don soit validé par la Commission Nationale des Comptes de Campagne et des Financements Politiques (CNCCFP).
                 </div>
 
                 <div class="em-form__row">
@@ -104,27 +109,27 @@
 
                 <div class="em-form__row">
                     <div class="em-form__group em-form__width--1">
-                        <label class="em-form__label">Prénom</label>
+                        <label class="em-form__label">Prénom <span class="em-form__required">*</span></label>
                         {{ form_errors(form.firstName) }}
                         {{ form_widget(form.firstName, { attr: { class: 'em-form__field', placeholder: 'Prénom' } }) }}
                     </div>
                     <div class="em-form__group em-form__width--1">
-                        <label class="em-form__label">Nom</label>
+                        <label class="em-form__label">Nom <span class="em-form__required">*</span></label>
                         {{ form_errors(form.lastName) }}
                         {{ form_widget(form.lastName, { attr: { class: 'em-form__field', placeholder: 'Nom' } }) }}
                     </div>
                 </div>
 
                 <div class="em-form__group">
-                    <label class="em-form__label">Nationalité</label>
+                    <label class="em-form__label">Nationalité <span class="em-form__required">*</span></label>
                     {{ form_errors(form.nationality) }}
-                    {{ form_widget(form.nationality, { attr: { class: 'em-form__field'} }) }}
+                    {{ form_widget(form.nationality, { attr: { class: 'em-form__field', placeholder: 'Adresse email'} }) }}
                 </div>
 
                 <div class="em-form__group">
-                    <label class="em-form__label">Adresse e-mail</label>
+                    <label class="em-form__label">Adresse e-mail <span class="em-form__required">*</span></label>
                     {{ form_errors(form.emailAddress) }}
-                    {{ form_widget(form.emailAddress, { attr: { class: 'em-form__field', placeholder: 'Adresse email' } }) }}
+                    {{ form_widget(form.emailAddress, { attr: { class: 'em-form__field', placeholder: 'Adresse e-mail' } }) }}
                 </div>
             </div>
 
@@ -133,7 +138,7 @@
 
                 <div class="em-form__group">
                     <div class="address-autocomplete">
-                        <label class="em-form__label">Adresse postale</label>
+                        <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
                     </div>
                     <p class="em-form__legend visually-hidden" id="address-autocomplete-help-message">
                         Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
@@ -142,25 +147,25 @@
 
                 <div class="address-block">
                     <div class="em-form__group">
-                        <label class="em-form__label">Adresse postale</label>
+                        <label class="em-form__label">Adresse postale <span class="em-form__required">*</span></label>
                         {{ form_errors(form.address) }}
                         {{ form_widget(form.address, { attr: { class: 'em-form__field', placeholder: 'Adresse postale' } }) }}
                     </div>
 
                     <div class="em-form__group">
-                        <label class="em-form__label">Pays</label>
+                        <label class="em-form__label">Pays <span class="em-form__required">*</span></label>
                         {{ form_errors(form.country) }}
                         {{ form_widget(form.country, { attr: { class: 'em-form__field' } }) }}
                     </div>
 
                     <div class="em-form__row">
                         <div class="em-form__group">
-                            <label class="em-form__label">Code postal</label>
+                            <label class="em-form__label">Code postal <span class="em-form__required">*</span></label>
                             {{ form_errors(form.postalCode) }}
                             {{ form_widget(form.postalCode, { attr: { class: 'em-form__field', placeholder: 'Code postal' } }) }}
                         </div>
                         <div class="em-form__group">
-                            <label class="em-form__label">Ville</label>
+                            <label class="em-form__label">Ville <span class="em-form__required">*</span></label>
                             {{ form_errors(form.cityName) }}
                             {{ form_widget(form.cityName, { attr: { class: 'em-form__field', placeholder: 'Ville' } }) }}
                         </div>
@@ -182,7 +187,7 @@
                 </div>
             </div>
 
-            {{ form_widget(form.submit, { 'attr': { 'class': 'btn-fat btn-fat--orange btn--full b__nudge--top' } }) }}
+            {{ form_widget(form.submit, { label: 'Finaliser mon don', attr: { class: 'btn-fat btn-fat--red btn--full b__nudge--top' } }) }}
 
             <div class="em-form__group">
                 <p class="em-form__cgu b__nudge--top-40">
