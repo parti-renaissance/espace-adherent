@@ -437,10 +437,14 @@
     }
 
     &__amount-chooser {
+        position: relative;
+        padding-bottom: 60px;
 
         &__after-taxes {
-            position: relative;
-            margin: 15px 0 20px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 15px 0 25px;
             font-size: 15px;
             color: $dark;
             font-family: $font-roboto;
@@ -460,6 +464,7 @@
                 vertical-align: middle;
                 line-height: 15px;
                 font-size: 13px;
+                text-align: center;
                 border-radius: 20px;
                 border: 2px solid $lines-grey;
                 font-weight: bold;
@@ -469,7 +474,7 @@
                 &__content {
                     opacity: 0;
                     pointer-events: none;
-                    z-index: 15;
+                    z-index: 25;
                     box-sizing: border-box;
                     background: #d3e2f0;
                     padding: 20px;
@@ -882,11 +887,18 @@
         h1 {
             font-weight: 400;
             font-style: italic;
+
+            span {
+                // font-weight: 700;
+                // color: $red--nation;
+            }
         }
 
-        span {
-            font-weight: 700;
-            color: $blue--dark;
+        h2 {
+            font-family: $font-roboto;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 12px;
         }
     }
 
@@ -1032,6 +1044,7 @@
             color: $silver-dark;
             letter-spacing: 0.3px;
             margin: 20px 0 0;
+            font-size: 18px;
         }
     }
 }

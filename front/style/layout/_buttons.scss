@@ -143,6 +143,17 @@
     }
 }
 
+@mixin btn--red {
+    background: $red--nation;
+    border-color: $red--nation;
+
+    &:hover {
+        color: white;
+        background: $red--nation;
+        border-color: $red--nation;
+    }
+}
+
 @mixin btn--dark {
     color: white;
     background: $dark;
@@ -654,6 +665,11 @@ button.btn {
 
     &--orange {
         @include btn--orange;
+        color: $white;
+    }
+
+    &--red {
+        @include btn--red;
         color: $white;
     }
 }

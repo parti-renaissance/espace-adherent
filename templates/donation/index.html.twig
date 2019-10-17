@@ -25,7 +25,8 @@
 
 {% endblock %}
 
-{% set boxHead = '<h1 class="text--larger">Je fais un <span>don</span></h1>' %}
+{% set boxHead = '<h1 class="text--larger">Je fais un <span>don</span></h1>
+<h2>Vous êtes une majorité à donner 50€</h2>' %}
 
 {% block donation_content %}
     <div class="donation__landing">
@@ -76,7 +77,7 @@
                 <div class="donation-box">
                     <div class="donation-box__flip with-shadow">
                         <div class="donation-box__front">
-                            <div class="donation-box__head text--center b__nudge--bottom-larger">
+                            <div class="donation-box__head text--center b__nudge--bottom">
                                 {{ boxHead|raw }}
                             </div>
 
@@ -88,7 +89,7 @@
                                        type="number" min="0.01" max="7500" step="0.01" />
 
                                 <input name="abonnement" id="donation-abonnement" {% if abonnement is same as(true) %} checked{% endif %} />
-                                <button class="btn-fat btn-fat--orange donation-button" type="submit">
+                                <button class="btn-fat btn-fat--red donation-button" type="submit">
                                     Je donne maintenant
                                 </button>
                             </form>
@@ -97,7 +98,7 @@
                             <button class="btn-fat btn-fat--gray donation-button js-flip">Je donne par chèque</button>
                         </div>
                         <div class="donation-box__back disable">
-                            <div class="donation-box__head text--center b__nudge--bottom-large">
+                            <div class="donation-box__head text--center b__nudge--bottom">
                                 {{ boxHead|raw }}
                             </div>
                             <p class="text--body text--dark b__nudge--top-50">Vous pouvez <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="text--blue--dark link--no--decor">télécharger un bulletin de don</a> et nous envoyer le chèque à :</p>
@@ -106,7 +107,7 @@
                                 63 rue Sainte-Anne,<br />
                                 75002 Paris<br />
                             </div>
-                            <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="btn-fat btn-fat--orange donation-button">Télécharger le bulletin de don</a>
+                            <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf" class="btn-fat btn-fat--red donation-button">Télécharger le bulletin de don</a>
                             <div class="donation-button-separator"></div>
                             <button class="btn-fat btn-fat--gray donation-button js-flip">Je donne par carte bancaire</button>
                         </div>

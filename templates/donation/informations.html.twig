@@ -43,11 +43,29 @@
             {{ form_errors(form, { error_raw: true }) }}
 
             <section class="donation__informations__recap">
-                <h3 class="donation-subtitle">Vous faite <span>un don</span> de :</h3>
+                <h3 class="donation-subtitle">Vous faites <span>un don</span> de :</h3>
                 <h1 class="donation__informations__amount b__nudge--top-large">{{ donation.amount|localizedcurrency('EUR')|replace({',00' : ''}) }} {{ donation.duration == constant('AppBundle\\Donation\\PayboxPaymentSubscription::UNLIMITED') ? ' <span>/ mois</span>' }}</h1>
                 <div class="donation__amount-chooser">
                     <div class="donation__amount-chooser__after-taxes">
-                        soit <span class="after-taxes-amount">{{ (donation.amount / 100 * 0.34)|localizedcurrency('EUR')|replace({',00' : ''})}}</span> après réduction d’impôt
+                        soit <span class="after-taxes-amount">{{ (donation.amount * 0.34)|localizedcurrency('EUR')|replace({',00' : ''})}}</span> après réduction d’impôt
+                        <div class="infos-taxe-reduction">
+                        ?
+                            <div class="infos-taxe-reduction__content">
+                                <div>La réduction fiscale</div>
+                                <p>
+                                    66 % de votre don vient en déduction de votre impôt sur
+                                    le revenu (dans la limite de 20 % du revenu imposable).
+                                    <br /><br />
+                                    <strong>Par exemple :</strong> un don de 100 € vous revient
+                                    en réalité à 34 € et vous fait bénéficier
+                                    d’une réduction d’impôt de 66 €. Le montant annuel de votre
+                                    don ne peut pas excéder 7500 € par personne physique.
+                                    <br /><br />
+                                    Le reçu fiscal pour votre don de l’année N vous sera envoyé
+                                    au 2e trimestre de l’année N+1.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="information__modal inf-modl--pale-blue b__nudge--top-large b__nudge--bottom-large">Votre don sera versé à l’Association de financement de La République En Marche (AFEMA), unique mandataire financier au bénéfice du Mouvement.</div>
@@ -156,7 +174,7 @@
                 </div>
 
                 <div class="form__checkbox">
-                    {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France.', label_attr: { id: 'donation_check_nationality_label' } }) }}
+                    {{ form_row(form.hasFrenchNationality, { label: 'Je certifie être de nationalité française ou résider fiscalement en France', label_attr: { id: 'donation_check_nationality_label' } }) }}
                 </div>
 
                 <div class="form__checkbox">
