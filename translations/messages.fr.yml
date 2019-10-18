@@ -283,7 +283,7 @@ referent.label.tags: Référent
 referent.button.accept: J'ai lu et j'accepte
 referent.popup.title: Charte de bonne utilisation des outils numériques
 referent.popup.subtitle: à l’usage des référents
-referent.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/referents/2-kit-administratif/charte_referents.pdf
+referent.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_referents.pdf
 referent.filter.interests: Choisissez des centres d'intérêt
 referent.managed_area: Zone gérée
 referent.checkbox.co_referent: Donner un accès à l'onglet&nbsp;<i>Adhérents</i>
@@ -501,7 +501,7 @@ donation.status.error: Erreur
 deputy.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
 deputy.popup.title: Charte de bonne utilisation des outils numériques
 deputy.popup.subtitle: à l’usage des députés
-deputy.popup.file_url: https://storage.googleapis.com/en-marche-prod/documents/deputes/charte_deputes.pdf
+deputy.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_deputes.pdf
 
 subscription_type.group.communication_mobile: SMS/MMS
 subscription_type.group.communication_emails: Informations nationales
@@ -595,4 +595,4 @@ application_request.tags.edited_successfully: Les tags ont bien été mis à jou
 application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
 application_request.removed_successfully: Le candidat a été retiré de votre équipe
 application_request.municipal_chief.popup.title: Charte de bonne utilisation des outils numériques
-application_request.municipal_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/Charte%20outils%20numeriques%20municipales%202020.pdf
+application_request.municipal_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_municipales_2020.pdf
