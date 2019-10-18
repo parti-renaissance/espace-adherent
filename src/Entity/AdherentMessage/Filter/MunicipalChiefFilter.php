@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\AdherentMessage\Filter;
 
+use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -208,6 +209,18 @@ class MunicipalChiefFilter extends AbstractAdherentMessageFilter
     public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
+    }
+
+    /**
+     * @Assert\IsTrue(message="municipal_chief.invalid_postal_code")
+     */
+    public function isValidPostalCode(): bool
+    {
+        if (null === $this->postalCode || !isset(FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$this->inseeCode])) {
+            return true;
+        }
+
+        return \in_array($this->postalCode, FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$this->inseeCode], true);
     }
 
     /**

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
- *             "groups": {"guideline_read"}
+ *             "groups": {"idea_guideline_read"}
  *         },
  *         "order": {"position": "ASC"},
  *         "pagination_enabled": false,
@@ -62,7 +62,7 @@ class Guideline implements EnabledInterface
      *
      * @ApiSubresource
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $questions;
 
@@ -73,14 +73,14 @@ class Guideline implements EnabledInterface
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $position;
 
     /**
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $name;
 

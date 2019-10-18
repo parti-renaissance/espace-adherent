@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "pagination_items_per_page": 3,
  *         "normalization_context": {
- *             "groups": {"thread_comment_read"}
+ *             "groups": {"idea_thread_comment_read"}
  *         },
  *         "order": {"createdAt": "ASC"},
  *         "filters": {"thread.answer"}
@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/ideas-workshop/threads",
  *             "normalization_context": {
- *                 "groups": {"thread_list_read"}
+ *                 "groups": {"idea_thread_list_read"}
  *             }
  *         },
  *         "post": {
@@ -100,7 +100,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/threads/{id}/approval-toggle",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "denormalization_context": {
- *                 "groups": {"thread_approval"}
+ *                 "groups": {"idea_thread_approval"}
  *             },
  *             "access_control": "object.getIdeaAuthor() == user",
  *             "swagger_context": {
@@ -162,7 +162,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
      *
      * @Assert\NotNull
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_thread_list_read"})
      */
     private $answer;
 
@@ -172,7 +172,7 @@ class Thread extends BaseComment implements AuthorInterface, ReportableInterface
      * @ORM\OneToMany(targetEntity="ThreadComment", mappedBy="thread", cascade={"remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"createdAt": "DESC"})
      *
-     * @SymfonySerializer\Groups({"thread_list_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_thread_list_read", "idea_read"})
      */
     private $comments;
 

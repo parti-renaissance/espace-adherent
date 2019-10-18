@@ -385,3 +385,4 @@ module.title.unique_entity: Il existe déjà un module avec ce titre pour cet ax
 module.slug.unique_entity: Il existe déjà un module avec cette URL pour cet axe de formation.
 
 municipal_chief.invalid_city: La valeur saisie dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.
+municipal_chief.invalid_postal_code: Le code postal ne fait pas partie de votre ville

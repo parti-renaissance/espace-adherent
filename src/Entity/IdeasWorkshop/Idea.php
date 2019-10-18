@@ -89,7 +89,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "post": {
  *             "path": "/ideas-workshop/ideas",
  *             "access_control": "is_granted('ROLE_ADHERENT')",
- *             "normalization_context": {"groups": {"idea_list_read", "with_answers"}}
+ *             "normalization_context": {"groups": {"idea_list_read", "idea_with_answers"}}
  *         }
  *     },
  *     itemOperations={
@@ -113,7 +113,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/ideas-workshop/ideas/{id}",
  *             "access_control": "object.getAuthor() == user",
- *             "normalization_context": {"groups": {"idea_list_read", "with_answers"}},
+ *             "normalization_context": {"groups": {"idea_list_read", "idea_with_answers"}},
  *         },
  *         "publish": {
  *             "method": "PUT",
@@ -239,7 +239,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      *
      * @ORM\Column(type="uuid")
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "thread_comment_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "my_committees", "idea_thread_comment_read"})
      */
     protected $uuid;
 
@@ -249,7 +249,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      * @Assert\Length(max=120, groups={"Admin"})
      * @Assert\NotBlank(message="idea.name.not_blank", groups={"Admin"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_write", "idea_read", "idea_vote_read"})
      */
     protected $name;
 
@@ -342,7 +342,7 @@ class Idea implements AuthorInterface, ReportableInterface, EnabledInterface
      *
      * @MandatoryQuestion(groups={"idea_publish"})
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_read", "with_answers"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_read", "idea_with_answers"})
      */
     private $answers;
 

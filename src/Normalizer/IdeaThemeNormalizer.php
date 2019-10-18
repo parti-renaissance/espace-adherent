@@ -6,7 +6,7 @@ use AppBundle\Entity\IdeasWorkshop\Theme;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ThemeNormalizer implements NormalizerInterface
+class IdeaThemeNormalizer implements NormalizerInterface
 {
     private $normalizer;
     private $urlGenerator;

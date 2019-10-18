@@ -6,7 +6,7 @@ use AppBundle\Entity\Adherent;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AuthorNormalizer implements NormalizerInterface
+class IdeaAuthorNicknameNormalizer implements NormalizerInterface
 {
     private $normalizer;
     private $security;
@@ -38,8 +38,13 @@ class AuthorNormalizer implements NormalizerInterface
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return $data instanceof Adherent;
+        return $data instanceof Adherent
+            && isset($context['groups'])
+            && array_filter($context['groups'], static function (string $group) {
+                return 0 === strpos($group, 'idea_');
+            })
+        ;
     }
 }

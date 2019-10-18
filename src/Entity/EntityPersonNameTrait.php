@@ -11,7 +11,7 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups({"export", "idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     * @SymfonySerializer\Groups({"export", "idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
      *
      * @JMS\Groups({"adherent_change_diff", "user_profile", "public"})
      * @JMS\SerializedName("firstName")
@@ -21,7 +21,7 @@ trait EntityPersonNameTrait
     /**
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
      *
      * @JMS\Groups({"adherent_change_diff", "user_profile", "public"})
      * @JMS\SerializedName("lastName")
