@@ -82,8 +82,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am on "/don"
     And I press "OK"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
     When I click the "donation-monthly_label" element
+    And I press "50 €"
     And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
@@ -117,8 +117,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
 
     Given I am on "/don"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
     And I click the "donation-monthly_label" element
+    And I press "50 €"
     When I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
@@ -126,7 +126,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Nom                      | Jean                     |
       | Prénom                   | Dupont                   |
       | app_donation_nationality | FR                       |
-      | Adresse email            | jean.dupont@en-marche.fr |
+      | Adresse e-mail           | jean.dupont@en-marche.fr |
       | Code postal              | 75001                    |
       | Ville                    | Paris                    |
       | Adresse postale          | 1 allée vivaldie         |
@@ -143,7 +143,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And the "app_donation[gender]" field should contain "female"
     And the "Nom" field should contain "Jean"
     And the "Prénom" field should contain "Dupont"
-    And the "Adresse email" field should contain "jean.dupont@en-marche.fr"
+    And the "Adresse e-mail" field should contain "jean.dupont@en-marche.fr"
 
   @javascript
   Scenario: The logged user can subscribe to donate each month successfully but can't have a second subscription without unsubscribe before
@@ -154,8 +154,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am on "/don"
     And I press "OK"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
     When I click the "donation-monthly_label" element
+    And I press "50 €"
     And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
@@ -184,8 +184,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     # Check if I can't continue create a new subscription and then can cancel a subscription
     Given I am on "/don"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
     And I click the "donation-monthly_label" element
+    And I press "50 €"
     When I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
@@ -209,15 +209,15 @@ Feature: The goal is to donate one time or multiple time with a subscription
     # Check if I can create a new subscription after cancel subscription
     Given I am on "/don"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
     When I click the "donation-monthly_label" element
+    And I press "50 €"
     And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -242,8 +242,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I am on "/don"
     And I press "OK"
     And wait 2 second until I see "Une fois"
-    And I press "50 €"
     When I click the "donation-monthly_label" element
+    And I press "50 €"
     And I press "Je donne maintenant"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
 

@@ -6,23 +6,14 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.runDonation();
+
+            $('.js-flip').click(function(event) {
+                event.preventDefault();
+                $('.donation-box__flip').toggleClass('flipped');
+                $('.donation-box__front, .donation-box__back').toggleClass('disable');
+            });
         });
     </script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-          var goflip = '.js-flip';
-
-          $(goflip).click(function() {
-            $('.donation-box__flip').toggleClass('flipped');
-            $('.donation-box__front, .donation-box__back').toggleClass('disable');
-            return false;
-          });
-
-        });
-    </script>
-
 {% endblock %}
 
 {% set boxHead = '<h1 class="text--larger">Je fais un <span>don</span></h1>
@@ -81,20 +72,12 @@
                                 {{ boxHead|raw }}
                             </div>
 
-                            <!-- Form -->
-                            <form method="get" action="{{ path('donation_index') }}" class="em-form">
-                                <input name="montant"
-                                       id="donation-amount"
-                                       class="form form__field form--full"
-                                       type="number" min="0.01" max="7500" step="0.01" />
-
-                                <input name="abonnement" id="donation-abonnement" {% if abonnement is same as(true) %} checked{% endif %} />
-                                <button class="btn-fat btn-fat--red donation-button" type="submit">
-                                    Je donne maintenant
-                                </button>
+                            <form method="get" action="{{ path('donation_index') }}" class="donation-widget-wrapper em-form">
+                                <div class="spin-loader"></div>
                             </form>
 
                             <div class="donation-button-separator"></div>
+
                             <button class="btn-fat btn-fat--gray donation-button js-flip">Je donne par chèque</button>
                         </div>
                         <div class="donation-box__back disable">

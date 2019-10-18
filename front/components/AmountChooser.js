@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 
+const defaultAmounts = [20, 50, 120, 500];
+
 export default class AmountChooser extends React.Component {
     constructor(props) {
         super(props);
@@ -54,7 +56,7 @@ export default class AmountChooser extends React.Component {
 
         return (
             <div className="amount-chooser">
-                <input type="hidden" name={this.props.name} value={state} />
+                <input type="hidden" name={this.props.name} value={state} key={`selected_amount_${state}`}/>
 
                 {this.props.amounts.map(amount => (
                     <button className={`amount-chooser__button ${amount === state ? classSelected : ''}`}
@@ -92,11 +94,12 @@ export default class AmountChooser extends React.Component {
 
 AmountChooser.defaultProps = {
     maxValue: 7500,
+    amounts: defaultAmounts,
 };
 
 AmountChooser.propTypes = {
     name: PropTypes.string.isRequired,
-    amounts: PropTypes.arrayOf(PropTypes.number).isRequired,
+    amounts: PropTypes.arrayOf(PropTypes.number),
     value: PropTypes.number,
     maxValue: PropTypes.number,
     onChange: PropTypes.func,

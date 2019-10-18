@@ -910,6 +910,17 @@
 
     .donation-button {
         width: 100%;
+        position: relative;
+
+        &:disabled {
+            &:before {
+                content: attr(data-error);
+                position: absolute;
+                text-transform: none;
+                top: -45px;
+                color: $red--spike;
+            }
+        }
     }
 
     .donation-button-separator {
