@@ -1,7 +1,7 @@
 {% block survey_question_form_widget %}
     <div class="question-box {{ form.fromSuggestedQuestion.vars.value ? 'read-only' }}">
         <div class="em-form__group">
-            {{ form_label(form.question, 'Question', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.question, 'Question libre', { label_attr: { class: 'em-form__label' } }) }}
 
             <div class="em-form__row">
                 {{ form_widget(form.question.content,  { attr: { class: 'em-form__field em-form__width--1', placeholder: 'Écrivez votre question' } }) }}
@@ -16,6 +16,7 @@
         </div>
 
         <div class="survey-question-type em-form__group em-form__checkbox--inline">
+            {{ form_label(form.question.type, 'Type de question', { label_attr: { class: 'em-form__label' } }) }}
             {{ form_widget(form.question.type, { attr: { class: 'form__radio' } }) }}
         </div>
 

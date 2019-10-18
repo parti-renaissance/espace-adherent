@@ -168,6 +168,18 @@
     }
 }
 
+@mixin btn--gray {
+    color: $black;
+    background: $btn--gray;
+    border-color: $btn--gray;
+
+    &:hover {
+        color: $black;
+        background: $btn--gray--hover;
+        border-color: $btn--gray--hover;
+    }
+}
+
 @mixin btn--black {
     color: white;
     background: black;
@@ -388,6 +400,10 @@ button.btn {
 
     &--text-blue {
         color: $blue;
+    }
+
+    &--gray {
+        @include btn--gray;
     }
 
     &--black {

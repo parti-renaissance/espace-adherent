@@ -510,3 +510,11 @@
         color: $error;
     }
 }
+
+.sub-section {
+   font-size: 20px;
+   color: $silver-grey;
+   margin-bottom: 50px;
+   padding-bottom: 30px;
+   border-bottom: solid 1px $lines-grey;
+}
