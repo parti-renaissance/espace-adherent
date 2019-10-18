@@ -32,7 +32,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | LoadDonatorIdentifierData |
     And I am logged as "jacques.picard@en-marche.fr"
     And I am on "/don/coordonnees?montant=7490&abonnement=0"
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should see "Vous avez déjà donné 250 euros cette année."
     And I should see "Le don que vous vous apprêtez à faire est trop élevé, car vous avez déjà donné 250 euros cette année. Les dons étant limités à 7500 euros par an et par personne, vous pouvez encore donner 7250 euros."
 
@@ -51,7 +51,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Nom                      | Jean                     |
       | Prénom                   | Dupont                   |
       | app_donation_nationality | FR                       |
-      | Adresse email            | jean.dupont@en-marche.fr |
+      | Adresse e-mail           | jean.dupont@en-marche.fr |
       | Code postal              | 75001                    |
       | Ville                    | Paris                    |
       | Adresse postale          | 1 allée vivaldie         |
@@ -59,7 +59,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -91,14 +91,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
       | Nom                      | Jean                     |
       | Prénom                   | Dupont                   |
       | app_donation_nationality | FR                       |
-      | Adresse email            | jean.dupont@en-marche.fr |
+      | Adresse e-mail           | jean.dupont@en-marche.fr |
       | Code postal              | 75001                    |
       | Ville                    | Paris                    |
       | Adresse postale          | 1 allée vivaldie         |
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -134,7 +134,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau don unique."
 
@@ -164,7 +164,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
@@ -194,7 +194,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
@@ -252,7 +252,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez vous rendre sur votre profil pour l’annuler ou faire un nouveau don unique."
 
@@ -263,7 +263,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     When I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
-    And I press "Continuer"
+    And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
 
