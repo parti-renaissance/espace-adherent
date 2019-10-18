@@ -41,14 +41,14 @@ abstract class BaseComment implements EnabledInterface, EntitySoftDeletedInterfa
      *
      * @ORM\Column(type="uuid")
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_thread_list_read", "idea_read"})
      */
     protected $uuid;
 
     /**
      * @ORM\Column(type="text")
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_thread_list_read", "idea_read"})
      *
      * @Assert\NotBlank
      */
@@ -58,14 +58,14 @@ abstract class BaseComment implements EnabledInterface, EntitySoftDeletedInterfa
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_thread_list_read", "idea_read"})
      */
     protected $author;
 
     /**
      * @ORM\Column(type="boolean")
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "thread_list_read", "thread_approval", "thread_comment_approval", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_thread_list_read", "idea_thread_approval", "idea_thread_comment_approval", "idea_read"})
      */
     protected $approved = false;
 

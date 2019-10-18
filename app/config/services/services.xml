@@ -282,17 +282,17 @@
         <service id="AppBundle\Normalizer\AuthorDenormalizer" />
         <service id="AppBundle\Normalizer\AdherentSegmentDenormalizer" />
         <service id="AppBundle\Normalizer\DptSiteNewsletterCommandDenormalizer" />
-        <service id="AppBundle\Normalizer\AuthorNormalizer">
+        <service id="AppBundle\Normalizer\IdeaAuthorNicknameNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
         </service>
-        <service id="AppBundle\Normalizer\ThemeNormalizer">
+        <service id="AppBundle\Normalizer\IdeaThemeNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
         </service>
-        <service id="AppBundle\Normalizer\ThreadNormalizer">
+        <service id="AppBundle\Normalizer\IdeaThreadNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
             <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
         </service>
-        <service id="AppBundle\Normalizer\AnswerNormalizer">
+        <service id="AppBundle\Normalizer\IdeaAnswerNormalizer">
             <argument type="service" id="api_platform.serializer.normalizer.item"/>
             <argument type="service" id="api_platform.metadata.resource.metadata_factory"/>
         </service>

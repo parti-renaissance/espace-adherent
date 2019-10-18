@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
- *             "groups": {"theme_read"}
+ *             "groups": {"idea_theme_read"}
  *         },
  *         "order": {"position": "ASC"},
  *         "pagination_enabled": false,
@@ -48,7 +48,7 @@ class Theme implements EnabledInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"theme_read", "idea_read", "idea_list_read"})
+     * @SymfonySerializer\Groups({"idea_theme_read", "idea_read", "idea_list_read"})
      */
     private $id;
 
@@ -59,7 +59,7 @@ class Theme implements EnabledInterface
      *
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"theme_read", "idea_list_read", "idea_read"})
+     * @SymfonySerializer\Groups({"idea_theme_read", "idea_list_read", "idea_read"})
      */
     protected $name;
 

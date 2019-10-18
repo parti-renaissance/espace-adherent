@@ -3,11 +3,11 @@
 namespace AppBundle\Normalizer;
 
 use ApiPlatform\Core\Metadata\Resource\Factory\CachedResourceMetadataFactory;
+use AppBundle\Entity\IdeasWorkshop\Answer;
 use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ThreadNormalizer implements NormalizerInterface
+class IdeaAnswerNormalizer implements NormalizerInterface
 {
     private $normalizer;
     private $resourceMetadataFactory;
@@ -22,13 +22,13 @@ class ThreadNormalizer implements NormalizerInterface
     {
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array('thread_list_read', $context['groups']) || \in_array('idea_read', $context['groups'])) {
-            $data['comments'] = [
-                'total_items' => \count($data['comments']),
+        if (\in_array('idea_read', $context['groups'], true)) {
+            $data['threads'] = [
+                'total_items' => \count($data['threads']),
                 'items' => \array_slice(
-                    $data['comments'],
+                    $data['threads'],
                     0,
-                    $this->resourceMetadataFactory->create(ThreadComment::class)->getAttribute('pagination_items_per_page')
+                    $this->resourceMetadataFactory->create(Thread::class)->getAttribute('pagination_items_per_page')
                 ),
             ];
         }
@@ -38,6 +38,6 @@ class ThreadNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Thread;
+        return $data instanceof Answer;
     }
 }

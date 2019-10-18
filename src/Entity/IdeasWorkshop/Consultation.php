@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultations"}},
  *     itemOperations={},
  *     attributes={
- *         "normalization_context": {"groups": {"consultation_list_read"}},
+ *         "normalization_context": {"groups": {"idea_consultation_list_read"}},
  *         "order": {"startedAt": "ASC"}
  *     }
  * )
@@ -48,19 +48,19 @@ class Consultation implements EnabledInterface
      *
      * @Assert\GreaterThanOrEqual(0)
      *
-     * @SymfonySerializer\Groups("consultation_list_read")
+     * @SymfonySerializer\Groups("idea_consultation_list_read")
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     private $responseTime;
 
     /**
-     * @SymfonySerializer\Groups("consultation_list_read")
+     * @SymfonySerializer\Groups("idea_consultation_list_read")
      * @ORM\Column(type="datetime")
      */
     private $startedAt;
 
     /**
-     * @SymfonySerializer\Groups("consultation_list_read")
+     * @SymfonySerializer\Groups("idea_consultation_list_read")
      * @ORM\Column(type="datetime")
      */
     private $endedAt;
@@ -68,13 +68,13 @@ class Consultation implements EnabledInterface
     /**
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups("consultation_list_read")
+     * @SymfonySerializer\Groups("idea_consultation_list_read")
      * @ORM\Column
      */
     private $url;
 
     /**
-     * @SymfonySerializer\Groups("consultation_list_read")
+     * @SymfonySerializer\Groups("idea_consultation_list_read")
      * @ORM\Column
      */
     private $name;

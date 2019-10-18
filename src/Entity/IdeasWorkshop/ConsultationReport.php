@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultation_reports"}},
  *     itemOperations={"get": {"method": "GET", "path": "/ideas-workshop/consultation_reports/{id}"}},
  *     attributes={
- *         "normalization_context": {"groups": {"consultation_report_read"}},
+ *         "normalization_context": {"groups": {"idea_consultation_report_read"}},
  *         "order": {"position": "ASC"}
  *     }
  * )
@@ -36,7 +36,7 @@ class ConsultationReport
     /**
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups("consultation_report_read")
+     * @SymfonySerializer\Groups("idea_consultation_report_read")
      * @ORM\Column
      */
     private $url;
@@ -46,13 +46,13 @@ class ConsultationReport
      *
      * @Gedmo\SortablePosition
      *
-     * @SymfonySerializer\Groups("consultation_report_read")
+     * @SymfonySerializer\Groups("idea_consultation_report_read")
      * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     private $position = 0;
 
     /**
-     * @SymfonySerializer\Groups("consultation_report_read")
+     * @SymfonySerializer\Groups("idea_consultation_report_read")
      * @ORM\Column
      */
     private $name;

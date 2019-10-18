@@ -47,7 +47,7 @@ class Answer implements UserDocumentInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"thread_comment_read", "idea_read", "with_answers", "thread_list_read"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_read", "idea_with_answers", "idea_thread_list_read"})
      */
     private $id;
 
@@ -56,7 +56,7 @@ class Answer implements UserDocumentInterface
      *
      * @AssertWysiwygLength(max=1700)
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "with_answers"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "idea_with_answers"})
      */
     private $content;
 
@@ -64,7 +64,7 @@ class Answer implements UserDocumentInterface
      * @ORM\ManyToOne(targetEntity="Question")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "with_answers"})
+     * @SymfonySerializer\Groups({"idea_write", "idea_publish", "idea_read", "idea_with_answers"})
      */
     private $question;
 

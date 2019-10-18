@@ -15,10 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
- *             "groups": {"vote_read"}
+ *             "groups": {"idea_vote_read"}
  *         },
  *         "denormalization_context": {
- *             "groups": {"vote_write"}
+ *             "groups": {"idea_vote_write"}
  *         },
  *     },
  *     collectionOperations={
@@ -54,7 +54,7 @@ class Vote implements AuthorInterface
      * @ORM\Column(type="integer", options={"unsigned": true})
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_vote_read"})
      */
     private $id;
 
@@ -64,7 +64,7 @@ class Vote implements AuthorInterface
      *
      * @Assert\NotNull
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "vote_read", "vote_write"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_vote_read", "idea_vote_write"})
      */
     private $idea;
 
@@ -74,7 +74,7 @@ class Vote implements AuthorInterface
      *
      * @Assert\NotNull
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "vote_read", "vote_write"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_vote_read", "idea_vote_write"})
      */
     private $author;
 
@@ -83,7 +83,7 @@ class Vote implements AuthorInterface
      *
      * @Assert\Choice(callback={"AppBundle\Entity\IdeasWorkshop\VoteTypeEnum", "toArray"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "vote_read", "vote_write"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_vote_read", "idea_vote_write"})
      */
     private $type;
 

@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={},
  *     itemOperations={
  *         "get": {
- *             "normalization_context": {"groups": {"vote_read"}},
+ *             "normalization_context": {"groups": {"idea_vote_read"}},
  *             "method": "GET",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "swagger_context": {
@@ -92,7 +92,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @JMS\Groups({"user_profile"})
      *
-     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "thread_list_read", "thread_comment_read", "vote_read"})
+     * @SymfonySerializer\Groups({"idea_list_read", "idea_read", "idea_thread_list_read", "idea_thread_comment_read", "idea_vote_read"})
      */
     private $nickname;
 

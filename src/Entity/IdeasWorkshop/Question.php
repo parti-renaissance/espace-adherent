@@ -30,7 +30,7 @@ class Question implements EnabledInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      *
-     * @SymfonySerializer\Groups({"guideline_read", "idea_read", "with_answers"})
+     * @SymfonySerializer\Groups({"idea_guideline_read", "idea_read", "idea_with_answers"})
      */
     private $id;
 
@@ -45,7 +45,7 @@ class Question implements EnabledInterface
     /**
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $placeholder;
 
@@ -56,28 +56,28 @@ class Question implements EnabledInterface
      *
      * @Gedmo\SortablePosition
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $position;
 
     /**
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $category;
 
     /**
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
      *
-     * @SymfonySerializer\Groups("guideline_read")
+     * @SymfonySerializer\Groups("idea_guideline_read")
      */
     private $required;
 

@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "pagination_items_per_page": 3,
  *         "normalization_context": {
- *             "groups": {"thread_comment_read"}
+ *             "groups": {"idea_thread_comment_read"}
  *         },
  *         "filters": {"threadComment.thread"},
  *         "order": {"createdAt": "DESC"}
@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "access_control": "is_granted('ROLE_ADHERENT')",
  *             "validation_groups": {"Default", "write"},
  *             "normalization_context": {
- *                 "groups": {"thread_comment_write", "thread_comment_read"}
+ *                 "groups": {"idea_thread_comment_write", "idea_thread_comment_read"}
  *             },
  *         }
  *     },
@@ -93,7 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/ideas-workshop/thread_comments/{id}/approval-toggle",
  *             "requirements": {"id": "%pattern_uuid%"},
  *             "denormalization_context": {
- *                 "groups": {"thread_comment_approval"}
+ *                 "groups": {"idea_thread_comment_approval"}
  *             },
  *             "access_control": "object.getIdeaAuthor() == user",
  *             "swagger_context": {
@@ -147,7 +147,7 @@ class ThreadComment extends BaseComment implements AuthorInterface, ReportableIn
      *
      * @Assert\NotNull
      *
-     * @SymfonySerializer\Groups({"thread_comment_write"})
+     * @SymfonySerializer\Groups({"idea_thread_comment_write"})
      */
     private $thread;
 
