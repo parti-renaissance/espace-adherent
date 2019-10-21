@@ -84,13 +84,13 @@
     counter-reset: section;
 
     .question-box {
-        border-top: solid 1px $lines-grey;
-        padding-top: 50px;
+        border-left: solid 1px $lines-grey;
+        padding: 15px 0 15px 30px;
         margin-top: 50px;
     }
 
     .question-choices {
-        margin-bottom: 50px;
+        margin-bottom: 0;
 
         .em-form__row {
             margin-bottom: 10px;

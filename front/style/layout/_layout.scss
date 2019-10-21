@@ -509,6 +509,28 @@
     }
 }
 
+.or-separator {
+    width: 100%;
+    height: 1px;
+    background-color: #e1e5ea;
+    margin: 20px 0;
+    position: relative;
+
+    &::before {
+        content: 'ou';
+        font-size: 14px;
+        text-transform: uppercase;
+        font-weight: bold;
+        background-color: #fff;
+        position: absolute;
+        top: -10px;
+        left: calc(50% - 25px);
+        font-family: "Roboto",Helvetica,sans-serif;
+        width: 50px;
+        text-align: center;
+    }
+}
+
 .ui-dialog {
     top: 2% !important;
     height: 90% !important;
