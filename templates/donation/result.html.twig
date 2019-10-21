@@ -45,14 +45,14 @@
 
                         <div class="opportunity">
                             <h2><strong>Je m'abonne</strong> à la newsletter</h2>
-                            <p class="text--body">Quelques secondes suffisent pour s'inscrire gratuitement à notre newsletter hebdomadaire !</p>
+                            <p class="text--body">Quelques secondes suffisent pour s'inscrire à notre newsletter hebdomadaire !</p>
                             <a href="{{ path('newsletter_subscription') }}" target="_blank" class="btn btn--green--apple">Je m'abonne</a>
                         </div>
 
                         {% if not is_adherent %}
                         <div class="opportunity large">
-                            <h2><strong>Rejoignez</strong> les 418 423 adhérents de La République En Marche !<br />C'est facile, gratuit et 3 minutes suffiront.</h2>
-                            <p class="text--body">Invitez par e-mail votre entourage à faire un don à La République En Marche !</p>
+                            <h2><strong>Rejoignez</strong> les 418 423 adhérents de La République En Marche !</h2>
+                            <p class="text--body">C'est facile, gratuit et 3 minutes suffiront.</p>
                             <a href="{{ path('app_membership_join') }}" target="_blank" class="btn btn--blue--sky">J'adhère maintenant</a>
                         </div>
                         {% endif %}

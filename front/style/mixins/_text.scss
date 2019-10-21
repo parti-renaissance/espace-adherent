@@ -340,6 +340,12 @@ $text--size-extra-large--big: 128px;
         padding: 0 5px;
     }
 
+    &--on-red {
+        color: white;
+        background: $red--spike;
+        padding: 0 5px;
+    }
+
     &--on-blue-night {
         color: $white;
         background: $blue--nation;
