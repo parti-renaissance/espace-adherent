@@ -93,7 +93,11 @@ class MailchimpSignUpEmailsCommand extends Command
                 continue;
             }
 
-            $adherent->setSubscriptionTypes($subscriptionTypes);
+            foreach ($subscriptionTypes as $type) {
+                if (!$adherent->hasSubscriptionType($type->getCode())) {
+                    $adherent->addSubscriptionType($type);
+                }
+            }
 
             if ($this->signUpHandler->signUpAdherent($adherent)) {
                 $adherent->setEmailUnsubscribed(false);

@@ -628,7 +628,7 @@
     background-color: #3A3241;
 
     &.with-bkg {
-        background-image: url('https://storage.cloud.google.com/en-marche-prod/static/donation-background.jpg');
+        background-image: url('https://storage.googleapis.com/en-marche-prod/static/donation-background.jpg');
         background-position: center top -245px;
     }
 
@@ -725,7 +725,7 @@
         width: 100%;
         height: 670px;
         background-color: black;
-        background-image: url('https://storage.cloud.google.com/en-marche-prod/static/donation-background.jpg');
+        background-image: url('https://storage.googleapis.com/en-marche-prod/static/donation-background.jpg');
         background-position: left -450px top -280px;
         order: 2;
 
