@@ -3,7 +3,7 @@ export default class TaxReturnProvider {
         amount = parseInt(amount);
 
         if (!amount || amount <= 0) {
-            return '0.00';
+            return '0,00';
         }
 
         return (amount * 0.34).toFixed(2);

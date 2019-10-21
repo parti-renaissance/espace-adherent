@@ -34,6 +34,27 @@
     }
 }
 
+@mixin btn-fat {
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    padding: 20px;
+    font-family: $font-gillsans;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: none;
+    transition: all 0.45s;
+    -webkit-transition: all 0.45s;
+    box-sizing: border-box;
+    outline: 0;
+
+    &:hover,
+    &:focus {
+        border: none;
+    }
+}
+
 @mixin newbtn {
     cursor: pointer;
     display: inline-flex;
@@ -122,6 +143,17 @@
     }
 }
 
+@mixin btn--red {
+    background: $red--spike;
+    border-color: $red--spike;
+
+    &:hover {
+        color: white;
+        background: #DA2323;
+        border-color: #DA2323;
+    }
+}
+
 @mixin btn--dark {
     color: white;
     background: $dark;
@@ -196,6 +228,17 @@
     color: white;
     background: $blue--dark;
     border-color: $blue--dark;
+
+    &:hover {
+        background-color: $blue-hover;
+        border-color: $blue-hover;
+    }
+}
+
+@mixin btn--blue--sky {
+    color: black;
+    background: $blue;
+    border-color: $blue;
 
     &:hover {
         background-color: $blue-hover;
@@ -370,12 +413,24 @@ button.btn {
         @include btn--green;
     }
 
+    &--gray {
+        @include btn--gray;
+    }
+
+    &--yellow {
+        @include btn--yellow;
+    }
+
     &--green--apple {
         @include btn--green--apple;
     }
 
     &--blue {
         @include btn--blue;
+    }
+
+    &--blue--sky {
+        @include btn--blue--sky;
     }
 
     &--ghosting--blue {
@@ -594,5 +649,31 @@ button.btn {
             color: black;
             background-color: $gray--lighter;
         }
+    }
+}
+
+.btn-fat {
+    @include btn-fat;
+
+    &--pink {
+        @include btn--pink;
+    }
+
+    &--gray {
+        @include btn--gray;
+    }
+
+    &--blue {
+        @include btn--blue;
+    }
+
+    &--orange {
+        @include btn--orange;
+        color: $white;
+    }
+
+    &--red {
+        @include btn--red;
+        color: $white;
     }
 }

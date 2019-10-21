@@ -154,6 +154,7 @@ $text--size-extra-large--big: 128px;
     line-height: 0.9em;
     margin-right: 10px;
     letter-spacing: -0.7px;
+    border: 0;
 
     @media (max-width: $tablet) {
         font-size: $text--size-medium;
@@ -161,10 +162,6 @@ $text--size-extra-large--big: 128px;
 
     @media (max-width: $mobile) {
         font-size: 22px;
-    }
-
-    a {
-        border: 0;
     }
 }
 
@@ -301,6 +298,15 @@ $text--size-extra-large--big: 128px;
 
     &--logo {
         @include text--logo;
+    }
+
+    &--logo-white {
+        @include text--logo;
+        color: $white;
+
+        &:hover {
+            color: $white;
+        }
     }
 
     &--italic {

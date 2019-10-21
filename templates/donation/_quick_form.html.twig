@@ -1,11 +1,7 @@
 <form method="get" action="{{ path('donation_index') }}" class="donate__form">
-    <input type="hidden" name="montant" class="amount-chooser donate__form__chooser__input" value="10" />
+    <input type="hidden" name="montant" class="amount-chooser donate__form__chooser__input" />
 
-    <button type="submit" title="Je donne" class="btn btn--primary btn--medium donate__form__button">
-        Je donne
-        <svg width="10px" height="16px" viewBox="1 5 10 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <title>Right arrow</title>
-            <polyline id="right-arrow" stroke="#FFFFFF" stroke-width="1" fill="none" points="2 6 10.14 12.9223586 2 19.8436338"></polyline>
-        </svg>
+    <button type="submit" title="Je donne" class="btn-fat btn-fat--blue donate__form__button">
+        Je donne maintenant
     </button>
 </form>
