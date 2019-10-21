@@ -237,7 +237,7 @@
         {% if not has_role_adherent %}
             <a href="{{ path('app_membership_join') }}" class="text--body b__nudge--right">Adhérer</a>
         {% endif %}
-        <a href="{{ path('donation_index') }}" class="btn btn--pink">Donner</a>
+        <a href="{{ path('donation_index') }}" class="btn btn--red">Donner</a>
     </div>
 </nav>
 {% if is_granted('ROLE_SUPERVISOR') or

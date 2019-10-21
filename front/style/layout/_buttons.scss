@@ -146,6 +146,7 @@
 @mixin btn--red {
     background: $red--spike;
     border-color: $red--spike;
+    color: $white;
 
     &:hover {
         color: white;
@@ -447,6 +448,10 @@ button.btn {
 
     &--pink {
         @include btn--pink;
+    }
+
+    &--red {
+        @include btn--red;
     }
 
     &--muted {

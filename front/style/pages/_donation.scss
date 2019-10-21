@@ -214,11 +214,11 @@
                 }
 
                 &--selected {
-                    background: $blue--dark;
+                    background: $red--spike;
                     color: white;
 
                     &:hover {
-                        background: $blue--dark--hover;
+                        background: #DA2323;
                     }
                 }
             }
@@ -521,22 +521,6 @@
             background: $green--apple;
             border-color: $green--apple;
         }
-    }
-
-    &__informations {
-        // form {
-        //     background: transparent;
-        //     width: auto;
-        // }
-        //
-        // .register__form__gender label {
-        //     @include text--default;
-        // }
-        //
-        // input[type="radio"]:checked + label:before {
-        //     background: $green--apple;
-        //     border-color: $green--apple;
-        // }
     }
 
     &__payment {
@@ -1191,6 +1175,10 @@
 
         @media (min-width: $mobile) {
             padding: 0 25px;
+        }
+
+        .em-form__group .em-form__label .em-form__required {
+            color: $blue--dark;
         }
     }
 
