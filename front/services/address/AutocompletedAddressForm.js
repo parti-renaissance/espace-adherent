@@ -40,6 +40,8 @@ export default class AutocompletedAddressForm extends EventEmitter {
             if (this._helpMessageBlock) {
                 this.addHelpMessage(autocomplete);
             }
+        } else {
+            hide(this._autocompleteWrapper);
         }
     }
 
