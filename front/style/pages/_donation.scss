@@ -273,6 +273,19 @@
 
         &.donate-adhesion{
             margin: auto;
+
+            .amount-chooser {
+                &__button,
+                &__other {
+                    border: 1px solid $lines-grey;
+                }
+
+                &__button {
+                    &--selected {
+                        border: none;
+                    }
+                }
+            }
         }
 
         form {
