@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Committee\CommitteeManager;
-use AppBundle\Donation\DonationRequest;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\Exception\AdherentAlreadyEnabledException;
@@ -326,8 +325,6 @@ class MembershipController extends Controller
             throw $this->createNotFoundException('New adherent not found.');
         }
 
-        return $this->render('membership/donation.html.twig', [
-            'amount' => DonationRequest::DEFAULT_AMOUNT,
-        ]);
+        return $this->render('membership/donation.html.twig');
     }
 }

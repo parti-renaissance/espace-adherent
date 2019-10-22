@@ -3,15 +3,6 @@
 {% block banner '' %}
 {% block page_title 'Je donne' %}
 
-{% block javascripts %}
-    <script type="text/javascript">
-        Kernel.onLoad(function() {
-            App.runDonation();
-        });
-        {{ parent() }}
-    </script>
-{% endblock %}
-
 {% block content %}
     <section class="donation__content l__wrapper--medium l__row b__nudge--bottom-50">
         <div class="donation__form donate-adhesion">
@@ -20,25 +11,17 @@
             </header>
             <hr class="l__wrapper b__nudge--bottom b__nudge--top">
             <div class="donation__amount l__wrapper--slim">
-                <form method="get" action="{{ path('donation_index', { adhesion: true }) }}" class="em-form">
-                    <input name="montant"
-                           id="donation-amount"
-                           class="form form__field form--full"
-                           type="number" min="0.01" max="7500" step="0.01" value="{{ amount }}"/>
+                {{ include('donation/_quick_form.html.twig') }}
 
-                    <input name="abonnement" id="donation-abonnement"/>
+                <div class="text--center b__nudge--bottom b__nudge--top-large">
+                    <a href="{{ path('app_membership_complete') }}" id="skip-donation" class="form btn">Passer cette étape</a>
+                </div>
 
-                    <div class="text--center b__nudge--bottom b__nudge--top-large">
-                        <a href="{{ path('app_membership_complete') }}" id="skip-donation" class="form btn">Passer cette étape</a>
-                        <button class="btn btn--red form" type="submit">Je donne</button>
-                    </div>
-
-                    <div class="b__nudge--top-large b__nudge--bottom-large">
-                        <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">
-                            Je donne par chèque
-                        </a>
-                    </div>
-                </form>
+                <div class="b__nudge--top-large b__nudge--bottom-large">
+                    <a href="https://storage.googleapis.com/en-marche-fr/bulletin-de-don-EMa.pdf">
+                        Je donne par chèque
+                    </a>
+                </div>
             </div>
         </div>
     </section>
