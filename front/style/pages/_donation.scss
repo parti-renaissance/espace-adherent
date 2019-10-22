@@ -258,46 +258,6 @@
 }
 
 .donation {
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    // background-attachment: fixed;
-    // height: 100vh;
-    // min-height: 100%;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
-    // background-position: center;
-    // position: relative;
-    // width: 100%;
-    //
-    // @media (max-height: 1000px) {
-    //     justify-content: flex-start;
-    //     height: auto;
-    // }
-    //
-    // @media (max-width: $mobile) {
-    //     background-color: white;
-    //     background-position: 0 0;
-    //     background-size: 100%;
-    // }
-    //
-    // &__video {
-    //     position: fixed;
-    //     right: 0;
-    //     bottom: 0;
-    //     min-width: 100%;
-    //     min-height: 100%;
-    //
-    //     &--overlay {
-    //         background: rgba(0, 0, 0, .5);
-    //         top: 0;
-    //         height: 100vh;
-    //         width: 100%;
-    //         box-sizing: border-box;
-    //         position: fixed;
-    //     }
-    // }
-
 
     &__form {
         width: 550px;
@@ -1183,7 +1143,6 @@
     }
 
     &__recap {
-        padding: 0 0 30px;
         border-bottom: 1px solid $lines-grey;
         margin-bottom: 30px;
     }
@@ -1196,6 +1155,18 @@
 
         span {
             font-size: 20px;
+        }
+    }
+
+    // Fix confirmDonationType input and radio button
+    label[for="app_donation_confirmDonationType_0"] {
+        &::before {
+            top: 9px;
+        }
+
+        input[type=text] {
+            width: 60px;
+            margin: 0 5px;
         }
     }
 }

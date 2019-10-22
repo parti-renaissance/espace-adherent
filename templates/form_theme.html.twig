@@ -232,7 +232,7 @@
                 {% if child.vars.value == constant('AppBundle\\Form\\DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE') %}
                     Je fais un don unique de {{ form.parent.children.amount.vars.value|localizedcurrency('EUR')|replace({',00' : ''})  }}
                 {% else %}
-                    Je fais un don mensuel de {{ form_widget(form.parent.children.confirmSubscriptionAmount) }} euros
+                    Je fais un don mensuel de {{ form_widget(form.parent.children.confirmSubscriptionAmount) }} €
                 {% endif %}
             </label>
         </div>

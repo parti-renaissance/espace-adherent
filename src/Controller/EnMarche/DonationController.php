@@ -155,6 +155,7 @@ class DonationController extends Controller
 
         return $this->render('donation/result.html.twig', [
             'successful' => $successful,
+            'nb_adherent' => $adherentRepository->countAdherents(),
             'result_code' => $request->query->get('result'),
             'donation' => $donation,
             'retry_url' => $retryUrl,
