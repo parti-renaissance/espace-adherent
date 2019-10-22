@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche\Jecoute;
 
 use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Jecoute\JecouteSpaceEnum;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,9 +20,9 @@ class MunicipalChiefJecouteController extends AbstractJecouteController
         return JecouteSpaceEnum::MUNICIPAL_CHIEF_SPACE;
     }
 
-    protected function getLocalSurveys(LocalSurveyRepository $localSurveyRepository): array
+    protected function getLocalSurveys(): array
     {
-        return $localSurveyRepository->findAllByAuthor($this->getUser());
+        return $this->localSurveyRepository->findAllByAuthor($this->getUser());
     }
 
     protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface

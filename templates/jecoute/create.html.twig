@@ -28,7 +28,7 @@
             });
 
             const lockQuestion = function (question) {
-                question.find('input').attr('readonly', true);
+                question.find('input').attr('disabled', true);
                 question.find('.choice-management').hide();
                 question.find('a[class$=question_choices-choice-rescue-add]').hide();
                 question.find('.form__radio-button').click(false);

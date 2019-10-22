@@ -34,7 +34,7 @@ abstract class Survey
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=70)
      *
      * @JMS\Groups({"survey_list"})
      */
@@ -201,5 +201,10 @@ abstract class Survey
 
             $this->setQuestions($questions);
         }
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 }
