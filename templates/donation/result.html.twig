@@ -51,7 +51,7 @@
 
                         {% if not is_adherent %}
                         <div class="opportunity large">
-                            <h2><strong>Rejoignez</strong> les 418 423 adhérents de La République En Marche !</h2>
+                            <h2><strong>Rejoignez</strong> les {{ nb_adherent|number_format(0, ',', ' ') }} adhérents de La République En Marche !</h2>
                             <p class="text--body">C'est facile, gratuit et 3 minutes suffiront.</p>
                             <a href="{{ path('app_membership_join') }}" target="_blank" class="btn btn--blue--sky">J'adhère maintenant</a>
                         </div>
