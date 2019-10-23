@@ -80,9 +80,11 @@
         <div class="manager-overview__row">
             {% if is_granted('ROLE_PRINT_PRIVILEGE') %}
               <div class="manager-overview__case case-half">
-                  <span class="manager-overview__case--section">Communication & Mobilisation</span>
-                  <h1 class="manager-overview__case--title">Mes tracts</h1>
-                  <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour créer vos tracts de campagne.</p>
+                  <div class="manager-verview__case--content">
+                      <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                      <h1 class="manager-overview__case--title">Mes tracts</h1>
+                      <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour créer vos tracts de campagne.</p>
+                  </div>
                   <footer class="manager-overview__case--footer">
                       <a href="https://muni2020.lamaisondesimpressions.fr/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                   </footer>
@@ -91,12 +93,18 @@
 
             {% if app.user.municipalChiefManagedArea.hasJecouteAccess() %}
                 <div class="manager-overview__case case-half">
-                    <span class="manager-overview__case--section">Communication & Mobilisation</span>
-                    <h1 class="manager-overview__case--title">J'écoute</h1>
-                    <p class="manager-overview__case--baseline">Application disponible sur
-                        <a class="text--blue--dark link--no-decor" target="_blank" href="https://play.google.com/store/apps/details?id=fr.en_marche.jecoute">Google Play</a>
-                        et sur l'<a class="text--blue--dark link--no-decor" target="_blank" href="https://apps.apple.com/fr/app/j%C3%A9coute/id1441973895">App Store</a>.
-                    </p>
+                    <div class="manager-verview__case--content">
+                        <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                        <h1 class="manager-overview__case--title">J'écoute</h1>
+                        <p class="manager-overview__case--baseline">
+                            Créez des questionnaires pour recueillir les impressions et les idées des citoyens sur la vie de votre commune.
+                            <a class="link--no-decor text--blue--dark" href="https://storage.googleapis.com/en-marche-fr/TECH/Jecoute/guide_utilisation_jecoute.pdf" target="_blank">Voir le guide d'utilisation</a>
+                            <br /><br />
+                            Application disponible sur
+                            <a class="text--blue--dark link--no-decor" target="_blank" href="https://play.google.com/store/apps/details?id=fr.en_marche.jecoute">Google Play</a>
+                            et sur l'<a class="text--blue--dark link--no-decor" target="_blank" href="https://apps.apple.com/fr/app/j%C3%A9coute/id1441973895">App Store</a>.
+                        </p>
+                    </div>
                     <footer class="manager-overview__case--footer">
                         <a href="{{ path('app_jecoute_municipal_chief_local_surveys_list') }}" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
@@ -104,19 +112,20 @@
             {% endif %}
             {% if municipal_site_is_enabled(app.user) %}
                 <div class="manager-overview__case case-half">
-                    <span class="manager-overview__case--section">Communication & Mobilisation</span>
-                    <h1 class="manager-overview__case--title">Mon site</h1>
-                    <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour gérer votre site de campagne.</p>
+                    <div class="manager-verview__case--content">
+                        <span class="manager-overview__case--section">Communication & Mobilisation</span>
+                        <h1 class="manager-overview__case--title">Mon site</h1>
+                        <p class="manager-overview__case--baseline">Connectez-vous avec vos identifiants En Marche pour gérer votre site de campagne.
+                        <a class="link--no-decor text--blue--dark" href="https://storage.googleapis.com/en-marche-fr/TECH/Sites_muni_dpt/guide_utilisation_sites.pdf" target="_blank">Voir le guide d'utilisation</a></p>
+                    </div>
                     <footer class="manager-overview__case--footer">
                         <a href="{{ dpt_api_host }}/admin/auth/login" target="_blank" class="btn btn btn--ghosting--blue">Administrer</a>
                     </footer>
                 </div>
-                {% else %}
-                <div></div>
             {% endif %}
         </div>
         <div class="b__nudge--top-large text--center">
-            <a href="https://storage.googleapis.com/en-marche-fr/TECH/Charte%20outils%20numeriques%20municipales%202020.pdf" class="text--small" target="_blank">Consulter la Charte de bonne utilisation des outils numériques</a>
+            <a href="https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_municipales_2020.pdf" class="text--small" target="_blank">Consulter la Charte de bonne utilisation des outils numériques</a>
         </div>
     </div>
 {% endblock %}
