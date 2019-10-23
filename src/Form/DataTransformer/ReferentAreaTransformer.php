@@ -10,14 +10,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class ReferentAreaTransformer implements DataTransformerInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $em;
 
-    /**
-     * ReferentAreaTransformer constructor.
-     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;

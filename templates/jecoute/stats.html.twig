@@ -57,49 +57,48 @@
 {% endblock %}
 
 {% block jecoute_content %}
-    {% if data.survey.isNational %}
-        <a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
-            ⟵ Retour
-        </a>
-    {% else %}
-        <a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
-            ⟵ Retour
-        </a>
-    {% endif %}
+    <a href="{{ path("app_jecoute_#{space_name}_" ~ (data.survey.isNational ? 'national' : 'local') ~ "_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+        ⟵ Retour
+    </a>
+
     <div class="l__wrapper--slim">
         <div class="form__title b__nudge--bottom-larger">
             <h3 class="text--medium text--center">Statistiques : {{ data.survey.name }}</h3>
         </div>
 
         <div class="jecoute-survey-stats b__nudge--top-40">
-            {% for question in data.questions %}
+            {% for items in data.questions %}
                 <div class="form__row form__new">
-                    <label class="label__header--large form form__label">{{ question.content }}</label>
-                        {% if question.stats.totalAnswered > 0 %}
-                            {% if question.type != constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
-                                <p class="total-answered b__nudge--top-15">{{ question.stats.totalAnswered }} réponses</p>
-                                {% for answer in question.stats.answers %}
-                                    <div class="block-stats b__nudge--bottom-small">
-                                            <div class="stats-bar" data-percent="{{ answer.percent }}%">
-                                                <div class="stats-bar__title"><span class="text--bold">{{ answer.value }}</span></div>
-                                                <div class="stats-bar__progress-bar"></div>
-                                                <div class="stats-bar__answered text--white text--bold">{{ answer.answered }}</div>
-                                            </div>
-                                            <div class="stats-percent text--right">
-                                                <span>{{ answer.percent|replace({'.' : ','}) }} %</span>
-                                            </div>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                <div class="b__nudge--top b__nudge--bottom-small">
-                                    <a data-question-uuid="{{ question.uuid }}" data-space-name="{{ space_name }}" class="data-answers-open-popin btn-secondary btn-secondary--blue">
-                                        Voir les {{ question.stats.totalAnswered }} réponses
-                                    </a>
-                                </div>
-                            {% endif %}
+                    <label class="label__header--large form form__label">{{ (items|first).question_content }}</label>
+
+                    {% for question in items if question.total > 0 %}
+                        {% if question.type == constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') %}
+                            <div class="b__nudge--top b__nudge--bottom-small">
+                                <a data-question-uuid="{{ question.uuid }}" data-space-name="{{ space_name }}" class="data-answers-open-popin btn-secondary btn-secondary--blue">
+                                    Voir les {{ question.total_simple_field }} réponses
+                                </a>
+                            </div>
                         {% else %}
-                            <p class="text--gray text--small">Aucune donnée n'est disponible pour le moment.</p>
+                            {% if loop.first %}
+                                <p class="total-answered b__nudge--top-15">{{ question.total }} réponses</p>
+                            {% endif %}
+
+                            {% set percent = (question.total_by_choice * 100 / question.total)|round(2) %}
+
+                            <div class="block-stats b__nudge--bottom-small">
+                                <div class="stats-bar" data-percent="{{ percent }}%">
+                                    <div class="stats-bar__title"><span class="text--bold">{{ question.choice_content }}</span></div>
+                                    <div class="stats-bar__progress-bar"></div>
+                                    <div class="stats-bar__answered text--white text--bold">{{ question.choice_content }}</div>
+                                </div>
+                                <div class="stats-percent text--right">
+                                    <span>{{ percent|replace({'.' : ','}) }} %</span>
+                                </div>
+                            </div>
                         {% endif %}
+                    {% else %}
+                        <p class="text--gray text--small">Aucune donnée n'est disponible pour le moment.</p>
+                    {% endfor %}
                     <br/>
                     <hr />
                 </div>
@@ -108,10 +107,9 @@
         </div>
 
         <div class="form__row text--center">
-            <a href="{{ path("app_jecoute_#{space_name}_survey_stats_download", {'uuid': data.survey.uuid}) }}" class="btn btn--ghosting--blue btn--large-and-full">Télécharger au format CSV</a>
+            <a href="{{ path("app_jecoute_#{space_name}_survey_stats", {uuid: data.survey.uuid, export: true}) }}" class="btn btn--ghosting--blue btn--large-and-full">Télécharger au format CSV</a>
         </div>
     </div>
 
     {% include ('jecoute/data_answers_dialog.html.twig') %}
-
 {% endblock %}

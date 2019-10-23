@@ -28,7 +28,7 @@
             });
 
             const lockQuestion = function (question) {
-                question.find('input').attr('disabled', true);
+                question.find('input').not('input[name$="[fromSuggestedQuestion]"], input[name$="[position]"]').attr('disabled', true);
                 question.find('.choice-management').hide();
                 question.find('a[class$=question_choices-choice-rescue-add]').hide();
                 question.find('.form__radio-button').click(false);
@@ -46,16 +46,15 @@
                 }
             };
 
-            $('.survey-question-type input:checked').each(function() {
+            $('.survey-question-type input[type="radio"]:checked').each(function() {
                 displayChoices($(this));
             });
-
 
             $('.jecoute-survey').on('click', '.survey-question-type input', function() {
                 displayChoices($(this));
             });
 
-            const suggestedQuestionsDialog = $("#suggested_questions_dialog");
+            const suggestedQuestionsDialog = $('#suggested_questions_dialog');
 
             suggestedQuestionsDialog.dialog({
                 modal: true,
@@ -68,17 +67,15 @@
                 position: { my: 'center', at: 'center' },
                 dialogClass: 'ui-dialog__middle',
                 open: function() {
-                    $(this).siblings('.ui-dialog-titlebar')
-                        .find('button').blur()
-                    ;
+                    $(this).siblings('.ui-dialog-titlebar').find('button').blur();
                 }
             });
 
-            $("#suggested-questions-open-popin").click(function() {
-                suggestedQuestionsDialog.dialog( "open" );
+            $('#suggested-questions-open-popin').click(function() {
+                suggestedQuestionsDialog.dialog('open');
             });
 
-            $(".add-current-suggested-question").click(function() {
+            $('.add-current-suggested-question').click(function() {
                 $('.question-add').trigger('click');
 
                 // Sets the content of the current suggested question
@@ -86,7 +83,9 @@
 
                 // Checks the type of the current suggested question
                 const currentChoiceType = $("input[name$='[question][type]']").last().attr('name');
-                $(`input[name='${currentChoiceType}'][value='${$(this).data('type')}']`).attr('checked', true);
+                displayChoices(
+                    $(`input[name='${currentChoiceType}'][value='${$(this).data('type')}']`).attr('checked', true)
+                );
 
                 // Adds the choices of the current suggested question
                 const choices = $(this).data('choices');
@@ -99,7 +98,7 @@
                 }
 
                 // Sets the suggested question flag
-                $("input[name$='[fromSuggestedQuestion]']").last().val('1');
+                $('input[name$="[fromSuggestedQuestion]"]').last().val($(this).data('id'));
 
                 // Locks the current added suggested question
                 const currentQuestion = $('.question-box').last();
@@ -113,9 +112,7 @@
             const selectConcernedZoneChoices = function (selectedInput) {
                 const cityField = $("input[name='survey_form[city]']");
 
-                if ('{{ constant('AppBundle\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}'
-                    === $(selectedInput).val())
-                {
+                if ('{{ constant('AppBundle\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}' === $(selectedInput).val()) {
                     cityField.show();
                 } else {
                     cityField.hide().val('');
@@ -129,14 +126,13 @@
             $("input[name='survey_form[concernedAreaChoice]']:checked").each(function() {
                 selectConcernedZoneChoices($(this));
             });
-
         });
     </script>
 {% endblock %}
 
 {% block jecoute_content %}
+    {% form_theme form with ['jquery.collection.html.twig', 'jecoute/_form_theme.html.twig'] %}
 
-    {% form_theme form with ['jquery.collection.html.twig','jecoute/_form_theme.html.twig'] %}
     <a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
     </a>
@@ -151,12 +147,12 @@
         {% endif %}
 
         {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
-        {{ include('jecoute/_form.html.twig') }}
+
+            {{ include('jecoute/_form.html.twig') }}
+
         {{ form_end(form) }}
     </div>
 
-    {% include ('jecoute/suggested_questions_dialog.html.twig') with {
-        'suggestedQuestions': suggestedQuestions
-    } %}
+    {% include 'jecoute/suggested_questions_dialog.html.twig' with {suggestedQuestions: suggestedQuestions} %}
 
 {% endblock %}

@@ -53,7 +53,7 @@ abstract class Survey
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $published = false;
+    private $published;
 
     public function __construct(string $name = null, bool $published = false)
     {
@@ -191,10 +191,8 @@ abstract class Survey
                 $clonedSurveyQuestion = clone $surveyQuestion;
                 $clonedSurveyQuestion->setSurvey($this);
 
-                if (!$surveyQuestion->isFromSuggestedQuestion()) {
-                    $clonedQuestion = clone $surveyQuestion->getQuestion();
-                    $clonedSurveyQuestion->setQuestion($clonedQuestion);
-                }
+                $clonedQuestion = clone $surveyQuestion->getQuestion();
+                $clonedSurveyQuestion->setQuestion($clonedQuestion);
 
                 $questions->add($clonedSurveyQuestion);
             }

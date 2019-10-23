@@ -2,8 +2,12 @@
 
 namespace AppBundle\Repository\Jecoute;
 
+use AppBundle\Entity\Jecoute\DataAnswer;
 use AppBundle\Entity\Jecoute\Question;
+use AppBundle\Entity\Jecoute\Survey;
+use AppBundle\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class QuestionRepository extends ServiceEntityRepository
@@ -13,23 +17,27 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    public function findDataByQuestion(Question $question): array
+    public function calculateStatistics(Survey $survey): array
     {
-        return $this
-            ->createQueryBuilder('question')
+        return $this->createQueryBuilder('q')
             ->select(
-                'question.type',
-                'choices.content',
-                'COUNT(DISTINCT selectedChoices) AS choicesCount',
-                'COUNT(dataAnswer.textField) AS textFieldsCount'
+                'sq.uuid',
+                'q.content AS question_content',
+                'q.type',
+                'ch.content as choice_content',
+                'COUNT(da1.textField) AS total_simple_field',
+                sprintf('(
+                    SELECT COUNT(1) FROM %s AS da2 
+                    INNER JOIN da2.selectedChoices AS sc
+                    WHERE sc = ch
+                ) AS total_by_choice', DataAnswer::class)
             )
-            ->leftJoin('question.choices', 'choices')
-            ->leftJoin('choices.dataAnswers', 'selectedChoices')
-            ->innerJoin('question.surveys', 'surveyQuestion')
-            ->leftJoin('surveyQuestion.dataAnswers', 'dataAnswer')
-            ->andWhere('question = :q')
-            ->setParameter('q', $question)
-            ->groupBy('choices.id')
+            ->innerJoin(SurveyQuestion::class, 'sq', Join::WITH, 'sq.question = q')
+            ->leftJoin('q.choices', 'ch')
+            ->leftJoin(DataAnswer::class, 'da1', Join::WITH, 'da1.surveyQuestion = sq')
+            ->where('sq.survey = :survey')
+            ->setParameter('survey', $survey)
+            ->groupBy('q.id', 'ch.id')
             ->getQuery()
             ->getArrayResult()
         ;

@@ -13,6 +13,22 @@ class SuggestedQuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, SuggestedQuestion::class);
     }
 
+    public function findById(int $id): ?SuggestedQuestion
+    {
+        return $this
+            ->createQueryBuilder('q')
+            ->addSelect('choices')
+            ->leftJoin('q.choices', 'choices')
+            ->where('q.id = :id AND q.published = :true')
+            ->setParameters([
+                'id' => $id,
+                'true' => true,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     /**
      * @return SuggestedQuestion[]
      */

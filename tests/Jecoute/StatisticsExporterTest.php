@@ -7,7 +7,6 @@ use AppBundle\Entity\Jecoute\LocalSurvey;
 use AppBundle\Entity\Jecoute\Question;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Jecoute\StatisticsExporter;
-use AppBundle\Jecoute\StatisticsProvider;
 use AppBundle\Jecoute\SurveyQuestionTypeEnum;
 use AppBundle\Repository\Jecoute\DataAnswerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,8 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 class StatisticsExporterTest extends TestCase
 {
-    /** @var MockObject|StatisticsProvider */
-    private $statisticsProvider;
     /** @var MockObject|DataAnswerRepository */
     private $dataAnswerRepository;
     /** @var MockObject|StatisticsExporter */
@@ -24,15 +21,11 @@ class StatisticsExporterTest extends TestCase
 
     public function setUp()
     {
-        $this->statisticsProvider = $this->getMockBuilder(StatisticsProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
         $this->dataAnswerRepository = $this->getMockBuilder(DataAnswerRepository::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
-        $this->statisticsExporter = new StatisticsExporter($this->statisticsProvider, $this->dataAnswerRepository);
+        $this->statisticsExporter = new StatisticsExporter($this->dataAnswerRepository);
     }
 
     public function testExport(): void
@@ -50,64 +43,61 @@ class StatisticsExporterTest extends TestCase
                 'name' => 'Questionnaire numéro 1',
             ],
             'questions' => [
-                0 => [
-                    'content' => 'Ceci est-il un champ libre ?',
-                    'type' => 'simple_field',
-                    'stats' => [
-                        'totalAnswered' => 3,
+                'uuid1' => [
+                    [
+                        'uuid' => '6ae09586-b8a8-4ea9-8b18-0158297b3656',
+                        'question_content' => 'Ceci est-il un champ libre ?',
+                        'type' => 'simple_field',
+                        'total_simple_field' => 3,
+                        'choice_content' => null,
+                        'total' => 3,
                     ],
-                    'surveyQuestion' => $surveyQuestion,
                 ],
-                1 => [
-                    'content' => 'Est-ce une question à choix multiple ?',
-                    'type' => 'multiple_choice',
-                    'stats' => [
-                        'answers' => [
-                            0 => [
-                                'value' => 'Réponse A',
-                                'percent' => '66.67',
-                                'answered' => '2',
-                            ],
-                            1 => [
-                                'value' => 'Réponse B',
-                                'percent' => '33.33',
-                                'answered' => '1',
-                            ],
-                        ],
+                'uuid2' => [
+                    [
+                        'question_content' => 'Est-ce une question à choix multiple ?',
+                        'type' => 'multiple_choice',
+                        'total_by_choice' => 2,
+                        'choice_content' => 'Réponse A',
+                        'total' => 3,
                     ],
-                    'surveyQuestion' => $surveyQuestion,
-                ],
-                2 => [
-                    'uuid' => '',
-                    'content' => 'Est-ce une question à choix unique ?',
-                    'type' => 'unique_choice',
-                    'stats' => [
-                        'answers' => [
-                            0 => [
-                                'value' => 'Réponse A',
-                                'percent' => '50.00',
-                                'answered' => '1',
-                            ],
-                            1 => [
-                                'value' => 'Réponse B',
-                                'percent' => '50.00',
-                                'answered' => '1',
-                            ],
-                        ],
+                    [
+                        'question_content' => 'Est-ce une question à choix multiple ?',
+                        'type' => 'multiple_choice',
+                        'total_by_choice' => 1,
+                        'choice_content' => 'Réponse B',
+                        'total' => 3,
                     ],
-                    'surveyQuestion' => $surveyQuestion,
                 ],
-                3 => [
-                    'uuid' => '',
-                    'content' => 'Ceci est-il un champ libre d\'une question suggérée ?',
-                    'type' => 'simple_field',
-                    'stats' => [],
-                    'surveyQuestion' => $surveyQuestion,
+                'uuid3' => [
+                    [
+                        'question_content' => 'Est-ce une question à choix unique ?',
+                        'type' => 'unique_choice',
+                        'total_by_choice' => 1,
+                        'choice_content' => 'Réponse A',
+                        'total' => 2,
+                    ],
+                    [
+                        'question_content' => 'Est-ce une question à choix unique ?',
+                        'type' => 'unique_choice',
+                        'total_by_choice' => 1,
+                        'choice_content' => 'Réponse B',
+                        'total' => 2,
+                    ],
+                ],
+                'uuid4' => [
+                    [
+                        'uuid' => '6ae09586-b8a8-4ea9-8b18-0158297b3656',
+                        'question_content' => 'Ceci est-il un champ libre d\'une question suggérée ?',
+                        'type' => 'simple_field',
+                        'total_simple_field' => 0,
+                        'choice_content' => null,
+                        'total' => 0,
+                    ],
                 ],
             ],
         ];
 
-        $this->statisticsProvider->expects($this->once())->method('getStatsBySurvey')->willReturn($findDataByQuestionReturn);
         $this->dataAnswerRepository
             ->expects($this->exactly(2))
             ->method('findAllBySurveyQuestion')
@@ -117,17 +107,13 @@ class StatisticsExporterTest extends TestCase
             ], [])
         ;
 
-        $statFile = $this->statisticsExporter->export($survey);
+        $content = $this->statisticsExporter->export($findDataByQuestionReturn);
 
-        $this->assertArrayHasKey('filename', $statFile);
-        $this->assertArrayHasKey('content', $statFile);
-        $this->assertInternalType('string', $statFile['content']);
-
-        $this->assertSame(1, substr_count($statFile['content'], 'Questionnaire TestU '));
-        $this->assertSame(1, substr_count($statFile['content'], 'Aucune donnée n\'est disponible pour le moment.'.\PHP_EOL));
-        $this->assertSame(1, substr_count($statFile['content'], 'Est-ce une question à choix multiple ?'.\PHP_EOL));
-        $this->assertSame(1, substr_count($statFile['content'], 'Réponse A;66.67%;2'.\PHP_EOL));
-        $this->assertSame(1, substr_count($statFile['content'], 'Réponse A;50.00%;1'.\PHP_EOL));
-        $this->assertSame(1, substr_count($statFile['content'], 'Test Unit 2;2019-01-01 01:00:00'.\PHP_EOL));
+        $this->assertSame(1, substr_count($content, 'Questionnaire numéro 1 '));
+        $this->assertSame(1, substr_count($content, 'Aucune donnée n\'est disponible pour le moment.'.\PHP_EOL));
+        $this->assertSame(1, substr_count($content, 'Est-ce une question à choix multiple ?'.\PHP_EOL));
+        $this->assertSame(1, substr_count($content, 'Réponse A;66.67%;2'.\PHP_EOL));
+        $this->assertSame(1, substr_count($content, 'Réponse A;50%;1'.\PHP_EOL));
+        $this->assertSame(1, substr_count($content, 'Test Unit 2;2019-01-01 01:00:00'.\PHP_EOL));
     }
 }

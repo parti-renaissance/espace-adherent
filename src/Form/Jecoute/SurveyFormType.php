@@ -68,11 +68,9 @@ class SurveyFormType extends AbstractType
         }
 
         if (!$options['disabled']) {
-            $builder
-                ->add('published', CheckboxType::class, [
-                    'required' => false,
-                ])
-            ;
+            $builder->add('published', CheckboxType::class, [
+                'required' => false,
+            ]);
         }
     }
 

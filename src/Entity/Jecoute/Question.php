@@ -39,15 +39,6 @@ class Question
     private $id;
 
     /**
-     * @var SurveyQuestion[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="SurveyQuestion", mappedBy="question")
-     *
-     * @Assert\Valid
-     */
-    private $surveys;
-
-    /**
      * @ORM\Column
      *
      * @Assert\NotBlank
@@ -61,7 +52,7 @@ class Question
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Jecoute\SurveyQuestionTypeEnum", "all"})*
+     * @Assert\Choice(callback={"AppBundle\Jecoute\SurveyQuestionTypeEnum", "all"})
      *
      * @JMS\Groups({"survey_list"})
      */
@@ -79,11 +70,10 @@ class Question
      */
     private $choices;
 
-    public function __construct(string $content = null, string $type = null)
+    public function __construct(string $content = null, string $type = SurveyQuestionTypeEnum::SIMPLE_FIELD)
     {
         $this->content = $content;
         $this->type = $type;
-        $this->surveys = new ArrayCollection();
         $this->choices = new ArrayCollection();
     }
 
@@ -95,27 +85,6 @@ class Question
     public function resetId(): void
     {
         $this->id = null;
-    }
-
-    /**
-     * @return Collection|Survey[]
-     */
-    public function getSurveys(): Collection
-    {
-        return $this->surveys;
-    }
-
-    public function addSurveyQuestion(SurveyQuestion $surveyQuestion): void
-    {
-        if (!$this->surveys->contains($surveyQuestion)) {
-            $surveyQuestion->setQuestion($this);
-            $this->surveys->add($surveyQuestion);
-        }
-    }
-
-    public function removeSurveyQuestion(Survey $survey): void
-    {
-        $this->surveys->removeElement($survey);
     }
 
     public function getContent(): ?string
@@ -168,16 +137,17 @@ class Question
         return $this->choices;
     }
 
-    public function setChoices(ArrayCollection $choices): void
+    public function setChoices(Collection $choices): void
     {
         $this->choices = $choices;
     }
 
     public function isChoiceType(): bool
     {
-        return SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE == $this->type
-            || SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE == $this->type
-        ;
+        return \in_array($this->type, [
+            SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE,
+            SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE,
+        ], true);
     }
 
     public function __clone()

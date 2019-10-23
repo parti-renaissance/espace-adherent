@@ -2,77 +2,65 @@
 
 namespace AppBundle\Jecoute;
 
-use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Repository\Jecoute\DataAnswerRepository;
+use Ramsey\Uuid\Uuid;
 
 class StatisticsExporter
 {
-    private $dataProvider;
     private $dataAnswerRepository;
-    private $content;
+    private $contentParts;
 
-    public function __construct(StatisticsProvider $provider, DataAnswerRepository $dataAnswerRepository)
+    public function __construct(DataAnswerRepository $dataAnswerRepository)
     {
-        $this->dataProvider = $provider;
         $this->dataAnswerRepository = $dataAnswerRepository;
     }
 
-    public function export(Survey $survey): array
+    public function export(array $data): string
     {
-        return [
-            'filename' => $this->getFilenameCsv($survey),
-            'content' => $this->getContent($survey),
-        ];
-    }
+        $this->buildHeader($data['survey']['name']);
 
-    private function getFilenameCsv(Survey $survey): string
-    {
-        return str_replace(' ', '_', $survey->getName().' '.date('Y-m-d_H-i').'.csv');
-    }
+        foreach ($data['questions'] as $items) {
+            $this->contentParts[] = $items[0]['question_content'];
 
-    private function getContent(Survey $survey): string
-    {
-        $data = $this->dataProvider->getStatsBySurvey($survey);
-        $this->buildHeader($survey);
-
-        foreach ($data['questions'] as $question) {
-            $this->content .= $question['content'].\PHP_EOL;
-
-            switch ($question['type']) {
+            switch ($items[0]['type']) {
                 case SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE:
                 case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
-                    $this->buildRowsChoicesAnswers($question['stats']);
+                    $this->buildRowsChoicesAnswers($items);
                     break;
                 case SurveyQuestionTypeEnum::SIMPLE_FIELD:
-                    $this->buildRowsSimpleField($question['surveyQuestion']);
+                    $this->buildRowsSimpleField($items[0]);
                     break;
                 default:
                     break;
             }
 
-            $this->content .= \PHP_EOL;
+            $this->contentParts[] = '';
         }
 
-        return $this->content;
+        return implode(\PHP_EOL, $this->contentParts);
     }
 
-    private function buildHeader(Survey $survey): void
+    private function buildHeader(string $name): void
     {
-        $this->content = $survey->getName().' '.date('d/m/Y H:i').\PHP_EOL.\PHP_EOL;
+        $this->contentParts[] = $name.' '.date('d/m/Y H:i');
+        $this->contentParts[] = '';
+        $this->contentParts[] = '';
     }
 
     private function buildRowsChoicesAnswers(array $stats): void
     {
-        foreach ($stats['answers'] as $answer) {
-            $answer['percent'] .= '%';
-            $this->content .= implode(';', $answer).\PHP_EOL;
+        foreach ($stats as $answer) {
+            $this->contentParts[] = implode(';', [
+                $answer['choice_content'],
+                round($answer['total_by_choice'] * 100 / $answer['total'], 2).'%',
+                $answer['total_by_choice'],
+            ]);
         }
     }
 
-    private function buildRowsSimpleField(SurveyQuestion $surveyQuestion): void
+    private function buildRowsSimpleField(array $item): void
     {
-        $responses = $this->dataAnswerRepository->findAllBySurveyQuestion($surveyQuestion);
+        $responses = $this->dataAnswerRepository->findAllBySurveyQuestion(Uuid::fromString($item['uuid']));
 
         if (!empty($responses)) {
             foreach ($responses as $response) {
@@ -82,10 +70,10 @@ class StatisticsExporter
                     $response['postedAt'] = $postAt->format('d/m/Y H:i');
                 }
 
-                $this->content .= implode(';', $response).\PHP_EOL;
+                $this->contentParts[] = implode(';', $response);
             }
         } else {
-            $this->content .= 'Aucune donnée n\'est disponible pour le moment.'.\PHP_EOL;
+            $this->contentParts[] = 'Aucune donnée n\'est disponible pour le moment.';
         }
     }
 }
