@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import 'utils/dom';
 import 'utils/css';
 import 'utils/text';
