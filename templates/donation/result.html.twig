@@ -27,9 +27,9 @@
                 <div class="l__wrapper--narrow">
                     <p class="donation__result__intro--text">
                         Continuons à transformer notre pays ensemble ! Les dons sont une ressource vitale pour La République En Marche !
-                        Chaque don, quel que soit le montant, nous permet d’engager une action concrète pour réussir ensemble la transformation du pays.
+                        Chaque don, quel que soit le montant, nous permet d'engager une action concrète pour réussir ensemble la transformation du pays.
                         <br /><br />
-                        <strong>C’est votre engagement qui fait vivre cette promesse !</strong>
+                        <strong>C'est votre engagement qui fait vivre cette promesse !</strong>
                     </p>
                 </div>
             </section>
@@ -61,17 +61,19 @@
             </section>
 
         {% else %}
-            <h3>{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
+            <div class="donation__result__failed">
+                <div class="l__wrapper--slim text--center">
+                    <h3 class="text--medium b__nudge--bottom-larger">{{ get_payment_message_by_code(result_code)|trans|raw }}</h3>
 
-            <p>
-                <a href="{{ retry_url }}" class="btn btn--medium btn--primary">
-                    Je souhaite réessayer
-                </a>
-            </p>
+                    <a href="{{ retry_url }}" class="btn btn--red">
+                        Je souhaite réessayer
+                    </a>
 
-            <p class="donation-result__support">
-                Si le problème persiste, veuillez <a href="https://contact.en-marche.fr/" target="_blank" rel="noopener noreferrer">nous contacter</a>.
-            </p>
+                    <p class="text--body donation-result__support b__nudge--top-large">
+                        Si le problème persiste, veuillez <a href="https://contact.en-marche.fr/" target="_blank" rel="noopener noreferrer">nous contacter</a>.
+                    </p>
+                </div>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
