@@ -9,7 +9,6 @@ export default() => {
     const exportSelection = dom('#members-export-selection');
     const printButton = dom('#members-print-button');
     const printSelection = dom('#members-print-selection');
-    const table = dom('.datagrid__table-manager');
 
     function getMemberCheckboxes() {
         return findAll(document, 'input[name="members[]"]');
@@ -103,13 +102,6 @@ export default() => {
     const printMembers = () => {
         printSelection.value = JSON.stringify(getSelectedMembers());
     };
-
-    on(table, 'table_update', () => {
-        getMemberCheckboxes().forEach((element) => {
-            off(element, 'change', toggle);
-            on(element, 'change', toggle);
-        });
-    });
 
     // Bind the print button (build a Json list of members to print)
     if (null != printButton) {

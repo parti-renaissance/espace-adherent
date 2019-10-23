@@ -150,7 +150,7 @@ tfp-rabbitmq: wait-for-rabbitmq                                                 
 	$(CONSOLE) --env=test rabbitmq:setup-fabric
 
 tfp-db: wait-for-db                                                                                    ## Init databases for tests
-	$(EXEC) rm -rf /tmp/data.db app/data/dumped_referents_users || true
+	$(EXEC) rm -rf /tmp/data.db || true
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test
 	$(CONSOLE) doctrine:database:create --env=test
 	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
