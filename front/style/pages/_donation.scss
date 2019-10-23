@@ -1243,6 +1243,12 @@
             }
         }
     }
+
+    &__failed {
+        box-sizing: border-box;
+        padding: 80px 0;
+        min-height: calc(100vh - 350px);
+    }
 }
 
 /*
@@ -1251,16 +1257,18 @@
 
 // Donation footer
 .donation__footer {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
     margin-top: 100px;
     background-color: $pale-grey;
-    padding: 50px 0 10px 0;
+    min-height: 150px;
 
     &__sections {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
+        padding-top: 40px;
     }
 
     .footer__section {
