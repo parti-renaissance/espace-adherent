@@ -269,3 +269,13 @@
         {{ form_errors(form) }}
     </div>
 {%- endblock -%}
+
+{% block _adherent_registration_birthdate_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {{- date_pattern|replace({
+            '{{ year }}': form_widget(form.year, {attr: {'data-validated-with': 'adherent_registration_birthdate_'}}),
+            '{{ month }}': form_widget(form.month, {attr: {'data-validated-with': 'adherent_registration_birthdate_'}}),
+            '{{ day }}': form_widget(form.day, {attr: {'data-validated-with': 'adherent_registration_birthdate_'}}),
+        })|raw -}}
+    </div>
+{% endblock %}

@@ -1,15 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20191024111152 extends AbstractMigration
 {
     public function up(Schema $schema): void

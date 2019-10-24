@@ -152,20 +152,6 @@
                                 {{ form_errors(form.customGender) }}
                             </div>
                         </div>
-                        <div id="{{ form.phone.vars.id }}">
-                            <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
-                            <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
-                                <div class=" register__form--mid">
-                                    {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays', attr: { 'data-validated-with': form.phone.number.vars.id } }) }}
-                                </div>
-                                <div class="register__form--mid">
-                                    {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
-                                    {{ form_errors(form.phone.country) }}
-                                    {{ form_errors(form.phone.number) }}
-                                </div>
-                            </div>
-                            {{ form_errors(form.phone) }}
-                        </div>
                     </div>
 
                     <div class="space--10-0"></div>
@@ -174,6 +160,22 @@
                         <span class="b__nudge--bottom-tiny text--gray text--italic">{{ 'common.optional'|trans|capitalize }}</span>
                         <hr id="hr_join" />
                     </div>
+
+                    <div id="{{ form.phone.vars.id }}">
+                        <p class="b__nudge--bottom-tiny text--bold">Téléphone</p>
+                        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+                            <div class=" register__form--mid">
+                                {{ form_widget(form.phone.country, { placeholder: 'Indicatif Pays', attr: { 'data-validated-with': form.phone.number.vars.id } }) }}
+                            </div>
+                            <div class="register__form--mid">
+                                {{ form_widget(form.phone.number, { attr: { placeholder: 'Téléphone' } }) }}
+                                {{ form_errors(form.phone.country) }}
+                                {{ form_errors(form.phone.number) }}
+                            </div>
+                        </div>
+                        {{ form_errors(form.phone) }}
+                    </div>
+
                     <div class="l__row l__row--top l__row--h-stretch b__nudge--top-10 l__mobile--col register__form--flex">
                         <div class="register__form--elected form__checkbox form__checkbox--large">
                             {{ form_widget(form.elected) }}
