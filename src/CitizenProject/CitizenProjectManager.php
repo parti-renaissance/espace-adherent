@@ -22,7 +22,6 @@ use AppBundle\Repository\CitizenProjectCommitteeSupportRepository;
 use AppBundle\Repository\CitizenProjectMembershipRepository;
 use AppBundle\Repository\CitizenProjectRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -273,15 +272,6 @@ class CitizenProjectManager
 
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_UPDATED, new CitizenProjectWasUpdatedEvent($citizenProject));
         $this->eventDispatcher->dispatch(Events::CITIZEN_PROJECT_FOLLOWER_REMOVED, new CitizenProjectFollowerChangeEvent($citizenProject, $adherent));
-    }
-
-    public function findAdherentNearCitizenProjectOrAcceptAllNotification(
-        CitizenProject $citizenProject,
-        int $offset = 0,
-        bool $excludeSupervisor = true,
-        int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN
-    ): Paginator {
-        return $this->getAdherentRepository()->findByNearCitizenProjectOrAcceptAllNotification($citizenProject, $offset, $excludeSupervisor, $radius);
     }
 
     public function approveCommitteeSupport(

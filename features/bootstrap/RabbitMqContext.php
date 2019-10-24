@@ -16,7 +16,6 @@ class RabbitMqContext implements Context
         'mailer-delayed-transactional',
         'referent-message-dispatcher',
         'deputy-message-dispatcher',
-        'project_citizen_creation_notification',
     ];
 
     private $container;

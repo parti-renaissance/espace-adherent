@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Address\Address;
 use AppBundle\Membership\Mandates;
 use AppBundle\Membership\MembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -55,7 +56,7 @@ class AdherentType extends AbstractType
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => $countryCode ? [$countryCode] : [],
+                'preferred_country_choices' => $countryCode ? [$countryCode] : [Address::FRANCE],
             ])
             ->add('mandates', ChoiceType::class, [
                 'label' => 'adherent.mandate.label',

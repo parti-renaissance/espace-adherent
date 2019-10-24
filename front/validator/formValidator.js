@@ -50,10 +50,11 @@ export default (formType, form) => {
                 const id = targetField.dataset.validatedWith;
 
                 if (id) {
-                    const linkedField = dom(`#${id}`);
-
-                    if (!linkedField.value) {
-                        emptyFieldNames.push(field[0]);
+                    for (const element of findAll(document, `[id^="${id}"]`)) {
+                        if (!element.value) {
+                            emptyFieldNames.push(field[0]);
+                            break;
+                        }
                     }
                 }
             }

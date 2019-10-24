@@ -9,7 +9,6 @@ export default (formType) => {
 
     const emailField = dom('#adherent_registration_emailAddress_first');
     const confirmEmailField = dom('#adherent_registration_emailAddress_second');
-    const captchaBlock = dom('div.g-recaptcha');
     const countryField = dom(`${rootIdField}_address_country`);
     const cityNameField = dom(`${rootIdField}_address_cityName`);
     const genderField = dom(`${rootIdField}_gender`);
@@ -82,7 +81,6 @@ export default (formType) => {
 
     on(genderField, 'change', checkGender);
     checkGender();
-
 
     zipCodeField.dispatchEvent(new Event('input'));
 

@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use AppBundle\BoardMember\BoardMemberFilter;
-use AppBundle\CitizenProject\CitizenProjectMessageNotifier;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Coordinator\CoordinatorManagedAreaUtils;
 use AppBundle\Entity\Adherent;
@@ -13,8 +12,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
 use AppBundle\Entity\ReferentManagedArea;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Membership\CitizenProjectNotificationDistance;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\Utils\RepositoryUtils;
@@ -314,56 +311,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function findByNearCitizenProjectOrAcceptAllNotification(
-        CitizenProject $citizenProject,
-        int $offset = 0,
-        bool $excludeSupervisor = true,
-        int $radius = CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN
-    ): Paginator {
-        $qb = $this->createNearbyQueryBuilder(
-                new Coordinates(
-                    $citizenProject->getLatitude(),
-                    $citizenProject->getLongitude()
-                )
-            );
-
-        $qb
-            ->join('n.subscriptionTypes', 'subscriptionType')
-            ->andWhere('subscriptionType.code = :citizen_project_subscription_type')
-            ->setParameter('citizen_project_subscription_type', SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL)
-        ;
-
-        $distance = $qb->expr()->orX();
-        $distance->add($this->getNearbyExpression().' <= :distance_max')
-            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :citizenProjectCreationEmailSubscriptionRadius')
-        ;
-
-        $qb->andWhere($distance)
-            ->setParameter('distance_max', $radius)
-            ->setParameter('citizenProjectCreationEmailSubscriptionRadius', CitizenProjectNotificationDistance::DISTANCE_ALL)
-        ;
-
-        $having = $qb->expr()->orX();
-        $having->add($this->getNearbyExpression().' <= n.citizenProjectCreationEmailSubscriptionRadius')
-            ->add('n.citizenProjectCreationEmailSubscriptionRadius = :acceptAllNotification')
-        ;
-        $qb->having($having)
-            ->setParameter('acceptAllNotification', CitizenProjectNotificationDistance::DISTANCE_ALL)
-        ;
-
-        if ($excludeSupervisor) {
-            $qb->andWhere('n.uuid != :uuid')
-                ->setParameter('uuid', $citizenProject->getCreatedBy())
-            ;
-        }
-
-        $qb->setFirstResult($offset)
-            ->setMaxResults(CitizenProjectMessageNotifier::NOTIFICATION_PER_PAGE)
-        ;
-
-        return new Paginator($qb);
     }
 
     public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array

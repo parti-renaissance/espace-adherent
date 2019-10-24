@@ -83,22 +83,6 @@
             <argument type="service" id="app.consumer.service_locator" />
         </service>
 
-        <service id="AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer" parent="app_abstract_consumer">
-            <argument type="service" id="app.consumer.service_locator" />
-            <call method="setCitizeProjectManager">
-                <argument type="service" id="AppBundle\CitizenProject\CitizenProjectManager"/>
-            </call>
-            <call method="setCitizenProjectRepository">
-                <argument type="service" id="AppBundle\Repository\CitizenProjectRepository"/>
-            </call>
-            <call method="setCitizenProjectMessageNotifier">
-                <argument type="service" id="app.citizen_project.citizen_project_message_notifier"/>
-            </call>
-            <call method="setProducer">
-                <argument type="service" id="old_sound_rabbit_mq.project_citizen_creation_notification_producer"/>
-            </call>
-        </service>
-
         <service id="AppBundle\Consumer\ChezVous\AlgoliaConsumer" parent="app_abstract_consumer">
             <argument type="service" id="app.consumer.service_locator" />
             <call method="setCityRepository">

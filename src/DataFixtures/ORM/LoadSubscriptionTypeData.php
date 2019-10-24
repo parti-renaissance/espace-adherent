@@ -63,11 +63,6 @@ class LoadSubscriptionTypeData extends Fixture
                 'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL,
                 'externalId' => null,
             ],
-            [
-                'label' => 'Être notifié(e) de la création de nouveaux projets citoyens dans un rayon de autour de chez moi',
-                'code' => SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL,
-                'externalId' => null,
-            ],
         ];
     }
 }
