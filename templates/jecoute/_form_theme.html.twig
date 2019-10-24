@@ -1,7 +1,7 @@
 {% block survey_question_form_widget %}
     <div class="question-box {{ form.fromSuggestedQuestion.vars.value ? 'read-only' }}">
         <div class="em-form__group">
-            {{ form_label(form.question, 'Question libre', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.question, 'Question ' ~ (form.fromSuggestedQuestion.vars.value ? 'suggérée' : 'libre'), { label_attr: { class: 'em-form__label' } }) }}
             {{ form_errors(form.question.content) }}
 
             <div class="em-form__row">
