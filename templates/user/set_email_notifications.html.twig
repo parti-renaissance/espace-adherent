@@ -26,8 +26,6 @@
             {% endif %}
         {% endfor %}
 
-        {{ form_row(form.citizenProjectCreationEmailSubscriptionRadius) }}
-
         <div class="b__nudge--top">
             {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
         </div>
@@ -47,61 +45,3 @@
         {% endif %}
     {{ form_end(form) }}
 {% endblock %}
-
-{% if app.user.isAdherent %}
-    {% block javascripts %}
-        {{ parent() }}
-        <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                const selectDistanceNotificationPc = $('#adherent_email_subscription_citizenProjectCreationEmailSubscriptionRadius');
-                const checkBoxNotificationPc = $('#adherent_email_subscription_subscriptionTypes_{{ cpSubscriptionType.id }}');
-                const labelCheckBoxNotificationPc = $('label[for="adherent_email_subscription_subscriptionTypes_{{ cpSubscriptionType.id }}"]');
-
-                checkboxHandler();
-
-                function checkboxHandler() {
-                    if (checkBoxNotificationPc.is(':checked')) {
-                        labelCheckBoxNotificationPc.text('');
-                        labelCheckBoxNotificationPc.append(
-                            $('<span>')
-                                .append('Être notifié(e) de la création de nouveaux projets citoyens dans un rayon de ')
-                                .append(selectDistanceNotificationPc)
-                                .append('autour de chez moi')
-                        );
-                        selectDistanceNotificationPc.children('option:selected').removeAttr('selected');
-                        selectDistanceNotificationPc.children('option[value="{{ app.user.hasCitizenProjectCreationEmailSubscription ? app.user.citizenProjectCreationEmailSubscriptionRadius : constant('CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE', app.user) }}"]').prop('selected', true);
-                        selectDistanceNotificationPc.show();
-                    } else {
-                        selectDistanceNotificationPc.hide();
-                        $("form[name='adherent_email_subscription']").append(selectDistanceNotificationPc);
-                        labelCheckBoxNotificationPc.text('Être notifié(e) de la création de nouveaux projets citoyens');
-                    }
-                }
-
-                function selectHandler() {
-                    var val = selectDistanceNotificationPc.find('option:selected').val(),
-                        message = '';
-
-                    if (val == '0') {
-                        message = 'Être notifié(e) de toute création de projet citoyen autour de chez moi';
-                    } else {
-                        message = 'Être notifié(e) de la création de nouveaux projets citoyens dans un rayon de '+selectDistanceNotificationPc+' autour de chez moi';
-                    }
-
-                    labelCheckBoxNotificationPc.text('');
-                    labelCheckBoxNotificationPc.append(
-                        $('<span>')
-                            .append('Être notifié(e) de ')
-                            .append(selectDistanceNotificationPc)
-                            .append('création de projet citoyen autour de chez moi')
-                    );
-                    selectDistanceNotificationPc.unbind('change').on('change', selectHandler);
-                }
-
-                checkBoxNotificationPc.on('change', checkboxHandler);
-                selectDistanceNotificationPc.on('change', selectHandler);
-            });
-        </script>
-    {% endblock %}
-{% endif %}

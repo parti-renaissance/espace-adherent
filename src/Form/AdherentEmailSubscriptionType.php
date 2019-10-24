@@ -2,18 +2,13 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\SubscriptionType;
-use AppBundle\Membership\CitizenProjectNotificationDistance;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,19 +36,12 @@ class AdherentEmailSubscriptionType extends AbstractType
                 'multiple' => true,
                 'error_bubbling' => true,
                 'query_builder' => function (EntityRepository $er) use ($options) {
-                    $eq = $er
+                    return $er
                         ->createQueryBuilder('st')
                         ->orderBy('st.position')
+                        ->where('st.code IN (:codes)')
+                        ->setParameter('codes', $options['is_adherent'] ? SubscriptionTypeEnum::ADHERENT_TYPES : SubscriptionTypeEnum::USER_TYPES)
                     ;
-
-                    if (!$options['is_adherent']) {
-                        $eq
-                            ->where('st.code IN (:codes)')
-                            ->setParameter('codes', SubscriptionTypeEnum::USER_TYPES)
-                        ;
-                    }
-
-                    return $eq;
                 },
                 'group_by' => function (SubscriptionType $type) {
                     switch ($type->getCode()) {
@@ -68,36 +56,14 @@ class AdherentEmailSubscriptionType extends AbstractType
                         case SubscriptionTypeEnum::MUNICIPAL_EMAIL:
                             return 'subscription_type.group.territories_emails';
                         case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL:
-                        case SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL:
                             return 'subscription_type.group.citizen_project_emails';
                     }
 
                     return null;
                 },
             ])
-            ->add('citizenProjectCreationEmailSubscriptionRadius', ChoiceType::class, [
-                'choices' => CitizenProjectNotificationDistance::DISTANCES,
-                'label' => false,
-                'attr' => [
-                    'style' => 'display: none;',
-                ],
-                'error_bubbling' => true,
-            ])
             ->add('submit', SubmitType::class, ['label' => 'Enregistrer les modifications'])
         ;
-
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $data = $event->getData();
-            if (empty($data['citizenProjectCreationEmailSubscriptionRadius'])
-                || Adherent::DISABLED_CITIZEN_PROJECT_EMAIL == $data['citizenProjectCreationEmailSubscriptionRadius']
-            ) {
-                $event->getForm()->add('citizenProjectCreationEmailSubscriptionRadius', ChoiceType::class, [
-                    'choices' => array_merge(CitizenProjectNotificationDistance::DISTANCES, ['Désactivé' => Adherent::DISABLED_CITIZEN_PROJECT_EMAIL]),
-                ]);
-                $data['citizenProjectCreationEmailSubscriptionRadius'] = Adherent::DISABLED_CITIZEN_PROJECT_EMAIL;
-                $event->setData($data);
-            }
-        });
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
