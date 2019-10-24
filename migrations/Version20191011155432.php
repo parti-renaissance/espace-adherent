@@ -51,12 +51,6 @@ final class Version20191011155432 extends AbstractMigration
             'Recevoir les e-mails de mon porteur de projet',
             SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL
         ));
-
-        $this->addSql(sprintf(
-            "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
-            'Être notifié(e) de la création de nouveaux projets citoyens dans un rayon de autour de chez moi',
-            SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL
-        ));
     }
 
     public function down(Schema $schema): void
@@ -101,12 +95,6 @@ final class Version20191011155432 extends AbstractMigration
             "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
             'Recevoir les e-mails de votre porteur de projet',
             SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL
-        ));
-
-        $this->addSql(sprintf(
-            "UPDATE subscription_type SET label = '%s' WHERE code = '%s'",
-            'Être notifié(e) de la création de nouveaux projets citoyens',
-            SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL
         ));
     }
 }

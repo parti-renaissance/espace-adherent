@@ -73,8 +73,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
-    public const DISABLED_CITIZEN_PROJECT_EMAIL = -1;
-    public const CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE = 10;
 
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -192,11 +190,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\ManyToMany(targetEntity="SubscriptionType", cascade={"persist"})
      */
     private $subscriptionTypes;
-
-    /**
-     * @ORM\Column(type="integer", options={"default": 10})
-     */
-    private $citizenProjectCreationEmailSubscriptionRadius = self::CITIZEN_PROJECT_EMAIL_DEFAULT_DISTANCE;
 
     /**
      * @ORM\Column(type="boolean", options={"default": 0})
@@ -1469,17 +1462,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getReferentTagCodes(): array
     {
         return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->referentTags->toArray());
-    }
-
-    public function getCitizenProjectCreationEmailSubscriptionRadius(): int
-    {
-        return $this->citizenProjectCreationEmailSubscriptionRadius;
-    }
-
-    public function setCitizenProjectCreationEmailSubscriptionRadius(
-        int $citizenProjectCreationEmailSubscriptionRadius
-    ): void {
-        $this->citizenProjectCreationEmailSubscriptionRadius = $citizenProjectCreationEmailSubscriptionRadius;
     }
 
     public function hasCitizenProjectHostEmailSubscription(): bool

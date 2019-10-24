@@ -22,9 +22,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 class CitizenProjectMessageNotifier implements EventSubscriberInterface
 {
-    public const RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN = 100;
-    public const NOTIFICATION_PER_PAGE = MailerService::PAYLOAD_MAXSIZE;
-
     private $manager;
     private $mailer;
     private $committeeManager;
