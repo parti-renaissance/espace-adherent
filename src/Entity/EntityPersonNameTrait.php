@@ -43,12 +43,12 @@ trait EntityPersonNameTrait
         return $this->firstName.' '.$this->getLastNameInitial();
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }

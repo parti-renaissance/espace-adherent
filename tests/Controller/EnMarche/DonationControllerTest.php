@@ -224,7 +224,7 @@ class DonationControllerTest extends WebTestCase
         $donator = $donation->getDonator();
         $this->assertInstanceOf(Donator::class, $donator);
         $this->assertSame($donator->getEmailAddress(), $donation->getEmailAddress());
-        $this->assertEquals($donator->getLastDonationAt(), $donation->getCreatedAt());
+        $this->assertEquals($donator->getLastDonationDate(), $donation->getCreatedAt());
         $this->assertSame('000053', $donator->getIdentifier());
 
         // Email should have been sent

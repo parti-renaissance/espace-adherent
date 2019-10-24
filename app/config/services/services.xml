@@ -82,6 +82,7 @@
         <service id="AppBundle\Command\DonationUpdateReferenceCommand" />
         <service id="AppBundle\Command\ImportDonationsCommand" />
         <service id="AppBundle\Command\ImportDonationCoordinatesCommand" />
+        <service id="AppBundle\Form\Admin\DonatorIdentifierType"/>
         <service id="AppBundle\Validator\PayboxSubscriptionValidator" />
         <service id="AppBundle\Validator\UniqueDonationSubscriptionValidator" />
         <service id="AppBundle\Validator\MaxFiscalYearDonationValidator" />
@@ -95,6 +96,8 @@
         </service>
         <service id="AppBundle\Donation\TransactionCallbackHandler"/>
         <service id="AppBundle\Donation\DonationRequestHandler"/>
+
+        <service id="AppBundle\Donation\DonatorMergeCommandHandler" public="true" />
         <service id="AppBundle\Donation\DonationRequestUtils" />
 
         <service id="app.donation_request.utils.locator" class="Symfony\Component\DependencyInjection\ServiceLocator">

@@ -4,7 +4,9 @@ namespace AppBundle\Repository;
 
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DonationRepository extends ServiceEntityRepository
@@ -54,6 +56,15 @@ class DonationRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function getSubscriptionsForDonatorQueryBuilder(Donator $donator): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('donation')
+            ->andWhere('donation.donator = :donator')
+            ->setParameter('donator', $donator)
         ;
     }
 }

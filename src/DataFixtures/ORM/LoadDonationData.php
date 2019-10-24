@@ -115,7 +115,6 @@ class LoadDonationData extends Fixture
             $donation->getEmailAddress()
         );
 
-        $donator->setLastDonationAt($donation->getCreatedAt());
         $donator->setIdentifier($accountId);
         $donator->addDonation($donation);
 

@@ -255,6 +255,7 @@ sonata_doctrine_orm_admin:
                 array_list: admin/CRUD/list/array_list.html.twig
                 datetime: admin/CRUD/list_datetime.html.twig
                 thumbnail: './admin/list/list_thumbnail.html.twig'
+                color: './admin/list/list_color.html.twig'
             show:
                 array: admin/CRUD/show_array.html.twig
                 array_list: admin/CRUD/show/array_list.html.twig

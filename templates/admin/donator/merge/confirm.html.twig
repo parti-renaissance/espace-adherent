@@ -1,0 +1,82 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Fusion de donateurs</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    <div class="col-md-6">
+        <div class="box box-danger">
+            <div class="box-header">
+                <h4 class="box-title">Donateur source</h4>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                {% include 'admin/donator/merge/_donator_summary.html.twig' with { donator: source_donator } %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="box box-success">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Donateur de destination
+                </h4>
+            </div>
+            <div class="box-body table-responsive no-padding">
+                {% include 'admin/donator/merge/_donator_summary.html.twig' with { donator: destination_donator } %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-warning">
+                        <div class="box-header">
+                            <h4 class="box-title">Confirmation de la fusion</h4>
+                        </div>
+                        <div class="box-body">
+                            <div class="sonata-ba-collapsed-fields">
+                                {{ form_row(form.sourceDonator, { label: 'Numéro du donateur source', attr: { readonly: true } }) }}
+                                {{ form_row(form.destinationDonator, { label: 'Numéro du donateur de destination', attr: { readonly: true } }) }}
+
+                                <div>
+                                    La fusion entraînera:
+                                    <ul>
+                                        <li>
+                                            la suppression du donateur source <b>{{ source_donator.firstName }} {{ source_donator.lastName }} ({{ source_donator.identifier }})</b>
+                                        </li>
+                                        <li>
+                                            le rapatriement de <b>{{ source_donator.donations|length }}</b> don{% if source_donator.donations|length > 1 %}s{% endif %}
+                                            pour le donateur <b>{{ destination_donator.firstName }} {{ destination_donator.lastName }} ({{ destination_donator.identifier }})</b>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    {{ form_widget(form.confirm, { label: 'Confirmer la fusion', attr: { class: 'btn btn-success' } }) }}
+                                    <a href="{{ path('app_admin_donator_merge') }}" class="btn btn-danger">Annuler</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

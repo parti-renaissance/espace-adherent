@@ -90,21 +90,33 @@ class Donator
     private $emailAddress;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $lastDonationAt;
+    private $comment;
 
     /**
      * @ORM\OneToMany(targetEntity="Donation", mappedBy="donator", cascade={"all"})
      */
     private $donations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Donation")
+     */
+    private $referenceDonation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DonatorTag")
+     */
+    private $tags;
+
     public function __construct(
-        ?string $lastName,
-        ?string $firstName,
-        ?string $city,
-        string $country,
-        ?string $emailAddress = null
+        string $lastName = null,
+        string $firstName = null,
+        string $city = null,
+        string $country = null,
+        string $emailAddress = null
     ) {
         $this->lastName = $lastName;
         $this->firstName = $firstName;
@@ -112,6 +124,17 @@ class Donator
         $this->country = $country;
         $this->emailAddress = $emailAddress;
         $this->donations = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s %s (%s)',
+            $this->firstName,
+            $this->lastName,
+            $this->identifier
+        );
     }
 
     public function getId(): ?int
@@ -119,7 +142,7 @@ class Donator
         return $this->id;
     }
 
-    public function getIdentifier(): string
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
@@ -199,14 +222,31 @@ class Donator
         $this->emailAddress = $emailAddress;
     }
 
-    public function getLastDonationAt(): ?\DateTimeInterface
+    public function getLastDonation(): ?Donation
     {
-        return $this->lastDonationAt;
+        if ($this->donations->isEmpty()) {
+            return null;
+        }
+
+        return $this->donations->first();
     }
 
-    public function setLastDonationAt(?\DateTimeInterface $lastDonationAt): void
+    public function getLastDonationDate(): ?\DateTimeInterface
     {
-        $this->lastDonationAt = $lastDonationAt;
+        if (!$donation = $this->getLastDonation()) {
+            return null;
+        }
+
+        return $donation->getCreatedAt();
+    }
+
+    public function getLastDonationAmount(): ?float
+    {
+        if (!$donation = $this->getLastDonation()) {
+            return null;
+        }
+
+        return $donation->getAmountInEuros();
     }
 
     public function getDonations(): Collection
@@ -226,5 +266,42 @@ class Donator
     public function removeDonation(Donation $donation): void
     {
         $this->donations->removeElement($donation);
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(DonatorTag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+    }
+
+    public function removeTag(DonatorTag $tag): void
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    public function getReferenceDonation(): ?Donation
+    {
+        return $this->referenceDonation;
+    }
+
+    public function setReferenceDonation(?Donation $donation): void
+    {
+        $this->referenceDonation = $donation;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): void
+    {
+        $this->comment = $comment;
     }
 }
