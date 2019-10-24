@@ -79,7 +79,7 @@
                 $('.question-add').trigger('click');
 
                 // Sets the content of the current suggested question
-                $("input[name$='[question][content]']").last().val($(this).data('content'));
+                $("input[name$='[question][content]']").last().val($(this).data('content')).parent().prev().html('Question suggérée');
 
                 // Checks the type of the current suggested question
                 const currentChoiceType = $("input[name$='[question][type]']").last().attr('name');
