@@ -168,7 +168,7 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(7, $histories73Subscriptions);
+        $this->assertCount(6, $histories73Subscriptions);
         $this->assertCount(0, $histories73Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
@@ -316,9 +316,9 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(7, $histories73Subscriptions);
-        $this->assertCount(7, $histories73Unsubscriptions);
-        $this->assertCount(7, $histories06Subscriptions);
+        $this->assertCount(6, $histories73Subscriptions);
+        $this->assertCount(6, $histories73Unsubscriptions);
+        $this->assertCount(6, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
@@ -483,14 +483,13 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
         $this->assertNotEmpty($adherent->getSubscriptionTypeCodes());
-        $this->assertTrue($adherent->hasCitizenProjectCreationEmailSubscription());
 
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[subscriptionTypes][]"]');
 
-        $this->assertCount(9, $subscriptions);
+        $this->assertCount(8, $subscriptions);
 
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
@@ -505,8 +504,8 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(1, $errors->count());
-        $this->assertSame('Cette valeur n\'est pas valide.', $errors->eq(0)->text());
+        self::assertSame(1, $errors->count());
+        self::assertSame('Cette valeur n\'est pas valide.', $errors->eq(0)->text());
 
         // Submit the emails subscription form with valid data
         Chronos::setTestNow('+1 day');
@@ -529,26 +528,21 @@ class AdherentControllerTest extends WebTestCase
         $histories = $this->findEmailSubscriptionHistoryByAdherent($adherent);
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
-        $historiesCitizenProjectCreation = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL);
         $historiesCitizenProjectHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);
 
-        $this->assertCount(11, $histories);
+        $this->assertCount(9, $histories);
         $this->assertCount(1, $historiesHost);
         $this->assertCount(1, $historiesReferents);
-        $this->assertCount(2, $historiesCitizenProjectCreation);
         $this->assertCount(2, $historiesCitizenProjectHost);
-        $this->assertSame('subscribe', $historiesHost[0]->getAction());
-        $this->assertSame('subscribe', $historiesReferents[0]->getAction());
-        $this->assertSame('unsubscribe', $historiesCitizenProjectCreation[0]->getAction());
-        $this->assertSame('subscribe', $historiesCitizenProjectCreation[1]->getAction());
-        $this->assertSame('unsubscribe', $historiesCitizenProjectHost[0]->getAction());
-        $this->assertSame('subscribe', $historiesCitizenProjectHost[1]->getAction());
+        self::assertSame('subscribe', $historiesHost[0]->getAction());
+        self::assertSame('subscribe', $historiesReferents[0]->getAction());
+        self::assertSame('unsubscribe', $historiesCitizenProjectHost[0]->getAction());
+        self::assertSame('subscribe', $historiesCitizenProjectHost[1]->getAction());
         $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::REFERENT_EMAIL));
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::DEPUTY_EMAIL));
-        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
 
         // Unsubscribe from 'subscribed_emails_local_host' and 'subscribed_emails_referents'
         Chronos::setTestNow('+1 week');
@@ -569,11 +563,11 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(14, $histories);
+        $this->assertCount(12, $histories);
         $this->assertCount(2, $historiesHost);
         $this->assertCount(2, $historiesReferents);
-        $this->assertSame('unsubscribe', $historiesHost[0]->getAction());
-        $this->assertSame('unsubscribe', $historiesReferents[0]->getAction());
+        self::assertSame('unsubscribe', $historiesHost[0]->getAction());
+        self::assertSame('unsubscribe', $historiesReferents[0]->getAction());
 
         Chronos::setTestNow('+2 weeks'); // To make sure the date order of the SQL query is correct
         // Re-subscribe to 'subscribed_emails_local_host' and 'subscribed_emails_referents'
@@ -597,11 +591,11 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(17, $histories);
+        $this->assertCount(15, $histories);
         $this->assertCount(3, $historiesHost);
         $this->assertCount(3, $historiesReferents);
-        $this->assertSame('subscribe', $historiesHost[0]->getAction());
-        $this->assertSame('subscribe', $historiesReferents[0]->getAction());
+        self::assertSame('subscribe', $historiesHost[0]->getAction());
+        self::assertSame('subscribe', $historiesReferents[0]->getAction());
         Chronos::setTestNow();
     }
 
@@ -1240,9 +1234,9 @@ class AdherentControllerTest extends WebTestCase
 
     private function getSubscriptionTypesFormValues(array $codes)
     {
-        return array_map(function (SubscriptionType $type) use ($codes) {
+        return array_map(static function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
-        }, $this->getSubscriptionTypeRepository()->findAll());
+        }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
     }
 
     private function checkIdeasAuthorCategory(array $ideas, string $categoryName)

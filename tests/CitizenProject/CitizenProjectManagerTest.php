@@ -66,14 +66,16 @@ class CitizenProjectManagerTest extends WebTestCase
 
     public function testFindAdherentNearCitizenProjectOrAcceptAllNotification()
     {
+        $this->markTestSkipped('Skipped because unused feature');
+
         $citizenProject = $this->getCitizenProject(LoadCitizenProjectData::CITIZEN_PROJECT_1_UUID);
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject);
 
-        $this->assertSame(6, $adherents->count());
+        self::assertSame(6, $adherents->count());
 
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, false);
 
-        $this->assertSame(7, $adherents->count());
+        self::assertSame(7, $adherents->count());
 
         $adherent = $this->getAdherentRepository()->findOneByEmail('francis.brioul@yahoo.com');
         $adherent->setCitizenProjectCreationEmailSubscriptionRadius(CitizenProjectNotificationDistance::DISTANCE_100KM);
@@ -86,7 +88,7 @@ class CitizenProjectManagerTest extends WebTestCase
 
         $adherents = $this->citizenProjectManager->findAdherentNearCitizenProjectOrAcceptAllNotification($citizenProject, 0, true, CitizenProjectMessageNotifier::RADIUS_NOTIFICATION_NEAR_PROJECT_CITIZEN);
 
-        $this->assertSame(8, $adherents->count());
+        self::assertSame(8, $adherents->count());
     }
 
     public function testFollowerAddedSuccessfully()

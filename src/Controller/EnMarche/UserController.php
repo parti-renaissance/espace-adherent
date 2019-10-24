@@ -22,7 +22,6 @@ use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\DonationRepository;
 use AppBundle\Repository\SubscriptionTypeRepository;
 use AppBundle\Repository\TransactionRepository;
-use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -164,10 +163,7 @@ class UserController extends Controller
             return $this->redirectToRoute('app_user_set_email_notifications');
         }
 
-        return $this->render('user/set_email_notifications.html.twig', [
-            'form' => $form->createView(),
-            'cpSubscriptionType' => $subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL),
-        ]);
+        return $this->render('user/set_email_notifications.html.twig', ['form' => $form->createView()]);
     }
 
     /**

@@ -98,7 +98,6 @@ class MembershipControllerTest extends WebTestCase
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
         $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS));
         $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-        $this->assertFalse($adherent->hasCitizenProjectCreationEmailSubscription());
 
         /** @var Adherent $adherent */
         $this->assertInstanceOf(
@@ -186,7 +185,7 @@ class MembershipControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
         $adherent = $this->getAdherentRepository()->findOneByEmail('test@test.com');
 
-        self::assertCount(9, $adherent->getSubscriptionTypes());
+        self::assertCount(8, $adherent->getSubscriptionTypes());
     }
 
     public function testAdherentSubscriptionTypesArePersistedCorrectlyWhenAdhesionFromUser(): void
@@ -232,11 +231,11 @@ class MembershipControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertSame('Votre compte adhérent est maintenant actif.', $crawler->filter('.flash__inner')->text());
+        self::assertSame('Votre compte adhérent est maintenant actif.', $crawler->filter('.flash__inner')->text());
 
         $this->manager->refresh($adherent);
 
-        self::assertCount(8, $adherent->getSubscriptionTypes());
+        self::assertCount(7, $adherent->getSubscriptionTypes());
     }
 
     public function testBannedAdherentSubscription(): void

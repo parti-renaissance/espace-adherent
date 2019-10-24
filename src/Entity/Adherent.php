@@ -1482,11 +1482,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->citizenProjectCreationEmailSubscriptionRadius = $citizenProjectCreationEmailSubscriptionRadius;
     }
 
-    public function hasCitizenProjectCreationEmailSubscription(): bool
-    {
-        return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_CREATION_EMAIL);
-    }
-
     public function hasCitizenProjectHostEmailSubscription(): bool
     {
         return $this->hasSubscriptionType(SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);

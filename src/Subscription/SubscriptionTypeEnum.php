@@ -26,7 +26,6 @@ final class SubscriptionTypeEnum extends Enum
         self::DEPUTY_EMAIL,
         self::REFERENT_EMAIL,
         self::MUNICIPAL_EMAIL,
-        self::CITIZEN_PROJECT_CREATION_EMAIL,
         self::CITIZEN_PROJECT_HOST_EMAIL,
     ];
 
@@ -38,5 +37,16 @@ final class SubscriptionTypeEnum extends Enum
 
     public const DEFAULT_MOBILE_TYPES = [
         self::MILITANT_ACTION_SMS,
+    ];
+
+    public const ADHERENT_TYPES = [
+        self::MILITANT_ACTION_SMS,
+        self::LOCAL_HOST_EMAIL,
+        self::MOVEMENT_INFORMATION_EMAIL,
+        self::WEEKLY_LETTER_EMAIL,
+        self::DEPUTY_EMAIL,
+        self::REFERENT_EMAIL,
+        self::MUNICIPAL_EMAIL,
+        self::CITIZEN_PROJECT_HOST_EMAIL,
     ];
 }
