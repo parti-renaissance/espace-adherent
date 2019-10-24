@@ -6,6 +6,7 @@ use AppBundle\Entity\Jecoute\DataAnswer;
 use AppBundle\Entity\Jecoute\Question;
 use AppBundle\Entity\Jecoute\Survey;
 use AppBundle\Entity\Jecoute\SurveyQuestion;
+use AppBundle\Jecoute\SurveyQuestionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -33,10 +34,13 @@ class QuestionRepository extends ServiceEntityRepository
                 ) AS total_by_choice', DataAnswer::class)
             )
             ->innerJoin(SurveyQuestion::class, 'sq', Join::WITH, 'sq.question = q')
-            ->leftJoin('q.choices', 'ch')
+            ->leftJoin('q.choices', 'ch', Join::WITH, 'q.type != :simple_field_type')
             ->leftJoin(DataAnswer::class, 'da1', Join::WITH, 'da1.surveyQuestion = sq')
             ->where('sq.survey = :survey')
-            ->setParameter('survey', $survey)
+            ->setParameters([
+                'survey' => $survey,
+                'simple_field_type' => SurveyQuestionTypeEnum::SIMPLE_FIELD,
+            ])
             ->groupBy('q.id', 'ch.id')
             ->getQuery()
             ->getArrayResult()
