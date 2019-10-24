@@ -30,7 +30,8 @@ Feature:
 
     # Edit
     Given I should see "Un questionnaire jecoute manager"
-    When I click the "survey-edit-2" element
+    When I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
+    And I follow "Éditer"
     And I should see "Nom du questionnaire"
     And I should see "Enregistrer le questionnaire"
 
@@ -40,9 +41,9 @@ Feature:
 
     # Show statistics
     Given I wait until I see "Un questionnaire jecoute manager (modifié)"
-    And I click the "survey-stats-2" element
+    And I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
+    And I follow "Statistiques"
     Then I should see "Statistiques : Un questionnaire jecoute manager (modifié)"
-    And I should see "Une question ?"
     And I should see "Aucune donnée n'est disponible pour le moment."
 
   @javascript
@@ -51,7 +52,8 @@ Feature:
     When I am on "/espace-responsable-jecoute/questionnaires-nationaux"
     And I should see "Questionnaires nationaux"
     And I should see "Questionnaire national numéro 1"
-    Given I click the "survey-stats-0" element
+    Given I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
+    And I follow "Statistiques"
     Then I should see "Statistiques : Questionnaire national numéro 1"
     And I should see "Une première question du 1er questionnaire national ?"
     And I should see "Aucune donnée n'est disponible pour le moment."

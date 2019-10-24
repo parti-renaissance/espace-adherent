@@ -10,12 +10,13 @@ use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Form\Jecoute\SurveyFormType;
 use AppBundle\Jecoute\StatisticsExporter;
 use AppBundle\Jecoute\StatisticsProvider;
-use AppBundle\Jecoute\SurveyExporter;
+use AppBundle\Jecoute\SurveyTypeEnum;
 use AppBundle\Repository\Jecoute\DataAnswerRepository;
 use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use AppBundle\Repository\Jecoute\NationalSurveyRepository;
 use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Gedmo\Sluggable\Util\Urlizer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,40 +28,26 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractJecouteController extends Controller
 {
-    /**
-     * @Route(
-     *     name="local_surveys_list",
-     *     methods={"GET"},
-     * )
-     */
-    public function jecouteLocalSurveysListAction(
+    protected $localSurveyRepository;
+    private $nationalSurveyRepository;
+
+    public function __construct(
         LocalSurveyRepository $localSurveyRepository,
-        SurveyExporter $surveyExporter
-    ): Response {
-        return  $this->renderTemplate('jecoute/local_surveys_list.html.twig', [
-            'surveysListJson' => $surveyExporter->exportLocalSurveysAsJson(
-                $this->getLocalSurveys($localSurveyRepository),
-                $this->getSpaceName()
-            ),
-        ]);
+        NationalSurveyRepository $nationalSurveyRepository
+    ) {
+        $this->localSurveyRepository = $localSurveyRepository;
+        $this->nationalSurveyRepository = $nationalSurveyRepository;
     }
 
     /**
-     * @Route(
-     *     path="/questionnaires-nationaux",
-     *     name="national_surveys_list",
-     *     methods={"GET"},
-     * )
+     * @Route("", name="local_surveys_list", methods={"GET"}, defaults={"type": SurveyTypeEnum::LOCAL})
+     * @Route("/questionnaires-nationaux", name="national_surveys_list", methods={"GET"}, defaults={"type": SurveyTypeEnum::NATIONAL})
      */
-    public function jecouteNationalSurveysListAction(
-        NationalSurveyRepository $nationalSurveyRepository,
-        SurveyExporter $surveyExporter
-    ): Response {
-        return $this->renderTemplate('jecoute/national_surveys_list.html.twig', [
-            'surveysListJson' => $surveyExporter->exportNationalSurveysAsJson(
-                $nationalSurveyRepository->findAllPublished(),
-                $this->getSpaceName()
-            ),
+    public function jecouteSurveysListAction(string $type): Response
+    {
+        return $this->renderTemplate('jecoute/surveys_list.html.twig', [
+            'type' => $type,
+            'surveys' => $this->getListSurveys($type),
         ]);
     }
 
@@ -106,10 +93,8 @@ abstract class AbstractJecouteController extends Controller
      * @Route(
      *     path="/questionnaire/{uuid}/editer",
      *     name="local_survey_edit",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET|POST"},
+     *     requirements={"uuid": "%pattern_uuid%"},
+     *     methods={"GET|POST"}
      * )
      *
      * @Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")
@@ -143,10 +128,8 @@ abstract class AbstractJecouteController extends Controller
      * @Route(
      *     path="/questionnaire/{uuid}",
      *     name="national_survey_show",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
+     *     requirements={"uuid": "%pattern_uuid%"},
+     *     methods={"GET"}
      * )
      *
      * @Entity("nationalSurvey", expr="repository.findOnePublishedByUuid(uuid)")
@@ -166,19 +149,34 @@ abstract class AbstractJecouteController extends Controller
      * @Route(
      *     path="/questionnaire/{uuid}/stats",
      *     name="survey_stats",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
+     *     requirements={"uuid": "%pattern_uuid%"},
+     *     methods={"GET"}
      * )
      *
      * @Entity("survey", expr="repository.findOneByUuid(uuid)")
+     *
+     * @Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")
      */
-    public function jecouteSurveyStatsAction(Survey $survey, StatisticsProvider $provider): Response
-    {
-        return $this->renderTemplate('jecoute/stats.html.twig', [
-            'data' => $provider->getStatsBySurvey($survey),
-        ]);
+    public function jecouteSurveyStatsAction(
+        Request $request,
+        Survey $survey,
+        StatisticsProvider $provider,
+        StatisticsExporter $exporter
+    ): Response {
+        $data = $provider->getStatsBySurvey($survey);
+
+        if ($request->query->has('export')) {
+            return new Response(
+                $exporter->export($data),
+                Response::HTTP_OK,
+                [
+                    'Content-Type' => 'text/csv',
+                    'Content-Disposition' => 'attachment;filename="'.Urlizer::urlize($survey->getName()).'-'.date('Y-m-d_H-i').'.csv"',
+                ]
+            );
+        }
+
+        return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $data]);
     }
 
     /**
@@ -221,40 +219,16 @@ abstract class AbstractJecouteController extends Controller
         DataAnswerRepository $dataAnswerRepository
     ): Response {
         return $this->render('jecoute/data_answers_dialog_content.html.twig', [
-            'answers' => $dataAnswerRepository->findAllBySurveyQuestion($surveyQuestion),
-        ]);
-    }
-
-    /**
-     * @Route(
-     *     path="/questionnaire/{uuid}/stats/download",
-     *     name="survey_stats_download",
-     *     requirements={
-     *         "uuid": "%pattern_uuid%",
-     *     },
-     *     methods={"GET"},
-     * )
-     *
-     * @Entity("survey", expr="repository.findOneByUuid(uuid)")
-     *
-     * @Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")
-     */
-    public function jecouteSurveyStatsDownloadAction(Survey $survey, StatisticsExporter $statisticsExporter): Response
-    {
-        $dataFile = $statisticsExporter->export($survey);
-
-        return new Response($dataFile['content'], Response::HTTP_OK, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment;filename="'.$dataFile['filename'].'"',
+            'answers' => $dataAnswerRepository->findAllBySurveyQuestion($surveyQuestion->getUuid()),
         ]);
     }
 
     abstract protected function getSpaceName(): string;
 
     /**
-     * @return LocalSurvey[]|array
+     * @return LocalSurvey[]
      */
-    abstract protected function getLocalSurveys(LocalSurveyRepository $localSurveyRepository): array;
+    abstract protected function getLocalSurveys(): array;
 
     abstract protected function getSurveyTags(): array;
 
@@ -277,5 +251,17 @@ abstract class AbstractJecouteController extends Controller
     protected function createSurveyForm(LocalSurvey $localSurvey): FormInterface
     {
         return $this->createForm(SurveyFormType::class, $localSurvey);
+    }
+
+    /**
+     * @return LocalSurvey[]|NationalSurvey[]
+     */
+    private function getListSurveys(string $type): array
+    {
+        if (SurveyTypeEnum::LOCAL === $type) {
+            return $this->getLocalSurveys();
+        }
+
+        return $this->nationalSurveyRepository->findAllPublishedWithStats();
     }
 }

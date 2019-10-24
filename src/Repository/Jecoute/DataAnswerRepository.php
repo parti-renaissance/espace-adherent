@@ -3,8 +3,8 @@
 namespace AppBundle\Repository\Jecoute;
 
 use AppBundle\Entity\Jecoute\DataAnswer;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class DataAnswerRepository extends ServiceEntityRepository
@@ -14,15 +14,15 @@ class DataAnswerRepository extends ServiceEntityRepository
         parent::__construct($registry, DataAnswer::class);
     }
 
-    public function findAllBySurveyQuestion(SurveyQuestion $surveyQuestion): array
+    public function findAllBySurveyQuestion(UuidInterface $surveyQuestionUuid): array
     {
         return $this
             ->createQueryBuilder('dataAnswer')
             ->select('dataAnswer.textField', 'dataSurvey.postedAt')
             ->innerJoin('dataAnswer.surveyQuestion', 'surveyQuestion')
             ->innerJoin('dataAnswer.dataSurvey', 'dataSurvey')
-            ->andWhere('surveyQuestion = :surveyQuestion')
-            ->setParameter('surveyQuestion', $surveyQuestion)
+            ->andWhere('surveyQuestion.uuid = :surveyQuestion')
+            ->setParameter('surveyQuestion', $surveyQuestionUuid)
             ->getQuery()
             ->getResult()
         ;

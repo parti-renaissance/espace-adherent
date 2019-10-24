@@ -24,7 +24,7 @@ class JecouteAdminSurveyQuestionFormType extends AbstractType
             $data = $event->getData();
             $form = $event->getForm();
 
-            if ($data instanceof SurveyQuestion && $data->isFromSuggestedQuestion()) {
+            if ($data instanceof SurveyQuestion && $data->getFromSuggestedQuestion()) {
                 $form->add('question', JecouteAdminQuestionType::class, [
                     'attr' => ['class' => 'question-disabled'],
                     'disabled' => true,

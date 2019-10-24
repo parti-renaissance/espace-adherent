@@ -41,7 +41,7 @@ class SurveyQuestion implements AuthoredInterface
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="surveys", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
      *
      * @Assert\Valid
      */
@@ -61,9 +61,9 @@ class SurveyQuestion implements AuthoredInterface
     private $dataAnswers;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $fromSuggestedQuestion = false;
+    private $fromSuggestedQuestion;
 
     public function __construct(Survey $survey = null, Question $question = null)
     {
@@ -123,12 +123,12 @@ class SurveyQuestion implements AuthoredInterface
         $this->question = $question;
     }
 
-    public function setFromSuggestedQuestion(?bool $fromSuggestedQuestion): void
+    public function setFromSuggestedQuestion(?int $questionId): void
     {
-        $this->fromSuggestedQuestion = (bool) $fromSuggestedQuestion;
+        $this->fromSuggestedQuestion = $questionId;
     }
 
-    public function isFromSuggestedQuestion(): bool
+    public function getFromSuggestedQuestion(): ?int
     {
         return $this->fromSuggestedQuestion;
     }

@@ -1,3 +1,4 @@
+{% spaceless %}
 {% set homepage_url = url('homepage')|trim('/') %}
 
 {% set default_sharer = 'https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg' %}
@@ -7,8 +8,7 @@
 {% set has_role_user = is_granted('ROLE_USER') %}
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
 {% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
-
-<!DOCTYPE html>
+{% endspaceless %}<!DOCTYPE html>
 <!--
  ______         __  __                _            _
 |  ____|       |  \/  |              | |          | |

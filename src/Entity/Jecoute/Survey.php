@@ -34,7 +34,7 @@ abstract class Survey
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=70)
      *
      * @JMS\Groups({"survey_list"})
      */
@@ -53,7 +53,7 @@ abstract class Survey
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $published = false;
+    private $published;
 
     public function __construct(string $name = null, bool $published = false)
     {
@@ -191,15 +191,18 @@ abstract class Survey
                 $clonedSurveyQuestion = clone $surveyQuestion;
                 $clonedSurveyQuestion->setSurvey($this);
 
-                if (!$surveyQuestion->isFromSuggestedQuestion()) {
-                    $clonedQuestion = clone $surveyQuestion->getQuestion();
-                    $clonedSurveyQuestion->setQuestion($clonedQuestion);
-                }
+                $clonedQuestion = clone $surveyQuestion->getQuestion();
+                $clonedSurveyQuestion->setQuestion($clonedQuestion);
 
                 $questions->add($clonedSurveyQuestion);
             }
 
             $this->setQuestions($questions);
         }
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 }

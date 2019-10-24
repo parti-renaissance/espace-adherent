@@ -3,7 +3,10 @@
 namespace AppBundle\Repository\Jecoute;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Jecoute\DataSurvey;
 use AppBundle\Entity\Jecoute\LocalSurvey;
+use AppBundle\Entity\Jecoute\SurveyQuestion;
+use AppBundle\Entity\ReferentTag;
 use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -32,12 +35,17 @@ class LocalSurveyRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllByTags(array $tags): array
+    /**
+     * @param ReferentTag[] $tags
+     *
+     * @return LocalSurvey[]
+     */
+    public function findAllByTagsWithStats(array $tags): array
     {
         $qb = $this
             ->createQueryBuilder('survey')
-            ->addSelect('questions')
-            ->innerJoin('survey.questions', 'questions')
+            ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
+            ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
         ;
 
         return $qb
@@ -80,8 +88,8 @@ class LocalSurveyRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('survey')
-            ->addSelect('questions')
-            ->innerJoin('survey.questions', 'questions')
+            ->addSelect(sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
+            ->addSelect(sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
             ->where('survey.author = :author')
             ->setParameter('author', $adherent)
             ->getQuery()

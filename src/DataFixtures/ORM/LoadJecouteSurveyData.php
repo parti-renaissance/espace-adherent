@@ -44,13 +44,17 @@ class LoadJecouteSurveyData extends Fixture
         $question3 = $this->getReference('question-3');
 
         /** @var Question $suggestedQuestion1 */
-        $suggestedQuestion1 = $this->getReference(('suggested-question-1'));
+        $suggestedQuestion1 = $this->getReference('suggested-question-1');
 
         $surveyQuestion1 = new SurveyQuestion($localSurvey1, $question1);
         $surveyQuestion2 = new SurveyQuestion($localSurvey1, $question2);
         $surveyQuestion3 = new SurveyQuestion($localSurvey1, $question3);
-        $surveyQuestion4 = new SurveyQuestion($localSurvey1, $suggestedQuestion1);
-        $surveyQuestion4->setFromSuggestedQuestion(true);
+        $surveyQuestion4 = new SurveyQuestion(
+            $localSurvey1,
+            $question4 = new Question($suggestedQuestion1->getContent(), $suggestedQuestion1->getType())
+        );
+        $question4->setChoices($suggestedQuestion1->getChoices());
+        $surveyQuestion4->setFromSuggestedQuestion($suggestedQuestion1->getId());
 
         $localSurvey1->addQuestion($surveyQuestion1);
         $localSurvey1->addQuestion($surveyQuestion2);

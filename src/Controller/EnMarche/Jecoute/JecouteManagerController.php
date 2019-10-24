@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche\Jecoute;
 
 use AppBundle\Jecoute\JecouteSpaceEnum;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,9 +18,9 @@ class JecouteManagerController extends AbstractJecouteController
         return JecouteSpaceEnum::MANAGER_SPACE;
     }
 
-    protected function getLocalSurveys(LocalSurveyRepository $localSurveyRepository): array
+    protected function getLocalSurveys(): array
     {
-        return $localSurveyRepository->findAllByTags($this->getSurveyTags());
+        return $this->localSurveyRepository->findAllByTagsWithStats($this->getSurveyTags());
     }
 
     protected function getSurveyTags(): array

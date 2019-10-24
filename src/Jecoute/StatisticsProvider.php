@@ -3,9 +3,7 @@
 namespace AppBundle\Jecoute;
 
 use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
 use AppBundle\Repository\Jecoute\QuestionRepository;
-use Doctrine\Common\Collections\Collection;
 
 class StatisticsProvider
 {
@@ -24,60 +22,39 @@ class StatisticsProvider
                 'name' => $survey->getName(),
                 'isNational' => $survey->isNational(),
             ],
-            'questions' => $this->createQuestions($survey->getQuestions()),
+            'questions' => $this->aggregateData($this->questionRepository->calculateStatistics($survey)),
         ];
 
         return $data;
     }
 
-    private function createQuestions(Collection $questions): array
+    private function aggregateData(array $stats): array
     {
         $data = [];
 
-        /** @var SurveyQuestion $surveyQuestion */
-        foreach ($questions as $surveyQuestion) {
-            $question = $surveyQuestion->getQuestion();
-            $dataByQuestion = $this->questionRepository->findDataByQuestion($question);
-            $totalAnswered = $this->calculateTotal($dataByQuestion, $question->getType());
+        foreach ($stats as $item) {
+            $uuid = (string) $item['uuid'];
 
-            $data[] = [
-                'uuid' => $surveyQuestion->getUuid(),
-                'content' => $question->getContent(),
-                'type' => $question->getType(),
-                'stats' => $this->createDataAnswers($dataByQuestion, $totalAnswered, $question->getType()),
-                'surveyQuestion' => $surveyQuestion,
-            ];
-        }
-
-        return $data;
-    }
-
-    private function createDataAnswers(array $dataBySurveyQuestion, int $totalAnswered, string $type): array
-    {
-        $data = [];
-
-        if (SurveyQuestionTypeEnum::SIMPLE_FIELD !== $type) {
-            foreach ($dataBySurveyQuestion as $result) {
-                $data['answers'][] = [
-                    'value' => $result['content'],
-                    'percent' => $totalAnswered > 0
-                        ? str_replace('.00', '', number_format(($result['choicesCount'] * 100) / $totalAnswered, 2))
-                        : 0,
-                    'answered' => $result['choicesCount'],
-                ];
+            if (!isset($data[$uuid])) {
+                $data[$uuid] = [];
             }
+
+            $data[$uuid][] = $item;
         }
 
-        $data['totalAnswered'] = $totalAnswered;
+        foreach ($data as &$items) {
+            array_walk(
+                $items,
+                static function (&$item, $key, $total) { $item['total'] = $total; },
+                array_sum(
+                    array_column(
+                        $items,
+                        SurveyQuestionTypeEnum::SIMPLE_FIELD === $items[0]['type'] ? 'total_simple_field' : 'total_by_choice'
+                    )
+                )
+            );
+        }
 
         return $data;
-    }
-
-    private function calculateTotal(array $data, string $type): int
-    {
-        return array_sum(array_column(
-            $data,
-            SurveyQuestionTypeEnum::SIMPLE_FIELD === $type ? 'textFieldsCount' : 'choicesCount'
-        ));
     }
 }

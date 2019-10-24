@@ -1,0 +1,137 @@
+{% extends 'jecoute/_layout.html.twig' %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runManagedList(
+                [
+                    {
+                        key: 'id',
+                        name: 'ID',
+                        style: {
+                            width: 25,
+                        }
+                    },
+                    {
+                        key: 'name',
+                        name: 'Nom du questionnaire',
+                    },
+                    {
+                        key: 'createdAt',
+                        name: 'Date de création',
+                    },
+                    {
+                        key: 'questionsCount',
+                        name: 'Nombre de questions',
+                    },
+                    {
+                        key: 'responsesCount',
+                        name: 'Nombre de répondants',
+                    },
+                    {
+                        key: 'zone',
+                        name: 'Zone',
+                    },
+                    {% if type == constant('AppBundle\\Jecoute\\SurveyTypeEnum::LOCAL') %}
+                        {
+                            key: 'author',
+                            name: 'Créateur',
+                        },
+                    {% endif %}
+                    {
+                        key: 'publish',
+                        name: "Publication",
+                        style: {
+                            width: 100,
+                        }
+                    },
+                    {
+                        key: 'menu',
+                        name: 'Action',
+                        menu: true,
+                    },
+                ],
+                [
+                {%- spaceless %}
+                    {% for data in surveys %}
+                        {% set survey = data[0] %}
+
+                        {% set row = {
+                            id: survey.id,
+                            name: survey.name,
+                            createdAt: survey.createdAt|date('d/m/Y'),
+                            questionsCount: data.questions_count,
+                            responsesCount: data.responses_count,
+                            zone: survey is instanceof('AppBundle\\Entity\\Jecoute\\LocalSurvey') ? survey.city : 'Département',
+                            publish: survey.published ? '<span class="status status__1">Publié</span>' :
+                                '<span class="status status__2">Non publié</span>',
+                        } %}
+
+                        {% if type == constant('AppBundle\\Jecoute\\SurveyTypeEnum::LOCAL') %}
+                            {% set row = row|merge({
+                                author: survey.author ? survey.author.fullName : 'Ancien adhérent',
+                                menu: [
+                                    {
+                                        label: 'Éditer',
+                                        url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
+                                    },
+                                    {
+                                        label: 'Dupliquer',
+                                        url: path("app_jecoute_#{space_name}_local_survey_duplicate", {uuid: survey.uuid})
+                                    },
+                                    {
+                                        label: 'Statistiques',
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
+                                    },
+                                ]
+                            }) %}
+                        {% else %}
+                            {% set row = row|merge({
+                                menu: [
+                                    {
+                                        label: 'Voir',
+                                        url: path("app_jecoute_#{space_name}_national_survey_show", {uuid: survey.uuid})
+                                    },
+                                    {
+                                        label: 'Statistiques',
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
+                                    },
+                                ]
+                            }) %}
+                        {% endif %}
+
+                        {{ row|json_encode|raw }},
+                    {% endfor %}
+                {% endspaceless -%}
+                ]
+            );
+        });
+    </script>
+{% endblock %}
+
+{% block jecoute_content %}
+    <div class="datagrid__table__tabs">
+        <div class="alert alert--tips b__nudge--bottom-60">
+            J’écoute vous permet de créer des questionnaires pour recueillir les impressions et les idées des citoyens sur la vie locale comme sur la politique nationale.
+            Ils seront disponibles sur l'application mobile et consultables par les adhérent(e)s du territoire que vous gérez.
+        </div>
+
+        <div class="datagrid__table__tabs__items">
+            {% if type == constant('AppBundle\\Jecoute\\SurveyTypeEnum::LOCAL') %}
+                <h3>Questionnaires locaux</h3>
+                <span class="separator"></span>
+                <h3><a href="{{ path("app_jecoute_#{space_name}_national_surveys_list") }}">Questionnaires nationaux</a></h3>
+            {% else %}
+                <h3><a href="{{ path("app_jecoute_#{space_name}_local_surveys_list") }}">Questionnaires locaux</a></h3>
+                <span class="separator"></span>
+                <h3>Questionnaires nationaux</h3>
+            {% endif %}
+        </div>
+
+        <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
+            + Créer un questionnaire local
+        </a>
+    </div>
+
+    <div id="datagrid"></div>
+{% endblock %}
