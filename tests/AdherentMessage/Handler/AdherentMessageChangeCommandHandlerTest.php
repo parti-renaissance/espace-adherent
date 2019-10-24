@@ -84,7 +84,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 3,
                         'subject_line' => '[Comité] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'jemarche@en-marche.fr',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
@@ -150,7 +150,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 1,
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                        'reply_to' => 'jemarche@en-marche.fr',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
@@ -198,7 +198,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 1,
                         'subject_line' => '[Référent] Subject',
                         'title' => 'Full Name - '.date('d/m/Y').' - code2',
-                        'reply_to' => 'jemarche@en-marche.fr',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
@@ -300,6 +300,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                             'first_name' => 'First Name',
                             'full_name' => 'Full Name',
                             'district_name' => 'District1',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         ],
                     ],
                 ]]]
@@ -330,7 +332,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 4,
                         'subject_line' => '[Projet citoyen] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'projetscitoyens@en-marche.fr',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
@@ -389,7 +391,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
                         'title' => 'Full Name - '.date('d/m/Y'),
-                        'reply_to' => 'jemarche@en-marche.fr',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
                     'recipients' => [
