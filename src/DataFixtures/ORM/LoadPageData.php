@@ -68,6 +68,15 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         ]));
 
         $manager->persist($factory->createFromArray([
+            'keywords' => 'mouvement en marche organigramme',
+            'title' => 'Le mouvement - Organigramme',
+            'slug' => 'le-mouvement/organigramme',
+            'description' => $description,
+            'content' => file_get_contents(__DIR__.'/../content.md'),
+            'media' => $media,
+        ]));
+
+        $manager->persist($factory->createFromArray([
             'keywords' => 'mouvement en marche organisation comité comités',
             'title' => 'Le mouvement - Les comités',
             'slug' => 'le-mouvement/les-comites',
