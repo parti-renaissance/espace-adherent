@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     itemOperations={"get"},
  * )
  *
- * @ApiFilter(SearchFilter::class, properties={"postAddress.postalCode": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"postAddress.postalCode": "exact", "category.name": "exact"})
  *
  * @Algolia\Index(autoIndex=false)
  */
