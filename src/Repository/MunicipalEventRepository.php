@@ -43,4 +43,25 @@ class MunicipalEventRepository extends EventRepository
 
         return \array_column($results, 'name');
     }
+
+    public function findCategoriesForPostalCode(array $postalCodes): array
+    {
+        $results = $this->createQueryBuilder('event')
+            ->select('DISTINCT category.name')
+            ->innerJoin('event.category', 'category')
+            ->where('event.status = :scheduled')
+            ->andWhere('event.finishAt > :now')
+            ->andWhere('event.postAddress.postalCode IN (:codes)')
+            ->setParameters([
+                'scheduled' => MunicipalEvent::STATUS_SCHEDULED,
+                'now' => new \DateTime(),
+                'codes' => $postalCodes,
+            ])
+            ->orderBy('category.name', 'ASC')
+            ->getQuery()
+            ->getArrayResult()
+        ;
+
+        return \array_column($results, 'name');
+    }
 }
