@@ -37,11 +37,11 @@ class QuestionType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event) {
             $data = $event->getData();
 
             if (SurveyQuestionTypeEnum::SIMPLE_FIELD === $data['type']) {
-                unset($data['choices']);
+                $data['choices'] = [];
                 $event->setData($data);
             }
         });
