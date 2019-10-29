@@ -487,7 +487,7 @@ HELP
                 ],
             ])
             ->add('referentTags', ModelAutocompleteFilter::class, [
-                'label' => 'Tags référent souscrits',
+                'label' => 'Tags souscrits',
                 'field_options' => [
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
@@ -496,7 +496,7 @@ HELP
                 ],
             ])
             ->add('managedArea', ReferentTagAutocompleteFilter::class, [
-                'label' => 'Tags référent gérés',
+                'label' => 'Tags gérés',
                 'field_options' => [
                     'model_manager' => $this->getModelManager(),
                     'admin_code' => $this->getCode(),
@@ -660,6 +660,8 @@ HELP
                     return true;
                 },
             ])
+            ->add('municipalChiefManagedArea.jecouteAccess', null, ['label' => 'Candidat municipal: Accès J\'écoute'])
+            ->add('municipalChiefManagedArea.inseeCode', null, ['label' => 'Candidat municipal: Insee code'])
         ;
     }
 
@@ -704,12 +706,6 @@ HELP
             ->add('firstName', null, [
                 'label' => 'Prénom',
             ])
-            ->add('nickname', null, [
-                'label' => 'Pseudo',
-            ])
-            ->add('nicknameUsed', null, [
-                'label' => 'Pseudo utilisé ?',
-            ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
@@ -732,9 +728,6 @@ HELP
             ->add('type', null, [
                 'label' => 'Type',
                 'template' => 'admin/adherent/list_status.html.twig',
-            ])
-            ->add('tags', null, [
-                'label' => 'Tags admin',
             ])
             ->add('referentTags', null, [
                 'label' => 'Tags souscrits',

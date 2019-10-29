@@ -51,11 +51,25 @@
         {% endif %}
 
         {% if object.isMunicipalChief %}
-            <span class="label label-primary" style="padding: 2px;">Candidat Municipales 2020 🇫🇷</span><br/>
+            <span class="label label-primary" style="padding: 2px;">
+                Candidat Municipales 2020 🇫🇷
+                {% if object.getMunicipalChiefManagedArea.hasJecouteAccess %}
+                    <span title="Accès J'écoute">&nbsp;☎️&nbsp;</span>
+                {% endif %}
+
+                {% if municipal_site_is_enabled(object) %}
+                    <span title="Site municipal actif">&nbsp;🖋&nbsp;</span>
+                {% endif %}
+            </span>
+            <br/>
         {% endif %}
     {% elseif object.isAdherent %}
         <span class="label label-primary">Adhérent</span>
     {% else %}
         <span class="label label-default">Utilisateur</span>
+    {% endif %}
+
+    {% if object.hasPrintPrivilege %}
+        <span title="Accès LMI">&nbsp;🖨</span>
     {% endif %}
 {% endblock %}
