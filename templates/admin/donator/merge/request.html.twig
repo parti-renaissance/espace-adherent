@@ -1,0 +1,54 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Fusion de donateurs
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Configuration de la fusion</h4>
+                </div>
+                <div class="box-body">
+                    {{ form_errors(form) }}
+
+                    <div class="sonata-ba-collapsed-fields">
+                        {{ form_row(form.sourceDonator, { label: 'Numéro du donateur source', attr: { min: 1 } }) }}
+                        {{ form_row(form.destinationDonator, { label: 'Numéro du donateur de destination', attr: { min: 1 } }) }}
+                        <div>
+                            <button type="submit" class="btn btn-success">Fusionner</button>
+                            <a href="{{ path('admin_app_donator_list') }}" class="btn btn-danger">
+                                Retour à la liste des donateurs
+                            </a>
+                        </div>
+                        <span class="help-block sonata-ba-field-help">
+                            Un écran récapitulatif de la fusion sera affiché pour demander confirmation.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% do form.confirm.setRendered %}
+    {{ form_end(form) }}
+{% endblock %}

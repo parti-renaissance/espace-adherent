@@ -57,7 +57,7 @@ class DonationTest extends TestCase
     {
         $donation = new Donation(
             Uuid::uuid4(),
-            '10',
+            'cb',
             '10',
             'male',
             'jean',
@@ -65,7 +65,8 @@ class DonationTest extends TestCase
             'jp@j.p',
             $this->createMock(PostAddress::class),
             '127.0.0.1',
-            PayboxPaymentSubscription::UNLIMITED
+            PayboxPaymentSubscription::UNLIMITED,
+            '10'
         );
 
         if ($donatedAt) {
@@ -85,7 +86,7 @@ class DonationTest extends TestCase
         yield 'success_without_subscription' => [
             new Donation(
                 $uuid,
-                '10',
+                'cb',
                 '10',
                 'male',
                 'jean',
@@ -93,7 +94,8 @@ class DonationTest extends TestCase
                 'jp@j.p',
                 $this->createMock(PostAddress::class),
                 '127.0.0.1',
-                PayboxPaymentSubscription::NONE
+                PayboxPaymentSubscription::NONE,
+                '10'
             ),
             [
                 'result' => Transaction::PAYBOX_SUCCESS,
@@ -112,7 +114,7 @@ class DonationTest extends TestCase
         yield 'success_subscription' => [
             new Donation(
                 $uuid,
-                '10',
+                'cb',
                 '10',
                 'male',
                 'jean',
@@ -120,7 +122,8 @@ class DonationTest extends TestCase
                 'jp@j.p',
                 $this->createMock(PostAddress::class),
                 '127.0.0.1',
-                PayboxPaymentSubscription::UNLIMITED
+                PayboxPaymentSubscription::UNLIMITED,
+                '10'
             ),
             [
                 'result' => Transaction::PAYBOX_SUCCESS,

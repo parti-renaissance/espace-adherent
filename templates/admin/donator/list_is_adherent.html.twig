@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.isAdherent %}
+        <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}">
+            {{ object.adherent }}
+        </a>
+    {% else %}
+        <span class="label label-danger">Non</span>
+    {% endif %}
+{% endblock %}

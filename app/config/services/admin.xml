@@ -366,6 +366,22 @@
             <argument />
         </service>
 
+        <service id="app.admin.donator_tag" class="AppBundle\Admin\DonatorTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags donateurs" group="Finances" />
+
+            <argument />
+            <argument>AppBundle\Entity\DonatorTag</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.donation_tag" class="AppBundle\Admin\DonationTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags dons" group="Finances" />
+
+            <argument />
+            <argument>AppBundle\Entity\DonationTag</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Tech

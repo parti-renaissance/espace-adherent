@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% for tag in object.tags %}
+        <span style="background-color: {{ tag.color }};padding: 2px 5px;color: white;">{{ tag.label }}</span>
+    {% endfor %}
+{% endblock %}

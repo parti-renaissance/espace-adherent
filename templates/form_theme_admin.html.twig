@@ -11,6 +11,42 @@
     </div>
 {% endblock %}
 
+{% block app_admin_donator_radio_referenceDonation_referenceDonation_entry_widget %}
+    {% set currentReferenceDonation = form.parent.parent.vars.value.referenceDonation %}
+    {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
+
+    <div class="radio">
+        <label>
+            <input type="radio"
+                   id="{{ form.vars.id }}"
+                   name="{{ form.vars.full_name }}"
+                   value="{{ form.vars.value }}"
+                   {% if currentValue == form.vars.value %} checked {% endif %}
+            />
+        </label>
+        <span class="control-label__text">
+            {% if form.vars.value %}
+                <a href="{{ path('admin_app_donation_edit', { id: form.vars.value }) }}" target="_blank">
+                    {{ form.vars.label }}
+                </a>
+            {% else %}
+                {{ form.vars.label }}
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
+
+{% block app_admin_donation_file_row -%}
+    {{ block('form_row') }}
+
+    {% set object = form.parent.vars.value %}
+    {% if object.filename is defined and object.filename is not empty %}
+        <a href="{{ path('app_admin_donation_file', { id: object.id }) }}" target="_blank">
+            <i class="fa fa-link" aria-hidden="true"></i> Voir le fichier uploadé
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block app_admin_mooc_mooc_image_file_image_row -%}
     {{ block('admin_image_with_url_row') }}
 {% endblock %}

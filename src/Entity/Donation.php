@@ -6,10 +6,14 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Geocoder\GeoPointInterface;
 use Cake\Chronos\Chronos;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="donations", indexes={
@@ -20,8 +24,6 @@ use Ramsey\Uuid\UuidInterface;
  * })
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
- *
- * @ORM\EntityListeners({"AppBundle\EntityListener\DonationListener"})
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -39,6 +41,17 @@ class Donation implements GeoPointInterface
     public const STATUS_FINISHED = 'finished';
     public const STATUS_ERROR = 'error';
 
+    public const TYPE_CB = 'cb';
+    public const TYPE_CHECK = 'check';
+    public const TYPE_TRANSFER = 'transfer';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $type;
+
     /**
      * @ORM\Column(type="integer")
      */
@@ -55,7 +68,7 @@ class Donation implements GeoPointInterface
     private $gender;
 
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      */
     private $emailAddress;
 
@@ -108,9 +121,49 @@ class Donation implements GeoPointInterface
     private $payboxOrderRef;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    private $checkNumber;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private $transferNumber;
+
+    /**
      * @ORM\Column(length=2, nullable=true)
      */
     private $nationality;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $filename;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\File(
+     *     maxSize="5M",
+     *     mimeTypes={
+     *         "application/pdf",
+     *         "application/x-pdf",
+     *         "image/*"
+     *     }
+     * )
+     */
+    private $file;
+
+    private $removeFile = false;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
 
     /**
      * @var Donator|null
@@ -119,21 +172,29 @@ class Donation implements GeoPointInterface
      */
     private $donator;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DonationTag")
+     */
+    private $tags;
+
     public function __construct(
-        UuidInterface $uuid,
-        string $payboxOrderRef,
-        int $amount,
-        string $gender,
-        string $firstName,
-        string $lastName,
-        string $emailAddress,
-        PostAddress $postAddress,
-        string $clientIp,
+        UuidInterface $uuid = null,
+        string $type = null,
+        int $amount = null,
+        string $gender = null,
+        string $firstName = null,
+        string $lastName = null,
+        ?string $emailAddress = null,
+        PostAddress $postAddress = null,
+        ?string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
+        string $payboxOrderRef = null,
         string $nationality = null,
-        Donator $donator = null
+        Donator $donator = null,
+        \DateTimeInterface $createdAt = null
     ) {
         $this->uuid = $uuid;
+        $this->type = $type;
         $this->amount = $amount;
         $this->gender = $gender;
         $this->firstName = $firstName;
@@ -141,17 +202,24 @@ class Donation implements GeoPointInterface
         $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
-        $this->createdAt = new Chronos();
+        $this->createdAt = $createdAt ?? new Chronos();
         $this->duration = $duration;
-        $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->payboxOrderRef = $payboxOrderRef;
+        $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->nationality = $nationality;
         $this->donator = $donator;
+        $this->tags = new ArrayCollection();
     }
 
     public function __toString(): string
     {
-        return sprintf('%s %s (%.2f €)', $this->lastName, $this->firstName, $this->amount / 100);
+        return sprintf(
+            '%s %s (%.2f €) (%s)',
+            $this->lastName,
+            $this->firstName,
+            $this->amount / 100,
+            $this->type
+        );
     }
 
     public function processPayload(array $payboxPayload): Transaction
@@ -176,12 +244,17 @@ class Donation implements GeoPointInterface
         $this->status = self::STATUS_CANCELED;
     }
 
-    public function getAmount(): int
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function getDuration(): int
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
@@ -196,17 +269,22 @@ class Donation implements GeoPointInterface
         return PayboxPaymentSubscription::UNLIMITED === $this->duration;
     }
 
-    public function getAmountInEuros()
+    public function getAmountInEuros(): float
     {
         return (float) $this->amount / 100;
     }
 
-    public function getGender(): string
+    public function setAmountInEuros(int $amountInEuros): void
+    {
+        $this->amount = $amountInEuros * 100;
+    }
+
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    public function getEmailAddress(): string
+    public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
     }
@@ -290,7 +368,7 @@ class Donation implements GeoPointInterface
         return self::STATUS_SUBSCRIPTION_IN_PROGRESS === $this->getStatus();
     }
 
-    public function getPayboxOrderRef(): string
+    public function getPayboxOrderRef(): ?string
     {
         return $this->payboxOrderRef;
     }
@@ -298,6 +376,26 @@ class Donation implements GeoPointInterface
     public function setPayboxOrderRef(string $payboxOrderRef): void
     {
         $this->payboxOrderRef = $payboxOrderRef;
+    }
+
+    public function getCheckNumber(): ?string
+    {
+        return $this->checkNumber;
+    }
+
+    public function setCheckNumber(?string $checkNumber): void
+    {
+        $this->checkNumber = $checkNumber;
+    }
+
+    public function getTransferNumber(): ?string
+    {
+        return $this->transferNumber;
+    }
+
+    public function setTransferNumber(?string $transferNumber): void
+    {
+        $this->transferNumber = $transferNumber;
     }
 
     public function getPayboxOrderRefWithSuffix(): string
@@ -328,5 +426,80 @@ class Donation implements GeoPointInterface
     public function setDonator(?Donator $donator): void
     {
         $this->donator = $donator;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(DonationTag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+    }
+
+    public function removeTag(DonationTag $tag): void
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    public function hasFileUploaded(): bool
+    {
+        return null !== $this->filename;
+    }
+
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    public function setFile(?UploadedFile $file): void
+    {
+        $this->file = $file;
+    }
+
+    public function removeFilename(): void
+    {
+        $this->filename = null;
+    }
+
+    public function setFilename(string $filename): void
+    {
+        $this->filename = $filename;
+    }
+
+    public function getRemoveFile(): bool
+    {
+        return $this->removeFile;
+    }
+
+    public function setRemoveFile(bool $removeFile): void
+    {
+        $this->removeFile = $removeFile;
+    }
+
+    public function getFilePathWithDirectory(): string
+    {
+        return sprintf('%s/%s', 'files/donations', $this->filename);
+    }
+
+    public function setFilenameFromUploadedFile(): void
+    {
+        $this->filename = sprintf('%s.%s',
+            md5(sprintf('%s@%s', $this->getUuid(), $this->file->getClientOriginalName())),
+            $this->file->getClientOriginalExtension()
+        );
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): void
+    {
+        $this->comment = $comment;
     }
 }
