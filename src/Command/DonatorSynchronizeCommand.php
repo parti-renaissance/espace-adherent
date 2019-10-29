@@ -76,11 +76,6 @@ class DonatorSynchronizeCommand extends Command
 
             $donator->addDonation($donation);
 
-            if (!\in_array($donation->getStatus(), [Donation::STATUS_REFUNDED, Donation::STATUS_WAITING_CONFIRMATION])
-            && $donator->getLastDonationAt() < $donation->getCreatedAt()) {
-                $donator->setLastDonationAt($donation->getCreatedAt());
-            }
-
             $this->manager->flush();
 
             $this->io->progressAdvance();
