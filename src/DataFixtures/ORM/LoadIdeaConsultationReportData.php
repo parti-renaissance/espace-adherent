@@ -19,7 +19,7 @@ class LoadIdeaConsultationReportData extends AbstractFixture
 
         $consultationReportHousingPolicy = new ConsultationReport(
             'Rapport sur la politique du logement',
-            'https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/regles_de_fonctionnement_LaREM.pdf',
+            'https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf',
             2
         );
         $this->addReference('consultation-report-housing-policy', $consultationReportHousingPolicy);

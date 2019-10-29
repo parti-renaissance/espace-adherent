@@ -28,7 +28,7 @@ Feature:
                 "name": "Rapport sur les énergies renouvables"
             },
             {
-                "url": "https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/regles_de_fonctionnement_LaREM.pdf",
+                "url": "https://storage.googleapis.com/en-marche-prod/documents/adherents/1-charte-et-manifeste/LaREM_regles_de_fonctionnement.pdf",
                 "position": 2,
                 "name": "Rapport sur la politique du logement"
             }
