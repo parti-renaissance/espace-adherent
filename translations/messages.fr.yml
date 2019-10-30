@@ -179,7 +179,6 @@ committee.message_deleted: Votre message a bien été supprimé.
 committee.message_published: Votre message a bien été publié.
 
 committee.members_count: '1 adhérent|%count% adhérents'
-committee.active_members_count: '1 adhérent actif|%count% adhérents actifs'
 event.participants_count: '1 inscrit|%count% inscrits'
 event.capacity: '1 inscrit|%count% inscrits'
 capacity: 'inscrit|inscrits'
