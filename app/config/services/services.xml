@@ -8,6 +8,8 @@
             <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
             <bind key="$environment">%kernel.environment%</bind>
             <bind key="$mailchimpWebhookKey">%env(MAILCHIMP_WEBHOOK_KEY)%</bind>
+            <bind key="$mailchimpCampagnUrl">%env(MAILCHIMP_CAMPAGN_URL)%</bind>
+            <bind key="$mailchimpOrgId">%env(MAILCHIMP_ORG_ID)%</bind>
         </defaults>
 
         <!-- History -->

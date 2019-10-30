@@ -17,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommonMessageController extends AbstractController
 {
+    private $mailchimpCampagnUrl;
+    private $mailchimpOrgId;
+
+    public function __construct(string $mailchimpCampagnUrl, string $mailchimpOrgId)
+    {
+        $this->mailchimpCampagnUrl = $mailchimpCampagnUrl;
+        $this->mailchimpOrgId = $mailchimpOrgId;
+    }
+
     /**
      * @Route("/{uuid}/statistics", requirements={"uuid": "%pattern_uuid%"}, condition="request.isXmlHttpRequest()", name="statistics", methods={"GET"})
      *
@@ -35,5 +44,24 @@ class CommonMessageController extends AbstractController
     public function getMessageTemplateAction(AbstractAdherentMessage $message, Manager $manager): Response
     {
         return new Response($manager->getCampaignContent(current($message->getMailchimpCampaigns())));
+    }
+
+    /**
+     * @Route("/{uuid}/preview-on-mailchimp", requirements={"uuid": "%pattern_uuid%"}, name="preview-on-mailchimp", methods={"GET"})
+     *
+     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     */
+    public function previewOnMailchimpAction(AbstractAdherentMessage $message): Response
+    {
+        if (!$message->isSynchronized()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->redirect(sprintf(
+            '%s?u=%s&id=%s',
+            $this->mailchimpCampagnUrl,
+            $this->mailchimpOrgId,
+            current($message->getMailchimpCampaigns())->getExternalId())
+        );
     }
 }

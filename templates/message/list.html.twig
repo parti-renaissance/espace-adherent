@@ -89,6 +89,7 @@
 
                                     {% if message.isSynchronized %}
                                         <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_#{message_type}_preview", message_route_params) }}">Visualiser</a>
+                                        <a class="row-action text--blue--dark link--no-decor" href="{{ path("app_message_common_preview-on-mailchimp", message_route_params) }}" target="_blank">Obtenir le lien de la campagne</a>
                                     {% else %}
                                         <a class="row-action btn--disabled" href="javascript:void(0);">
                                             Visualiser<br/>

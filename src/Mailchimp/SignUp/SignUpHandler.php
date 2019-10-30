@@ -16,19 +16,19 @@ class SignUpHandler implements LoggerAwareInterface
     private $subscriptionGroupId;
     private $subscriptionIds;
     private $client;
-    private $formId;
+    private $mailchimpOrgId;
     private $listId;
 
     public function __construct(
         HttpClientInterface $client,
         int $subscriptionGroupId,
         array $subscriptionIds,
-        string $formId,
+        string $mailchimpOrgId,
         string $listId
     ) {
         $this->subscriptionGroupId = $subscriptionGroupId;
         $this->subscriptionIds = $subscriptionIds;
-        $this->formId = $formId;
+        $this->mailchimpOrgId = $mailchimpOrgId;
         $this->listId = $listId;
         $this->client = $client;
     }
@@ -38,7 +38,7 @@ class SignUpHandler implements LoggerAwareInterface
         try {
             $response = $this->client->request('POST', '/subscribe/post', [
                 'query' => [
-                    'u' => $this->formId,
+                    'u' => $this->mailchimpOrgId,
                     'id' => $this->listId,
                 ],
                 'body' => $this->getFormData($adherent),
@@ -68,6 +68,6 @@ class SignUpHandler implements LoggerAwareInterface
 
     private function getTokenKey(): string
     {
-        return sprintf('b_%s_%s', $this->formId, $this->listId);
+        return sprintf('b_%s_%s', $this->mailchimpOrgId, $this->listId);
     }
 }
