@@ -69,6 +69,11 @@ class Donator
     private $firstName;
 
     /**
+     * @ORM\Column(length=6, nullable=true)
+     */
+    private $gender;
+
+    /**
      * @ORM\Column(length=50, nullable=true)
      *
      * @Assert\NotBlank(message="common.birthcity.not_blank")
@@ -114,12 +119,14 @@ class Donator
     public function __construct(
         string $lastName = null,
         string $firstName = null,
+        string $gender = null,
         string $city = null,
         string $country = null,
         string $emailAddress = null
     ) {
         $this->lastName = $lastName;
         $this->firstName = $firstName;
+        $this->gender = $gender;
         $this->city = $city;
         $this->country = $country;
         $this->emailAddress = $emailAddress;
@@ -190,6 +197,16 @@ class Donator
     public function setFirstName(?string $firstName): void
     {
         $this->firstName = $firstName;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 
     public function getCity(): ?string
@@ -303,5 +320,10 @@ class Donator
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
     }
 }

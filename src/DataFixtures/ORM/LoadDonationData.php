@@ -32,13 +32,17 @@ class LoadDonationData extends Fixture
         /** @var Adherent $adherent2 */
         $adherent2 = $this->getReference('adherent-3');
 
-        $donationNormal = $this->createDonation($adherent0);
-        $donationMonthly = $this->createDonation($adherent0, 42., PayboxPaymentSubscription::UNLIMITED);
-        $donation0 = $this->createDonation($adherent1, 50.);
-        $donation1 = $this->createDonation($adherent2, 50.);
-        $donation2 = $this->createDonation($adherent2, 40.);
-        $donation3 = $this->createDonation($adherent2, 60., PayboxPaymentSubscription::UNLIMITED);
-        $donation4 = $this->createDonation($adherent2, 100., PayboxPaymentSubscription::UNLIMITED);
+        $donator0 = $this->createDonator('000050', $adherent0);
+        $donator1 = $this->createDonator('000051', $adherent1);
+        $donator2 = $this->createDonator('000052', $adherent2);
+
+        $donationNormal = $this->createDonation($donator0);
+        $donationMonthly = $this->createDonation($donator0, 42., PayboxPaymentSubscription::UNLIMITED);
+        $donation0 = $this->createDonation($donator1, 50.);
+        $donation1 = $this->createDonation($donator2, 50.);
+        $donation2 = $this->createDonation($donator2, 40.);
+        $donation3 = $this->createDonation($donator2, 60., PayboxPaymentSubscription::UNLIMITED);
+        $donation4 = $this->createDonation($donator2, 100., PayboxPaymentSubscription::UNLIMITED);
 
         $transactionNormal = $this->createTransaction($donationNormal);
         $transactionMonthly = $this->createTransaction($donationMonthly);
@@ -54,9 +58,10 @@ class LoadDonationData extends Fixture
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
 
-        $donator0 = $this->createDonator($donationNormal, '000050', $adherent0);
-        $donator1 = $this->createDonator($donation0, '000051', $adherent1);
-        $donator2 = $this->createDonator($donation4, '000052', $adherent2);
+
+        $manager->persist($donator0);
+        $manager->persist($donator1);
+        $manager->persist($donator2);
 
         $manager->persist($donationNormal);
         $manager->persist($donationMonthly);
@@ -74,15 +79,11 @@ class LoadDonationData extends Fixture
         $manager->persist($transaction3);
         $manager->persist($transaction4);
 
-        $manager->persist($donator0);
-        $manager->persist($donator1);
-        $manager->persist($donator2);
-
         $manager->flush();
     }
 
     public function createDonation(
-        Adherent $adherent,
+        Donator $donator,
         float $amount = 50.0,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB
@@ -91,36 +92,31 @@ class LoadDonationData extends Fixture
             $uuid = Uuid::uuid4(),
             $type,
             $amount * 100,
-            $adherent->getGender(),
-            $adherent->getFirstName(),
-            $adherent->getLastName(),
-            $adherent->getEmailAddress(),
-            $adherent->getPostAddress(),
+            $donator->getAdherent()->getPostAddress(),
             '127.0.0.1',
             $duration,
-            $uuid->toString().'_'.$this->slugify->slugify($adherent->getFullName()),
-            Address::FRANCE
+            $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
+            Address::FRANCE,
+            $donator
         );
 
         return $donation;
     }
 
-    public function createDonator(Donation $donation, string $accountId, ?Adherent $adherent): Donator
+    public function createDonator(string $accountId, Adherent $adherent): Donator
     {
         $donator = new Donator(
-            $donation->getLastName(),
-            $donation->getFirstName(),
-            $donation->getCityName(),
-            $donation->getCountry(),
-            $donation->getEmailAddress()
+            $adherent->getLastName(),
+            $adherent->getFirstName(),
+            $adherent->getGender(),
+            $adherent->getCityName(),
+            $adherent->getCountry(),
+            $adherent->getEmailAddress()
         );
 
         $donator->setIdentifier($accountId);
-        $donator->addDonation($donation);
 
-        if ($adherent) {
-            $donator->setAdherent($adherent);
-        }
+        $donator->setAdherent($adherent);
 
         return $donator;
     }

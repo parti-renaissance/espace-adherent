@@ -161,6 +161,7 @@ class ImportDonationsCommand extends Command
                 $firstName,
                 $lastName,
                 $cityName,
+                self::GENDERS_MAP[$gender],
                 self::COUNTRIES_MAP[$country]
             );
 
@@ -170,10 +171,6 @@ class ImportDonationsCommand extends Command
                 Uuid::uuid4(),
                 self::TYPES_MAP[$type],
                 $amount,
-                self::GENDERS_MAP[$gender],
-                $firstName,
-                $lastName,
-                null,
                 $this->postAddressFactory->createFlexible(
                     self::COUNTRIES_MAP[$country],
                     $postalCode,
