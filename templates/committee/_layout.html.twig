@@ -3,7 +3,7 @@
 {% set is_host = is_host(committee) %}
 
 {%- block meta_description -%}
-    {{ committee.name }} est un comité local de La République En Marche {% if committee_hosts is not empty %}animé par {{ committee_hosts[0].partialName }}{% endif %}. Il se situe dans la ville de {{ committee.cityName }} et et se compose de {{ 'committee.members_count'|transchoice(committee.membersCount) }}. Les comités locaux sont le fondement de notre mouvement, rejoignez-en un pour participer à la vie locale du mouvement !
+    {{ committee.name }} est un comité local de La République En Marche. Il se situe dans la ville de {{ committee.cityName }} et se compose de {{ 'committee.members_count'|transchoice(committee.membersCount) }}. Les comités locaux sont le fondement de notre mouvement, rejoignez-en un pour participer à la vie locale du mouvement !
 {%- endblock -%}
 
 {% block content %}
