@@ -57,7 +57,7 @@ services:
             $client: '@app.http_client.mailchimp_signup'
             $subscriptionGroupId: '%env(MAILCHIMP_SIGNUP_SUBSCRIPTION_GROUP_ID)%'
             $subscriptionIds: '%env(json:MAILCHIMP_SIGNUP_SUBSCRIPTION_IDS)%'
-            $formId: '%env(MAILCHIMP_SIGNUP_FORM_ID)%'
+            $mailchimpOrgId: '%env(MAILCHIMP_ORG_ID)%'
             $listId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
         tags:
             - { name: 'monolog.logger', channel: 'mailchimp_sync' }

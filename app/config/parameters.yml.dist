@@ -121,7 +121,8 @@ parameters:
     env(MAILCHIMP_NEWSLETTER_TAG_IDS): '{}'
     env(MAILCHIMP_SIGNUP_HOST): 'https://mailchimp.com'
     env(MAILCHIMP_SIGNUP_SUBSCRIPTION_GROUP_ID): 123
-    env(MAILCHIMP_SIGNUP_FORM_ID): 123
+    env(MAILCHIMP_ORG_ID): 123
+    env(MAILCHIMP_CAMPAGN_URL): https://us16.campaign-archive.com
     env(MAILCHIMP_SIGNUP_SUBSCRIPTION_IDS): |
         {
             "subscribed_emails_movement_information": 1,
