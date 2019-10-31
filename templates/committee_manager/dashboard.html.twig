@@ -65,11 +65,14 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        on(window, 'load', function() {
-            once(dom('.show-more-link'), 'click', function () {
-                hide(this);
-                removeClass(dom('#committees-next-part'), 'hidden');
+        const element = dom('.show-more-link');
+        if (element) {
+            on(window, 'load', function() {
+                once(element, 'click', function () {
+                    hide(this);
+                    removeClass(dom('#committees-next-part'), 'hidden');
+                });
             });
-        });
+        }
     </script>
 {% endblock %}

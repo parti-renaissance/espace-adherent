@@ -1,12 +1,7 @@
-import 'babel-polyfill';
 import 'utils/dom';
 import 'utils/css';
 import 'utils/text';
 import 'utils/url';
-import 'core-js/modules/es6.array.for-each';
-import 'core-js/modules/es6.array.map';
-import 'core-js/modules/es6.object.keys';
-import 'core-js/modules/es6.promise';
 
 window.Kernel = class {
     static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist) {
