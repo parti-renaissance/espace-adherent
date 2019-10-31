@@ -15,6 +15,7 @@
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "@ckeditor/ckeditor5-build-en-marche": "https://github.com/EnMarche/ckeditor5-build-classic#stable",
     "@google/markerclusterer": "^1.0.3",
     "@mapbox/polylabel": "^1.0.2",
     "algoliasearch": "^3.22.1",

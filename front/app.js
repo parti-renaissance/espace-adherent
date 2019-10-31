@@ -252,6 +252,12 @@ class App {
             module.default(formToDisplay);
         });
     }
+
+    createCKEditor(elementSelector, uploadUrl) {
+        System.import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
+            module.default(dom(elementSelector), uploadUrl);
+        });
+    }
 }
 
 window.App = new App();

@@ -52,6 +52,21 @@
 .manager-space,
 .citizen-project__form {
 
+    .ck-editor__main {
+        & > .ck-editor__editable {
+            min-height: 500px;
+        }
+
+        ul, ol {
+            padding-left: 40px;
+            margin: 16px 0;
+        }
+
+        ul {
+            list-style: disc;
+        }
+    }
+
     select {
         -webkit-appearance: none;
         -moz-appearance: none;
