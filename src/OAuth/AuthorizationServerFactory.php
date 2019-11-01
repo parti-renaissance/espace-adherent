@@ -2,7 +2,6 @@
 
 namespace AppBundle\OAuth;
 
-use AppBundle\Repository\AdherentRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
@@ -13,11 +12,12 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 
 class AuthorizationServerFactory
 {
     private $accessTokenRepository;
-    private $adherentRepository;
+    private $userRepository;
     private $clientRepository;
     private $scopeRepository;
     private $privateKey;
@@ -27,7 +27,7 @@ class AuthorizationServerFactory
 
     public function __construct(
         AccessTokenRepositoryInterface $accessTokenRepository,
-        AdherentRepository $adherentRepository,
+        UserRepositoryInterface $userRepository,
         AuthCodeRepositoryInterface $authCodeRepository,
         ClientRepositoryInterface $clientRepository,
         RefreshTokenRepositoryInterface $refreshTokenRepository,
@@ -36,7 +36,7 @@ class AuthorizationServerFactory
         string $encryptionKey
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
-        $this->adherentRepository = $adherentRepository;
+        $this->userRepository = $userRepository;
         $this->clientRepository = $clientRepository;
         $this->scopeRepository = $scopeRepository;
         $this->privateKey = $privateKey;
@@ -69,7 +69,7 @@ class AuthorizationServerFactory
         $refreshTokenGrant->setRefreshTokenTTL($refreshTokenTtl);
         $server->enableGrantType($refreshTokenGrant, $accessTokenTtl);
 
-        $passwordGrant = new PasswordGrant($this->adherentRepository, $this->refreshTokenRepository);
+        $passwordGrant = new PasswordGrant($this->userRepository, $this->refreshTokenRepository);
 
         $passwordGrant->setRefreshTokenTTL($refreshTokenTtl);
         $server->enableGrantType($passwordGrant, $accessTokenTtl);
