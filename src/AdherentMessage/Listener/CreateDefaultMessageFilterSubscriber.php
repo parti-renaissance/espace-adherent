@@ -14,7 +14,7 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::MESSAGE_PRE_CREATE => ['createDefaultMessageFilter', -1],
+            Events::MESSAGE_PRE_CREATE => ['createDefaultMessageFilter', 1000],
         ];
     }
 
