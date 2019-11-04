@@ -20,8 +20,8 @@ class InitialiseMailchimpCampaignEntitySubscriber implements EventSubscriberInte
     public static function getSubscribedEvents()
     {
         return [
-            Events::MESSAGE_PRE_CREATE => ['initialiseMailchimpCampaign', 10000],
-            Events::MESSAGE_FILTER_PRE_EDIT => ['initialiseMailchimpCampaign', 10000],
+            Events::MESSAGE_PRE_CREATE => ['initialiseMailchimpCampaign'],
+            Events::MESSAGE_FILTER_PRE_EDIT => ['initialiseMailchimpCampaign'],
         ];
     }
 
