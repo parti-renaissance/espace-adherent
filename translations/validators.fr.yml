@@ -386,3 +386,23 @@ module.slug.unique_entity: Il existe déjà un module avec cette URL pour cet ax
 
 municipal_chief.invalid_city: La valeur saisie dans le champ Candidat Municipales 2020 🇫🇷 n'est pas un code INSEE de ville valide.
 municipal_chief.invalid_postal_code: Le code postal ne fait pas partie de votre ville
+
+#
+# ProgrammaticFoundation
+#
+programmatic_foundation.position.greater_than_zero: La position doit être supérieure à 0
+programmatic_foundation.title.not_empty: Le titre ne peut pas être vide
+programmatic_foundation.content.not_empty: Le contenu ne peut pas être vide
+programmatic_foundation.city.not_empty: Le ville ne peut pas être vide
+
+programmatic_foundation.unique_position.approach: L'ordre d'affichage doit être unique
+programmatic_foundation.unique_position.sub_approach: L'ordre d'affichage doit être unique pour un grand axe donné
+programmatic_foundation.unique_position.measure: L'ordre d'affichage doit être unique pour un axe secondaire donné
+programmatic_foundation.unique_position.project: L'ordre d'affichage doit être unique pour une mesure donnée
+
+programmatic_foundation.slug.unique.measure: Le slug des mesures doit être unique
+programmatic_foundation.slug.not_empty: Le slug ne peut pas être vide
+
+programmatic_foundation.parent.required.sub_approach: Un axe secondaire doit être lié à un grand axe
+programmatic_foundation.parent.required.measure: Une mesure doit être liée à un axe secondaire
+programmatic_foundation.parent.required.project: Un projet doit être lié à une mesure

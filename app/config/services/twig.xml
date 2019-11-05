@@ -84,5 +84,6 @@
         <service id="AppBundle\Twig\CanaryExtension">
             <argument key="$canaryMode">%env(ENABLE_CANARY)%</argument>
         </service>
+
     </services>
 </container>
