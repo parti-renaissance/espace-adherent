@@ -1,3 +1,5 @@
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import 'utils/dom';
 import 'utils/css';
 import 'utils/text';
