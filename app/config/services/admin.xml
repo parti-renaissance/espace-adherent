@@ -1057,6 +1057,52 @@
 
         <!--
         ######################################################
+        # ProgrammaticFoundation
+        ######################################################
+        -->
+
+        <service id="app.admin.approach" class="AppBundle\Admin\ApproachAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Grand axes" group="Socle programmatique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ProgrammaticFoundation\Approach</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+        </service>
+
+        <service id="app.admin.approach_sub" class="AppBundle\Admin\SubApproachAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Axes secondaires" group="Socle programmatique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ProgrammaticFoundation\SubApproach</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+        </service>
+
+        <service id="app.admin.approach_measure" class="AppBundle\Admin\ApproachMeasureAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Mesures" group="Socle programmatique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ProgrammaticFoundation\Measure</argument>
+            <argument>PixSortableBehaviorBundle:SortableAdmin</argument>
+        </service>
+
+        <service id="app.admin.approach_project" class="AppBundle\Admin\ApproachProjectAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Projets" group="Socle programmatique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ProgrammaticFoundation\Project</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.programmatic_foundation_tag" class="AppBundle\Admin\ProgrammaticFoundationTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags" group="Socle programmatique" />
+
+            <argument />
+            <argument>AppBundle\Entity\ProgrammaticFoundation\Tag</argument>
+            <argument />
+        </service>
+
+        <!--
+        ######################################################
         # Menu
         ######################################################
         -->

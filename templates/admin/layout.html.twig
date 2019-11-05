@@ -48,170 +48,172 @@
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script>
-        $(function() {
-            $('.content-editor').each(function(key, item) {
-                var simplemde = new SimpleMDE({
-                    element: item,
-                    spellChecker: false,
-                    renderingConfig: {
-                        singleLineBreaks: false
-                    },
-                    previewConfig: {
-                        useIframe: true,
-                        editorCss: [
-                            '{{ webpack_asset('app.css') }}',
-                            '{{ asset('css/simplemde.inside.css') }}'
-                        ],
-                    },
-                    toolbar: [
-                        {
-                            name: "fullscreen",
-                            action: function() {
-                                simplemde.toggleSideBySide();
-                                simplemde.toggleFullScreen();
-                            },
-                            className: "fa fa-eye",
-                            title: "Plein écran avec prévisualisation"
-                        },
-                        "|",
-                        {
-                            name: "bold",
-                            action: SimpleMDE.toggleBold,
-                            className: "fa fa-bold",
-                            title: "Gras"
-                        },
-                        {
-                            name: "italic",
-                            action: SimpleMDE.toggleItalic,
-                            className: "fa fa-italic",
-                            title: "Italique"
-                        },
-                        {
-                            name: "title",
-                            action: SimpleMDE.toggleHeading3,
-                            className: "fa fa-header",
-                            title: "Titre"
-                        },
-                        "|",
-                        {
-                            name: "unordered-list",
-                            action: SimpleMDE.toggleUnorderedList,
-                            className: "fa fa-list-ul",
-                            title: "Liste à puces"
-                        },
-                        {
-                            name: "ordered-list",
-                            action: SimpleMDE.toggleUnorderedList,
-                            className: "fa fa-list-ol",
-                            title: "Liste à chiffres"
-                        },
-                        "|",
-                        {
-                            name: "link",
-                            action: SimpleMDE.drawLink,
-                            className: "fa fa-link",
-                            title: "Lien"
-                        },
-                        {
-                            name: "image",
-                            action: function(editor) {
-                                editor.codemirror.replaceSelection(
-                                    "<figure>\n" +
-                                    "    <img src=\"http://url-de-l-image.com\">\n" +
-                                    "    <figcaption>Légende de l'image</figcaption>\n" +
-                                    "</figure>"
-                                );
+     $(function() {
+         $('.content-editor').each(function(key, item) {
+             var simplemde = new SimpleMDE({
+                 element: item,
+                 spellChecker: false,
+                 renderingConfig: {
+                     singleLineBreaks: false
+                 },
+                 previewConfig: {
+                     useIframe: true,
+                     editorCss: [
+                         '{{ webpack_asset('app.css') }}',
+                         '{{ asset('css/simplemde.inside.css') }}'
+                     ],
+                 },
+                 toolbar: [
+                     {
+                         name: "fullscreen",
+                         action: function() {
+                             simplemde.toggleSideBySide();
+                             simplemde.toggleFullScreen();
+                         },
+                         className: "fa fa-eye",
+                         title: "Plein écran avec prévisualisation"
+                     },
+                     "|",
+                     {
+                         name: "bold",
+                         action: SimpleMDE.toggleBold,
+                         className: "fa fa-bold",
+                         title: "Gras"
+                     },
+                     {
+                         name: "italic",
+                         action: SimpleMDE.toggleItalic,
+                         className: "fa fa-italic",
+                         title: "Italique"
+                     },
+                     {
+                         name: "title",
+                         action: SimpleMDE.toggleHeading3,
+                         className: "fa fa-header",
+                         title: "Titre"
+                     },
+                     "|",
+                     {
+                         name: "unordered-list",
+                         action: SimpleMDE.toggleUnorderedList,
+                         className: "fa fa-list-ul",
+                         title: "Liste à puces"
+                     },
+                     {
+                         name: "ordered-list",
+                         action: SimpleMDE.toggleUnorderedList,
+                         className: "fa fa-list-ol",
+                         title: "Liste à chiffres"
+                     },
+                     "|",
+                     {
+                         name: "link",
+                         action: SimpleMDE.drawLink,
+                         className: "fa fa-link",
+                         title: "Lien"
+                     },
+                     {
+                         name: "image",
+                         action: function(editor) {
+                             editor.codemirror.replaceSelection(
+                                 "<figure>\n" +
+                                 "    <img src=\"http://url-de-l-image.com\">\n" +
+                                 "    <figcaption>Légende de l'image</figcaption>\n" +
+                                 "</figure>"
+                             );
 
-                                editor.codemirror.focus();
-                            },
-                            className: "fa fa-image",
-                            title: "Image avec légende"
-                        },
-                        {
-                            name: "video",
-                            action: function(editor) {
-                                editor.codemirror.replaceSelection(
-                                    "<div class=\"video\">\n"+
-                                    "    <iframe src=\"https://url-de-la-video.com\" width=\"560\" height=\"315\"\n" +
-                                    "            frameborder=\"0\" style=\"border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\" allowFullScreen=\"true\"></iframe>\n"+
-                                    "</div>"
-                                );
+                             editor.codemirror.focus();
+                         },
+                         className: "fa fa-image",
+                         title: "Image avec légende"
+                     },
+                     {
+                         name: "video",
+                         action: function(editor) {
+                             editor.codemirror.replaceSelection(
+                                 "<div class=\"video\">\n"+
+                                 "    <iframe src=\"https://url-de-la-video.com\" width=\"560\" height=\"315\"\n" +
+                                 "            frameborder=\"0\" style=\"border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowTransparency=\"true\" allowFullScreen=\"true\"></iframe>\n"+
+                                 "</div>"
+                             );
 
-                                editor.codemirror.focus();
-                            },
-                            className: "fa fa-film",
-                            title: "Vidéo YouTube/Facebook"
-                        },
-                        {
-                            name: "quote",
-                            action: function(editor) {
-                                editor.codemirror.replaceSelection(
-                                    "<figure>\n" +
-                                    "    <blockquote>\n" +
-                                    "        <span>« Citation »</span>\n" +
-                                    "    </blockquote>\n" +
-                                    "    <figcaption>Emmanuel Macron, le 20 janvier 2017</figcaption>\n" +
-                                    "</figure>"
-                                );
+                             editor.codemirror.focus();
+                         },
+                         className: "fa fa-film",
+                         title: "Vidéo YouTube/Facebook"
+                     },
+                     {
+                         name: "quote",
+                         action: function(editor) {
+                             editor.codemirror.replaceSelection(
+                                 "<figure>\n" +
+                                 "    <blockquote>\n" +
+                                 "        <span>« Citation »</span>\n" +
+                                 "    </blockquote>\n" +
+                                 "    <figcaption>Emmanuel Macron, le 20 janvier 2017</figcaption>\n" +
+                                 "</figure>"
+                             );
 
-                                editor.codemirror.focus();
-                            },
-                            className: "fa fa-quote-left",
-                            title: "Citation"
-                        },
-                        {
-                            name: "horizontal-rule",
-                            action: SimpleMDE.drawHorizontalRule,
-                            className: "fa fa-minus",
-                            title: "Barre de séparation horizontale"
-                        },
-                        "|",
-                        {
-                            name: "guide",
-                            action: "https://github.com/EnMarche/en-marche.fr/blob/master/docs/content-styleguide.md",
-                            className: "fa fa-question-circle",
-                            title: "Mardown Guide"
-                        },
-                        "|",
-                        "side-by-side"
-                    ],
-                });
-            });
+                             editor.codemirror.focus();
+                         },
+                         className: "fa fa-quote-left",
+                         title: "Citation"
+                     },
+                     {
+                         name: "horizontal-rule",
+                         action: SimpleMDE.drawHorizontalRule,
+                         className: "fa fa-minus",
+                         title: "Barre de séparation horizontale"
+                     },
+                     "|",
+                     {
+                         name: "guide",
+                         action: "https://github.com/EnMarche/en-marche.fr/blob/master/docs/content-styleguide.md",
+                         className: "fa fa-question-circle",
+                         title: "Mardown Guide"
+                     },
+                     "|",
+                     "side-by-side"
+                 ],
+             });
+         });
 
-            $('.ck-editor').each(function(key, item) {
-                CKEDITOR.replace(item, {
-                    removePlugins: 'elementspath',
-                    height: {{ height|default(200) }},
-                    resize_enabled: false,
-                    toolbar: [
-                        { name: 'tools', items: [ 'Maximize' ] },
-                        { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-                        { name: 'styles', items: [ 'Format' ] },
-                        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-                        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
-                        { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-                        { name: 'links', items: [ 'Link', 'Unlink', 'Image' ] }
-                    ]
-                });
-            });
+         $('.ck-editor').each(function(key, item) {
+             CKEDITOR.replace(item, {
+                 removePlugins: 'elementspath',
+                 height: {{ height|default(200) }},
+                 resize_enabled: false,
+                 toolbar: [
+                     { name: 'tools', items: [ 'Maximize' ] },
+                     { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+                     { name: 'styles', items: [ 'Format' ] },
+                     { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
+                     { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
+                     { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
+                     { name: 'links', items: [ 'Link', 'Unlink', 'Image' ] }
+                 ]
+             });
+         });
 
-            $('.ck-editor-advanced').each(function(key, item) {
-                CKEDITOR.replace(item, {
-                    removePlugins: 'elementspath',
-                    height: {{ height|default(200) }},
-                    resize_enabled: false,
-                    toolbar: [
-                        { name: 'tools', items: [ 'Maximize' ] },
-                        { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-                        { name: 'styles', items: [ 'Format' ] },
-                        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat', '-', 'Source' ] },
-                        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
-                        { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-                        { name: 'links', items: [ 'Link', 'Unlink', 'Image' ] }
-                    ]
-                });
-            });
-        });
+         $('.ck-editor-advanced').each(function(key, item) {
+             CKEDITOR.replace(item, {
+                 removePlugins: 'elementspath',
+                 extraPlugins: 'confighelper,youtube',
+                 extraAllowedContent: 'iframe[*]',
+                 height: {{ height|default(200) }},
+                 resize_enabled: false,
+                 toolbar: [
+                     { name: 'tools', items: [ 'Maximize' ] },
+                     { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+                     { name: 'styles', items: [ 'Format' ] },
+                     { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat', '-', 'Source' ] },
+                     { name: 'paragraph', items: [ 'NumberedList', 'BulletedList' ] },
+                     { name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
+                     { name: 'links', items: [ 'Link', 'Unlink', 'Image', 'Youtube' ] }
+                 ]
+             });
+         });
+     });
     </script>
     <script src="{{ asset('js/pixsort_ini.js') }}"></script>
 {% endblock %}
