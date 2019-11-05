@@ -98,7 +98,7 @@
         </service>
 
         <service id="app.admin.newsletter_subscription" class="AppBundle\Admin\NewsletterSubscriptionAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Newsletter" group="Campagne" />
+            <tag name="sonata.admin" manager-type="orm" label="Newsletter" group="Communication" />
 
             <argument />
             <argument>AppBundle\Entity\NewsletterSubscription</argument>

@@ -2,11 +2,15 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Newsletter\Events;
+use AppBundle\Newsletter\NewsletterEvent;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class NewsletterSubscriptionAdmin extends AbstractAdmin
@@ -17,6 +21,9 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -80,5 +87,28 @@ class NewsletterSubscriptionAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function postRemove($object)
+    {
+        $this->eventDispatcher->dispatch(Events::UNSUBSCRIBE, new NewsletterEvent($object));
+    }
+
+    public function postUpdate($object)
+    {
+        $this->eventDispatcher->dispatch(Events::UPDATE, new NewsletterEvent($object));
+    }
+
+    /**
+     * @required
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
     }
 }

@@ -11,13 +11,12 @@ export default class AutocompletedAddressForm extends EventEmitter {
     }
 
     buildWidget() {
-        // Stop if google class is undefined
-        if ('undefined' === typeof google) {
-            return;
-        }
-
         // Show the autocomplete when the address fields are not filled
         if (!this._address.isFilled()) {
+            // Stop if google class is undefined
+            if ('undefined' === typeof google) {
+                return;
+            }
 
             const autocomplete = new GooglePlaceAutocomplete(this._autocompleteWrapper, this._address, 'form form--full form__field em-form__field');
 

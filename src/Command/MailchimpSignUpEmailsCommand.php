@@ -93,8 +93,9 @@ class MailchimpSignUpEmailsCommand extends Command
                 continue;
             }
 
+            $codes = $adherent->getSubscriptionTypeCodes();
             foreach ($subscriptionTypes as $type) {
-                if (!$adherent->hasSubscriptionType($type->getCode())) {
+                if (!\in_array($type->getCode(), $codes, true)) {
                     $adherent->addSubscriptionType($type);
                 }
             }
