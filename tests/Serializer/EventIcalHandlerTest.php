@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Serializer;
 
 use AppBundle\Entity\Event;
+use AppBundle\Entity\MunicipalEvent;
 use AppBundle\Serializer\EventICalHandler;
 use AppBundle\Serializer\IcalSerializationVisitor;
 use JMS\Serializer\GraphNavigator;
@@ -26,13 +27,17 @@ class EventIcalHandlerTest extends TestCase
     {
         $result = EventICalHandler::getSubscribingMethods();
 
-        $this->assertInternalType('array', $result);
-        $this->assertCount(1, $result);
+        $this->assertCount(2, $result);
 
         $this->assertEquals(Event::class, $result[0]['type']);
         $this->assertEquals('ical', $result[0]['format']);
         $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[0]['direction']);
         $this->assertEquals('serialize', $result[0]['method']);
+
+        $this->assertEquals(MunicipalEvent::class, $result[1]['type']);
+        $this->assertEquals('ical', $result[1]['format']);
+        $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[1]['direction']);
+        $this->assertEquals('serialize', $result[1]['method']);
     }
 
     /**
