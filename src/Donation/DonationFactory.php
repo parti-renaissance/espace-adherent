@@ -22,10 +22,6 @@ class DonationFactory
             $request->getUuid(),
             $request->getType(),
             $request->getAmount() * 100,
-            $request->getGender(),
-            $request->getFirstName(),
-            $request->getLastName(),
-            $request->getEmailAddress(),
             $this->addressFactory->createFlexible(
                 $request->getCountry(),
                 $request->getPostalCode(),

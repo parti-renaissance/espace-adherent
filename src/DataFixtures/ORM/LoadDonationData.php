@@ -58,7 +58,6 @@ class LoadDonationData extends Fixture
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
 
-
         $manager->persist($donator0);
         $manager->persist($donator1);
         $manager->persist($donator2);

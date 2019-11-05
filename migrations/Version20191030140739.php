@@ -17,6 +17,7 @@ final class Version20191030140739 extends AbstractMigration
                 WHERE d.donator_id = id
                 LIMIT 1 
             )
+            WHERE gender IS NULL
 SQL
         );
         $this->addSql('DROP INDEX donation_email_idx ON donations');

@@ -64,7 +64,11 @@ class DonationUpdateReferenceCommand extends Command
 
             $reference = $this->donationRequestUtils->buildDonationReference(
                 $donation->getUuid(),
-                sprintf('%s %s', $donation->getFirstName(), $donation->getLastName())
+                sprintf(
+                    '%s %s',
+                    $donation->getDonator()->getFirstName(),
+                    $donation->getDonator()->getLastName()
+                )
             );
 
             $donation->setPayboxOrderRef($reference);
