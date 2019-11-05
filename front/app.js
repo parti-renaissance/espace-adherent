@@ -255,7 +255,7 @@ class App {
 
     createCKEditor(elementSelector, uploadUrl) {
         System.import('services/form/CKEditor').catch((error) => { throw error; }).then((module) => {
-            module.default(dom(elementSelector), uploadUrl);
+            module.default(dom(elementSelector), uploadUrl, {removePlugins: ['MediaEmbed']});
         });
     }
 }
