@@ -111,6 +111,25 @@
             </noscript>
             <!-- End Google Tag Manager (noscript) -->
         {% endif %}
+
+        <!-- START Display Upgrade Message for IE 10 or Less -->
+        <!-- [if lte IE 9]>
+            {% block ie_warning %}
+                <div class="flash notice-flashes">
+                    <div class="flash__inner">
+                        Pensez à mettre à jour votre navigateur web ou le changer <a href="https://browsehappy.com" target="_blank">ici</a> pour visualiser correctement le site.
+                        <a href="#" class="link--no--decor" onClick="document.cookie = 'dismiss_ie_warning=true;';this.parentNode.parentNode.removeChild(this.parentNode);">&times;</a>
+                    </div>
+                </div>
+            {% endblock %}
+        <![endif]-->
+        <script>
+            // IF THE BROWSER IS INTERNET EXPLORER 10
+            if (!document.cookie.match(new RegExp('dismiss_ie_warning=true')) && (navigator.appVersion.indexOf('MSIE 10') !== -1 || navigator.appVersion.indexOf('MSIE 11') !== -1)) { document.write('{{ block('ie_warning')|e('js') }}');}
+            // ]]>
+        </script>
+        <!-- END Display Upgrade Message for IE 10 or Less -->
+
         {% block flash_message %}
             {% for message in app.flashes('info') %}
                 <div class="flash notice-flashes">
