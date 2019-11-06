@@ -1,7 +1,8 @@
 <?php
 
 use AppBundle\Entity\Donation;
-use AppBundle\Repository\DonationRepository;
+use AppBundle\Entity\Donator;
+use AppBundle\Repository\DonatorRepository;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -60,10 +61,13 @@ class DonationContext extends \Behat\MinkExtension\Context\RawMinkContext
 
     private function getDonation(string $email): ?Donation
     {
-        /** @var DonationRepository $repository */
-        $repository = $this->getService(DonationRepository::class);
+        /** @var DonatorRepository $repository */
+        $repository = $this->getService(DonatorRepository::class);
 
-        return $repository->findOneBy(['emailAddress' => $email], ['createdAt' => 'DESC']);
+        /** @var Donator $donator */
+        $donator = $repository->findOneBy(['emailAddress' => $email]);
+
+        return $donator->getDonations()->first();
     }
 
     private function getContainer(): ContainerInterface

@@ -103,6 +103,7 @@ class Donator
 
     /**
      * @ORM\OneToMany(targetEntity="Donation", mappedBy="donator", cascade={"all"})
+     * @ORM\OrderBy({"createdAt": "ASC"})
      */
     private $donations;
 

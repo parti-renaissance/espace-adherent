@@ -160,12 +160,12 @@ class DonationController extends Controller
             'donation' => $donation,
             'retry_url' => $retryUrl,
             'is_registration' => $request->query->get('is_registration'),
-            'is_adherent' => $adherentRepository->isAdherent($donation->getEmailAddress()),
-            'is_newsletter_subscribed' => $newsletterSubscriptionRepository->isSubscribed($donation->getEmailAddress()),
+            'is_adherent' => $adherentRepository->isAdherent($donation->getDonator()->getEmailAddress()),
+            'is_newsletter_subscribed' => $newsletterSubscriptionRepository->isSubscribed($donation->getDonator()->getEmailAddress()),
             'newsletter_form' => $this
                 ->createForm(
                     NewsletterSubscriptionType::class,
-                    new NewsletterSubscription($donation->getEmailAddress(), $donation->getPostalCode(), $donation->getCountry())
+                    new NewsletterSubscription($donation->getDonator()->getEmailAddress(), $donation->getPostalCode(), $donation->getCountry())
                 )
                 ->createView(),
         ]);

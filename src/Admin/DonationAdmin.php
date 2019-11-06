@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -117,6 +118,20 @@ class DonationAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('donator', ModelAutocompleteFilter::class, [
+                'label' => 'Donateur',
+                'show_filter' => true,
+                'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'identifier',
+                        'firstName',
+                        'lastName',
+                        'emailAddress',
+                    ],
+                ],
+            ])
             ->add(
                 'status',
                 'doctrine_orm_choice',

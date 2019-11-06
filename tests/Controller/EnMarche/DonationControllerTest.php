@@ -115,10 +115,10 @@ class DonationControllerTest extends WebTestCase
 
         /* @var Donation $donation */
         $this->assertEquals(3000, $donation->getAmount());
-        $this->assertSame('male', $donation->getGender());
-        $this->assertSame('Doe', $donation->getLastName());
-        $this->assertSame('John', $donation->getFirstName());
-        $this->assertSame('test@paybox.com', $donation->getEmailAddress());
+        $this->assertSame('male', $donation->getDonator()->getGender());
+        $this->assertSame('Doe', $donation->getDonator()->getLastName());
+        $this->assertSame('John', $donation->getDonator()->getFirstName());
+        $this->assertSame('test@paybox.com', $donation->getDonator()->getEmailAddress());
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());
@@ -223,7 +223,7 @@ class DonationControllerTest extends WebTestCase
 
         $donator = $donation->getDonator();
         $this->assertInstanceOf(Donator::class, $donator);
-        $this->assertSame($donator->getEmailAddress(), $donation->getEmailAddress());
+        $this->assertSame($donator->getEmailAddress(), $donation->getDonator()->getEmailAddress());
         $this->assertEquals($donator->getLastDonationDate(), $donation->getCreatedAt());
         $this->assertSame('000053', $donator->getIdentifier());
 
@@ -268,10 +268,10 @@ class DonationControllerTest extends WebTestCase
 
         /* @var Donation $donation */
         $this->assertEquals(3000, $donation->getAmount());
-        $this->assertSame('male', $donation->getGender());
-        $this->assertSame('Doe', $donation->getLastName());
-        $this->assertSame('John', $donation->getFirstName());
-        $this->assertSame('test@paybox.com', $donation->getEmailAddress());
+        $this->assertSame('male', $donation->getDonator()->getGender());
+        $this->assertSame('Doe', $donation->getDonator()->getLastName());
+        $this->assertSame('John', $donation->getDonator()->getFirstName());
+        $this->assertSame('test@paybox.com', $donation->getDonator()->getEmailAddress());
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());

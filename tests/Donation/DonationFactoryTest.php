@@ -7,6 +7,7 @@ use AppBundle\Address\PostAddressFactory;
 use AppBundle\Donation\DonationFactory;
 use AppBundle\Donation\DonationRequest;
 use AppBundle\Donation\DonationRequestUtils;
+use AppBundle\Entity\Donator;
 use AppBundle\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
@@ -38,12 +39,19 @@ class DonationFactoryTest extends TestCase
         $request->setDuration(0);
 
         $factory = $this->createFactory();
-        $donation = $factory->createFromDonationRequest($request);
 
-        $this->assertSame('m.dupont@example.fr', $donation->getEmailAddress());
-        $this->assertSame('male', $donation->getGender());
-        $this->assertSame('Damien', $donation->getFirstName());
-        $this->assertSame('DUPONT', $donation->getLastName());
+        $donator = $this->createMock(Donator::class);
+        $donator->method('getGender')->willReturn('male');
+        $donator->method('getFirstName')->willReturn('Damien');
+        $donator->method('getLastName')->willReturn('DUPONT');
+        $donator->method('getEmailAddress')->willReturn('m.dupont@example.fr');
+
+        $donation = $factory->createFromDonationRequest($request, $donator);
+
+        $this->assertSame('m.dupont@example.fr', $donation->getDonator()->getEmailAddress());
+        $this->assertSame('male', $donation->getDonator()->getGender());
+        $this->assertSame('Damien', $donation->getDonator()->getFirstName());
+        $this->assertSame('DUPONT', $donation->getDonator()->getLastName());
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('2, Rue de la République', $donation->getAddress());
         $this->assertSame('Lyon', $donation->getCityName());
