@@ -3,6 +3,7 @@
 namespace AppBundle\Serializer;
 
 use AppBundle\Entity\Event;
+use AppBundle\Entity\MunicipalEvent;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 
@@ -16,6 +17,12 @@ class EventICalHandler implements SubscribingHandlerInterface
         return [
             [
                 'type' => Event::class,
+                'format' => 'ical',
+                'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
+                'method' => 'serialize',
+            ],
+            [
+                'type' => MunicipalEvent::class,
                 'format' => 'ical',
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
                 'method' => 'serialize',
