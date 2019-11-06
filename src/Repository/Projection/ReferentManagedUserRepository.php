@@ -8,6 +8,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Repository\ReferentTrait;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -83,7 +84,10 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $qb->orderBy("u.$sortColumn", $orderDirection);
 
         if ($onlyEmailSubscribers) {
-            $qb->andWhere('u.isMailSubscriber = 1');
+            $qb
+                ->andWhere('FIND_IN_SET(:subscription_type, u.subscriptionTypes) > 0')
+                ->setParameter('subscription_type', SubscriptionTypeEnum::REFERENT_EMAIL)
+            ;
         }
 
         $managedAreas = $referent->getManagedAreaTagCodes();
@@ -223,8 +227,8 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
         if (null !== $filter->onlyEmailSubscribers()) {
             $qb
-                ->andWhere('u.isMailSubscriber = :isMailSubscriber')
-                ->setParameter('isMailSubscriber', $filter->onlyEmailSubscribers())
+                ->andWhere(sprintf('FIND_IN_SET(:subscription_type, u.subscriptionTypes) %s 0', $filter->onlyEmailSubscribers() ? '>' : '='))
+                ->setParameter('subscription_type', SubscriptionTypeEnum::REFERENT_EMAIL)
             ;
         }
 

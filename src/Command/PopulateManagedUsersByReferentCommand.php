@@ -32,7 +32,7 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
           INSERT INTO projection_referent_managed_users
             (status, type, original_id, email, postal_code, city, country, first_name, last_name, age, phone, 
             committees, is_committee_member, is_committee_host, is_committee_supervisor, committee_postal_code, 
-            subscribed_tags, is_mail_subscriber, created_at, gender, interests, supervisor_tags, citizen_projects, 
+            subscribed_tags, subscription_types, created_at, gender, interests, supervisor_tags, citizen_projects, 
             citizen_projects_organizer)
             SELECT
             0,
@@ -85,10 +85,11 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
                 GROUP BY a.id
             ),
             (
-                SELECT IF(COUNT(st.id) > 0, 1, 0)
+                SELECT GROUP_CONCAT(st.code SEPARATOR  ',')
                 FROM subscription_type st
                 JOIN adherent_subscription_type ast ON ast.subscription_type_id = st.id
-                WHERE ast.adherent_id = a.id AND st.code = 'subscribed_emails_referents'
+                WHERE ast.adherent_id = a.id
+                GROUP BY a.id
             ),
             a.registered_at,
             a.gender,
