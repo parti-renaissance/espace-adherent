@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\Projection\ReferentManagedUserFactory;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -33,7 +34,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
-            'is_mail_subscriber' => 0,
+            'subscription_types' => [SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
             'created_at' => '2017-06-01 09:22:45',
             'gender' => 'male',
@@ -54,7 +55,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_committee_member' => 1,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 0,
-            'is_mail_subscriber' => 1,
+            'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => 'ch',
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'male',
@@ -75,7 +76,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_committee_member' => 0,
             'is_committee_host' => 1,
             'is_committee_supervisor' => 0,
-            'is_mail_subscriber' => 1,
+            'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => '92',
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
@@ -100,7 +101,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 1,
-            'is_mail_subscriber' => 1,
+            'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
             'subscribedTags' => '77',
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',

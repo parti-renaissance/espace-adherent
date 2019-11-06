@@ -323,7 +323,7 @@
                                 Adhérent
                             {% endif %}
                         </td>
-                        <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+                        <td>{{ user.hasSmsSubscriptionType ? (user.phone ? user.phone|phone_number_format : 'Non renseigné') : 'Masqué' }}</td>
                         <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}

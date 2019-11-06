@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Projection;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
@@ -20,14 +21,11 @@ use libphonenumber\PhoneNumber;
  */
 class ReferentManagedUser
 {
-    const STATUS_INSERTING = 0;
-    const STATUS_READY = 1;
-    const STATUS_EXPIRED = 2;
+    public const STATUS_READY = 1;
+    public const TYPE_ADHERENT = 'adherent';
 
-    const TYPE_ADHERENT = 'adherent';
-
-    const STYLE_TYPE_ADHERENT = 'adherent';
-    const STYLE_TYPE_HOST = 'host';
+    private const STYLE_TYPE_ADHERENT = 'adherent';
+    private const STYLE_TYPE_HOST = 'host';
 
     /**
      * @var int
@@ -153,13 +151,6 @@ class ReferentManagedUser
     private $isCommitteeSupervisor;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $isMailSubscriber;
-
-    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -188,7 +179,7 @@ class ReferentManagedUser
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    private $supervisorTags = [];
+    private $supervisorTags;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -199,6 +190,13 @@ class ReferentManagedUser
      * @ORM\Column(type="json", nullable=true)
      */
     private $citizenProjectsOrganizer;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $subscriptionTypes;
 
     public function __construct(
         int $status,
@@ -217,7 +215,7 @@ class ReferentManagedUser
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
         int $isCommitteeSupervisor = 0,
-        int $isMailSubscriber = 0,
+        array $subscriptionTypes = [],
         string $subscribedTags = null,
         \DateTime $createdAt = null,
         string $gender = null,
@@ -241,7 +239,7 @@ class ReferentManagedUser
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
-        $this->isMailSubscriber = $isMailSubscriber;
+        $this->subscriptionTypes = $subscriptionTypes;
         $this->subscribedTags = $subscribedTags;
         $this->createdAt = $createdAt;
         $this->gender = $gender;
@@ -351,7 +349,7 @@ class ReferentManagedUser
 
     public function isMailSubscriber(): bool
     {
-        return $this->isMailSubscriber;
+        return \in_array(SubscriptionTypeEnum::REFERENT_EMAIL, $this->subscriptionTypes, true);
     }
 
     public function getSubscribedTags(): string
@@ -402,5 +400,15 @@ class ReferentManagedUser
     public function getCitizenProjectsOrganizer(): ?array
     {
         return $this->citizenProjectsOrganizer;
+    }
+
+    public function getSubscriptionTypes(): array
+    {
+        return $this->subscriptionTypes;
+    }
+
+    public function hasSmsSubscriptionType(): bool
+    {
+        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
     }
 }
