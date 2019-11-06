@@ -15,6 +15,7 @@ Feature:
       | scope         | read:stats                                   |
     And I add the access token to the Authorization header
     When I send a "GET" request to "/api/statistics/acquisition?start-date=01-01-2018&end-date=31-03-2018&tags%5B%5D=CH"
+    Then print last response
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON node "root" should have 21 elements
