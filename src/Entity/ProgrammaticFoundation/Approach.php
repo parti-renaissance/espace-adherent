@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\ProgrammaticFoundation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,9 +11,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/programmatic-foundation/approaches",
+ *             "method": "GET",
+ *         }
+ *     },
+ *     attributes={
+ *         "normalization_context": {"groups": {"approach_list_read"}},
+ *         "pagination_enabled"=false,
+ *         "order": {"position": "ASC"}
+ *     }
+ * )
+ *
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_approach")
  * @UniqueEntity("position", message="programmatic_foundation.unique_position.approach")
@@ -26,17 +42,20 @@ class Approach
     /**
      * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $position;
 
     /**
      * @ORM\Column
      * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $title;
 
     /**
      * @ORM\Column(nullable=true)
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $content;
 
@@ -49,6 +68,7 @@ class Approach
      * )
      * @ORM\OrderBy({"position": "ASC"})
      * @Assert\Valid
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $subApproaches;
 

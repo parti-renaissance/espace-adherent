@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Le socle programme' %}
+{% block canonical_url url('app_approaches') %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runProgrammaticFoundation();
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<main class="programmatic-foundation programmatic-foundation__view-approaches">
+    <section class="programmatic-foundation__head background--darker ">
+    </section>
+    <section class="content l__wrapper--medium">
+        <div class="programmatic-foundation-widget-wrapper">
+        </div>
+    </section>
+</main>
+{% endblock %}

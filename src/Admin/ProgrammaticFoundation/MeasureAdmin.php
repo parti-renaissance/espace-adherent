@@ -64,6 +64,9 @@ class MeasureAdmin extends AbstractAdmin
             ])
             ->add('_action', null, [
                 'actions' => [
+                    'link' => [
+                        'template' => 'admin/programmatic_foundation/measure/link.html.twig',
+                    ],
                     'edit' => [],
                     'delete' => [],
                 ],

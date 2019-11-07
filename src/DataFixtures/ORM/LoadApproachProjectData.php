@@ -24,9 +24,7 @@ class LoadApproachProjectData extends AbstractFixture implements DependentFixtur
             $project = new Project(
                 $i + 1,
                 sprintf('Projet lorem %d', $i + 1),
-                '<p style="text-align:center"><iframe frameborder="0" height="360" src="https://www.youtube.com/embed/QTACugN67yc" width="640"></iframe></p>
-
-<p>Maecenas finibus aliquam risus, eu lobortis magna convallis in. Cras et diam dignissim, auctor turpis tincidunt, rutrum urna. Aenean nec lacinia est. Donec ultrices ante eu interdum euismod. Ut tortor mi, ullamcorper sed elit at, fringilla molestie leo. In efficitur arcu dui, id posuere nulla ultricies quis. Sed fringilla lacus sed enim vestibulum, at ornare metus scelerisque. Phasellus id sagittis neque. In justo quam, <a href="#">placerat a pretium a</a>, mattis et nibh. Duis consequat ac metus aliquam fermentum.</p>
+                '<p>Maecenas finibus aliquam risus, eu lobortis magna convallis in. Cras et diam dignissim, auctor turpis tincidunt, rutrum urna. Aenean nec lacinia est. Donec ultrices ante eu interdum euismod. Ut tortor mi, ullamcorper sed elit at, fringilla molestie leo. In efficitur arcu dui, id posuere nulla ultricies quis. Sed fringilla lacus sed enim vestibulum, at ornare metus scelerisque. Phasellus id sagittis neque. In justo quam, <a href="#">placerat a pretium a</a>, mattis et nibh. Duis consequat ac metus aliquam fermentum.</p>
 
 <p>Proin eget laoreet mi, vel fermentum nulla. Mauris sit amet tortor bibendum, maximus enim eu, mollis quam. Mauris id dui condimentum, faucibus tortor nec, fringilla quam. In fringilla vestibulum justo eu auctor. Pellentesque commodo mi maximus leo scelerisque cursus. Fusce lobortis enim dui, in congue ligula commodo eu. Donec a augue et elit mattis iaculis. Maecenas ultricies molestie sem et efficitur.</p>
 

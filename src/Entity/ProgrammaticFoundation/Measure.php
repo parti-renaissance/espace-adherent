@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,12 +33,14 @@ class Measure
     /**
      * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $position;
 
     /**
      * @ORM\Column
      * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $title;
 
@@ -45,28 +48,33 @@ class Measure
      * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"})
      * @Assert\NotBlank(message="programmatic_foundation.slug.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="programmatic_foundation.content.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $isLeading = false;
 
     /**
      * @ORM\Column
      * @Assert\NotBlank(message="programmatic_foundation.city.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="boolean")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $isExpanded = false;
 
@@ -85,12 +93,14 @@ class Measure
      *     orphanRemoval=true
      * )
      * @Assert\Valid
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $projects;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProgrammaticFoundation\Tag")
      * @ORM\JoinTable(name="programmatic_foundation_measure_tag")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $tags;
 
