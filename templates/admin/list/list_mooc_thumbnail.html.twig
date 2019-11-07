@@ -1,0 +1,11 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    <div style="text-align: center;">
+        {% if object.listImage or object.articleImage %}
+            <img src="{{ path('asset_url', { path: (object.listImage ?? object.articleImage).filePath }) }}" style="max-height: 70px; max-width: 100px;" alt="thumbnail">
+        {% elseif object.hasYoutubeThumbnail %}
+            <img src="{{ object.getYoutubeThumbnail }}" style="max-height: 70px; max-width: 100px;" alt="thumbnail"/>
+        {% endif %}
+    </div>
+{% endblock %}

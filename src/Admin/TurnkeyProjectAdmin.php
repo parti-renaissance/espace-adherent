@@ -196,10 +196,9 @@ class TurnkeyProjectAdmin extends AbstractAdmin
             ->add('category', null, [
                 'label' => 'Catégorie',
             ])
-            ->add('_image', null, [
+            ->add('_image', 'thumbnail', [
                 'label' => 'Miniature d\'image',
                 'virtual_field' => true,
-                'template' => 'admin/list/list_image_miniature.html.twig',
             ])
             ->add('youtubeId', null, [
                 'label' => 'Youtube ID',

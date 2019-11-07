@@ -3,9 +3,7 @@
 {% block field %}
     <div style="text-align: center;">
         {% if object.imageName is defined and object.imageName is not empty %}
-            <img src="{{ path('asset_url', { path: object.getImagePath }) }}" style="max-height: 70px; max-width: 100px;">
-        {% elseif object.hasYoutubeThumbnail is defined and object.hasYoutubeThumbnail %}
-            <img src="{{ object.getYoutubeThumbnail }}" style="max-height: 70px; max-width: 100px;" />
+            <img src="{{ path('asset_url', { path: object.getImagePath }) }}" style="max-height: 70px; max-width: 100px;" alt="thumbnail">
         {% endif %}
     </div>
 {% endblock %}

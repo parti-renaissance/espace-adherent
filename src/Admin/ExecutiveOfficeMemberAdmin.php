@@ -149,10 +149,9 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
             ->add('job', null, [
                 'label' => 'Poste',
             ])
-            ->add('_image', null, [
+            ->add('_image', 'thumbnail', [
                 'label' => 'Photo',
                 'virtual_field' => true,
-                'template' => 'admin/list/list_image_miniature.html.twig',
             ])
             ->add('executiveOfficer', null, [
                 'label' => 'Délégué général',

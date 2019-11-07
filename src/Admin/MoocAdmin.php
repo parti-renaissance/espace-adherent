@@ -3,46 +3,27 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\Chapter;
-use AppBundle\Entity\Mooc\Mooc;
+use AppBundle\Form\ImageType;
 use AppBundle\Form\PurifiedTextareaType;
-use AppBundle\Mooc\MoocManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
-class MoocAdmin extends AbstractAdmin
+class MoocAdmin extends AbstractAdmin implements ImageUploadAdminInterface
 {
-    /**
-     * @var MoocManager
-     */
-    private $moocManager;
-
-    public function __construct(string $code, string $class, string $baseControllerName, MoocManager $moocManager)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->moocManager = $moocManager;
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->tab('MOOC')
-                ->with('Général', ['class' => 'col-md-6'])
+            ->tab('Général')
+                ->with('Général', ['class' => 'col-md-8'])
                     ->add('title', TextType::class, [
                         'label' => 'Titre',
                         'filter_emojis' => true,
-                    ])
-                    ->add('image', FileType::class, [
-                        'required' => false,
-                        'label' => 'Ajoutez une photo',
-                        'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 960x720px.',
                     ])
                     ->add('description', TextType::class, [
                         'label' => 'Description',
@@ -58,18 +39,8 @@ class MoocAdmin extends AbstractAdmin
                         'purifier_type' => 'enrich_content',
                         'filter_emojis' => true,
                     ])
-                    ->add('youtubeId', TextType::class, [
-                        'label' => 'Youtube ID',
-                        'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
-                        'filter_emojis' => true,
-                    ])
-                    ->add('youtubeDuration', TimeType::class, [
-                        'label' => 'Durée de la vidéo',
-                        'widget' => 'single_text',
-                        'with_seconds' => true,
-                    ])
                 ->end()
-                ->with('Boutons de partage', ['class' => 'col-md-6'])
+                ->with('Boutons de partage', ['class' => 'col-md-4'])
                     ->add('shareTwitterText', TextType::class, [
                         'label' => 'Texte du partage sur Twitter',
                         'filter_emojis' => true,
@@ -93,7 +64,7 @@ class MoocAdmin extends AbstractAdmin
 
         if (!$this->request->isXmlHttpRequest()) {
             $formMapper
-                ->with('Chapitres', ['class' => 'col-md-6'])
+                ->with('Chapitres', ['class' => 'col-md-4'])
                     ->add('chapters', EntityType::class, [
                         'class' => Chapter::class,
                         'by_reference' => false,
@@ -104,7 +75,39 @@ class MoocAdmin extends AbstractAdmin
             ;
         }
 
-        $formMapper->end();
+        $formMapper
+            ->end()
+            ->tab('Media')
+                ->with('Liste', ['class' => 'col-md-6'])
+                    ->add('listImage', ImageType::class, [
+                        'required' => false,
+                        'allow_delete' => !empty($this->getSubject()->getListImage()),
+                        'label' => 'Ajoutez une photo',
+                        'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 960x720px.',
+                    ])
+                ->end()
+                ->with('Article', ['class' => 'col-md-6'])
+                    ->add('articleImage', ImageType::class, [
+                        'required' => false,
+                        'allow_delete' => !empty($this->getSubject()->getArticleImage()),
+                        'label' => 'Ajoutez une photo',
+                        'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 960x720px.',
+                    ])
+                    ->add('youtubeId', TextType::class, [
+                        'label' => 'Youtube ID',
+                        'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
+                        'filter_emojis' => true,
+                        'required' => false,
+                    ])
+                    ->add('youtubeDuration', TimeType::class, [
+                        'label' => 'Durée de la vidéo',
+                        'widget' => 'single_text',
+                        'with_seconds' => true,
+                        'required' => false,
+                    ])
+                ->end()
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -137,8 +140,9 @@ class MoocAdmin extends AbstractAdmin
                 'label' => 'Youtube ID',
                 'template' => 'admin/list/list_youtube_id.html.twig',
             ])
-            ->add('_thumbnail', 'thumbnail', [
+            ->add('_thumbnail', null, [
                 'label' => 'Miniature',
+                'template' => 'admin/list/list_mooc_thumbnail.html.twig',
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -154,37 +158,11 @@ class MoocAdmin extends AbstractAdmin
         $collection->remove('show');
     }
 
-    /**
-     * @param Mooc $mooc
-     */
-    public function postRemove($mooc)
+    public function getUploadableImagePropertyNames(): array
     {
-        parent::postRemove($mooc);
-
-        $this->moocManager->removeImage($mooc);
-    }
-
-    /**
-     * @param Mooc $mooc
-     */
-    public function prePersist($mooc)
-    {
-        parent::prePersist($mooc);
-
-        if ($mooc->getImage()) {
-            $this->moocManager->saveImage($mooc);
-        }
-    }
-
-    /**
-     * @param Mooc $mooc
-     */
-    public function preUpdate($mooc)
-    {
-        parent::preUpdate($mooc);
-
-        if ($mooc->getImage()) {
-            $this->moocManager->saveImage($mooc);
-        }
+        return [
+            'articleImage',
+            'listImage',
+        ];
     }
 }
