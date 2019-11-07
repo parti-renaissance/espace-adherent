@@ -1,0 +1,14 @@
+<div class="programmatic-foundation__children programmatic-foundation__{{ type }}">
+    {% for child in children %}
+        <div class="child">
+            <input type="checkbox" id="{{ type~"-"~child.id }}" class="hidden-toggle"{% if child.isExpanded %} checked="true"{% endif %}"/>
+            <label class="head text--default-large" for="{{ type~"-"~child.id }}">
+                <span class="title">{{ child.title }}</span>
+                <div class="toggle"></div>
+            </label>
+            <div class="content">
+                {{ child.content|raw }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

@@ -78,6 +78,12 @@ class App {
         });
     }
 
+    runProgrammaticFoundation() {
+        System.import('pages/programmatic_foundation').catch((error) => { throw error; }).then((module) => {
+            module.default('.programmatic-foundation-widget-wrapper', this.get('api'));
+        });
+    }
+
     runDonationInformation(formType) {
         System.import('pages/donation_information').catch((error) => { throw error; }).then((module) => {
             module.default(formType);

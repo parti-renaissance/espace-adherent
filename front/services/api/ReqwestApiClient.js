@@ -56,6 +56,13 @@ export default class ReqwestApiClient {
         });
     }
 
+    getApproaches(callback) {
+        this._createRequest(callback, {
+            url: '/api/programmatic-foundation/approaches',
+            type: 'json'
+        });
+    }
+
     getCommittees(callback) {
         this._createRequest(callback, {
             url: '/api/committees',

@@ -69,8 +69,13 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: url('/images/icons/icn-form-select.svg') no-repeat right 10px center;
+    background: $white url('/images/icons/icn-form-select.svg') no-repeat right 10px center;
     cursor: pointer;
+}
+
+@mixin em-form-search {
+    background: $white url('/images/icons/icn-form-search.svg') no-repeat left 10px center;
+    padding-left: 45px;
 }
 
 @mixin em-form-textarea {
@@ -201,6 +206,7 @@
         .em-form__field { @include em-form-field;}
         textarea.em-form__field { @include em-form-textarea; }
         select.em-form__field { @include em-form-select; }
+        .em-form__search { @include em-form-search; }
 
         .em-form__label { @include em-form-label; }
         .em-form__legend { @include em-form-legend; }
