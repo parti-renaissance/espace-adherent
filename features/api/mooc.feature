@@ -30,7 +30,7 @@ Feature:
             "title": "La Rentrée des Territoires",
             "description": "Description du MOOC, la Rentrée des Territoires",
             "slug": "la-rentree-des-territoires",
-            "image": "http://test.enmarche.code/assets/images/mooc/41a496d8ef383c1e9248f2994285593c.png"
+            "image": "http://test.enmarche.code/assets/images/745a98fd-a55c-4168-bb26-a5db550b844c.jpg"
         }
     ]
     """
@@ -47,6 +47,7 @@ Feature:
       "content": "<strong>Lorem ipsum</strong> dolor sit amet, consectetur adipiscing elit.",
       "youtubeId": "ktHEfEDhscU",
       "youtubeThumbnail": "https://img.youtube.com/vi/ktHEfEDhscU/0.jpg",
+      "articleImage": null,
       "youtubeDuration": "00:02:10",
       "shareTwitterText": "Bonsoir, voici un tweet de partage d'un MOOC #enmarche",
       "shareFacebookText": "Bonsoir, voici un partage avec Facebook",

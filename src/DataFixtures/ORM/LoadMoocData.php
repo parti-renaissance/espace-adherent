@@ -2,12 +2,13 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Image;
 use AppBundle\Entity\Mooc\Mooc;
 use Cake\Chronos\MutableDateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Ramsey\Uuid\Uuid;
 
 class LoadMoocData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -41,7 +42,12 @@ class LoadMoocData extends AbstractFixture implements DependentFixtureInterface
             'Voici le contenu de l\'email de partage. Merci.'
         );
 
-        $moocWithImage->setImageName(new UploadedFile('src/DataFixtures/citizen-projects/default.png', 'default.png'));
+        $image = new Image(Uuid::fromString('745a98fd-a55c-4168-bb26-a5db550b844c'));
+        $image->setExtension('jpg');
+
+        copy('app/data/static/proteger-la-france.jpg', 'app/data/images/'.$image->getUuid().'.jpg');
+
+        $moocWithImage->setListImage($image);
 
         $manager->persist($moocWithImage);
 

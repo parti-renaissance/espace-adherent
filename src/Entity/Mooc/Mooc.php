@@ -4,7 +4,8 @@ namespace AppBundle\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Entity\ImageTrait;
+use AppBundle\Entity\Image;
+use AppBundle\Validator\ImageObject as AssertImageObject;
 use Cake\Chronos\MutableDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Mooc
 {
     use EntityTimestampableTrait;
-    use ImageTrait;
 
     /**
      * @ORM\Id
@@ -84,16 +83,19 @@ class Mooc
     private $content;
 
     /**
-     * @ORM\Column
+     * @var string|null
      *
-     * @Assert\NotBlank
+     * @ORM\Column(nullable=true)
+     *
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
      * @Assert\Length(min=2, max=11)
      */
     private $youtubeId;
 
     /**
-     * @ORM\Column(type="time")
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="time", nullable=true)
      *
      * @Assert\Time
      */
@@ -106,6 +108,7 @@ class Mooc
      * @Assert\Length(max=255)
      */
     private $shareTwitterText;
+
     /**
      * @ORM\Column
      *
@@ -113,6 +116,7 @@ class Mooc
      * @Assert\Length(max=255)
      */
     private $shareFacebookText;
+
     /**
      * @ORM\Column
      *
@@ -120,6 +124,7 @@ class Mooc
      * @Assert\Length(max=255)
      */
     private $shareEmailSubject;
+
     /**
      * @ORM\Column(length=500)
      *
@@ -129,16 +134,32 @@ class Mooc
     protected $shareEmailBody;
 
     /**
-     * @var UploadedFile|null
+     * @var Image|null
      *
-     * @Assert\Image(
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"all"}, orphanRemoval=true)
+     *
+     * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},
      *     maxSize="1M",
      *     maxWidth="960",
      *     maxHeight="720"
      * )
      */
-    protected $image;
+    protected $articleImage;
+
+    /**
+     * @var Image|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"all"}, orphanRemoval=true)
+     *
+     * @AssertImageObject(
+     *     mimeTypes={"image/jpeg", "image/png"},
+     *     maxSize="1M",
+     *     maxWidth="960",
+     *     maxHeight="720"
+     * )
+     */
+    protected $listImage;
 
     public function __construct(
         string $title = null,
@@ -250,7 +271,7 @@ class Mooc
         return $this->youtubeId;
     }
 
-    public function setYoutubeId(string $youtubeId): void
+    public function setYoutubeId(?string $youtubeId): void
     {
         $this->youtubeId = $youtubeId;
     }
@@ -260,17 +281,17 @@ class Mooc
         return null !== $this->youtubeId;
     }
 
-    public function getYoutubeThumbnail(): string
+    public function getYoutubeThumbnail(): ?string
     {
-        return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
+        return $this->youtubeId ? sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId) : null;
     }
 
-    public function getYoutubeDuration(): \DateTime
+    public function getYoutubeDuration(): ?\DateTime
     {
         return $this->youtubeDuration;
     }
 
-    public function setYoutubeDuration(\DateTime $youtubeDuration): void
+    public function setYoutubeDuration(?\DateTime $youtubeDuration): void
     {
         $this->youtubeDuration = $youtubeDuration;
     }
@@ -315,8 +336,23 @@ class Mooc
         $this->shareEmailBody = $shareEmailBody;
     }
 
-    public function getImagePath(): string
+    public function getArticleImage(): ?Image
     {
-        return sprintf('images/mooc/%s', $this->getImageName());
+        return $this->articleImage;
+    }
+
+    public function setArticleImage(?Image $articleImage): void
+    {
+        $this->articleImage = $articleImage;
+    }
+
+    public function getListImage(): ?Image
+    {
+        return $this->listImage;
+    }
+
+    public function setListImage(?Image $listImage): void
+    {
+        $this->listImage = $listImage;
     }
 }

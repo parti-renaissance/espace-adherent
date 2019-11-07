@@ -691,6 +691,10 @@
             <tag name="sonata.admin.extension" target="app.admin.formation_axe" />
         </service>
 
+        <service id="app.admin.image_upload_extension" class="AppBundle\Admin\Extension\ImageUploadExtension">
+            <tag name="sonata.admin.extension" target="app.admin.mooc_mooc" />
+        </service>
+
         <service id="app.admin.mooc_mooc" class="AppBundle\Admin\MoocAdmin">
             <tag name="sonata.admin" manager-type="orm" label="MOOC" group="Formation" />
 

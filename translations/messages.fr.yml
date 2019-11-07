@@ -595,3 +595,5 @@ application_request.taken_successfully: Le candidat a bien été ajouté à votr
 application_request.removed_successfully: Le candidat a été retiré de votre équipe
 application_request.municipal_chief.popup.title: Charte de bonne utilisation des outils numériques
 application_request.municipal_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_municipales_2020.pdf
+
+admin.image.delete: Supprimer l'image actuelle

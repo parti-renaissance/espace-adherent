@@ -27,14 +27,14 @@ class MoocSerializerSubscriber implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event): void
     {
-        if (\in_array('mooc_list', $event->getContext()->attributes->get('groups')->get())) {
+        if (\in_array('mooc_list', $event->getContext()->attributes->get('groups')->get(), true)) {
             /** @var Mooc $mooc */
             $mooc = $event->getObject();
 
             $event->getVisitor()->addData(
                 'image',
-                $mooc->getImageName()
-                    ? $this->router->generate('asset_url', ['path' => $mooc->getImagePath()], UrlGeneratorInterface::ABSOLUTE_URL)
+                $mooc->getListImage()
+                    ? $this->router->generate('asset_url', ['path' => $mooc->getListImage()->getFilePath()], UrlGeneratorInterface::ABSOLUTE_URL)
                     : $mooc->getYoutubeThumbnail()
             );
         }

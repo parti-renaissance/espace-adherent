@@ -11,6 +11,7 @@ use AppBundle\Entity\Mooc\Quiz;
 use AppBundle\Entity\Mooc\Video;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -58,7 +59,8 @@ class MoocNormalizer implements NormalizerInterface
             'content' => $mooc->getContent(),
             'youtubeId' => $mooc->getYoutubeId(),
             'youtubeThumbnail' => $mooc->getYoutubeThumbnail(),
-            'youtubeDuration' => $mooc->getYoutubeDuration()->format('H:i:s'),
+            'articleImage' => ($image = $mooc->getArticleImage()) ? $this->router->generate('asset_url', ['path' => $image->getFilePath()], UrlGeneratorInterface::ABSOLUTE_URL) : null,
+            'youtubeDuration' => $mooc->getYoutubeDuration() ? $mooc->getYoutubeDuration()->format('H:i:s') : null,
             'shareTwitterText' => $mooc->getShareTwitterText(),
             'shareFacebookText' => $mooc->getShareFacebookText(),
             'shareEmailSubject' => $mooc->getShareEmailSubject(),
