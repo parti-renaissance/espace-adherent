@@ -102,12 +102,23 @@ class Donator
     private $comment;
 
     /**
+     * @var Donation[]
+     *
      * @ORM\OneToMany(targetEntity="Donation", mappedBy="donator", cascade={"all"})
-     * @ORM\OrderBy({"createdAt": "ASC"})
+     * @ORM\OrderBy({"createdAt": "DESC"})
      */
     private $donations;
 
     /**
+     * @var Donation|null
+     *
+     * @ORM\OneToOne(targetEntity="Donation")
+     */
+    private $lastSuccessfulDonation;
+
+    /**
+     * @var Donation|null
+     *
      * @ORM\ManyToOne(targetEntity="Donation")
      */
     private $referenceDonation;
@@ -240,18 +251,9 @@ class Donator
         $this->emailAddress = $emailAddress;
     }
 
-    public function getLastDonation(): ?Donation
-    {
-        if ($this->donations->isEmpty()) {
-            return null;
-        }
-
-        return $this->donations->first();
-    }
-
     public function getLastDonationDate(): ?\DateTimeInterface
     {
-        if (!$donation = $this->getLastDonation()) {
+        if (!$donation = $this->lastSuccessfulDonation) {
             return null;
         }
 
@@ -260,7 +262,7 @@ class Donator
 
     public function getLastDonationAmount(): ?float
     {
-        if (!$donation = $this->getLastDonation()) {
+        if (!$donation = $this->lastSuccessfulDonation) {
             return null;
         }
 
@@ -313,6 +315,19 @@ class Donator
         $this->referenceDonation = $donation;
     }
 
+    public function getReferenceAddress(): ?string
+    {
+        if ($donation = $this->referenceDonation) {
+            return $donation->getInlineFormattedAddress();
+        }
+
+        if ($donation = $this->lastSuccessfulDonation) {
+            return $donation->getInlineFormattedAddress();
+        }
+
+        return null;
+    }
+
     public function getComment(): ?string
     {
         return $this->comment;
@@ -326,5 +341,15 @@ class Donator
     public function getFullName(): string
     {
         return $this->firstName.' '.$this->lastName;
+    }
+
+    public function getLastSuccessfulDonation(): ?Donation
+    {
+        return $this->lastSuccessfulDonation;
+    }
+
+    public function setLastSuccessfulDonation(?Donation $donation): void
+    {
+        $this->lastSuccessfulDonation = $donation;
     }
 }

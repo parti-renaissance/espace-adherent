@@ -162,6 +162,13 @@ class Donation implements GeoPointInterface
     private $donator;
 
     /**
+     * @var Transaction[]
+     *
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation")
+     */
+    private $transactions;
+
+    /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DonationTag")
      */
     private $tags;
@@ -190,6 +197,7 @@ class Donation implements GeoPointInterface
         $this->nationality = $nationality;
         $this->donator = $donator;
         $this->tags = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -476,5 +484,25 @@ class Donation implements GeoPointInterface
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    /**
+     * @return Transaction[]|Collection
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): void
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+        }
+    }
+
+    public function setLastSuccessfulDonation(): void
+    {
+        $this->donator->setLastSuccessfulDonation($this);
     }
 }

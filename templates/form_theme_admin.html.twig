@@ -11,6 +11,13 @@
     </div>
 {% endblock %}
 
+{% block app_admin_donator_referenceDonation_entity_referenceDonation_row %}
+    {{ block('form_row') }}
+
+    {% set donator = form.parent.vars.value %}
+    {{ donator.referenceAddress }}
+{% endblock %}
+
 {% block app_admin_donator_radio_referenceDonation_referenceDonation_entry_widget %}
     {% set currentReferenceDonation = form.parent.parent.vars.value.referenceDonation %}
     {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
