@@ -16,7 +16,7 @@ final class DataSurveyAnsweredMessage extends Message
             null,
             '',
             [
-                'first_name' => $dataSurvey->getFirstName(),
+                'first_name' => (string) $dataSurvey->getFirstName(),
             ]
         );
 
