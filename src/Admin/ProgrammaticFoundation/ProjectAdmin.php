@@ -38,8 +38,8 @@ class ProjectAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('position', null, [
-                'label' => 'Ordre d\'affichage',
+            ->addIdentifier('title', null, [
+                'label' => 'Titre',
             ])
             ->add('measure', null, [
                 'label' => 'Mesure associée',
@@ -47,19 +47,22 @@ class ProjectAdmin extends AbstractAdmin
                 'sort_parent_association_mappings' => [['fieldName' => 'measure']],
                 'sort_field_mapping' => ['fieldName' => 'title'],
             ])
-            ->addIdentifier('title', null, [
-                'label' => 'Titre',
-            ])
             ->add('city', null, [
                 'label' => 'Ville',
             ])
             ->add('tags', null, [
                 'label' => 'Tags',
             ])
+            ->add('position', null, [
+                'header_style' => 'width: 10%',
+                'label' => 'Ordre d\'affichage',
+            ])
             ->add('isExpanded', null, [
+                'header_style' => 'width: 10%',
                 'label' => 'Ouvert par défaut',
             ])
             ->add('_action', null, [
+                'header_style' => 'width: 15%',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

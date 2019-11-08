@@ -21,13 +21,15 @@ class ApproachAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('position', null, [
-                'label' => 'Ordre d\'affichage',
-            ])
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
             ])
+            ->add('position', null, [
+                'label' => 'Ordre d\'affichage',
+                'header_style' => 'width: 10%',
+            ])
             ->add('_action', null, [
+                'header_style' => 'width: 15%',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],

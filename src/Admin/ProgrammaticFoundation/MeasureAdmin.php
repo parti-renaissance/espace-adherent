@@ -38,6 +38,9 @@ class MeasureAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('title', null, [
+                'label' => 'Titre',
+            ])
             ->add('subApproach', null, [
                 'label' => 'Axe secondaire associé',
                 'sortable' => true,
@@ -46,9 +49,6 @@ class MeasureAdmin extends AbstractAdmin
             ])
             ->add('position', null, [
                 'label' => 'Ordre d\'affichage',
-            ])
-            ->addIdentifier('title', null, [
-                'label' => 'Titre',
             ])
             ->add('city', null, [
                 'label' => 'Ville',
@@ -97,7 +97,7 @@ class MeasureAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Mesure')
+            ->with('Mesure', ['class' => 'col-md-8'])
                 ->add('subApproach', EntityType::class, [
                     'label' => 'Axe secondaire associé associé',
                     'class' => SubApproach::class,
@@ -131,6 +131,15 @@ class MeasureAdmin extends AbstractAdmin
                     'attr' => [
                         'min' => 1,
                     ],
+                ])
+            ->end()
+            ->with('Éléments', ['class' => 'col-md-4'])
+                ->add('tags', EntityType::class, [
+                    'label' => 'Tags',
+                    'required' => false,
+                    'multiple' => true,
+                    'class' => Tag::class,
+                    'by_reference' => false,
                 ])
             ->end()
         ;
