@@ -50,9 +50,6 @@ class MeasureAdmin extends AbstractAdmin
             ->add('position', null, [
                 'label' => 'Ordre d\'affichage',
             ])
-            ->add('city', null, [
-                'label' => 'Ville',
-            ])
             ->add('tags', null, [
                 'label' => 'Tags',
             ])
@@ -76,10 +73,6 @@ class MeasureAdmin extends AbstractAdmin
         $datagridMapper
             ->add('subApproach', null, [
                 'label' => 'Axe secondaire associé',
-                'show_filter' => true,
-            ])
-            ->add('city', null, [
-                'label' => 'Ville',
                 'show_filter' => true,
             ])
             ->add('tags', ModelFilter::class, [
@@ -118,9 +111,6 @@ class MeasureAdmin extends AbstractAdmin
                     'attr' => ['class' => 'ck-editor-advanced'],
                     'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
-                ])
-                ->add('city', TextType::class, [
-                    'label' => 'Ville',
                 ])
                 ->add('isExpanded', BooleanType::class, [
                     'label' => 'Ouvert par défaut',
