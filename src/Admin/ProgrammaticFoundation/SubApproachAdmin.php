@@ -35,6 +35,12 @@ class SubApproachAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('title', null, [
+                'label' => 'Titre',
+            ])
+            ->add('subtitle', null, [
+                'label' => 'Sous-titre',
+            ])
             ->add('approach', null, [
                 'label' => 'Grand axe associé',
                 'sortable' => true,
@@ -43,17 +49,14 @@ class SubApproachAdmin extends AbstractAdmin
             ])
             ->add('position', null, [
                 'label' => 'Ordre d\'affichage',
-            ])
-            ->addIdentifier('title', null, [
-                'label' => 'Titre',
-            ])
-            ->add('subtitle', null, [
-                'label' => 'Sous-titre',
+                'header_style' => 'width: 10%',
             ])
             ->add('isExpanded', null, [
                 'label' => 'Ouvert par défaut',
+                'header_style' => 'width: 10%',
             ])
             ->add('_action', null, [
+                'header_style' => 'width: 15%',
                 'actions' => [
                     'edit' => [],
                     'delete' => [],
