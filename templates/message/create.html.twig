@@ -7,8 +7,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% import 'javascript.js.twig' as js %}
-
     <script type="text/javascript">
         Kernel.onLoad(function() {
             App.createCKEditor('#adherent_message_content', '{{ path('app_filebrowser_upload_ckeditor5', { type: constant('AppBundle\\Entity\\UserDocument::TYPE_ADHERENT_MESSAGE') }) }}');
