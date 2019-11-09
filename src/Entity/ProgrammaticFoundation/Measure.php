@@ -60,12 +60,6 @@ class Measure
     private $isLeading = false;
 
     /**
-     * @ORM\Column
-     * @Assert\NotBlank(message="programmatic_foundation.city.not_empty")
-     */
-    private $city;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $isExpanded = false;
@@ -99,7 +93,6 @@ class Measure
         string $title = null,
         string $content = null,
         bool $isLeading = false,
-        string $city = null,
         bool $isExpanded = false,
         SubApproach $subApproach = null
     ) {
@@ -108,7 +101,6 @@ class Measure
         $this->title = $title;
         $this->content = $content;
         $this->isLeading = $isLeading;
-        $this->city = $city;
         $this->isExpanded = $isExpanded;
         $this->subApproach = $subApproach;
         $this->projects = new ArrayCollection();
@@ -168,16 +160,6 @@ class Measure
     public function setIsLeading(bool $isLeading): void
     {
         $this->isLeading = $isLeading;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): void
-    {
-        $this->city = $city;
     }
 
     public function getIsExpanded(): bool

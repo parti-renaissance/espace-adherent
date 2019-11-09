@@ -9,15 +9,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadApproachMeasureData extends AbstractFixture implements DependentFixtureInterface
 {
-    private const CITIES = [
-        'Lyon',
-        'Paris',
-        'St Jean des Vignes',
-        'Marseille',
-        'Lyon',
-        'Bordeaux',
-    ];
-
     private const CONTENTS = [
         '<p>Ut tortor mi, ullamcorper sed elit at, fringilla molestie leo. In efficitur arcu dui, id posuere nulla ultricies quis. Sed fringilla lac<a href="#">us sed enim vestibul</a>um, at ornare metus scelerisque. Phasellus id sagittis neque. In justo quam, placerat a pretium a, mattis et nibh. Duis consequat ac metus aliquam fermentum.</p>
 
@@ -46,7 +37,6 @@ class LoadApproachMeasureData extends AbstractFixture implements DependentFixtur
                 sprintf('Mesure lorem %d', $i + 1),
                 self::CONTENTS[$i % 3],
                 (0 === $i % 3),
-                self::CITIES[$i % 6],
                 0 === $i % 10
             );
             $project1 = $this->getReference(sprintf('sub-approach-measure-project-%d', 2 * $i));
