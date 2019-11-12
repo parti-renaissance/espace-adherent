@@ -7,9 +7,13 @@
 {% endblock %}
 
 {% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/lang/fr.js') }}"></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            App.createCKEditor('#adherent_message_content', '{{ path('app_filebrowser_upload_ckeditor5', { type: constant('AppBundle\\Entity\\UserDocument::TYPE_ADHERENT_MESSAGE') }) }}');
+            {{ js.ckeditor('adherent_message_content', 500, constant('AppBundle\\Entity\\UserDocument::TYPE_ADHERENT_MESSAGE'), 5000, true) }}
         });
     </script>
 {% endblock %}
