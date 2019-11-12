@@ -299,6 +299,7 @@ document.validation.max_filesize: Le fichier est trop grand. La taille maximum a
 # Mooc
 #
 mooc.youtubeid_syntax: La syntaxe est incorrecte, l'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-".
+mooc.two_media: Vous ne pouvez pas renseigner et l'image et la vidéo YouTube en même temps.
 
 #
 # Message

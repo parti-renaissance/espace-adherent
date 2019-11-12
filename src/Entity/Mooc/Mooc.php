@@ -24,6 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @UniqueEntity("title")
+ * @Assert\Expression(
+ *     expression="(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())",
+ *     message="mooc.two_media"
+ * )
  *
  * @Algolia\Index(autoIndex=false)
  */
