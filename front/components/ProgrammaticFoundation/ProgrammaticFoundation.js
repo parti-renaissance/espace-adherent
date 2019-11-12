@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import Filterer from '../../services/programmatic-foundation/Filterer';
 import SearchEngine from '../../services/programmatic-foundation/SearchEngine';
+import Legend from './Legend';
 
 export default class ProgrammaticFoundation extends React.Component {
     constructor(props) {
@@ -62,7 +63,8 @@ export default class ProgrammaticFoundation extends React.Component {
         return (
             <div>
               {this.renderSearchBar()}
-              <h1 className="text--larger">{this.state.searching ? 'Recherche' : 'Le socle programme'}</h1>
+              <div className="programmatic-foundation__breadcrumb">{this.state.searching ? 'Quitter la recherche' : 'Socle programme > Toutes les mesures'}</div>
+              <h1 className="text--larger b__nudge--bottom-larger">{this.state.searching ? 'Recherche' : 'Le socle programme'}</h1>
               {this.renderContent()}
             </div>
         );
@@ -78,16 +80,20 @@ export default class ProgrammaticFoundation extends React.Component {
 
     renderContent() {
         if (this.state.loading) {
-            return <p>Loading...</p>;
+            return <p className="text--body">Chargement...</p>;
         }
 
         return (
             <div>
-              <ToggleLeadingMeasures onToggleChange={v => this.handleLeadingMeasuresChange(v)} />
-              {
+                <div className="l__row l__row--h-stretch l__row--wrap b__nudge--bottom-50">
+                    <ToggleLeadingMeasures onToggleChange={v => this.handleLeadingMeasuresChange(v)} />
+                    <Legend />
+                </div>
+
+                {
                   this.state.searching ? <SearchResults results={this.state.searchResults} />
                   : <Approaches approaches={this.state.approaches}/>
-              }
+                }
             </div>
         );
     }
