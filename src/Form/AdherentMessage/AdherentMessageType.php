@@ -27,6 +27,7 @@ class AdherentMessageType extends AbstractType
                 ],
                 'filter_emojis' => true,
                 'purifier_type' => 'enrich_content',
+                'with_character_count' => true,
             ])
             ->add('save', SubmitType::class)
             ->add('next', SubmitType::class)

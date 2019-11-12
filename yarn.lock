@@ -705,7 +705,7 @@
 
 "@ckeditor/ckeditor5-build-en-marche@https://github.com/EnMarche/ckeditor5-build-classic#stable":
   version "15.0.0"
-  resolved "https://github.com/EnMarche/ckeditor5-build-classic#3704a9fe536ea7f8bdc7a050e204b714a9c2d1d5"
+  resolved "https://github.com/EnMarche/ckeditor5-build-classic#73a0a654bd8955d8d3b1868ebbfad634ffaa097e"
 
 "@google/markerclusterer@^1.0.3":
   version "1.0.3"
