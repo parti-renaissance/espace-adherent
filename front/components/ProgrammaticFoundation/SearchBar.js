@@ -24,7 +24,7 @@ export default class SearchBar extends React.Component {
                     <input type="text" className="em-form__field em-form__search" placeholder="Rechercher une mesure ou un projet illustratif" onChange={this.handleSearchQueryChange.bind(this)} />
                 </div>
 
-                <div className="em-form__group city-search em-form__search">
+                <div className="em-form__group city-search">
                     <select className="em-form__field">
                         <option value="">France entière</option>
                         <option value="dog">Dog</option>

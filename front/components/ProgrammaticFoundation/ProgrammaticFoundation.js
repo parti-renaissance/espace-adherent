@@ -60,12 +60,28 @@ export default class ProgrammaticFoundation extends React.Component {
     }
 
     render() {
+        if (this.state.searching) {
+            return (
+                <div>
+                    {this.renderSearchBar()}
+                    <ul className="programmatic-foundation__breadcrumb text--body">
+                        <li> ⟵ Quitter la recherche</li>
+                    </ul>
+                    <h1 className="text--larger b__nudge--bottom-larger">Recherche...</h1>
+                    {this.renderContent()}
+                </div>
+            );
+        }
+
         return (
             <div>
-              {this.renderSearchBar()}
-              <div className="programmatic-foundation__breadcrumb">{this.state.searching ? 'Quitter la recherche' : 'Socle programme > Toutes les mesures'}</div>
-              <h1 className="text--larger b__nudge--bottom-larger">{this.state.searching ? 'Recherche' : 'Le socle programme'}</h1>
-              {this.renderContent()}
+                {this.renderSearchBar()}
+                <ul className="programmatic-foundation__breadcrumb text--body">
+                    <li>Socle programme</li>
+                    <li>Toutes les mesures</li>
+                </ul>
+                <h1 className="text--larger b__nudge--bottom-larger">Le socle programme</h1>
+                {this.renderContent()}
             </div>
         );
     }

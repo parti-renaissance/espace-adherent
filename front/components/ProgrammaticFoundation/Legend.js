@@ -7,7 +7,7 @@ export default class Legend extends React.Component {
                 <span className="legend-title">Légende :</span>
                 <span className="legend-item basic-measure">Mesure</span>
                 <span className="legend-item leading-measure">Mesure phare</span>
-                <span className="legend-item project">Project illustratif</span>
+                <span className="legend-item project">Projet illustratif</span>
             </div>
         );
     }
