@@ -1,22 +1,13 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import Project from './Project';
 
 export default class Measure extends React.Component {
     render() {
-        const sectionIdentifier = `${this.props.parentSectionIdentifier}${this.props.measure.position}.`;
-        const renderedProjects = this.props.measure.projects.map(
-            project => <Project
-                         key={project.position}
-                         project={project}
-                         parentSectionIdentifier={sectionIdentifier}
-                       />
-        );
-
-        const measureLink = `/socle-programme/mesures/${this.props.measure.slug}`;
-        const leadingMesureClass = this.props.measure.isLeading ? 'leading' : null;
+        const sectionIdentifierParts = this.props.parentSectionIdentifierParts.concat(this.props.measure.position);
+        const sectionIdentifier = sectionIdentifierParts.join('.');
 
         return (
-          <div className={`programmatic-foundation__measure child ${leadingMesureClass}`}>
+          <div className={`programmatic-foundation__measure child ${this.props.measure.isLeading ? 'leading' : ''}`}>
               <input
                 type="checkbox"
                 id={sectionIdentifier}
@@ -35,7 +26,7 @@ export default class Measure extends React.Component {
                       </svg>
                       Copier le lien de la mesure
                   </a>
-                  <a href={measureLink} target="_blank">
+                  <a href={`/socle-programme/mesures/${this.props.measure.slug}`} target="_blank">
                       <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                         <path fill="#7B889B" d="M5.5632955,2.44999999 L5.5632955,3.55000001 L2.55,3.55 L2.55,13.449 L12.449,13.449 L12.45,10.6170839 L13.55,10.6170839 L13.55,14.55 L1.44999999,14.55 L1.44999999,2.44999999 L5.5632955,2.44999999 Z M13.55,2.44999999 L13.55,7.55000001 L12.45,7.55000001 L12.449,4.327 L8,8.77781748 L7.22218252,8 L11.672,3.55 L8.44999999,3.55000001 L8.44999999,2.44999999 L13.55,2.44999999 Z"/>
                       </svg>
@@ -44,10 +35,22 @@ export default class Measure extends React.Component {
                 </div>
                 <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
-                  {renderedProjects}
+                  {this.props.measure.projects.map((project, index) => {
+                      return <Project
+                          key={index}
+                          project={project}
+                          parentSectionIdentifierParts={sectionIdentifierParts}
+                      />
+                  })}
                 </div>
               </div>
             </div>
         );
     }
 }
+
+Measure.propsType = {
+    measure: PropTypes.object.isRequired,
+    parentSectionIdentifierParts: PropTypes.arrayOf(PropTypes.string),
+    preventAutoExpand: PropTypes.bool,
+};
