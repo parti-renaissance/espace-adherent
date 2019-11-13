@@ -31,7 +31,7 @@ export default class SearchResults extends React.Component {
                 </div>
               </div>
               <div className="projects">
-                <h2>Projets</h2>
+                <h2>Projets illustratifs</h2>
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
                   {renderedProjects}
                 </div>

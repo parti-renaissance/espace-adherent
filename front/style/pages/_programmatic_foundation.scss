@@ -1,20 +1,63 @@
 .programmatic-foundation {
     padding-bottom: 100px;
 
+    &__breadcrumb {
+        margin: 30px 0;
+
+        li {
+            display: inline-block;
+            color: $silver-grey;
+
+            &:not(:first-child)::before {
+                content: '';
+                display : inline-block;
+                height : 0;
+                width : 0;
+                border-top : 5px solid transparent;
+                border-bottom : 5px solid transparent;
+                border-left : 5px solid $silver-grey;
+                opacity: 0.4;
+                margin: 0 10px;
+            }
+        }
+    }
+
     &__search {
         width: 100%;
-        margin: 40px 0;
+        margin: 40px 0 0 0;
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
-        max-width: 75%;
+
+        .text-search,
+        .city-search {
+            margin-bottom: 15px;
+        }
 
         .text-search {
             flex-grow: 2;
-            margin-right: 15px;
         }
 
         .city-search {
             flex-grow: 1;
+        }
+
+        @media (min-width: $tablet) {
+            max-width: 75%;
+        }
+
+        @media (min-width: $mobile) {
+            flex-direction: row;
+            margin: 40px 0;
+
+            .text-search,
+            .city-search {
+                margin-bottom: 35px;
+            }
+
+            .text-search {
+                margin-right: 15px;
+            }
         }
     }
 
@@ -153,8 +196,7 @@
 
                 .head {
                     background-color: $gray--pale;
-                    padding: 20px 30px ;
-                    height: 70px;
+                    padding: 25px 30px;
                     margin-top: 10px;
 
                     .title {
@@ -225,7 +267,6 @@
             .head {
                 display: flex;
                 box-sizing: border-box;
-                height: 92px;
                 padding: 35px 30px;
                 font-weight: 500;
                 background-color: $white;
@@ -271,6 +312,15 @@
                     padding-right: 18px;
                     border-bottom: none;
                     text-decoration: underline;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    .icn {
+                        vertical-align: middle;
+                        margin-right: 5px;
+                    }
                 }
                 margin: 20px 30px;
                 padding-bottom: 15px;
