@@ -273,6 +273,7 @@
                         </th>
                         <th style="width: 100px;">Rôle(s)</th>
                         <th style="width: 100px;">Téléphone</th>
+                        <th style="width: 100px;">SMS/MMS</th>
                         <th style="width: 100px;">Commune</th>
                         <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
                             <a
@@ -323,7 +324,13 @@
                                 Adhérent
                             {% endif %}
                         </td>
-                        <td>{{ user.hasSmsSubscriptionType ? (user.phone ? user.phone|phone_number_format : 'Non renseigné') : 'Masqué' }}</td>
+                        <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+                        <td>
+                            {% set hasSmsSubscriptionType = user.hasSmsSubscriptionType %}
+                            <span class="status status__{{ hasSmsSubscriptionType ? '1' : '2' }}">
+                                {{ (hasSmsSubscriptionType ? 'global.yes' : 'global.no')|trans }}
+                            </span>
+                        </td>
                         <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}
