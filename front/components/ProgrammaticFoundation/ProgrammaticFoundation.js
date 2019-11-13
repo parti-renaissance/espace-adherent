@@ -1,25 +1,34 @@
-import React from 'react';
-import Approaches from './Approaches';
+import React, {PropTypes} from 'react';
+import _ from 'lodash';
 import ToggleLeadingMeasures from './ToggleLeadingMeasures';
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
-import Filterer from '../../services/programmatic-foundation/Filterer';
 import SearchEngine from '../../services/programmatic-foundation/SearchEngine';
-import Legend from './Legend';
+import ReqwestApiClient from '../../services/api/ReqwestApiClient';
+import Loader from '../Loader';
+import Approach from './Approach';
 
 export default class ProgrammaticFoundation extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            searchBarKey: 1,
             loading: true,
-            approaches: [],
             searching: false,
+            filters: null,
+            approaches: [],
             searchResults: [],
         };
 
-        props.api.getApproaches((approaches) => {
-            this.unfilteredApproaches = approaches;
+        this.handleLeadingMeasuresChange = this.handleLeadingMeasuresChange.bind(this);
+        this.handleSearchChange = this.handleSearchChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.api.getApproaches((approaches) => {
+            this.rawApproaches = approaches;
+
             this.setState({
                 approaches,
                 loading: false,
@@ -29,88 +38,127 @@ export default class ProgrammaticFoundation extends React.Component {
 
     handleLeadingMeasuresChange(isLeading) {
         if (this.state.searching) {
-            this.setState({
-                searchResults: Filterer.filterSearchResultsByIsLeading(isLeading, this.unfilteredSearchResults),
-            });
+            this.handleSearchChange({...this.state.filters, ...{isLeading: isLeading}});
         } else {
             this.setState({
-                approaches: Filterer.filterApproachesByIsLeading(isLeading, this.unfilteredApproaches),
+                approaches: this.filterApproachesByIsLeading(isLeading),
             });
         }
     }
 
-    handleSearchChange(searchData) {
-        const query = searchData.query;
-        const city = searchData.city;
-
-        if (!query.length && !city.length) {
-            this.setState({
-                searching: false,
-            });
-
-            return;
-        }
-
-        this.unfilteredSearchResults = SearchEngine.search(query, city, this.unfilteredApproaches);
+    handleSearchChange(data) {
+        const searching = !!data.query || !!data.city;
 
         this.setState({
-            searching: true,
-            searchResults: this.unfilteredSearchResults,
+            searching: searching,
+            searchResults: searching ? SearchEngine.search(this.state.approaches, data) : [],
+            filters: data,
         });
     }
 
     render() {
-        if (this.state.searching) {
-            return (
-                <div>
-                    {this.renderSearchBar()}
-                    <ul className="programmatic-foundation__breadcrumb text--body">
-                        <li> ⟵ Quitter la recherche</li>
-                    </ul>
-                    <h1 className="text--larger b__nudge--bottom-larger">Recherche...</h1>
-                    {this.renderContent()}
-                </div>
-            );
-        }
-
         return (
             <div>
-                {this.renderSearchBar()}
-                <ul className="programmatic-foundation__breadcrumb text--body">
-                    <li>Socle programme</li>
-                    <li>Toutes les mesures</li>
-                </ul>
-                <h1 className="text--larger b__nudge--bottom-larger">Le socle programme</h1>
-                {this.renderContent()}
-            </div>
-        );
-    }
+                <SearchBar
+                    key={`is-active-${this.state.searchBarKey}`}
+                    onSearchChange={this.handleSearchChange}
+                    filters={this.state.filters}
+                    cityChoices={this.getCitiesFromProjects()}
+                />
 
-    renderSearchBar() {
-        if (this.state.loading) {
-            return null;
-        }
-
-        return <SearchBar onSearchChange={v => this.handleSearchChange(v)}/>;
-    }
-
-    renderContent() {
-        if (this.state.loading) {
-            return <p className="text--body">Chargement...</p>;
-        }
-
-        return (
-            <div>
-                <div className="l__row l__row--h-stretch l__row--wrap b__nudge--bottom-50">
-                    <ToggleLeadingMeasures onToggleChange={v => this.handleLeadingMeasuresChange(v)} />
-                    <Legend />
-                </div>
-
-                {
-                  this.state.searching ? <SearchResults results={this.state.searchResults} />
-                  : <Approaches approaches={this.state.approaches}/>
+                {this.state.loading ?
+                    <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
+                    this.renderApproaches()
                 }
             </div>
         );
     }
+
+    renderApproaches() {
+        return (
+            <div>
+                {this.renderBreadcrumbs()}
+
+                <h1 className="text--larger b__nudge--bottom-larger">{this.state.searching ? 'Recherche...' : 'Le socle programme'}</h1>
+
+                <div className="l__row l__row--h-stretch l__row--wrap b__nudge--bottom-50">
+                    <ToggleLeadingMeasures key={`active-${this.state.filters && this.state.filters.isLeading}`} onToggleChange={this.handleLeadingMeasuresChange} value={this.state.filters && this.state.filters.isLeading}/>
+
+                    <div className="programmatic-foundation__legend">
+                        <span className="legend-title">Légende :</span>
+                        <span className="legend-item basic-measure">Mesure</span>
+                        <span className="legend-item leading-measure">Mesure phare</span>
+                        <span className="legend-item project">Projet illustratif</span>
+                    </div>
+                </div>
+
+                {this.state.searching ?
+                    <SearchResults results={this.state.searchResults} /> :
+                    <div className="programmatic-foundation__approaches">
+                        {this.state.approaches.map((approach, index) => {
+                            return <Approach key={index} approach={approach}/>;
+                        })}
+                    </div>
+                }
+            </div>
+        );
+    }
+
+    getCitiesFromProjects() {
+        return _.uniq(_.flatMap(this.state.approaches, (approach) => {
+            return _.flatMap(approach.sub_approaches, (subApproaches) => {
+                return _.flatMap(subApproaches.measures, (measure) => {
+                    return _.flatMap(measure.projects, (project) => {
+                        return project.city;
+                    });
+                });
+            });
+        })).sort();
+    }
+
+    renderBreadcrumbs() {
+        const breadcrumbParts = [];
+
+        if (this.state.searching) {
+            breadcrumbParts.push(<a href={'#'} className={"link--no--decor"} onClick={event => {
+                event.preventDefault();
+                this.setState({searchBarKey: this.state.searchBarKey + 1});
+                this.handleSearchChange({});
+            }}>⟵ Quitter la recherche</a>)
+        } else {
+            breadcrumbParts.push('Socle programme', 'Toutes les mesures')
+        }
+
+        return <ul className="programmatic-foundation__breadcrumb text--body">
+            {breadcrumbParts.map((item, index) => <li key={index}>{item}</li>)}
+        </ul>
+    }
+
+    filterApproachesByIsLeading(isLeading) {
+        if (isLeading === false) {
+            return this.rawApproaches;
+        }
+
+        return _.filter(this.rawApproaches, (approach) => {
+            const subApproaches = _.filter(approach.sub_approaches, (sub_approach) => {
+                const measures = _.filter(sub_approach.measures, (measure) => { return measure.isLeading;});
+
+                if (measures.length) {
+                    sub_approach.measures = measures;
+                }
+
+                return !!measures.length;
+            });
+
+            if (subApproaches.length) {
+                approach.sub_approaches = subApproaches;
+            }
+
+            return !!subApproaches.length;
+        });
+    }
 }
+
+ProgrammaticFoundation.propsType = {
+    api: PropTypes.instanceOf(ReqwestApiClient).isRequired,
+};

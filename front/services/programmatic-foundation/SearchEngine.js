@@ -1,40 +1,50 @@
 import Fuse from 'fuse.js';
+import _ from 'lodash';
 
 export default class SearchEngine {
-    static search(query, city, initialApproaches) {
-        const approaches = JSON.parse(JSON.stringify(initialApproaches));
+    static search(approaches, filters) {
+        const measures = _.flatMap(approaches, (approach) => {
+            return _.flatMap(approach.sub_approaches, (subApproach) => {
+                return _.flatMap(filters.isLeading ? _.filter(subApproach.measures, ['isLeading', true]) : subApproach.measures, (measure) => {
+                    measure.parentSectionIdentifierParts = [
+                        approach.position,
+                        subApproach.position,
+                    ];
 
-        const measures = approaches.map(
-            a => a.sub_approaches.map(
-                s => s.measures.map((m) => {
-                    m.parentSectionIdentifier = `${a.position}.${s.position}.`;
-                    return m;
-                })
-            ).flat()
-        ).flat();
+                    return measure;
+                });
+            });
+        });
 
-        const projects = measures.map(
-            m => m.projects.map((p) => {
-                p.parentSectionIdentifier = `${m.parentSectionIdentifier}.${m.position}`;
-                return p;
-            })
-        ).flat();
+        const projects = _.flatMap(measures, (measure) => {
+            return _.flatMap(
+                filters.city ? _.filter(measure.projects, ['city', filters.city]) : measure.projects,
+                (project) => {
+                    project.parentSectionIdentifierParts = measure.parentSectionIdentifierParts.concat(measure.position);
+
+                    return project;
+                }
+            );
+        });
 
         const searchOptions = {
-            threshold: 0.3,
+            threshold: 0.1,
             keys: [
                 'title',
                 'tags.label',
             ],
         };
 
-        const results = {
-            measures: (new Fuse(measures, searchOptions)).search(query),
-            projects: (new Fuse(projects, searchOptions)).search(query),
+        if (filters.query) {
+            return {
+                measures: (new Fuse(measures, searchOptions)).search(filters.query),
+                projects: (new Fuse(projects, searchOptions)).search(filters.query),
+            };
+        }
+
+        return {
+            measures: [],
+            projects: projects,
         };
-
-        //TODO filter by city
-
-        return results;
     }
 }

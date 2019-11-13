@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     attributes={
  *         "normalization_context": {"groups": {"approach_list_read"}},
- *         "pagination_enabled"=false,
+ *         "pagination_enabled": false,
  *         "order": {"position": "ASC"}
  *     }
  * )
