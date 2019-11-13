@@ -8,6 +8,8 @@ import ReqwestApiClient from '../../services/api/ReqwestApiClient';
 import Loader from '../Loader';
 import Approach from './Approach';
 
+import icnClose from './../../../web/images/icons/icn_close.svg';
+
 export default class ProgrammaticFoundation extends React.Component {
     constructor(props) {
         super(props);
@@ -59,6 +61,13 @@ export default class ProgrammaticFoundation extends React.Component {
     render() {
         return (
             <div>
+                <div className="programmatic-foundation__contact information__modal inf-modl--pale-blue b__nudge--top-40">
+                    Vous souhaitez partager un projet inspirant ou suggérer une mesure nouvelle ?
+                    Vous avez une remarque ou une question sur une mesure ou un projet ?
+                    Contactez l'équipe programme à <a href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
+                    <img src={icnClose} className="icn-close" />
+                </div>
+
                 <SearchBar
                     key={`is-active-${this.state.searchBarKey}`}
                     onSearchChange={this.handleSearchChange}
