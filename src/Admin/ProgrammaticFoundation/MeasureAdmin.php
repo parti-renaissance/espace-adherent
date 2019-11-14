@@ -13,18 +13,11 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MeasureAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-    ];
-
     public function createQuery($context = 'list')
     {
         /** @var QueryBuilder $proxyQuery */
@@ -99,14 +92,14 @@ class MeasureAdmin extends AbstractAdmin
                     'class' => SubApproach::class,
                     'placeholder' => 'Sélectionner un axe secondaire',
                 ])
-                ->add('title', TextType::class, [
+                ->add('title', null, [
                     'label' => 'Titre',
                 ])
-                ->add('slug', TextType::class, [
+                ->add('slug', null, [
                     'label' => 'Slug',
                     'disabled' => true,
                 ])
-                ->add('isLeading', BooleanType::class, [
+                ->add('isLeading', null, [
                     'label' => 'Mesure phare',
                 ])
                 ->add('content', PurifiedTextareaType::class, [
@@ -115,7 +108,7 @@ class MeasureAdmin extends AbstractAdmin
                     'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
                 ])
-                ->add('isExpanded', BooleanType::class, [
+                ->add('isExpanded', null, [
                     'label' => 'Ouvert par défaut',
                 ])
                 ->add('position', IntegerType::class, [

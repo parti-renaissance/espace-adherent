@@ -8,7 +8,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ApproachAdmin extends AbstractAdmin
 {
@@ -42,7 +41,7 @@ class ApproachAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('Grand axe')
-                ->add('title', TextType::class, [
+                ->add('title', null, [
                     'label' => 'Titre',
                 ])
                 ->add('content', PurifiedTextareaType::class, [
