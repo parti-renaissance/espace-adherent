@@ -3,9 +3,9 @@ import _ from 'lodash';
 
 export default class SearchEngine {
     static search(approaches, filters) {
-        const measures = _.flatMap(approaches, (approach) => {
+        let measures = _.flatMap(approaches, (approach) => {
             return _.flatMap(approach.sub_approaches, (subApproach) => {
-                return _.flatMap(filters.isLeading ? _.filter(subApproach.measures, ['isLeading', true]) : subApproach.measures, (measure) => {
+                return _.flatMap(subApproach.measures, (measure) => {
                     measure.parentSectionIdentifierParts = [
                         approach.position,
                         subApproach.position,
@@ -16,16 +16,34 @@ export default class SearchEngine {
             });
         });
 
-        const projects = _.flatMap(measures, (measure) => {
-            return _.flatMap(
-                filters.city ? _.filter(measure.projects, ['city', filters.city]) : measure.projects,
-                (project) => {
-                    project.parentSectionIdentifierParts = measure.parentSectionIdentifierParts.concat(measure.position);
+        if (filters.isLeading || filters.tag) {
+            measures = _.filter(measures, {
+                ...(filters.isLeading ? {isLeading: true} : {}),
+                ...(filters.tag ? {tags: [{label: filters.tag}]} : {})
+            });
+        }
 
-                    return project;
-                }
-            );
+        let projects = _.flatMap(measures, (measure) => {
+            return _.flatMap(measure.projects, (project) => {
+                project.parentSectionIdentifierParts = measure.parentSectionIdentifierParts.concat(measure.position);
+
+                return project;
+            });
         });
+
+        if (filters.city || filters.tag) {
+            projects = _.filter(projects, {
+                ...(filters.city ? {city: filters.city} : {}),
+                ...(filters.tag ? {tags: [{label: filters.tag}]} : {})
+            });
+        }
+
+        if (!filters.query) {
+            return {
+                measures: measures,
+                projects: projects,
+            };
+        }
 
         const searchOptions = {
             threshold: 0.1,
@@ -35,16 +53,9 @@ export default class SearchEngine {
             ],
         };
 
-        if (filters.query) {
-            return {
-                measures: (new Fuse(measures, searchOptions)).search(filters.query),
-                projects: (new Fuse(projects, searchOptions)).search(filters.query),
-            };
-        }
-
         return {
-            measures: [],
-            projects: projects,
+            measures: (new Fuse(measures, searchOptions)).search(filters.query),
+            projects: (new Fuse(projects, searchOptions)).search(filters.query),
         };
     }
 }

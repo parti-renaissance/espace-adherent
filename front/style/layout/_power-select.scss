@@ -1,0 +1,101 @@
+.PowerSelect {
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: $font-roboto;
+    font-size: 16px;
+    line-height: 1;
+    color: $black;
+    border-radius: 3px;
+    border: 1px solid $lines-grey;
+    background: #FFFFFF url(/images/icons/icn-form-select.svg) no-repeat right 10px center;
+    height: 60px;
+    outline: 0;
+
+    &:focus {
+        border-color: $blue--dark;
+    }
+
+    &__Menu {
+        box-sizing: border-box;
+        font-family: $font-roboto;
+        background: $white;
+        border-radius: 3px;
+        border: 1px solid $lines-grey;
+        margin-top: 3px;
+        padding: 8px;
+    }
+
+    &__SearchInputContainer {
+        margin-bottom: 5px;
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #444;
+            border: 0;
+            padding: 8px 10px;
+            border-radius: 3px;
+
+            &:focus {
+                border-color: $blue--dark;
+            }
+        }
+    }
+
+    &__Option {
+        cursor: pointer;
+        font-size: 16px;
+        color: #444;
+        border: 0;
+        padding: 8px 10px;
+        border-radius: 3px;
+        width: 100%;
+        box-sizing: border-box;
+
+        &:hover {
+            background: $gray--pale;
+        }
+    }
+
+
+    &__Clear {
+        padding: 4px;
+        display: inline-block;
+        margin-right: 40px;
+
+        &:hover {
+            color: $blue--dark;
+        }
+
+        &:before {
+            content: "\D7";
+        }
+    }
+
+    &__Trigger {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+    }
+
+    &__TriggerLabel {
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+
+        span {
+            line-height: 60px;
+        }
+    }
+
+    &__Trigger--empty .PowerSelect__Clear {
+        visibility: hidden;
+        margin-left: auto;
+    }
+
+    &__TriggerStatus {
+        display: none;
+    }
+}
