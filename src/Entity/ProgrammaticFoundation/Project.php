@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,6 +31,7 @@ class Project
     /**
      * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $position;
 
@@ -37,6 +39,7 @@ class Project
      * @ORM\Column
      *
      * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $title;
 
@@ -44,6 +47,7 @@ class Project
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank(message="programmatic_foundation.content.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $content;
 
@@ -51,11 +55,13 @@ class Project
      * @ORM\Column
      *
      * @Assert\NotBlank(message="programmatic_foundation.city.not_empty")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="boolean")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $isExpanded = false;
 
@@ -69,6 +75,7 @@ class Project
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProgrammaticFoundation\Tag")
      * @ORM\JoinTable(name="programmatic_foundation_project_tag")
+     * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $tags;
 

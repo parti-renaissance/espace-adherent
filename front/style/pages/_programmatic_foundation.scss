@@ -1,0 +1,376 @@
+.programmatic-foundation {
+    padding-bottom: 100px;
+
+    &__breadcrumb {
+        margin: 30px 0;
+
+        li {
+            display: inline-block;
+            color: $silver-grey;
+
+            &:not(:first-child)::before {
+                content: '';
+                display : inline-block;
+                height : 0;
+                width : 0;
+                border-top : 5px solid transparent;
+                border-bottom : 5px solid transparent;
+                border-left : 5px solid $silver-grey;
+                opacity: 0.4;
+                margin: 0 10px;
+            }
+        }
+    }
+
+    &__contact {
+        position: relative;
+        padding-right: 45px;
+
+        .icn-close {
+            position: absolute;
+            cursor: pointer;
+            right: 10px;
+            top: 10px;
+            opacity: 0.5;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__search {
+        width: 100%;
+        margin: 40px 0 0 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+
+        .text-search,
+        .city-search {
+            margin-bottom: 15px;
+        }
+
+        .text-search {
+            flex-grow: 2;
+        }
+
+        .city-search {
+            flex-grow: 1;
+        }
+
+        @media (min-width: $tablet) {
+            max-width: 75%;
+        }
+
+        @media (min-width: $mobile) {
+            flex-direction: row;
+            margin: 40px 0;
+
+            .text-search,
+            .city-search {
+                margin-bottom: 35px;
+            }
+
+            .text-search {
+                margin-right: 15px;
+            }
+        }
+    }
+
+    &__search-results {
+        font-family: $font-roboto;
+
+        .measures,
+        .projects {
+            padding: 30px;
+            background-color: $white;
+            border-bottom: 1px solid #EEE;
+
+            h2 {
+                font-weight: 500;
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+        }
+    }
+
+    &__leading {
+        padding-right: 20px;
+
+        .form__checkbox {
+            margin: 20px 0 0 0;
+        }
+    }
+
+    &__legend {
+        font-family: $font-roboto;
+        font-size: 14px;
+        margin: 20px 0 0 0;
+
+        .legend-title {
+            color: $black;
+            font-weight: bold;
+        }
+
+        .legend-item {
+            color: $silver-grey;
+            margin-left: 20px;
+
+            &::before {
+                content: '';
+                display: inline-block;
+                margin-right: 8px;
+                width: 12px;
+                height: 12px;
+                border-radius: 10px;
+                vertical-align: middle;
+            }
+
+            &.leading-measure {
+                &::before { background-color: $pink--hit; }
+            }
+
+            &.basic-measure {
+                &::before { background-color: $blue--dodger; }
+            }
+
+            &.project {
+                &::before { background-color: $green--ocean; }
+            }
+        }
+    }
+
+    &__head {
+        height: 44px;
+    }
+
+    &__view-measure {
+        margin-bottom: 60px;
+
+        header {
+            margin: 110px 0 40px 0;
+        }
+
+        .content {
+            article {
+                a {
+                    color: $blue--dark;
+                    border-bottom: none;
+                }
+
+                img {
+                    width: 100% !important;
+                    height: auto !important;
+                }
+            }
+        }
+    }
+
+    &__view-approaches {
+        background-color: $gray--pale;
+    }
+
+    &__approaches {
+        font-family: $font-roboto;
+    }
+
+    &__approach {
+        margin-bottom: 70px;
+
+        h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        & > .content {
+            color: $silver-grey;
+            margin-bottom: 30px;
+        }
+    }
+
+    &__sub-approach {
+        background-color: $white;
+
+        .title {
+            font-size: 20px;
+        }
+
+        .subtitle {
+            margin-top: auto;
+            color: $silver-grey;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    }
+
+    &__measures,
+    &__projects {
+        &.programmatic-foundation__children {
+            .child {
+                border-bottom: none;
+                overflow: hidden;
+
+                .head {
+                    background-color: $gray--pale;
+                    padding: 25px 30px;
+                    margin-top: 10px;
+
+                    .title {
+                        font-size: 18px;
+                        align-self: center;
+                    }
+
+                    .toggle {
+                        top: 20px;
+                        right: 20px;
+                        width: 30px;
+                        height: 30px;
+                        background-color: $white;
+
+                        &:after, &:before {
+                            top: 10px;
+                            right: 14px;
+                            height: 10px;
+                        }
+                    }
+                }
+
+                .hidden-toggle {
+                    &:checked {
+                        & + .head .toggle {
+                            background-color: $gray--mystic;
+                        }
+                        & + .head + .content {
+                            margin-bottom: 50px;
+                        }
+                        & + .head + .content .html {
+                            margin-top: 30px;
+                            color: $dark;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &__measure {
+        .head {
+            border-left: 4px solid $blue--dodger;
+        }
+
+        &.leading {
+            > .head {
+                border-left: 4px solid $pink--hit;
+            }
+        }
+    }
+
+    &__project {
+        .head {
+            border-left: 4px solid $green--ocean;
+        }
+    }
+
+    &__children {
+        .child {
+            border-bottom: 1px solid $gray--gallery;
+
+            .head, .content {
+                transform: translateZ(0);
+                transition: all 0.2s;
+            }
+
+            .head {
+                display: flex;
+                box-sizing: border-box;
+                padding: 35px 30px;
+                font-weight: 500;
+                background-color: $white;
+                border-radius: 3px;
+                cursor: pointer;
+                margin-bottom: 0;
+
+                .toggle {
+                    position: absolute;
+                    top: 26px;
+                    right: 30px;
+                    width: 40px;
+                    height: 40px;
+                    background-color: $gray--mystic;
+                    border-radius: 30px;
+
+                    &:after, &:before {
+                        position: absolute;
+                        top: 13px;
+                        right: 19px;
+                        content: '';
+                        width: 2px;
+                        height: 14px;
+                        background-color: $silver-grey;
+                        transition: all 0.2s;
+                    }
+
+                    &:before {
+                        transform: rotate(90deg);
+                    }
+                }
+            }
+
+            .content {
+                max-height: 0;
+                overflow: hidden;
+            }
+
+            .measure-links {
+                a {
+                    font-size: 14px;
+                    color: $silver-grey;
+                    padding-right: 18px;
+                    border-bottom: none;
+                    text-decoration: underline;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    .icn {
+                        vertical-align: middle;
+                        margin-right: 5px;
+                    }
+                }
+                margin: 20px 30px;
+                padding-bottom: 15px;
+                border-bottom: 1px solid $gray--mystic;
+            }
+
+            .html, .programmatic-foundation__children {
+                padding: 0 30px;
+            }
+
+            .hidden-toggle {
+                display: none;
+
+                &:checked {
+                    & + .head {
+                        background-color: $white;
+                        margin-bottom: 10px;
+                    }
+                    & + .head + .content {
+                        max-height: none;
+                        margin-bottom: 20px;
+                    }
+                    & + .head + .content .html {
+                        margin-bottom: 40px;
+                    }
+                    & + .head .toggle {
+                        background-color: $gray--mystic;
+                    }
+                    & + .head .toggle:after {
+                        transform: rotate(90deg);
+                    }
+                }
+            }
+        }
+    }
+}

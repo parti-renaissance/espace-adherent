@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title measure.title %}
+{% block canonical_url url('app_approach_measure_view', {slug: measure.slug}) %}
+
+{% block content %}
+<main class="programmatic-foundation programmatic-foundation__view-measure">
+    <section class="programmatic-foundation__head background--darker ">
+    </section>
+    <section class="content">
+        <article class="l__wrapper--narrow">
+            <header>
+                <h1 class="text--large b__nudge--bottom-small">{{ measure.subApproach.approach.position }}.{{ measure.subApproach.position }}.{{ measure.position }}. {{ measure.title }}</h1>
+            </header>
+            {{ measure.content|raw }}
+            {% include 'programmatic_foundation/_children.html.twig' with {children: measure.projects, type: 'project'} %}
+        </article>
+    </section>
+</main>
+{% endblock %}
