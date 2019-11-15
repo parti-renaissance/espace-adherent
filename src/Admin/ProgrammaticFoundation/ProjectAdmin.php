@@ -13,18 +13,11 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Form\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProjectAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-    ];
-
     public function createQuery($context = 'list')
     {
         /** @var QueryBuilder $proxyQuery */
@@ -99,7 +92,7 @@ class ProjectAdmin extends AbstractAdmin
                     'class' => Measure::class,
                     'placeholder' => 'Sélectionner une mesure',
                 ])
-                ->add('title', TextType::class, [
+                ->add('title', null, [
                     'label' => 'Titre',
                 ])
                 ->add('content', PurifiedTextareaType::class, [
@@ -108,10 +101,10 @@ class ProjectAdmin extends AbstractAdmin
                     'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
                 ])
-                ->add('city', TextType::class, [
+                ->add('city', null, [
                     'label' => 'Ville',
                 ])
-                ->add('isExpanded', BooleanType::class, [
+                ->add('isExpanded', null, [
                     'label' => 'Ouvert par défaut',
                 ])
                 ->add('position', IntegerType::class, [
