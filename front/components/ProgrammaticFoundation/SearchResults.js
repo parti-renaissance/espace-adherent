@@ -9,7 +9,7 @@ export default class SearchResults extends React.Component {
                 <h2>Mesures</h2>
 
                 <div className="programmatic-foundation__children programmatic-foundation__measures">
-                    {this.props.results.measures.map((measure, index) => {
+                    {this.props.measures.map((measure, index) => {
                         return <Measure
                             key={index}
                             measure={measure}
@@ -24,7 +24,7 @@ export default class SearchResults extends React.Component {
                 <h2>Projets illustratifs</h2>
 
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
-                    {this.props.results.projects.map((project, index) => {
+                    {this.props.projects.map((project, index) => {
                         return <Project
                             key={index}
                             parentSectionIdentifierParts={project.parentSectionIdentifierParts}
@@ -39,5 +39,11 @@ export default class SearchResults extends React.Component {
 }
 
 SearchResults.propsType = {
-    results: PropTypes.object.isRequired,
+    measures: PropTypes.arrayOf(PropTypes.object).isRequired,
+    projects: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+SearchResults.defaultProps = {
+    measures: [],
+    projects: [],
 };

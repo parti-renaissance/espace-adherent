@@ -41,13 +41,12 @@
 
     &__search {
         width: 100%;
-        margin: 40px 0 0 0;
+        margin: 40px 0 15px 0;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
 
-        .text-search,
-        .city-search {
+        .em-form__group {
             margin-bottom: 15px;
         }
 
@@ -59,21 +58,24 @@
             flex-grow: 1;
         }
 
-        @media (min-width: $tablet) {
-            max-width: 75%;
+        .tag-search {
+            flex-basis: 100%;
         }
 
         @media (min-width: $mobile) {
             flex-direction: row;
-            margin: 40px 0;
+            margin: 40px 0 35px 0;
 
-            .text-search,
-            .city-search {
+            .em-form__group {
                 margin-bottom: 35px;
             }
 
-            .text-search {
-                margin-right: 15px;
+            .city-search, .tag-search {
+                margin-left: 15px;
+            }
+
+            .tag-search {
+                flex-basis: 250px;
             }
         }
     }
@@ -111,11 +113,22 @@
         .legend-title {
             color: $black;
             font-weight: bold;
+            margin-right: 20px;
+
+            @media (min-width: $mobile) {
+                margin-right: 0;
+            }
         }
 
         .legend-item {
             color: $silver-grey;
-            margin-left: 20px;
+            margin-right: 20px;
+            white-space: nowrap;
+
+            @media (min-width: $mobile) {
+                margin-right: 0px;
+                margin-left: 20px;
+            }
 
             &::before {
                 content: '';
@@ -139,10 +152,6 @@
                 &::before { background-color: $green--ocean; }
             }
         }
-    }
-
-    &__head {
-        height: 44px;
     }
 
     &__view-measure {
@@ -194,13 +203,13 @@
 
         .title {
             font-size: 20px;
+            margin-right: 10px;
         }
 
         .subtitle {
             margin-top: auto;
             color: $silver-grey;
             font-weight: 600;
-            margin-left: 10px;
         }
     }
 
@@ -213,8 +222,8 @@
 
                 .head {
                     background-color: $gray--pale;
-                    padding: 25px 30px;
-                    margin-top: 10px;
+                    padding: 25px 70px 25px 25px;
+                    margin-bottom: 10px;
 
                     .title {
                         font-size: 18px;
@@ -242,16 +251,25 @@
                             background-color: $gray--mystic;
                         }
                         & + .head + .content {
-                            margin-bottom: 50px;
+                            margin-bottom: 30px;
                         }
                         & + .head + .content .html {
-                            margin-top: 30px;
+                            margin-top: 10px;
                             color: $dark;
+                            padding: 0;
+
+                            @media (min-width: $mobile) {
+                                padding: 0 20px;
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    &__projects {
+        margin-top: 40px;
     }
 
     &__measure {
@@ -283,8 +301,9 @@
 
             .head {
                 display: flex;
+                flex-wrap: wrap;
                 box-sizing: border-box;
-                padding: 35px 30px;
+                padding: 30px 80px 30px 20px;
                 font-weight: 500;
                 background-color: $white;
                 border-radius: 3px;
@@ -293,7 +312,7 @@
 
                 .toggle {
                     position: absolute;
-                    top: 26px;
+                    top: calc(50% - 20px);
                     right: 30px;
                     width: 40px;
                     height: 40px;
@@ -329,6 +348,7 @@
                     padding-right: 18px;
                     border-bottom: none;
                     text-decoration: underline;
+                    transition: color .5s;
 
                     &:hover {
                         text-decoration: none;
@@ -338,14 +358,22 @@
                         vertical-align: middle;
                         margin-right: 5px;
                     }
+
+                    &.copied {
+                        color: $green--apple;
+                    }
                 }
-                margin: 20px 30px;
+                margin: 0;
                 padding-bottom: 15px;
                 border-bottom: 1px solid $gray--mystic;
+
+                @media (min-width: $mobile) {
+                    margin: 10px 20px;
+                }
             }
 
             .html, .programmatic-foundation__children {
-                padding: 0 30px;
+                padding: 0 20px;
             }
 
             .hidden-toggle {
@@ -354,14 +382,14 @@
                 &:checked {
                     & + .head {
                         background-color: $white;
-                        margin-bottom: 10px;
                     }
                     & + .head + .content {
                         max-height: none;
                         margin-bottom: 20px;
                     }
                     & + .head + .content .html {
-                        margin-bottom: 40px;
+                        margin-bottom: 20px;
+                        color: $dark;
                     }
                     & + .head .toggle {
                         background-color: $gray--mystic;

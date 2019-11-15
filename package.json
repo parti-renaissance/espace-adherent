@@ -55,6 +55,7 @@
     "react-csv": "^1.0.5",
     "react-data-grid": "^2.0.6",
     "react-dom": "^15.3.2",
+    "react-power-select": "^1.0.0-beta.17",
     "reqwest": "^2.0.5",
     "sass-loader": "^7.1.0",
     "select2": "^4.0.6-rc.1",

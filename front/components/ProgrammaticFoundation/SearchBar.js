@@ -1,21 +1,7 @@
 import React, {PropTypes} from 'react';
+import {PowerSelect} from 'react-power-select';
 
 export default class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            query: (props.filters && props.filters.query) || '',
-            city: (props.filters && props.filters.city) || '',
-        };
-    }
-
-    handleFilterChange(data) {
-        this.props.onSearchChange({...this.state, ...data});
-
-        this.setState(data);
-    }
-
     render() {
         return (
             <div className="em-form programmatic-foundation__search">
@@ -24,30 +10,65 @@ export default class SearchBar extends React.Component {
                         type="text"
                         className="em-form__field em-form__search"
                         placeholder="Rechercher une mesure ou un projet illustratif"
-                        onChange={(event) => this.handleFilterChange({query: event.target.value})}
-                        value={this.state.query}
+                        onChange={event => this.props.onFilterTextChange(event.target.value)}
+                        value={this.props.filterText}
                     />
                 </div>
 
                 <div className="em-form__group city-search">
                     <select
                         className="em-form__field"
-                        onChange={(event) => this.handleFilterChange({city: event.target.value})}
-                        value={this.state.city}
+                        onChange={event => this.props.onFilterCityChange(event.target.value)}
+                        value={this.props.filterCity}
                     >
-                        <option value="">France entière</option>
-                        {this.props.cityChoices.map(city => {
-                            return <option key={city}>{city}</option>;
-                        })}
+                        {this.getCities()}
                     </select>
+                </div>
+
+                <div className="em-form__group tag-search">
+                    <PowerSelect
+                        selected={this.props.filterTag}
+                        options={this.props.filterTagChoices}
+                        onChange={event => this.props.onFilterTagChange(event.option)}
+                        placeholder='Choisissez un tag'
+                        searchEngine={true}
+                        showClear={true}
+                        searchInputAutoFocus={true}
+                        searchPlaceholder={'Rechercher...'}
+                    />
                 </div>
             </div>
         );
     }
+
+    getCities() {
+        const cities = [
+            <option value="" key="empty-city">France entière</option>,
+        ];
+
+        this.props.filterCityChoices.map((city) => {
+            cities.push(<option key={city}>{city}</option>);
+        });
+
+        return cities;
+    }
 }
 
 SearchBar.propsType = {
-    onSearchChange: PropTypes.func.isRequired,
-    cityChoices: PropTypes.arrayOf(PropTypes.string).isRequired,
-    filters: PropTypes.object,
+    onFilterTextChange: PropTypes.func.isRequired,
+    onFilterCityChange: PropTypes.func.isRequired,
+    onFilterTagChange: PropTypes.func.isRequired,
+
+    filterCityChoices: PropTypes.arrayOf(PropTypes.string).isRequired,
+    filterTagChoices: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+    filterText: PropTypes.string,
+    filterCity: PropTypes.string,
+    filterTag: PropTypes.string,
+};
+
+SearchBar.defaultProps = {
+    filterText: '',
+    filterCity: '',
+    filterTag: '',
 };
