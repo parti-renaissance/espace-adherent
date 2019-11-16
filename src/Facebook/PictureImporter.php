@@ -4,8 +4,8 @@ namespace AppBundle\Facebook;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Psr\Cache\CacheItemPoolInterface;
 use function GuzzleHttp\Psr7\copy_to_string;
+use Psr\Cache\CacheItemPoolInterface;
 
 class PictureImporter
 {

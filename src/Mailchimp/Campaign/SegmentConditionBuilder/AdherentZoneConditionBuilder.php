@@ -24,9 +24,7 @@ class AdherentZoneConditionBuilder extends AbstractStaticSegmentConditionBuilder
         }
 
         if (!$tag->getExternalId()) {
-            throw new StaticSegmentIdMissingException(
-                sprintf('[AdherentMessage] Referent tag (%s) does not have a Mailchimp ID', $tag->getCode())
-            );
+            throw new StaticSegmentIdMissingException(sprintf('[AdherentMessage] Referent tag (%s) does not have a Mailchimp ID', $tag->getCode()));
         }
 
         return $tag->getExternalId();

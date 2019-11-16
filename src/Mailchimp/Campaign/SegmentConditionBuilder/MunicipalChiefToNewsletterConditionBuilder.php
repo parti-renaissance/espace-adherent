@@ -22,10 +22,7 @@ class MunicipalChiefToNewsletterConditionBuilder extends AbstractConditionBuilde
         $filter = $campaign->getMessage()->getFilter();
 
         if (!$filter->getInseeCode()) {
-            throw new InvalidFilterException(
-                $campaign->getMessage(),
-                '[MunicipalChiefMessage] Message does not have a valid city value'
-            );
+            throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
         }
 
         $conditions[] = [

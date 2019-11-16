@@ -72,11 +72,7 @@ class EmailContext extends RawMinkContext
         $link = $this->currentEmailPayload['Recipients'][0]['Vars'][$emailVariableName] ?? null;
 
         if (!$link) {
-            throw new \RuntimeException(sprintf(
-                'There is no variable or no data called %s. Variables availables are %s.',
-                $emailVariableName,
-                implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))
-            ));
+            throw new \RuntimeException(sprintf('There is no variable or no data called %s. Variables availables are %s.', $emailVariableName, implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))));
         }
 
         $this->visitPath($link);

@@ -22,20 +22,14 @@ class MunicipalChiefToAdherentConditionBuilder extends AbstractConditionBuilder
         $filter = $campaign->getMessage()->getFilter();
 
         if (!$inseeCode = $filter->getInseeCode()) {
-            throw new InvalidFilterException(
-                $campaign->getMessage(),
-                '[MunicipalChiefMessage] Message does not have a valid city value'
-            );
+            throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
         }
 
         $cityName = FranceCitiesBundle::getCityNameFromInseeCode($inseeCode) ??
             FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode] ?? null;
 
         if (!$cityName) {
-            throw new InvalidFilterException(
-                $campaign->getMessage(),
-                sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $inseeCode)
-            );
+            throw new InvalidFilterException($campaign->getMessage(), sprintf('[MunicipalMessage] Invalid city Name for insee code "%s"', $inseeCode));
         }
 
         $conditions = [[

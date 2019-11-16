@@ -22,7 +22,6 @@ trait NearbyTrait
      * Setting the hidden flag to false allow you to get an array as result containing
      * the entity and the calculated distance.
      *
-     *
      * @return QueryBuilder
      */
     public function createNearbyQueryBuilder(Coordinates $coordinates, bool $hidden = true)

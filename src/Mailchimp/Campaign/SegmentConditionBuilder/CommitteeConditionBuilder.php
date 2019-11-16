@@ -24,9 +24,7 @@ class CommitteeConditionBuilder extends AbstractStaticSegmentConditionBuilder
         }
 
         if (!$committee->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(
-                sprintf('[AdherentMessage] Committee "%s" does not have mailchimp ID', $committee->getUuidAsString())
-            );
+            throw new StaticSegmentIdMissingException(sprintf('[AdherentMessage] Committee "%s" does not have mailchimp ID', $committee->getUuidAsString()));
         }
 
         return $committee->getMailchimpId();

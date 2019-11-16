@@ -8,7 +8,7 @@ use Sabre\VObject\Component\VCalendar;
 class IcalSerializationVisitor extends GenericSerializationVisitor
 {
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getResult()
     {

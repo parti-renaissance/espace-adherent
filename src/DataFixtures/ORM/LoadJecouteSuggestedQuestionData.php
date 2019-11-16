@@ -46,7 +46,7 @@ class LoadJecouteSuggestedQuestionData extends Fixture
         foreach (self::SUGGESTED_QUESTIONS as $code => $data) {
             $question = new SuggestedQuestion($data['content'], $data['type'], $data['published']);
 
-            if (array_key_exists('choices', $data)) {
+            if (\array_key_exists('choices', $data)) {
                 foreach ($data['choices'] as $choice) {
                     $question->addChoice(new Choice($choice));
                 }

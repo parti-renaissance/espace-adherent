@@ -288,10 +288,7 @@ class CitizenProjectManager
         }
 
         if ($committeeSupport->isApproved()) {
-            throw new CitizenProjectCommitteeSupportAlreadySupportException(
-                $committeeSupport->getCommittee(),
-                $committeeSupport->getCitizenProject()
-            );
+            throw new CitizenProjectCommitteeSupportAlreadySupportException($committeeSupport->getCommittee(), $committeeSupport->getCitizenProject());
         }
 
         $committeeSupport->approve();

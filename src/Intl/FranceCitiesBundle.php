@@ -230,7 +230,7 @@ class FranceCitiesBundle
         foreach (self::$cities as $postalCode => $cities) {
             $trimmedInseeCode = ltrim($inseeCode, '0');
 
-            if (array_key_exists($trimmedInseeCode, $cities) || array_key_exists($inseeCode, $cities)) {
+            if (\array_key_exists($trimmedInseeCode, $cities) || \array_key_exists($inseeCode, $cities)) {
                 return $cities[$trimmedInseeCode] ?? $cities[$inseeCode];
             }
         }

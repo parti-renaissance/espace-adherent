@@ -26,10 +26,7 @@ class DonatorToIdentifierTransformer implements DataTransformerInterface
         $donator = $this->donatorRepository->findOneBy(['identifier' => $donatorIdentifier]);
 
         if (!$donator) {
-            throw new TransformationFailedException(sprintf(
-                'A Donator with identifier "%d" does not exist.',
-                $donatorIdentifier
-            ));
+            throw new TransformationFailedException(sprintf('A Donator with identifier "%d" does not exist.', $donatorIdentifier));
         }
 
         return $donator;

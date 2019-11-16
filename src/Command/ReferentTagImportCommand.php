@@ -175,7 +175,7 @@ SQL;
 
             $managedAreaTags = [];
             foreach ($tags as $tagCode) {
-                if (!array_key_exists($tagCode, $referentTags)) {
+                if (!\array_key_exists($tagCode, $referentTags)) {
                     throw new \RuntimeException(sprintf('No ReferentTag found with code "%s". (line %d)', $tagCode, $index + 2));
                 }
 

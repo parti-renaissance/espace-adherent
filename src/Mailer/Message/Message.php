@@ -103,7 +103,7 @@ class Message
             throw new \InvalidArgumentException('Recipient key must be an integer index or valid email address string.');
         }
 
-        if (\is_string($key) && array_key_exists($key = mb_strtolower($key), $this->recipients)) {
+        if (\is_string($key) && \array_key_exists($key = mb_strtolower($key), $this->recipients)) {
             return $this->recipients[$key];
         }
 

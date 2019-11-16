@@ -234,9 +234,7 @@ class EventController extends Controller
         }
 
         if (!($adherentEventRegistration = $eventRegistrationManager->searchRegistration($event, $this->getUser()->getEmailAddress(), null))) {
-            throw $this->createNotFoundException(
-                'Impossible d\'exécuter la désinscription de l\'évènement, votre inscription n\'est pas trouvée.'
-            );
+            throw $this->createNotFoundException('Impossible d\'exécuter la désinscription de l\'évènement, votre inscription n\'est pas trouvée.');
         }
 
         $eventRegistrationManager->remove($adherentEventRegistration);

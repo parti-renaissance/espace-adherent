@@ -156,8 +156,6 @@ class MoocNormalizer implements NormalizerInterface
             return 'quiz';
         }
 
-        throw new NotNormalizableValueException(
-            sprintf('%s is not an authorized BaseMoocElement.', \get_class($element))
-        );
+        throw new NotNormalizableValueException(sprintf('%s is not an authorized BaseMoocElement.', \get_class($element)));
     }
 }

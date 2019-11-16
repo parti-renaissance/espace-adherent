@@ -94,9 +94,7 @@ class NewsletterValueObject
     public static function createFromSiteNewsletterCommand(MailchimpSyncSiteNewsletterCommand $command): self
     {
         if (!NewsletterTypeEnum::isValid($command->getType())) {
-            throw new \InvalidArgumentException(
-                sprintf('[Newsletter] site type "%s" of newsletter is invalid', $command->getType())
-            );
+            throw new \InvalidArgumentException(sprintf('[Newsletter] site type "%s" of newsletter is invalid', $command->getType()));
         }
 
         $object = new self();

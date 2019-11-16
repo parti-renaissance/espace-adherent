@@ -26,10 +26,7 @@ class CommitteeToIdTransformer implements DataTransformerInterface
         $committee = $this->committeeRepository->findOneBy(['id' => $committeeId]);
 
         if (!$committee) {
-            throw new TransformationFailedException(sprintf(
-                'A Committee with id "%d" does not exist.',
-                $committeeId
-            ));
+            throw new TransformationFailedException(sprintf('A Committee with id "%d" does not exist.', $committeeId));
         }
 
         return $committee;

@@ -9,7 +9,7 @@ abstract class ArrayUtils
         $diff = [];
 
         foreach ($a as $key => $value) {
-            if (!array_key_exists($key, $b)) {
+            if (!\array_key_exists($key, $b)) {
                 $diff[$key] = $value;
                 continue;
             }
