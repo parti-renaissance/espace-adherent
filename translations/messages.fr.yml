@@ -522,7 +522,7 @@ actualites.label.opinions: opinions
 # Payment messages
 #
 payment.message.generic: Votre don n'a pas été effectué, soit car vous l'avez annulé soit car une erreur s'est produite.
-payment.message.connection_failed: La connexion au centre d’autorisation de la banque a échoué ou une erreur interne est survenue. Veuillez patienter quelques instants avant de réessayer.
+payment.message.connection_failed: La connexion au centre d’autorisation de la banque a échoué ou une erreur interne est survenue. Veuillez patienter quelques instants avant de réessayer. Le paiement par carte commerciale n’est pas accepté.
 payment.message.error_paybox: Une erreur interne est survenue. Veuillez patienter quelques instants avant de réessayer. Si le problème persiste, veuillez nous contacter en cliquant <a href="https://contact.en-marche.fr/" target="_blank">ici</a>.
 payment.message.card_number_invalid: Votre numéro de carte ou cryptogramme visuel semble être erroné. Veuillez patienter quelques instants avant de réessayer.
 payment.message.expiry_date_invalid: La date de fin de validité de votre carte semble être erronée. Veuillez patienter quelques instants avant de réessayer.
