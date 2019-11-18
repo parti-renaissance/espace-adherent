@@ -4,33 +4,44 @@
 {% block canonical_url url('app_approach_measure_view', {uuid: measure.uuid}) %}
 
 {% block content %}
-<main class="programmatic-foundation programmatic-foundation__view-measure">
-    <section class="content">
-        <article class="l__wrapper--narrow">
-            <header>
-                <h1 class="text--large b__nudge--bottom-small">{{ measure.subApproach.approach.position }}.{{ measure.subApproach.position }}.{{ measure.position }}. {{ measure.title }}</h1>
-            </header>
+    {% set approach = measure.subApproach.approach %}
+    {% set sub_approach = measure.subApproach %}
 
-            <div class="html">
-                {{ measure.content|raw }}
-            </div>
+    <div class="l__wrapper--narrow">
+        <ul class="l__wrapper--narrow programmatic-foundation__breadcrumb text--body">
+            <li>{{ approach.position }} {{ approach.title }}</li>
+            <li>{{ approach.position }}.{{ sub_approach.position }} {{ sub_approach.title }}</li>
+            <li>{{ approach.position }}.{{ sub_approach.position }}.{{ measure.position }} {{ measure.title }}</li>
+        </ul>
+    </div>
 
-            <div class="programmatic-foundation__children programmatic-foundation__project">
-                {% for project in measure.projects %}
-                    <div class="child {{ project.isExpanded ? 'expanded' : '' }}">
-                        <div class="head text--default-large" onclick="toggleClass(this.parentNode, 'expanded');">
-                            <span class="title">{{ project.title }}</span>
-                            <span class="toggle"></span>
-                        </div>
-                        <div class="content">
-                            <div class="html">
-                                {{ project.content|raw }}
+    <main class="programmatic-foundation programmatic-foundation__view-measure">
+        <section class="content">
+            <article class="l__wrapper--narrow">
+                <header>
+                    <h1 class="text--large b__nudge--bottom-small">{{ approach.position }}.{{ sub_approach.position }}.{{ measure.position }}. {{ measure.title }}</h1>
+                </header>
+
+                <div class="html">
+                    {{ measure.content|raw }}
+                </div>
+
+                <div class="programmatic-foundation__children programmatic-foundation__project">
+                    {% for project in measure.projects %}
+                        <div class="child {{ project.isExpanded ? 'expanded' : '' }}">
+                            <div class="head text--default-large" onclick="toggleClass(this.parentNode, 'expanded');">
+                                <span class="title">{{ project.title }}</span>
+                                <span class="toggle"></span>
+                            </div>
+                            <div class="content">
+                                <div class="html">
+                                    {{ project.content|raw }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </article>
-    </section>
-</main>
+                    {% endfor %}
+                </div>
+            </article>
+        </section>
+    </main>
 {% endblock %}

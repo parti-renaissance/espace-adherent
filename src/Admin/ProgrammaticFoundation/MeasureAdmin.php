@@ -95,10 +95,6 @@ class MeasureAdmin extends AbstractAdmin
                 ->add('title', null, [
                     'label' => 'Titre',
                 ])
-                ->add('slug', null, [
-                    'label' => 'Slug',
-                    'disabled' => true,
-                ])
                 ->add('isLeading', null, [
                     'label' => 'Mesure phare',
                 ])

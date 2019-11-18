@@ -129,7 +129,7 @@ export default class ProgrammaticFoundation extends React.Component {
                     });
                 });
             });
-        })).sort();
+        })).sort((a, b) => a.localeCompare(b));
     }
 
     extractAllTags() {
@@ -142,7 +142,7 @@ export default class ProgrammaticFoundation extends React.Component {
                     );
                 });
             });
-        })).sort();
+        })).sort((a, b) => a.localeCompare(b));
     }
 
     isSearching() {

@@ -158,7 +158,9 @@
         margin-bottom: 60px;
 
         header {
-            margin: 110px 0 40px 0;
+            h1 {
+                margin-top: 0;
+            }
         }
 
         .content {
