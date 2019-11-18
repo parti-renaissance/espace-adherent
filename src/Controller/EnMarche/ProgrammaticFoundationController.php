@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\ProgrammaticFoundation\Measure;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,8 +18,7 @@ class ProgrammaticFoundationController extends Controller
     }
 
     /**
-     * @Route("/socle-programme/mesures/{slug}", name="app_approach_measure_view", methods={"GET"})
-     * @Entity("measure", expr="repository.findOneBySlug(slug)")
+     * @Route("/socle-programme/mesures/{uuid}", name="app_approach_measure_view", methods={"GET"})
      */
     public function viewMeasureAction(Measure $measure): Response
     {

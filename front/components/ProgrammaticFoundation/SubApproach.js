@@ -11,19 +11,14 @@ export default class SubApproach extends React.Component {
         const sectionIdentifier = sectionIdentifierParts.join('.');
 
         return (
-            <div className="programmatic-foundation__sub-approach child">
-                <input
-                    type="checkbox"
-                    id={sectionIdentifier}
-                    className="hidden-toggle"
-                    defaultChecked={this.props.subApproach.isExpanded && !this.props.preventAutoExpand}
-                />
-
-                <label className="head" htmlFor={sectionIdentifier}>
+            <div className={`programmatic-foundation__sub-approach child ${
+                this.props.subApproach.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''
+            }`}>
+                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
                     <span className="title">{sectionIdentifier} {this.props.subApproach.title}</span>
                     <span className="subtitle">{this.props.subApproach.subtitle}</span>
-                    <div className="toggle" />
-                </label>
+                    <span className="toggle" />
+                </div>
 
                 <div className="content">
                     <div className="html" dangerouslySetInnerHTML={{ __html: this.props.subApproach.content }} />

@@ -2,21 +2,14 @@ import React, {PropTypes} from 'react';
 
 export default class Project extends React.Component {
     render() {
-        const sectionIdentifier = this.props.parentSectionIdentifierParts.concat(this.props.project.position).join('.');
-
         return (
-            <div className="programmatic-foundation__project child">
-                <input
-                    type="checkbox"
-                    id={sectionIdentifier}
-                    className="hidden-toggle"
-                    defaultChecked={this.props.project.isExpanded && !this.props.preventAutoExpand}
-                />
-
-                <label className="head" htmlFor={sectionIdentifier}>
+            <div className={`programmatic-foundation__project child ${
+                this.props.project.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''
+            }`}>
+                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
                     <span className="title">{this.props.project.title}</span>
-                    <div className="toggle" />
-                </label>
+                    <span className="toggle" />
+                </div>
 
                 <div className="content">
                     <div className="html" dangerouslySetInnerHTML={{ __html: this.props.project.content }} />
@@ -28,6 +21,5 @@ export default class Project extends React.Component {
 
 Project.propsType = {
     project: PropTypes.object.isRequired,
-    parentSectionIdentifierParts: PropTypes.arrayOf(PropTypes.string).isRequired,
     preventAutoExpand: PropTypes.bool,
 };

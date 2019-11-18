@@ -7,7 +7,6 @@ use AppBundle\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -17,12 +16,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_measure")
- * @UniqueEntity("slug", message="programmatic_foundation.slug.unique.measure")
+ *
  * @UniqueEntity(
  *     fields={"position", "subApproach"},
  *     errorPath="position",
  *     message="programmatic_foundation.unique_position.measure"
  * )
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class Measure
@@ -43,14 +43,6 @@ class Measure
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $title;
-
-    /**
-     * @ORM\Column(unique=true)
-     * @Gedmo\Slug(fields={"title"})
-     * @Assert\NotBlank(message="programmatic_foundation.slug.not_empty")
-     * @SymfonySerializer\Groups({"approach_list_read"})
-     */
-    private $slug;
 
     /**
      * @ORM\Column(type="text")
@@ -139,16 +131,6 @@ class Measure
     public function setTitle(string $title): void
     {
         $this->title = $title;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
     }
 
     public function getContent(): ?string

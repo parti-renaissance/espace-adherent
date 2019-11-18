@@ -6,15 +6,14 @@ export default class SearchEngine {
         let measures = _.flatMap(approaches, (approach) => {
             return _.flatMap(approach.sub_approaches, (subApproach) => {
                 return _.flatMap(subApproach.measures, (measure) => {
-                    measure.parentSectionIdentifierParts = [
-                        approach.position,
-                        subApproach.position,
-                    ];
+                    measure.parentSectionIdentifierParts = [approach.position, subApproach.position];
 
                     return measure;
                 });
             });
         });
+
+        let projects = _.flatMap(measures, (measure) => _.flatMap(measure.projects));
 
         if (filters.isLeading || filters.tag) {
             measures = _.filter(measures, {
@@ -22,14 +21,6 @@ export default class SearchEngine {
                 ...(filters.tag ? {tags: [{label: filters.tag}]} : {})
             });
         }
-
-        let projects = _.flatMap(measures, (measure) => {
-            return _.flatMap(measure.projects, (project) => {
-                project.parentSectionIdentifierParts = measure.parentSectionIdentifierParts.concat(measure.position);
-
-                return project;
-            });
-        });
 
         if (filters.city || filters.tag) {
             projects = _.filter(projects, {

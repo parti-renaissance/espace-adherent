@@ -40,13 +40,6 @@ class ImageUploadExtension extends AbstractAdminExtension
                 continue;
             }
 
-            $imagePropertyName = ucfirst($imagePropertyName);
-
-            /** @var Image $image */
-            if (null === $image = $object->{'get'.$imagePropertyName}()) {
-                continue;
-            }
-
             // If the image is optional (optional relation) and must be removed from file system and DB
             if ($image->isDeleted()) {
                 $this->removeImageFile($image);

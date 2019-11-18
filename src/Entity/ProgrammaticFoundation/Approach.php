@@ -31,7 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_approach")
+ *
  * @UniqueEntity("position", message="programmatic_foundation.unique_position.approach")
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class Approach
@@ -54,7 +56,7 @@ class Approach
     private $title;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $content;

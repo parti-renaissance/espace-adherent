@@ -7,17 +7,15 @@ export default class Measure extends React.Component {
         const sectionIdentifier = sectionIdentifierParts.join('.');
 
         return (
-            <div className={`programmatic-foundation__measure child ${this.props.measure.isLeading ? 'leading' : ''}`}>
-                <input
-                    type="checkbox"
-                    id={sectionIdentifier}
-                    className="hidden-toggle"
-                    defaultChecked={this.props.measure.isExpanded && !this.props.preventAutoExpand}
-                />
-                <label className="head" htmlFor={sectionIdentifier}>
+            <div className={`programmatic-foundation__measure child ${
+                this.props.measure.isLeading ? 'leading' : ''
+            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
+
+                <div className="head" onClick={event => toggleClass(event.target.parentNode, 'expanded')}>
                     <span className="title">{sectionIdentifier} {this.props.measure.title}</span>
-                    <div className="toggle" />
-                </label>
+                    <span className="toggle" />
+                </div>
+
                 <div className="content">
                     <div className="measure-links">
                         <a href="#" onClick={this.handleCopyAction.bind(this)}>
@@ -39,7 +37,6 @@ export default class Measure extends React.Component {
                             return <Project
                                 key={index}
                                 project={project}
-                                parentSectionIdentifierParts={sectionIdentifierParts}
                             />
                         })}
                     </div>
@@ -65,7 +62,7 @@ export default class Measure extends React.Component {
     }
 
     getMeasureUrl(absolute = false) {
-        return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.slug}`
+        return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.uuid}`
     }
 }
 
