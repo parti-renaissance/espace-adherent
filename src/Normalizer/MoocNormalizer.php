@@ -7,13 +7,11 @@ use AppBundle\Entity\Mooc\AttachmentLink;
 use AppBundle\Entity\Mooc\BaseMoocElement;
 use AppBundle\Entity\Mooc\Chapter;
 use AppBundle\Entity\Mooc\Mooc;
-use AppBundle\Entity\Mooc\Quiz;
-use AppBundle\Entity\Mooc\Video;
+use AppBundle\Entity\Mooc\MoocElementTypeEnum;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MoocNormalizer implements NormalizerInterface
@@ -82,7 +80,7 @@ class MoocNormalizer implements NormalizerInterface
     private function normalizeElement(BaseMoocElement $element): array
     {
         $moocElement = [
-            'type' => $this->getElementType($element),
+            'type' => $element->getType(),
             'title' => $element->getTitle(),
             'slug' => $element->getSlug(),
             'content' => $element->getContent(),
@@ -94,16 +92,22 @@ class MoocNormalizer implements NormalizerInterface
             'attachments' => $this->normalizeFiles($element->getFiles()),
         ];
 
-        /** @var Video $element */
-        if ($element instanceof Video) {
-            $moocElement['youtubeId'] = $element->getYoutubeId();
-            $moocElement['youtubeThumbnail'] = $element->getYoutubeThumbnail();
-            $moocElement['duration'] = $element->getDuration()->format('H:i:s');
-        }
-
-        /** @var Quiz $element */
-        if ($element instanceof Quiz) {
-            $moocElement['typeformUrl'] = $element->getTypeformUrl();
+        switch ($element->getType()) {
+            case MoocElementTypeEnum::VIDEO:
+                $moocElement['youtubeId'] = $element->getYoutubeId();
+                $moocElement['youtubeThumbnail'] = $element->getYoutubeThumbnail();
+                $moocElement['duration'] = $element->getDuration()->format('H:i:s');
+                break;
+            case MoocElementTypeEnum::IMAGE:
+                $moocElement['image'] = $this->router->generate(
+                    'asset_url',
+                    ['path' => $element->getImage()->getFilePath()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+                break;
+            case MoocElementTypeEnum::QUIZ:
+                $moocElement['typeformUrl'] = $element->getTypeformUrl();
+                break;
         }
 
         return $moocElement;
@@ -144,18 +148,5 @@ class MoocNormalizer implements NormalizerInterface
         }
 
         return $attachmentFiles;
-    }
-
-    private function getElementType(BaseMoocElement $element): string
-    {
-        if ($element instanceof Video) {
-            return 'video';
-        }
-
-        if ($element instanceof Quiz) {
-            return 'quiz';
-        }
-
-        throw new NotNormalizableValueException(sprintf('%s is not an authorized BaseMoocElement.', \get_class($element)));
     }
 }

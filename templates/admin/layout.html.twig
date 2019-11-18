@@ -197,6 +197,7 @@
 
          $('.ck-editor-advanced').each(function(key, item) {
              CKEDITOR.replace(item, {
+                 title: false,
                  removePlugins: 'elementspath',
                  extraPlugins: 'confighelper,youtube',
                  extraAllowedContent: 'iframe[*]',

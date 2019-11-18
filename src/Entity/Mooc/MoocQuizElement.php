@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Quiz extends BaseMoocElement
+class MoocQuizElement extends BaseMoocElement
 {
     /**
      * @var string
@@ -44,5 +44,10 @@ class Quiz extends BaseMoocElement
     public function setTypeformUrl(string $typeformUrl): void
     {
         $this->typeformUrl = $typeformUrl;
+    }
+
+    public function getType(): string
+    {
+        return MoocElementTypeEnum::QUIZ;
     }
 }

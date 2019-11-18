@@ -3,7 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Mooc\AttachmentLink;
-use AppBundle\Entity\Mooc\Video;
+use AppBundle\Entity\Mooc\MoocVideoElement;
 use Cake\Chronos\MutableDateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -12,7 +12,7 @@ class LoadMoocVideoData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
-        $video1 = new Video(
+        $video1 = new MoocVideoElement(
             'Les produits transformés dans une première vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
@@ -33,7 +33,7 @@ class LoadMoocVideoData extends AbstractFixture
         $manager->persist($video1);
         $this->addReference('mooc-video-1', $video1);
 
-        $video2 = new Video(
+        $video2 = new MoocVideoElement(
             'Les produits transformés dans une deuxième vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et.',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
@@ -46,7 +46,7 @@ class LoadMoocVideoData extends AbstractFixture
         $manager->persist($video2);
         $this->addReference('mooc-video-2', $video2);
 
-        $video3 = new Video(
+        $video3 = new MoocVideoElement(
             'Les produits transformés dans une troisième vidéo',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
