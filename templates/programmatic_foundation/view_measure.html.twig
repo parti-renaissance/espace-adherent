@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title measure.title %}
-{% block canonical_url url('app_approach_measure_view', {slug: measure.slug}) %}
+{% block canonical_url url('app_approach_measure_view', {uuid: measure.uuid}) %}
 
 {% block content %}
 <main class="programmatic-foundation programmatic-foundation__view-measure">
@@ -10,8 +10,26 @@
             <header>
                 <h1 class="text--large b__nudge--bottom-small">{{ measure.subApproach.approach.position }}.{{ measure.subApproach.position }}.{{ measure.position }}. {{ measure.title }}</h1>
             </header>
-            {{ measure.content|raw }}
-            {% include 'programmatic_foundation/_children.html.twig' with {children: measure.projects, type: 'project'} %}
+
+            <div class="html">
+                {{ measure.content|raw }}
+            </div>
+
+            <div class="programmatic-foundation__children programmatic-foundation__project">
+                {% for project in measure.projects %}
+                    <div class="child {{ project.isExpanded ? 'expanded' : '' }}">
+                        <div class="head text--default-large" onclick="toggleClass(this.parentNode, 'expanded');">
+                            <span class="title">{{ project.title }}</span>
+                            <span class="toggle"></span>
+                        </div>
+                        <div class="content">
+                            <div class="html">
+                                {{ project.content|raw }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </article>
     </section>
 </main>

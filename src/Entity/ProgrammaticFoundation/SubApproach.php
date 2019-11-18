@@ -16,11 +16,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="programmatic_foundation_sub_approach")
+ *
  * @UniqueEntity(
  *     fields={"position", "approach"},
  *     errorPath="position",
  *     message="programmatic_foundation.unique_position.sub_approach"
  * )
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class SubApproach
@@ -49,7 +51,7 @@ class SubApproach
     private $subtitle;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $content;
@@ -58,7 +60,7 @@ class SubApproach
      * @ORM\Column(type="boolean")
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
-    private $isExpanded = false;
+    private $isExpanded;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProgrammaticFoundation\Approach", inversedBy="subApproaches")

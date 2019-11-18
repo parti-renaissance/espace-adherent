@@ -245,15 +245,17 @@
                     }
                 }
 
-                .hidden-toggle {
-                    &:checked {
-                        & + .head .toggle {
+                &.expanded {
+                    & > .head {
+                        .toggle {
                             background-color: $gray--mystic;
                         }
-                        & + .head + .content {
-                            margin-bottom: 30px;
-                        }
-                        & + .head + .content .html {
+                    }
+
+                    & > .content {
+                        margin-bottom: 30px;
+
+                        & > .html {
                             margin-top: 10px;
                             color: $dark;
                             padding: 0;
@@ -376,26 +378,26 @@
                 padding: 0 20px;
             }
 
-            .hidden-toggle {
-                display: none;
+            &.expanded {
+                & > .head {
+                    background-color: $white;
 
-                &:checked {
-                    & + .head {
-                        background-color: $white;
+                    .toggle {
+                        background-color: $gray--mystic;
+
+                        &:after {
+                            transform: rotate(90deg);
+                        }
                     }
-                    & + .head + .content {
-                        max-height: none;
-                        margin-bottom: 20px;
-                    }
-                    & + .head + .content .html {
+                }
+
+                & > .content {
+                    max-height: none;
+                    margin-bottom: 20px;
+
+                    & > .html {
                         margin-bottom: 20px;
                         color: $dark;
-                    }
-                    & + .head .toggle {
-                        background-color: $gray--mystic;
-                    }
-                    & + .head .toggle:after {
-                        transform: rotate(90deg);
                     }
                 }
             }

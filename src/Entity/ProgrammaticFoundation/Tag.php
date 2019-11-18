@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="programmatic_foundation_tag")
  *
  * @UniqueEntity("label")
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class Tag
@@ -31,7 +32,7 @@ class Tag
      * @Assert\Length(max="100")
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
-    private $label = '';
+    private $label;
 
     public function __construct(string $label = '')
     {
