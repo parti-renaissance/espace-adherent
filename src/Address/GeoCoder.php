@@ -13,7 +13,7 @@ class GeoCoder
     private $provider;
     private $logger;
     /**
-     * @var null|City[]
+     * @var City[]|null
      */
     private $cacheRecord = [];
 

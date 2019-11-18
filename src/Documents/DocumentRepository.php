@@ -84,7 +84,7 @@ class DocumentRepository
             $directory[] = new Document(
                 $file['type'],
                 $file['filename'],
-                ('file' === $file['type'] && array_key_exists('extension', $file) && $file['extension']) ? $file['extension'] : '',
+                ('file' === $file['type'] && \array_key_exists('extension', $file) && $file['extension']) ? $file['extension'] : '',
                 ltrim(substr($file['path'], $pathPrefixLength), '/')
             );
         }

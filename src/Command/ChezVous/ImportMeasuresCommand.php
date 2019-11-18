@@ -79,11 +79,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
     private function importMeasureType(string $type): void
     {
         if (!\in_array($type, $this->measureFactory->getTypeChoices(), true)) {
-            throw new \InvalidArgumentException(sprintf(
-                '"%s" is not a known measure type. Known measure types are: "%s".',
-                $type,
-                implode('", "', $this->measureFactory->getTypeChoices())
-            ));
+            throw new \InvalidArgumentException(sprintf('"%s" is not a known measure type. Known measure types are: "%s".', $type, implode('", "', $this->measureFactory->getTypeChoices())));
         }
 
         $measureType = $this->measureFactory->getMeasureType($type);

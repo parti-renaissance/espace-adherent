@@ -222,11 +222,7 @@ class CommitteeManagerController extends Controller
     {
         $committeeManager = $this->get('app.committee.manager');
         if (!$committeeManager->isPromotableHost($member, $committee)) {
-            throw $this->createNotFoundException(sprintf(
-                'Member "%s" of committee "%s" can not be promoted as a host privileged person.',
-                $member->getUuid(),
-                $committee->getUuid()
-            ));
+            throw $this->createNotFoundException(sprintf('Member "%s" of committee "%s" can not be promoted as a host privileged person.', $member->getUuid(), $committee->getUuid()));
         }
 
         $form = $this->createForm(FormType::class);
@@ -258,11 +254,7 @@ class CommitteeManagerController extends Controller
     {
         $committeeManager = $this->get('app.committee.manager');
         if (!$committeeManager->isDemotableHost($member, $committee)) {
-            throw $this->createNotFoundException(sprintf(
-                'Member "%s" of committee "%s" can not be demoted as a simple follower.',
-                $member->getUuid(),
-                $committee->getUuid()
-            ));
+            throw $this->createNotFoundException(sprintf('Member "%s" of committee "%s" can not be demoted as a simple follower.', $member->getUuid(), $committee->getUuid()));
         }
 
         $form = $this->createForm(FormType::class);

@@ -20,10 +20,7 @@ class CitizenActionNotificationMessage extends Message
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof Adherent) {
-            throw new \InvalidArgumentException(sprintf(
-                'This message builder requires a collection of %s instances',
-                Adherent::class
-            ));
+            throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
         }
 
         $message = new static(
@@ -39,10 +36,7 @@ class CitizenActionNotificationMessage extends Message
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof Adherent) {
-                throw new \InvalidArgumentException(sprintf(
-                    'This message builder requires a collection of %s instances',
-                    Adherent::class
-                ));
+                throw new \InvalidArgumentException(sprintf('This message builder requires a collection of %s instances', Adherent::class));
             }
 
             $message->addRecipient(

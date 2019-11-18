@@ -35,7 +35,7 @@ class MeasurePayloadValidator extends ConstraintValidator
         $expectedPayloadKeys = $this->measureChoiceLoader->getTypeKeysMap()[$type] ?? [];
 
         foreach ($payload as $key => $value) {
-            if (!array_key_exists($key, $expectedPayloadKeys)) {
+            if (!\array_key_exists($key, $expectedPayloadKeys)) {
                 $this
                     ->context
                     ->buildViolation($constraint->unexpectedKeyForType)
@@ -50,7 +50,7 @@ class MeasurePayloadValidator extends ConstraintValidator
         }
 
         foreach ($expectedPayloadKeys as $key => $required) {
-            if ($required && !array_key_exists($key, $payload)) {
+            if ($required && !\array_key_exists($key, $payload)) {
                 $this
                     ->context
                     ->buildViolation($constraint->missingKeyForType)
@@ -66,8 +66,8 @@ class MeasurePayloadValidator extends ConstraintValidator
 
         if (BaisseNombreChomeurs::getType() === $type) {
             if (
-                !array_key_exists(BaisseNombreChomeurs::KEY_BAISSE_VILLE, $payload)
-                && !array_key_exists(BaisseNombreChomeurs::KEY_BAISSE_DEPARTEMENT, $payload)
+                !\array_key_exists(BaisseNombreChomeurs::KEY_BAISSE_VILLE, $payload)
+                && !\array_key_exists(BaisseNombreChomeurs::KEY_BAISSE_DEPARTEMENT, $payload)
             ) {
                 $this
                     ->context
@@ -88,8 +88,8 @@ class MeasurePayloadValidator extends ConstraintValidator
         }
 
         if (CouvertureFibre::getType() === $type) {
-            $hausseVilleExists = array_key_exists(CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_VILLE, $payload);
-            $locauxVilleExists = array_key_exists(CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE, $payload);
+            $hausseVilleExists = \array_key_exists(CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_VILLE, $payload);
+            $locauxVilleExists = \array_key_exists(CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_VILLE, $payload);
 
             if (($hausseVilleExists && !$locauxVilleExists) || (!$hausseVilleExists && $locauxVilleExists)) {
                 $this
@@ -112,8 +112,8 @@ class MeasurePayloadValidator extends ConstraintValidator
                 ;
             }
 
-            $hausseDepartementExists = array_key_exists(CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT, $payload);
-            $locauxDepartementExists = array_key_exists(CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT, $payload);
+            $hausseDepartementExists = \array_key_exists(CouvertureFibre::KEY_HAUSSE_DEPUIS_2017_DEPARTEMENT, $payload);
+            $locauxDepartementExists = \array_key_exists(CouvertureFibre::KEY_NOMBRE_LOCAUX_RACCORDES_DEPARTEMENT, $payload);
 
             if (
                 ($hausseDepartementExists && !$locauxDepartementExists)

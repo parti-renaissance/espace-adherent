@@ -131,7 +131,7 @@ class Measure
         $this->payload = [];
 
         foreach ($entries as $entry) {
-            if (!array_key_exists('key', $entry) || !array_key_exists('value', $entry)) {
+            if (!\array_key_exists('key', $entry) || !\array_key_exists('value', $entry)) {
                 continue;
             }
 

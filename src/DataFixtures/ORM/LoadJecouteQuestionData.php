@@ -60,7 +60,7 @@ class LoadJecouteQuestionData extends Fixture
         foreach (self::QUESTIONS as $code => $data) {
             $question = new Question($data['content'], $data['type']);
 
-            if (array_key_exists('choices', $data)) {
+            if (\array_key_exists('choices', $data)) {
                 $i = 1;
 
                 foreach ($data['choices'] as $choice) {

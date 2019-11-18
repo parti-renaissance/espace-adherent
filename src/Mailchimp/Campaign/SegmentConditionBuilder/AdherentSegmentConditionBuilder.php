@@ -23,9 +23,7 @@ class AdherentSegmentConditionBuilder extends AbstractStaticSegmentConditionBuil
         }
 
         if (!$segment->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(
-                sprintf('[AdherentMessage] AdherentSegment "%s" does not have mailchimp ID', $segment->getUuid()->toString())
-            );
+            throw new StaticSegmentIdMissingException(sprintf('[AdherentMessage] AdherentSegment "%s" does not have mailchimp ID', $segment->getUuid()->toString()));
         }
 
         return $segment->getMailchimpId();

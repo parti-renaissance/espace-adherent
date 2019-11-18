@@ -22,10 +22,7 @@ class EmailTemplateFactory
         $callable = [$this->templateClass, 'createWithMessage'];
 
         if (!\is_callable($callable)) {
-            throw new \LogicException(sprintf(
-                'The static method "createWithMessage" should exist in the "%s" class.',
-                $this->templateClass
-            ));
+            throw new \LogicException(sprintf('The static method "createWithMessage" should exist in the "%s" class.', $this->templateClass));
         }
 
         return \call_user_func_array($callable, [

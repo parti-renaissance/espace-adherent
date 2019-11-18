@@ -38,7 +38,6 @@ interface AdherentExpirableTokenInterface
     /**
      * Expires a token if it's not already.
      *
-     *
      * @throws AdherentTokenAlreadyUsedException If the token has already been used
      * @throws AdherentTokenExpiredException     If the token is expired
      * @throws AdherentTokenMismatchException    If the adherent is not tied to this token

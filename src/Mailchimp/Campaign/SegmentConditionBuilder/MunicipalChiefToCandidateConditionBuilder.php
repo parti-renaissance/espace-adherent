@@ -30,10 +30,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
         $filter = $campaign->getMessage()->getFilter();
 
         if (!$inseeCode = $filter->getInseeCode()) {
-            throw new InvalidFilterException(
-                $campaign->getMessage(),
-                '[MunicipalChiefMessage] Message does not have a valid city value'
-            );
+            throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
         }
 
         $conditions[] = [
@@ -107,10 +104,7 @@ class MunicipalChiefToCandidateConditionBuilder extends AbstractConditionBuilder
 
         if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode]) && $postalCode = $filter->getPostalCode()) {
             if (false === ($matchedInseeCode = array_search($postalCode, FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode], true))) {
-                throw new InvalidFilterException(
-                    $campaign->getMessage(),
-                    sprintf('[MunicipalChiefMessage] Postal code "%s" not found for the city "%s"', $postalCode, $inseeCode)
-                );
+                throw new InvalidFilterException($campaign->getMessage(), sprintf('[MunicipalChiefMessage] Postal code "%s" not found for the city "%s"', $postalCode, $inseeCode));
             }
 
             $conditions[] = [

@@ -139,19 +139,19 @@ class ImportDonationsCommand extends Command
             $checkNumber = $row['check_number'];
             $donatedAt = \DateTimeImmutable::createFromFormat('m/d/Y', $row['date']);
 
-            if (!array_key_exists($type, self::TYPES_MAP)) {
+            if (!\array_key_exists($type, self::TYPES_MAP)) {
                 $this->io->text("\"$type\" is not a valid transaction type.");
 
                 continue;
             }
 
-            if (!array_key_exists($gender, self::GENDERS_MAP)) {
+            if (!\array_key_exists($gender, self::GENDERS_MAP)) {
                 $this->io->text("\"$gender\" is not a valid gender.");
 
                 continue;
             }
 
-            if (!array_key_exists($country, self::COUNTRIES_MAP)) {
+            if (!\array_key_exists($country, self::COUNTRIES_MAP)) {
                 $this->io->text("\"$country\" is not a valid country.");
 
                 continue;

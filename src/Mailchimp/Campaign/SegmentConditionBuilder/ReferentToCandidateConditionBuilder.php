@@ -21,10 +21,7 @@ class ReferentToCandidateConditionBuilder extends AbstractConditionBuilder
     public function build(MailchimpCampaign $campaign): array
     {
         if (!$campaign->getLabel()) {
-            throw new InvalidFilterException(
-                $campaign->getMessage(),
-                '[ReferentMessage] Referent message does not have a valid tag code'
-            );
+            throw new InvalidFilterException($campaign->getMessage(), '[ReferentMessage] Referent message does not have a valid tag code');
         }
 
         $conditions[] = [

@@ -42,9 +42,7 @@ class FixtureContext extends RawMinkContext
 
         $fixtures = $loader->getFixtures();
         if (!$fixtures) {
-            throw new InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures))
-            );
+            throw new InvalidArgumentException(sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $fixtures)));
         }
 
         $this->executor->execute($fixtures);

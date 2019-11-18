@@ -59,9 +59,7 @@ class FeatureContext extends RawMinkContext
         $count = substr_count($this->getSession()->getPage()->getText(), $text);
 
         if ($times !== $count) {
-            throw new \Exception(
-                sprintf('Found %d occurences of "%s" when expecting %d', $count, $text, $times)
-            );
+            throw new \Exception(sprintf('Found %d occurences of "%s" when expecting %d', $count, $text, $times));
         }
     }
 

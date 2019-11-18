@@ -9,8 +9,6 @@ interface GeocoderInterface
     /**
      * Geocodes an address.
      *
-     *
-     *
      * @throws GeocodingException
      */
     public function geocode(string $address): Coordinates;

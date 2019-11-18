@@ -48,9 +48,9 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
     private $storage;
 
     private $pathExtractedFile;
-    private $referentNotFound;
-    private $imageError;
-    private $imageAddedOnStorage;
+    private $referentNotFound = [];
+    private $imageError = [];
+    private $imageAddedOnStorage = [];
 
     protected function configure()
     {
@@ -68,9 +68,6 @@ class ImportReferentBioPictureCommand extends ContainerAwareCommand
         $this->mediaRepository = $this->em->getRepository(Media::class);
         $this->mediaFactory = $this->getContainer()->get(MediaFactory::class);
         $this->storage = $this->getContainer()->get('app.storage');
-        $this->referentNotFound = [];
-        $this->imageError = [];
-        $this->imageAddedOnStorage = [];
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

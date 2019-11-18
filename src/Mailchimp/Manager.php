@@ -125,9 +125,7 @@ class Manager implements LoggerAwareInterface
     public function getCampaignContent(MailchimpCampaign $campaign): string
     {
         if (!$campaign->getExternalId()) {
-            throw new InvalidCampaignIdException(
-                sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid())
-            );
+            throw new InvalidCampaignIdException(sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()));
         }
 
         return $this->driver->getCampaignContent($campaign->getExternalId());
@@ -147,9 +145,7 @@ class Manager implements LoggerAwareInterface
             $campaignData = $this->driver->createCampaign($editCampaignRequest);
 
             if (empty($campaignData['id'])) {
-                throw new \RuntimeException(
-                    sprintf('Campaign for the message "%s" has not been created', $message->getUuid())
-                );
+                throw new \RuntimeException(sprintf('Campaign for the message "%s" has not been created', $message->getUuid()));
             }
 
             $campaign->setExternalId($campaignData['id']);
@@ -265,9 +261,7 @@ class Manager implements LoggerAwareInterface
     private function checkMessageExternalId(MailchimpCampaign $campaign): void
     {
         if (!$campaign->getExternalId()) {
-            throw new InvalidCampaignIdException(
-                sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toString())
-            );
+            throw new InvalidCampaignIdException(sprintf('Message "%s" does not have a valid campaign id', $campaign->getMessage()->getUuid()->toString()));
         }
     }
 }

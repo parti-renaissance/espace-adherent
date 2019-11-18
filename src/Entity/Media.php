@@ -120,7 +120,7 @@ class Media
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getName()
     {
@@ -128,7 +128,7 @@ class Media
     }
 
     /**
-     * @param null|string $name
+     * @param string|null $name
      *
      * @return Media
      */
@@ -140,7 +140,7 @@ class Media
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPath()
     {
@@ -148,7 +148,7 @@ class Media
     }
 
     /**
-     * @param null|string $path
+     * @param string|null $path
      *
      * @return Media
      */
@@ -220,7 +220,7 @@ class Media
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getMimeType()
     {
@@ -228,7 +228,7 @@ class Media
     }
 
     /**
-     * @param null|string $mimeType
+     * @param string|null $mimeType
      *
      * @return Media
      */
@@ -274,7 +274,7 @@ class Media
     }
 
     /**
-     * @return null|UploadedFile
+     * @return UploadedFile|null
      */
     public function getFile()
     {

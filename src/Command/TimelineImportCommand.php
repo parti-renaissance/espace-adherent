@@ -148,14 +148,8 @@ class TimelineImportCommand extends Command
             }
 
             $isFeatured = strtolower($isFeatured);
-            if (!array_key_exists($isFeatured, self::BOOLEAN_CHOICES)) {
-                throw new \RuntimeException(sprintf(
-                    'Invalid featured flag label "%s" given for theme "%s". Valid values are: "%s". (line %d)',
-                    $isFeatured,
-                    $title,
-                    implode(', ', array_keys(self::BOOLEAN_CHOICES)),
-                    $index + 2
-                ));
+            if (!\array_key_exists($isFeatured, self::BOOLEAN_CHOICES)) {
+                throw new \RuntimeException(sprintf('Invalid featured flag label "%s" given for theme "%s". Valid values are: "%s". (line %d)', $isFeatured, $title, implode(', ', array_keys(self::BOOLEAN_CHOICES)), $index + 2));
             }
 
             if (empty($description)) {
@@ -219,23 +213,12 @@ class TimelineImportCommand extends Command
             }
 
             if (Measure::TITLE_MAX_LENGTH < mb_strlen($title)) {
-                throw new \RuntimeException(sprintf(
-                    'Measure title "%s" is too long. (%d characters max).',
-                    $title,
-                    Measure::TITLE_MAX_LENGTH
-                ));
-
+                throw new \RuntimeException(sprintf('Measure title "%s" is too long. (%d characters max).', $title, Measure::TITLE_MAX_LENGTH));
                 continue;
             }
 
             if (!\in_array($status, Measure::STATUSES, true)) {
-                throw new \RuntimeException(sprintf(
-                    'Invalid status for measure "%s": "%s" given, valid values are "%s". (line %d)',
-                    $title,
-                    $status,
-                    implode(', ', array_keys(Measure::STATUSES)),
-                    $index + 2
-                ));
+                throw new \RuntimeException(sprintf('Invalid status for measure "%s": "%s" given, valid values are "%s". (line %d)', $title, $status, implode(', ', array_keys(Measure::STATUSES)), $index + 2));
             }
 
             $relatedThemes = [];
@@ -243,13 +226,8 @@ class TimelineImportCommand extends Command
                 foreach (explode(',', $themes) as $themeTitle) {
                     $themeTitle = trim($themeTitle);
 
-                    if (!array_key_exists($themeTitle, $savedThemes)) {
-                        throw new \RuntimeException(sprintf(
-                            'No theme found with title "%s" for measure "%s". (line %d)',
-                            $themeTitle,
-                            $title,
-                            $index + 2
-                        ));
+                    if (!\array_key_exists($themeTitle, $savedThemes)) {
+                        throw new \RuntimeException(sprintf('No theme found with title "%s" for measure "%s". (line %d)', $themeTitle, $title, $index + 2));
                     }
 
                     $relatedThemes[] = $savedThemes[$themeTitle];
@@ -261,13 +239,8 @@ class TimelineImportCommand extends Command
                 foreach (explode(',', $profiles) as $profileTitle) {
                     $profileTitle = trim($profileTitle);
 
-                    if (!array_key_exists($profileTitle, $savedProfiles)) {
-                        throw new \RuntimeException(sprintf(
-                            'No profile found with title "%s" for measure "%s". (line %d)',
-                            $profileTitle,
-                            $title,
-                            $index + 2
-                        ));
+                    if (!\array_key_exists($profileTitle, $savedProfiles)) {
+                        throw new \RuntimeException(sprintf('No profile found with title "%s" for measure "%s". (line %d)', $profileTitle, $title, $index + 2));
                     }
 
                     $relatedProfiles[] = $savedProfiles[$profileTitle];

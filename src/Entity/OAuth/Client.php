@@ -169,9 +169,7 @@ class Client implements EntitySoftDeletedInterface
     {
         foreach ($allowedGrantTypes as $grantType) {
             if (!GrantTypeEnum::isValid($grantType)) {
-                throw new \DomainException(sprintf(
-                    '"%s" is not a valid grant type. Use constants defined in %s.', $grantType, GrantTypeEnum::class
-                ));
+                throw new \DomainException(sprintf('"%s" is not a valid grant type. Use constants defined in %s.', $grantType, GrantTypeEnum::class));
             }
         }
 

@@ -590,7 +590,7 @@ class Summary
     }
 
     /**
-     * @return null|UploadedFile
+     * @return UploadedFile|null
      */
     public function getProfilePicture()
     {

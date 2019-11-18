@@ -39,13 +39,7 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
             && !$token instanceof JWTUserToken
             && !$token instanceof UsernamePasswordToken
         ) {
-            throw new \RuntimeException(sprintf(
-                'Authentication token must be a %s or %s or %s instance. (%s given)',
-                PostAuthenticationGuardToken::class,
-                JWTUserToken::class,
-                UsernamePasswordToken::class,
-                \get_class($token)
-            ));
+            throw new \RuntimeException(sprintf('Authentication token must be a %s or %s or %s instance. (%s given)', PostAuthenticationGuardToken::class, JWTUserToken::class, UsernamePasswordToken::class, \get_class($token)));
         }
 
         $user->recordLastLoginTime();

@@ -57,7 +57,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
         $repository = $this->em->getRepository('AppBundle:Media');
 
         foreach (self::$data as $homeBlockData) {
-            if (!array_key_exists('path', $homeBlockData)) {
+            if (!\array_key_exists('path', $homeBlockData)) {
                 continue;
             }
 
@@ -104,7 +104,7 @@ class LoadHomeBlockData implements FixtureInterface, ContainerAwareInterface
                 'title' => $homeBlockData['title'],
                 'subtitle' => $homeBlockData['subtitle'] ?? '',
                 'link' => $homeBlockData['link'],
-                'media' => array_key_exists('path', $homeBlockData) ? $this->mediasRegistry[$homeBlockData['path']] : null,
+                'media' => \array_key_exists('path', $homeBlockData) ? $this->mediasRegistry[$homeBlockData['path']] : null,
                 'titleCta' => $homeBlockData['titleCta'] ?? null,
                 'colorCta' => $homeBlockData['colorCta'] ?? null,
                 'bgColor' => $homeBlockData['bgColor'] ?? null,

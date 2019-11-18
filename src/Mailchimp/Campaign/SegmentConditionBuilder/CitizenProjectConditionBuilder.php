@@ -24,9 +24,7 @@ class CitizenProjectConditionBuilder extends AbstractStaticSegmentConditionBuild
         }
 
         if (!$citizenProject->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(
-                sprintf('[AdherentMessage] Citizen project "%s" does not have mailchimp ID', $citizenProject->getUuidAsString())
-            );
+            throw new StaticSegmentIdMissingException(sprintf('[AdherentMessage] Citizen project "%s" does not have mailchimp ID', $citizenProject->getUuidAsString()));
         }
 
         return $citizenProject->getMailchimpId();

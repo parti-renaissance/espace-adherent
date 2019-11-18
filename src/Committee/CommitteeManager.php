@@ -455,7 +455,7 @@ class CommitteeManager
         string $postalCode,
         int $count = self::COMMITTEE_PROPOSALS_COUNT
     ): array {
-        $postalCodePrefix = array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
+        $postalCodePrefix = \array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
             ? substr($postalCode, 0, 3)
             : null
         ;
@@ -492,25 +492,17 @@ class CommitteeManager
         if (CommitteeMembership::COMMITTEE_SUPERVISOR === $privilege) {
             // We can't have more than 1 supervisors per committee
             if ($this->countCommitteeSupervisors($committee = $membership->getCommittee())) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException(
-                    $membership->getUuid()
-                );
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeException($membership->getUuid());
             }
 
             // Adherent can't be supervisor of multiple committees
             if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException(
-                    $membership->getUuid(),
-                    $adherent->getEmailAddress()
-                );
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForSupervisorException($membership->getUuid(), $adherent->getEmailAddress());
             }
 
             // We can't add a supervisor if committee is not approved
             if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
-                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException(
-                    $membership->getUuid(),
-                    $committee->getName()
-                );
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($membership->getUuid(), $committee->getName());
             }
         }
 

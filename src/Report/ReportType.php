@@ -98,9 +98,7 @@ final class ReportType
     private static function assertExists(string $type): void
     {
         if (!isset(self::LIST[$type])) {
-            throw new \InvalidArgumentException(
-                \sprintf('%s is not a valid ReportType, use %s constants.', $type, __CLASS__)
-            );
+            throw new \InvalidArgumentException(\sprintf('%s is not a valid ReportType, use %s constants.', $type, __CLASS__));
         }
     }
 

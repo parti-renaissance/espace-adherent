@@ -26,7 +26,7 @@ final class OrTextSearchFilter extends AbstractContextAwareFilter
         $property = str_replace(self::PROPERTY_SUFFIX, '', $property);
 
         // to be sure that filter is applied only to an existing string field
-        if (!array_key_exists($property, $this->properties)
+        if (!\array_key_exists($property, $this->properties)
             || !$this->getClassMetadata($resourceClass)->hasField($property)
             || 'string' !== $this->getClassMetadata($resourceClass)->getTypeOfField($property)) {
             return;

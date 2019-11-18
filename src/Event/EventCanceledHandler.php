@@ -33,7 +33,7 @@ class EventCanceledHandler
 
         $this->manager->flush();
 
-        if (array_key_exists($className = \get_class($event), self::EVENTS_MAPPING)) {
+        if (\array_key_exists($className = \get_class($event), self::EVENTS_MAPPING)) {
             $this->dispatcher->dispatch(
                 self::EVENTS_MAPPING[$className],
                 $this->createDispatchedEvent($event)

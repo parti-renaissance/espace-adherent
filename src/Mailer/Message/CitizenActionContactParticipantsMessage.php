@@ -33,9 +33,7 @@ final class CitizenActionContactParticipantsMessage extends Message
 
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof EventRegistration) {
-                throw new \InvalidArgumentException(
-                    'This message builder requires a collection of EventRegistration instances'
-                );
+                throw new \InvalidArgumentException('This message builder requires a collection of EventRegistration instances');
             }
 
             $message->addRecipient(

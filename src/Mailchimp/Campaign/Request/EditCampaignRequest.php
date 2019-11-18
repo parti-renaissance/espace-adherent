@@ -65,9 +65,7 @@ class EditCampaignRequest implements RequestInterface
     public function setSegmentOptions(array $segmentOptions): self
     {
         if (!empty($segmentOptions) && empty($segmentOptions['list_id'])) {
-            throw new \InvalidArgumentException(
-                'You must instantiate a request object with Mailchimp List id for using the filters'
-            );
+            throw new \InvalidArgumentException('You must instantiate a request object with Mailchimp List id for using the filters');
         }
 
         $this->segmentOptions = $segmentOptions;
