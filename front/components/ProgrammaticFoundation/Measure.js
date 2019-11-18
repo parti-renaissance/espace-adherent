@@ -11,7 +11,7 @@ export default class Measure extends React.Component {
                 this.props.measure.isLeading ? 'leading' : ''
             } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
 
-                <div className="head" onClick={event => toggleClass(event.target.parentNode, 'expanded')}>
+                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
                     <span className="title">{sectionIdentifier} {this.props.measure.title}</span>
                     <span className="toggle" />
                 </div>
