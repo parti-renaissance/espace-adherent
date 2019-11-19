@@ -319,7 +319,7 @@ class LoadEventData extends Fixture
             'category' => $eventCategory9,
             'description' => 'Du bonheur pour tout le monde, gratuitement, et que personne ne reparte lésé ! ',
             'address' => PostAddress::createFrenchAddress('60 avenue des Champs-Élysées', '75008-75108', null, 48.870507, 2.313243),
-            'begin_at' => (new Chronos('now'))->format('Y-m-d H:00:00'),
+            'begin_at' => (new Chronos('now'))->modify('-30 minutes')->format('Y-m-d H:i:00'),
             'finish_at' => (new Chronos('now'))->format('Y-m-d').' 18:00:00',
             'capacity' => 15,
         ]);
