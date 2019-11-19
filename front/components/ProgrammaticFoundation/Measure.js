@@ -68,6 +68,6 @@ export default class Measure extends React.Component {
 
 Measure.propsType = {
     measure: PropTypes.object.isRequired,
-    parentSectionIdentifierParts: PropTypes.arrayOf(PropTypes.string),
+    parentSectionIdentifierParts: PropTypes.arrayOf(PropTypes.string).isRequired,
     preventAutoExpand: PropTypes.bool,
 };
