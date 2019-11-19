@@ -53,9 +53,9 @@ class Mooc
     private $title;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @var string|null
      *
-     * @Assert\Length(min=2, max=400)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @JMS\Groups({"mooc_list"})
      */

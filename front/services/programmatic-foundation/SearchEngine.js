@@ -1,4 +1,3 @@
-import Fuse from 'fuse.js';
 import _ from 'lodash';
 
 export default class SearchEngine {
@@ -36,17 +35,14 @@ export default class SearchEngine {
             };
         }
 
-        const searchOptions = {
-            threshold: 0.1,
-            keys: [
-                'title',
-                'tags.label',
-            ],
+        const filterCallback = (item) => {
+            return item.title.search(filters.query) !== -1
+                || _.uniq(_.flatMap(item.tags, tag => tag.label)).join().search(filters.query) !== -1
         };
 
         return {
-            measures: (new Fuse(measures, searchOptions)).search(filters.query),
-            projects: (new Fuse(projects, searchOptions)).search(filters.query),
+            measures: _.filter(measures, filterCallback),
+            projects: _.filter(projects, filterCallback),
         };
     }
 }
