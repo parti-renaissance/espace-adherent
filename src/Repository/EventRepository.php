@@ -462,7 +462,7 @@ SQL;
 
         if ($search->getCityCoordinates()) {
             $query->setParameter('distance_max', $search->getRadius());
-            $query->setParameter('today', date_format(new \DateTime('now - 1 hour'), 'Y-m-d H:i:s'));
+            $query->setParameter('today', new \DateTime('now - 1 hour'));
         }
 
         if (!empty($searchQuery)) {
