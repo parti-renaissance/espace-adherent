@@ -23,8 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
- *     "video": "AppBundle\Entity\Mooc\Video",
- *     "quiz": "AppBundle\Entity\Mooc\Quiz",
+ *     MoocElementTypeEnum::VIDEO: "AppBundle\Entity\Mooc\MoocVideoElement",
+ *     MoocElementTypeEnum::QUIZ: "AppBundle\Entity\Mooc\MoocQuizElement",
+ *     MoocElementTypeEnum::IMAGE: "AppBundle\Entity\Mooc\MoocImageElement",
  * })
  *
  * @Algolia\Index(autoIndex=false)
@@ -65,11 +66,9 @@ abstract class BaseMoocElement
     protected $position;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(length=800, nullable=true)
-     *
-     * @Assert\Length(min=5, max=800)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $content;
 
@@ -299,4 +298,6 @@ abstract class BaseMoocElement
     {
         $this->shareEmailBody = $shareEmailBody;
     }
+
+    abstract public function getType(): string;
 }

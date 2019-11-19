@@ -4,10 +4,10 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\AttachmentFile;
 use AppBundle\Entity\Mooc\Chapter;
-use AppBundle\Entity\Mooc\Quiz;
-use AppBundle\Entity\Mooc\Video;
+use AppBundle\Entity\Mooc\MoocElementTypeEnum;
 use AppBundle\Form\Admin\BaseFileType;
 use AppBundle\Form\AttachmentLinkType;
+use AppBundle\Form\ImageType;
 use AppBundle\Form\PurifiedTextareaType;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
-class MoocElementAdmin extends AbstractAdmin
+class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterface
 {
     public function createQuery($context = 'list')
     {
@@ -37,100 +37,82 @@ class MoocElementAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Général', ['class' => 'col-md-6'])
-                ->add('title', TextType::class, [
-                    'label' => 'Titre',
-                    'filter_emojis' => true,
-                ])
-                ->add('slug', TextType::class, [
-                    'label' => 'Slug',
-                    'disabled' => true,
-                ])
-                ->add('content', PurifiedTextareaType::class, [
-                    'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor-advanced'],
-                    'purifier_type' => 'enrich_content',
-                    'filter_emojis' => true,
-                ])
-                ->add('chapter', EntityType::class, [
-                    'class' => Chapter::class,
-                    'placeholder' => 'Sélectionner un chapitre',
-                ])
-                ->add('position', IntegerType::class, [
-                    'label' => 'Ordre d\'affichage',
-                    'required' => false,
-                    'scale' => 0,
-                    'attr' => [
-                        'min' => 0,
-                    ],
-                ])
-        ;
-        if ($this->getSubject() instanceof Video) {
-            $formMapper
-                ->add('youtubeId', TextType::class, [
-                    'label' => 'Youtube ID',
-                    'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
-                    'filter_emojis' => true,
-                ])
-                ->add('duration', TimeType::class, [
-                    'label' => 'Durée de la vidéo',
-                    'widget' => 'single_text',
-                    'with_seconds' => true,
-                ])
-            ;
-        } elseif ($this->getSubject() instanceof Quiz) {
-            $formMapper
-                ->add('typeformUrl', UrlType::class, [
-                    'label' => 'Lien du type form',
-                ])
-            ;
-        }
-        $formMapper
-            ->end()
-            ->with('Boutons de partage', ['class' => 'col-md-6'])
-                ->add('shareTwitterText', TextType::class, [
-                    'label' => 'Texte du partage sur Twitter',
-                    'filter_emojis' => true,
-                ])
-                ->add('shareFacebookText', TextType::class, [
-                    'label' => 'Texte du partage sur Facebook',
-                    'filter_emojis' => true,
-                ])
-                ->add('shareEmailSubject', TextType::class, [
-                    'label' => 'Sujet de l\'email de partage',
-                    'filter_emojis' => true,
-                ])
-                ->add('shareEmailBody', PurifiedTextareaType::class, [
-                    'label' => 'Corps de l\'email de partage',
-                    'attr' => ['rows' => 5, 'maxlength' => 500],
-                    'purifier_type' => 'enrich_content',
-                    'filter_emojis' => true,
-                ])
-            ->end()
-            ->with('Liens attachés', ['class' => 'col-md-6'])
-                ->add('links', CollectionType::class, [
-                    'label' => false,
-                    'entry_type' => AttachmentLinkType::class,
-                    'required' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ])
-            ->end()
-            ->with('Fichiers attachés', ['class' => 'col-md-6'])
-                ->add('files', CollectionType::class, [
-                    'label' => false,
-                    'entry_type' => BaseFileType::class,
-                    'entry_options' => [
-                        'data_class' => AttachmentFile::class,
-                    ],
-                    'required' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ])
+            ->tab('Général')
+                ->with('Général', ['class' => 'col-md-6'])
+                    ->add('title', TextType::class, [
+                        'label' => 'Titre',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('slug', TextType::class, [
+                        'label' => 'Slug',
+                        'disabled' => true,
+                    ])
+                    ->add('content', PurifiedTextareaType::class, [
+                        'label' => 'Contenu',
+                        'attr' => ['class' => 'ck-editor-advanced'],
+                        'purifier_type' => 'enrich_content',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('chapter', EntityType::class, [
+                        'class' => Chapter::class,
+                        'placeholder' => 'Sélectionner un chapitre',
+                    ])
+                    ->add('position', IntegerType::class, [
+                        'label' => 'Ordre d\'affichage',
+                        'required' => false,
+                        'scale' => 0,
+                        'attr' => [
+                            'min' => 0,
+                        ],
+                    ])
+                ->end()
+                ->with('Boutons de partage', ['class' => 'col-md-6'])
+                    ->add('shareTwitterText', TextType::class, [
+                        'label' => 'Texte du partage sur Twitter',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('shareFacebookText', TextType::class, [
+                        'label' => 'Texte du partage sur Facebook',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('shareEmailSubject', TextType::class, [
+                        'label' => 'Sujet de l\'email de partage',
+                        'filter_emojis' => true,
+                    ])
+                    ->add('shareEmailBody', PurifiedTextareaType::class, [
+                        'label' => 'Corps de l\'email de partage',
+                        'attr' => ['rows' => 5, 'maxlength' => 500],
+                        'purifier_type' => 'enrich_content',
+                        'filter_emojis' => true,
+                    ])
+                ->end()
+                ->with('Liens attachés', ['class' => 'col-md-6'])
+                    ->add('links', CollectionType::class, [
+                        'label' => false,
+                        'entry_type' => AttachmentLinkType::class,
+                        'required' => false,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'by_reference' => false,
+                    ])
+                ->end()
+                ->with('Fichiers attachés', ['class' => 'col-md-6'])
+                    ->add('files', CollectionType::class, [
+                        'label' => false,
+                        'entry_type' => BaseFileType::class,
+                        'entry_options' => [
+                            'data_class' => AttachmentFile::class,
+                        ],
+                        'required' => false,
+                        'allow_add' => true,
+                        'allow_delete' => true,
+                        'by_reference' => false,
+                    ])
+                ->end()
             ->end()
         ;
+
+        $this->addMediaTab($formMapper);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -189,5 +171,61 @@ class MoocElementAdmin extends AbstractAdmin
     {
         $collection->remove('show');
         $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
+    }
+
+    public function getUploadableImagePropertyNames(): array
+    {
+        if (MoocElementTypeEnum::IMAGE !== $this->getSubject()->getType()) {
+            return [];
+        }
+
+        return [
+            'image',
+        ];
+    }
+
+    private function addMediaTab(FormMapper $formMapper): void
+    {
+        $formMapper->tab('Media');
+
+        switch ($this->getSubject()->getType()) {
+            case MoocElementTypeEnum::VIDEO:
+                $formMapper
+                    ->with('Vidéo', ['class' => 'col-md-6'])
+                        ->add('youtubeId', TextType::class, [
+                            'label' => 'Youtube ID',
+                            'help' => 'L\'ID de la vidéo Youtube ne peut contenir que des chiffres, des lettres, et les caractères "_" et "-"',
+                            'filter_emojis' => true,
+                        ])
+                        ->add('duration', TimeType::class, [
+                            'label' => 'Durée de la vidéo',
+                            'widget' => 'single_text',
+                            'with_seconds' => true,
+                        ])
+                    ->end()
+                ;
+                break;
+            case MoocElementTypeEnum::IMAGE:
+                $formMapper
+                    ->with('Image', ['class' => 'col-md-6'])
+                        ->add('image', ImageType::class, [
+                            'label' => 'Ajoutez une photo',
+                            'help' => 'La photo ne doit pas dépasser 1 Mo et ne doit pas faire plus de 960x720px.',
+                        ])
+                    ->end()
+                ;
+                break;
+            case MoocElementTypeEnum::QUIZ:
+                $formMapper
+                    ->with('Quiz', ['class' => 'col-md-6'])
+                        ->add('typeformUrl', UrlType::class, [
+                            'label' => 'Lien du type form',
+                        ])
+                    ->end()
+                ;
+                break;
+        }
+
+        $formMapper->end();
     }
 }

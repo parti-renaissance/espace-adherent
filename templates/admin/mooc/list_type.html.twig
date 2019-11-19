@@ -1,9 +1,11 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object is mooc_video %}
+    {% if object.type is constant('AppBundle\\Entity\\Mooc\\MoocElementTypeEnum::VIDEO') %}
         <span class="label label-danger">Youtube</span><br/>
-    {% elseif object is mooc_quiz %}
+    {% elseif object.type is constant('AppBundle\\Entity\\Mooc\\MoocElementTypeEnum::QUIZ') %}
         <span class="label label-success">Quiz</span><br/>
+    {% elseif object.type is constant('AppBundle\\Entity\\Mooc\\MoocElementTypeEnum::IMAGE') %}
+        <span class="label label-info">Image</span><br/>
     {% endif %}
 {% endblock %}

@@ -12,19 +12,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Video extends BaseMoocElement
+class MoocVideoElement extends BaseMoocElement
 {
     /**
-     * @ORM\Column
+     * @ORM\Column(nullable=true)
      *
-     * @Assert\NotBlank
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
      * @Assert\Length(min=2, max=11)
      */
     private $youtubeId;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="time", nullable=true)
      *
      * @Assert\Time
      */
@@ -73,5 +72,10 @@ class Video extends BaseMoocElement
     public function setDuration(\DateTime $duration): void
     {
         $this->duration = $duration;
+    }
+
+    public function getType(): string
+    {
+        return MoocElementTypeEnum::VIDEO;
     }
 }

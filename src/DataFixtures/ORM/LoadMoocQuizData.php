@@ -2,7 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Mooc\Quiz;
+use AppBundle\Entity\Mooc\MoocQuizElement;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -10,7 +10,7 @@ class LoadMoocQuizData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $quiz = new Quiz(
+        $quiz = new MoocQuizElement(
             'Le test de votre vie',
             '<p>une description</p>',
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',

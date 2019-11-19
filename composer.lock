@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c1c104ab8fe78a48ff4d553056a571a",
+    "content-hash": "92f9842567dd6f33794ade76146d23fd",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -16291,7 +16291,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1",
+        "php": ">=7.3",
         "ext-amqp": "*",
         "ext-json": "*",
         "ext-openssl": "*",
