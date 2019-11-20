@@ -83,8 +83,6 @@ class UpdateDistrictGeoPolygonCommand extends Command
                 $this->em->flush();
 
                 $this->io->progressAdvance();
-            } else {
-                $errors[] = $district;
             }
         }
     }
@@ -92,12 +90,14 @@ class UpdateDistrictGeoPolygonCommand extends Command
     private function getNewGeoData(District $district): ?GeoData
     {
         $dptCode = $district->getDepartmentCode();
-        $dptCode = str_pad($dptCode, 3, '0', \STR_PAD_LEFT);
 
         if ('999' === $dptCode) {
             $polygons = $this->getCountriesPolygons($district->getCountries());
         } else {
-            $polygons = $this->getDistrictPolygon($dptCode, str_pad($district->getNumber(), 2, '0', \STR_PAD_LEFT));
+            $polygons = $this->getDistrictPolygon(
+                str_pad($dptCode, 3, '0', \STR_PAD_LEFT),
+                str_pad($district->getNumber(), 2, '0', \STR_PAD_LEFT)
+            );
         }
 
         if (empty($polygons)) {

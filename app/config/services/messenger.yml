@@ -67,6 +67,17 @@ services:
                 exchange: { name: 'messenger-topic', type: topic }
                 queue: { name: 'mailchimp_campaign', routing_key: 'mailchimp.campaign' }
 
+    messenger.transport.default:
+        class: Symfony\Component\Messenger\Transport\TransportInterface
+        factory: 'Symfony\Component\Messenger\Transport\TransportFactory:createTransport'
+        tags:
+            - { name: messenger.receiver, alias: default }
+        arguments:
+            $dsn: '%env(RABBITMQ_DSN)%'
+            $options:
+                exchange: { name: 'messenger-topic', type: topic }
+                queue: { name: 'default', routing_key: 'async.command' }
+
     # Senders Locator witch defines a mapping [MessageClass => [alias: service]]
     messenger.transport.senders_locator:
         class: Symfony\Component\Messenger\Transport\Sender\SendersLocator
@@ -74,6 +85,7 @@ services:
             $senders:
                 AppBundle\Mailchimp\CampaignMessageInterface: { mailchimp_campaign: '@messenger.transport.mailchimp_campaign' }
                 AppBundle\Mailchimp\SynchronizeMessageInterface: { mailchimp_sync: '@messenger.transport.mailchimp_sync' }
+                AppBundle\Messenger\Message\AsynchronousMessageInterface: { default: '@messenger.transport.default' }
 
     Symfony\Component\Messenger\Transport\Sender\SendersLocatorInterface: '@messenger.transport.senders_locator'
 
