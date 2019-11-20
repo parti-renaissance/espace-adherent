@@ -8,7 +8,7 @@ use CrEOF\Spatial\PHP\Types\Geometry\Polygon;
 
 class GeometryFactory
 {
-    public function createGeometryFromGeoJson(array $geometry): GeometryInterface
+    public static function createGeometryFromGeoJson(array $geometry): GeometryInterface
     {
         switch ($geometry['type']) {
             case GeometryInterface::POLYGON:
@@ -22,14 +22,14 @@ class GeometryFactory
         }
     }
 
-    public function mergeGeoJsonGeometries(array $geometries): GeometryInterface
+    public static function mergeGeoJsonGeometries(array $geometries): GeometryInterface
     {
-        $geometry = $this->createGeometryFromGeoJson(array_shift($geometries)['geometry']);
+        $geometry = static::createGeometryFromGeoJson(array_shift($geometries)['geometry']);
         $polygons = GeometryInterface::MULTIPOLYGON === $geometry->getType() ? $geometry->getPolygons() : [$geometry];
         $multiPolygon = new MultiPolygon($polygons);
 
         foreach ($geometries as $json) {
-            $geometry = $this->createGeometryFromGeoJson($json['geometry']);
+            $geometry = static::createGeometryFromGeoJson($json['geometry']);
             if (GeometryInterface::POLYGON === $geometry->getType()) {
                 $multiPolygon->addPolygon($geometry->toArray());
             } else {
@@ -40,5 +40,14 @@ class GeometryFactory
         }
 
         return $multiPolygon;
+    }
+
+    public static function createGeometry(array $polygons): GeometryInterface
+    {
+        if (1 === \count($polygons)) {
+            return static::createGeometryFromGeoJson($polygons[0]['geometry']);
+        }
+
+        return static::mergeGeoJsonGeometries($polygons);
     }
 }
