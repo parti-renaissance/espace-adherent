@@ -37,7 +37,7 @@ class EventICalHandler implements SubscribingHandlerInterface
                 'UID' => $event->getUuid()->toString(),
                 'SUMMARY' => $event->getName(),
                 'DESCRIPTION' => $event->getDescription(),
-                'DTSTART' => $this->formatDate($event->getBeginAt()),
+                'DTSTART' => $this->formatDate($event->getLocalBeginAt()),
                 'DTEND' => $this->formatDate($event->getFinishAt()),
                 'LOCATION' => $event->getInlineFormattedAddress(),
             ],

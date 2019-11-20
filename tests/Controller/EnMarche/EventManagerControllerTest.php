@@ -3,6 +3,8 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
+use AppBundle\DataFixtures\ORM\LoadEventData;
+use AppBundle\Entity\Event;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventContactMembersMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -357,6 +359,42 @@ class EventManagerControllerTest extends WebTestCase
         $this->client->request('GET', '/evenements/'.date('Y-m-d', strtotime('+3 days')).'-reunion-de-reflexion-parisienne/ical');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+    }
+
+    public function testExportIcalForeignEvent()
+    {
+        $uuid = LoadEventData::EVENT_12_UUID;
+        /** @var Event $event */
+        $event = $this->getEventRepository()->findOneBy(['uuid' => $uuid]);
+
+        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/ical', $event->getSlug()));
+        $this->isSuccessful($response = $this->client->getResponse());
+        $this->assertSame(sprintf('attachment; filename=%s-meeting-de-new-york-city.ics', $event->getFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
+        $this->assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
+
+        $beginAt = preg_quote($event->getLocalBeginAt()->format('Ymd\THis'), '/');
+        $finishAt = preg_quote($event->getFinishAt()->format('Ymd\THis'), '/');
+        $uuid = preg_quote($uuid, '/');
+        $icalRegex = <<<CONTENT
+BEGIN\:VCALENDAR
+VERSION\:2\.0
+PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.1\.6\/\/EN
+CALSCALE\:GREGORIAN
+ORGANIZER\:CN\="Pierre KIROULE"\\\\;mailto\:kiroule\.p@blabla\.tld
+BEGIN\:VEVENT
+UID\:$uuid
+DTSTAMP\:\\d{8}T\\d{6}Z
+SUMMARY\:Meeting de New York City
+DESCRIPTION\:Ouvert aux français de New York\.
+DTSTART\:$beginAt
+DTEND\:$finishAt
+LOCATION\:226 W 52nd St\\\\, 10019 New York\\\\, \États\-Unis
+END\:VEVENT
+END\:VCALENDAR
+CONTENT;
+        $icalRegex = str_replace("\n", "\r\n", $icalRegex); // Returned content contains CRLF
+
+        $this->assertRegExp(sprintf('/%s/', $icalRegex), $response->getContent());
     }
 
     private function redirectionEventNotPublishTest($url)
