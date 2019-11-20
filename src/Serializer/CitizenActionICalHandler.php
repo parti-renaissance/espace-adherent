@@ -30,7 +30,7 @@ class CitizenActionICalHandler implements SubscribingHandlerInterface
                 'UID' => $citizenAction->getUuid()->toString(),
                 'SUMMARY' => $citizenAction->getName(),
                 'DESCRIPTION' => $citizenAction->getDescription(),
-                'DTSTART' => self::formatDate($citizenAction->getBeginAt()),
+                'DTSTART' => self::formatDate($citizenAction->getLocalBeginAt()),
                 'DTEND' => self::formatDate($citizenAction->getFinishAt()),
                 'LOCATION' => $citizenAction->getInlineFormattedAddress(),
             ],
