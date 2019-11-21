@@ -16,6 +16,7 @@ use AppBundle\Form\ActivityPositionType;
 use AppBundle\Form\Admin\CoordinatorManagedAreaType;
 use AppBundle\Form\Admin\MunicipalChiefManagedAreaType;
 use AppBundle\Form\Admin\ReferentManagedAreaType;
+use AppBundle\Form\Admin\SenatorAreaType;
 use AppBundle\Form\EventListener\BoardMemberListener;
 use AppBundle\Form\EventListener\RevokeManagedAreaSubscriber;
 use AppBundle\Form\GenderType;
@@ -373,6 +374,11 @@ HELP
                     'btn_add' => false,
                     'required' => false,
                 ])
+                ->add('senatorArea', SenatorAreaType::class, [
+                    'required' => false,
+                    'label' => 'Circonscription sénateur',
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas sénateur.',
+                ])
             ->end()
             ->with('Membre du Conseil', ['class' => 'col-md-6'])
                 ->add('boardMemberArea', ChoiceType::class, [
@@ -566,6 +572,12 @@ HELP
                     if (\in_array(AdherentRoleEnum::DEPUTY, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.managedDistrict', $alias), 'district');
                         $where->add('district IS NOT NULL');
+                    }
+
+                    // Senator
+                    if (\in_array(AdherentRoleEnum::SENATOR, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.senatorArea', $alias), 'senatorArea');
+                        $where->add('senatorArea IS NOT NULL');
                     }
 
                     // Board Member
