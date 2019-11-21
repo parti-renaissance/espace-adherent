@@ -16,8 +16,7 @@ export default class SearchResults extends React.Component {
         return (
             <div>
                 <div className="measures">
-                    <h2>Mesures</h2>
-
+                    <div className="programmatic-foundation__items-type">Les mesures</div>
                     <div className="programmatic-foundation__children programmatic-foundation__measures">
                         {this.props.measures.map((measure, index) => {
                             return <Measure
@@ -31,8 +30,7 @@ export default class SearchResults extends React.Component {
                 </div>
 
                 <div className="projects">
-                    <h2>Projets illustratifs</h2>
-
+                    <div className="programmatic-foundation__items-type">Les projets illustratifs</div>
                     <div className="programmatic-foundation__children programmatic-foundation__projects">
                         {this.props.projects.map((project, index) => {
                             return <Project
@@ -52,7 +50,7 @@ export default class SearchResults extends React.Component {
             <div className="measures text--center">
                 Il n'y a pas de mesure ni de projet associé à votre recherche.<br/>
                 Proposez-en un(e) à l'équipe programme en
-                écrivant à <a href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
+                écrivant à <a href="mailto:idees@en-marche.fr" className="text--blue--dark link--no-decor">idees@en-marche.fr</a>
             </div>
         );
     }

@@ -6,12 +6,12 @@ export default class Breadcrumbs extends React.Component {
 
         if (this.props.isSearching) {
             breadcrumbs.push(
-                <a href="#" className={"link--no--decor"} onClick={this.props.onExitClick}>
+                <a href="#" className={"link--no--decor text--blue--dark"} onClick={this.props.onExitClick}>
                     ⟵ Quitter la recherche
                 </a>
             );
         } else {
-            breadcrumbs.push('Socle programme', 'Toutes les mesures');
+            breadcrumbs.push('Les axes et leurs mesures');
         }
 
         return (

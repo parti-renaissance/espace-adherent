@@ -32,63 +32,76 @@ export default class ProgrammaticFoundation extends React.Component {
 
         return (
             <div>
-                <div className="programmatic-foundation__contact information__modal inf-modl--pale-blue b__nudge--top-40">
-                    Vous souhaitez partager un projet inspirant ou suggérer une mesure nouvelle ?
-                    Vous avez une remarque ou une question sur une mesure ou un projet ?
-                    Contactez l'équipe programme à <a href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
-                    <img
-                        src={icnClose}
-                        className="icn-close"
-                        onClick={event => hide(event.target.parentNode)}
-                        alt="close icon"
-                    />
-                </div>
-
-                <SearchBar
-                    filterText={this.state.filterText}
-                    filterCity={this.state.filterCity}
-                    filterTag={this.state.filterTag}
-                    filterCityChoices={this.extractAllCities()}
-                    filterTagChoices={this.extractAllTags()}
-                    onFilterTextChange={this.handleFilterTextChange}
-                    onFilterCityChange={this.handleFilterCityChange}
-                    onFilterTagChange={this.handleFilterTagChange}
-                />
-
-                <Breadcrumbs isSearching={isSearching}  onExitClick={this.handleSearchExit}/>
-
-                {this.state.isLoading ?
-                    <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
-
-                    <div>
-                        <h1 className="text--larger b__nudge--bottom-larger">
-                            {this.props.isSearching ? 'Recherche...' : 'Le socle programme'}
-                        </h1>
-
-                        <div className="l__row l__row--h-stretch l__row--wrap b__nudge--bottom-50">
-                            <ToggleLeadingMeasures
-                                onToggleChange={this.handleLeadingMeasuresChange}
-                                value={this.state.filterIsLeading}
-                            />
-
-                            <div className="programmatic-foundation__legend">
-                                <span className="legend-title">Légende :</span>
-                                <span className="legend-item basic-measure">Mesure</span>
-                                <span className="legend-item leading-measure">Mesure phare</span>
-                                <span className="legend-item project">Projet illustratif</span>
-                            </div>
+                <div className="programmatic-foundation__header">
+                    <div className="l__wrapper">
+                        <div className="content l__row l__row--center l__row--middle l__row--wrap text--center">
+                            <h1 className="text--larger b__nudge--bottom">
+                                Le socle programme
+                            </h1>
+                            <a href="#" className="text--body text--blue--dark link--no-decor text--bold">Télécharger les mesures phares</a>
                         </div>
 
-                        <Content
-                            isSearching={isSearching}
-                            filterIsLeading={this.state.filterIsLeading}
+                    </div>
+                </div>
+
+                <div className="programmatic-foundation__content">
+                    <div className="l__wrapper">
+                        <SearchBar
                             filterText={this.state.filterText}
                             filterCity={this.state.filterCity}
                             filterTag={this.state.filterTag}
-                            approaches={this.initialApproaches}
+                            filterCityChoices={this.extractAllCities()}
+                            filterTagChoices={this.extractAllTags()}
+                            onFilterTextChange={this.handleFilterTextChange}
+                            onFilterCityChange={this.handleFilterCityChange}
+                            onFilterTagChange={this.handleFilterTagChange}
                         />
                     </div>
-                }
+                    <div className="l__wrapper--medium">
+                        {this.state.isLoading ?
+                            <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
+
+                            <div>
+                                <div className="programmatic-foundation__contact information__modal inf-modl--pale-blue">
+                                    Vous souhaitez partager un projet inspirant ou suggérer une mesure nouvelle ?
+                                    Vous avez une remarque ou une question sur une mesure ou un projet ?
+                                    Contactez l'équipe programme à <a href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
+                                    <img
+                                        src={icnClose}
+                                        className="icn-close"
+                                        onClick={event => hide(event.target.parentNode)}
+                                        alt="close icon"
+                                    />
+                                </div>
+
+                                <Breadcrumbs isSearching={isSearching} onExitClick={this.handleSearchExit}/>
+
+                                <div className="l__row l__row--h-stretch l__row--wrap b__nudge--bottom-50">
+                                    <div className="programmatic-foundation__legend">
+                                        <span className="legend-item leading-measure">Mesure phare</span>
+                                        <span className="legend-item basic-measure">Mesure</span>
+                                        <span className="legend-item project">Projet illustratif</span>
+                                    </div>
+
+                                    <ToggleLeadingMeasures
+                                        onToggleChange={this.handleLeadingMeasuresChange}
+                                        value={this.state.filterIsLeading}
+                                    />
+                                </div>
+
+                                <Content
+                                    isSearching={isSearching}
+                                    filterIsLeading={this.state.filterIsLeading}
+                                    filterText={this.state.filterText}
+                                    filterCity={this.state.filterCity}
+                                    filterTag={this.state.filterTag}
+                                    approaches={this.initialApproaches}
+                                />
+                            </div>
+                        }
+                    </div>
+                </div>
+
             </div>
         );
     }
