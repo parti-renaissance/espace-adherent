@@ -24,6 +24,7 @@ export default class SubApproach extends React.Component {
                     <div className="html" dangerouslySetInnerHTML={{ __html: this.props.subApproach.content }} />
 
                     <div className="programmatic-foundation__children programmatic-foundation__measures">
+                        <div className="programmatic-foundation__items-type">Les mesures</div>
                         {this.props.subApproach.measures.map(measure => {
                             return <Measure
                                 key={measure.position}

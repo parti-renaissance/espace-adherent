@@ -10,8 +10,25 @@
         }
     }
 
+    &__header {
+        background-color: $gray--pale;
+
+        .content {
+            height: 150px;
+
+            a {
+                display: none;
+            }
+
+            @media (min-width: $mobile) {
+                height: 300px;
+            }
+        }
+    }
+
     &__breadcrumb {
-        margin: 30px 0;
+        margin: 50px 0 !important;
+        padding: 0 !important;
 
         li {
             display: inline-block;
@@ -34,6 +51,7 @@
     &__contact {
         position: relative;
         padding-right: 45px;
+        margin-bottom: 30px;
 
         .icn-close {
             position: absolute;
@@ -49,11 +67,14 @@
     }
 
     &__search {
-        width: 100%;
-        margin: 40px 0 15px 0;
+        padding: 15px 20px 0px 20px;
+        background-color: $white;
+        box-shadow: 0 2px 5px 0 rgba(25, 65, 115, .1);
+        border-radius: 4px;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
+        margin: -20px 0 50px 0;
 
         .em-form__group {
             margin-bottom: 15px;
@@ -73,11 +94,8 @@
 
         @media (min-width: $mobile) {
             flex-direction: row;
-            margin: 40px 0 35px 0;
-
-            .em-form__group {
-                margin-bottom: 35px;
-            }
+            margin: -50px 0 50px 0;
+            padding: 20px 30px 5px 30px;
 
             .city-search, .tag-search {
                 margin-left: 15px;
@@ -94,14 +112,10 @@
 
         .measures,
         .projects {
-            padding: 30px;
-            background-color: $white;
-            border-bottom: 1px solid #EEE;
+            margin-bottom: 50px;
 
-            h2 {
-                font-weight: 500;
-                font-size: 20px;
-                margin-bottom: 15px;
+            .programmatic-foundation__projects {
+                margin: 0;
             }
         }
     }
@@ -119,25 +133,10 @@
         font-size: 14px;
         margin: 20px 0 0 0;
 
-        .legend-title {
-            color: $black;
-            font-weight: bold;
-            margin-right: 20px;
-
-            @media (min-width: $mobile) {
-                margin-right: 0;
-            }
-        }
-
         .legend-item {
-            color: $silver-grey;
             margin-right: 20px;
             white-space: nowrap;
-
-            @media (min-width: $mobile) {
-                margin-right: 0px;
-                margin-left: 20px;
-            }
+            font-weight: bold;
 
             &::before {
                 content: '';
@@ -150,15 +149,24 @@
             }
 
             &.leading-measure {
-                &::before { background-color: $pink--hit; }
+                color: $pink--hit;
+                &::before {
+                    background-color: $pink--hit;
+                }
             }
 
             &.basic-measure {
-                &::before { background-color: $blue--dodger; }
+                color: $blue--dodger;
+                &::before {
+                    background-color: $blue--dodger;
+                }
             }
 
             &.project {
-                &::before { background-color: $green--ocean; }
+                color: $green--ocean;
+                &::before {
+                    background-color: $green--ocean;
+                }
             }
         }
     }
@@ -188,7 +196,7 @@
     }
 
     &__view-approaches {
-        background-color: $gray--pale;
+        background-color: $white;
     }
 
     &__approaches {
@@ -199,7 +207,7 @@
         margin-bottom: 70px;
 
         h2 {
-            font-size: 26px;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
@@ -215,13 +223,38 @@
         .title {
             font-size: 20px;
             margin-right: 10px;
+            color: $silver-grey;
+            font-weight: bold;
         }
 
         .subtitle {
             margin-top: auto;
             color: $silver-grey;
-            font-weight: 600;
         }
+
+        > .head {
+            background-color: $gray--pale;
+        }
+
+        > .content {
+            padding-left: 20px;
+        }
+
+        &.expanded {
+            > .head {
+                .title {
+                    color: $dark;
+                }
+            }
+        }
+    }
+
+    &__items-type {
+        font-size: 14px;
+        font-weight: bold;
+        color: $silver-grey;
+        text-transform: uppercase;
+        margin: 30px 0 20px;
     }
 
     &__measures,
@@ -232,27 +265,11 @@
                 overflow: hidden;
 
                 .head {
-                    background-color: $gray--pale;
                     padding: 25px 70px 25px 25px;
-                    margin-bottom: 10px;
 
                     .title {
                         font-size: 18px;
-                        align-self: center;
-                    }
-
-                    .toggle {
-                        top: 20px;
-                        right: 20px;
-                        width: 30px;
-                        height: 30px;
-                        background-color: $white;
-
-                        &:after, &:before {
-                            top: 10px;
-                            right: 14px;
-                            height: 10px;
-                        }
+                        font-weight: bold;
                     }
                 }
 
@@ -270,10 +287,6 @@
                             margin-top: 10px;
                             color: $dark;
                             padding: 0;
-
-                            @media (min-width: $mobile) {
-                                padding: 0 20px;
-                            }
                         }
                     }
                 }
@@ -281,31 +294,31 @@
         }
     }
 
-    &__projects {
-        margin-top: 40px;
-    }
-
     &__measure {
-        .head {
+        > .head {
             border-left: 4px solid $blue--dodger;
+            background-color: $blue-dodger--light;
+
+            .title {
+                color: $blue--dodger;
+            }
         }
 
         &.leading {
             > .head {
                 border-left: 4px solid $pink--hit;
-            }
-        }
-    }
+                background-color: $pink--hit--light;
 
-    &__project {
-        .head {
-            border-left: 4px solid $green--ocean;
+                .title {
+                    color: $pink--hit;
+                }
+            }
         }
     }
 
     &__children {
         .child {
-            border-bottom: 1px solid $gray--gallery;
+            margin-bottom: 10px;
 
             .head, .content {
                 transform: translateZ(0);
@@ -313,32 +326,29 @@
             }
 
             .head {
-                display: flex;
-                flex-wrap: wrap;
                 box-sizing: border-box;
                 padding: 30px 80px 30px 20px;
                 font-weight: 500;
-                background-color: $white;
                 border-radius: 3px;
                 cursor: pointer;
                 margin-bottom: 0;
 
                 .toggle {
                     position: absolute;
-                    top: calc(50% - 20px);
-                    right: 30px;
-                    width: 40px;
-                    height: 40px;
-                    background-color: $gray--mystic;
+                    top: calc(50% - 15px);
+                    right: 20px;
+                    width: 30px;
+                    height: 30px;
+                    background-color: $white;
                     border-radius: 30px;
 
                     &:after, &:before {
                         position: absolute;
-                        top: 13px;
-                        right: 19px;
+                        top: 10px;
+                        right: 14px;
+                        height: 10px;
                         content: '';
                         width: 2px;
-                        height: 14px;
                         background-color: $silver-grey;
                         transition: all 0.2s;
                     }
@@ -355,13 +365,21 @@
             }
 
             .measure-links {
+                margin-bottom: 30px;
+                padding: 20px 0;
+                border-bottom: 1px solid $gray--mystic;
+
                 a {
+                    display: inline-block;
+                    background-color: $pale-grey;
                     font-size: 14px;
                     color: $silver-grey;
-                    padding-right: 18px;
+                    padding: 2px 10px;
                     border-bottom: none;
-                    text-decoration: underline;
+                    border-radius: 50px;
+                    font-weight: bold;
                     transition: color .5s;
+                    margin-right: 5px;
 
                     &:hover {
                         text-decoration: none;
@@ -376,17 +394,6 @@
                         color: $green--apple;
                     }
                 }
-                margin: 0;
-                padding-bottom: 15px;
-                border-bottom: 1px solid $gray--mystic;
-
-                @media (min-width: $mobile) {
-                    margin: 10px 20px;
-                }
-            }
-
-            .html, .programmatic-foundation__children {
-                padding: 0 20px;
             }
 
             &.expanded {
@@ -411,6 +418,24 @@
                         color: $dark;
                     }
                 }
+            }
+        }
+    }
+
+    &__projects {
+        margin-top: 40px;
+    }
+
+    &__project,
+    &__project .child {
+        > .head {
+            padding: 25px 70px 25px 25px;
+            border-left: 4px solid $green--ocean;
+            background-color: $green--ocean--light;
+
+            .title {
+                color: $green--ocean;
+                font-weight: bold;
             }
         }
     }

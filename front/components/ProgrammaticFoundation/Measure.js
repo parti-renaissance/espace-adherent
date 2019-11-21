@@ -33,6 +33,7 @@ export default class Measure extends React.Component {
                     </div>
                     <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
                     <div className="programmatic-foundation__children programmatic-foundation__projects">
+                        <div className="programmatic-foundation__items-type">Les Projets illustratifs</div>
                         {this.props.measure.projects.map((project, index) => {
                             return <Project
                                 key={index}
