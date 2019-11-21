@@ -209,6 +209,9 @@
                 </li>
                 {% if has_role_adherent %}
                     <li>
+                        <a href="{{ path('app_adherent_my_vote') }}">Vote des statuts</a>
+                    </li>
+                    <li>
                         <a href="{{ path('app_documents_index') }}">Mes documents</a>
                     </li>
                 {% endif %}
