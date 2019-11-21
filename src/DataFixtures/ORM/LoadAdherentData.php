@@ -15,6 +15,7 @@ use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ReferentTeamMember;
+use AppBundle\Entity\SenatorArea;
 use AppBundle\Membership\ActivityPositions;
 use AppBundle\Membership\AdherentFactory;
 use AppBundle\Subscription\SubscriptionTypeEnum;
@@ -51,6 +52,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const REFERENT_3_UUID = 'e1bee762-4dc1-42f6-9884-1c83ba9c6d17';
     public const DEPUTY_1_UUID = '918f07e5-676b-49c0-b76d-72ce01cb2404';
     public const DEPUTY_2_UUID = 'ccd87fb0-7d98-433f-81e1-3dd8b14f79c0';
+    public const SENATOR_UUID = '021268fe-d4b3-44a7-bce9-c001191249a7';
 
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -567,6 +569,25 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $deputy_ch_li->addReferentTag($this->getReference('referent_tag_ch'));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
 
+        // sentator
+        $senator_59 = $adherentFactory->createFromArray([
+            'uuid' => self::SENATOR_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'senator@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Bob',
+            'last_name' => 'Senator (59)',
+            'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
+            'birthdate' => '1992-07-28',
+            'position' => 'employed',
+            'phone' => '33 673654349',
+            'registered_at' => '2019-06-10 09:19:00',
+        ]);
+        $senatorArea = new SenatorArea();
+        $senatorArea->setDepartmentTag($this->getReference('referent_tag_59'));
+        $senator_59->setSenatorArea($senatorArea);
+        $this->addReference('senator-59', $senator_59);
+
         // municipal chief
         $municipalChief1 = $adherentFactory->createFromArray([
             'uuid' => self::MUNICIPAL_CHIEF_1_UUID,
@@ -652,6 +673,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key25 = AdherentActivationToken::generate($municipalChief3);
         $key26 = AdherentActivationToken::generate($adherent17);
         $key27 = AdherentActivationToken::generate($adherent18);
+        $key28 = AdherentActivationToken::generate($senator_59);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -677,6 +699,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $referent75and77->activate($key19, '2018-05-13 07:21:01');
         $deputy_75_1->activate($key20, '2017-06-01 12:14:51');
         $deputy_ch_li->activate($key21, '2017-06-26 12:14:51');
+        $senator_59->activate($key28, '2017-06-26 12:14:51');
         $municipalChief1->activate($key23, '2019-06-10 09:19:00');
         $municipalChief2->activate($key24, '2019-06-10 09:19:00');
         $municipalChief3->activate($key25, '2019-06-10 09:19:00');
@@ -847,6 +870,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($coordinatorCP);
         $manager->persist($deputy_75_1);
         $manager->persist($deputy_ch_li);
+        $manager->persist($senator_59);
         $manager->persist($municipalChief1);
         $manager->persist($municipalChief2);
         $manager->persist($municipalChief3);

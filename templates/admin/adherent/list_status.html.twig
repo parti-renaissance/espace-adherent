@@ -50,6 +50,10 @@
             <span class="label label-primary" style="padding: 2px;">Député</span><br/>
         {% endif %}
 
+        {% if object.isSenator %}
+            <span class="label label-primary" style="padding: 2px;">Sénateur</span><br/>
+        {% endif %}
+
         {% if object.isMunicipalChief %}
             <span class="label label-primary" style="padding: 2px;">
                 Candidat Municipales 2020 🇫🇷
