@@ -77,7 +77,7 @@ class ImportProgrammaticFoundationCommand extends Command
         $this->io->progressStart($total = $csv->count());
 
         $line = 0;
-        $previousApproachTitle = $previousSubApproachTitle = $previousMeasureTitle = null;
+        $previousApproachTitle = $previousSubApproachTitle = null;
         $approachPosition = $subApproachPosition = $measurePosition = 1;
 
         foreach ($csv as $row) {
@@ -87,22 +87,30 @@ class ImportProgrammaticFoundationCommand extends Command
             $measureContent = next($row);
 
             if (!empty($approachTitle) && $previousApproachTitle !== $approachTitle) {
-                $approach = $this->createApproach($approachPosition, $approachTitle);
-                ++$approachPosition;
-                $subApproachPosition = 0;
+                if (!$approach = $this->findApproach($approachTitle)) {
+                    $approach = $this->createApproach($approachPosition, $approachTitle);
+                    ++$approachPosition;
+                    $subApproachPosition = 0;
 
-                $this->em->persist($approach);
-                $this->em->flush();
+                    $this->em->persist($approach);
+                    $this->em->flush();
+                }
+
+                $previousApproachTitle = $approachTitle;
             }
 
             if (!empty($subApproachTitle) && $previousSubApproachTitle !== $subApproachTitle) {
-                $subApproach = $this->createSubApproach($subApproachPosition, $subApproachTitle);
-                $approach->addSubApproach($subApproach);
-                ++$subApproachPosition;
-                $measurePosition = 0;
+                if (!$subApproach = $this->findSubApproach($subApproachTitle)) {
+                    $subApproach = $this->createSubApproach($subApproachPosition, $subApproachTitle);
+                    $approach->addSubApproach($subApproach);
+                    ++$subApproachPosition;
+                    $measurePosition = 0;
 
-                $this->em->persist($subApproach);
-                $this->em->flush();
+                    $this->em->persist($subApproach);
+                    $this->em->flush();
+                }
+
+                $previousSubApproachTitle = $subApproachTitle;
             }
 
             if (!empty($measureTitle)) {
@@ -145,6 +153,16 @@ class ImportProgrammaticFoundationCommand extends Command
 
         $this->em->persist($project);
         $this->em->flush();
+    }
+
+    private function findApproach(string $title): ?Approach
+    {
+        return $this->em->getRepository(Approach::class)->findOneBy(['title' => $title]);
+    }
+
+    private function findSubApproach(string $title): ?SubApproach
+    {
+        return $this->em->getRepository(SubApproach::class)->findOneBy(['title' => $title]);
     }
 
     private function createApproach(int $position, string $title): Approach
