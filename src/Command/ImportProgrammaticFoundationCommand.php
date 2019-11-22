@@ -85,12 +85,6 @@ class ImportProgrammaticFoundationCommand extends Command
             $subApproachTitle = mb_substr(next($row), 0, 255);
             $measureTitle = mb_substr(next($row), 0, 255);
             $measureContent = next($row);
-            $project1Title = mb_substr(next($row), 0, 255);
-            $project1Content = next($row);
-            $project1City = mb_substr(next($row), 0, 255);
-            $project2Title = mb_substr(next($row), 0, 255);
-            $project2Content = next($row);
-            $project2City = mb_substr(next($row), 0, 255);
 
             if (!empty($approachTitle) && $previousApproachTitle !== $approachTitle) {
                 $approach = $this->createApproach($approachPosition, $approachTitle);
@@ -120,8 +114,15 @@ class ImportProgrammaticFoundationCommand extends Command
                 $this->em->flush();
             }
 
-            $this->addProject($measure, 1, $project1Title, $project1Content, $project1City);
-            $this->addProject($measure, 2, $project2Title, $project2Content, $project2City);
+            for ($i = 1; $i <= 8; ++$i) {
+                $this->addProject(
+                    $measure,
+                    $i,
+                    mb_substr(next($row), 0, 255),
+                    next($row),
+                    mb_substr(next($row), 0, 255)
+                );
+            }
 
             ++$line;
 
