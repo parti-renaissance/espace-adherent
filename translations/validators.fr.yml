@@ -407,3 +407,5 @@ programmatic_foundation.slug.not_empty: Le slug ne peut pas être vide
 programmatic_foundation.parent.required.sub_approach: Un axe secondaire doit être lié à un grand axe
 programmatic_foundation.parent.required.measure: Une mesure doit être liée à un axe secondaire
 programmatic_foundation.parent.required.project: Un projet doit être lié à une mesure
+
+senator_area.invalid_area_choice: Choix de circonscription du Sénateur est invalide

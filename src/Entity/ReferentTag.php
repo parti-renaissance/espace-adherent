@@ -25,6 +25,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ReferentTag
 {
+    public const TYPE_DEPARTMENT = 'department';
+    public const TYPE_COUNTRY = 'country';
+    public const TYPE_DISTRICT = 'district';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -65,6 +69,13 @@ class ReferentTag
      * @ORM\Column(nullable=true)
      */
     private $externalId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $type;
 
     public function __construct(string $name = null, string $code = null)
     {

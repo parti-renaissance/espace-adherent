@@ -435,6 +435,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $charters;
 
+    /**
+     * @var SenatorArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\SenatorArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $senatorArea;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -566,6 +573,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_DEPUTY';
         }
 
+        if ($this->isSenator()) {
+            $roles[] = 'ROLE_SENATOR';
+        }
+
         if ($this->isAdherentMessageRedactor()) {
             $roles[] = 'ROLE_MESSAGE_REDACTOR';
         }
@@ -664,6 +675,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCitizenProjectAdministrator()
             || $this->isBoardMember()
             || $this->isDeputy()
+            || $this->isSenator()
             || $this->isMunicipalChief()
         ;
     }
@@ -1573,6 +1585,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return !empty($this->mandates);
     }
 
+    public function getSenatorArea(): ?SenatorArea
+    {
+        return $this->senatorArea;
+    }
+
+    public function setSenatorArea(?SenatorArea $senatorArea): void
+    {
+        $this->senatorArea = $senatorArea;
+    }
+
     public function isCommentsCguAccepted(): bool
     {
         return $this->commentsCguAccepted;
@@ -1734,5 +1756,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $charter->setAdherent($this);
             $this->charters->add($charter);
         }
+    }
+
+    public function isSenator(): bool
+    {
+        return !empty($this->senatorArea);
     }
 }
