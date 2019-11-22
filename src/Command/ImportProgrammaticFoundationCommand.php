@@ -12,6 +12,7 @@ use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -39,6 +40,12 @@ class ImportProgrammaticFoundationCommand extends Command
     {
         $this
             ->addArgument('filename', InputArgument::REQUIRED)
+            ->addOption(
+                'append',
+                null,
+                InputOption::VALUE_NONE,
+                'If defined, no reset of the database will be made before import.'
+            )
             ->setDescription('Import Programmatic Foundation')
         ;
     }
@@ -50,6 +57,18 @@ class ImportProgrammaticFoundationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (false === $input->getOption('append')) {
+            $this->io->section('Resetting programmatic foundation.');
+
+            $approaches = $this->em->getRepository(Approach::class)->findAll();
+
+            foreach ($approaches as $approach) {
+                $this->em->remove($approach);
+            }
+
+            $this->em->flush();
+        }
+
         $this->io->section('Starting programmatic foundation import.');
 
         $csv = Reader::createFromStream($this->storage->readStream($input->getArgument('filename')));
@@ -120,7 +139,7 @@ class ImportProgrammaticFoundationCommand extends Command
             return;
         }
 
-        $project = $this->createProject(1, $title, $content, $city);
+        $project = $this->createProject($position, $title, $content, $city);
         $measure->addProject($project);
 
         $this->em->persist($project);
