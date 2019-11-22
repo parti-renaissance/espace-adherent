@@ -679,5 +679,8 @@
                 <argument type="service" id="logger" />
             </call>
         </service>
+
+        <service id="AppBundle\Command\ImportProgrammaticFoundationCommand" />
+        <service id="AppBundle\Command\ResetProgrammaticFoundationCommand" />
     </services>
 </container>
