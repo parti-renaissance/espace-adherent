@@ -679,5 +679,7 @@
                 <argument type="service" id="logger" />
             </call>
         </service>
+
+        <service id="AppBundle\Command\ImportProgrammaticFoundationCommand" />
     </services>
 </container>
