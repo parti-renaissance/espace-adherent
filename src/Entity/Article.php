@@ -63,6 +63,16 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      */
     private $themes;
 
+    /**
+     * @var Media
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     *
+     * @Assert\NotBlank
+     * @Assert\Valid
+     */
+    private $media;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
