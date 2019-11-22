@@ -58,11 +58,14 @@
                 <ul>
                     {% for article in articles %}
                     <li>
-                        <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="thumbnail">
-                            <img src="{{ media_asset(article.media, {'w': 250, 'h': 170, 'fit': 'crop'}) }}"
-                                 title="{{ article.media.name }}"
-                                 alt="{{ article.media.name }}" />
-                        </a>
+                        {% if article.media %}
+                            <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}" class="thumbnail">
+                                <img src="{{ media_asset(article.media, {'w': 250, 'h': 170, 'fit': 'crop'}) }}"
+                                     title="{{ article.media.name }}"
+                                     alt="{{ article.media.name }}" />
+                            </a>
+                        {% endif %}
+
                         <div>
                             <h2>
                                 <a href="{{ path('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) }}">

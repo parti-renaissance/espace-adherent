@@ -32,6 +32,7 @@ class ArticleAdminTest extends WebTestCase
                 'data.description',
                 'data.content',
                 'data.slug',
+                'data.media',
             ],
             $this->client->getContainer()
         );
