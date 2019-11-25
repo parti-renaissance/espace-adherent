@@ -37,8 +37,8 @@ class EventICalHandler implements SubscribingHandlerInterface
                 'UID' => $event->getUuid()->toString(),
                 'SUMMARY' => $event->getName(),
                 'DESCRIPTION' => $event->getDescription(),
-                'DTSTART' => $this->formatDate($event->getLocalBeginAt(), $event->getTimeZone()),
-                'DTEND' => $this->formatDate($event->getLocalFinishAt(), $event->getTimeZone()),
+                'DTSTART' => $this->formatDate($event->getLocalBeginAt()),
+                'DTEND' => $this->formatDate($event->getFinishAt()),
                 'LOCATION' => $event->getInlineFormattedAddress(),
             ],
         ];
@@ -55,8 +55,8 @@ class EventICalHandler implements SubscribingHandlerInterface
         $visitor->setRoot($eventData);
     }
 
-    private function formatDate(\DateTimeInterface $date, string $timezone): string
+    private function formatDate(\DateTime $date): string
     {
-        return sprintf('%s:%s', $timezone, $date->format('Ymd\THis'));
+        return $date->format('Ymd\THis');
     }
 }

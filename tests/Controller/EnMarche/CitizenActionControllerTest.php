@@ -91,8 +91,8 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $this->assertSame(sprintf('attachment; filename=%s-projet-citoyen-3.ics', $citizenAction->getFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
         $this->assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $beginAt = preg_quote('Europe/Paris:'.$citizenAction->getBeginAt()->format('Ymd\THis'), '/');
-        $finishAt = preg_quote('Europe/Paris:'.$citizenAction->getFinishAt()->format('Ymd\THis'), '/');
+        $beginAt = preg_quote($citizenAction->getBeginAt()->format('Ymd\THis'), '/');
+        $finishAt = preg_quote($citizenAction->getFinishAt()->format('Ymd\THis'), '/');
         $uuid = preg_quote($uuid, '/');
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
