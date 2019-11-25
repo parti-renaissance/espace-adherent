@@ -372,8 +372,8 @@ class EventManagerControllerTest extends WebTestCase
         $this->assertSame(sprintf('attachment; filename=%s-meeting-de-new-york-city.ics', $event->getLocalFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
         $this->assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $beginAt = preg_quote('America/New_York:'.$event->getLocalBeginAt()->format('Ymd\THis'), '/');
-        $finishAt = preg_quote('America/New_York:'.$event->getLocalFinishAt()->format('Ymd\THis'), '/');
+        $beginAt = preg_quote($event->getLocalBeginAt()->format('Ymd\THis'), '/');
+        $finishAt = preg_quote($event->getFinishAt()->format('Ymd\THis'), '/');
         $uuid = preg_quote($uuid, '/');
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
