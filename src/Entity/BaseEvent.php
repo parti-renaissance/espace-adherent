@@ -267,6 +267,11 @@ abstract class BaseEvent implements GeoPointInterface, ReportableInterface, Refe
         return $this->finishAt;
     }
 
+    public function getLocalFinishAt(): \DateTimeInterface
+    {
+        return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
+    }
+
     public function getOrganizer(): ?Adherent
     {
         return $this->organizer;
