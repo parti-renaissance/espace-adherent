@@ -27,7 +27,7 @@
     }
 
     &__breadcrumb {
-        margin: 50px 0 !important;
+        margin: 30px 0 !important;
         padding: 0 !important;
 
         li {
@@ -84,24 +84,17 @@
             flex-grow: 2;
         }
 
-        .city-search {
-            flex-grow: 1;
-        }
-
-        .tag-search {
+        .city-search, .tag-search {
             flex-basis: 100%;
         }
 
-        @media (min-width: $mobile) {
+        @media (min-width: $tablet) {
             flex-direction: row;
             margin: -50px 0 50px 0;
             padding: 20px 30px 5px 30px;
 
             .city-search, .tag-search {
                 margin-left: 15px;
-            }
-
-            .tag-search {
                 flex-basis: 250px;
             }
         }
@@ -121,7 +114,6 @@
     }
 
     &__leading {
-        padding-right: 20px;
 
         .form__checkbox {
             margin: 20px 0 0 0;
@@ -207,7 +199,7 @@
         margin-bottom: 70px;
 
         h2 {
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 20px;
         }
 
@@ -221,7 +213,7 @@
         background-color: $white;
 
         .title {
-            font-size: 20px;
+            font-size: 18px;
             margin-right: 10px;
             color: $silver-grey;
             font-weight: bold;
@@ -265,7 +257,7 @@
                 overflow: hidden;
 
                 .head {
-                    padding: 25px 70px 25px 25px;
+                    padding: 25px 70px 25px 20px;
 
                     .title {
                         font-size: 18px;
@@ -327,7 +319,7 @@
 
             .head {
                 box-sizing: border-box;
-                padding: 30px 80px 30px 20px;
+                padding: 25px 70px 25px 20px;
                 font-weight: 500;
                 border-radius: 3px;
                 cursor: pointer;

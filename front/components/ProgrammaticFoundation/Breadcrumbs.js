@@ -10,8 +10,6 @@ export default class Breadcrumbs extends React.Component {
                     ⟵ Quitter la recherche
                 </a>
             );
-        } else {
-            breadcrumbs.push('Les axes et leurs mesures');
         }
 
         return (
