@@ -30,8 +30,8 @@ class CitizenActionICalHandler implements SubscribingHandlerInterface
                 'UID' => $citizenAction->getUuid()->toString(),
                 'SUMMARY' => $citizenAction->getName(),
                 'DESCRIPTION' => $citizenAction->getDescription(),
-                'DTSTART' => self::formatDate($citizenAction->getLocalBeginAt()),
-                'DTEND' => self::formatDate($citizenAction->getFinishAt()),
+                'DTSTART' => self::formatDate($citizenAction->getLocalBeginAt(), $citizenAction->getTimeZone()),
+                'DTEND' => self::formatDate($citizenAction->getFinishAt(), $citizenAction->getTimeZone()),
                 'LOCATION' => $citizenAction->getInlineFormattedAddress(),
             ],
         ];
@@ -48,8 +48,8 @@ class CitizenActionICalHandler implements SubscribingHandlerInterface
         $visitor->setRoot($data);
     }
 
-    private static function formatDate(\DateTimeInterface $date): string
+    private static function formatDate(\DateTimeInterface $date, string $timezone): string
     {
-        return $date->format('Ymd\THis');
+        return sprintf('%s:%s', $timezone, $date->format('Ymd\THis'));
     }
 }

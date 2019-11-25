@@ -73,7 +73,7 @@ class EventIcalHandlerTest extends TestCase
                        ->will($this->returnValue($startDate))
         ;
         $committeeEvent->expects($this->once())
-                       ->method('getFinishAt')
+                       ->method('getLocalFinishAt')
                        ->will($this->returnValue($endDate))
         ;
         $committeeEvent->expects($this->once())
