@@ -85,7 +85,7 @@
                     </a>
                 </li>
                 <li class="programme__proposal programme__proposal--category">
-                    <a href="{{ path('article_view', {categorySlug: 'actualites', articleSlug: 'contrat-avec-la-nation'}) }}">
+                    <a href="{{ path('article_view', {categorySlug: 'actualites', articleSlug: 'contrat-avec-la-nation'}) }}" target="_blank">
                         <h2>
                             Le contrat avec la Nation
                         </h2>
@@ -95,7 +95,7 @@
                     </a>
                 </li>
                 <li class="programme__proposal programme__proposal--category">
-                    <a href="{{ path('article_view', {categorySlug: 'actualites', articleSlug: 'emmanuel-macron-notre-projet-economique-efficace-juste-et-credible'}) }}">
+                    <a href="{{ path('article_view', {categorySlug: 'actualites', articleSlug: 'emmanuel-macron-notre-projet-economique-efficace-juste-et-credible'}) }}" target="_blank">
                         <h2>
                             Stratégie économique
                         </h2>
@@ -117,6 +117,42 @@
                 {% endfor %}
             </ul>
         </article>
+
+        <div class="l__wrapper--slim">
+            <ul class="reminders">
+                <li class="reminder">
+                    <h2>J'adhère à La République En Marche</h2>
+                    <a href="{{ path('app_membership_join') }}" target="_blank" class="btn btn--no-border">J'adhère</a>
+                </li>
+                <li class="reminder">
+                    <h2>Je m'abonne à la Newsletter</h2>
+                    <a href="{{ path('newsletter_subscription') }}" target="_blank" class="btn btn--no-border">Je m'abonne</a>
+                </li>
+                <li class="reminder">
+                    <h2>Ce qui a changé près de chez vous</h2>
+                    <a href="https://chezvous.en-marche.fr/" target="_blank" class="btn btn--no-border">J'entre ma ville</a>
+                </li>
+                <li class="reminder">
+                    <h2>On l'a dit, on le fait</h2>
+                    <a href="https://transformer.en-marche.fr/" target="_blank" class="btn btn--no-border">Consulter les mesures</a>
+                </li>
+            </ul>
+        </div>
+
+        <section class="donate l__wrapper--slim background--green b__nudge--bottom-huge">
+            <div class="space--30 l__row l__row--h-stretch l__mobile--col">
+                <div class="donate__text">
+                    <h2 class="text--large">
+                        Un don pour <span class="text--on-white">transformer</span> la France !
+                    </h2>
+                    <p class="text--body text--small b__nudge--top-large">
+                        Chaque don, quel que soit le montant, nous permet d’engager une action concrète pour réussir ensemble la transformation du pays.
+                    </p>
+                </div>
+
+                {{ include('donation/_quick_form.html.twig') }}
+            </div>
+        </section>
     </section>
 
 </main>
