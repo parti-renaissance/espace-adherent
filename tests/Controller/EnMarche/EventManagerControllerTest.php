@@ -369,7 +369,7 @@ class EventManagerControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/ical', $event->getSlug()));
         $this->isSuccessful($response = $this->client->getResponse());
-        $this->assertSame(sprintf('attachment; filename=%s-meeting-de-new-york-city.ics', $event->getFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
+        $this->assertSame(sprintf('attachment; filename=%s-meeting-de-new-york-city.ics', $event->getLocalFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
         $this->assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $beginAt = preg_quote($event->getLocalBeginAt()->format('Ymd\THis'), '/');
