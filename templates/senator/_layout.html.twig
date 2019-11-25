@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Espace député' %}
-{% block canonical_url url('app_message_deputy_list') %}
+{% block page_title 'Espace sénateur' %}
+{% block canonical_url url('app_message_senator_list') %}
 
-{% set hasCharterAccepted = app.user.charters.hasDeputyCharterAccepted %}
+{% set hasCharterAccepted = app.user.charters.hasSenatorCharterAccepted %}
 
 {% block stylesheets %}
     {% if not hasCharterAccepted %}
@@ -13,12 +13,12 @@
 
 {% block content %}
     <main>
-        <section class="manager-space deputy procuration-manager b__nudge--bottom-huge">
+        <section class="manager-space procuration-manager b__nudge--bottom-huge">
             <header class="manager-header">
                 <div class="l__wrapper">
                     <div class="first-section">
                         <div class="manager-information">
-                            <p>Vous gérez : <span>{{ app.user.managedDistrict }}</span></p>
+                            <p>Vous gérez le département : <span>{{ app.user.senatorArea.departmentTag }}</span></p>
                         </div>
                     </div>
                     <div class="second-section">
@@ -28,8 +28,8 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
-                                <a href="{{ path("app_message_deputy_list", route_params|default({})) }}">Mes messages</a>
+                            <li class="{{ is_active_route(app.request, 'app_message_senator_*') ? 'active' }}">
+                                <a href="{{ path("app_message_senator_list", route_params|default({})) }}">Mes messages</a>
                             </li>
                         </ul>
                     </nav>
@@ -37,15 +37,15 @@
             </header>
 
             <div class="l__wrapper procuration-manager__content text--body">
-                {% block deputy_content %}{% endblock %}
+                {% block senator_content %}{% endblock %}
             </div>
         </section>
 
         {% if not hasCharterAccepted %}
             {% include 'chart_dialog.html.twig' with {
-                'title': 'deputy.popup.title'|trans,
-                'subtitle': 'deputy.popup.subtitle'|trans,
-                'fileUrl': 'deputy.popup.file_url'|trans
+                'title': 'senator.popup.title'|trans,
+                'subtitle': 'senator.popup.subtitle'|trans,
+                'fileUrl': 'senator.popup.file_url'|trans
             } %}
         {% endif %}
     </main>
@@ -61,7 +61,7 @@
         <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
         <script type="text/javascript">
             Kernel.onLoad(function() {
-                {{ js.chart_acceptation('#chart_dialog', constant('AppBundle\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_DEPUTY')) }}
+                {{ js.chart_acceptation('#chart_dialog', constant('AppBundle\\AdherentCharter\\AdherentCharterTypeEnum::TYPE_SENATOR')) }}
             } );
         </script>
     {% endif %}

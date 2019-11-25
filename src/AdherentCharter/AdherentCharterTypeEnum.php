@@ -8,5 +8,6 @@ class AdherentCharterTypeEnum extends Enum
 {
     public const TYPE_REFERENT = 'referent';
     public const TYPE_DEPUTY = 'deputy';
+    public const TYPE_SENATOR = 'senator';
     public const TYPE_MUNICIPAL_CHIEF = 'municipal_chief';
 }

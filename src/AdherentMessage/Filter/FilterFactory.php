@@ -18,6 +18,8 @@ abstract class FilterFactory
                 return static::createReferentFilter($user);
             case AdherentMessageTypeEnum::DEPUTY:
                 return static::createDeputyFilter($user);
+            case AdherentMessageTypeEnum::SENATOR:
+                return static::createSenatorFilter($user);
             case AdherentMessageTypeEnum::COMMITTEE:
                 return static::createCommitteeFilter();
             case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
@@ -53,5 +55,10 @@ abstract class FilterFactory
     private static function createMunicipalChiefFilter(Adherent $adherent): MunicipalChiefFilter
     {
         return new MunicipalChiefFilter($adherent->getMunicipalChiefManagedArea()->getInseeCode());
+    }
+
+    private static function createSenatorFilter(Adherent $user): AdherentZoneFilter
+    {
+        return new AdherentZoneFilter($user->getSenatorArea()->getDepartmentTag());
     }
 }

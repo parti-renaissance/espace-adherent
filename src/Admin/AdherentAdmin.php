@@ -377,7 +377,7 @@ HELP
                 ->add('senatorArea', SenatorAreaType::class, [
                     'required' => false,
                     'label' => 'Circonscription sénateur',
-                    'help' => 'Laisser vide si l\'adhérent n\'est pas sénateur.',
+                    'help' => 'Laisser vide si l\'adhérent n\'est pas parlementaire.',
                 ])
             ->end()
             ->with('Membre du Conseil', ['class' => 'col-md-6'])

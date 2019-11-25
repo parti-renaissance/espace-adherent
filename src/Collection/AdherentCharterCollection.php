@@ -7,6 +7,7 @@ use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
 use AppBundle\Entity\AdherentCharter\DeputyCharter;
 use AppBundle\Entity\AdherentCharter\MunicipalChiefCharter;
 use AppBundle\Entity\AdherentCharter\ReferentCharter;
+use AppBundle\Entity\AdherentCharter\SenatorCharter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection
@@ -32,6 +33,13 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
+    public function hasSenatorCharterAccepted(): bool
+    {
+        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
+            return $charter instanceof SenatorCharter;
+        });
+    }
+
     public function hasCharterAcceptedForType(string $type): bool
     {
         switch ($type) {
@@ -43,6 +51,9 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_DEPUTY:
                 return $this->hasDeputyCharterAccepted();
+
+            case AdherentCharterTypeEnum::TYPE_SENATOR:
+                return $this->hasSenatorCharterAccepted();
         }
 
         return false;

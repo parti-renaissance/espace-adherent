@@ -249,6 +249,7 @@
     is_granted('ROLE_REFERENT') or
     is_granted('ROLE_COREFERENT') or
     is_granted('ROLE_DEPUTY') or
+    is_granted('ROLE_SENATOR') or
     is_granted('ROLE_BOARD_MEMBER') or
     is_granted('ROLE_COORDINATOR') or
     is_granted('ROLE_PROCURATION_MANAGER') or
@@ -261,6 +262,7 @@
         (app.user.isSupervisor or app.user.isHost) +
         (app.user.isReferent or app.user.isCoReferent) +
         app.user.isDeputy +
+        app.user.isSenator +
         app.user.isCoordinatorCitizenProjectSector +
         app.user.isCoordinatorCommitteeSector +
         app.user.isProcurationManager +

@@ -109,11 +109,20 @@ parameters:
             "subscribed_emails_local_host": "22",
             "subscribed_emails_referents": "23",
             "citizen_project_host_email": "24",
-            "COMMITTEE_FOLLOWER": "25",
-            "COMMITTEE_NO_FOLLOWER": "26",
-            "COMMITTEE_SUPERVISOR": "27",
-            "COMMITTEE_HOST": "28",
-            "CITIZEN_PROJECT_HOST": "29"
+            "municipal_email": "25",
+            "senator_email": "26",
+            "COMMITTEE_FOLLOWER": "27",
+            "COMMITTEE_NO_FOLLOWER": "28",
+            "COMMITTEE_SUPERVISOR": "29",
+            "COMMITTEE_HOST": "30",
+            "CITIZEN_PROJECT_HOST": "31",
+            "REFERENT": "32",
+            "DEPUTY": "33",
+            "REC": "34",
+            "COORDINATOR": "35",
+            "PROCURATION_MANAGER": "36",
+            "ASSESSOR_MANAGER": "37",
+            "BOARD_MEMBER": "38"
         }
     env(MAILCHIMP_CAMPAIGN_FOLDER_IDS): '{}'
     env(MAILCHIMP_TEMPLATE_IDS): '{}'
@@ -132,5 +141,6 @@ parameters:
             "subscribed_emails_referents": 16,
             "citizen_project_host_email": 32,
             "militant_action_sms": 64,
-            "municipal_email": 128
+            "municipal_email": 128,
+            "senator_email": 256
         }

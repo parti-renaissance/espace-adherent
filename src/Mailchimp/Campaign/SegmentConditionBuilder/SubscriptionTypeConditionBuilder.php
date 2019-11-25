@@ -10,6 +10,7 @@ use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use AppBundle\Entity\AdherentMessage\SenatorAdherentMessage;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 
 class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
@@ -22,6 +23,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
             CommitteeAdherentMessage::class,
             CitizenProjectAdherentMessage::class,
             MunicipalChiefAdherentMessage::class,
+            SenatorAdherentMessage::class,
         ], true);
     }
 
@@ -43,6 +45,10 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
             case DeputyAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
+                break;
+
+            case SenatorAdherentMessage::class:
+                $interestKeys[] = SubscriptionTypeEnum::SENATOR_EMAIL;
                 break;
 
             case CommitteeAdherentMessage::class:

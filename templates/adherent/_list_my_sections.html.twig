@@ -18,6 +18,11 @@
         <a href="{{ path('app_message_deputy_list') }}">Espace député</a>
     </li>
 {% endif %}
+{% if app.user.isSenator %}
+    <li>
+        <a href="{{ path('app_message_senator_list') }}">Espace sénateur</a>
+    </li>
+{% endif %}
 {% if app.user.isCoordinatorCitizenProjectSector %}
     <li>
         <a href="{{ path('app_coordinator_citizen_project', { s: constant('AppBundle\\Entity\\CitizenProject::PENDING')}) }}"> Espace responsable engagement citoyen

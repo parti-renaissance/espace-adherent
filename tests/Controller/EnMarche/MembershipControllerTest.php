@@ -185,7 +185,7 @@ class MembershipControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/inscription/centre-interets', $this->client);
         $adherent = $this->getAdherentRepository()->findOneByEmail('test@test.com');
 
-        self::assertCount(8, $adherent->getSubscriptionTypes());
+        self::assertCount(9, $adherent->getSubscriptionTypes());
     }
 
     public function testAdherentSubscriptionTypesArePersistedCorrectlyWhenAdhesionFromUser(): void
@@ -235,7 +235,7 @@ class MembershipControllerTest extends WebTestCase
 
         $this->manager->refresh($adherent);
 
-        self::assertCount(7, $adherent->getSubscriptionTypes());
+        self::assertCount(8, $adherent->getSubscriptionTypes());
     }
 
     public function testBannedAdherentSubscription(): void

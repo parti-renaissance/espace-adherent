@@ -503,6 +503,13 @@ deputy.popup.title: Charte de bonne utilisation des outils numériques
 deputy.popup.subtitle: à l’usage des députés
 deputy.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_deputes.pdf
 
+#
+# Senator
+#
+senator.popup.title: Charte de bonne utilisation des outils numériques
+senator.popup.subtitle: à l’usage des sénateurs
+senator.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_senateurs.pdf
+
 subscription_type.group.communication_mobile: SMS/MMS
 subscription_type.group.communication_emails: Informations nationales
 subscription_type.group.territories_emails: Informations locales

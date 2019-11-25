@@ -54,6 +54,7 @@ class AdherentEmailSubscriptionType extends AbstractType
                         case SubscriptionTypeEnum::REFERENT_EMAIL:
                         case SubscriptionTypeEnum::LOCAL_HOST_EMAIL:
                         case SubscriptionTypeEnum::MUNICIPAL_EMAIL:
+                        case SubscriptionTypeEnum::SENATOR_EMAIL:
                             return 'subscription_type.group.territories_emails';
                         case SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL:
                             return 'subscription_type.group.citizen_project_emails';

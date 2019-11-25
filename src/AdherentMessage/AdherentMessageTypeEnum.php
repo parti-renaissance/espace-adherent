@@ -11,4 +11,5 @@ class AdherentMessageTypeEnum extends Enum
     public const COMMITTEE = 'committee';
     public const CITIZEN_PROJECT = 'citizen_project';
     public const MUNICIPAL_CHIEF = 'municipal_chief';
+    public const SENATOR = 'senator';
 }
