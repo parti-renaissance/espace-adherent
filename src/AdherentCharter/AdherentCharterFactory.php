@@ -6,6 +6,7 @@ use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
 use AppBundle\Entity\AdherentCharter\DeputyCharter;
 use AppBundle\Entity\AdherentCharter\MunicipalChiefCharter;
 use AppBundle\Entity\AdherentCharter\ReferentCharter;
+use AppBundle\Entity\AdherentCharter\SenatorCharter;
 
 abstract class AdherentCharterFactory
 {
@@ -18,6 +19,8 @@ abstract class AdherentCharterFactory
                 return new MunicipalChiefCharter();
             case AdherentCharterTypeEnum::TYPE_DEPUTY:
                 return new DeputyCharter();
+            case AdherentCharterTypeEnum::TYPE_SENATOR:
+                return new SenatorCharter();
         }
 
         return null;

@@ -9,6 +9,7 @@ use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
 use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
 use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use AppBundle\Entity\AdherentMessage\SenatorAdherentMessage;
 use Ramsey\Uuid\Uuid;
 
 class AdherentMessageFactory
@@ -37,6 +38,10 @@ class AdherentMessageFactory
 
             case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
                 $message = new MunicipalChiefAdherentMessage(Uuid::uuid4(), $adherent);
+                break;
+
+            case AdherentMessageTypeEnum::SENATOR:
+                $message = new SenatorAdherentMessage(Uuid::uuid4(), $adherent);
                 break;
 
             default:

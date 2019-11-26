@@ -573,10 +573,10 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $senator_59 = $adherentFactory->createFromArray([
             'uuid' => self::SENATOR_UUID,
             'password' => self::DEFAULT_PASSWORD,
-            'email' => 'senator@en-marche-dev.fr',
+            'email' => 'senateur@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Bob',
-            'last_name' => 'Senator (59)',
+            'last_name' => 'Senateur (59)',
             'address' => PostAddress::createFrenchAddress('2 avenue Jean Jaurès', '77000-77288', null, 48.5278939, 2.6484923),
             'birthdate' => '1992-07-28',
             'position' => 'employed',

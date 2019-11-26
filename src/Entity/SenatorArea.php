@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -29,13 +28,6 @@ class SenatorArea
      */
     private $departmentTag;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
-    private $entireWorld = false;
-
     public function getId(): int
     {
         return $this->id;
@@ -49,25 +41,5 @@ class SenatorArea
     public function setDepartmentTag(?ReferentTag $departmentTag): void
     {
         $this->departmentTag = $departmentTag;
-    }
-
-    public function isEntireWorld(): bool
-    {
-        return $this->entireWorld;
-    }
-
-    public function setEntireWorld(bool $entireWorld): void
-    {
-        $this->entireWorld = $entireWorld;
-    }
-
-    /**
-     * @Assert\IsTrue(message="senator_area.invalid_area_choice")
-     */
-    public function isValid(): bool
-    {
-        return ($this->departmentTag && !$this->entireWorld)
-            || ($this->entireWorld && !$this->departmentTag)
-        ;
     }
 }

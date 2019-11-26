@@ -25,6 +25,9 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
             case AdherentMessageTypeEnum::DEPUTY:
                 $prefix = 'Député';
                 break;
+            case AdherentMessageTypeEnum::SENATOR:
+                $prefix = 'Sénateur';
+                break;
             case AdherentMessageTypeEnum::COMMITTEE:
                 $prefix = 'Comité';
                 break;

@@ -4,6 +4,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Intl\UnitedNationsBundle;
+use AppBundle\Repository\ReferentTagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -18,8 +19,8 @@ class LoadReferentTagData extends Fixture
             switch ($department) {
                 // 2 separate tags for Corsica + 1 tag for whole Corsica
                 case '20':
-                    $this->createReferentTag($manager, 'Département 2A', '2A');
-                    $this->createReferentTag($manager, 'Département 2B', '2B');
+                    $this->createReferentTag($manager, 'Département 2A', '2A', ReferentTag::TYPE_DEPARTMENT);
+                    $this->createReferentTag($manager, 'Département 2B', '2B', ReferentTag::TYPE_DEPARTMENT);
                     $this->createReferentTag($manager, 'Corse', '20');
 
                     break;
@@ -31,14 +32,14 @@ class LoadReferentTagData extends Fixture
                         $this->createReferentTag($manager, "750$district", "750$district");
                     }
 
-                    $this->createReferentTag($manager, 'Paris', '75');
+                    $this->createReferentTag($manager, 'Paris', '75', ReferentTag::TYPE_DEPARTMENT);
 
                     break;
                 // does not exist
                 case '96':
                     break;
                 default:
-                    $this->createReferentTag($manager, "Département $department", $department);
+                    $this->createReferentTag($manager, "Département $department", $department, ReferentTag::TYPE_DEPARTMENT);
 
                     break;
             }
@@ -48,12 +49,15 @@ class LoadReferentTagData extends Fixture
             $this->createReferentTag($manager, $countryName, $countryCode);
         }
 
+        $this->createReferentTag($manager, 'Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
+
         $manager->flush();
     }
 
-    private function createReferentTag(ObjectManager $manager, string $name, string $code): void
+    private function createReferentTag(ObjectManager $manager, string $name, string $code, string $type = null): void
     {
         $referentTag = new ReferentTag($name, $code);
+        $referentTag->setType($type);
 
         $manager->persist($referentTag);
 

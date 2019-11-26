@@ -6,11 +6,13 @@ use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\SubscriptionType;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use AppBundle\Mailchimp\Manager;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
 use AppBundle\Mailchimp\Synchronisation\Request\MemberTagsRequest;
+use AppBundle\Repository\ReferentTagRepository;
 
 class RequestBuilder
 {
@@ -54,7 +56,8 @@ class RequestBuilder
             ->setCountryName($adherent->getCountryName())
             ->setAdhesionDate($adherent->getRegisteredAt())
             ->setInterests($this->buildInterestArray($adherent))
-            ->setActiveTags($adherent->getReferentTagCodes())
+            ->setActiveTags($this->getActiveTags($adherent))
+            ->setInactiveTags($this->getInactiveTags($adherent))
             ->setIsSubscribeRequest($adherent->isEnabled() && false === $adherent->isEmailUnsubscribed())
         ;
     }
@@ -346,5 +349,21 @@ class RequestBuilder
                 true
             )
         );
+    }
+
+    private function getActiveTags(Adherent $adherent): array
+    {
+        $tags = $adherent->getReferentTagCodes();
+
+        if (PostAddress::FRANCE !== $adherent->getCountry()) {
+            $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
+        }
+
+        return $tags;
+    }
+
+    private function getInactiveTags(Adherent $adherent): array
+    {
+        return PostAddress::FRANCE === $adherent->getCountry() ? [ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG] : [];
     }
 }

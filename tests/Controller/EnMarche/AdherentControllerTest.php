@@ -168,7 +168,7 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(6, $histories73Subscriptions);
+        $this->assertCount(7, $histories73Subscriptions);
         $this->assertCount(0, $histories73Unsubscriptions);
         $this->assertCount(0, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
@@ -178,18 +178,18 @@ class AdherentControllerTest extends WebTestCase
         $inputPattern = 'input[name="adherent[%s]"]';
         $optionPattern = 'select[name="adherent[%s]"] option[selected="selected"]';
 
-        $this->assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
-        $this->assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
-        $this->assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
-        $this->assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
-        $this->assertSame('73100', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        $this->assertSame('73100-73182', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
-        $this->assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
-        $this->assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
-        $this->assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        $this->assertSame('8', $crawler->filter(sprintf($optionPattern, 'birthdate][day'))->attr('value'));
-        $this->assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
-        $this->assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
+        self::assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
+        self::assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
+        self::assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
+        self::assertSame('122 rue de Mouxy', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
+        self::assertSame('73100', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        self::assertSame('73100-73182', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
+        self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
+        self::assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
+        self::assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
+        self::assertSame('8', $crawler->filter(sprintf($optionPattern, 'birthdate][day'))->attr('value'));
+        self::assertSame('7', $crawler->filter(sprintf($optionPattern, 'birthdate][month'))->attr('value'));
+        self::assertSame('1950', $crawler->filter(sprintf($optionPattern, 'birthdate][year'))->attr('value'));
         self::assertCount(2, $adherent->getReferentTags());
         self::assertAdherentHasReferentTag($adherent, '73');
         self::assertAdherentHasReferentTag($adherent, 'CIRCO_73004');
@@ -219,11 +219,11 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(5, $errors->count());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        $this->assertSame('Veuillez renseigner un code postal.', $errors->eq(2)->text());
-        $this->assertSame('L\'adresse est obligatoire.', $errors->eq(3)->text());
+        self::assertSame(5, $errors->count());
+        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
+        self::assertSame('Veuillez renseigner un code postal.', $errors->eq(2)->text());
+        self::assertSame('L\'adresse est obligatoire.', $errors->eq(3)->text());
 
         // Submit the profile form with too long input
         $crawler = $this->client->submit($crawler->selectButton('adherent[submit]')->form([
@@ -255,10 +255,10 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(3, $errors->count());
-        $this->assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(0)->text());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(1)->text());
-        $this->assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(2)->text());
+        self::assertSame(3, $errors->count());
+        self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(0)->text());
+        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(1)->text());
+        self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(2)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('adherent[submit]')->form([
@@ -296,13 +296,13 @@ class AdherentControllerTest extends WebTestCase
         /** @var Adherent $adherent */
         $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('carl999@example.fr');
 
-        $this->assertSame('female', $adherent->getGender());
-        $this->assertSame('Jean Dupont', $adherent->getFullName());
-        $this->assertSame('9 rue du Lycée', $adherent->getAddress());
-        $this->assertSame('06000', $adherent->getPostalCode());
-        $this->assertSame('Nice', $adherent->getCityName());
-        $this->assertSame('401020304', $adherent->getPhone()->getNationalNumber());
-        $this->assertSame('student', $adherent->getPosition());
+        self::assertSame('female', $adherent->getGender());
+        self::assertSame('Jean Dupont', $adherent->getFullName());
+        self::assertSame('9 rue du Lycée', $adherent->getAddress());
+        self::assertSame('06000', $adherent->getPostalCode());
+        self::assertSame('Nice', $adherent->getCityName());
+        self::assertSame('401020304', $adherent->getPhone()->getNationalNumber());
+        self::assertSame('student', $adherent->getPosition());
         $this->assertNotNull($newLatitude = $adherent->getLatitude());
         $this->assertNotNull($newLongitude = $adherent->getLongitude());
         $this->assertNotSame($oldLatitude, $newLatitude);
@@ -316,9 +316,9 @@ class AdherentControllerTest extends WebTestCase
         $histories73Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '73');
         $histories73Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '73');
 
-        $this->assertCount(6, $histories73Subscriptions);
-        $this->assertCount(6, $histories73Unsubscriptions);
-        $this->assertCount(6, $histories06Subscriptions);
+        $this->assertCount(7, $histories73Subscriptions);
+        $this->assertCount(7, $histories73Unsubscriptions);
+        $this->assertCount(7, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
 
@@ -374,7 +374,7 @@ class AdherentControllerTest extends WebTestCase
         $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('michel.vasseur@example.ch');
         $ideas = $this->getIdeaRepository()->findBy(['author' => $adherent]);
 
-        $this->assertSame([], $adherent->getMandates());
+        self::assertSame([], $adherent->getMandates());
         $this->checkIdeasAuthorCategory($ideas, AuthorCategoryEnum::ADHERENT);
     }
 
@@ -396,8 +396,8 @@ class AdherentControllerTest extends WebTestCase
         $interestsLabels = array_values($interests);
 
         foreach ($checkboxes as $i => $checkbox) {
-            $this->assertSame($interestsValues[$i], $checkbox->getAttribute('value'));
-            $this->assertSame($interestsLabels[$i], $crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->text());
+            self::assertSame($interestsValues[$i], $checkbox->getAttribute('value'));
+            self::assertSame($interestsLabels[$i], $crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->text());
         }
 
         $interests = $this->client->getContainer()->getParameter('adherent_interests');
@@ -420,7 +420,7 @@ class AdherentControllerTest extends WebTestCase
         $this->container->get('doctrine.orm.entity_manager')->clear();
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
 
-        $this->assertSame(array_values($chosenInterests), $adherent->getInterests());
+        self::assertSame(array_values($chosenInterests), $adherent->getInterests());
 
         $crawler = $this->client->followRedirect();
 
@@ -428,7 +428,7 @@ class AdherentControllerTest extends WebTestCase
 
         foreach ($checkboxes as $i => $checkbox) {
             if (isset($chosenInterests[$i])) {
-                $this->assertSame('checked', $checkbox->getAttribute('checked'));
+                self::assertSame('checked', $checkbox->getAttribute('checked'));
             } else {
                 $this->assertEmpty($crawler->filter('label[for="app_adherent_pin_interests_interests_'.$i.'"]')->eq(0)->attr('checked'));
             }
@@ -459,9 +459,9 @@ class AdherentControllerTest extends WebTestCase
         $errors = $crawler->filter('.form__errors > li');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame(2, $errors->count());
-        $this->assertSame('Le mot de passe est invalide.', $errors->eq(0)->text());
-        $this->assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
+        self::assertSame(2, $errors->count());
+        self::assertSame('Le mot de passe est invalide.', $errors->eq(0)->text());
+        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('adherent_change_password[submit]')->form(), [
@@ -489,7 +489,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[subscriptionTypes][]"]');
 
-        $this->assertCount(8, $subscriptions);
+        $this->assertCount(9, $subscriptions);
 
         // Submit the emails subscription form with invalid data
         // We need to use a POST request because the crawler does not
@@ -530,7 +530,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
         $historiesCitizenProjectHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::CITIZEN_PROJECT_HOST_EMAIL);
 
-        $this->assertCount(9, $histories);
+        $this->assertCount(11, $histories);
         $this->assertCount(1, $historiesHost);
         $this->assertCount(1, $historiesReferents);
         $this->assertCount(2, $historiesCitizenProjectHost);
@@ -563,7 +563,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(12, $histories);
+        $this->assertCount(14, $histories);
         $this->assertCount(2, $historiesHost);
         $this->assertCount(2, $historiesReferents);
         self::assertSame('unsubscribe', $historiesHost[0]->getAction());
@@ -591,7 +591,7 @@ class AdherentControllerTest extends WebTestCase
         $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
         $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
 
-        $this->assertCount(15, $histories);
+        $this->assertCount(17, $histories);
         $this->assertCount(3, $historiesHost);
         $this->assertCount(3, $historiesReferents);
         self::assertSame('subscribe', $historiesHost[0]->getAction());

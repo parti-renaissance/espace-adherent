@@ -4,7 +4,7 @@ namespace AppBundle\Form\Admin;
 
 use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\SenatorArea;
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Repository\ReferentTagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,22 +21,15 @@ class SenatorAreaType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'class' => ReferentTag::class,
-                'query_builder' => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('tag')
-                        ->where('tag.type = :type')
-                        ->setParameter('type', ReferentTag::TYPE_DEPARTMENT)
-                    ;
+                'query_builder' => function (ReferentTagRepository $repository) {
+                    return $repository->createSelectSenatorAreaQueryBuilder();
                 },
-            ])
-            ->add('entireWorld', null, [
-                'label' => 'Le monde entier',
-                'required' => false,
             ])
             ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                 /** @var SenatorArea $data */
                 $data = $event->getData();
 
-                if ($data instanceof SenatorArea && !$data->getDepartmentTag() && !$data->isEntireWorld()) {
+                if ($data instanceof SenatorArea && !$data->getDepartmentTag()) {
                     $event->setData(null);
                 }
             })

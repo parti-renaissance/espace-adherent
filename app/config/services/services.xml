@@ -583,6 +583,7 @@
                 <argument key="AppBundle\Entity\AdherentMessage\DeputyAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\ReferentAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder" />
                 <argument key="AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder" />
+                <argument key="AppBundle\Entity\AdherentMessage\SenatorAdherentMessage" type="service" id="AppBundle\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder" />
             </argument>
             <tag name="container.service_locator" />
         </service>

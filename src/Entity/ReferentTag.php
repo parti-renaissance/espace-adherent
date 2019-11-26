@@ -122,4 +122,9 @@ class ReferentTag
     {
         $this->externalId = $externalId;
     }
+
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
+    }
 }

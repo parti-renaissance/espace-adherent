@@ -18,6 +18,7 @@ use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
 use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use AppBundle\Entity\AdherentMessage\SenatorAdherentMessage;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\District;
@@ -30,6 +31,7 @@ use AppBundle\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\MunicipalChiefMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\ContentSection\ReferentMessageSectionBuilder;
+use AppBundle\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
@@ -312,6 +314,66 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
+    public function testSenatorMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(SenatorAdherentMessage::class);
+        $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')));
+        $tag->setExternalId(123);
+
+        $this->clientMock
+            ->expects($this->exactly(2))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '6',
+                        'template_id' => 6,
+                        'subject_line' => '[Sénateur] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'StaticSegment',
+                                    'op' => 'static_is',
+                                    'field' => 'static_segment',
+                                    'value' => 123,
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/123/content', ['json' => [
+                    'template' => [
+                        'id' => 6,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'full_name' => 'Full Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                        ],
+                    ],
+                ]]]
+            )
+            ->willReturn(new Response(200, [], json_encode(['id' => 123])))
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
     public function testCitizenProjectMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(CitizenProjectAdherentMessage::class);
@@ -484,6 +546,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'committee' => 3,
                         'citizen_project' => 4,
                         'municipal_chief' => 5,
+                        'senator' => 6,
                     ],
                     [
                         'referent' => 1,
@@ -491,6 +554,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'committee' => 3,
                         'citizen_project' => 4,
                         'municipal_chief' => 5,
+                        'senator' => 6,
                     ],
                     [
                         'subscribed_emails_referents' => 1,
@@ -538,6 +602,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             CommitteeAdherentMessage::class => new CommitteeMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://committee_url'])),
             ReferentAdherentMessage::class => new ReferentMessageSectionBuilder(),
             DeputyAdherentMessage::class => new DeputyMessageSectionBuilder(),
+            SenatorAdherentMessage::class => new SenatorMessageSectionBuilder(),
             MunicipalChiefAdherentMessage::class => new MunicipalChiefMessageSectionBuilder(),
             CitizenProjectAdherentMessage::class => new CitizenProjectMessageSectionBuilder($this->createConfiguredMock(UrlGeneratorInterface::class, ['generate' => 'https://citizen_project_url'])),
         ]);

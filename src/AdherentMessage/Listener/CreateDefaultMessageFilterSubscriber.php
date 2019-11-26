@@ -25,6 +25,7 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
         if (!\in_array($message->getType(), [
             AdherentMessageTypeEnum::DEPUTY,
             AdherentMessageTypeEnum::REFERENT,
+            AdherentMessageTypeEnum::SENATOR,
         ], true)) {
             return;
         }
