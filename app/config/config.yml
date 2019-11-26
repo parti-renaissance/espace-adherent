@@ -199,7 +199,7 @@ csa_guzzle:
         mailjet_api:
             config:
                 base_uri: 'https://api.mailjet.com/v3/'
-                timeout: 2.0
+                timeout: 10.0
                 headers:
                     Content-Type: 'application/json'
 
