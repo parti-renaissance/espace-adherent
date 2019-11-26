@@ -23,6 +23,7 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
     public const CLIENT_06_UUID = '4f3394d4-7137-424a-8c73-27e0ad641fc9';
     public const CLIENT_07_UUID = 'e7c07c65-bba1-4a05-8d9b-76de6e5145c6';
     public const CLIENT_08_UUID = '4222f4ce-f994-45f7-9ff5-f9f09ab3992b';
+    public const CLIENT_09_UUID = '40bdd6db-e422-4153-819c-9973c09f9297';
 
     public function load(ObjectManager $manager)
     {
@@ -119,6 +120,18 @@ class LoadClientData extends AbstractFixture implements FixtureInterface
         $client8->addSupportedScope(Scope::JECOUTE_SURVEYS);
 
         $manager->persist($client8);
+
+        $manager->flush();
+
+        $client9 = new Client(
+            Uuid::fromString(self::CLIENT_09_UUID),
+            'CRM Paris',
+            'Pour récupérer des données sur les adhérents de Paris.',
+            'cChiFrOxtYb4CgnKoYvV9evEcrOsk2hb9wvO73QLYyc=',
+            [GrantTypeEnum::CLIENT_CREDENTIALS]
+        );
+        $client9->addSupportedScope(Scope::CRM_PARIS);
+        $manager->persist($client9);
 
         $manager->flush();
     }
