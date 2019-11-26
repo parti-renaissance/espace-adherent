@@ -325,6 +325,7 @@
         <service id="AppBundle\Command\ImportDistrictsCommand"/>
         <service id="AppBundle\Command\ImportElectedRepresentativesRegisterCommand"/>
         <service id="AppBundle\Command\UnregisterAdherentsCommand"/>
+        <service id="AppBundle\Command\UpdateDistrictGeoPolygonCommand"/>
         <service id="AppBundle\Command\NotifyIdeaAuthorCommand">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
         </service>
@@ -387,7 +388,7 @@
 
         <!-- Deputy -->
         <service id="AppBundle\Command\CreateReferentTagsForDistrictsCommand" />
-        <service id="AppBundle\Command\InitializeReferentTagsForDistrictsOnAdherentsCommand" />
+        <service id="AppBundle\Command\UpdateReferentTagsForDistrictsOnAdherentsCommand" />
         <service id="AppBundle\Deputy\Subscriber\BindAdherentDistrictSubscriber" />
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
         <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
@@ -495,6 +496,10 @@
         </service>
         <service id="AppBundle\Statistics\Acquisition\Calculator\AmountMonthlyDonationCalculator">
             <tag name="app.acquisition_statistics.calculator" priority="21"/>
+        </service>
+
+        <service id="AppBundle\Adherent\Handler\UpdateReferentTagOnDistrictCommandHandler">
+            <tag name="messenger.message_handler" />
         </service>
 
         <!-- Storage -->

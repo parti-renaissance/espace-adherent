@@ -162,6 +162,11 @@ class District
         return $this->geoData;
     }
 
+    public function setGeoData(GeoData $geoData): void
+    {
+        $this->geoData = $geoData;
+    }
+
     public function getAdherent(): ?Adherent
     {
         return $this->adherent;

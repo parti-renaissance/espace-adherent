@@ -20,13 +20,11 @@ class DistrictLoader
     private $doctrine;
     private $geoCountries;
     private $geoDistricts;
-    private $geometryFactory;
 
-    public function __construct(Registry $doctrine, GeometryFactory $geometryFactory, LoggerInterface $logger)
+    public function __construct(Registry $doctrine, LoggerInterface $logger)
     {
         $this->logger = $logger;
         $this->doctrine = $doctrine;
-        $this->geometryFactory = $geometryFactory;
         $this->em = $this->doctrine->getManager();
         $this->decoder = new Serializer([new ObjectNormalizer()], [new JsonEncoder(), new CsvEncoder()]);
     }
@@ -88,7 +86,7 @@ class DistrictLoader
             unset($this->geoDistricts[$key]);
             $geoDistrict = array_shift($geoDistricts);
 
-            $geoData = new GeoData($this->geometryFactory->createGeometryFromGeoJson($geoDistrict['fields']['geo_shape']));
+            $geoData = new GeoData(GeometryFactory::createGeometryFromGeoJson($geoDistrict['fields']['geo_shape']));
             $countries = [District::FRANCE];
         } else {
             $countries = explode(',', str_replace(' ', '', $district['code_pays']));
@@ -99,7 +97,7 @@ class DistrictLoader
             if (0 === \count($geoCountries)) {
                 throw new \RuntimeException("Countries GeoJSON file doesn't contain countries with codes '$countries'");
             }
-            $geoData = new GeoData($this->geometryFactory->mergeGeoJsonGeometries($geoCountries));
+            $geoData = new GeoData(GeometryFactory::mergeGeoJsonGeometries($geoCountries));
         }
 
         if ($existingDistrict = $this->em->getRepository(District::class)->findOneBy(['code' => $district['circo_ID']])) {
