@@ -31,7 +31,6 @@ class CsvResponseFactory
         );
 
         $response->headers->set('Content-Disposition', $disposition);
-        $response->headers->set('Content-Description', 'File Transfer');
         $response->setCallback($content_callback);
 
         return $response;
