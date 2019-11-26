@@ -22,6 +22,7 @@ final class Scope extends Enum implements ScopeEntityInterface
     public const READ_TYPEFORMS = 'read:typeforms';
     public const READ_STATS = 'read:stats';
     public const JECOUTE_SURVEYS = 'jecoute_surveys';
+    public const CRM_PARIS = 'crm_paris';
 
     public function __toString()
     {
