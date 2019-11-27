@@ -154,7 +154,7 @@ final class MyEuropeProcessor
                     break;
                 default:
                     // Not handled
-                    continue;
+                    continue 2;
             }
 
             foreach ($choices as $choice) {
