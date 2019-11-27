@@ -42,14 +42,9 @@ class CrmParisControllerTest extends WebTestCase
         );
 
         $regex = <<<CONTENT
-uuid,first_name,last_name
-a046adbe-9c7b-56a9-a676-6151a6785dda,Jacques,Picard
-29461c49-6316-5be1-9ac3-17816bf2d819,Lucie,Olivera
-25e75e2f-2f73-4f51-8542-bd511ba6a945,Patrick,Bialès
-2f69db3c-ecd7-4a8a-bd23-bb4c9cfd70cf,Referent75and77,Referent75and77
-1ebee762-4dc1-42f6-9884-1c83ba9c6d71,Coordinatrice,"CITIZEN PROJECT"
-918f07e5-676b-49c0-b76d-72ce01cb2404,Député,"PARIS I"
-ccd87fb0-7d98-433f-81e1-3dd8b14f79c0,Député,"CHLI FDESIX"
+uuid,first_name,last_name,email_address,phone,address,gender,birthdate,latitude,longitude,interests
+a046adbe-9c7b-56a9-a676-6151a6785dda,Jacques,Picard,jacques.picard@en-marche.fr,"Country Code: 33 National Number: 187264236","36 rue de la Paix, 75008 Paris 8e",male,1953-04-03,48.869946,2.329719,
+29461c49-6316-5be1-9ac3-17816bf2d819,Lucie,Olivera,luciole1989@spambox.fr,"Country Code: 33 National Number: 727363643","13 boulevard des Italiens, 75009 Paris 9e",female,1989-09-17,48.871323,2.335376,jeunesse
 CONTENT;
 
         $this->assertRegExp(sprintf('/%s/', $regex), $responseContent);

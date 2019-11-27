@@ -22,6 +22,14 @@ class CrmParisController extends Controller
         'uuid',
         'first_name',
         'last_name',
+        'email_address',
+        'phone',
+        'address',
+        'gender',
+        'birthdate',
+        'latitude',
+        'longitude',
+        'interests',
     ];
 
     /**
@@ -43,6 +51,14 @@ class CrmParisController extends Controller
                 $adherent->getUuid(),
                 $adherent->getFirstName(),
                 $adherent->getLastName(),
+                $adherent->getEmailAddress(),
+                $adherent->getPhone(),
+                $adherent->getInlineFormattedAddress(),
+                $adherent->getGender(),
+                $adherent->getBirthdate()->format('Y-m-d'),
+                $adherent->getLatitude(),
+                $adherent->getLongitude(),
+                implode(', ', $adherent->getInterests()),
             ]));
         }
 
