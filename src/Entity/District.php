@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * References :
- *  - France: https://public.opendatasoft.com/explore/dataset/circonscriptions-legislatives-2017/export (JSON format)
- *  - Other countries: https://gist.github.com/angelodlfrtr/cf39d7db97c335f87d22
+ *  - France: https://www.data.gouv.fr/s/resources/contours-precis-des-circonscriptions-legislatives/20170511-183720/circonscriptions-legislatives.json
+ *  - Other countries: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DistrictRepository")
  * @ORM\Table(

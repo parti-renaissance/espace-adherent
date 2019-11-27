@@ -57,21 +57,18 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $url = sprintf('/3.0/lists/%s/segments?count=10000&fields=segments.id,segments.name', $this->mailchimpListId);
-
         $this->io->progressStart();
 
-        $response = $this->client->request('GET', $url);
+        $offset = 0;
+        $limit = 1000;
 
-        if (200 !== $response->getStatusCode()) {
-            return;
+        while ($tags = $this->getTags($offset, $limit)) {
+            $this->updateReferentTags($tags);
+            $this->updateCommittees($tags);
+            $this->updateCitizenProjects($tags);
+
+            $offset += $limit;
         }
-
-        $tags = json_decode((string) $response->getBody(), true)['segments'];
-
-        $this->updateReferentTags($tags);
-        $this->updateCommittees($tags);
-        $this->updateCitizenProjects($tags);
 
         $this->io->progressFinish();
     }
@@ -154,5 +151,24 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 
         $this->entityManager->flush();
         $this->entityManager->clear();
+    }
+
+    private function getTags(int $offset, int $limit): array
+    {
+        $params = [
+            'query' => [
+                'offset' => $offset,
+                'count' => $limit,
+                'fields' => 'segments.id,segments.name',
+            ],
+        ];
+
+        $response = $this->client->request('GET', sprintf('/3.0/lists/%s/segments', $this->mailchimpListId), $params);
+
+        if (200 !== $response->getStatusCode()) {
+            return [];
+        }
+
+        return json_decode((string) $response->getBody(), true)['segments'];
     }
 }
