@@ -6,6 +6,7 @@ use AppBundle\Csv\CsvResponseFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentRepository;
 use League\Csv\Writer;
+use libphonenumber\PhoneNumberUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,8 @@ class CrmParisController extends Controller
      */
     public function adherentsAction(
         AdherentRepository $adherentRepository,
-        CsvResponseFactory $csvResponseFactory
+        CsvResponseFactory $csvResponseFactory,
+        PhoneNumberUtil $phoneNumberUtil
     ): Response {
         $csv = Writer::createFromPath('php://temp', 'r+');
 
@@ -52,7 +54,7 @@ class CrmParisController extends Controller
                 $adherent->getFirstName(),
                 $adherent->getLastName(),
                 $adherent->getEmailAddress(),
-                $adherent->getPhone(),
+                $adherent->getPhone() ? $phoneNumberUtil->format($adherent->getPhone(), 'NATIONAL') : null,
                 $adherent->getInlineFormattedAddress(),
                 $adherent->getGender(),
                 $adherent->getBirthdate()->format('Y-m-d'),
