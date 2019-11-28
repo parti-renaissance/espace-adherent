@@ -2,6 +2,8 @@
 
 namespace AppBundle\Serializer;
 
+use AppBundle\Entity\BaseEvent;
+use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\MunicipalEvent;
 use JMS\Serializer\GraphNavigator;
@@ -27,36 +29,36 @@ class EventICalHandler implements SubscribingHandlerInterface
                 'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
                 'method' => 'serialize',
             ],
+            [
+                'type' => CitizenAction::class,
+                'format' => 'ical',
+                'direction' => GraphNavigator::DIRECTION_SERIALIZATION,
+                'method' => 'serialize',
+            ],
         ];
     }
 
-    public function serialize(IcalSerializationVisitor $visitor, Event $event): void
+    public function serialize(IcalSerializationVisitor $visitor, BaseEvent $event): void
     {
         $eventData = [
             'VEVENT' => [
                 'UID' => $event->getUuid()->toString(),
                 'SUMMARY' => $event->getName(),
                 'DESCRIPTION' => $event->getDescription(),
-                'DTSTART' => $this->formatDate($event->getLocalBeginAt()),
-                'DTEND' => $this->formatDate($event->getFinishAt()),
+                'DTSTART' => $event->getLocalBeginAt(),
+                'DTEND' => $event->getLocalFinishAt(),
                 'LOCATION' => $event->getInlineFormattedAddress(),
             ],
         ];
 
         if ($organizer = $event->getOrganizer()) {
             $eventData['ORGANIZER'] = sprintf(
-                'CN="%s %s";mailto:%s',
+                '%s %s',
                 $organizer->getFirstName(),
-                mb_strtoupper($organizer->getLastName()),
-                $organizer->getEmailAddress()
+                mb_strtoupper($organizer->getLastName())
             );
         }
 
         $visitor->setRoot($eventData);
-    }
-
-    private function formatDate(\DateTime $date): string
-    {
-        return $date->format('Ymd\THis');
     }
 }

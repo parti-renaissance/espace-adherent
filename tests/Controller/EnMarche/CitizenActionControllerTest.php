@@ -88,25 +88,25 @@ class CitizenActionControllerTest extends AbstractEventControllerTest
         $this->client->request(Request::METHOD_GET, sprintf('/action-citoyenne/%s/ical', $citizenAction->getSlug()));
 
         $this->isSuccessful($response = $this->client->getResponse());
-        $this->assertSame(sprintf('attachment; filename=%s-projet-citoyen-3.ics', $citizenAction->getFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
-        $this->assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
+        self::assertSame(sprintf('attachment; filename=%s-projet-citoyen-3.ics', $citizenAction->getFinishAt()->format('Y-m-d')), $response->headers->get('Content-Disposition'));
+        self::assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
-        $beginAt = preg_quote($citizenAction->getBeginAt()->format('Ymd\THis'), '/');
-        $finishAt = preg_quote($citizenAction->getFinishAt()->format('Ymd\THis'), '/');
+        $beginAt = preg_quote($citizenAction->getLocalBeginAt()->format('Ymd\THis'), '/');
+        $finishAt = preg_quote($citizenAction->getLocalFinishAt()->format('Ymd\THis'), '/');
         $uuid = preg_quote($uuid, '/');
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
 VERSION\:2\.0
 PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.1\.6\/\/EN
 CALSCALE\:GREGORIAN
-ORGANIZER\:CN\="Jacques PICARD"\\\\;mailto\:jacques\.picard@en\-marche\.fr
+ORGANIZER\:Jacques PICARD
 BEGIN\:VEVENT
 UID\:$uuid
 DTSTAMP\:\\d{8}T\\d{6}Z
 SUMMARY\:Projet citoyen #3
 DESCRIPTION\:Un troisième projet citoyen
-DTSTART\:$beginAt
-DTEND\:$finishAt
+DTSTART;TZID=Europe\/Paris\:$beginAt
+DTEND;TZID=Europe\/Paris\:$finishAt
 LOCATION\:16 rue de la Paix\\\\, 75008 Paris 8e
 END\:VEVENT
 END\:VCALENDAR
