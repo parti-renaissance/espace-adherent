@@ -434,6 +434,9 @@
         <service id="AppBundle\Committee\EventListener\CommitteeSubscriber">
             <argument key="$producer" type="service" id="old_sound_rabbit_mq.sync_api_producer"/>
         </service>
+        <service id="AppBundle\Committee\EventListener\SendEmailForNewFollowerListener">
+            <argument type="service" key="$mailer" id="app.mailer.transactional" />
+        </service>
 
         <!-- Event subscriber -->
         <service id="AppBundle\Event\EventListener\EventSubscriber">
