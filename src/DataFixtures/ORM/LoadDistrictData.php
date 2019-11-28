@@ -30,13 +30,9 @@ class LoadDistrictData extends AbstractFixture implements FixtureInterface, Cont
 
         $districtRepository = $manager->getRepository(District::class);
 
-        $deputy_75_1 = $this->getReference('deputy-75-1');
-        $district_75_1 = $districtRepository->findOneBy(['code' => '75001']);
-        $district_75_1->setAdherent($deputy_75_1);
+        $this->getReference('deputy-75-1')->setManagedDistrict($districtRepository->findOneBy(['code' => '75001']));
 
-        $deputy_ch_li = $this->getReference('deputy-ch-li');
-        $district_ch_li = $districtRepository->findOneBy(['code' => 'FDE-06']);
-        $district_ch_li->setAdherent($deputy_ch_li);
+        $this->getReference('deputy-ch-li')->setManagedDistrict($districtRepository->findOneBy(['code' => 'FDE-06']));
 
         // Create referent tags for districts
         foreach ($districtRepository->findAll() as $district) {
