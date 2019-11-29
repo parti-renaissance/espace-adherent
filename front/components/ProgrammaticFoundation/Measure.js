@@ -3,22 +3,19 @@ import Project from './Project';
 
 export default class Measure extends React.Component {
     render() {
-        const sectionIdentifierParts = this.props.parentSectionIdentifierParts.concat(this.props.measure.position);
-        const sectionIdentifier = sectionIdentifierParts.join('.');
-
         return (
             <div className={`programmatic-foundation__measure child ${
                 this.props.measure.isLeading ? 'leading' : ''
             } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
 
                 <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
-                    <span className="title">{sectionIdentifier} {this.props.measure.title}</span>
+                    <span className="title">{this.props.measure.title}</span>
                     <span className="toggle" />
                 </div>
 
                 <div className="content">
                     <div className="measure-links">
-                        <a href="#" onClick={this.handleCopyAction.bind(this)}>
+                        <a href="#" onClick={this.handleCopyAction.bind(this)} data-success-title="Copié">
                             <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                 <path fill="#7B889B" d="M13.5,1.5 L13.5,12.5 L10.5,12.5 L10.5,15.5 L2.5,15.5 L2.5,4.5 L5.5,4.5 L5.5,1.5 L13.5,1.5 Z M5.5,5.5 L3.5,5.5 L3.5,14.5 L9.5,14.5 L9.5,12.5 L5.5,12.5 L5.5,5.5 Z M12.5,2.5 L6.5,2.5 L6.5,11.5 L12.5,11.5 L12.5,2.5 Z"/>
                             </svg>
@@ -69,6 +66,5 @@ export default class Measure extends React.Component {
 
 Measure.propsType = {
     measure: PropTypes.object.isRequired,
-    parentSectionIdentifierParts: PropTypes.arrayOf(PropTypes.string).isRequired,
     preventAutoExpand: PropTypes.bool,
 };

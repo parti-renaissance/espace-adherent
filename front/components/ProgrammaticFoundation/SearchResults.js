@@ -23,7 +23,6 @@ export default class SearchResults extends React.Component {
                                 key={index}
                                 measure={measure}
                                 preventAutoExpand={true}
-                                parentSectionIdentifierParts={measure.parentSectionIdentifierParts}
                             />
                         })}
                     </div>

@@ -370,7 +370,6 @@
                     border-bottom: none;
                     border-radius: 50px;
                     font-weight: bold;
-                    transition: color .5s;
                     margin-right: 5px;
 
                     &:hover {
@@ -383,7 +382,30 @@
                     }
 
                     &.copied {
-                        color: $green--apple;
+                        position: relative;
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            border-left: 7px solid transparent;
+                            border-right: 7px solid transparent;
+                            border-bottom: 7px solid $darker;
+                            top: 33px;
+                            left: 53%;
+                        }
+
+                        &:after {
+                            content: attr(data-success-title);
+                            position: absolute;
+                            left: 35%;
+                            top: 40px;
+                            color: $white;
+                            padding: 6px 13px 6px 34px;
+                            border-radius: 3px;
+                            background: $darker url('/images/check.svg') no-repeat 9px center;
+                        }
                     }
                 }
             }

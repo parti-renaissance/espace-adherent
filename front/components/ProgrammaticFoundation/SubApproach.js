@@ -28,7 +28,6 @@ export default class SubApproach extends React.Component {
                         {this.props.subApproach.measures.map(measure => {
                             return <Measure
                                 key={measure.position}
-                                parentSectionIdentifierParts={sectionIdentifierParts}
                                 measure={measure}
                             />
                           })}
