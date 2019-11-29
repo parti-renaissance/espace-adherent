@@ -373,21 +373,21 @@ class EventManagerControllerTest extends WebTestCase
         self::assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $beginAt = preg_quote($event->getLocalBeginAt()->format('Ymd\THis'), '/');
-        $finishAt = preg_quote($event->getFinishAt()->format('Ymd\THis'), '/');
+        $finishAt = preg_quote($event->getLocalFinishAt()->format('Ymd\THis'), '/');
         $uuid = preg_quote($uuid, '/');
         $icalRegex = <<<CONTENT
 BEGIN\:VCALENDAR
 VERSION\:2\.0
 PRODID\:\-\/\/Sabre\/\/Sabre VObject 4\.1\.6\/\/EN
 CALSCALE\:GREGORIAN
-ORGANIZER\:CN\="Pierre KIROULE"\\\\;mailto\:kiroule\.p@blabla\.tld
+ORGANIZER\:Pierre KIROULE
 BEGIN\:VEVENT
 UID\:$uuid
 DTSTAMP\:\\d{8}T\\d{6}Z
 SUMMARY\:Meeting de New York City
 DESCRIPTION\:Ouvert aux français de New York\.
-DTSTART\:$beginAt
-DTEND\:$finishAt
+DTSTART;TZID=America\/New_York\:$beginAt
+DTEND;TZID=America\/New_York\:$finishAt
 LOCATION\:226 W 52nd St\\\\, 10019 New York\\\\, \États\-Unis
 END\:VEVENT
 END\:VCALENDAR

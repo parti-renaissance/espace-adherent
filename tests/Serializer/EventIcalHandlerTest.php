@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Serializer;
 
+use AppBundle\Entity\CitizenAction;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\MunicipalEvent;
 use AppBundle\Serializer\EventICalHandler;
@@ -27,7 +28,7 @@ class EventIcalHandlerTest extends TestCase
     {
         $result = EventICalHandler::getSubscribingMethods();
 
-        $this->assertCount(2, $result);
+        $this->assertCount(3, $result);
 
         $this->assertEquals(Event::class, $result[0]['type']);
         $this->assertEquals('ical', $result[0]['format']);
@@ -38,6 +39,11 @@ class EventIcalHandlerTest extends TestCase
         $this->assertEquals('ical', $result[1]['format']);
         $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[1]['direction']);
         $this->assertEquals('serialize', $result[1]['method']);
+
+        $this->assertEquals(CitizenAction::class, $result[2]['type']);
+        $this->assertEquals('ical', $result[2]['format']);
+        $this->assertEquals(GraphNavigator::DIRECTION_SERIALIZATION, $result[2]['direction']);
+        $this->assertEquals('serialize', $result[2]['method']);
     }
 
     /**
@@ -53,17 +59,6 @@ class EventIcalHandlerTest extends TestCase
         $startDate = $this->createMock('\DateTime');
         $endDate = $this->createMock('\DateTime');
 
-        $startDate->expects($this->once())
-            ->method('format')
-            ->with($this->equalTo('Ymd\THis'))
-            ->will($this->returnValue('20170307T090000'))
-        ;
-        $endDate->expects($this->once())
-            ->method('format')
-            ->with($this->equalTo('Ymd\THis'))
-            ->will($this->returnValue('20170307T100000'))
-        ;
-
         $committeeEvent->expects($this->once())
                        ->method('getUuid')
                        ->will($this->returnValue($uuid))
@@ -73,7 +68,7 @@ class EventIcalHandlerTest extends TestCase
                        ->will($this->returnValue($startDate))
         ;
         $committeeEvent->expects($this->once())
-                       ->method('getFinishAt')
+                       ->method('getLocalFinishAt')
                        ->will($this->returnValue($endDate))
         ;
         $committeeEvent->expects($this->once())

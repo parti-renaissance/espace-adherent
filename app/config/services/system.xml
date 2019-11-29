@@ -248,10 +248,6 @@
             <tag name="jms_serializer.subscribing_handler" />
         </service>
 
-        <service id="app.citizen_project_serializer.citizen_action_ical_handler" class="AppBundle\Serializer\CitizenActionICalHandler">
-            <tag name="jms_serializer.subscribing_handler" />
-        </service>
-
         <!-- Form -->
         <service id="AppBundle\Form\TypeExtension\FormTypeExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
