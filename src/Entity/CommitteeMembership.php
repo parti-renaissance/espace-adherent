@@ -58,6 +58,8 @@ class CommitteeMembership
      *
      * @ORM\ManyToOne(targetEntity="Committee")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"adherent_committees_modal"})
      */
     private $committee;
 
@@ -69,6 +71,8 @@ class CommitteeMembership
      * @var string
      *
      * @ORM\Column(length=10)
+     *
+     * @Groups({"adherent_committees_modal"})
      */
     private $privilege;
 
@@ -212,7 +216,7 @@ class CommitteeMembership
     }
 
     /**
-     * @Groups({"export"})
+     * @Groups({"export", "adherent_committees_modal"})
      */
     public function getSubscriptionDate(): \DateTimeImmutable
     {

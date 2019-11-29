@@ -264,6 +264,12 @@ class App {
             module.default(elementSelector, uploadUrl, {removePlugins: ['MediaEmbed']});
         });
     }
+
+    runReferentUserList(committeeModalButtonClass) {
+        System.import('pages/referent_user_list').catch((error) => { throw error; }).then((module) => {
+            module.default(committeeModalButtonClass, this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

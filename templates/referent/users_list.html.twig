@@ -17,6 +17,8 @@
                     theme: 'default em-filters'
                 });
             }
+
+            App.runReferentUserList('referent-user__committees-modal--trigger');
         });
     </script>
 {% endblock %}
@@ -275,6 +277,7 @@
                         <th style="width: 100px;">Téléphone</th>
                         <th style="width: 100px;">SMS/MMS</th>
                         <th style="width: 100px;">Commune</th>
+                        <th style="width: 100px;">Comité(s) suivi(s)</th>
                         <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
                             <a
                                 href="{{ path('app_referent_users', filter.toArray|merge({sort: 'registeredAt', order: order})) }}"
@@ -332,6 +335,19 @@
                             </span>
                         </td>
                         <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
+                        <td>
+                            {% set committees_count = user.committees|length %}
+
+                            {% if committees_count > 0 and user.adherentUuid %}
+                                {{ committees_count }} •
+                                <a
+                                    href="javascript:void(0);"
+                                    class="referent-user__committees-modal--trigger"
+                                    data-uuid="{{ user.adherentUuid }}"
+                                    data-adherent-name="{{ user.fullName }}"
+                                >Voir</a>
+                            {% endif %}
+                        </td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.createdAt|date('d/m/Y H:i') }}
                         </td>
@@ -360,5 +376,7 @@
                 pagination_route_params: filter.toArray
             } %}
         {% endif %}
+
+        <div id="modal-wrapper"></div>
     </div>
 {% endblock %}

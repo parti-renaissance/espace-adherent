@@ -1282,6 +1282,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->jecouteManagedArea instanceof JecouteManagedArea && !empty($this->jecouteManagedArea->getCodes());
     }
 
+    /**
+     * @return CommitteeMembership[]|CommitteeMembershipCollection
+     */
     public function getMemberships(): CommitteeMembershipCollection
     {
         if (!$this->memberships instanceof CommitteeMembershipCollection) {

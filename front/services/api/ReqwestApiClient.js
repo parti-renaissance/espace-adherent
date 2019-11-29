@@ -257,4 +257,11 @@ export default class ReqwestApiClient {
             processData: false,
         });
     }
+
+    getAdherentCommittees(uuid, callback) {
+        this._createRequest(callback, {
+            url: '/api/adherents/' + uuid + '/committees',
+            type: 'json',
+        });
+    }
 }

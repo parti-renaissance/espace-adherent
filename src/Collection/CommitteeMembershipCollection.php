@@ -77,6 +77,13 @@ class CommitteeMembershipCollection extends ArrayCollection
         });
     }
 
+    public function getMembershipsForApprovedCommittees(): self
+    {
+        return $this->filter(function (CommitteeMembership $membership) {
+            return $membership->getCommittee()->isApproved();
+        });
+    }
+
     public function getCommitteeMembershipsInWaitingForApproval(): self
     {
         return $this->filter(function (CommitteeMembership $membership) {

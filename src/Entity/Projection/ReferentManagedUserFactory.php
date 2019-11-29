@@ -29,7 +29,8 @@ class ReferentManagedUserFactory
             $data['gender'] ?? null,
             $data['supervisor_tags'] ?? [],
             $data['citizenProjects'] ?? null,
-            $data['citizenProjectsOrganizer'] ?? null
+            $data['citizenProjectsOrganizer'] ?? null,
+            $data['uuid'] ?? null
         );
     }
 

@@ -26,6 +26,9 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentManagedUser::class);
     }
 
+    /**
+     * @return ReferentManagedUser[]|PaginatorInterface
+     */
     public function search(
         Adherent $referent,
         ManagedUsersFilter $filter = null,
