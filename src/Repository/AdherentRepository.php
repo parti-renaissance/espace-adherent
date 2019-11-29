@@ -741,4 +741,35 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'id'
         );
     }
+
+    public function getCrmParisIterator(): IterableResult
+    {
+        return $this->createQueryBuilder('a')
+            ->select('partial a.{
+                id,
+                uuid,
+                firstName,
+                lastName,
+                emailAddress,
+                phone,
+                postAddress.address,
+                postAddress.postalCode,
+                postAddress.city,
+                postAddress.cityName,
+                postAddress.country,
+                postAddress.latitude,
+                postAddress.longitude,
+                gender,
+                birthdate,
+                interests
+            }')
+            ->andWhere('a.postAddress.postalCode LIKE :parisPostalCode')
+            ->setParameter('parisPostalCode', '75%')
+            ->andWhere('a.postAddress.country = :country')
+            ->setParameter('country', 'FR')
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->iterate()
+        ;
+    }
 }

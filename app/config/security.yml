@@ -329,7 +329,7 @@ security:
             security: false
 
         api_oauth:
-            pattern: ^/api/(me|webhooks|statistics/|jecoute/)
+            pattern: ^/api/(me|webhooks|statistics/|jecoute/|crm-paris/)
             stateless: true
             guard:
                 authenticators:
