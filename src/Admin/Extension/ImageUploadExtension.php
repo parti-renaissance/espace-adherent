@@ -87,7 +87,7 @@ class ImageUploadExtension extends AbstractAdminExtension
 
     public function postRemove(AdminInterface $admin, $object)
     {
-        foreach ($admin->getUploadableImagePropertyNames() as $imagePropertyName) {
+        foreach ($admin->getUploadableImagePropertyNames($object) as $imagePropertyName) {
             $imagePropertyName = ucfirst($imagePropertyName);
 
             /** @var Image $image */

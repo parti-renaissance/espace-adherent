@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Mooc\AttachmentFile;
+use AppBundle\Entity\Mooc\BaseMoocElement;
 use AppBundle\Entity\Mooc\Chapter;
 use AppBundle\Entity\Mooc\MoocElementTypeEnum;
 use AppBundle\Form\Admin\BaseFileType;
@@ -173,9 +174,9 @@ class MoocElementAdmin extends AbstractAdmin implements ImageUploadAdminInterfac
         $collection->add('move', $this->getRouterIdParameter().'/move/{position}');
     }
 
-    public function getUploadableImagePropertyNames(): array
+    public function getUploadableImagePropertyNames(BaseMoocElement $element = null): array
     {
-        if (MoocElementTypeEnum::IMAGE !== $this->getSubject()->getType()) {
+        if (MoocElementTypeEnum::IMAGE !== ($element ? $element->getType() : $this->getSubject()->getType())) {
             return [];
         }
 
