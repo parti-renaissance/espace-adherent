@@ -45,7 +45,7 @@ export default class AdherentCommitteeList extends React.Component {
 
     renderMainBlock() {
         return (
-            <div className="font-roboto">
+            <div className="adherent__committees font-roboto">
                 <div className="text--bold text--default-large b__nudge--bottom">
                     Comité(s) suivi(s) par {this.state.adherent_name} :
                 </div>
@@ -53,7 +53,7 @@ export default class AdherentCommitteeList extends React.Component {
                     const date = new Date(membership.subscriptionDate);
 
                     return (
-                        <div key={index} className="b__nudge--bottom-medium">
+                        <div key={index} className="adherent__committees--item">
                             <div>
                                 <a className="link--no-decor link--blue--dark"
                                    href={`/comites/${membership.committee.slug}`}
