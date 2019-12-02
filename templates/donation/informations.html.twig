@@ -131,6 +131,12 @@
                     {{ form_errors(form.emailAddress) }}
                     {{ form_widget(form.emailAddress, { attr: { class: 'em-form__field', placeholder: 'Adresse e-mail' } }) }}
                 </div>
+
+                <div class="em-form__group">
+                    <label class="em-form__label">Code don</label>
+                    {{ form_errors(form.code) }}
+                    {{ form_widget(form.code, { attr: { class: 'em-form__field', placeholder: 'Code don' } }) }}
+                </div>
             </div>
 
             <div>
