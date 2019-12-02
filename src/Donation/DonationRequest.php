@@ -107,6 +107,11 @@ class DonationRequest
      */
     private $nationality;
 
+    /**
+     * @Assert\Length(max=12)
+     */
+    private $code;
+
     private $clientIp;
 
     /**
@@ -266,6 +271,16 @@ class DonationRequest
     public function setCountry(?string $country)
     {
         $this->country = $country;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 
     public function getClientIp(): string

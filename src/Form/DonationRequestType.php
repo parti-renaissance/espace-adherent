@@ -122,6 +122,9 @@ class DonationRequestType extends AbstractType
             ->add('country', UnitedNationsCountryType::class, [
                 'preferred_choices' => [Address::FRANCE],
             ])
+            ->add('code', TextType::class, [
+                'filter_emojis' => true,
+            ])
             ->add('isPhysicalPerson', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [new Assert\IsTrue()],

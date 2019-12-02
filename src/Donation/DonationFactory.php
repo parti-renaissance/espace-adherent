@@ -36,6 +36,7 @@ class DonationFactory
                 $request->getFirstName().' '.$request->getLastName()
             ),
             $request->getNationality(),
+            $request->getCode(),
             $donator
         );
     }
