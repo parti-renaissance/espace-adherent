@@ -29,9 +29,7 @@ export default class AdherentCommitteeList extends React.Component {
 
         this.setState(data);
 
-        if(this.state.display = true){
-            document.body.style.overflow = 'hidden';
-        }
+        addClass(document.body, 'modal-open');
     }
 
     fetchData() {
@@ -87,12 +85,9 @@ export default class AdherentCommitteeList extends React.Component {
     }
 
     _hideModal() {
-        this.setState({
-            display: false,
-        });
+        this.setState({ display: false });
 
-        document.body.style.overflow = 'auto';
-
+        removeClass(document.body, 'modal-open');
     }
 
     render() {
