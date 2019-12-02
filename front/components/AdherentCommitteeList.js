@@ -49,8 +49,7 @@ export default class AdherentCommitteeList extends React.Component {
                 <div className="text--bold text--default-large b__nudge--bottom">
                     Comité(s) suivi(s) par {this.state.adherent_name} :
                 </div>
-                {this.state.committees.map((membership, index) => {
-                    return (
+                {this.state.committees.map((membership, index) => (
                         <div key={index} className="adherent__committees--item">
                             <div>
                                 <a className="link--no-decor link--blue--dark"
@@ -70,8 +69,7 @@ export default class AdherentCommitteeList extends React.Component {
                             }
                             </div>
                         </div>
-                    );
-                })}
+                    ))}
             </div>
         );
     }
