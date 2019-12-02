@@ -28,6 +28,10 @@ export default class AdherentCommitteeList extends React.Component {
         }
 
         this.setState(data);
+
+        if(this.state.display = true){
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     fetchData() {
@@ -86,6 +90,9 @@ export default class AdherentCommitteeList extends React.Component {
         this.setState({
             display: false,
         });
+
+        document.body.style.overflow = 'auto';
+
     }
 
     render() {
