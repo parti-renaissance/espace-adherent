@@ -131,12 +131,6 @@
                     {{ form_errors(form.emailAddress) }}
                     {{ form_widget(form.emailAddress, { attr: { class: 'em-form__field', placeholder: 'Adresse e-mail' } }) }}
                 </div>
-
-                <div class="em-form__group">
-                    <label class="em-form__label">Code don</label>
-                    {{ form_errors(form.code) }}
-                    {{ form_widget(form.code, { attr: { class: 'em-form__field', placeholder: 'Code don' } }) }}
-                </div>
             </div>
 
             <div>
@@ -179,7 +173,21 @@
                 </div>
             </div>
 
-            <div class="em-form__group em-form__group--cgu">
+            <div class="b__nudge--top-50">
+                <h3 class="text--medium-small b__nudge--bottom">Code d'équipe</h3>
+                <div class="text--body text--dark b__nudge--bottom-larger">
+                    Si un code équipe vous a été transmis, veuillez le renseigner ici (optionnel).
+                </div>
+                <div class="em-form__group">
+                    <label class="em-form__label">Code d'équipe</label>
+                    {{ form_errors(form.code) }}
+                    {{ form_widget(form.code, { attr: { class: 'em-form__field', placeholder: 'Code d\'équipe à 6 chiffres' } }) }}
+                </div>
+            </div>
+
+            <hr class="b__nudge--top-50 b__nudge--bottom-larger"/>
+
+            <div class="em-form__group em-form__group--cgu b__nudge--top-large">
                 <div class="form__checkbox">
                     {{ form_row(form.isPhysicalPerson, { label: "Je certifie sur l'honneur être une personne physique et que le règlement de mon don ne provient pas du compte d'une personne morale (entreprise, association, collectivité...) mais bien de mon compte bancaire personnel", label_attr: { id: 'donation_check_label' } }) }}
                 </div>
