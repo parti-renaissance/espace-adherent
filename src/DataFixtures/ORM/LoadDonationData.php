@@ -87,7 +87,7 @@ class LoadDonationData extends Fixture
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB
     ): Donation {
-        $donation = new Donation(
+        return new Donation(
             $uuid = Uuid::uuid4(),
             $type,
             $amount * 100,
@@ -96,10 +96,9 @@ class LoadDonationData extends Fixture
             $duration,
             $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
             Address::FRANCE,
+            null,
             $donator
         );
-
-        return $donation;
     }
 
     public function createDonator(string $accountId, Adherent $adherent): Donator
