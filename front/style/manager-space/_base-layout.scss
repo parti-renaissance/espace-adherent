@@ -494,6 +494,20 @@
     }
 }
 
+.modal-content {
+
+    .adherent__committees {
+        &--item {
+            padding: 20px 0;
+            border-bottom: 1px solid $lines-grey;
+
+            &:last-child {
+                border: none;
+            }
+        }
+    }
+}
+
 // global components
 .alert {
     max-width: 900px;

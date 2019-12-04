@@ -18,6 +18,7 @@
         right: 0;
         bottom: 0;
         background-color: rgba(0,0,0,0.6);
+        pointer-events: none;
     }
 
     .modal-content {
@@ -78,4 +79,8 @@
             transform: rotate(-45deg);
         }
     }
+}
+
+body.modal-open {
+    overflow-y: hidden;
 }

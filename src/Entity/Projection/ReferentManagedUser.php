@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * This entity is a projection: do not insert, update or delete objects using this class.
@@ -56,6 +57,13 @@ class ReferentManagedUser
      * @ORM\Column(type="bigint", options={"unsigned": true})
      */
     private $originalId;
+
+    /**
+     * @var UuidInterface|null
+     *
+     * @ORM\Column(type="uuid", nullable=true)
+     */
+    private $adherentUuid;
 
     /**
      * @var string
@@ -221,11 +229,13 @@ class ReferentManagedUser
         string $gender = null,
         array $supervisorTags = [],
         array $citizenProjects = null,
-        array $citizenProjectsOrganizer = null
+        array $citizenProjectsOrganizer = null,
+        UuidInterface $uuid = null
     ) {
         $this->status = $status;
         $this->type = $type;
         $this->originalId = $originalId;
+        $this->adherentUuid = $uuid;
         $this->email = $email;
         $this->postalCode = $postalCode;
         $this->committeePostalCode = $committeePostalCode;
@@ -275,6 +285,16 @@ class ReferentManagedUser
     public function getOriginalId(): int
     {
         return $this->originalId;
+    }
+
+    public function getAdherentUuid(): ?UuidInterface
+    {
+        return $this->adherentUuid;
+    }
+
+    public function setAdherentUuid(?UuidInterface $adherentUuid): void
+    {
+        $this->adherentUuid = $adherentUuid;
     }
 
     public function getEmail(): string

@@ -7,12 +7,11 @@ use AppBundle\Entity\Projection\ReferentManagedUserFactory;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadReferentManagedUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadReferentManagedUserData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -24,6 +23,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'status' => ReferentManagedUser::STATUS_READY,
             'type' => ReferentManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-1')->getId(),
+            'uuid' => $this->getReference('adherent-1')->getUuid(),
             'email' => $this->getReference('adherent-1')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-1')->getPostalCode(),
             'city' => $this->getReference('adherent-1')->getCityName(),
@@ -44,6 +44,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'status' => ReferentManagedUser::STATUS_READY,
             'type' => ReferentManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-13')->getId(),
+            'uuid' => $this->getReference('adherent-13')->getUuid(),
             'email' => $this->getReference('adherent-13')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-13')->getPostalCode(),
             'city' => $this->getReference('adherent-13')->getCityName(),
@@ -65,6 +66,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'status' => ReferentManagedUser::STATUS_READY,
             'type' => ReferentManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-5')->getId(),
+            'uuid' => $this->getReference('adherent-5')->getUuid(),
             'email' => $this->getReference('adherent-5')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-5')->getPostalCode(),
             'city' => $this->getReference('adherent-5')->getCityName(),
@@ -89,6 +91,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements FixtureInte
             'status' => ReferentManagedUser::STATUS_READY,
             'type' => ReferentManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-7')->getId(),
+            'uuid' => $this->getReference('adherent-7')->getUuid(),
             'email' => $this->getReference('adherent-7')->getEmailAddress(),
             'postal_code' => $this->getReference('adherent-7')->getPostalCode(),
             'committee_postal_code' => '91',

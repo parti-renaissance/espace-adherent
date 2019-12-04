@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -55,5 +56,25 @@ class AdherentController extends AbstractController
         $errors = $serializer->serialize($violations, 'jsonproblem');
 
         return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @Route("/adherents/{uuid}/committees", name="api_adherent_committees", methods={"GET"})
+     *
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function getAdherentCommittees(Adherent $adherent, UserInterface $referent): Response
+    {
+        /** @var Adherent $referent */
+        if (!array_intersect($adherent->getReferentTagCodes(), $referent->getManagedAreaTagCodes())) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->json(
+            $adherent->getMemberships()->getMembershipsForApprovedCommittees(),
+            Response::HTTP_OK,
+            [],
+            ['groups' => ['adherent_committees_modal']]
+        );
     }
 }
