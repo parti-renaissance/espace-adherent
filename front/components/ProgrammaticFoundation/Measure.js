@@ -14,6 +14,17 @@ export default class Measure extends React.Component {
                 </div>
 
                 <div className="content">
+                    <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
+                    <div className="programmatic-foundation__children programmatic-foundation__projects">
+                        <div className="programmatic-foundation__items-type">Projets inspirants</div>
+                        {this.props.measure.projects.map((project, index) => {
+                            return <Project
+                                key={index}
+                                project={project}
+                            />
+                        })}
+                    </div>
+
                     <div className="measure-links">
                         <a href="#" onClick={this.handleCopyAction.bind(this)} data-success-title="Copié">
                             <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -28,16 +39,7 @@ export default class Measure extends React.Component {
                             Afficher sur une nouvelle page
                         </a>
                     </div>
-                    <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
-                    <div className="programmatic-foundation__children programmatic-foundation__projects">
-                        <div className="programmatic-foundation__items-type">Les Projets illustratifs</div>
-                        {this.props.measure.projects.map((project, index) => {
-                            return <Project
-                                key={index}
-                                project={project}
-                            />
-                        })}
-                    </div>
+
                 </div>
             </div>
         );

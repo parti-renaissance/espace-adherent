@@ -8,8 +8,8 @@ export default class SearchBar extends React.Component {
                 <div className="em-form__group text-search">
                     <input
                         type="text"
-                        className="em-form__field em-form__search"
-                        placeholder="Rechercher une mesure ou un projet illustratif"
+                        className="em-form__field"
+                        placeholder="Mesure ou projet illustratif"
                         onChange={event => this.props.onFilterTextChange(event.target.value)}
                         value={this.props.filterText}
                     />
@@ -30,7 +30,7 @@ export default class SearchBar extends React.Component {
                         selected={this.props.filterTag}
                         options={this.props.filterTagChoices}
                         onChange={event => this.props.onFilterTagChange(event.option)}
-                        placeholder='Choisissez un tag'
+                        placeholder='Choisissez une thématique'
                         searchEngine={true}
                         showClear={true}
                         searchInputAutoFocus={true}

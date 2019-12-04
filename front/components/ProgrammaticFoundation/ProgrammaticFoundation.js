@@ -4,6 +4,7 @@ import ReqwestApiClient from '../../services/api/ReqwestApiClient';
 import Content from './Content';
 import SearchBar from './SearchBar';
 import icnClose from './../../../web/images/icons/icn_close.svg';
+import logoPQM from './../../../web/images/projets-qui-marchent-logo-horizontal.svg';
 import Breadcrumbs from './Breadcrumbs';
 import ToggleLeadingMeasures from './ToggleLeadingMeasures';
 import Loader from '../Loader';
@@ -31,21 +32,22 @@ export default class ProgrammaticFoundation extends React.Component {
         const isSearching = this.isSearching();
 
         return (
-            <div>
-                <div className="programmatic-foundation__header">
-                    <div className="l__wrapper">
-                        <div className="content l__row l__row--center l__row--middle l__row--wrap text--center">
-                            <h1 className="text--larger b__nudge--bottom">
-                                Le socle programme
-                            </h1>
-                            <a href="#" className="text--body text--blue--dark link--no-decor text--bold">Télécharger les mesures phares</a>
-                        </div>
+            <div className="programmatic-foundation__row l__wrapper">
+                <div className="programmatic-foundation__left">
+                    <div className="content l__col">
+                        <img
+                            src={logoPQM}
+                            alt="Socle programmatique - Des projets qui marchent"
+                            className="socle-logo"
+                        />
 
-                    </div>
-                </div>
+                        <div className="text--body b__nudge--top"><strong>Filtrer</strong></div>
 
-                <div className="programmatic-foundation__content">
-                    <div className="l__wrapper">
+                        <ToggleLeadingMeasures
+                            onToggleChange={this.handleLeadingMeasuresChange}
+                            value={this.state.filterIsLeading}
+                        />
+
                         <SearchBar
                             filterText={this.state.filterText}
                             filterCity={this.state.filterCity}
@@ -56,38 +58,38 @@ export default class ProgrammaticFoundation extends React.Component {
                             onFilterCityChange={this.handleFilterCityChange}
                             onFilterTagChange={this.handleFilterTagChange}
                         />
+
+                        <div className="programmatic-foundation__contact information__modal inf-modl--pale-blue">
+                            Vous souhaitez partager un projet inspirant ou suggérer une mesure nouvelle ?
+                            Vous avez une remarque ou une question sur une mesure ou un projet ?
+                            Contactez l'équipe programme à <a href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
+                            <img
+                                src={icnClose}
+                                className="icn-close"
+                                onClick={event => hide(event.target.parentNode)}
+                                alt="close icon"
+                            />
+                        </div>
                     </div>
-                    <div className="l__wrapper--medium">
+                </div>
+
+                <div className="programmatic-foundation__right">
+
+                        <div className="l__row l__row--h-stretch l__row--wrap">
+                            <div className="programmatic-foundation__legend">
+                                <span className="legend-item leading-measure">Mesure phare</span>
+                                <span className="legend-item basic-measure">Mesure</span>
+                                <span className="legend-item project">Projet illustratif</span>
+                            </div>
+                        </div>
+
+                        {/*<a href="#" className="text--body text--blue--dark link--no-decor text--bold">Télécharger les mesures phares</a>*/}
+
                         {this.state.isLoading ?
                             <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
 
                             <div>
-                                <div className="programmatic-foundation__contact information__modal inf-modl--pale-blue">
-                                    Vous souhaitez partager un projet inspirant ou suggérer une mesure nouvelle ?
-                                    Vous avez une remarque ou une question sur une mesure ou un projet ?
-                                    Contactez l'équipe programme à <a href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
-                                    <img
-                                        src={icnClose}
-                                        className="icn-close"
-                                        onClick={event => hide(event.target.parentNode)}
-                                        alt="close icon"
-                                    />
-                                </div>
-
                                 <Breadcrumbs isSearching={isSearching} onExitClick={this.handleSearchExit}/>
-
-                                <div className="l__row l__row--h-stretch l__row--wrap b__nudge--bottom-50">
-                                    <div className="programmatic-foundation__legend">
-                                        <span className="legend-item leading-measure">Mesure phare</span>
-                                        <span className="legend-item basic-measure">Mesure</span>
-                                        <span className="legend-item project">Projet illustratif</span>
-                                    </div>
-
-                                    <ToggleLeadingMeasures
-                                        onToggleChange={this.handleLeadingMeasuresChange}
-                                        value={this.state.filterIsLeading}
-                                    />
-                                </div>
 
                                 <Content
                                     isSearching={isSearching}
@@ -99,7 +101,6 @@ export default class ProgrammaticFoundation extends React.Component {
                                 />
                             </div>
                         }
-                    </div>
                 </div>
 
             </div>
