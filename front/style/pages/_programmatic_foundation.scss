@@ -99,14 +99,19 @@
 
     &__contact {
         position: relative;
-        padding-right: 45px;
+        font-family: $font-roboto;
+        color: $silver-grey;
         margin-top: 20px;
+        padding: 20px 25px 0 0;
+        border-top: 1px solid $lines-grey;
+        font-size: 13px;
+        line-height: 18px;
 
         .icn-close {
             position: absolute;
             cursor: pointer;
-            right: 10px;
-            top: 10px;
+            right: 0px;
+            top: 15px;
             opacity: 0.5;
 
             &:hover {
@@ -209,6 +214,15 @@
         header {
             h1 {
                 margin-top: 0;
+                font-size: 22px;
+                line-height: 28px;
+                font-weight: bold;
+                color: $blue--dodger;
+                font-family: $font-roboto;
+
+                &.leading {
+                    color: $pink--hit;
+                }
             }
         }
 
@@ -225,6 +239,10 @@
                 }
             }
         }
+
+        .programmatic-foundation__project {
+            margin-top: 30px;
+        }
     }
 
     &__view-approaches {
@@ -239,7 +257,7 @@
         margin-bottom: 70px;
 
         h2 {
-            font-size: 22px;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
@@ -287,6 +305,7 @@
         color: $silver-grey;
         text-transform: uppercase;
         margin: 30px 0 20px;
+        letter-spacing: normal;
     }
 
     &__measures,

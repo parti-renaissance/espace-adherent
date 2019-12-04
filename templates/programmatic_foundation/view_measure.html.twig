@@ -18,12 +18,14 @@
         <section class="content">
             <article class="l__wrapper--narrow">
                 <header>
-                    <h1 class="text--large b__nudge--bottom-small">{{ measure.title }}</h1>
+                    <h1 class="{{ measure.isLeading ? 'leading' : '' }}">{{ measure.title }}</h1>
                 </header>
 
                 <div class="html">
                     {{ measure.content|raw }}
                 </div>
+
+                <div class="programmatic-foundation__items-type">Projets inspirants</div>
 
                 <div class="programmatic-foundation__children programmatic-foundation__project">
                     {% for project in measure.projects %}
