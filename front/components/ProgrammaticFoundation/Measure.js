@@ -8,7 +8,7 @@ export default class Measure extends React.Component {
                 this.props.measure.isLeading ? 'leading' : ''
             } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
 
-                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
+                <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
                     <span className="toggle" />
                 </div>
@@ -63,6 +63,21 @@ export default class Measure extends React.Component {
 
     getMeasureUrl(absolute = false) {
         return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.uuid}`
+    }
+
+    toggleActiveMeasure(event) {
+
+        if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
+            let items = event.currentTarget.parentNode.parentNode.children;
+            for (var i=0; i<items.length; ++i) {
+                if (hasClass(items[i], 'expanded')) {
+                    removeClass(items[i], 'expanded');
+                }
+            }
+            addClass(event.currentTarget.parentNode, 'expanded');
+        } else {
+            removeClass(event.currentTarget.parentNode, 'expanded');
+        }
     }
 }
 
