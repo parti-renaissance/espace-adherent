@@ -30,7 +30,7 @@ export default class SearchBar extends React.Component {
                         selected={this.props.filterTag}
                         options={this.props.filterTagChoices}
                         onChange={event => this.props.onFilterTagChange(event.option)}
-                        placeholder='Choisissez une thématique'
+                        placeholder='Thématique'
                         searchEngine={true}
                         showClear={true}
                         searchInputAutoFocus={true}
@@ -43,7 +43,7 @@ export default class SearchBar extends React.Component {
 
     getCities() {
         const cities = [
-            <option value="" key="empty-city">France entière</option>,
+            <option value="" key="empty-city">Taille de ville</option>,
         ];
 
         this.props.filterCityChoices.map((city) => {
