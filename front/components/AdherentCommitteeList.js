@@ -113,7 +113,7 @@ export default class AdherentCommitteeList extends React.Component {
         case 'HOST':
             return 'Co-animateur 🏅';
         default:
-            return 'Member';
+            return 'Membre';
         }
     }
 }
