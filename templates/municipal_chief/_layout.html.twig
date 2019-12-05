@@ -64,9 +64,11 @@
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
                             </li>
 
-                            <li>
-                                <a href="{{ path('app_approaches') }}">Catalogue</a>
-                            </li>
+                            {% if is_canary_enabled() %}
+                                <li>
+                                    <a href="{{ path('app_approaches') }}">Catalogue</a>
+                                </li>
+                            {% endif %}
 
                             {% if municipal_site_is_enabled(app.user) %}
                                 <li>
