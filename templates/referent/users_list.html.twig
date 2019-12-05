@@ -273,11 +273,11 @@
                                 Identité
                             </a>
                         </th>
-                        <th style="width: 100px;">Rôle(s)</th>
+                        <th style="width: 100px;">Rôle</th>
                         <th style="width: 100px;">Téléphone</th>
                         <th style="width: 100px;">SMS/MMS</th>
                         <th style="width: 100px;">Commune</th>
-                        <th style="width: 100px;">Comité(s) suivi(s)</th>
+                        <th style="width: 100px;">Comité</th>
                         <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
                             <a
                                 href="{{ path('app_referent_users', filter.toArray|merge({sort: 'registeredAt', order: order})) }}"
@@ -346,6 +346,8 @@
                                     data-uuid="{{ user.adherentUuid }}"
                                     data-adherent-name="{{ user.fullName }}"
                                 >Voir</a>
+                            {% else %}
+                                Aucun
                             {% endif %}
                         </td>
                         <td class="datagrid__table__col--hide-mobile">
