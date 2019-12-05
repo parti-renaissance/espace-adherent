@@ -1,14 +1,16 @@
 import React, {PropTypes} from 'react';
 import Project from './Project';
+import ReactDOM from 'react-dom';
 
 export default class Measure extends React.Component {
     render() {
         return (
             <div className={`programmatic-foundation__measure child ${
                 this.props.measure.isLeading ? 'leading' : ''
-            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
+            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}
+                ref={this.props.measure.uuid}>
 
-                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
+                <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
                     <span className="toggle" />
                 </div>
@@ -45,6 +47,11 @@ export default class Measure extends React.Component {
         );
     }
 
+    scrollToMyRef() {
+        ReactDOM.findDOMNode(this.refs[this.props.measure.uuid]).scrollIntoView({behavior: "smooth"});
+
+    }
+
     handleCopyAction(event) {
         event.preventDefault();
 
@@ -63,6 +70,24 @@ export default class Measure extends React.Component {
 
     getMeasureUrl(absolute = false) {
         return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.uuid}`
+    }
+
+    toggleActiveMeasure(event) {
+        if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
+            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__approaches'))
+                .getElementsByClassName('programmatic-foundation__measure');
+
+            for (var i=0; i<items.length; ++i) {
+                if (hasClass(items[i], 'expanded')) {
+                    removeClass(items[i], 'expanded');
+                }
+            }
+            addClass(event.currentTarget.parentNode, 'expanded');
+
+            this.scrollToMyRef();
+        } else {
+            removeClass(event.currentTarget.parentNode, 'expanded');
+        }
     }
 }
 
