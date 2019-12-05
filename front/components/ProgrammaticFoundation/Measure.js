@@ -1,17 +1,14 @@
 import React, {PropTypes} from 'react';
 import Project from './Project';
+import ReactDOM from 'react-dom';
 
 export default class Measure extends React.Component {
-    constructor(props) {
-        super(props);
-        this.myRef = this.props.measure.uuid;
-    }
     render() {
         return (
             <div className={`programmatic-foundation__measure child ${
                 this.props.measure.isLeading ? 'leading' : ''
             } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}
-                ref={this.myRef}>
+                ref={this.props.measure.uuid}>
 
                 <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
@@ -50,6 +47,11 @@ export default class Measure extends React.Component {
         );
     }
 
+    scrollToMyRef() {
+        ReactDOM.findDOMNode(this.refs[this.props.measure.uuid]).scrollIntoView({behavior: "smooth"});
+
+    }
+
     handleCopyAction(event) {
         event.preventDefault();
 
@@ -80,7 +82,7 @@ export default class Measure extends React.Component {
             }
             addClass(event.currentTarget.parentNode, 'expanded');
 
-            setTimeout(window.scrollTo(0, this.refs[this.myRef].offsetTop - 30), 250);
+            this.scrollToMyRef();
         } else {
             removeClass(event.currentTarget.parentNode, 'expanded');
         }
