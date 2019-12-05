@@ -1,19 +1,32 @@
 import React, {PropTypes} from 'react';
 import Project from './Project';
+import ReactDOM from 'react-dom';
 
 export default class Measure extends React.Component {
     render() {
         return (
             <div className={`programmatic-foundation__measure child ${
                 this.props.measure.isLeading ? 'leading' : ''
-            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
+            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}
+                ref={this.props.measure.uuid}>
 
-                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
+                <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
                     <span className="toggle" />
                 </div>
 
                 <div className="content">
+                    <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
+                    <div className="programmatic-foundation__children programmatic-foundation__projects">
+                        <div className="programmatic-foundation__items-type">Projets inspirants</div>
+                        {this.props.measure.projects.map((project, index) => {
+                            return <Project
+                                key={index}
+                                project={project}
+                            />
+                        })}
+                    </div>
+
                     <div className="measure-links">
                         <a href="#" onClick={this.handleCopyAction.bind(this)} data-success-title="Copié">
                             <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -28,19 +41,15 @@ export default class Measure extends React.Component {
                             Afficher sur une nouvelle page
                         </a>
                     </div>
-                    <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
-                    <div className="programmatic-foundation__children programmatic-foundation__projects">
-                        <div className="programmatic-foundation__items-type">Les Projets illustratifs</div>
-                        {this.props.measure.projects.map((project, index) => {
-                            return <Project
-                                key={index}
-                                project={project}
-                            />
-                        })}
-                    </div>
+
                 </div>
             </div>
         );
+    }
+
+    scrollToMyRef() {
+        ReactDOM.findDOMNode(this.refs[this.props.measure.uuid]).scrollIntoView({behavior: "smooth"});
+
     }
 
     handleCopyAction(event) {
@@ -61,6 +70,24 @@ export default class Measure extends React.Component {
 
     getMeasureUrl(absolute = false) {
         return `${absolute ? window.location.href : window.location.pathname}/mesures/${this.props.measure.uuid}`
+    }
+
+    toggleActiveMeasure(event) {
+        if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
+            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__approaches'))
+                .getElementsByClassName('programmatic-foundation__measure');
+
+            for (var i=0; i<items.length; ++i) {
+                if (hasClass(items[i], 'expanded')) {
+                    removeClass(items[i], 'expanded');
+                }
+            }
+            addClass(event.currentTarget.parentNode, 'expanded');
+
+            this.scrollToMyRef();
+        } else {
+            removeClass(event.currentTarget.parentNode, 'expanded');
+        }
     }
 }
 

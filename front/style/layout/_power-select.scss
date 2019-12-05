@@ -6,10 +6,14 @@
     line-height: 1;
     color: $black;
     border-radius: 3px;
-    border: 1px solid $lines-grey;
+    border: 1px solid white;
     background: #FFFFFF url(/images/icons/icn-form-select.svg) no-repeat right 10px center;
-    height: 60px;
+    height: 50px;
     outline: 0;
+
+    &:hover {
+        border-color: $lines-grey;
+    }
 
     &:focus {
         border-color: $blue--dark;

@@ -3,10 +3,14 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\ProgrammaticFoundation\Measure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ */
 class ProgrammaticFoundationController extends Controller
 {
     /**

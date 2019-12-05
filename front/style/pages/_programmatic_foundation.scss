@@ -1,5 +1,21 @@
 .programmatic-foundation {
+    position: relative;
     padding-bottom: 100px;
+
+    .left-stripe {
+        background-color: $pale-grey;
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: calc((100% - 1200px) / 2 );
+        min-width: 200px;
+
+        @media (min-width: $tablet) {
+            display: block;
+        }
+    }
 
     & .content {
         ul {
@@ -10,19 +26,52 @@
         }
     }
 
-    &__header {
+    &__row {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow: hidden;
+
+        @media (min-width: $tablet) {
+            flex-direction: row;
+        }
+    }
+
+    &__left {
+        position: relative;
+        box-sizing: border-box;
         background-color: $gray--pale;
+        padding: 0 20px 20px;
+
+        @media (min-width: $tablet) {
+            position: absolute;
+            min-width: 350px;
+            width: 350px;
+            top: 0;
+            bottom: 0;
+            padding: 0 30px 0 0;
+            margin: 0;
+        }
 
         .content {
-            height: 150px;
+            padding-top: 30px;
 
-            a {
-                display: none;
+            .socle-logo {
+                margin: 0 auto;
             }
 
-            @media (min-width: $mobile) {
-                height: 300px;
+            .em-form .form__checkbox label {
+                font-size: 14px;
             }
+        }
+    }
+
+    &__right {
+        width: 100%;
+        box-sizing: border-box;
+
+        @media (min-width: $tablet) {
+            padding-left: calc(350px + 60px);
         }
     }
 
@@ -50,14 +99,19 @@
 
     &__contact {
         position: relative;
-        padding-right: 45px;
-        margin-bottom: 30px;
+        font-family: $font-roboto;
+        color: $silver-grey;
+        margin-top: 20px;
+        padding: 20px 25px 0 0;
+        border-top: 1px solid $lines-grey;
+        font-size: 13px;
+        line-height: 18px;
 
         .icn-close {
             position: absolute;
             cursor: pointer;
-            right: 10px;
-            top: 10px;
+            right: 0px;
+            top: 15px;
             opacity: 0.5;
 
             &:hover {
@@ -67,17 +121,19 @@
     }
 
     &__search {
-        padding: 15px 20px 0px 20px;
-        background-color: $white;
-        box-shadow: 0 2px 5px 0 rgba(25, 65, 115, .1);
-        border-radius: 4px;
         display: flex;
         flex-direction: column;
+        justify-content: flex-start;
         flex-wrap: wrap;
-        margin: -20px 0 50px 0;
+        width: 100%;
 
         .em-form__group {
             margin-bottom: 15px;
+
+            .em-form__field {
+                height: 50px;
+                border-color: white;
+            }
         }
 
         .text-search {
@@ -86,17 +142,6 @@
 
         .city-search, .tag-search {
             flex-basis: 100%;
-        }
-
-        @media (min-width: $tablet) {
-            flex-direction: row;
-            margin: -50px 0 50px 0;
-            padding: 20px 30px 5px 30px;
-
-            .city-search, .tag-search {
-                margin-left: 15px;
-                flex-basis: 250px;
-            }
         }
     }
 
@@ -123,7 +168,7 @@
     &__legend {
         font-family: $font-roboto;
         font-size: 14px;
-        margin: 20px 0 0 0;
+        margin: 50px 0 10px 0;
 
         .legend-item {
             margin-right: 20px;
@@ -169,6 +214,15 @@
         header {
             h1 {
                 margin-top: 0;
+                font-size: 22px;
+                line-height: 28px;
+                font-weight: bold;
+                color: $blue--dodger;
+                font-family: $font-roboto;
+
+                &.leading {
+                    color: $pink--hit;
+                }
             }
         }
 
@@ -185,6 +239,10 @@
                 }
             }
         }
+
+        .programmatic-foundation__project {
+            margin-top: 30px;
+        }
     }
 
     &__view-approaches {
@@ -199,7 +257,7 @@
         margin-bottom: 70px;
 
         h2 {
-            font-size: 22px;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
@@ -247,6 +305,7 @@
         color: $silver-grey;
         text-transform: uppercase;
         margin: 30px 0 20px;
+        letter-spacing: normal;
     }
 
     &__measures,
@@ -354,6 +413,11 @@
             .content {
                 max-height: 0;
                 overflow: hidden;
+
+
+                @media (min-width: $tablet) {
+                    padding: 0 25px;
+                }
             }
 
             .measure-links {
@@ -363,11 +427,10 @@
 
                 a {
                     display: inline-block;
-                    background-color: $pale-grey;
+                    border: 1px solid $lines-grey;
                     font-size: 14px;
-                    color: $silver-grey;
-                    padding: 2px 10px;
-                    border-bottom: none;
+                    color: $dark;
+                    padding: 6px 12px;
                     border-radius: 50px;
                     font-weight: bold;
                     margin-right: 5px;
