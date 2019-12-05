@@ -2,11 +2,16 @@ import React, {PropTypes} from 'react';
 import Project from './Project';
 
 export default class Measure extends React.Component {
+    constructor(props) {
+        super(props);
+        this.myRef = this.props.measure.uuid;
+    }
     render() {
         return (
             <div className={`programmatic-foundation__measure child ${
                 this.props.measure.isLeading ? 'leading' : ''
-            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
+            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}
+                ref={this.myRef}>
 
                 <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
@@ -66,7 +71,6 @@ export default class Measure extends React.Component {
     }
 
     toggleActiveMeasure(event) {
-
         if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
             let items = event.currentTarget.parentNode.parentNode.children;
             for (var i=0; i<items.length; ++i) {
@@ -75,6 +79,8 @@ export default class Measure extends React.Component {
                 }
             }
             addClass(event.currentTarget.parentNode, 'expanded');
+
+            setTimeout(window.scrollTo(0, this.refs[this.myRef].offsetTop - 30), 250);
         } else {
             removeClass(event.currentTarget.parentNode, 'expanded');
         }
