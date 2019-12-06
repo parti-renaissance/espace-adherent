@@ -67,6 +67,13 @@ class ProjectAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('title', null, [
+                'label' => 'Titre',
+                'show_filter' => true,
+            ])
+            ->add('city', null, [
+                'label' => 'Taille de ville',
+            ])
             ->add('measure', null, [
                 'label' => 'Mesure associée',
                 'show_filter' => true,

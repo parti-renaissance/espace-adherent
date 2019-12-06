@@ -67,6 +67,16 @@ class MeasureAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('title', null, [
+                'label' => 'Titre',
+                'show_filter' => true,
+            ])
+            ->add('isLeading', null, [
+                'label' => 'Mesure phare',
+            ])
+            ->add('isExpanded', null, [
+                'label' => 'Ouvert par défaut',
+            ])
             ->add('subApproach', null, [
                 'label' => 'Axe secondaire associé',
                 'show_filter' => true,

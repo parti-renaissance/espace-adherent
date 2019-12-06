@@ -15,30 +15,42 @@ export default class SearchResults extends React.Component {
     renderResultContent() {
         return (
             <div>
-                <div className="measures">
-                    <div className="programmatic-foundation__items-type">Les mesures</div>
-                    <div className="programmatic-foundation__children programmatic-foundation__measures">
-                        {this.props.measures.map((measure, index) => {
-                            return <Measure
-                                key={index}
-                                measure={measure}
-                                preventAutoExpand={true}
-                            />
-                        })}
-                    </div>
-                </div>
+                { !!this.props.measures.length && this.renderMeasuresContent() }
 
-                <div className="projects">
-                    <div className="programmatic-foundation__items-type">Les projets illustratifs</div>
-                    <div className="programmatic-foundation__children programmatic-foundation__projects">
-                        {this.props.projects.map((project, index) => {
-                            return <Project
-                                key={index}
-                                project={project}
-                                preventAutoExpand={true}
-                            />
-                        })}
-                    </div>
+                { !!this.props.projects.length && this.renderProjectsContent() }
+            </div>
+        );
+    }
+
+    renderMeasuresContent() {
+        return (
+            <div className="measures">
+                <div className="programmatic-foundation__items-type">Les mesures</div>
+                <div className="programmatic-foundation__children programmatic-foundation__measures">
+                    {this.props.measures.map((measure, index) => {
+                        return <Measure
+                            key={index}
+                            measure={measure}
+                            preventAutoExpand={true}
+                        />
+                    })}
+                </div>
+            </div>
+        );
+    }
+
+    renderProjectsContent() {
+        return (
+            <div className="projects">
+                <div className="programmatic-foundation__items-type">Les projets illustratifs</div>
+                <div className="programmatic-foundation__children programmatic-foundation__projects">
+                    {this.props.projects.map((project, index) => {
+                        return <Project
+                            key={index}
+                            project={project}
+                            preventAutoExpand={true}
+                        />
+                    })}
                 </div>
             </div>
         );

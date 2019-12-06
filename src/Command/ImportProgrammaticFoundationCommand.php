@@ -191,6 +191,12 @@ class ImportProgrammaticFoundationCommand extends Command
                     continue;
                 }
 
+                if (empty($projectCity)) {
+                    $this->validationErrors[] = sprintf('Project with title "%s" has no city. (line %d)', $projectTitle, $line);
+
+                    continue;
+                }
+
                 $this->addProject(
                     $measure,
                     $i,

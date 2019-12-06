@@ -61,6 +61,10 @@ class SubApproachAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('title', null, [
+                'label' => 'Titre',
+                'show_filter' => true,
+            ])
             ->add('approach', null, [
                 'label' => 'Grand axe associé',
                 'show_filter' => true,
