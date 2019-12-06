@@ -48,6 +48,12 @@ class ImportProgrammaticFoundationCommand extends Command
                 InputOption::VALUE_NONE,
                 'If defined, no reset of the database will be made before import.'
             )
+            ->addOption(
+                'skip-errors',
+                null,
+                InputOption::VALUE_NONE,
+                'If defined, errors are skipped instead of canceling to whole import.'
+            )
             ->setDescription('Import Programmatic Foundation')
         ;
     }
@@ -64,16 +70,18 @@ class ImportProgrammaticFoundationCommand extends Command
         try {
             $this->import($input);
 
-            if (0 === $this->validationErrors) {
+            if (0 < \count($this->validationErrors)) {
+                foreach ($this->validationErrors as $validationError) {
+                    $this->io->comment($validationError);
+                }
+            }
+
+            if (false !== $input->getOption('skip-errors') || 0 === \count($this->validationErrors)) {
                 $this->em->commit();
 
                 $this->io->success('Programmatic foundation imported successfully!');
             } else {
                 $this->em->rollback();
-
-                foreach ($this->validationErrors as $validationError) {
-                    $this->io->comment($validationError);
-                }
 
                 $this->io->error(sprintf('Import canceled due to %d validation errors.', \count($this->validationErrors)));
             }
@@ -106,14 +114,25 @@ class ImportProgrammaticFoundationCommand extends Command
         $this->io->progressStart($total = $csv->count());
 
         $line = 0;
+        $approach = $subApproach = null;
         $previousApproachTitle = $previousSubApproachTitle = null;
         $approachPosition = $subApproachPosition = $measurePosition = 1;
 
         foreach ($csv as $row) {
-            $approachTitle = mb_substr(reset($row), 0, 255);
-            $subApproachTitle = mb_substr(next($row), 0, 255);
-            $measureTitle = mb_substr(next($row), 0, 255);
-            $measureContent = next($row);
+            $approachTitle = mb_substr(trim(reset($row)), 0, 255);
+            $subApproachTitle = mb_substr(trim(next($row)), 0, 255);
+            $measureTitle = mb_substr(trim(next($row)), 0, 255);
+            $measureContent = trim(next($row));
+
+            if (empty($measureTitle)) {
+                continue;
+            }
+
+            if (empty($measureContent)) {
+                $this->validationErrors[] = sprintf('Measure with title "%s" has no content. (line %d)', $measureTitle, $line);
+
+                continue;
+            }
 
             if (!empty($approachTitle) && $previousApproachTitle !== $approachTitle) {
                 if (!$approach = $this->findApproach($approachTitle)) {
@@ -126,6 +145,10 @@ class ImportProgrammaticFoundationCommand extends Command
                 }
 
                 $previousApproachTitle = $approachTitle;
+            }
+
+            if (!$approach) {
+                continue;
             }
 
             if (!empty($subApproachTitle) && $previousSubApproachTitle !== $subApproachTitle) {
@@ -142,32 +165,28 @@ class ImportProgrammaticFoundationCommand extends Command
                 $previousSubApproachTitle = $subApproachTitle;
             }
 
-            if (!empty($measureTitle)) {
-                if (empty($measureContent)) {
-                    $this->validationErrors[] = sprintf('Measure with title "%s" has no content. (line %d)', $measureTitle, $line);
-
-                    continue;
-                }
-
-                $measure = $this->createMeasure($measurePosition, $measureTitle, $measureContent);
-                $subApproach->addMeasure($measure);
-                ++$measurePosition;
-
-                $this->em->persist($measure);
-                $this->em->flush();
+            if (!$subApproach) {
+                continue;
             }
 
+            $measure = $this->createMeasure($measurePosition, $measureTitle, $measureContent);
+            $subApproach->addMeasure($measure);
+            ++$measurePosition;
+
+            $this->em->persist($measure);
+            $this->em->flush();
+
             for ($i = 1; $i <= 8; ++$i) {
-                $projectTitle = next($row);
-                $projectContent = next($row);
-                $projectCity = next($row);
+                $projectTitle = trim(next($row));
+                $projectContent = trim(next($row));
+                $projectCity = trim(next($row));
 
                 if (empty($projectTitle)) {
                     continue;
                 }
 
                 if (empty($projectContent)) {
-                    $this->validationErrors = sprintf('Project with title "%s" has no content. (line %d)', $projectTitle, $line);
+                    $this->validationErrors[] = sprintf('Project with title "%s" has no content. (line %d)', $projectTitle, $line);
 
                     continue;
                 }
