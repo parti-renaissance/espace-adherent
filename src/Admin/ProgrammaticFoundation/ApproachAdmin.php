@@ -4,6 +4,7 @@ namespace AppBundle\Admin\ProgrammaticFoundation;
 
 use AppBundle\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -16,6 +17,16 @@ class ApproachAdmin extends AbstractAdmin
         '_per_page' => 32,
         '_sort_by' => 'position',
     ];
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('title', null, [
+                'label' => 'Titre',
+                'show_filter' => true,
+            ])
+        ;
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {
