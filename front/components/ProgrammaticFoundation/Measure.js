@@ -74,7 +74,7 @@ export default class Measure extends React.Component {
 
     toggleActiveMeasure(event) {
         if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
-            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__approaches'))
+            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
                 .getElementsByClassName('programmatic-foundation__measure');
 
             for (var i=0; i<items.length; ++i) {
