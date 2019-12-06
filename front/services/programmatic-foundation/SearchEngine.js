@@ -24,7 +24,7 @@ export default class SearchEngine {
 
         if (!filters.query) {
             return {
-                measures: measures,
+                measures: !filters.city ? measures : [],
                 projects: projects,
             };
         }
