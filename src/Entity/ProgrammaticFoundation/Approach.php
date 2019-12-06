@@ -69,7 +69,6 @@ class Approach
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position": "ASC"})
-     * @Assert\Valid
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $subApproaches;

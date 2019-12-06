@@ -77,7 +77,6 @@ class Measure
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     * @Assert\Valid
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $projects;
