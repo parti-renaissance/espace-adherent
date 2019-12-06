@@ -15,9 +15,9 @@ export default class SearchResults extends React.Component {
     renderResultContent() {
         return (
             <div>
-                {this.props.measures.length ? this.renderMeasuresContent() : ''}
+                { !!this.props.measures.length && this.renderMeasuresContent() }
 
-                {this.props.projects.length ? this.renderProjectsContent() : ''}
+                { !!this.props.projects.length && this.renderProjectsContent() }
             </div>
         );
     }
