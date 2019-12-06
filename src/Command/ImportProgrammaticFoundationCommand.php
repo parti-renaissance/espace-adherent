@@ -23,6 +23,8 @@ class ImportProgrammaticFoundationCommand extends Command
     private $storage;
     private $em;
 
+    private $validationErrors = [];
+
     /**
      * @var SymfonyStyle|null
      */
@@ -57,6 +59,33 @@ class ImportProgrammaticFoundationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->em->beginTransaction();
+
+        try {
+            $this->import($input);
+
+            if (0 === $this->validationErrors) {
+                $this->em->commit();
+
+                $this->io->success('Programmatic foundation imported successfully!');
+            } else {
+                $this->em->rollback();
+
+                foreach ($this->validationErrors as $validationError) {
+                    $this->io->comment($validationError);
+                }
+
+                $this->io->error(sprintf('Import canceled due to %d validation errors.', \count($this->validationErrors)));
+            }
+        } catch (\Exception $exception) {
+            $this->em->rollback();
+
+            throw $exception;
+        }
+    }
+
+    private function import(InputInterface $input): void
+    {
         if (false === $input->getOption('append')) {
             $this->io->section('Resetting programmatic foundation.');
 
@@ -90,7 +119,7 @@ class ImportProgrammaticFoundationCommand extends Command
                 if (!$approach = $this->findApproach($approachTitle)) {
                     $approach = $this->createApproach($approachPosition, $approachTitle);
                     ++$approachPosition;
-                    $subApproachPosition = 0;
+                    $subApproachPosition = 1;
 
                     $this->em->persist($approach);
                     $this->em->flush();
@@ -104,7 +133,7 @@ class ImportProgrammaticFoundationCommand extends Command
                     $subApproach = $this->createSubApproach($subApproachPosition, $subApproachTitle);
                     $approach->addSubApproach($subApproach);
                     ++$subApproachPosition;
-                    $measurePosition = 0;
+                    $measurePosition = 1;
 
                     $this->em->persist($subApproach);
                     $this->em->flush();
@@ -114,6 +143,12 @@ class ImportProgrammaticFoundationCommand extends Command
             }
 
             if (!empty($measureTitle)) {
+                if (empty($measureContent)) {
+                    $this->validationErrors[] = sprintf('Measure with title "%s" has no content. (line %d)', $measureTitle, $line);
+
+                    continue;
+                }
+
                 $measure = $this->createMeasure($measurePosition, $measureTitle, $measureContent);
                 $subApproach->addMeasure($measure);
                 ++$measurePosition;
@@ -123,12 +158,26 @@ class ImportProgrammaticFoundationCommand extends Command
             }
 
             for ($i = 1; $i <= 8; ++$i) {
+                $projectTitle = next($row);
+                $projectContent = next($row);
+                $projectCity = next($row);
+
+                if (empty($projectTitle)) {
+                    continue;
+                }
+
+                if (empty($projectContent)) {
+                    $this->validationErrors = sprintf('Project with title "%s" has no content. (line %d)', $projectTitle, $line);
+
+                    continue;
+                }
+
                 $this->addProject(
                     $measure,
                     $i,
-                    mb_substr(next($row), 0, 255),
-                    next($row),
-                    mb_substr(next($row), 0, 255)
+                    mb_substr($projectTitle, 0, 255),
+                    $projectContent,
+                    mb_substr($projectCity, 0, 255)
                 );
             }
 
@@ -138,16 +187,10 @@ class ImportProgrammaticFoundationCommand extends Command
         }
 
         $this->io->progressFinish();
-
-        $this->io->success('Programmatic foundation imported successfully!');
     }
 
-    private function addProject(Measure $measure, int $position, ?string $title, ?string $content, ?string $city): void
+    private function addProject(Measure $measure, int $position, ?string $title, string $content, ?string $city): void
     {
-        if (empty($title)) {
-            return;
-        }
-
         $project = $this->createProject($position, $title, $content, $city);
         $measure->addProject($project);
 
