@@ -49,7 +49,6 @@ export default class Measure extends React.Component {
 
     scrollToMyRef() {
         ReactDOM.findDOMNode(this.refs[this.props.measure.uuid]).scrollIntoView({behavior: "smooth"});
-
     }
 
     handleCopyAction(event) {

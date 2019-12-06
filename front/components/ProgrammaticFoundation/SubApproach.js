@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import Measure from './Measure';
+import ReactDOM from "react-dom";
 
 export default class SubApproach extends React.Component {
     render() {
@@ -13,8 +14,8 @@ export default class SubApproach extends React.Component {
         return (
             <div className={`programmatic-foundation__sub-approach child ${
                 this.props.subApproach.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''
-            }`}>
-                <div className="head" onClick={event => toggleClass(event.currentTarget.parentNode, 'expanded')}>
+            }`} ref={this.props.subApproach.uuid}>
+                <div className="head" onClick={this.toggleActiveSubApproach.bind(this)}>
                     <span className="title">{sectionIdentifier} {this.props.subApproach.title}</span>
                     <span className="subtitle">{this.props.subApproach.subtitle}</span>
                     <span className="toggle" />
@@ -35,6 +36,28 @@ export default class SubApproach extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    scrollToMyRef() {
+        ReactDOM.findDOMNode(this.refs[this.props.subApproach.uuid]).scrollIntoView({behavior: "smooth"});
+    }
+
+    toggleActiveSubApproach(event) {
+        if (false === hasClass(event.currentTarget.parentNode, 'expanded')) {
+            let items = ReactDOM.findDOMNode(event.currentTarget.closest('.programmatic-foundation__right'))
+                .getElementsByClassName('programmatic-foundation__sub-approach');
+
+            for (var i=0; i<items.length; ++i) {
+                if (hasClass(items[i], 'expanded')) {
+                    removeClass(items[i], 'expanded');
+                }
+            }
+            addClass(event.currentTarget.parentNode, 'expanded');
+
+            this.scrollToMyRef();
+        } else {
+            removeClass(event.currentTarget.parentNode, 'expanded');
+        }
     }
 }
 
