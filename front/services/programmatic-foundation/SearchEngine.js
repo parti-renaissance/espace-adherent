@@ -30,8 +30,8 @@ export default class SearchEngine {
         }
 
         const filterCallback = (item) => {
-            return item.title.search(filters.query) !== -1
-                || _.uniq(_.flatMap(item.tags, tag => tag.label)).join().search(filters.query) !== -1
+            return item.title.toLowerCase().indexOf(filters.query.toLowerCase()) !== -1
+                || _.uniq(_.flatMap(item.tags, tag => tag.label)).join().toLowerCase().indexOf(filters.query.toLowerCase()) !== -1
         };
 
         return {
