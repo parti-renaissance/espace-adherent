@@ -25,7 +25,7 @@ export default class SearchResults extends React.Component {
     renderMeasuresContent() {
         return (
             <div className="measures">
-                <div className="programmatic-foundation__items-type">Les mesures</div>
+                <div className="programmatic-foundation__items-type">Mesures</div>
                 <div className="programmatic-foundation__children programmatic-foundation__measures">
                     {this.props.measures.map((measure, index) => {
                         return <Measure

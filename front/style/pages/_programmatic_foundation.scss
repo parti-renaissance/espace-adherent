@@ -257,8 +257,13 @@
         margin-bottom: 70px;
 
         h2 {
-            font-size: 24px;
+            font-size: 22px;
+            line-height: normal;
             margin-bottom: 20px;
+
+            @media (min-width: $mobile) {
+                font-size: 26px;
+            }
         }
 
         & > .content {
@@ -275,6 +280,10 @@
             margin-right: 10px;
             color: $silver-grey;
             font-weight: bold;
+
+            @media (min-width: $mobile) {
+                font-size: 20px;
+            }
         }
 
         .subtitle {
@@ -300,7 +309,7 @@
     }
 
     &__items-type {
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
         color: $silver-grey;
         text-transform: uppercase;
