@@ -64,7 +64,7 @@
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
                             </li>
 
-                            {% if is_canary_enabled() %}
+                            {% if is_canary_enabled() and is_granted('ROLE_PRINT_PRIVILEGE') %}
                                 <li>
                                     <a href="{{ path('app_approaches') }}">Catalogue</a>
                                 </li>

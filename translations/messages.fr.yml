@@ -75,6 +75,7 @@ user: utilisateur
 citizen_project_holder: porteur de projet
 municipal_chief: Candidat Municipales 2020 🇫🇷
 print_privilege: Accès LMI
+programmatic_foundation_privilege: Socle Programmatique
 
 adherent.registration.success: |
     Vous venez de rejoindre En Marche, nous vous en remercions !

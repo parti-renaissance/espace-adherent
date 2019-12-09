@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+
+    <title>Nous contacter | En Marche !</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Formulaire de contact pour le mouvement En Marche !">
+
+    <link rel="icon" type="image/png" href="web/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="web/img/favicon-16x16.png" sizes="16x16">
+    <link rel="apple-touch-icon" sizes="180x180" href="web/img/apple-touch-icon.png?v2">
+
+    <meta property="og:site_name" content="Aide En Marche !">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aide-en-marche.fr">
+    <meta property="og:title" content="Aide En Marche !">
+    <meta property="og:description" content="Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.">
+    <meta property="og:image" content="https://en-marche.fr/images/default_sharer.jpg">
+    <meta property="og:image:width" content="628">
+    <meta property="og:image:height" content="288">
+
+    <meta property="fb:pages" content="543099962534877">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="En Marche !">
+    <meta name="twitter:description" content="Pour ceux qui sont convaincus que le pays est bloqué, qui ont le goût du travail, du progrès, du risque, qui vivent pour la liberté, l'égalité, et l'Europe.">
+    <meta name="twitter:image:src" content="https://en-marche.fr/images/default_sharer.jpg">
+
+    <meta name="author" content="En Marche !">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="web/css/main.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="web/js/form.js"></script>
+</head>
+<body>
+<header class="header">
+    <div class="l-container header-container">
+        <nav>
+            <ul class="header-nav-list">
+                <li><a class="logo" href="https://en-marche.fr">En Marche !</a></li>
+            </ul>
+        </nav>
+        <div class="header-ctas">
+            <a class="btn btn--basic uppercase header-cta-give" href="https://en-marche.fr/inscription">J'adhère</a>
+            <a class="btn uppercase" href="https://en-marche.fr/don">Je donne</a>
+        </div>
+    </div>
+</header>
+
+<div class="test-form-container">
+    <div class="l-container">
+        <div class="form-box">
+            <div class="form-content" style="line-height: 20px;">
+                <h1>Nous contacter</h1>
+                <form  id="contact-form" method="POST"
+                       action="https://webhook.frontapp.com/forms/en_marche/049b75cd027dd514a2b4195029a1dc9dc5c6e232d5325547bb6a8ee0280a604e"
+                       enctype="multipart/form-data" accept-charset="utf-8">
+                    <p>
+                        <br>
+                        Merci de votre intérêt !
+                        <br><br><b>Pour une réponse plus rapide, pensez à jeter un coup oeil à notre <a style="color: #1D5FD1" href="https://aide.en-marche.fr/?utm_source=formulaire-contact">aide en ligne</a> où vous trouverez des réponses aux questions les plus fréquentes 24 heures sur 24 - 7 jours sur 7 &nbsp;🙌🏽</b>
+                        <br><br>
+                        Si vous souhaitez contacter le président de la République, vous pouvez vous rendre directement sur la <a style="color: #1D5FD1" href="https://www.elysee.fr/ecrire-au-president-de-la-republique/">page de contact de l'Élysée</a>. Pour contacter un membre du gouvernement, <a style="color: #1D5FD1" href="https://lannuaire.service-public.fr/gouvernement">cliquez ici</a>.
+                    </p>
+                    <div class="form-group" style="margin-top:20px">
+                        <label class="form-label" for="first_name">Votre prénom</label>
+                        <input class= "form-input" type="text" name="first_name" id="first_name" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Votre nom</label>
+                        <input class="form-input" type="text" name="last_name" id="last_name" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Votre adresse e-mail</label>
+                        <input class="form-input" type="email" name="email" id="email" required="required">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-select" id="vous_residez" name="vous_residez" required="required">
+                            <option value="" disabled="disabled" selected="selected">Vous résidez ...</option>
+                            <option value="France">Vous résidez en France</option>
+                            <option value="Etranger">Vous résidez à l'étranger</option>
+                        </select>
+                        <div id="is-france">
+                            <p>
+                                <br />
+                                <br />
+                                Si vous résidez en France, quel est votre code postal ?
+                            </p>
+                            <div class="form-group">
+                                <div>
+                                    <label class="form-labe form-label-inline" for="zipcode">Votre code postal</label>
+                                    <input class="form-input form-input--zipcode" type="number" name="zipcode" id="zipcode" pattern="[0-9]{5}" title="PostCode">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                Dites nous-en plus sur la raison de votre message&nbsp;:
+                            </p>
+                            <select id="select-motif" class="form-select" name="motif" required="required">
+                                <option value="" disabled="disabled" selected="selected"></option>
+                                <option value="vie_pratique">J'ai une question sur mon adhésion ou mon comité local</option>
+                                <option value="bug_espaceperso">Je n'arrive plus à accéder à mon espace perso</option>
+                                <option value="bug_profil">Je n'arrive pas à compléter mon profil</option>
+                                <option value="atelier_des_idees">Je veux signaler une proposition abusive de l'Atelier des idées</option>
+                                <option value="desadhesion">Je souhaite désadhérer / me désinscrire du mouvement</option>
+                                <option value="idee">J'ai une idée à soumettre</option>
+                                <option value="don">J'ai une question sur les dons</option>
+                                <option value="invitation_LaREM">Je souhaite inviter En Marche&nbsp;! à un évènement</option>
+                                <option value="contact_presse">Je veux contacter le service presse (pour les media uniquement)</option>
+                                <option value="autre">Autre demande</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group ">
+                            <label class="form-label " for="subject">Sujet de votre message</label>
+                            <input class= "form-input" type="text" name="subject" id="subject" required="required"  >
+                        </div>
+                        <div id="adi-form">
+                            <div class="form-group">
+                                <label class="form-label" for="adi-url" >Url de la proposition</label>
+                                <input class= "form-input" type="text" name="adi-url" id="adi-url" >
+                            </div>
+                        </div>
+                        <div id="motif-form">
+                            <div class="form-group">
+                                <label class="form-label" for="body" >Votre message</label>
+                                <textarea class="form-text" name="body" id="body"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <input type="checkbox" class="form-checkbox" required="required">
+                        <label class="form-label">J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous&nbsp;:</label>
+                    </div>
+                    <p style="color:gray; font-size: 14px;">
+                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de permettre aux utilisateurs et aux adhérents de contacter LaREM et de permettre à LaREM de vous envoyer des communications politiques.
+                        Les informations marquées d'un astérisque sont obligatoires. L'absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                        Conformément à la règlementation, vous disposez d'un droit d'opposition et d'un droit à la limitation du traitement de données vous concernant, ainsi que d'un droit d'accès, de rectification, de portabilité et d'effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d'une copie de votre pièce d'identité à l'adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France et <a style="text-decoration:underline !important;" href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+                    </p>
+                    <div class="form-group center">
+                        <button class="form-btn" type="submit">Envoyer</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div style="margin: 30px 0 50px; text-align: center;">
+        Vous pouvez aussi nous contacter par téléphone au 01 86 95 02 86.<br>Notre standard est ouvert de 10h30 à 12h30 et de 14h00 à 17h30 du lundi au vendredi.
+    </div>
+</div>
+</div>
+
+<footer class="footer--slim background--lighter space--30-0">
+    <div class="l__wrapper">
+        <div class="l__row l__row--h-stretch l__tablet--col l__mobile--col-center">
+            <a href="https://en-marche.fr" class="link--no-decor"><svg width="109px" height="41px" viewBox="462 369 109 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="title">
+                    <title>En Marche Logo</title>
+                    <polygon id="E" stroke="none" fill="#000000" fill-rule="evenodd" points="468.6709 369.5363 462.9999 408.6353 492.3099 408.6353 493.2979 401.6383 474.0579 401.6383 475.3849 391.9913 489.2349 391.9913 490.2219 384.9943 476.4849 384.9943 477.6969 376.5043 493.5239 376.5043 494.5109 369.5363"></polygon>
+                    <polygon id="M" stroke="none" fill="#000000" fill-rule="evenodd" points="538.969 369.5363 525.569 394.3603 519.391 369.5363 508.869 369.5363 495.978 408.6353 505.822 408.6353 514.313 382.8223 520.774 408.6353 526.782 408.6353 540.351 383.6123 541.451 408.6353 551.043 408.6353 549.209 369.5363"></polygon>
+                    <path id="!" d="M570.3975,373.2315 C570.3975,374.1905 570.2895,375.1775 570.0735,376.1935 C569.8565,377.2095 569.5415,378.4505 569.1275,379.9175 L564.6705,395.5175 L558.7185,395.5175 L559.2265,377.3775 C559.4145,374.9155 559.6685,373.2215 559.9885,372.3005 C560.2885,371.4725 560.8765,370.7155 561.7515,370.0295 C562.6265,369.3425 563.8525,369.0005 565.4325,369.0005 C567.2005,369.0005 568.4695,369.4375 569.2415,370.3115 C570.0115,371.1865 570.3975,372.1595 570.3975,373.2315 M566.4485,403.2745 C566.4485,404.3285 566.1845,405.3055 565.6585,406.2095 C565.1315,407.1115 564.4175,407.8265 563.5135,408.3525 C562.6115,408.8785 561.6335,409.1425 560.5805,409.1425 C559.5085,409.1425 558.5205,408.8785 557.6185,408.3525 C556.7155,407.8265 556.0015,407.1115 555.4745,406.2095 C554.9475,405.3055 554.6845,404.3285 554.6845,403.2745 C554.6845,402.2035 554.9475,401.2155 555.4745,400.3125 C556.0015,399.4105 556.7155,398.6955 557.6185,398.1685 C558.5205,397.6425 559.5085,397.3785 560.5805,397.3785 C561.6335,397.3785 562.6115,397.6425 563.5135,398.1685 C564.4175,398.6955 565.1315,399.4105 565.6585,400.3125 C566.1845,401.2155 566.4485,402.2035 566.4485,403.2745" stroke="none" fill="#000000" fill-rule="evenodd"></path>
+                </svg></a>
+            <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-tablet">
+                <li class="head">Suivez En Marche !</li>
+                <li><a href="https://www.facebook.com/EnMarche/" target="_blank" rel="noopener noreferrer"><i class="fa fa-facebook-square"></i></a></li>
+                <li><a href="https://twitter.com/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/enmarchefr/" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="https://www.youtube.com/channel/UCJw8np695wqWOaKVhFjkRyg" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-square"></i></a></li>
+                <li><a href="https://medium.com/@enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-medium"></i></a></li>
+                <li><a href="https://www.linkedin.com/company/en-marche" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin-square"></i></a></li>
+                <li><a href="https://www.snapchat.com/add/enmarchefr" target="_blank" rel="noopener noreferrer"><i class="fa fa-snapchat-ghost"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
