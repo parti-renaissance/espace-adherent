@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @Security("is_granted('ROLE_PROGRAMMATIC_FOUNDATION')")
  */
 class ProgrammaticFoundationController extends Controller
 {

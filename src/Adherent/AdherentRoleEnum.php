@@ -35,4 +35,6 @@ class AdherentRoleEnum extends Enum
     public const MUNICIPAL_CHIEF = 'municipal_chief';
 
     public const PRINT_PRIVILEGE = 'print_privilege';
+
+    public const PROGRAMMATIC_FOUNDATION_PRIVILEGE = 'programmatic_foundation_privilege';
 }

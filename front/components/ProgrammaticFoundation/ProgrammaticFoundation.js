@@ -35,11 +35,13 @@ export default class ProgrammaticFoundation extends React.Component {
             <div className="programmatic-foundation__row l__wrapper">
                 <div className="programmatic-foundation__left">
                     <div className="content l__col">
-                        <img
-                            src={logoPQM}
-                            alt="Socle programmatique - Des projets qui marchent"
-                            className="socle-logo"
-                        />
+                        <a href={"/socle-programme"}>
+                            <img
+                                src={logoPQM}
+                                alt="Socle programmatique - Des projets qui marchent"
+                                className="socle-logo"
+                            />
+                        </a>
 
                         <div className="text--body b__nudge--top"><strong>Filtrer</strong></div>
 
