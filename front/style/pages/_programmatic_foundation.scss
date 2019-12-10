@@ -2,7 +2,7 @@
     position: relative;
     padding-bottom: 100px;
 
-    .left-stripe {
+    .background-stripe-01 {
         background-color: $pale-grey;
         display: none;
         position: absolute;
@@ -11,6 +11,20 @@
         left: 0;
         width: calc((100% - 1200px) / 2 );
         min-width: 200px;
+
+        @media (min-width: $tablet) {
+            display: block;
+        }
+    }
+
+    .background-stripe-02 {
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 0;
+        bottom: -100px;
+        width: 350px;
+        background-color: $pale-grey;
 
         @media (min-width: $tablet) {
             display: block;
@@ -27,10 +41,10 @@
     }
 
     &__row {
+        position: relative;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        overflow: hidden;
 
         @media (min-width: $tablet) {
             flex-direction: row;
@@ -44,11 +58,12 @@
         padding: 0 20px 20px;
 
         @media (min-width: $tablet) {
-            position: absolute;
-            min-width: 350px;
+            position: -webkit-sticky;
+            top: -140px;
+            background-color: transparent;
+            position: sticky;
             width: 350px;
-            top: 0;
-            bottom: 0;
+            height: 600px;
             padding: 0 30px 0 0;
             margin: 0;
         }
@@ -58,10 +73,11 @@
 
             .socle-logo {
                 margin: 0 auto;
-            }
+                border: none;
 
-            .em-form .form__checkbox label {
-                font-size: 14px;
+                img {
+                    width: 230px;
+                }
             }
         }
     }
@@ -71,7 +87,8 @@
         box-sizing: border-box;
 
         @media (min-width: $tablet) {
-            padding-left: calc(350px + 60px);
+            width: calc(100% - 350px);
+            padding-left: 60px;
         }
     }
 
