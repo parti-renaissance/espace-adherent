@@ -8,6 +8,7 @@ import logoPQM from './../../../web/images/projets-qui-marchent-logo-horizontal.
 import Breadcrumbs from './Breadcrumbs';
 import ToggleLeadingMeasures from './ToggleLeadingMeasures';
 import Loader from '../Loader';
+import ReactDOM from "react-dom";
 
 export default class ProgrammaticFoundation extends React.Component {
     constructor(props) {
@@ -75,7 +76,7 @@ export default class ProgrammaticFoundation extends React.Component {
                     </div>
                 </div>
 
-                <div className="programmatic-foundation__right">
+                <div className="programmatic-foundation__right" ref={"programmatic-foundation-results"}>
 
                         <div className="l__row l__row--h-stretch l__row--wrap">
                             <div className="programmatic-foundation__legend">
@@ -120,20 +121,32 @@ export default class ProgrammaticFoundation extends React.Component {
         });
     }
 
+    scrollToMyRef() {
+        ReactDOM.findDOMNode(this.refs['programmatic-foundation-results']).scrollIntoView({behavior: "smooth"});
+    }
+
     handleFilterTextChange(text) {
-        this.setState({filterText: text})
+        this.setState({filterText: text});
+
+        this.scrollToMyRef();
     }
 
     handleFilterCityChange(text) {
-        this.setState({filterCity: text})
+        this.setState({filterCity: text});
+
+        this.scrollToMyRef();
     }
 
     handleFilterTagChange(text) {
-        this.setState({filterTag: text})
+        this.setState({filterTag: text});
+
+        this.scrollToMyRef();
     }
 
     handleLeadingMeasuresChange(value) {
-        this.setState({filterIsLeading: value})
+        this.setState({filterIsLeading: value});
+
+        this.scrollToMyRef();
     }
 
     extractAllCities() {
