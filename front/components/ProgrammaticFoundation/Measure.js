@@ -17,15 +17,8 @@ export default class Measure extends React.Component {
 
                 <div className="content">
                     <div className="html" dangerouslySetInnerHTML={{ __html: this.props.measure.content }} />
-                    <div className="programmatic-foundation__children programmatic-foundation__projects">
-                        <div className="programmatic-foundation__items-type">Projets inspirants</div>
-                        {this.props.measure.projects.map((project, index) => {
-                            return <Project
-                                key={index}
-                                project={project}
-                            />
-                        })}
-                    </div>
+
+                    { !!this.props.measure.projects.length && this.renderProjects() }
 
                     <div className="measure-links">
                         <a href="#" onClick={this.handleCopyAction.bind(this)} data-success-title="Copié">
@@ -49,6 +42,20 @@ export default class Measure extends React.Component {
 
     scrollToMyRef() {
         ReactDOM.findDOMNode(this.refs[this.props.measure.uuid]).scrollIntoView({behavior: "smooth"});
+    }
+
+    renderProjects() {
+        return (
+            <div className="programmatic-foundation__children programmatic-foundation__projects">
+                <div className="programmatic-foundation__items-type">Projets inspirants</div>
+                {this.props.measure.projects.map((project, index) => {
+                    return <Project
+                        key={index}
+                        project={project}
+                    />
+                })}
+            </div>
+        );
     }
 
     handleCopyAction(event) {
