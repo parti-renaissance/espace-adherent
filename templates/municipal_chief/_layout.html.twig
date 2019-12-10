@@ -64,7 +64,7 @@
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
                             </li>
 
-                            {% if is_canary_enabled() and is_granted('ROLE_PROGRAMMATIC_FOUNDATION') %}
+                            {% if is_granted('ROLE_PROGRAMMATIC_FOUNDATION') %}
                                 <li>
                                     <a href="{{ path('app_approaches') }}">Projets qui marchent</a>
                                 </li>

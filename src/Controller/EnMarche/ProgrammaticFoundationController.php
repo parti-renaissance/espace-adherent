@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\ProgrammaticFoundation\Measure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,15 +15,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProgrammaticFoundationController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route(name="app_approaches", methods={"GET"})
      */
     public function approachesAction(): Response
     {
-        $this->disableInProduction();
-
         return $this->render('programmatic_foundation/approaches.html.twig');
     }
 
@@ -33,8 +28,6 @@ class ProgrammaticFoundationController extends Controller
      */
     public function viewMeasureAction(Measure $measure): Response
     {
-        $this->disableInProduction();
-
         return $this->render('programmatic_foundation/view_measure.html.twig', [
             'measure' => $measure,
         ]);
