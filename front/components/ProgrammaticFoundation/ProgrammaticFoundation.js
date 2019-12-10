@@ -36,7 +36,7 @@ export default class ProgrammaticFoundation extends React.Component {
                 <span className="background-stripe-02"></span>
                 <div className="programmatic-foundation__left">
                     <div className="content l__col">
-                        <a href={"/socle-programme"} className="socle-logo">
+                        <a href={"/projets-qui-marchent"} className="socle-logo">
                             <img
                                 src={logoPQM}
                                 alt="Socle programmatique - Des projets qui marchent"

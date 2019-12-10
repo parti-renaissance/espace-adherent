@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * @Route("/projets-qui-marchent")
+ *
  * @Security("is_granted('ROLE_PROGRAMMATIC_FOUNDATION')")
  */
 class ProgrammaticFoundationController extends Controller
@@ -17,7 +19,7 @@ class ProgrammaticFoundationController extends Controller
     use CanaryControllerTrait;
 
     /**
-     * @Route("/socle-programme", name="app_approaches", methods={"GET"})
+     * @Route(name="app_approaches", methods={"GET"})
      */
     public function approachesAction(): Response
     {
@@ -27,7 +29,7 @@ class ProgrammaticFoundationController extends Controller
     }
 
     /**
-     * @Route("/socle-programme/mesures/{uuid}", name="app_approach_measure_view", methods={"GET"})
+     * @Route("/mesures/{uuid}", name="app_approach_measure_view", methods={"GET"})
      */
     public function viewMeasureAction(Measure $measure): Response
     {
