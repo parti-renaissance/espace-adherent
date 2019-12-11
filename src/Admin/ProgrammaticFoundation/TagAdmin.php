@@ -3,6 +3,7 @@
 namespace AppBundle\Admin\ProgrammaticFoundation;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -14,6 +15,16 @@ class TagAdmin extends AbstractAdmin
         '_per_page' => 32,
         '_sort_by' => 'label',
     ];
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('label', null, [
+                'label' => 'Label',
+                'show_filter' => true,
+            ])
+        ;
+    }
 
     protected function configureListFields(ListMapper $listMapper)
     {

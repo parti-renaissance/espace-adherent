@@ -19,12 +19,10 @@ export default class ProgrammaticFoundation extends React.Component {
             filterIsLeading: false,
             filterText: '',
             filterCity: '',
-            filterTag: '',
         };
 
         this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
         this.handleFilterCityChange = this.handleFilterCityChange.bind(this);
-        this.handleFilterTagChange = this.handleFilterTagChange.bind(this);
         this.handleSearchExit = this.handleSearchExit.bind(this);
         this.handleLeadingMeasuresChange = this.handleLeadingMeasuresChange.bind(this);
     }
@@ -54,12 +52,9 @@ export default class ProgrammaticFoundation extends React.Component {
                         <SearchBar
                             filterText={this.state.filterText}
                             filterCity={this.state.filterCity}
-                            filterTag={this.state.filterTag}
                             filterCityChoices={this.extractAllCities()}
-                            filterTagChoices={this.extractAllTags()}
                             onFilterTextChange={this.handleFilterTextChange}
                             onFilterCityChange={this.handleFilterCityChange}
-                            onFilterTagChange={this.handleFilterTagChange}
                         />
 
                         <div className="programmatic-foundation__contact">
@@ -99,7 +94,6 @@ export default class ProgrammaticFoundation extends React.Component {
                                     filterIsLeading={this.state.filterIsLeading}
                                     filterText={this.state.filterText}
                                     filterCity={this.state.filterCity}
-                                    filterTag={this.state.filterTag}
                                     approaches={this.initialApproaches}
                                 />
                             </div>
@@ -139,12 +133,6 @@ export default class ProgrammaticFoundation extends React.Component {
         this.scrollToMyRef();
     }
 
-    handleFilterTagChange(text) {
-        this.setState({filterTag: text});
-
-        this.scrollToMyRef();
-    }
-
     handleLeadingMeasuresChange(value) {
         this.setState({filterIsLeading: value});
 
@@ -163,21 +151,8 @@ export default class ProgrammaticFoundation extends React.Component {
         })).sort((a, b) => a.localeCompare(b));
     }
 
-    extractAllTags() {
-        return _.uniq(_.flatMap(this.initialApproaches, (approach) => {
-            return _.flatMap(approach.sub_approaches, (subApproaches) => {
-                return _.flatMap(subApproaches.measures, measure => {
-                    return _.merge(
-                        _.flatMap(measure.tags, tag => tag.label),
-                        _.flatMap(measure.projects, project => _.flatMap(project.tags, tag => tag.label))
-                    );
-                });
-            });
-        })).sort((a, b) => a.localeCompare(b));
-    }
-
     isSearching() {
-        return !!this.state.filterText || !!this.state.filterCity || !!this.state.filterTag;
+        return !!this.state.filterText || !!this.state.filterCity;
     }
 
     handleSearchExit(event) {
@@ -186,7 +161,6 @@ export default class ProgrammaticFoundation extends React.Component {
         this.setState({
             filterText: '',
             filterCity: '',
-            filterTag: '',
             filterIsLeading: false,
         })
     }

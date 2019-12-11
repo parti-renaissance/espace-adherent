@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import {PowerSelect} from 'react-power-select';
 
 export default class SearchBar extends React.Component {
     render() {
@@ -24,19 +23,6 @@ export default class SearchBar extends React.Component {
                         {this.getCities()}
                     </select>
                 </div>
-
-                <div className="em-form__group tag-search">
-                    <PowerSelect
-                        selected={this.props.filterTag}
-                        options={this.props.filterTagChoices}
-                        onChange={event => this.props.onFilterTagChange(event.option)}
-                        placeholder='Thématique'
-                        searchEngine={true}
-                        showClear={true}
-                        searchInputAutoFocus={true}
-                        searchPlaceholder={'Rechercher...'}
-                    />
-                </div>
             </div>
         );
     }
@@ -57,18 +43,14 @@ export default class SearchBar extends React.Component {
 SearchBar.propsType = {
     onFilterTextChange: PropTypes.func.isRequired,
     onFilterCityChange: PropTypes.func.isRequired,
-    onFilterTagChange: PropTypes.func.isRequired,
 
     filterCityChoices: PropTypes.arrayOf(PropTypes.string).isRequired,
-    filterTagChoices: PropTypes.arrayOf(PropTypes.string).isRequired,
 
     filterText: PropTypes.string,
     filterCity: PropTypes.string,
-    filterTag: PropTypes.string,
 };
 
 SearchBar.defaultProps = {
     filterText: '',
     filterCity: '',
-    filterTag: '',
 };

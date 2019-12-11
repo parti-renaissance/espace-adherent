@@ -12,7 +12,7 @@ export default class Approach extends React.Component {
                 <div className="programmatic-foundation__sub-approaches programmatic-foundation__children">
                     {this.props.approach.sub_approaches.map((subApproach, index) => {
                         return <SubApproach
-                            key={index}
+                            key={index+subApproach.uuid}
                             parentSectionIdentifier={this.props.approach.position}
                             subApproach={subApproach}
                         />

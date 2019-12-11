@@ -17,7 +17,7 @@ export default class Content extends React.Component {
         return (
             <div className="programmatic-foundation__approaches">
                 {approaches.map((approach, index) => {
-                    return <Approach key={index} approach={approach} />;
+                    return <Approach key={index+approach.uuid} approach={approach} />;
                 })}
             </div>
         );
@@ -47,7 +47,6 @@ export default class Content extends React.Component {
         return {
             query: this.props.filterText,
             city: this.props.filterCity,
-            tag: this.props.filterTag,
             isLeading: this.props.filterIsLeading,
         };
     }
@@ -60,7 +59,6 @@ Content.propTypes = {
 
     filterText: PropTypes.string,
     filterCity: PropTypes.string,
-    filterTag: PropTypes.string,
 };
 
 Content.defaultProps = {
@@ -68,5 +66,4 @@ Content.defaultProps = {
     filterIsLeading: false,
     filterText: '',
     filterCity: '',
-    filterTag: '',
 };

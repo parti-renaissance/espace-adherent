@@ -28,7 +28,7 @@ export default class SubApproach extends React.Component {
                         <div className="programmatic-foundation__items-type">Mesures</div>
                         {this.props.subApproach.measures.map(measure => {
                             return <Measure
-                                key={measure.position}
+                                key={measure.position+measure.uuid}
                                 measure={measure}
                             />
                           })}
