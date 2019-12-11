@@ -6,6 +6,7 @@ use AppBundle\Entity\ProgrammaticFoundation\Approach;
 use AppBundle\Entity\ProgrammaticFoundation\Measure;
 use AppBundle\Entity\ProgrammaticFoundation\Project;
 use AppBundle\Entity\ProgrammaticFoundation\SubApproach;
+use AppBundle\Entity\ProgrammaticFoundation\Tag;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
@@ -103,6 +104,12 @@ class ImportProgrammaticFoundationCommand extends Command
                 $this->em->remove($approach);
             }
 
+            $tags = $this->em->getRepository(Tag::class)->findAll();
+
+            foreach ($tags as $tag) {
+                $this->em->remove($tag);
+            }
+
             $this->em->flush();
         }
 
@@ -123,6 +130,7 @@ class ImportProgrammaticFoundationCommand extends Command
             $subApproachTitle = mb_substr(trim(next($row)), 0, 255);
             $measureTitle = mb_substr(trim(next($row)), 0, 255);
             $measureContent = trim(next($row));
+            $measureTags = trim(next($row));
 
             if (empty($measureTitle)) {
                 continue;
@@ -169,7 +177,7 @@ class ImportProgrammaticFoundationCommand extends Command
                 continue;
             }
 
-            $measure = $this->createMeasure($measurePosition, $measureTitle, $measureContent);
+            $measure = $this->createMeasure($measurePosition, $measureTitle, $measureContent, $measureTags);
             $subApproach->addMeasure($measure);
             ++$measurePosition;
 
@@ -180,6 +188,7 @@ class ImportProgrammaticFoundationCommand extends Command
                 $projectTitle = trim(next($row));
                 $projectContent = trim(next($row));
                 $projectCity = trim(next($row));
+                $projectTags = trim(next($row));
 
                 if (empty($projectTitle)) {
                     continue;
@@ -202,7 +211,8 @@ class ImportProgrammaticFoundationCommand extends Command
                     $i,
                     mb_substr($projectTitle, 0, 255),
                     $projectContent,
-                    mb_substr($projectCity, 0, 255)
+                    mb_substr($projectCity, 0, 255),
+                    $projectTags
                 );
             }
 
@@ -214,9 +224,15 @@ class ImportProgrammaticFoundationCommand extends Command
         $this->io->progressFinish();
     }
 
-    private function addProject(Measure $measure, int $position, ?string $title, string $content, ?string $city): void
-    {
-        $project = $this->createProject($position, $title, $content, $city);
+    private function addProject(
+        Measure $measure,
+        int $position,
+        ?string $title,
+        string $content,
+        ?string $city,
+        ?string $tags
+    ): void {
+        $project = $this->createProject($position, $title, $content, $city, $tags);
         $measure->addProject($project);
 
         $this->em->persist($project);
@@ -243,13 +259,57 @@ class ImportProgrammaticFoundationCommand extends Command
         return new SubApproach($position, $title);
     }
 
-    private function createMeasure(int $position, string $title, string $content): Measure
+    private function createMeasure(int $position, string $title, string $content, ?string $tags): Measure
     {
-        return new Measure($position, $title, $content);
+        $measure = new Measure($position, $title, $content);
+
+        $tagsArray = explode(',', $tags);
+
+        foreach ($tagsArray as $tagLabel) {
+            $tagLabel = trim($tagLabel);
+
+            if (empty($tagLabel)) {
+                continue;
+            }
+
+            if (!$tag = $this->findTag($tagLabel)) {
+                $tag = new Tag($tagLabel);
+
+                $this->em->persist($tag);
+            }
+
+            $measure->addTag($tag);
+        }
+
+        return $measure;
     }
 
-    private function createProject(int $position, string $title, string $content, string $city): Project
+    private function createProject(int $position, string $title, string $content, string $city, ?string $tags): Project
     {
-        return new Project($position, $title, $content, $city);
+        $project = new Project($position, $title, $content, $city);
+
+        $tagsArray = explode(',', $tags);
+        foreach ($tagsArray as $tagLabel) {
+            $tagLabel = trim($tagLabel);
+
+            if (empty($tagLabel)) {
+                continue;
+            }
+
+            if (!$tag = $this->findTag($tagLabel)) {
+                $tag = new Tag($tagLabel);
+
+                $this->em->persist($tag);
+            }
+
+            $project->addTag($tag);
+        }
+
+        return $project;
+    }
+
+    private function findTag(string $tagLabel): ?Tag
+    {
+        return $this->em->getRepository(Tag::class)->findOneBy(['label' => $tagLabel]);
     }
 }
