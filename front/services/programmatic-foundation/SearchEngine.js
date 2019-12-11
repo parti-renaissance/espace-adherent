@@ -8,17 +8,15 @@ export default class SearchEngine {
 
         let projects = _.flatMap(measures, (measure) => _.flatMap(measure.projects));
 
-        if (filters.isLeading || filters.tag) {
+        if (filters.isLeading) {
             measures = _.filter(measures, {
-                ...(filters.isLeading ? {isLeading: true} : {}),
-                ...(filters.tag ? {tags: [{label: filters.tag}]} : {})
+                ...(filters.isLeading ? {isLeading: true} : {})
             });
         }
 
-        if (filters.city || filters.tag) {
+        if (filters.city) {
             projects = _.filter(projects, {
-                ...(filters.city ? {city: filters.city} : {}),
-                ...(filters.tag ? {tags: [{label: filters.tag}]} : {})
+                ...(filters.city ? {city: filters.city} : {})
             });
         }
 

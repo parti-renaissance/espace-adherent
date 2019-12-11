@@ -29,7 +29,7 @@ export default class SearchResults extends React.Component {
                 <div className="programmatic-foundation__children programmatic-foundation__measures">
                     {this.props.measures.map((measure, index) => {
                         return <Measure
-                            key={index}
+                            key={index+measure.uuid}
                             measure={measure}
                             preventAutoExpand={true}
                         />
@@ -46,7 +46,7 @@ export default class SearchResults extends React.Component {
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
                     {this.props.projects.map((project, index) => {
                         return <Project
-                            key={index}
+                            key={index+project.uuid}
                             project={project}
                             preventAutoExpand={true}
                         />
