@@ -28,8 +28,8 @@ export default class SearchEngine {
         }
 
         const filterCallback = (item) => {
-            return this.normalize(item.title).indexOf(filters.query.toLowerCase()) !== -1
-                || this.normalize(_.uniq(_.flatMap(item.tags, tag => tag.label)).join()).indexOf(filters.query.toLowerCase()) !== -1
+            return this.normalize(item.title).indexOf(this.normalize(filters.query)) !== -1
+                || this.normalize(_.uniq(_.flatMap(item.tags, tag => tag.label)).join()).indexOf(this.normalize(filters.query)) !== -1
         };
 
         return {
