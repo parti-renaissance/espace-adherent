@@ -30,13 +30,17 @@ export default class SearchEngine {
         }
 
         const filterCallback = (item) => {
-            return item.title.toLowerCase().indexOf(filters.query.toLowerCase()) !== -1
-                || _.uniq(_.flatMap(item.tags, tag => tag.label)).join().toLowerCase().indexOf(filters.query.toLowerCase()) !== -1
+            return this.normalize(item.title).indexOf(filters.query.toLowerCase()) !== -1
+                || this.normalize(_.uniq(_.flatMap(item.tags, tag => tag.label)).join()).indexOf(filters.query.toLowerCase()) !== -1
         };
 
         return {
             measures: _.filter(measures, filterCallback),
             projects: _.filter(projects, filterCallback),
         };
+    }
+
+    static normalize(string) {
+        return string.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     }
 }
