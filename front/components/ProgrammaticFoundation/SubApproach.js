@@ -14,7 +14,7 @@ export default class SubApproach extends React.Component {
         return (
             <div className={`programmatic-foundation__sub-approach child ${
                 this.props.subApproach.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''
-            }`} ref={this.props.subApproach.uuid}>
+            }`}>
                 <div className="head" onClick={this.toggleActiveSubApproach.bind(this)}>
                     <span className="title">{sectionIdentifier} {this.props.subApproach.title}</span>
                     <span className="subtitle">{this.props.subApproach.subtitle}</span>
@@ -39,7 +39,9 @@ export default class SubApproach extends React.Component {
     }
 
     scrollToMyRef() {
-        ReactDOM.findDOMNode(this.refs[this.props.subApproach.uuid]).scrollIntoView({behavior: "smooth"});
+        setTimeout(() => {
+            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+        }, 200);
     }
 
     toggleActiveSubApproach(event) {

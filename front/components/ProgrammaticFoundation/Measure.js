@@ -7,8 +7,7 @@ export default class Measure extends React.Component {
         return (
             <div className={`programmatic-foundation__measure child ${
                 this.props.measure.isLeading ? 'leading' : ''
-            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}
-                ref={this.props.measure.uuid}>
+            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
 
                 <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
@@ -41,7 +40,9 @@ export default class Measure extends React.Component {
     }
 
     scrollToMyRef() {
-        ReactDOM.findDOMNode(this.refs[this.props.measure.uuid]).scrollIntoView({behavior: "smooth"});
+        setTimeout(() => {
+            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+        }, 200);
     }
 
     renderProjects() {
