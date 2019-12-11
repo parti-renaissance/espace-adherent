@@ -76,7 +76,7 @@ export default class ProgrammaticFoundation extends React.Component {
                     </div>
                 </div>
 
-                <div className="programmatic-foundation__right" ref={"programmatic-foundation-results"}>
+                <div className="programmatic-foundation__right">
 
                         <div className="l__row l__row--h-stretch l__row--wrap">
                             <div className="programmatic-foundation__legend">
@@ -122,7 +122,9 @@ export default class ProgrammaticFoundation extends React.Component {
     }
 
     scrollToMyRef() {
-        ReactDOM.findDOMNode(this.refs['programmatic-foundation-results']).scrollIntoView({behavior: "smooth"});
+        setTimeout(() => {
+            ReactDOM.findDOMNode(this).scrollIntoView({behavior: "smooth"});
+        }, 200);
     }
 
     handleFilterTextChange(text) {
