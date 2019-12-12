@@ -78,8 +78,22 @@
             let yearOfBirthSelect = $('select[name="app_retirement_simulator[yearOfBirth]"]');
 
             delayBeforeRetirementSelect.add(yearOfBirthSelect).change(function() {
+                updateFormForImpossibleUsecase();
                 updateYearOfBirthAndDelayBeforeRetirementContent();
             }).change();
+
+            function updateFormForImpossibleUsecase() {
+                let yearOfBirth = yearOfBirthSelect.val();
+                let delayBeforeRetirement = delayBeforeRetirementSelect.val();
+
+                if ('in_or_after_2004' === yearOfBirth) {
+                    delayBeforeRetirementSelect.val('in_or_after_2037');
+                }
+
+                if ('before_2037' === delayBeforeRetirement) {
+                    yearOfBirthSelect.val('before_2004');
+                }
+            }
 
             function updateYearOfBirthAndDelayBeforeRetirementContent() {
                 let yearOfBirth = yearOfBirthSelect.val();
