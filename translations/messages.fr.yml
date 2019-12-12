@@ -599,7 +599,7 @@ vote_place.availability:none: 'Aucune'
 #
 # Application request
 #
-application_request.tags.edited_successfully: Les ta gs ont bien été mis à jour
+application_request.tags.edited_successfully: Les tags ont bien été mis à jour
 application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
 application_request.removed_successfully: Le candidat a été retiré de votre équipe
 application_request.municipal_chief.popup.title: Charte de bonne utilisation des outils numériques
@@ -621,9 +621,9 @@ retirement_simulator.number_of_children.one: 1
 retirement_simulator.number_of_children.two: 2
 retirement_simulator.number_of_children.three_or_more: 3 ou plus
 
-retirement_simulator.profession.official: Fonctionnaire
-retirement_simulator.profession.hospital_staff: Personnel hospitalier
-retirement_simulator.profession.researcher: Chercheur
-retirement_simulator.profession.teacher: Enseignant
-retirement_simulator.profession.security_force: Membre des forces de l'ordre
-retirement_simulator.profession.other: Autre
+retirement_simulator.profession.official: fonctionnaire
+retirement_simulator.profession.hospital_staff: personnel hospitalier
+retirement_simulator.profession.researcher: chercheur
+retirement_simulator.profession.teacher: enseignant
+retirement_simulator.profession.security_force: membre des forces de l'ordre
+retirement_simulator.profession.other: autre
