@@ -599,10 +599,31 @@ vote_place.availability:none: 'Aucune'
 #
 # Application request
 #
-application_request.tags.edited_successfully: Les tags ont bien été mis à jour
+application_request.tags.edited_successfully: Les ta gs ont bien été mis à jour
 application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
 application_request.removed_successfully: Le candidat a été retiré de votre équipe
 application_request.municipal_chief.popup.title: Charte de bonne utilisation des outils numériques
 application_request.municipal_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_municipales_2020.pdf
 
 admin.image.delete: Supprimer l'image actuelle
+
+#
+# Retirement simulator
+#
+retirement_simulator.delay_before_retirement.before_2037: dans moins de 17 ans (avant 2037)
+retirement_simulator.delay_before_retirement.in_or_after_2037: dans plus de 17 ans (après 2037)
+
+retirement_simulator.year_of_birth.before_2004: avant 2004
+retirement_simulator.year_of_birth.in_or_after_2004: après 2004 (inclus)
+
+retirement_simulator.number_of_children.zero: 0
+retirement_simulator.number_of_children.one: 1
+retirement_simulator.number_of_children.two: 2
+retirement_simulator.number_of_children.three_or_more: 3 ou plus
+
+retirement_simulator.profession.official: Fonctionnaire
+retirement_simulator.profession.hospital_staff: Personnel hospitalier
+retirement_simulator.profession.researcher: Chercheur
+retirement_simulator.profession.teacher: Enseignant
+retirement_simulator.profession.security_force: Membre des forces de l'ordre
+retirement_simulator.profession.other: Autre

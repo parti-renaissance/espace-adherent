@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Simulateur de retraite' %}
+{% block canonical_url url('app_retirement_simulator_home') %}
+
+{% block content %}
+    <main>
+        <section>
+            <div>
+                Aujourd'hui (avant la réforme), il est prévu que vous partiez à la retraite
+                {{ form_widget(form.delayBeforeRetirement) }}
+            </div>
+            <div>
+                Vous êtes né
+                {{ form_widget(form.yearOfBirth) }}
+            </div>
+            <div>
+                Vous avez
+                {{ form_widget(form.numberOfChildren) }}
+                enfants
+            </div>
+            <div>
+                Vous êtes
+                {{ form_widget(form.profession) }}
+            </div>
+        </section>
+
+        <section>
+            <h3>Ce qui ne change pas</h3>
+            <div id="retirement-simulator-unchanged__bloc-1">
+                <ul>
+                    <li>L'âge légal de départ à la retraite est à 62 ans.</li>
+                    <li>Les personnes qui ont une carrière longue pourront toujours partir 2 ans plus tôt.</li>
+                    <li>Les personnes qui bénéficient aujourd'hui du dispositif de prise en compte de la pénibilité pourront toujours partir 2 ans plus tôt.</li>
+                    <li>Pas de pénalisation en cas d’interruption de carrière (congé maternité, période de chômage, longue maladie).</li>
+                </ul>
+            </div>
+            <div id="retirement-simulator-unchanged__bloc-2">
+            </div>
+            <div id="retirement-simulator-unchanged__bloc-3">
+            </div>
+            <div id="retirement-simulator-unchanged__bloc-4">
+            </div>
+            <div id="retirement-simulator-unchanged__bloc-5">
+            </div>
+        </section>
+
+        <section>
+            <h3>Ce qui ne change pas</h3>
+            <div id="retirement-simulator-changed__bloc-1">
+                Plus de solidarité. A partir de 2022 :
+                <ul>
+                    <li>
+                        Augmentation de la retraite minimum à 1000€/mois.
+                        C'est une avancée notable pour beaucoup d'agriculteurs, de commerçants et d'artisans qui touchent aujourd'hui une retraite inférieure à 1000€/mois.
+                    </li>
+                </ul>
+            </div>
+            <div id="retirement-simulator-changed__bloc-2">
+            </div>
+            <div id="retirement-simulator-changed__bloc-3">
+            </div>
+            <div id="retirement-simulator-changed__bloc-4">
+            </div>
+            <div id="retirement-simulator-changed__bloc-5">
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+
+            // Year of birth & delay before retirement
+            let delayBeforeRetirementSelect= $('select[name="app_retirement_simulator[delayBeforeRetirement]"]');
+            let yearOfBirthSelect = $('select[name="app_retirement_simulator[yearOfBirth]"]');
+
+            delayBeforeRetirementSelect.add(yearOfBirthSelect).change(function() {
+                updateYearOfBirthAndDelayBeforeRetirementContent();
+            }).change();
+
+            function updateYearOfBirthAndDelayBeforeRetirementContent() {
+                let yearOfBirth = yearOfBirthSelect.val();
+                let delayBeforeRetirement = delayBeforeRetirementSelect.val();
+                let content1Unchanged, content1Changed, content2Unchanged, content2Changed;
+
+                content1Unchanged = content1Changed = content2Unchanged =content2Changed = "TODO: resultat de: " +
+                    yearOfBirth +
+                    " et " +
+                    delayBeforeRetirement;
+
+                $('#retirement-simulator-unchanged__bloc-2').html(content1Unchanged);
+                $('#retirement-simulator-changed__bloc-2').html(content1Changed);
+
+                $('#retirement-simulator-unchanged__bloc-3').html(content2Unchanged);
+                $('#retirement-simulator-changed__bloc-3').html(content2Changed);
+            }
+
+            // Number of children
+            let numberOfChildrenSelect = $('select[name="app_retirement_simulator[numberOfChildren]"]');
+
+            numberOfChildrenSelect.change(function() {
+                updateNumberOfChildrenContent();
+            }).change();
+
+            function updateNumberOfChildrenContent() {
+                let numberOfChildren = numberOfChildrenSelect.val();
+                let contentUnchanged, contentChanged;
+
+                switch (numberOfChildren) {
+                    case 'three_or_more':
+                        contentUnchanged = "Bonus au 3ième enfant. Pas de baisse de pension, contrairement à ce que préconisait le rapport Delevoye.";
+                        break;
+                    default:
+                        contentUnchanged = null;
+                }
+
+                switch (numberOfChildren) {
+                    case 'one':
+                    case 'two':
+                    case 'three_or_more':
+                        contentChanged = "Majoration de la pension pour les femmes, dès le 1er enfant." +
+                            "Grâce à cela, 8 millions de femmes auront une augmentation de leur retraite, contre 3 millions aujourd’hui.";
+                        break;
+                    default:
+                        contentChanged = null;
+
+                }
+
+                $('#retirement-simulator-unchanged__bloc-4').html(contentUnchanged);
+                $('#retirement-simulator-changed__bloc-4').html(contentChanged);
+            }
+
+            // Profession
+            let professionSelect = $('select[name="app_retirement_simulator[profession]"]');
+
+            professionSelect.change(function() {
+                updateProfessionContent(this.value);
+            }).change();
+
+            function updateProfessionContent() {
+                let profession = professionSelect.val();
+                let contentUnchanged, contentChanged;
+
+                switch (profession) {
+                    case 'official':
+                        contentUnchanged = null;
+                        contentChanged = "Les primes seront intégrées dans le calcul de la retraite, ce qui va conduire à une amélioration de la situation." +
+                            "Ceux qui effectuent des tâches pénibles pourront partir plus tôt à la retraite (prise en compte de la pénibilité).";
+                        break;
+                    case 'hospital_staff':
+                        contentUnchanged = null;
+                        contentChanged = "Ceux qui effectuent des tâches pénibles pourront partir plus tôt à la retraite (prise en compte de la pénibilité)." +
+                            "Cela concerne en particulier les infirmiers. L'abaissement des seuils de pénibilité du travail de nuit leur permettra de partir plus tôt.";
+                        break;
+                    case 'researcher':
+                        contentUnchanged = null;
+                        contentChanged = "Revalorisation progressives des salaires à partir de 2021.";
+                        break;
+                    case 'teacher':
+                        contentUnchanged = "Les pensions des enseignants ne baisseront pas (sera inscrit dans la loi).";
+                        contentChanged = "Revalorisation progressives des salaires à partir de 2021.";
+                        break;
+                    case 'security_force':
+                        contentUnchanged = "Les âges dérogatoires pour les forces de sécurité exposées à des fonctions dangereuses seront maintenus.";
+                        contentChanged = null;
+                        break;
+                    default:
+                        contentUnchanged = contentChanged = null;
+                }
+
+                $('#retirement-simulator-unchanged__bloc-5').html(contentUnchanged);
+                $('#retirement-simulator-changed__bloc-5').html(contentChanged);
+            }
+        });
+    </script>
+{% endblock %}
