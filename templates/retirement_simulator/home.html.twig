@@ -10,28 +10,35 @@
                 <h1 class="text--large title">Le simulateur de la reforme des retraites</h1>
                 <div class="retirement-simulator__journey">
                     <div class="simulator-journey__item">
-                        Aujourd'hui (avant la réforme), il est prévu que vous partiez à la retraite
-                        <span>{{ form_widget(form.delayBeforeRetirement) }}</span>.
+                        <label for="">
+                            Aujourd'hui (avant la réforme), il est prévu que vous partiez à la retraite
+                            <span>{{ form_widget(form.delayBeforeRetirement) }}</span>.
+                        </label>
                     </div>
 
                     <br />
 
                     <div class="simulator-journey__item">
-                        Vous êtes né(e) <span>{{ form_widget(form.yearOfBirth) }}</span>.
+                        <label for="">
+                            Vous êtes né(e) <span>{{ form_widget(form.yearOfBirth) }}</span>.
+                        </label>
+
                     </div>
 
                     <div class="simulator-journey__item">
-                        Vous avez <span>{{ form_widget(form.numberOfChildren) }}</span> enfant(s).
+                        <label for="">
+                            Vous avez <span>{{ form_widget(form.numberOfChildren) }}</span> enfant(s).
+                        </label>
                     </div>
 
                     <br />
 
                     <div class="simulator-journey__item">
-                        Vous êtes <span>{{ form_widget(form.profession) }}</span>.
+                        <label for="">
+                            Vous êtes <span>{{ form_widget(form.profession) }}</span>.
+                        </label>
                     </div>
-
                 </div>
-
             <div>
         </section>
 
