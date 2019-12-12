@@ -7,35 +7,40 @@
     <main class="retirement-simulator">
         <section class="retirement-simulator__header">
             <div class="l__wrapper">
+                <h1 class="text--large title">Le simulateur de la reforme des retraites</h1>
                 <div class="retirement-simulator__journey">
-                    <h1 class="text--large">Le simulateur de la reforme des retraites</h1>
-                    <div>
+                    <div class="simulator-journey__item">
                         Aujourd'hui (avant la réforme), il est prévu que vous partiez à la retraite
-                        {{ form_widget(form.delayBeforeRetirement, { attr: { class: 'aca' }}) }}
+                        <span>{{ form_widget(form.delayBeforeRetirement) }}</span>.
                     </div>
-                    <div>
-                        Vous êtes né
-                        {{ form_widget(form.yearOfBirth) }}
+
+                    <br />
+
+                    <div class="simulator-journey__item">
+                        Vous êtes né(e) <span>{{ form_widget(form.yearOfBirth) }}</span>.
                     </div>
-                    <div>
-                        Vous avez
-                        {{ form_widget(form.numberOfChildren) }}
-                        enfants
+
+                    <div class="simulator-journey__item">
+                        Vous avez <span>{{ form_widget(form.numberOfChildren) }}</span> enfant(s).
                     </div>
-                    <div>
-                        Vous êtes
-                        {{ form_widget(form.profession) }}
+
+                    <br />
+
+                    <div class="simulator-journey__item">
+                        Vous êtes <span>{{ form_widget(form.profession) }}</span>.
                     </div>
+
                 </div>
 
             <div>
         </section>
 
         <section class="retirement-simulator__result">
-            <div class="l__wrapper">
-                <div class="retirement-simulator__result--bloc unchanged">
-                    <h3>Ce qui ne change pas</h3>
-                    <div id="retirement-simulator-unchanged__bloc-1">
+            <div class="l__wrapper l__row l__row--top l__row--h-stretch">
+                <div class="simulator-result__col unchanged">
+                    <h2 class="text--medium">Ce qui ne change pas</h2>
+                    <hr />
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-1">
                         <ul>
                             <li>L'âge légal de départ à la retraite est à 62 ans.</li>
                             <li>Les personnes qui ont une carrière longue pourront toujours partir 2 ans plus tôt.</li>
@@ -43,16 +48,17 @@
                             <li>Pas de pénalisation en cas d’interruption de carrière (congé maternité, période de chômage, longue maladie).</li>
                         </ul>
                     </div>
-                    <div id="retirement-simulator-unchanged__bloc-2"></div>
-                    <div id="retirement-simulator-unchanged__bloc-3"></div>
-                    <div id="retirement-simulator-unchanged__bloc-4"></div>
-                    <div id="retirement-simulator-unchanged__bloc-5"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-2"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-3"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-4"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-5"></div>
                 </div>
 
-                <div class="retirement-simulator__result--bloc changed">
-                    <h3>Ce qui ne change pas</h3>
-                    <div id="retirement-simulator-changed__bloc-1">
-                        Plus de solidarité. A partir de 2022 :
+                <div class="simulator-result__col changed">
+                    <h2 class="text--medium">Ce qui change</h2>
+                    <hr />
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-1">
+                        <div class="subtitle">Plus de solidarité. À partir de 2022 : </div>
                         <ul>
                             <li>
                                 Augmentation de la retraite minimum à 1000€/mois.
@@ -60,10 +66,10 @@
                             </li>
                         </ul>
                     </div>
-                    <div id="retirement-simulator-changed__bloc-2"></div>
-                    <div id="retirement-simulator-changed__bloc-3"></div>
-                    <div id="retirement-simulator-changed__bloc-4"></div>
-                    <div id="retirement-simulator-changed__bloc-5"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-2"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-3"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-4"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-5"></div>
                 </div>
             </div>
         </section>
