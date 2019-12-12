@@ -78,18 +78,71 @@
             let yearOfBirthSelect = $('select[name="app_retirement_simulator[yearOfBirth]"]');
 
             delayBeforeRetirementSelect.add(yearOfBirthSelect).change(function() {
+                updateFormForImpossibleUsecase();
                 updateYearOfBirthAndDelayBeforeRetirementContent();
             }).change();
+
+            function updateFormForImpossibleUsecase() {
+                let yearOfBirth = yearOfBirthSelect.val();
+                let delayBeforeRetirement = delayBeforeRetirementSelect.val();
+
+                if ('in_or_after_2004' === yearOfBirth) {
+                    delayBeforeRetirementSelect.val('in_or_after_2037');
+                }
+
+                if ('before_2037' === delayBeforeRetirement) {
+                    yearOfBirthSelect.val('before_2004');
+                }
+            }
 
             function updateYearOfBirthAndDelayBeforeRetirementContent() {
                 let yearOfBirth = yearOfBirthSelect.val();
                 let delayBeforeRetirement = delayBeforeRetirementSelect.val();
                 let content1Unchanged, content1Changed, content2Unchanged, content2Changed;
 
-                content1Unchanged = content1Changed = content2Unchanged =content2Changed = "TODO: resultat de: " +
-                    yearOfBirth +
-                    " et " +
-                    delayBeforeRetirement;
+                switch (true) {
+                    case 'before_2004' === yearOfBirth && 'before_2037' === delayBeforeRetirement:
+                        content1Unchanged = "Il n'y aura aucune évolution des modalités de calculs des montants de la retraite, " +
+                            "tant pour le régime général que pour les régimes spéciaux, " +
+                            "sauf pour prendre en compte les améliorations ci-dessous (voir \"ce qui change\").";
+                        content2Unchanged = null;
+                        content1Changed = "Plus de responsabilité. " +
+                            "Si les partenaires sociaux ne trouve pas de solution alternative, " +
+                            "l'âge de départ à taux plein sera progressivement augmenté pour passer de 62 ans en 2022 à 64 ans en 2027.";
+                        content2Changed = "A partir de 2022, les personnes qui n'ont pas suffisamment de trimestre pourront partir à la retraite à taux plein avant 67 ans. " +
+                            "Cela bénéficie particulièrement aux femmes." +
+                            "Cet abaissement de l'âge d'annulation de la décôte sera progressivement amené de 67 ans en 2022 à 65 ans en 2027.";
+                        break;
+                    case 'before_2004' === yearOfBirth && 'in_or_after_2037' === delayBeforeRetirement:
+                        content1Unchanged = "Le système actuel continue de fonctionner comme maintenant jusqu'en 2025. Les droits acquis sont garantis à 100%.";
+                        content2Unchanged = null;
+                        content1Changed = "A partir de 2022 :" +
+                            "- Garantie du montant minimal de la pension de réversion (des veuves ou des veufs), à au moins 70% de la retraite du couple." +
+                            "A partir de 2025 :" +
+                            "- Le nouveau système universel à points entre en vigueur pour toutes les années travaillées après 2025." +
+                            "- Il y aura une conversion de tous les droits acquis en points," +
+                                "selon des règles de calcul qui doivent être négociées secteur par secteur, avec les partenaires sociaux." +
+                                "Aujourd'hui, les règles de conversion ne sont pas connues, donc tous les simulateurs en ligne sont erronés.";
+                        content2Changed = "Une réforme juste :" +
+                            "- Chaque euro cotisé donne le même montant de pension, que vous soyez salarié, indépendant ou fonctionnaire." +
+                            "- Chaque heure travaillée crée des droits à la retraite, même quand on travaille moins de 150 heures par trimestre." +
+                            "Le point de retraite ne pourra pas baisser. Sa valeur sera fixée par les partenaires sociaux.";
+                        break;
+                    case 'in_or_after_2004' === yearOfBirth && 'in_or_after_2037' === delayBeforeRetirement:
+                        content1Unchanged = null;
+                        content2Unchanged = null;
+                        content1Changed = "Tous les jeunes nés à partir de 2004 entreront directement dans le nouveau système de retraite universelle par point. " +
+                            "Personne ne bénéficiera d'un régime spécial de retraite." +
+                            "Garantie du montant minimal de la pension de réversion (des veuves ou des veufs), à au moins 70% de la retraite du couple.";
+                        content2Changed = "Une réforme juste :" +
+                            "- Chaque euro cotisé donne le même montant de pension, que vous soyez salarié, indépendant ou fonctionnaire." +
+                            "- Chaque heure travaillée crée des droits à la retraite, même quand on travaille moins de 150 heures par trimestre." +
+                            "- Les jeunes cotiseront enfin pour leur retraite lors de leurs stages et de leurs jobs d’été." +
+                            "Le point de retraite ne pourra pas baisser. Sa valeur sera fixée par les partenaires sociaux.";
+                        break;
+                    default:
+                        content1Unchanged = content1Changed = content2Unchanged = content2Changed = null
+                }
 
                 $('#retirement-simulator-unchanged__bloc-2').html(content1Unchanged);
                 $('#retirement-simulator-changed__bloc-2').html(content1Changed);
