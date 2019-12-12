@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Simulateur de retraite' %}
+{% block canonical_url url('app_retirement_simulator_home') %}
+
+{% block content %}
+    <main class="retirement-simulator">
+        <section class="retirement-simulator__header">
+            <div class="l__wrapper">
+                <h1 class="text--large title">Le simulateur de la reforme des retraites</h1>
+                <div class="retirement-simulator__journey">
+                    <div class="simulator-journey__item">
+                        <label for="{{ form.delayBeforeRetirement.vars.id }}">
+                            Aujourd'hui (avant la réforme), il est prévu que vous partiez à la retraite
+                            <span>{{ form_widget(form.delayBeforeRetirement) }}</span>.
+                        </label>
+                    </div>
+
+                    <br />
+
+                    <div class="simulator-journey__item">
+                        <label for="{{ form.yearOfBirth.vars.id }}">
+                            Vous êtes né(e) <span>{{ form_widget(form.yearOfBirth) }}</span>.
+                        </label>
+
+                    </div>
+
+                    <div class="simulator-journey__item">
+                        <label for="{{ form.numberOfChildren.vars.id }}">
+                            Vous avez <span>{{ form_widget(form.numberOfChildren) }}</span> enfant(s).
+                        </label>
+                    </div>
+
+                    <br />
+
+                    <div class="simulator-journey__item">
+                        <label for="{{ form.profession.vars.id }}">
+                            Vous êtes <span>{{ form_widget(form.profession) }}</span>.
+                        </label>
+                    </div>
+                </div>
+            <div>
+        </section>
+
+        <section class="retirement-simulator__result">
+            <div class="l__wrapper l__row l__row--top l__row--h-stretch">
+                <div class="simulator-result__col unchanged">
+                    <h2 class="text--medium">Ce qui ne change pas</h2>
+                    <hr />
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-1">
+                        <div class="simulator-result__col--item--measure">
+                            <span class="icon-check"></span>
+                            L'âge légal de départ à la retraite est à 62 ans.
+                        </div>
+                        <div class="simulator-result__col--item--measure">
+                            <span class="icon-check"></span>
+                            Les personnes qui ont une carrière longue pourront toujours partir 2 ans plus tôt.
+                        </div>
+                        <div class="simulator-result__col--item--measure">
+                            <span class="icon-check"></span>
+                            Les personnes qui bénéficient aujourd'hui du dispositif de prise en compte de la pénibilité pourront toujours partir 2 ans plus tôt.
+                        </div>
+                        <div class="simulator-result__col--item--measure">
+                            <span class="icon-check"></span>
+                            Pas de pénalisation en cas d’interruption de carrière (congé maternité, période de chômage, longue maladie).
+                        </div>
+                    </div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-2"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-3"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-4"></div>
+                </div>
+
+                <div class="simulator-result__col changed">
+                    <h2 class="text--medium">Ce qui change</h2>
+                    <hr />
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-1">
+                        <div class="subtitle">Plus de solidarité. À partir de 2022 : </div>
+                        <ul>
+                            <li>
+                                Augmentation de la retraite minimum à 1000€/mois.
+                                C'est une avancée notable pour beaucoup d'agriculteurs, de commerçants et d'artisans qui touchent aujourd'hui une retraite inférieure à 1000€/mois.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-2"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-3"></div>
+                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-4"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+
+            let delayBeforeRetirementSelect= $('select[name="app_retirement_simulator[delayBeforeRetirement]"]');
+            let yearOfBirthSelect = $('select[name="app_retirement_simulator[yearOfBirth]"]');
+            let numberOfChildrenSelect = $('select[name="app_retirement_simulator[numberOfChildren]"]');
+            let professionSelect = $('select[name="app_retirement_simulator[profession]"]');
+
+            delayBeforeRetirementSelect.change(function() {
+                if ('before_2037' === this.value) {
+                    yearOfBirthSelect.val('before_2004');
+                }
+
+                updateYearOfBirthAndDelayBeforeRetirementContent();
+                updateNumberOfChildrenContent();
+                updateProfessionContent();
+            }).change();
+
+            yearOfBirthSelect.change(function() {
+                if ('in_or_after_2004' === this.value) {
+                    delayBeforeRetirementSelect.val('in_or_after_2037');
+                }
+
+                updateYearOfBirthAndDelayBeforeRetirementContent();
+                updateNumberOfChildrenContent();
+                updateProfessionContent();
+            }).change();
+
+            function updateYearOfBirthAndDelayBeforeRetirementContent() {
+                let yearOfBirth = yearOfBirthSelect.val();
+                let delayBeforeRetirement = delayBeforeRetirementSelect.val();
+                let contentUnchanged, contentChanged;
+
+                switch (true) {
+                    case 'before_2004' === yearOfBirth && 'before_2037' === delayBeforeRetirement:
+                        contentUnchanged = wrapMeasure("Il n'y aura aucune évolution des modalités de calculs des montants de la retraite, " +
+                            "tant pour le régime général que pour les régimes spéciaux, " +
+                            "sauf pour prendre en compte les améliorations ci-dessous (voir \"ce qui change\").");
+                        contentChanged = wrapMeasure("Plus de responsabilité. " +
+                            "Si les partenaires sociaux ne trouve pas de solution alternative, " +
+                            "l'âge de départ à taux plein sera progressivement augmenté pour passer de 62 ans en 2022 à 64 ans en 2027." +
+                            "À partir de 2022, les personnes qui n'ont pas suffisamment de trimestre pourront partir à la retraite à taux plein avant 67 ans. " +
+                            "Cela bénéficie particulièrement aux femmes." +
+                            "Cet abaissement de l'âge d'annulation de la décote sera progressivement amené de 67 ans en 2022 à 65 ans en 2027.");
+                        break;
+                    case 'before_2004' === yearOfBirth && 'in_or_after_2037' === delayBeforeRetirement:
+                        contentUnchanged = wrapMeasure("Le système actuel continue de fonctionner comme maintenant jusqu'en 2025. " +
+                            "Les droits acquis sont garantis à 100%.");
+                        contentChanged = wrapMeasure("À partir de 2022 :" +
+                            "- Garantie du montant minimal de la pension de réversion (des veuves ou des veufs), à au moins 70% de la retraite du couple." +
+                            "À partir de 2025 :" +
+                            "- Le nouveau système universel à points entre en vigueur pour toutes les années travaillées après 2025." +
+                            "- Il y aura une conversion de tous les droits acquis en points, " +
+                            "selon des règles de calcul qui doivent être négociées secteur par secteur, avec les partenaires sociaux. " +
+                            "Aujourd'hui, les règles de conversion ne sont pas connues, donc tous les simulateurs en ligne sont erronés. " +
+                            "Une réforme juste :" +
+                            "- Chaque euro cotisé donne le même montant de pension, que vous soyez salarié, indépendant ou fonctionnaire." +
+                            "- Chaque heure travaillée crée des droits à la retraite, même quand on travaille moins de 150 heures par trimestre." +
+                            "Le point de retraite ne pourra pas baisser. Sa valeur sera fixée par les partenaires sociaux.");
+                        break;
+                    case 'in_or_after_2004' === yearOfBirth && 'in_or_after_2037' === delayBeforeRetirement:
+                        contentUnchanged = null;
+                        contentChanged = wrapMeasure("Tous les jeunes nés à partir de 2004 entreront directement dans le nouveau système de retraite universelle par point. " +
+                            "Personne ne bénéficiera d'un régime spécial de retraite. " +
+                            "Garantie du montant minimal de la pension de réversion (des veuves ou des veufs), à au moins 70% de la retraite du couple. " +
+                            "Une réforme juste :" +
+                            "- Chaque euro cotisé donne le même montant de pension, que vous soyez salarié, indépendant ou fonctionnaire." +
+                            "- Chaque heure travaillée crée des droits à la retraite, même quand on travaille moins de 150 heures par trimestre." +
+                            "- Les jeunes cotiseront enfin pour leur retraite lors de leurs stages et de leurs jobs d’été." +
+                            "Le point de retraite ne pourra pas baisser. Sa valeur sera fixée par les partenaires sociaux.");
+                        break;
+                    default:
+                        contentUnchanged = contentChanged = null
+                }
+
+                $('#retirement-simulator-unchanged__bloc-2').html(contentUnchanged);
+                $('#retirement-simulator-changed__bloc-2').html(contentChanged);
+            }
+
+            numberOfChildrenSelect.change(function() {
+                updateNumberOfChildrenContent();
+            }).change();
+
+            function updateNumberOfChildrenContent() {
+                let numberOfChildren = numberOfChildrenSelect.val();
+                let delayBeforeRetirement = delayBeforeRetirementSelect.val();
+                let contentUnchanged, contentChanged;
+
+                switch (numberOfChildren) {
+                    case 'three_or_more':
+                        contentUnchanged = 'Bonus au 3<sup>ème</sup> enfant. Pas de baisse de pension, contrairement à ce que préconisait le rapport Delevoye.';
+                        break;
+                    default:
+                        contentUnchanged = null;
+                }
+
+                switch (true) {
+                    case 'one' === numberOfChildren && 'in_or_after_2037' === delayBeforeRetirement:
+                    case 'two' === numberOfChildren && 'in_or_after_2037' === delayBeforeRetirement:
+                    case 'three_or_more' === numberOfChildren:
+                        contentChanged = 'Majoration de la pension pour les femmes, dès le 1<sup>er</sup> enfant. ' +
+                            'Grâce à cela, 8 millions de femmes auront une augmentation de leur retraite, contre 3 millions aujourd’hui.';
+                        break;
+                    default:
+                        contentChanged = null;
+
+                }
+
+                $('#retirement-simulator-unchanged__bloc-3').html(contentUnchanged ? wrapMeasure(contentUnchanged) : null);
+                $('#retirement-simulator-changed__bloc-3').html(contentChanged ? wrapMeasure(contentChanged) : null);
+            }
+
+            professionSelect.change(function() {
+                updateProfessionContent(this.value);
+            }).change();
+
+            function updateProfessionContent() {
+                let profession = professionSelect.val();
+                let delayBeforeRetirement = delayBeforeRetirementSelect.val();
+                let contentUnchanged, contentChanged;
+
+                switch (true) {
+                    case 'official' === profession && 'in_or_after_2037' === delayBeforeRetirement:
+                        contentUnchanged = null;
+                        contentChanged = 'Les primes seront intégrées dans le calcul de la retraite, ce qui va conduire à une amélioration de la situation. ' +
+                            'Ceux qui effectuent des tâches pénibles pourront partir plus tôt à la retraite (prise en compte de la pénibilité).';
+                        break;
+                    case 'hospital_staff' === profession:
+                        contentUnchanged = null;
+                        contentChanged = 'Ceux qui effectuent des tâches pénibles pourront partir plus tôt à la retraite (prise en compte de la pénibilité). ' +
+                            'Cela concerne en particulier les infirmiers. ' +
+                            'L\'abaissement des seuils de pénibilité du travail de nuit leur permettra de partir plus tôt.';
+                        break;
+                    case 'researcher' === profession:
+                        contentUnchanged = null;
+                        contentChanged = 'Revalorisation progressives des salaires à partir de 2021.';
+                        break;
+                    case 'teacher' === profession:
+                        contentUnchanged = 'Les pensions des enseignants ne baisseront pas (sera inscrit dans la loi).';
+                        contentChanged = 'Revalorisation progressives des salaires à partir de 2021.';
+                        break;
+                    case 'security_force' === profession:
+                        contentUnchanged = 'Les âges dérogatoires pour les forces de sécurité exposées à des fonctions dangereuses seront maintenus.';
+                        contentChanged = null;
+                        break;
+                    default:
+                        contentUnchanged = contentChanged = null;
+                }
+
+                $('#retirement-simulator-unchanged__bloc-4').html(contentUnchanged ? wrapMeasure(contentUnchanged) : null);
+                $('#retirement-simulator-changed__bloc-4').html(contentChanged ? wrapMeasure(contentChanged) : null);
+            }
+
+            function wrapMeasure(measure) {
+                return '<div class="simulator-result__col--item--measure">' +
+                    '<span class="icon-check"></span>' + measure +
+                    '</div>';
+            }
+        });
+    </script>
+{% endblock %}
