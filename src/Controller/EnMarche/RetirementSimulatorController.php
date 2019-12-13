@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/simulateur-retraite")
+ * @Route("/retraite-interactif")
  */
 class RetirementSimulatorController extends Controller
 {
