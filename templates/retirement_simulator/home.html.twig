@@ -7,7 +7,7 @@
     <main class="retirement-simulator">
         <section class="retirement-simulator__header">
             <div class="l__wrapper">
-                <h1 class="text--large title">Le simulateur de la reforme des retraites</h1>
+                <h1 class="text--large title">Réforme des retraites : <br />ce qui change pour vous</h1>
                 <div class="retirement-simulator__journey">
                     <div class="simulator-journey__item">
                         <label for="{{ form.delayBeforeRetirement.vars.id }}">
@@ -38,6 +38,10 @@
                             Vous êtes <span>{{ form_widget(form.profession) }}</span>.
                         </label>
                     </div>
+
+                    <br /><br />
+
+                    <button class="btn btn--blue">Résultats</button>
                 </div>
             <div>
         </section>
@@ -126,7 +130,7 @@
                 }
 
                 if ('three_or_more' === numberOfChildrenSelect.val()) {
-                    content += wrapMeasure('Bonus au 3ème enfant. Il ne sera pas réduit, contrairement à ce que préconisait le rapport Delevoye.');
+                    content += wrapMeasure('Bonus au 3<sup>ème</sup> enfant. Il ne sera pas réduit, contrairement à ce que préconisait le rapport Delevoye.');
                 }
 
                 if ('teacher' === professionSelect.val()) {
@@ -186,8 +190,8 @@
                     content += wrapMeasure('Revalorisation progressives des salaires à partir de 2021.');
                 }
 
-                content += '<div class="subtitle">Un système qui protège mieux :</div>';
-                content += wrapMeasure('A partir de 2022, augmentation de la retraite minimum à 1000€ net par mois pour les carrières complètes.');
+                content += '<div class="subtitle">Un système qui protège mieux.</div>';
+                content += wrapMeasure('À partir de 2022, augmentation de la retraite minimum à 1000€ net par mois pour les carrières complètes.');
 
                 if ('in_or_after_2037' === delayBeforeRetirementSelect.val()) {
                     content += wrapMeasure('Le montant minimal de la pension de réversion (des veuves ou des veufs), est garanti à au moins 70% de la retraite du couple.');
@@ -197,7 +201,7 @@
                     content += wrapMeasure('Majoration de la pension pour les femmes, dès le 1er enfant. Grâce à cela, 5 millions de femmes auront une augmentation de leur retraite.');
                 }
 
-                content += '<div class="subtitle">Entrée en vigueur :</div>';
+                content += '<div class="subtitle">Entrée en vigueur.</div>';
 
                 if ('before_2037' === delayBeforeRetirementSelect.val()) {
                     content += wrapMeasure(
