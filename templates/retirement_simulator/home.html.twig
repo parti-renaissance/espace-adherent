@@ -41,7 +41,9 @@
 
                     <br /><br />
 
-                    <button class="btn btn--blue">Résultats</button>
+                    <button class="btn btn--blue" id="simulator-journey-button">
+                        Résultats
+                    </button>
                 </div>
             <div>
         </section>
@@ -93,20 +95,16 @@
                 }
             });
 
-            delayBeforeRetirementSelect
-                .add(yearOfBirthSelect)
-                .add(numberOfChildrenSelect)
-                .add(professionSelect)
-                .change(function() {
-                    updateContent();
-                })
-            ;
+            $('#simulator-journey-button').click(function() {
+                updateContent();
+            });
+
+            updateContent();
 
             function updateContent() {
                 updateUnchangedContent();
                 updateChangedContent();
             }
-            updateContent();
 
             function updateUnchangedContent() {
                 let content = '<h2 class="text--medium">Ce qui ne change pas</h2>' +

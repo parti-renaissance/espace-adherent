@@ -34,6 +34,7 @@ class RetirementSimulatorType extends AbstractType
         'researcher',
         'teacher',
         'security_force',
+        'other',
     ];
 
     public function buildForm(FormBuilderInterface $builder, array $options)
