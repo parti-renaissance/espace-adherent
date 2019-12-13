@@ -43,48 +43,43 @@
         </section>
 
         <section class="retirement-simulator__result">
-            <div class="l__wrapper l__row l__row--top l__row--h-stretch">
+            <div class="l__wrapper l__row l__row--top l__row--h-stretch l__row--wrap">
                 <div class="simulator-result__col unchanged">
                     <h2 class="text--medium">Ce qui ne change pas</h2>
                     <hr />
-                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-1">
+                    <div id="retirement-simulator-unchanged__bloc-1">
                         <div class="simulator-result__col--item--measure">
-                            <span class="icon-check"></span>
                             L'âge légal de départ à la retraite est à 62 ans.
                         </div>
                         <div class="simulator-result__col--item--measure">
-                            <span class="icon-check"></span>
                             Les personnes qui ont une carrière longue pourront toujours partir 2 ans plus tôt.
                         </div>
                         <div class="simulator-result__col--item--measure">
-                            <span class="icon-check"></span>
                             Les personnes qui bénéficient aujourd'hui du dispositif de prise en compte de la pénibilité pourront toujours partir 2 ans plus tôt.
                         </div>
                         <div class="simulator-result__col--item--measure">
-                            <span class="icon-check"></span>
                             Pas de pénalisation en cas d’interruption de carrière (congé maternité, période de chômage, longue maladie).
                         </div>
                     </div>
-                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-2"></div>
-                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-3"></div>
-                    <div class="simulator-result__col--item" id="retirement-simulator-unchanged__bloc-4"></div>
+                    <div id="retirement-simulator-unchanged__bloc-2"></div>
+                    <div id="retirement-simulator-unchanged__bloc-3"></div>
+                    <div id="retirement-simulator-unchanged__bloc-4"></div>
                 </div>
 
                 <div class="simulator-result__col changed">
                     <h2 class="text--medium">Ce qui change</h2>
                     <hr />
-                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-1">
+                    <div id="retirement-simulator-changed__bloc-1">
                         <div class="subtitle">Plus de solidarité. À partir de 2022 : </div>
                         <div class="simulator-result__col--item--measure">
-                            <span class="icon-check"></span>
                             Augmentation de la retraite minimum à 1000€/mois.
                             <br>
                             C'est une avancée notable pour beaucoup d'agriculteurs, de commerçants et d'artisans qui touchent aujourd'hui une retraite inférieure à 1000€/mois.
                         </div>
                     </div>
-                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-2"></div>
-                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-3"></div>
-                    <div class="simulator-result__col--item" id="retirement-simulator-changed__bloc-4"></div>
+                    <div id="retirement-simulator-changed__bloc-2"></div>
+                    <div id="retirement-simulator-changed__bloc-3"></div>
+                    <div id="retirement-simulator-changed__bloc-4"></div>
                 </div>
             </div>
         </section>
@@ -285,9 +280,7 @@
             }
 
             function wrapMeasure(measure) {
-                return '<div class="simulator-result__col--item--measure">' +
-                    '<span class="icon-check"></span>' + measure +
-                    '</div>';
+                return '<div class="simulator-result__col--item--measure">' + measure + '</div>';
             }
 
             function changeContent(node, content) {

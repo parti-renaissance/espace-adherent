@@ -28,7 +28,7 @@
                         position: relative;
                         display: inline-block;
                         padding: 0;
-                        margin: 0 10px;
+                        margin: 0 5px;
                         line-height: normal;
 
                         select {
@@ -37,7 +37,7 @@
                             box-sizing: content-box;
                             border: none;
                             height: 30px;
-                            padding: 0 30px 0 0;
+                            padding: 0 30px 0 5px;
                             border-bottom: solid 2px $blue--dark;
                             background-color: transparent;
                             border-radius: 0;
@@ -59,6 +59,7 @@
                             border-color: $blue--dark transparent transparent transparent;
                             right: 10px;
                             top: 14px;
+                            pointer-events: none;
                         }
                     }
                 }
@@ -67,20 +68,28 @@
     }
 
     &__result {
-        margin: 80px 0 200px;
+        margin: 80px 0 100px;
 
         .simulator-result__col {
-            width: calc(50% - 40px);
+            width: 100%;
+            margin-bottom: 60px;
+
+            @media (min-width: $tablet) {
+                width: calc(50% - 40px);
+            }
 
             hr {
                 width: 40px;
                 margin: 40px 0;
             }
 
-            &--item {
+            &--item--measure {
                 margin-top: 30px;
                 font-family: $font-roboto;
                 color: $dark;
+                background-position: left top;
+                background-repeat: no-repeat;
+                padding-left: 40px;
 
                 .subtitle {
                     text-transform: uppercase;
@@ -91,6 +100,18 @@
 
                 ul {
                     list-style: circle;
+                }
+            }
+
+            &.changed {
+                .simulator-result__col--item--measure {
+                    background-image: url('/images/icons/measure-changed.svg');
+                }
+            }
+
+            &.unchanged {
+                .simulator-result__col--item--measure {
+                    background-image: url('/images/icons/measure-unchanged.svg');
                 }
             }
         }
