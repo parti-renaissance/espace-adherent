@@ -95,6 +95,19 @@
     <script src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            $('.retirement-simulator__journey select').change(function() {
+                resizeSelect($(this));
+            }).each(function() {
+                resizeSelect($(this));
+            });
+
+            function resizeSelect(select) {
+                var text = select.find('option:selected').text()
+                var $aux = $('<select/>').append($('<option/>').text(text))
+                select.after($aux)
+                select.width($aux.width())
+                $aux.remove()
+            }
 
             let delayBeforeRetirementSelect= $('select[name="app_retirement_simulator[delayBeforeRetirement]"]');
             let yearOfBirthSelect = $('select[name="app_retirement_simulator[yearOfBirth]"]');
@@ -193,7 +206,6 @@
                         contentUnchanged = contentChanged = null
                 }
 
-                console.log('updating dates content');
                 changeContent($('#retirement-simulator-unchanged__bloc-2'), contentUnchanged ? wrapMeasure(contentUnchanged) : null);
                 changeContent($('#retirement-simulator-changed__bloc-2'), contentChanged ? wrapMeasure(contentChanged) : null);
             }
