@@ -1,7 +1,7 @@
 .retirement-simulator {
     &__header {
-        background-color: $gray--pale;
-        padding: 40px 0;
+        background-color: $yellow;
+        padding: 80px 0;
 
         @media (min-width: $mobile) {
             padding: 60px 0;
@@ -9,6 +9,10 @@
 
         .title {
             margin-bottom: 20px;
+
+            span {
+                background-color: white;
+            }
 
             @media (min-width: $mobile) {
                 margin-bottom: 45px;
@@ -18,7 +22,7 @@
 
     &__journey {
         font-size: 18px;
-        color: $silver-grey;
+        color: $black;
         line-height: 28px;
         font-family: $font-roboto;
 
@@ -45,12 +49,12 @@
                             border: none;
                             height: 30px;
                             padding: 0 30px 0 5px;
-                            border-bottom: solid 2px $blue--dark;
-                            background-color: transparent;
+                            border-bottom: solid 2px $black;
+                            background-color: $white;
                             border-radius: 0;
                             font-size: 18px;
                             font-family: $font-roboto;
-                            color: $blue--dark;
+                            color: $black;
                             font-weight: bold;
                             cursor: pointer;
                             margin: 0;
@@ -63,7 +67,7 @@
                             height: 0;
                             border-style: solid;
                             border-width: 7px 5px 0 5px;
-                            border-color: $blue--dark transparent transparent transparent;
+                            border-color: $black transparent transparent transparent;
                             right: 10px;
                             top: 14px;
                             pointer-events: none;
