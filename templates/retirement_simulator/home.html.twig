@@ -2,6 +2,7 @@
 
 {% block page_title 'Réforme des retraites : ce qui change pour vous' %}
 {% block canonical_url url('app_retirement_simulator_home') %}
+{% block open_graph_image (homepage_url ~ static_asset('retirement-simulator_sharer.jpg', { q: 70 }))|raw %}
 
 {% block content %}
     <main class="retirement-simulator">
