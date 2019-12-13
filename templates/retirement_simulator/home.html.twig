@@ -102,7 +102,7 @@
             let professionSelect = $('select[name="app_retirement_simulator[profession]"]');
 
             delayBeforeRetirementSelect.change(function() {
-                if ('before_2037' === this.value) {
+                if ('before_2037' === this.value && 'before_2004' !== yearOfBirthSelect.val()) {
                     yearOfBirthSelect.val('before_2004');
                 }
 
@@ -112,14 +112,14 @@
             }).change();
 
             yearOfBirthSelect.change(function() {
-                if ('in_or_after_2004' === this.value) {
+                if ('in_or_after_2004' === this.value && 'in_or_after_2037' !== delayBeforeRetirementSelect.val()) {
                     delayBeforeRetirementSelect.val('in_or_after_2037');
                 }
 
                 updateYearOfBirthAndDelayBeforeRetirementContent();
                 updateNumberOfChildrenContent();
                 updateProfessionContent();
-            }).change();
+            });
 
             function updateYearOfBirthAndDelayBeforeRetirementContent() {
                 let yearOfBirth = yearOfBirthSelect.val();
@@ -193,13 +193,14 @@
                         contentUnchanged = contentChanged = null
                 }
 
-                $('#retirement-simulator-unchanged__bloc-2').html(contentUnchanged);
-                $('#retirement-simulator-changed__bloc-2').html(contentChanged);
+                console.log('updating dates content');
+                changeContent($('#retirement-simulator-unchanged__bloc-2'), contentUnchanged ? wrapMeasure(contentUnchanged) : null);
+                changeContent($('#retirement-simulator-changed__bloc-2'), contentChanged ? wrapMeasure(contentChanged) : null);
             }
 
             numberOfChildrenSelect.change(function() {
                 updateNumberOfChildrenContent();
-            }).change();
+            });
 
             function updateNumberOfChildrenContent() {
                 let numberOfChildren = numberOfChildrenSelect.val();
@@ -226,13 +227,13 @@
 
                 }
 
-                $('#retirement-simulator-unchanged__bloc-3').html(contentUnchanged ? wrapMeasure(contentUnchanged) : null);
-                $('#retirement-simulator-changed__bloc-3').html(contentChanged ? wrapMeasure(contentChanged) : null);
+                changeContent($('#retirement-simulator-unchanged__bloc-3'), contentUnchanged ? wrapMeasure(contentUnchanged) : null);
+                changeContent($('#retirement-simulator-changed__bloc-3'), contentChanged ? wrapMeasure(contentChanged) : null);
             }
 
             professionSelect.change(function() {
                 updateProfessionContent(this.value);
-            }).change();
+            });
 
             function updateProfessionContent() {
                 let profession = professionSelect.val();
@@ -267,14 +268,20 @@
                         contentUnchanged = contentChanged = null;
                 }
 
-                $('#retirement-simulator-unchanged__bloc-4').html(contentUnchanged ? wrapMeasure(contentUnchanged) : null);
-                $('#retirement-simulator-changed__bloc-4').html(contentChanged ? wrapMeasure(contentChanged) : null);
+                changeContent($('#retirement-simulator-unchanged__bloc-4'), contentUnchanged ? wrapMeasure(contentUnchanged) : null);
+                changeContent($('#retirement-simulator-changed__bloc-4'), contentChanged ? wrapMeasure(contentChanged) : null);
             }
 
             function wrapMeasure(measure) {
                 return '<div class="simulator-result__col--item--measure">' +
                     '<span class="icon-check"></span>' + measure +
                     '</div>';
+            }
+
+            function changeContent(node, content) {
+                node.animate({'opacity': 0}, 250, function () {
+                    $(this).html(content);
+                }).animate({'opacity': 1}, 250);
             }
         });
     </script>

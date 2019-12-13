@@ -27,12 +27,12 @@ class RetirementSimulatorType extends AbstractType
     ];
 
     private const PROFESSION_CHOICES = [
+        'other',
         'official',
         'hospital_staff',
         'researcher',
         'teacher',
         'security_force',
-        'other',
     ];
 
     public function buildForm(FormBuilderInterface $builder, array $options)
