@@ -83,10 +83,13 @@
                 margin: 40px 0;
             }
 
-            &--item {
+            &--item--measure {
                 margin-top: 30px;
                 font-family: $font-roboto;
                 color: $dark;
+                background-position: left top;
+                background-repeat: no-repeat;
+                padding-left: 40px;
 
                 .subtitle {
                     text-transform: uppercase;
@@ -97,6 +100,18 @@
 
                 ul {
                     list-style: circle;
+                }
+            }
+
+            &.changed {
+                .simulator-result__col--item--measure {
+                    background-image: url('/images/icons/measure-changed.svg');
+                }
+            }
+
+            &.unchanged {
+                .simulator-result__col--item--measure {
+                    background-image: url('/images/icons/measure-unchanged.svg');
                 }
             }
         }
