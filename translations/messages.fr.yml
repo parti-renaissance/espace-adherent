@@ -626,4 +626,5 @@ retirement_simulator.profession.hospital_staff: personnel hospitalier
 retirement_simulator.profession.researcher: chercheur
 retirement_simulator.profession.teacher: enseignant
 retirement_simulator.profession.security_force: membre des forces de l'ordre
-retirement_simulator.profession.other: autre
+retirement_simulator.profession.private_sector: salarié du privé
+retirement_simulator.profession.independant: indépendant

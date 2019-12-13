@@ -27,7 +27,8 @@ class RetirementSimulatorType extends AbstractType
     ];
 
     private const PROFESSION_CHOICES = [
-        'other',
+        'private_sector',
+        'independant',
         'official',
         'hospital_staff',
         'researcher',
