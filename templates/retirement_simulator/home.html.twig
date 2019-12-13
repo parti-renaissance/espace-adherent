@@ -186,6 +186,50 @@
                     content += wrapMeasure('Revalorisation progressives des salaires à partir de 2021.');
                 }
 
+                content += '<div class="subtitle">Un système qui protège mieux :</div>';
+                content += wrapMeasure('A partir de 2022, augmentation de la retraite minimum à 1000€ net par mois pour les carrières complètes.');
+
+                if ('in_or_after_2037' === delayBeforeRetirementSelect.val()) {
+                    content += wrapMeasure('Le montant minimal de la pension de réversion (des veuves ou des veufs), est garanti à au moins 70% de la retraite du couple.');
+                }
+
+                if ('in_or_after_2037' === delayBeforeRetirementSelect.val() && 'zero' !== numberOfChildrenSelect.val()) {
+                    content += wrapMeasure('Majoration de la pension pour les femmes, dès le 1er enfant. Grâce à cela, 5 millions de femmes auront une augmentation de leur retraite.');
+                }
+
+                content += '<div class="subtitle">Entrée en vigueur :</div>';
+
+                if ('before_2037' === delayBeforeRetirementSelect.val()) {
+                    content += wrapMeasure(
+                        'Si les partenaires sociaux ne trouve pas de solution alternative, ' +
+                        'l\'âge de départ à taux plein sera progressivement augmenté pour passer de 62 ans en 2022 à 64 ans en 2027.'
+                    );
+
+                    content += wrapMeasure(
+                        'À partir de 2022, les personnes qui n\'ont pas suffisamment de trimestres pourront partir à la retraite à taux plein avant 67 ans. ' +
+                        'Cela bénéficie particulièrement aux femmes. ' +
+                        'Cet abaissement de l\'âge d\'annulation de la décote sera progressivement amené de 67 ans en 2022 à 65 ans en 2027.'
+                    );
+                }
+
+                if ('in_or_after_2037' === delayBeforeRetirementSelect.val() && 'before_2004' === yearOfBirthSelect.val()) {
+                    content += wrapMeasure('Le nouveau système universel à points entre en vigueur pour toutes les années travaillées après 2025.');
+
+                    content += wrapMeasure(
+                        'En 2025, il y aura une conversion en points de tous les droits acquis, ' +
+                        'selon des règles de calcul qui doivent être négociées secteur par secteur, avec les partenaires sociaux. ' +
+                        'Aujourd\'hui, les règles de conversion ne sont pas connues, ' +
+                        'donc tous les simulateurs en ligne qui calculent des valeur en euros sont erronés.'
+                    );
+                }
+
+                if ('in_or_after_2037' === delayBeforeRetirementSelect.val() && 'in_or_after_2004' === yearOfBirthSelect.val()) {
+                    content += wrapMeasure(
+                        'Tous les jeunes nés à partir de 2004 entreront directement dans le nouveau système de retraite universelle par point. ' +
+                        'Personne ne bénéficiera d\'un régime spécial de retraite.'
+                    );
+                }
+
                 changeContent($('#simulator-result-changed'), content);
             }
 
