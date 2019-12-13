@@ -48,16 +48,16 @@
                     <h2 class="text--medium">Ce qui ne change pas</h2>
                     <hr />
                     <div id="retirement-simulator-unchanged__bloc-1">
-                        <div class="simulator-result__col--item--measure">
+                        <div class="simulator-result__col--measure">
                             L'âge légal de départ à la retraite est à 62 ans.
                         </div>
-                        <div class="simulator-result__col--item--measure">
+                        <div class="simulator-result__col--measure">
                             Les personnes qui ont une carrière longue pourront toujours partir 2 ans plus tôt.
                         </div>
-                        <div class="simulator-result__col--item--measure">
+                        <div class="simulator-result__col--measure">
                             Les personnes qui bénéficient aujourd'hui du dispositif de prise en compte de la pénibilité pourront toujours partir 2 ans plus tôt.
                         </div>
-                        <div class="simulator-result__col--item--measure">
+                        <div class="simulator-result__col--measure">
                             Pas de pénalisation en cas d’interruption de carrière (congé maternité, période de chômage, longue maladie).
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                     <hr />
                     <div id="retirement-simulator-changed__bloc-1">
                         <div class="subtitle">Plus de solidarité. </div>
-                        <div class="simulator-result__col--item--measure">
+                        <div class="simulator-result__col--measure">
                             À partir de 2022 :
                             <br><br>
                             Augmentation de la retraite minimum à 1000€/mois.
@@ -161,13 +161,13 @@
                         );
                         contentChanged = wrapMeasure(
                             'À partir de 2022 :' +
-                            '<br>' +
+                            '<br><br>' +
                             '<ul>' +
                                 '<li>Garantie du montant minimal de la pension de réversion (des veuves ou des veufs), à au moins 70% de la retraite du couple.</li>' +
                             '</ul>' +
                             '<br>' +
                             'À partir de 2025 :' +
-                            '<br>' +
+                            '<br><br>' +
                             '<ul>' +
                                 '<li>Le nouveau système universel à points entre en vigueur pour toutes les années travaillées après 2025.</li>' +
                                 '<li>Il y aura une conversion de tous les droits acquis en points, selon des règles de calcul qui doivent être négociées secteur par secteur, avec les partenaires sociaux.</li>' +
@@ -175,7 +175,7 @@
                             'Aujourd\'hui, les règles de conversion ne sont pas connues, donc tous les simulateurs en ligne sont erronés.' +
                             '<br><br>' +
                             'Une réforme juste :' +
-                            '<br>' +
+                            '<br><br>' +
                             '<ul>' +
                                 '<li>Chaque euro cotisé donne le même montant de pension, que vous soyez salarié, indépendant ou fonctionnaire.</li>' +
                                 '<li>Chaque heure travaillée crée des droits à la retraite, même quand on travaille moins de 150 heures par trimestre.</li>' +
@@ -285,7 +285,7 @@
             }
 
             function wrapMeasure(measure) {
-                return '<div class="simulator-result__col--item--measure">' + measure + '</div>';
+                return '<div class="simulator-result__col--measure">' + measure + '</div>';
             }
 
             function changeContent(node, content) {
