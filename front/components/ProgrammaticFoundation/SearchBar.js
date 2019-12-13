@@ -8,7 +8,7 @@ export default class SearchBar extends React.Component {
                     <input
                         type="text"
                         className="em-form__field"
-                        placeholder="Mesure ou projet illustratif"
+                        placeholder="Mesure, projet ou thématique"
                         onChange={event => this.props.onFilterTextChange(event.target.value)}
                         value={this.props.filterText}
                     />

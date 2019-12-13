@@ -77,7 +77,7 @@ export default class ProgrammaticFoundation extends React.Component {
                             <div className="programmatic-foundation__legend">
                                 <span className="legend-item leading-measure">Mesure phare</span>
                                 <span className="legend-item basic-measure">Mesure</span>
-                                <span className="legend-item project">Projet illustratif</span>
+                                <span className="legend-item project">Projet inspirant</span>
                             </div>
                         </div>
 
