@@ -201,8 +201,8 @@
                         contentUnchanged = contentChanged = null
                 }
 
-                changeContent($('#retirement-simulator-unchanged__bloc-2'), contentUnchanged ? wrapMeasure(contentUnchanged) : null);
-                changeContent($('#retirement-simulator-changed__bloc-2'), contentChanged ? wrapMeasure(contentChanged) : null);
+                changeContent($('#retirement-simulator-unchanged__bloc-2'), contentUnchanged);
+                changeContent($('#retirement-simulator-changed__bloc-2'), contentChanged);
             }
 
             numberOfChildrenSelect.change(function() {
