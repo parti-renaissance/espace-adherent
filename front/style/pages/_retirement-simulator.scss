@@ -83,6 +83,14 @@
                 margin: 40px 0;
             }
 
+            .subtitle {
+                text-transform: uppercase;
+                color: $green--ocean;
+                font-weight: bold;
+                margin-bottom: 30px;
+                font-family: $font-roboto;
+            }
+
             &--item--measure {
                 margin-top: 30px;
                 font-family: $font-roboto;
@@ -91,16 +99,6 @@
                 background-repeat: no-repeat;
                 padding-left: 40px;
 
-                .subtitle {
-                    text-transform: uppercase;
-                    color: $green--ocean;
-                    font-weight: bold;
-                    margin-bottom: 30px;
-                }
-
-                ul {
-                    list-style: circle;
-                }
             }
 
             &.changed {
