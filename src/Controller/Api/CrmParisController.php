@@ -31,6 +31,7 @@ class CrmParisController extends Controller
         'latitude',
         'longitude',
         'interests',
+        'subscription_types',
     ];
 
     /**
@@ -61,6 +62,7 @@ class CrmParisController extends Controller
                 $adherent->getLatitude(),
                 $adherent->getLongitude(),
                 implode(', ', $adherent->getInterests()),
+                implode(', ', $adherent->getSubscriptionTypeCodes()),
             ]));
         }
 
