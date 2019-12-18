@@ -184,6 +184,28 @@
                         <a href="{{ path('app_documents_index') }}">Mes documents</a>
                     </li>
                 {% endif %}
+            </ul>
+
+            <small>INTERNATIONAL</small>
+            <ul class="b__nudge--bottom">
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'consulaires2020' }) }}">
+                        Élections consulaires
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'consulaires2020-candidatures' }) }}">
+                        Appel à candidatures
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('app_static_page', { slug: 'consulaires2020-cic' }) }}">
+                        Commission d'investiture consulaire
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="b__nudge--bottom">
                 <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %}>
                     <a class="je-cherche" href="javascript:void(0)">
                         {{ include('components/search.html.twig') }}
