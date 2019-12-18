@@ -70,6 +70,29 @@
                     </li>
                 </ul>
             </div>
+            <div class="nav-dropdown">
+                <p>
+                    International
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item">
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'consulaires2020' }) }}">
+                            Élections consulaires
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'consulaires2020-candidatures' }) }}">
+                            Appel à candidatures
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'consulaires2020-cic' }) }}">
+                            Commission d'investiture consulaire
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %} class="b__nudge--left-medium">
             <a class="je-cherche" href="javascript:void(0)">
