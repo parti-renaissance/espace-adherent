@@ -58,7 +58,7 @@ class CrmParisController extends Controller
                 $adherent->getPhone() ? $phoneNumberUtil->format($adherent->getPhone(), 'NATIONAL') : null,
                 $adherent->getInlineFormattedAddress(),
                 $adherent->getGender(),
-                $adherent->getBirthdate()->format('Y-m-d'),
+                $adherent->getBirthdate() ? $adherent->getBirthdate()->format('Y-m-d') : null,
                 $adherent->getLatitude(),
                 $adherent->getLongitude(),
                 implode(', ', $adherent->getInterests()),
