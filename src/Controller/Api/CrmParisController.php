@@ -42,6 +42,8 @@ class CrmParisController extends Controller
         CsvResponseFactory $csvResponseFactory,
         PhoneNumberUtil $phoneNumberUtil
     ): Response {
+        set_time_limit(0);
+
         $csv = Writer::createFromPath('php://temp', 'r+');
 
         $csv->insertOne(self::CSV_HEADER);
