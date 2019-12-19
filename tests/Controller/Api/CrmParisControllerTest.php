@@ -48,6 +48,9 @@ a046adbe-9c7b-56a9-a676-6151a6785dda,Jacques,Picard,jacques.picard@en-marche.fr,
 CONTENT;
 
         $this->assertRegExp(sprintf('/%s/', preg_quote($regex)), $responseContent);
+
+        // Ensure adherents without subscription type 'municipal_email' isn't exported
+        $this->assertNotContains('gisele-berthoux@caramail.com', $responseContent);
     }
 
     public function testAnonymousCanNotExportAdherentsCsv(): void

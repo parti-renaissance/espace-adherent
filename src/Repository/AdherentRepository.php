@@ -745,6 +745,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function getCrmParisIterator(): IterableResult
     {
         return $this->createQueryBuilder('a')
+            ->distinct()
+            ->innerJoin('a.subscriptionTypes', 'subscription_types')
+            ->andWhere('subscription_types.code = :subscription_code')
+            ->setParameter('subscription_code', 'municipal_email')
             ->andWhere('a.postAddress.postalCode LIKE :parisPostalCode')
             ->setParameter('parisPostalCode', '75%')
             ->andWhere('a.postAddress.country = :country')
