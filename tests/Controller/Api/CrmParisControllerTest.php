@@ -25,13 +25,32 @@ class CrmParisControllerTest extends WebTestCase
         $data = json_decode($response->getContent(), true);
         $acessToken = $data['access_token'];
 
+        ob_start();
         $this->client->request(Request::METHOD_GET, '/api/crm-paris/adherents', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $acessToken",
         ]);
 
+        $responseContent = ob_get_clean();
+
         $this->isSuccessful($response = $this->client->getResponse());
 
-        $this->assertEquals('OK', $response->getContent());
+        self::assertSame('none', $response->headers->get('Content-Encoding'));
+        self::assertSame('text/csv; charset=UTF-8', $response->headers->get('Content-Type'));
+        self::assertRegExp(
+            '/^attachment; filename="[\d]{14}-adherents.csv"$/',
+            $response->headers->get('Content-Disposition')
+        );
+
+        $regex = <<<CONTENT
+uuid,first_name,last_name,email_address,phone,address,gender,birthdate,latitude,longitude,interests,subscription_types
+a046adbe-9c7b-56a9-a676-6151a6785dda,Jacques,Picard,jacques.picard@en-marche.fr,+33187264236,"36 rue de la Paix, 75008 Paris 8e",male,1953-04-03,48.869946,2.329719,,"subscribed_emails_movement_information, subscribed_emails_weekly_letter, municipal_email, deputy_email, subscribed_emails_local_host, subscribed_emails_referents, citizen_project_host_email, senator_email"
+29461c49-6316-5be1-9ac3-17816bf2d819,Lucie,Olivera,luciole1989@spambox.fr,+33727363643,"13 boulevard des Italiens, 75009 Paris 9e",female,1989-09-17,48.871323,2.335376,jeunesse,"subscribed_emails_movement_information, subscribed_emails_weekly_letter, municipal_email, subscribed_emails_local_host, subscribed_emails_referents, citizen_project_host_email, senator_email"
+CONTENT;
+
+        $this->assertRegExp(sprintf('/%s/', preg_quote($regex)), $responseContent);
+
+        // Ensure adherents without subscription type 'municipal_email' isn't exported
+        $this->assertNotContains('gisele-berthoux@caramail.com', $responseContent);
     }
 
     public function testAnonymousCanNotExportAdherentsCsv(): void
