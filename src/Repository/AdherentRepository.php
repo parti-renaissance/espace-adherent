@@ -14,6 +14,7 @@ use AppBundle\Entity\District;
 use AppBundle\Entity\ReferentManagedArea;
 use AppBundle\Statistics\StatisticsParametersFilter;
 use AppBundle\Subscription\SubscriptionTypeEnum;
+use AppBundle\Utils\AreaUtils;
 use AppBundle\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -745,15 +746,36 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function getCrmParisIterator(): IterableResult
     {
         return $this->createQueryBuilder('a')
+            ->select('partial a.{
+                id,
+                uuid,
+                firstName,
+                lastName,
+                emailAddress,
+                phone,
+                postAddress.address,
+                postAddress.postalCode,
+                postAddress.city,
+                postAddress.cityName,
+                postAddress.country,
+                postAddress.latitude,
+                postAddress.longitude,
+                gender,
+                birthdate,
+                interests
+            }')
             ->distinct()
             ->innerJoin('a.subscriptionTypes', 'subscription_types')
             ->andWhere('subscription_types.code = :subscription_code')
-            ->setParameter('subscription_code', 'municipal_email')
             ->andWhere('a.postAddress.postalCode LIKE :parisPostalCode')
-            ->setParameter('parisPostalCode', '75%')
             ->andWhere('a.postAddress.country = :country')
-            ->setParameter('country', 'FR')
+            ->setParameters([
+                'subscription_code' => SubscriptionTypeEnum::MUNICIPAL_EMAIL,
+                'parisPostalCode' => AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS.'%',
+                'country' => AreaUtils::CODE_FRANCE,
+            ])
             ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->iterate()
         ;
     }

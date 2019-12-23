@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Csv\CsvResponseFactory;
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentRepository;
+use League\Csv\CharsetConverter;
 use League\Csv\Writer;
 use libphonenumber\PhoneNumberUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,6 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CrmParisController extends Controller
 {
+    private const CSV_DELIMITER = ';';
+    private const CSV_OUTPUT_ENCODING = 'windows-1252';
     private const CSV_HEADER = [
         'uuid',
         'first_name',
@@ -26,12 +29,14 @@ class CrmParisController extends Controller
         'email_address',
         'phone',
         'address',
+        'postal_code',
+        'city_name',
+        'district',
         'gender',
         'birthdate',
         'latitude',
         'longitude',
         'interests',
-        'subscription_types',
     ];
 
     /**
@@ -45,9 +50,10 @@ class CrmParisController extends Controller
         set_time_limit(0);
 
         $csv = Writer::createFromPath('php://temp', 'r+');
+        $csv->setDelimiter(self::CSV_DELIMITER);
+        $csv->addFormatter((new CharsetConverter())->outputEncoding(self::CSV_OUTPUT_ENCODING));
 
         $csv->insertOne(self::CSV_HEADER);
-
         foreach ($adherentRepository->getCrmParisIterator() as $result) {
             /** @var Adherent $adherent */
             $adherent = $result[0];
@@ -58,13 +64,15 @@ class CrmParisController extends Controller
                 $adherent->getLastName(),
                 $adherent->getEmailAddress(),
                 $adherent->getPhone() ? $phoneNumberUtil->format($adherent->getPhone(), 'NATIONAL') : null,
-                $adherent->getInlineFormattedAddress(),
+                $adherent->getAddress(),
+                $adherent->getPostalCode(),
+                $adherent->getCityName(),
+                5 === mb_strlen($adherent->getPostalCode()) ? mb_substr($adherent->getPostalCode(), 4, 2) : null,
                 $adherent->getGender(),
-                $adherent->getBirthdate() ? $adherent->getBirthdate()->format('Y-m-d') : null,
+                $adherent->getBirthdate() ? $adherent->getBirthdate()->format('d-m-Y') : null,
                 $adherent->getLatitude(),
                 $adherent->getLongitude(),
                 implode(', ', $adherent->getInterests()),
-                implode(', ', $adherent->getSubscriptionTypeCodes()),
             ]));
         }
 
