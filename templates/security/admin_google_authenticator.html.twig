@@ -12,7 +12,7 @@
                 <div class="login__form">
                     <p class="login__form__title">Code d'authentification</p>
 
-                    <form class="form" action="" method="post">
+                    <form class="form" action="{{ path("admin_security_2fa_check") }}" method="post">
                         {% for flashMessage in app.flashes("two_factor") %}
                             <p class="text--error">{{ flashMessage|trans }}</p>
                         {% endfor %}
