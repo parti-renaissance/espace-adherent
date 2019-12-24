@@ -76,6 +76,17 @@ app_oauth:
     prefix:   "/oauth/v2"
 
 #
+# Admin 2FA
+#
+admin_security_2fa:
+    path: /admin/2fa
+    defaults:
+        _controller: "scheb_two_factor.form_controller:form"
+
+admin_security_2fa_check:
+    path: /admin/2fa_check
+
+#
 # Admin panel
 #
 admin_dashboard:

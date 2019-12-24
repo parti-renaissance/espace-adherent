@@ -355,6 +355,11 @@ security:
                 csrf_token_generator: security.csrf.token_manager
 
                 failure_handler: AppBundle\Security\Http\AuthenticationFailureHandler
+            two_factor:
+                auth_form_path: admin_security_2fa
+                check_path: admin_security_2fa_check
+                default_target_path: sonata_admin_dashboard
+                always_use_default_target_path: true
             logout:
                 path: logout
                 target: homepage
@@ -388,6 +393,7 @@ security:
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: '^/admin/(2fa|logout)', role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
         - { path: '^/admin/impersonation/exit', roles: [ROLE_PREVIOUS_ADMIN] }
         - { path: '^/admin', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: IS_AUTHENTICATED_FULLY }

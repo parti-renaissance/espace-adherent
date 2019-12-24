@@ -49,7 +49,20 @@ class AdminSecurityControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         $this->assertClientIsRedirectedTo('/admin/dashboard', $this->client, true);
 
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo('/admin/2fa', $this->client, true);
+
         $crawler = $this->client->followRedirect();
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertCount(1, $crawler->filter('#_auth_code'));
+
+        $this->client->submit($crawler->selectButton('Je me connecte')->form([
+            '_auth_code' => '123456',
+        ]));
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('/admin/2fa', $this->client, true);
+
+        $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('#_auth_code'));
     }

@@ -170,10 +170,7 @@ class Administrator implements UserInterface, TwoFactorInterface
         $this->activated = $activated;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getGoogleAuthenticatorSecret()
+    public function getGoogleAuthenticatorSecret(): ?string
     {
         return $this->googleAuthenticatorSecret;
     }
@@ -181,8 +178,18 @@ class Administrator implements UserInterface, TwoFactorInterface
     /**
      * @param string|null $googleAuthenticatorSecret
      */
-    public function setGoogleAuthenticatorSecret($googleAuthenticatorSecret)
+    public function setGoogleAuthenticatorSecret($googleAuthenticatorSecret): void
     {
         $this->googleAuthenticatorSecret = $googleAuthenticatorSecret;
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return null !== $this->googleAuthenticatorSecret;
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->emailAddress;
     }
 }

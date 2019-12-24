@@ -74,7 +74,7 @@
         "predis/predis": "^1.1.0",
         "ramsey/uuid-doctrine": "^1.2",
         "sabre/dav": "^3.2",
-        "scheb/two-factor-bundle": "^2.8",
+        "scheb/two-factor-bundle": "^4.11",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "4.0.x-dev",
         "sensiolabs/security-checker": "^5.0",
