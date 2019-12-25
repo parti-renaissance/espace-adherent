@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Csv\CsvResponseFactory;
-use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentRepository;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
@@ -37,6 +36,7 @@ class CrmParisController extends Controller
         'latitude',
         'longitude',
         'interests',
+        'sms_mms',
     ];
 
     /**
@@ -54,27 +54,7 @@ class CrmParisController extends Controller
         $csv->addFormatter((new CharsetConverter())->outputEncoding(self::CSV_OUTPUT_ENCODING));
 
         $csv->insertOne(self::CSV_HEADER);
-        foreach ($adherentRepository->getCrmParisIterator() as $result) {
-            /** @var Adherent $adherent */
-            $adherent = $result[0];
-
-            $csv->insertOne(array_combine(self::CSV_HEADER, [
-                $adherent->getUuid(),
-                $adherent->getFirstName(),
-                $adherent->getLastName(),
-                $adherent->getEmailAddress(),
-                $adherent->getPhone() ? $phoneNumberUtil->format($adherent->getPhone(), 'NATIONAL') : null,
-                $adherent->getAddress(),
-                $adherent->getPostalCode(),
-                $adherent->getCityName(),
-                5 === mb_strlen($adherent->getPostalCode()) ? mb_substr($adherent->getPostalCode(), 4, 2) : null,
-                $adherent->getGender(),
-                $adherent->getBirthdate() ? $adherent->getBirthdate()->format('d-m-Y') : null,
-                $adherent->getLatitude(),
-                $adherent->getLongitude(),
-                implode(', ', $adherent->getInterests()),
-            ]));
-        }
+        $csv->insertAll($adherentRepository->getCrmParisRecords());
 
         return $csvResponseFactory->createStreamedResponse($csv);
     }
