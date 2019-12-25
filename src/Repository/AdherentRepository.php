@@ -743,40 +743,62 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         );
     }
 
-    public function getCrmParisIterator(): IterableResult
+    public function getCrmParisRecords(): array
     {
-        return $this->createQueryBuilder('a')
-            ->select('partial a.{
-                id,
-                uuid,
-                firstName,
-                lastName,
-                emailAddress,
-                phone,
-                postAddress.address,
-                postAddress.postalCode,
-                postAddress.city,
-                postAddress.cityName,
-                postAddress.country,
-                postAddress.latitude,
-                postAddress.longitude,
-                gender,
-                birthdate,
-                interests
-            }')
-            ->distinct()
-            ->innerJoin('a.subscriptionTypes', 'subscription_types')
-            ->andWhere('subscription_types.code = :subscription_code')
-            ->andWhere('a.postAddress.postalCode LIKE :parisPostalCode')
-            ->andWhere('a.postAddress.country = :country')
-            ->setParameters([
-                'subscription_code' => SubscriptionTypeEnum::MUNICIPAL_EMAIL,
-                'parisPostalCode' => AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS.'%',
-                'country' => AreaUtils::CODE_FRANCE,
-            ])
-            ->getQuery()
-            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-            ->iterate()
-        ;
+        $sql = <<<SQL
+            SELECT
+                a.uuid,
+                a.first_name,
+                a.last_name,
+                a.email_address,
+                a.phone,
+                a.address_address AS address,
+                a.address_postal_code AS postal_code,
+                a.address_city_name AS city,
+                IF(
+                    5 = LENGTH(a.address_postal_code),
+                    SUBSTRING(a.address_postal_code, 4, 2),
+                    NULL
+                ) AS district,
+                a.gender,
+                DATE_FORMAT(a.birthdate, '%d-%m-%Y') AS birthdate,
+                a.address_latitude AS latitude,
+                a.address_longitude AS longitude,
+                a.interests,
+                COALESCE(
+                    (
+                        SELECT 1
+                        FROM adherent_subscription_type ast
+                        INNER JOIN subscription_type st
+                            ON ast.subscription_type_id = st.id
+                        WHERE ast.adherent_id = a.id
+                        AND st.code = :sms_mms_subscription_code
+                        LIMIT 1
+                    ),
+                    0
+                ) AS sms_mms
+            FROM adherents a
+            WHERE a.address_country = :country_code_france
+            AND a.address_postal_code LIKE :prefix_postalcode_paris
+            AND EXISTS (
+                SELECT 1
+                FROM adherent_subscription_type ast
+                INNER JOIN subscription_type st
+                    ON ast.subscription_type_id = st.id
+                WHERE ast.adherent_id = a.id
+                AND st.code = :municipal_email_subscription_code
+                LIMIT 1
+            )
+            ;
+SQL;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->bindValue('country_code_france', AreaUtils::CODE_FRANCE);
+        $stmt->bindValue('prefix_postalcode_paris', AreaUtils::PREFIX_POSTALCODE_PARIS_DISTRICTS.'%');
+        $stmt->bindValue('municipal_email_subscription_code', SubscriptionTypeEnum::MUNICIPAL_EMAIL);
+        $stmt->bindValue('sms_mms_subscription_code', SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }
