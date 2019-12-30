@@ -757,11 +757,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 a.address_city_name AS city,
                 IF(
                     5 = LENGTH(a.address_postal_code),
-                    SUBSTRING(a.address_postal_code, 4, 2),
+                    CAST(SUBSTRING(a.address_postal_code, 4, 2) AS UNSIGNED),
                     NULL
                 ) AS district,
                 a.gender,
-                DATE_FORMAT(a.birthdate, '%d-%m-%Y') AS birthdate,
+                DATE_FORMAT(a.birthdate, '%d/%m/%Y') AS birthdate,
                 a.address_latitude AS latitude,
                 a.address_longitude AS longitude,
                 a.interests,
