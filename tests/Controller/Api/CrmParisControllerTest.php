@@ -43,8 +43,8 @@ class CrmParisControllerTest extends WebTestCase
 
         $regex = <<<CONTENT
 uuid;first_name;last_name;email_address;phone;address;postal_code;city_name;district;gender;birthdate;latitude;longitude;interests;sms_mms
-a046adbe-9c7b-56a9-a676-6151a6785dda;Jacques;Picard;jacques.picard@en-marche.fr;+33187264236;"36 rue de la Paix";75008;"Paris 8e";08;male;03-04-1953;48.869946;2.329719;;0
-29461c49-6316-5be1-9ac3-17816bf2d819;Lucie;Olivera;luciole1989@spambox.fr;+33727363643;"13 boulevard des Italiens";75009;"Paris 9e";09;female;17-09-1989;48.871323;2.335376;jeunesse;0
+a046adbe-9c7b-56a9-a676-6151a6785dda;Jacques;Picard;jacques.picard@en-marche.fr;+33187264236;"36 rue de la Paix";75008;"Paris 8e";8;male;03/04/1953;48.869946;2.329719;;0
+29461c49-6316-5be1-9ac3-17816bf2d819;Lucie;Olivera;luciole1989@spambox.fr;+33727363643;"13 boulevard des Italiens";75009;"Paris 9e";9;female;17/09/1989;48.871323;2.335376;jeunesse;0
 CONTENT;
 
         $this->assertRegExp(sprintf('/%s/', preg_quote($regex)), $responseContent);
