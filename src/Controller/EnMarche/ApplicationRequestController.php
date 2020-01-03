@@ -7,7 +7,10 @@ use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
 use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
 use AppBundle\Form\ApplicationRequest\RunningMateRequestType;
 use AppBundle\Form\ApplicationRequest\VolunteerRequestType;
+use AppBundle\Intl\FranceCitiesBundle;
+use AppBundle\Utils\AreaUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,6 +49,22 @@ class ApplicationRequestController extends Controller
             'volunteer_form' => $volunteerForm->createView(),
             'running_mate_form' => $runningMateForm->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/city/autocompletion",
+     *     name="city_autocomplete",
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"GET"}
+     * )
+     */
+    public function cityAutocompleteAction(Request $request): JsonResponse
+    {
+        if (!$search = $request->query->get('search')) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(FranceCitiesBundle::searchCities($search, 20, AreaUtils::INSEE_CODES_ATTACHED_TO_ANNECY));
     }
 
     /**

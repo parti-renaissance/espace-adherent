@@ -40,6 +40,16 @@ class AreaUtils
         '75018' => ['75009', '75018'],
     ];
 
+    public const INSEE_CODE_ANNECY = '74010';
+    public const INSEE_CODES_ATTACHED_TO_ANNECY = [
+        '74268',
+        '74011',
+        '74268',
+        '74093',
+        '74182',
+        '74217',
+    ];
+
     public static function getCodeFromPostalCode(?string $postalCode): ?string
     {
         $department = mb_substr($postalCode, 0, 2);

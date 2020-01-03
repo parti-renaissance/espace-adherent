@@ -143,7 +143,7 @@ class FranceCitiesBundle
      * - postal codes if given parameter is a number
      * - city names otherwise
      */
-    public static function searchCities(string $search, int $maxResults = 20): array
+    public static function searchCities(string $search, int $maxResults = 20, array $ignore = []): array
     {
         $search = self::canonicalizeCityName($search);
 
@@ -152,6 +152,10 @@ class FranceCitiesBundle
         foreach (self::$cities as $postalCode => $cities) {
             foreach ($cities as $inseeCode => $cityName) {
                 $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
+
+                if (\in_array($inseeCode, $ignore)) {
+                    continue;
+                }
 
                 if (!is_numeric($search)) {
                     if (0 !== strpos(self::canonicalizeCityName($cityName), $search)) {
