@@ -23,7 +23,7 @@
                 <li>
                     <div class="text--normal">Date d'adhésion</div>
                     {% if summary.member.activatedAt %}
-                        {{ summary.member.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+                        {{ summary.member.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}
                     {% else %}
                         -
                     {% endif %}

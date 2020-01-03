@@ -3,6 +3,6 @@
 {% block field %}
     {% set lastComment = object.comments|last %}
     {% if lastComment %}
-        {{ lastComment.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM Y HH:mm") }}
+        {{ lastComment.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy HH:mm") }}
     {% endif %}
 {% endblock %}

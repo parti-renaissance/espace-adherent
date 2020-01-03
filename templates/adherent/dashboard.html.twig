@@ -19,7 +19,7 @@
                     {{ get_user_level_label(app.user) }},
                 {% endif %}
 
-                {{ 'dashboard.adherent_since'|trans({'%date%': app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, "MMMM Y")}) }}
+                {{ 'dashboard.adherent_since'|trans({'%date%': app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, "MMMM yyyy")}) }}
             </p>
         </div>
 
@@ -56,7 +56,7 @@
                                     <span class="pull-right">{{ email.Recipients|length }}</span>
                                 </div>
                                 <div class="list-subtitle">
-                                    {{ email.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }}
+                                    {{ email.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy") }}
                                     <span class="pull-right">{{ 'dashboard.emails.recipent'|transchoice(email.Recipients|length) }}</span>
                                 </div>
                                 <hr>
@@ -77,7 +77,7 @@
                                     <span class="pull-right">{{ event.participantsCount }}</span>
                                 </div>
                                 <div class="list-subtitle">
-                                    À {{ event.postAddress.city }}, le {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y à HH:mm") }}
+                                    À {{ event.postAddress.city }}, le {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") }}
                                     <span class="pull-right">{{ 'dashboard.events.participantsCount'|transchoice(event.participantsCount) }}</span>
                                 </div>
                                 <hr>
