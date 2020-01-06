@@ -44,11 +44,6 @@ export default class ProgrammaticFoundation extends React.Component {
 
                         <div className="text--body b__nudge--top"><strong>Filtrer</strong></div>
 
-                        <ToggleLeadingMeasures
-                            onToggleChange={this.handleLeadingMeasuresChange}
-                            value={this.state.filterIsLeading}
-                        />
-
                         <SearchBar
                             filterText={this.state.filterText}
                             filterCity={this.state.filterCity}
@@ -75,7 +70,6 @@ export default class ProgrammaticFoundation extends React.Component {
 
                         <div className="l__row l__row--h-stretch l__row--wrap">
                             <div className="programmatic-foundation__legend">
-                                <span className="legend-item leading-measure">Mesure phare</span>
                                 <span className="legend-item basic-measure">Mesure</span>
                                 <span className="legend-item project">Projet inspirant</span>
                             </div>

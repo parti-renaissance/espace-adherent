@@ -5,9 +5,8 @@ import ReactDOM from 'react-dom';
 export default class Measure extends React.Component {
     render() {
         return (
-            <div className={`programmatic-foundation__measure child ${
-                this.props.measure.isLeading ? 'leading' : ''
-            } ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
+            <div className={`programmatic-foundation__measure child
+            ${this.props.measure.isExpanded && !this.props.preventAutoExpand ? 'expanded' : ''}`}>
 
                 <div className="head" onClick={this.toggleActiveMeasure.bind(this)}>
                     <span className="title">{this.props.measure.title}</span>
