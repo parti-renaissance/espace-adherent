@@ -29,7 +29,7 @@ class LoadApproachProjectData extends AbstractFixture implements DependentFixtur
 <p>Proin eget laoreet mi, vel fermentum nulla. Mauris sit amet tortor bibendum, maximus enim eu, mollis quam. Mauris id dui condimentum, faucibus tortor nec, fringilla quam. In fringilla vestibulum justo eu auctor. Pellentesque commodo mi maximus leo scelerisque cursus. Fusce lobortis enim dui, in congue ligula commodo eu. Donec a augue et elit mattis iaculis. Maecenas ultricies molestie sem et efficitur.</p>
 
 <p>Pellentesque convallis tempus magna, et sollicitudin odio fermentum sit amet. Vestibulum fringilla vel dui id accumsan. Pellentesque elementum bibendum tortor eu dignissim. Vestibulum consectetur eleifend elementum. Maecenas feugiat risus eget enim tempor, et dignissim diam hendrerit. Pellentesque elementum consectetur est, eu egestas augue mattis non. Ut arcu nisl, ornare et elit vitae, auctor convallis est. Curabitur congue finibus convallis.</p>',
-                self::CITIES[$i % 6],
+                Project::CITY_TYPES[$i % 4],
                 0 === $i % 4
             );
 

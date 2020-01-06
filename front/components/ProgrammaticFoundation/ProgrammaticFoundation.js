@@ -77,7 +77,7 @@ export default class ProgrammaticFoundation extends React.Component {
                             <div className="programmatic-foundation__legend">
                                 <span className="legend-item leading-measure">Mesure phare</span>
                                 <span className="legend-item basic-measure">Mesure</span>
-                                <span className="legend-item project">Projet illustratif</span>
+                                <span className="legend-item project">Projet inspirant</span>
                             </div>
                         </div>
 
@@ -148,7 +148,25 @@ export default class ProgrammaticFoundation extends React.Component {
                     });
                 });
             });
-        })).sort((a, b) => a.localeCompare(b));
+        })).sort((a, b) => a.localeCompare(b)).sort(function(a,b) {
+            var importantResults = {
+                'Petite commune': 1,
+                'Ville moyenne': 2,
+                'Métropole': 3,
+                'Autre': 4,
+            };
+
+            var importantA = importantResults[a],
+                importantB = importantResults[b],
+                ret;
+
+            if (importantA && !importantB) {ret = -1}
+            else if (importantB && !importantA) {ret = 1}
+            else if (importantA && importantB) {ret = importantA - importantB}
+            else {ret = 0};
+
+            return(ret);
+        });
     }
 
     isSearching() {

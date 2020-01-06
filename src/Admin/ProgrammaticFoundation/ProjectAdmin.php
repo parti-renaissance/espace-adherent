@@ -3,6 +3,7 @@
 namespace AppBundle\Admin\ProgrammaticFoundation;
 
 use AppBundle\Entity\ProgrammaticFoundation\Measure;
+use AppBundle\Entity\ProgrammaticFoundation\Project;
 use AppBundle\Entity\ProgrammaticFoundation\Tag;
 use AppBundle\Form\PurifiedTextareaType;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -12,8 +13,10 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ProjectAdmin extends AbstractAdmin
@@ -71,8 +74,14 @@ class ProjectAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
-            ->add('city', null, [
+            ->add('city', ChoiceFilter::class, [
                 'label' => 'Taille de ville',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'multiple' => true,
+                    'choices' => array_combine(Project::CITY_TYPES, Project::CITY_TYPES),
+                ],
             ])
             ->add('measure', null, [
                 'label' => 'Mesure associée',
@@ -108,8 +117,9 @@ class ProjectAdmin extends AbstractAdmin
                     'purifier_type' => 'enrich_content',
                     'filter_emojis' => true,
                 ])
-                ->add('city', null, [
-                    'label' => 'Ville',
+                ->add('city', ChoiceType::class, [
+                    'label' => 'Taille de ville',
+                    'choices' => array_combine(Project::CITY_TYPES, Project::CITY_TYPES),
                 ])
                 ->add('isExpanded', null, [
                     'label' => 'Ouvert par défaut',
