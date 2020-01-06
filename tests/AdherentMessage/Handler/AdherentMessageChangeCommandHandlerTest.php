@@ -455,7 +455,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '5',
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'). ' - Paris 1er',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Paris 1er',
                         'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -508,9 +508,6 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $this->createHandler($message)($this->commandDummy);
     }
 
-    /**
-     * @group debug
-     */
     public function testAnnecyMunicipalChiefMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
