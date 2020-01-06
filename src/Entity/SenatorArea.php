@@ -24,7 +24,7 @@ class SenatorArea
     /**
      * @var ReferentTag|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ReferentTag")
      */
     private $departmentTag;
 
