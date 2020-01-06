@@ -5,8 +5,8 @@
             <div class="cv__training">
                 <h3 class="text--body">{{ training.diploma|upper }} - {{ training.studyField|upper }}</h3>
                 <h4 class="text--body">{{ training.organization }}</h4>
-                {% set endedAt = training.onGoing ? "aujourd'hui" : training.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') %}
-                <div class="text--body">{{ training.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }} - {{ endedAt }} ({{ training.length }})</div>
+                {% set endedAt = training.onGoing ? "aujourd'hui" : training.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') %}
+                <div class="text--body">{{ training.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }} - {{ endedAt }} ({{ training.length }})</div>
                 <div class="cv__training__desc text--body b__nudge--top">{{ training.description }}</div>
                 <span class="text--body text--italic">{{ training.extraCurricular }}</span>
                 {% block modify %}{% endblock %}

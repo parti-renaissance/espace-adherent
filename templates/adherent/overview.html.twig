@@ -9,7 +9,7 @@
         <span class="text--gray">({{ app.user.emailaddress }})</span>.
     </div>
     {% if app.user.activatedAt %}
-        <div class="settings__membership">Adhérent{{ app.user.female ? "e" }} depuis {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}.</div>
+        <div class="settings__membership">Adhérent{{ app.user.female ? "e" }} depuis {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}.</div>
     {% else %}
         <div class="settings__membership">Non adhérent{{ app.user.female ? "e" }}.</div>
     {% endif %}

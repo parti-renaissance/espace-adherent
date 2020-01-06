@@ -9,7 +9,7 @@
         <span class="settings__username"><strong>Code postal</strong> {{ app.user.postAddress.postalCode }}</span><br/>
 
         {% if has_role_adherent and app.user.activatedAt %}
-            <div class="settings__membership">Adhérent{{ app.user.female ? "e" }} depuis {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}.</div>
+            <div class="settings__membership">Adhérent{{ app.user.female ? "e" }} depuis {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}.</div>
         {% else %}
             <div class="settings__membership">Non adhérent{{ app.user.female ? "e" }}.</div>
         {% endif %}

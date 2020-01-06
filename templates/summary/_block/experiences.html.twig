@@ -8,9 +8,9 @@
                     <h3 class="text--body">{{ experience.title|upper }}</h3>
                     <h4 class="text--body">{{ experience.company }}</h4>
                     <div class="text--body b__nudge--bottom">
-                        {{ experience.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+                        {{ experience.startedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}
                         {% if experience.endedAt %}
-                            - {{ experience.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM Y') }}
+                            - {{ experience.endedAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}
                         {% elseif experience.onGoing %}
                             - aujourd'hui
                         {% endif %}

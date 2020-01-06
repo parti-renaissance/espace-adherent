@@ -1,5 +1,5 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    Du {{ object.startedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} au {{ object.endedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }}
+    Du {{ object.startedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy") }} au {{ object.endedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy") }}
 {% endblock %}

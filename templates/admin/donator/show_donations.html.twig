@@ -4,7 +4,7 @@
     <ul>
         {% for donation in object.donations %}
             <li>
-                <a href="{{ path('admin_app_donation_show', { id: donation.id }) }}">Le {{ donation.createdAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMM Y HH:mm') }} : {{ donation.amountInEuros|localizedcurrency('EUR') }}</a>
+                <a href="{{ path('admin_app_donation_show', { id: donation.id }) }}">Le {{ donation.createdAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMM yyyy HH:mm') }} : {{ donation.amountInEuros|localizedcurrency('EUR') }}</a>
             </li>
         {% endfor %}
     </ul>

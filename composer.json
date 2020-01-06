@@ -43,7 +43,7 @@
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
         "egulias/email-validator": "^2.1",
-        "endroid/qr-code-bundle": "^3.3",
+        "endroid/qr-code-bundle": "^3.4.2",
         "exercise/htmlpurifier-bundle": "^1.0",
         "facebook/graph-sdk": "^5.4",
         "geoip2/geoip2": "^2.4",

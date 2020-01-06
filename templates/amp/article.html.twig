@@ -71,7 +71,7 @@
                     <h1 class="text--large b__nudge--bottom-small">
                         {{ article.title }}
                     </h1>
-                    <h2 class="text--gray">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} - {{ article.description }}</h2>
+                    <h2 class="text--gray">{{ article.publishedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy") }} - {{ article.description }}</h2>
                 </header>
 
                 {% if article.media and article.displayMedia %}

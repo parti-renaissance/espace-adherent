@@ -34,7 +34,7 @@
                         {% set date = event.beginAt|date('Ymd') %}
 
                         <div class="text--normal text--bold text--uppercase b__nudge--bottom-medium b__nudge--top-large">
-                            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }}
+                            {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}
                         </div>
                     {% endif %}
 
@@ -51,7 +51,7 @@
                                     </a>
                                 </h2>
                                 <div class="text--body">
-                                    {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM Y') }} &mdash; à {{ event.cityName }}<br />
+                                    {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }} &mdash; à {{ event.cityName }}<br />
                                 </div>
                                 {% if event.type and event.isCitizenAction %}
                                     {% if event.organizer %}
