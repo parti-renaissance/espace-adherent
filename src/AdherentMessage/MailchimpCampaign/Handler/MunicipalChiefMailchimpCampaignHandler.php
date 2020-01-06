@@ -25,9 +25,13 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
         $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
 
         $filters = [
-            'type' => 'text_merge',
-            'value' => $inseeCode,
-            'label' => $city['name'] ?? $inseeCode,
+            [
+                [
+                    'type' => 'text_merge',
+                    'value' => $inseeCode,
+                    'label' => $city['name'] ?? $inseeCode,
+                ],
+            ],
         ];
 
         if ($filter->getContactAdherents() && AreaUtils::INSEE_CODE_ANNECY === $inseeCode) {
@@ -35,9 +39,11 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
                 $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCodeAttachedToAnnecy);
 
                 $filters[] = [
-                    'type' => 'text_merge',
-                    'value' => $inseeCodeAttachedToAnnecy,
-                    'label' => $city['name'] ?? $inseeCodeAttachedToAnnecy,
+                    [
+                        'type' => 'text_merge',
+                        'value' => $inseeCodeAttachedToAnnecy,
+                        'label' => $city['name'] ?? $inseeCodeAttachedToAnnecy,
+                    ],
                 ];
             }
         }

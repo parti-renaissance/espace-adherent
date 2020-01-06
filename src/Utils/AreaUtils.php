@@ -42,7 +42,6 @@ class AreaUtils
 
     public const INSEE_CODE_ANNECY = '74010';
     public const INSEE_CODES_ATTACHED_TO_ANNECY = [
-        '74268',
         '74011',
         '74268',
         '74093',
