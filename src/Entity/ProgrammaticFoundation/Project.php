@@ -30,6 +30,18 @@ class Project
     use EntityIdentityTrait;
     use TimestampableEntity;
 
+    private const CITY_SMALL = 'Petite commune';
+    private const CITY_MEDIUM = 'Ville moyenne';
+    private const CITY_LARGE = 'Métropole';
+    private const CITY_OTHER = 'Autre';
+
+    public const CITY_TYPES = [
+        self::CITY_SMALL,
+        self::CITY_MEDIUM,
+        self::CITY_LARGE,
+        self::CITY_OTHER,
+    ];
+
     /**
      * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
@@ -57,6 +69,7 @@ class Project
      * @ORM\Column
      *
      * @Assert\NotBlank(message="programmatic_foundation.city.not_empty")
+     * @Assert\Choice(choices=Project::CITY_TYPES)
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $city;
