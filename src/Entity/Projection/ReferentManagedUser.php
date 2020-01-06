@@ -367,11 +367,6 @@ class ReferentManagedUser
         return $this->isCommitteeSupervisor;
     }
 
-    public function isMailSubscriber(): bool
-    {
-        return \in_array(SubscriptionTypeEnum::REFERENT_EMAIL, $this->subscriptionTypes, true);
-    }
-
     public function getSubscribedTags(): string
     {
         return $this->subscribedTags;

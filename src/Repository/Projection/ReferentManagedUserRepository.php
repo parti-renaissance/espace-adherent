@@ -4,14 +4,10 @@ namespace AppBundle\Repository\Projection;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Projection\ReferentManagedUser;
-use AppBundle\Referent\ManagedUsersFilter;
+use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\ReferentTrait;
-use AppBundle\Subscription\SubscriptionTypeEnum;
-use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -26,99 +22,32 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentManagedUser::class);
     }
 
-    /**
-     * @return ReferentManagedUser[]|PaginatorInterface
-     */
-    public function search(
-        Adherent $referent,
-        ManagedUsersFilter $filter = null,
-        bool $onlyEmailSubscribers = false,
-        int $page = 1
-    ): PaginatorInterface {
-        $page = $page < 1 ? 1 : $page;
-
+    public function searchByFilter(ManagedUsersFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
+    {
         return new ApiPaginator(new Paginator($this
-            ->createFilterQueryBuilder($referent, $filter, $onlyEmailSubscribers)
-            ->setFirstResult(($page - 1) * ManagedUsersFilter::PER_PAGE)
-            ->setMaxResults(ManagedUsersFilter::PER_PAGE)
+            ->createFilterQueryBuilder($filter)
+            ->setFirstResult((($page < 1 ? 1 : $page) - 1) * $limit)
+            ->setMaxResults($limit)
             ->getQuery()
             ->useResultCache(true)
             ->setResultCacheLifetime(1800)
         ));
     }
 
-    public function createDispatcherIterator(Adherent $referent, ManagedUsersFilter $filter = null): IterableResult
+    private function createFilterQueryBuilder(ManagedUsersFilter $filter): QueryBuilder
     {
-        $qb = $this->createFilterQueryBuilder($referent, $filter, true);
-
-        if ($filter) {
-            $qb->setFirstResult($filter->getOffset());
-        }
-
-        return $qb->getQuery()->iterate();
-    }
-
-    private function createFilterQueryBuilder(
-        Adherent $referent,
-        ManagedUsersFilter $filter = null,
-        bool $onlyEmailSubscribers = false
-    ): QueryBuilder {
-        $this->checkReferent($referent);
-
-        $qb = $this->createQueryBuilder('u');
-        $qb
+        $qb = $this
+            ->createQueryBuilder('u')
             ->where('u.status = :status')
             ->setParameter('status', ReferentManagedUser::STATUS_READY)
+            ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $sortColumn = 'createdAt';
-        $orderDirection = 'DESC';
+        $this->withReferentZoneCondition($qb, $filter->getReferentTags());
 
-        if ($filter) {
-            if (($sort = $filter->getSort()) && 'lastName' === $sort) {
-                $sortColumn = $sort;
-            }
-
-            if ($order = $filter->getOrder()) {
-                $orderDirection = 'd' === $order ? 'DESC' : 'ASC';
-            }
-        }
-
-        $qb->orderBy("u.$sortColumn", $orderDirection);
-
-        if ($onlyEmailSubscribers) {
-            $qb
-                ->andWhere('FIND_IN_SET(:subscription_type, u.subscriptionTypes) > 0')
-                ->setParameter('subscription_type', SubscriptionTypeEnum::REFERENT_EMAIL)
-            ;
-        }
-
-        $managedAreas = $referent->getManagedAreaTagCodes();
-        if ($filter && ($queryZone = $filter->getQueryZone()) && \in_array($queryZone, $managedAreas)) {
-            $this->withReferentZoneCondition($qb, [$queryZone]);
-        } else {
-            $this->withReferentZoneCondition($qb, $managedAreas);
-            if (!$filter) {
-                return $qb;
-            }
-        }
-
-        if ($queryId = $filter->getQueryId()) {
-            $queryId = array_map('intval', explode(',', $queryId));
-
-            $idExpression = $qb->expr()->orX();
-            foreach ($queryId as $key => $id) {
-                $idExpression->add('u.id = :id_'.$key);
-                $qb->setParameter('id_'.$key, $id);
-            }
-
-            $qb->andWhere($idExpression);
-        }
-
-        if ($queryAreaCode = $filter->getQueryAreaCode()) {
-            $queryAreaCode = array_map('trim', explode(',', $queryAreaCode));
-
+        if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
+
             foreach ($queryAreaCode as $key => $areaCode) {
                 if (is_numeric($areaCode)) {
                     $areaCodeExpression->add('u.postalCode LIKE :postalCode_'.$key.' OR u.committeePostalCode LIKE :postalCode_'.$key);
@@ -134,56 +63,56 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($areaCodeExpression);
         }
 
-        if (\in_array($filter->getQueryGender(), Genders::ALL)) {
+        if ($gender = $filter->getGender()) {
             $qb
                 ->andWhere('u.gender = :gender')
-                ->setParameter('gender', $filter->getQueryGender())
+                ->setParameter('gender', $gender)
             ;
         }
 
-        if ($queryLastName = $filter->getQueryLastName()) {
+        if ($lastName = $filter->getLastName()) {
             $qb
-                ->andWhere('u.lastName LIKE :lastname')
-                ->setParameter('lastname', '%'.$queryLastName.'%')
+                ->andWhere('u.lastName LIKE :last_name')
+                ->setParameter('last_name', '%'.$lastName.'%')
             ;
         }
 
-        if ($queryFirstName = $filter->getQueryFirstName()) {
+        if ($firstName = $filter->getFirstName()) {
             $qb
-                ->andWhere('u.firstName LIKE :firstName')
-                ->setParameter('firstName', '%'.$queryFirstName.'%')
+                ->andWhere('u.firstName LIKE :first_name')
+                ->setParameter('first_name', '%'.$firstName.'%')
             ;
         }
 
-        if ($queryAgeMinimum = $filter->getQueryAgeMinimum()) {
+        if ($ageMin = $filter->getAgeMin()) {
             $qb
-                ->andWhere('u.age >= :ageMinimum')
-                ->setParameter('ageMinimum', $queryAgeMinimum)
+                ->andWhere('u.age >= :age_min')
+                ->setParameter('age_min', $ageMin)
             ;
         }
 
-        if ($queryAgeMaximum = $filter->getQueryAgeMaximum()) {
+        if ($ageMax = $filter->getAgeMax()) {
             $qb
-                ->andWhere('u.age <= :ageMaximum')
-                ->setParameter('ageMaximum', $queryAgeMaximum)
+                ->andWhere('u.age <= :age_max')
+                ->setParameter('age_max', $ageMax)
             ;
         }
 
-        if ($queryRegisteredFrom = $filter->getQueryRegisteredFrom()) {
+        if ($registeredSince = $filter->getRegisteredSince()) {
             $qb
-                ->andWhere('u.createdAt >= :registeredFrom')
-                ->setParameter('registeredFrom', $queryRegisteredFrom->format('Y-m-d 00:00:00'))
+                ->andWhere('u.createdAt >= :registered_since')
+                ->setParameter('registered_since', $registeredSince->format('Y-m-d 00:00:00'))
             ;
         }
 
-        if ($queryRegisteredTo = $filter->getQueryRegisteredTo()) {
+        if ($registeredUntil = $filter->getRegisteredUntil()) {
             $qb
-                ->andWhere('u.createdAt <= :registeredTo')
-                ->setParameter('registeredTo', $queryRegisteredTo->format('Y-m-d 23:59:59'))
+                ->andWhere('u.createdAt <= :registered_until')
+                ->setParameter('registered_until', $registeredUntil->format('Y-m-d 23:59:59'))
             ;
         }
 
-        foreach (array_values($filter->getQueryInterests()) as $key => $interest) {
+        foreach (array_values($filter->getInterests()) as $key => $interest) {
             $qb
                 ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
                 ->setParameter('interest_'.$key, $interest)
@@ -202,43 +131,43 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             $qb->setParameter('type_aic', ReferentManagedUser::TYPE_ADHERENT);
         }
 
-        if ($filter->includeHosts()) {
+        if ($filter->includeCommitteeHosts()) {
             $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = 1');
             $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
         }
 
-        if ($filter->includeSupervisors()) {
+        if ($filter->includeCommitteeSupervisors()) {
             $and = new Andx();
             $and->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
             $qb->setParameter('type_s', ReferentManagedUser::TYPE_ADHERENT);
 
             $supervisorExpression = $qb->expr()->orX();
-            foreach ($referent->getManagedAreaTagCodes() as $key => $code) {
+            foreach ($filter->getReferentTags() as $key => $code) {
                 $supervisorExpression->add(sprintf('FIND_IN_SET(:code_%s, u.supervisorTags) > 0', $key));
-                $qb->setParameter('code_'.$key, $code);
+                $qb->setParameter('code_'.$key, $code->getCode());
             }
 
             $and->add($supervisorExpression);
             $typeExpression->add($and);
         }
 
-        if ($filter->includeCitizenProject()) {
+        if ($filter->includeCitizenProjectHosts()) {
             $typeExpression->add('json_length(u.citizenProjectsOrganizer) > 0');
         }
 
         $qb->andWhere($typeExpression);
 
-        if (null !== $filter->onlyEmailSubscribers()) {
+        if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
             $qb
-                ->andWhere(sprintf('FIND_IN_SET(:subscription_type, u.subscriptionTypes) %s 0', $filter->onlyEmailSubscribers() ? '>' : '='))
-                ->setParameter('subscription_type', SubscriptionTypeEnum::REFERENT_EMAIL)
+                ->andWhere(sprintf('FIND_IN_SET(:subscription_type, u.subscriptionTypes) %s 0', $filter->getEmailSubscription() ? '>' : '='))
+                ->setParameter('subscription_type', $filter->getSubscriptionType())
             ;
         }
 
         return $qb;
     }
 
-    public function countAdherentInReferentZone(Adherent $referent): int
+    public function countManagedUsers(array $referentTags): int
     {
         $qb = $this
             ->createQueryBuilder('u')
@@ -246,7 +175,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         ;
 
         return (int) $this
-            ->withReferentZoneCondition($qb, $referent->getManagedAreaTagCodes())
+            ->withReferentZoneCondition($qb, $referentTags)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -264,8 +193,8 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
                     $qb->expr()->like("$alias.committeePostalCode", ":tag_prefix_$key")
                 )
             );
-            $qb->setParameter("tag_$key", $tag);
-            $qb->setParameter("tag_prefix_$key", $tag.'%');
+            $qb->setParameter("tag_$key", $tag->getCode());
+            $qb->setParameter("tag_prefix_$key", $tag->getCode().'%');
         }
 
         return $qb->andWhere($tagsFilter);

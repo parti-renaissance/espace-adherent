@@ -254,114 +254,109 @@ class ReferentControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, $user);
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'anc' => 1,
-            'aic' => 1,
-            'h' => 1,
-            'ac' => 77,
+            'f' => [
+                'city' => 77,
+            ],
         ];
+
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $this->assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'anc' => 1,
-            'aic' => 1,
-            'h' => 1,
-            's' => 1,
-            'ac' => 'Melun',
+            'f' => [
+                'city' => 'Melun',
+            ],
         ];
+
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'anc' => 1,
-            'aic' => 1,
-            'h' => 1,
-            'ac' => 'FR',
+            'f' => [
+                'city' => 'FR',
+            ],
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'anc' => 1,
-            'aic' => 1,
-            'h' => 1,
-            'ac' => 13,
+            'f' => [
+                'city' => 13,
+            ],
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $data = [
-            'anc' => 1,
-            'aic' => 1,
-            'h' => 1,
-            'ac' => 59,
+            'f' => [
+                'city' => 59,
+            ],
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(0, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Gender
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'g' => 'male',
+            'f' => [
+                'gender' => 'male',
+            ],
         ];
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        self::assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'g' => 'female',
+            'f' => [
+                'gender' => 'female',
+                'includeCommitteeSupervisors' => false,
+            ],
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['s']->untick();
-
-        $this->client->submit($form, $data);
-        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Firstname
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'g' => 'male',
-            'f' => 'Mich',
+            'f' => [
+                'gender' => 'male',
+                'firstName' => 'Mich',
+            ],
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['s']->untick();
-
-        $this->client->submit($form, $data);
-        $this->assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        self::assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Lastname
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'l' => 'ou',
-            'g' => '',
-            'f' => '',
+            'f' => [
+                'lastName' => 'ou',
+                'includeCommitteeSupervisors' => false,
+            ],
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['s']->untick();
-
-        $this->client->submit($form, $data);
-        $this->assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        self::assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
 
         // Managed Area
         $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
         $data = [
-            'qz' => '77',
+            'f' => [
+                'referentTags' => 100,
+                'includeCommitteeSupervisors' => false,
+            ],
         ];
 
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['s']->untick();
-
-        $this->client->submit($form, $data);
-        $this->assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
+        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
+        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
     }
 
     public function testFilterAdherents()
@@ -374,11 +369,13 @@ class ReferentControllerTest extends WebTestCase
 
         // filter hosts
         $data = [
-            'h' => true,
-            's' => false,
-            'anc' => false,
-            'aic' => false,
-            'cp' => false,
+            'f' => [
+                'includeCommitteeHosts' => true,
+                'includeCommitteeSupervisors' => false,
+                'includeAdherentsNoCommittee' => false,
+                'includeAdherentsInCommittee' => false,
+                'includeCitizenProjectHosts' => false,
+            ],
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
@@ -391,10 +388,13 @@ class ReferentControllerTest extends WebTestCase
 
         // filter supervisors
         $data = [
-            'h' => false,
-            's' => true,
-            'anc' => false,
-            'aic' => false,
+            'f' => [
+                'includeCommitteeHosts' => false,
+                'includeCommitteeSupervisors' => true,
+                'includeAdherentsNoCommittee' => false,
+                'includeAdherentsInCommittee' => false,
+                'includeCitizenProjectHosts' => false,
+            ],
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
@@ -402,15 +402,16 @@ class ReferentControllerTest extends WebTestCase
         $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertContains('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-        $this->assertContains('Brioul', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
+        $this->assertContains('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
 
         // filter newsletter subscriptions
         $data = [
-            'h' => false,
-            's' => false,
-            'anc' => false,
-            'aic' => false,
+            'f' => [
+                'includeCommitteeHosts' => false,
+                'includeCommitteeSupervisors' => false,
+                'includeAdherentsNoCommittee' => false,
+                'includeAdherentsInCommittee' => false,
+            ],
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
@@ -422,10 +423,13 @@ class ReferentControllerTest extends WebTestCase
 
         // filter adherents in no committee
         $data = [
-            'h' => false,
-            's' => false,
-            'anc' => true,
-            'aic' => false,
+            'f' => [
+                'includeCommitteeHosts' => false,
+                'includeCommitteeSupervisors' => false,
+                'includeAdherentsNoCommittee' => true,
+                'includeAdherentsInCommittee' => false,
+                'includeCitizenProjectHosts' => false,
+            ],
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
@@ -442,10 +446,13 @@ class ReferentControllerTest extends WebTestCase
 
         // filter adherents in committees
         $data = [
-            'h' => false,
-            's' => false,
-            'anc' => false,
-            'aic' => true,
+            'f' => [
+                'includeCommitteeHosts' => false,
+                'includeCommitteeSupervisors' => false,
+                'includeAdherentsNoCommittee' => false,
+                'includeAdherentsInCommittee' => true,
+                'includeCitizenProjectHosts' => false,
+            ],
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
@@ -457,11 +464,13 @@ class ReferentControllerTest extends WebTestCase
 
         // filter adherents in CP
         $data = [
-            'h' => false,
-            's' => false,
-            'anc' => false,
-            'aic' => false,
-            'cp' => true,
+            'f' => [
+                'includeCommitteeHosts' => false,
+                'includeCommitteeSupervisors' => false,
+                'includeAdherentsNoCommittee' => false,
+                'includeAdherentsInCommittee' => false,
+                'includeCitizenProjectHosts' => true,
+            ],
         ];
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);

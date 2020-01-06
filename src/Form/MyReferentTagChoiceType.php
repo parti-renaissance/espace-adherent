@@ -36,10 +36,15 @@ class MyReferentTagChoiceType extends AbstractType
     {
         $user = $this->security->getUser();
 
-        if (!$user || !$user instanceof Adherent || !$user->getManagedArea()) {
+        if (!$user || !$user instanceof Adherent) {
             return [];
         }
 
-        return $user->getManagedArea()->getTags()->toArray();
+        if (!$user->isReferent() && !$user->isCoReferent()) {
+            return [];
+        }
+
+        return ($user->isCoReferent() ? $user->getReferentOfReferentTeam() : $user)
+            ->getManagedArea()->getTags()->toArray();
     }
 }

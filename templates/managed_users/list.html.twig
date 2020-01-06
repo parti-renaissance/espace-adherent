@@ -1,0 +1,275 @@
+{% extends 'managed_users/_layout.html.twig' %}
+
+{% block managed_users_content %}
+    <div class="datagrid__pre-table b__nudge--bottom-larger">
+        <h3>Adhérents</h3>
+
+        {% if total_count %}
+            <span class="datagrid__count">
+                <span>{{ users.totalItems|number_format(0, ',', ' ') }}</span> sur {{ total_count|number_format(0, ',', ' ') }} adhérent{{ total_count > 1 ? 's' : '' }}
+            </span>
+        {% endif %}
+    </div>
+
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+
+            <h4 class="manager__filters__subtitle">Filtrer par</h4>
+
+            {{ form_errors(form) }}
+
+            <div class="manager__filters__row">
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        {% if form.referentTags is defined %}
+                            <div class="filter__row">
+                                <label class="filter__label">Zones gérées</label>
+                                {{ form_widget(form.referentTags, {attr: {class: 'filter__field'}}) }}
+                                {{ form_errors(form.referentTags) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="filter__row">
+                            <label class="filter__label">Rôles</label>
+                            {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité'}) }}
+                            {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)'}) }}
+                            {{ form_row(form.includeCommitteeSupervisors, {label: 'Animateurs de comités locaux'}) }}
+                            {{ form_row(form.includeCommitteeHosts, {label: 'Co-animateurs de comités locaux'}) }}
+                            {{ form_row(form.includeCitizenProjectHosts, {label: 'Porteurs de projets citoyens'}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Genre</label>
+                            {{ form_widget(form.gender, {attr: {class: 'filter__radio__tabs inputs--4'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Âge</label>
+                            <div class="filter__multi">
+                                <label style="width: 45%">
+                                    {{ form_widget(form.ageMin, {label: false, attr: {class: 'filter__field', placeholder: 18}}) }}
+                                </label>
+                                à
+                                <label style="width: 45%">
+                                    {{ form_widget(form.ageMax, {label: false, attr: {class: 'filter__field', placeholder: 99}}) }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Date d'adhésion</label>
+                            <div class="filter__multi">
+                                <label style="width: 45%">
+                                    {{ form_widget(form.registeredSince, {label: false, attr: {class: 'filter__field'}}) }}
+                                </label>
+                                à
+                                <label style="width: 45%">
+                                    {{ form_widget(form.registeredUntil, {label: false, attr: {class: 'filter__field'}}) }}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Statut (E-mail)</label>
+                            {{ form_widget(form.emailSubscription, {attr: {class: 'filter__field'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">Nom</label>
+                            {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                            {{ form_errors(form.lastName) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Prénom</label>
+                            {{ form_widget(form.firstName, {attr: {class: 'filter__field', placeholder: 'Saisissez un prénom'}}) }}
+                            {{ form_errors(form.firstName) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Ville ou code postal</label>
+                            {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
+                            {{ form_errors(form.city) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Centres d'intérêt</label>
+                            {{ form_widget(form.interests, {attr: {class: 'filter__field multi_select2', 'data-placeholder': 'referent.filter.interests'|trans}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Appliquer</button>
+
+                {% if form.vars.submitted %}
+                    <a href="{{ path("app_#{space_name}_managed_users_list") }}" class="btn btn--no-border b__nudge--bottom-medium">
+                        Réinitialiser les filtres
+                    </a>
+                {% endif %}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="datagrid">
+        <div class="b__nudge--bottom-larger">
+            <table class="datagrid__table-manager">
+                <thead>
+                    <tr>
+                        {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
+
+                        <th style="width: 100px;">
+                            <a
+                                href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                                class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
+                            >
+                                Identité
+                            </a>
+                        </th>
+                        <th style="width: 100px;">Rôle</th>
+                        <th style="width: 100px;">Téléphone</th>
+                        <th style="width: 100px;">SMS/MMS</th>
+                        <th style="width: 100px;">Commune</th>
+                        <th style="width: 100px;">Comité</th>
+                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
+                            <a
+                                href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'createdAt', order: order})}) }}"
+                                class="sort-link sort-link--order-{{ filter.sort == 'createdAt' ? filter.order : 'a' }}"
+                            >
+                                Adhésion le
+                            </a>
+                        </th>
+                        <th style="width: 100px;">{{ 'common.adherent.status_email'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr class="referent__item referent__item--{{ user.styleType }}">
+                        <td class="adherent-identity">
+                            <div class="adherent-name">
+                                {{ user.lastName }} {{ user.firstName }}
+                            </div>
+                            <div class="adherent-caracs">
+                                {% if user.gender %}
+                                {% if 'male' == user.gender %}
+                                    {{ 'common.gender.man'|trans }}
+                                {% else %}
+                                    {{ 'common.gender.woman'|trans }}
+                                {% endif %}
+                            {% else %}
+                                ~
+                                {% endif %},
+                                {{ user.age ? user.age ~ ' ans' : '~'}}
+                            </div>
+                        </td>
+                        <td>
+                            {% set isBasicAdherent = true %}
+                            {%- if user.citizenProjectsOrganizer -%}
+                                {% set isBasicAdherent = false %}
+                                Porteur de projet<br />
+                            {% endif %}
+                            {%- if user.isCommitteeSupervisor -%}
+                                {% set isBasicAdherent = false %}
+                                Animateur local<br />
+                            {% endif %}
+                            {%- if user.isCommitteeHost -%}
+                                {% set isBasicAdherent = false %}
+                                Co-animateur local<br />
+                            {% endif %}
+                            {%- if isBasicAdherent -%}
+                                Adhérent
+                            {% endif %}
+                        </td>
+                        <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+                        <td>
+                            {% set hasSmsSubscriptionType = user.hasSmsSubscriptionType %}
+                            <span class="status status__{{ hasSmsSubscriptionType ? '1' : '2' }}">
+                                {{ (hasSmsSubscriptionType ? 'global.yes' : 'global.no')|trans }}
+                            </span>
+                        </td>
+                        <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
+                        <td>
+                            {% set committees_count = user.committees|length %}
+
+                            {% if committees_count > 0 and user.adherentUuid %}
+                                {{ committees_count }} •
+                                <a
+                                        href="javascript:void(0);"
+                                        class="referent-user__committees-modal--trigger"
+                                        data-uuid="{{ user.adherentUuid }}"
+                                        data-adherent-name="{{ user.fullName }}"
+                                >Voir</a>
+                            {% else %}
+                                Aucun
+                            {% endif %}
+                        </td>
+                        <td class="datagrid__table__col--hide-mobile">
+                            {{ user.createdAt|date('d/m/Y H:i') }}
+                        </td>
+                        <td>
+                            {% set is_email_subscribed = filter.subscriptionType and filter.subscriptionType in user.subscriptionTypes %}
+
+                            <span class="status status__{{ is_email_subscribed ? '1' : '2' }}">
+                                {{ (is_email_subscribed ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
+                            </span>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                            Aucun résultat
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if users.count %}
+            {% include 'components/_modern_pagination.html.twig' with {
+                current_page: users.currentPage,
+                total_pages: users.lastPage,
+                pagination_route_params: {f: filter.toArray()}
+            } %}
+        {% endif %}
+
+        <div id="modal-wrapper"></div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('select2/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.multi_select2').each(function () {
+                $(this).select2({
+                    placeholder: this.dataset.placeholder || '',
+                    theme: 'default em-filters'
+                });
+            });
+
+            App.runReferentUserList('referent-user__committees-modal--trigger');
+        });
+    </script>
+{% endblock %}

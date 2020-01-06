@@ -31,6 +31,10 @@
                             <li class="{{ is_active_route(app.request, 'app_message_senator_*') ? 'active' }}">
                                 <a href="{{ path("app_message_senator_list", route_params|default({})) }}">Mes messages</a>
                             </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_senator_managed_users_list') ? 'active' }}">
+                                <a href="{{ path('app_senator_managed_users_list') }}">Adhérents</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
