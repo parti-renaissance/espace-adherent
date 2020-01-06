@@ -34,7 +34,10 @@ class MunicipalChiefMailchimpCampaignHandler extends AbstractMailchimpCampaignHa
             ],
         ];
 
-        if ($filter->getContactAdherents() && AreaUtils::INSEE_CODE_ANNECY === $inseeCode) {
+        if (
+            ($filter->getContactAdherents() || $filter->getContactNewsletter())
+            && AreaUtils::INSEE_CODE_ANNECY === $inseeCode
+        ) {
             foreach (AreaUtils::INSEE_CODES_ATTACHED_TO_ANNECY as $inseeCodeAttachedToAnnecy) {
                 $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCodeAttachedToAnnecy);
 
