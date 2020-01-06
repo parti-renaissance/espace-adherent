@@ -4,6 +4,7 @@ namespace Tests\AppBundle\AdherentMessage\Handler;
 
 use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
+use AppBundle\AdherentMessage\MailchimpCampaign\Handler\MunicipalChiefMailchimpCampaignHandler;
 use AppBundle\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
@@ -442,6 +443,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $message->setFilter($filter = new MunicipalChiefFilter(75101));
         $filter->setContactRunningMateTeam(true);
 
+        (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
+
         $this->clientMock
             ->expects($this->exactly(2))
             ->method('request')
@@ -452,7 +455,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '5',
                         'template_id' => 5,
                         'subject_line' => '[Municipales 2020] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'title' => 'Full Name - '.date('d/m/Y').' - Paris 1er',
                         'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -499,6 +502,296 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
             ->willReturn(
                 new Response(200, [], json_encode(['id' => 'campaign_id1'])),
                 new Response(200, [], json_encode(['id' => 'campaign_id1']))
+            )
+        ;
+
+        $this->createHandler($message)($this->commandDummy);
+    }
+
+    public function testAnnecyMunicipalChiefMessageGeneratesGoodPayloads(): void
+    {
+        $message = $this->preparedMessage(MunicipalChiefAdherentMessage::class);
+        $message->setFilter($filter = new MunicipalChiefFilter(74010));
+        $filter->setContactAdherents(true);
+
+        (new MunicipalChiefMailchimpCampaignHandler())->handle($message);
+
+        $this->clientMock
+            ->expects($this->exactly(12))
+            ->method('request')
+            ->withConsecutive(
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Annecy',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'starts',
+                                    'field' => 'CITY',
+                                    'value' => 'Annecy (',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Annecy-le-Vieux',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'starts',
+                                    'field' => 'CITY',
+                                    'value' => 'Annecy-le-Vieux (',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Seynod',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'starts',
+                                    'field' => 'CITY',
+                                    'value' => 'Seynod (',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id3/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Cran-Gevrier',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'starts',
+                                    'field' => 'CITY',
+                                    'value' => 'Cran-Gevrier (',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id4/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Meythet',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'starts',
+                                    'field' => 'CITY',
+                                    'value' => 'Meythet (',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id5/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
+                        ],
+                    ],
+                ]]],
+                ['POST', '/3.0/campaigns', ['json' => [
+                    'type' => 'regular',
+                    'settings' => [
+                        'folder_id' => '5',
+                        'template_id' => 5,
+                        'subject_line' => '[Municipales 2020] Subject',
+                        'title' => 'Full Name - '.date('d/m/Y').' - Pringy',
+                        'reply_to' => 'ne-pas-repondre@en-marche.fr',
+                        'from_name' => 'Full Name | La République En Marche !',
+                    ],
+                    'recipients' => [
+                        'list_id' => 'main_list_id',
+                        'segment_opts' => [
+                            'match' => 'all',
+                            'conditions' => [
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontainsall',
+                                    'field' => 'interests-C',
+                                    'value' => [],
+                                ],
+                                [
+                                    'condition_type' => 'TextMerge',
+                                    'op' => 'starts',
+                                    'field' => 'CITY',
+                                    'value' => 'Pringy (',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]]],
+                ['PUT', '/3.0/campaigns/campaign_id6/content', ['json' => [
+                    'template' => [
+                        'id' => 5,
+                        'sections' => [
+                            'content' => 'Content',
+                            'first_name' => 'First Name',
+                            'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
+                            'city_name' => 'Paris 1er',
+                        ],
+                    ],
+                ]]],
+            )
+            ->willReturn(
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id1'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id2'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id3'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id3'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id4'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id4'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id5'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id5'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id6'])),
+                new Response(200, [], json_encode(['id' => 'campaign_id6']))
             )
         ;
 

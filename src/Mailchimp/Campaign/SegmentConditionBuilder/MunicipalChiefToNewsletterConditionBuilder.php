@@ -18,10 +18,7 @@ class MunicipalChiefToNewsletterConditionBuilder extends AbstractConditionBuilde
 
     public function build(MailchimpCampaign $campaign): array
     {
-        /** @var MunicipalChiefFilter $filter */
-        $filter = $campaign->getMessage()->getFilter();
-
-        if (!$filter->getInseeCode()) {
+        if (!$inseeCode = $campaign->getCity()) {
             throw new InvalidFilterException($campaign->getMessage(), '[MunicipalChiefMessage] Message does not have a valid city value');
         }
 
@@ -29,7 +26,7 @@ class MunicipalChiefToNewsletterConditionBuilder extends AbstractConditionBuilde
             'condition_type' => 'TextMerge',
             'op' => 'contains',
             'field' => MemberRequest::MERGE_FIELD_INSEE_CODE,
-            'value' => $filter->getInseeCode(),
+            'value' => $inseeCode,
         ];
 
         $conditions[] = $this->buildStaticSegmentCondition(
