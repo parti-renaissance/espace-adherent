@@ -4,8 +4,9 @@ namespace Tests\AppBundle\Repository;
 
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\Entity\ReferentTag;
-use AppBundle\Referent\ManagedUsersFilter;
+use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -30,35 +31,12 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
 
     public function testSearch()
     {
-        $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(
-            [
-                $this->referentTagRepository->findOneBy(['code' => 'ch']),
-                $this->referentTagRepository->findOneBy(['code' => '77']),
-            ],
-            '1.123456',
-            '2.34567'
-        );
+        $filter = new ManagedUsersFilter(null, [
+            $this->referentTagRepository->findOneBy(['code' => 'ch']),
+            $this->referentTagRepository->findOneBy(['code' => '77']),
+        ]);
 
-        $this->assertCount(3, $this->referentManagedUserRepository->search($referent));
-    }
-
-    public function testSearchWithoutEmailSubscribers()
-    {
-        $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(
-            [
-                $this->referentTagRepository->findOneBy(['code' => 'ch']),
-                $this->referentTagRepository->findOneBy(['code' => '77']),
-            ],
-            '1.123456',
-            '2.34567'
-        );
-
-        $filter = $this->createMock(ManagedUsersFilter::class);
-        $filter->expects($this->any())->method('onlyEmailSubscribers')->willReturn(false);
-
-        $this->assertCount(1, $this->referentManagedUserRepository->search($referent, $filter));
+        $this->assertCount(3, $this->referentManagedUserRepository->searchByFilter($filter));
     }
 
     /**
@@ -66,91 +44,20 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
      */
     public function testSearchWithEmailSubscribersInevitably(?bool $onlyEmailSubscribers, int $count)
     {
-        $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(
-            [
-                $this->referentTagRepository->findOneBy(['code' => 'ch']),
-                $this->referentTagRepository->findOneBy(['code' => '77']),
-            ],
-            '1.123456',
-            '2.34567'
-        );
+        $filter = new ManagedUsersFilter(SubscriptionTypeEnum::REFERENT_EMAIL, [
+            $this->referentTagRepository->findOneBy(['code' => 'ch']),
+            $this->referentTagRepository->findOneBy(['code' => '77']),
+        ]);
+        $filter->setEmailSubscription($onlyEmailSubscribers);
 
-        $filter = $this->createMock(ManagedUsersFilter::class);
-        $filter->expects($this->any())->method('onlyEmailSubscribers')->willReturn($onlyEmailSubscribers);
-
-        $this->assertCount($count, $this->referentManagedUserRepository->search($referent, $filter, true));
+        $this->assertCount($count, $this->referentManagedUserRepository->searchByFilter($filter));
     }
 
     public function providesOnlyEmailSubscribers(): \Generator
     {
-        yield [null, 2];
+        yield [null, 3];
         yield [true, 2];
-        yield [false, 0];
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testSearchWithInvalidReferent()
-    {
-        $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent([], '1.123456', '2.34567');
-
-        $this->referentManagedUserRepository->search($referent);
-    }
-
-    public function testCreateDispatcherIterator()
-    {
-        $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(
-            [
-                $this->referentTagRepository->findOneBy(['code' => '92']),
-                $this->referentTagRepository->findOneBy(['code' => '77']),
-            ],
-            '1.123456',
-            '2.34567'
-        );
-
-        $results = $this->referentManagedUserRepository->createDispatcherIterator($referent);
-
-        $expectedEmails = ['francis.brioul@yahoo.com', 'gisele-berthoux@caramail.com'];
-
-        $count = 0;
-        foreach ($results as $key => $result) {
-            $this->assertSame($expectedEmails[$key], $result[0]->getEmail());
-            ++$count;
-        }
-
-        $this->assertSame(2, $count);
-    }
-
-    public function testCreateDispatcherIteratorWithOffset()
-    {
-        $referent = $this->createAdherent('referent@en-marche-dev.fr');
-        $referent->setReferent(
-            [
-                $this->referentTagRepository->findOneBy(['code' => '92']),
-                $this->referentTagRepository->findOneBy(['code' => '77']),
-            ],
-            '1.123456',
-            '2.34567'
-        );
-
-        $filter = $this->createMock(ManagedUsersFilter::class);
-        $filter->expects($this->once())->method('getOffset')->willReturn(1);
-
-        $results = $this->referentManagedUserRepository->createDispatcherIterator($referent, $filter);
-
-        $expectedEmails = ['gisele-berthoux@caramail.com'];
-
-        $count = 0;
-        foreach ($results as $key => $result) {
-            $this->assertSame($expectedEmails[$key], $result[0]->getEmail());
-            ++$count;
-        }
-
-        $this->assertSame(1, $count);
+        yield [false, 1];
     }
 
     protected function setUp()

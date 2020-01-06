@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Security\Voter\ManagedUserVoter;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -60,15 +60,10 @@ class AdherentController extends AbstractController
 
     /**
      * @Route("/adherents/{uuid}/committees", name="api_adherent_committees", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT')")
      */
-    public function getAdherentCommittees(Adherent $adherent, UserInterface $referent): Response
+    public function getAdherentCommittees(Adherent $adherent): Response
     {
-        /** @var Adherent $referent */
-        if (!array_intersect($adherent->getReferentTagCodes(), $referent->getManagedAreaTagCodes())) {
-            throw $this->createNotFoundException();
-        }
+        $this->denyAccessUnlessGranted(ManagedUserVoter::IS_MANAGED_USER, $adherent);
 
         return $this->json(
             $adherent->getMemberships()->getMembershipsForApprovedCommittees(),

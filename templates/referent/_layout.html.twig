@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_title 'Mon espace référent' %}
-{% block canonical_url url('app_referent_users') %}
+{% block canonical_url url('app_referent_managed_users_list') %}
 
 {% block banner '' %}
 
@@ -54,7 +54,7 @@
                     {% if is_granted('ROLE_REFERENT') %}
                     <nav class="manager-header__menu">
                         <ul>
-                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_users*', 'app_jecoute_referent_*']) %}
+                            {% set is_mobilisation_links = is_active_route(app.request, ['app_referent_event_manager_event*', 'app_referent_institutional_events*', 'app_referent_committees', 'app_referent_managed_users_list', 'app_jecoute_referent_*']) %}
 
                             <li class="{{ is_active_route(app.request, 'app_referent_event_manager_event*') ? 'active' }}">
                                 <a href="{{ path('app_referent_event_manager_events') }}">Événements</a>
@@ -68,8 +68,8 @@
                                 <a href="{{ path('app_referent_citizen_projects') }}">Projets citoyens</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_referent_users*') ? 'active' }}">
-                                <a href="{{ path('app_referent_users') }}">Adhérents</a>
+                            <li class="{{ is_active_route(app.request, 'app_referent_managed_users_list') ? 'active' }}">
+                                <a href="{{ path('app_referent_managed_users_list') }}">Adhérents</a>
                             </li>
 
                             <li class="{{ is_active_route(app.request, 'app_jecoute_referent_*') ? 'active' }}">

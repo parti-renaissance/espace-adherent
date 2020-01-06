@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Form\InstitutionalEventCommandType;
@@ -13,12 +12,10 @@ use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Referent\ManagedCitizenProjectsExporter;
 use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
-use AppBundle\Referent\ManagedUsersFilter;
 use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Repository\CitizenProjectRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Repository\InstitutionalEventRepository;
-use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use AppBundle\Repository\ReferentRepository;
@@ -35,42 +32,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ReferentController extends Controller
 {
-    public const TOKEN_ID = 'referent_managed_users';
-
-    /**
-     * @Route("/utilisateurs", name="app_referent_users", methods={"GET"})
-     *
-     * @Security("is_granted('ROLE_REFERENT') or is_granted('ROLE_COREFERENT')")
-     */
-    public function usersAction(Request $request, ReferentManagedUserRepository $repository): Response
-    {
-        $filter = new ManagedUsersFilter();
-        $filter->handleRequest($request);
-
-        if ($filter->hasToken() && !$this->isCsrfTokenValid(self::TOKEN_ID, $filter->getToken())) {
-            return $this->redirectToRoute('app_referent_users');
-        }
-
-        /** @var Adherent $referent */
-        $referent = $this->getUser()->isCoReferent() ? $this->getUser()->getReferentOfReferentTeam() : $this->getUser();
-        $results = $repository->search(
-            $referent,
-            $filter->hasToken() ? $filter : null,
-            false,
-            $request->query->getInt('page', 1)
-        );
-
-        $filter->setToken($this->get('security.csrf.token_manager')->getToken(self::TOKEN_ID));
-
-        return $this->render('referent/users_list.html.twig', [
-            'managedArea' => $referent->getManagedArea(),
-            'filter' => $filter,
-            'has_filter' => $request->query->has(ManagedUsersFilter::PARAMETER_TOKEN),
-            'total_count' => $repository->countAdherentInReferentZone($referent),
-            'results' => $results,
-        ]);
-    }
-
     /**
      * @Route("/evenements-institutionnels", name="app_referent_institutional_events", methods={"GET"})
      *
