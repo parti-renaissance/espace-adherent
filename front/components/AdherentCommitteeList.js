@@ -17,6 +17,7 @@ export default class AdherentCommitteeList extends React.Component {
             display: false,
             dataLoaded: false,
             committees: [],
+            error: null,
         };
     }
 
@@ -38,10 +39,18 @@ export default class AdherentCommitteeList extends React.Component {
         }
 
         this.api.getAdherentCommittees(this.state.uuid, (data) => {
-            this.setState({
-                dataLoaded: true,
-                committees: data,
-            });
+            if (null === data) {
+                this.setState({
+                    dataLoaded: true,
+                    committees: [],
+                    error: 'Une erreur est survenue. Veuillez réessayer dans quelques instants.',
+                });
+            } else {
+                this.setState({
+                    dataLoaded: true,
+                    committees: data,
+                });
+            }
         });
     }
 
@@ -51,7 +60,11 @@ export default class AdherentCommitteeList extends React.Component {
                 <div className="text--bold text--default-large b__nudge--bottom">
                     Comité(s) suivi(s) par {this.state.adherent_name} :
                 </div>
-                {this.state.committees.map((membership, index) => (
+
+                {this.state.error ?
+                    <div className="text-error">{this.state.error}</div> :
+
+                    this.state.committees.map((membership, index) => (
                         <div key={index} className="adherent__committees--item">
                             <div>
                                 <a className="link--no-decor link--blue--dark"
@@ -64,14 +77,15 @@ export default class AdherentCommitteeList extends React.Component {
                             <div className="text--small text--silver-gray">
                                 <span className="text--bold">{this.getMembershipLabel(membership.privilege)} </span>
                                 depuis le {
-                                    membership.subscriptionDate.split('T')[0].replace(
-                                        /([0-9]{4})-([0-9]{2})-([0-9]{2})/,
-                                        '$3/$2/$1'
-                                    )
+                                membership.subscriptionDate.split('T')[0].replace(
+                                    /([0-9]{4})-([0-9]{2})-([0-9]{2})/,
+                                    '$3/$2/$1'
+                                )
                             }
                             </div>
                         </div>
-                    ))}
+                    ))
+                }
             </div>
         );
     }
