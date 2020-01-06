@@ -149,20 +149,20 @@ export default class ProgrammaticFoundation extends React.Component {
                 });
             });
         })).sort((a, b) => a.localeCompare(b)).sort(function(a,b) {
-            var important_results = {
+            var importantResults = {
                 'Petite commune': 1,
                 'Ville moyenne': 2,
                 'Métropole': 3,
                 'Autre': 4,
             };
 
-            var important_a = important_results[a],
-                important_b = important_results[b],
+            var importantA = importantResults[a],
+                importantB = importantResults[b],
                 ret;
 
-            if (important_a && !important_b) {ret = -1}
-            else if (important_b && !important_a) {ret = 1}
-            else if (important_a && important_b) {ret = important_a - important_b}
+            if (importantA && !importantB) {ret = -1}
+            else if (importantB && !importantA) {ret = 1}
+            else if (importantA && importantB) {ret = importantA - importantB}
             else {ret = 0};
 
             return(ret);
