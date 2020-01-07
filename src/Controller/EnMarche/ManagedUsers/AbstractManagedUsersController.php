@@ -4,13 +4,13 @@ namespace AppBundle\Controller\EnMarche\ManagedUsers;
 
 use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractManagedUsersController extends AbstractController
+abstract class AbstractManagedUsersController extends Controller
 {
     private $managedUsersRepository;
 

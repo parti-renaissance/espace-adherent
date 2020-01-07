@@ -32,9 +32,11 @@
                                 <a href="{{ path("app_message_deputy_list", route_params|default({})) }}">Mes messages</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_deputy_managed_users_list') ? 'active' }}">
-                                <a href="{{ path('app_deputy_managed_users_list') }}">Adhérents</a>
-                            </li>
+                            {% if is_canary_enabled() %}
+                                <li class="{{ is_active_route(app.request, 'app_deputy_managed_users_list') ? 'active' }}">
+                                    <a href="{{ path('app_deputy_managed_users_list') }}">Adhérents</a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
