@@ -39,8 +39,6 @@ class DonationRequestHandler
 
     public function handle(DonationRequest $donationRequest): Donation
     {
-        $donation = $this->donationFactory->createFromDonationRequest($donationRequest);
-
         if (!$donator = $this->donatorRepository->findOneForMatching(
             $donationRequest->getEmailAddress(),
             $donationRequest->getFirstName(),
@@ -48,6 +46,8 @@ class DonationRequestHandler
         )) {
             $donator = $this->createDonator($donationRequest);
         }
+
+        $donation = $this->donationFactory->createFromDonationRequest($donationRequest, $donator);
 
         $donator->addDonation($donation);
 

@@ -32,7 +32,8 @@ class TransactionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('transaction')
             ->addSelect('donation')
             ->innerJoin('transaction.donation', 'donation')
-            ->andWhere('donation.emailAddress = :email')
+            ->innerJoin('donation.donator', 'donator')
+            ->andWhere('donator.emailAddress = :email')
             ->andWhere('transaction.payboxResultCode = :resultCode')
             ->setParameters([
                 'resultCode' => Transaction::PAYBOX_SUCCESS,
@@ -53,8 +54,9 @@ class TransactionRepository extends ServiceEntityRepository
 
         return (int) $this->createQueryBuilder('transaction')
             ->innerJoin('transaction.donation', 'donation')
+            ->innerJoin('donation.donator', 'donator')
             ->select('SUM(donation.amount)')
-            ->where('donation.emailAddress = :email')
+            ->where('donator.emailAddress = :email')
             ->andWhere('transaction.payboxResultCode = :success_code')
             ->andWhere('transaction.payboxDateTime BETWEEN :first_day_of_year AND :last_day_of_year')
             ->setParameters([

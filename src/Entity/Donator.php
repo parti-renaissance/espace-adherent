@@ -90,6 +90,11 @@ class Donator
     private $emailAddress;
 
     /**
+     * @ORM\Column(length=6, nullable=true)
+     */
+    private $gender;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
@@ -98,10 +103,21 @@ class Donator
 
     /**
      * @ORM\OneToMany(targetEntity="Donation", mappedBy="donator", cascade={"all"})
+     * @ORM\OrderBy({"createdAt": "DESC"})
      */
     private $donations;
 
     /**
+     * @var Donation|null
+     *
+     * @ORM\OneToOne(targetEntity="Donation")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
+     */
+    private $lastSuccessfulDonation;
+
+    /**
+     * @var Donation|null
+     *
      * @ORM\ManyToOne(targetEntity="Donation")
      */
     private $referenceDonation;
@@ -116,7 +132,8 @@ class Donator
         string $firstName = null,
         string $city = null,
         string $country = null,
-        string $emailAddress = null
+        string $emailAddress = null,
+        string $gender = null
     ) {
         $this->lastName = $lastName;
         $this->firstName = $firstName;
@@ -125,6 +142,7 @@ class Donator
         $this->emailAddress = $emailAddress;
         $this->donations = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->gender = $gender;
     }
 
     public function __toString(): string
@@ -192,6 +210,11 @@ class Donator
         $this->firstName = $firstName;
     }
 
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
+
     public function getCity(): ?string
     {
         return $this->city;
@@ -222,18 +245,19 @@ class Donator
         $this->emailAddress = $emailAddress;
     }
 
-    public function getLastDonation(): ?Donation
+    public function getGender(): ?string
     {
-        if ($this->donations->isEmpty()) {
-            return null;
-        }
+        return $this->gender;
+    }
 
-        return $this->donations->first();
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
     }
 
     public function getLastDonationDate(): ?\DateTimeInterface
     {
-        if (!$donation = $this->getLastDonation()) {
+        if (!$donation = $this->lastSuccessfulDonation) {
             return null;
         }
 
@@ -242,7 +266,7 @@ class Donator
 
     public function getLastDonationAmount(): ?float
     {
-        if (!$donation = $this->getLastDonation()) {
+        if (!$donation = $this->lastSuccessfulDonation) {
             return null;
         }
 
@@ -285,6 +309,16 @@ class Donator
         $this->tags->removeElement($tag);
     }
 
+    public function getLastSuccessfulDonation(): ?Donation
+    {
+        return $this->lastSuccessfulDonation;
+    }
+
+    public function setLastSuccessfulDonation(?Donation $donation): void
+    {
+        $this->lastSuccessfulDonation = $donation;
+    }
+
     public function getReferenceDonation(): ?Donation
     {
         return $this->referenceDonation;
@@ -303,5 +337,18 @@ class Donator
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getReferenceAddress(): ?string
+    {
+        if ($donation = $this->referenceDonation) {
+            return $donation->getInlineFormattedAddress();
+        }
+
+        if ($donation = $this->lastSuccessfulDonation) {
+            return $donation->getInlineFormattedAddress();
+        }
+
+        return null;
     }
 }

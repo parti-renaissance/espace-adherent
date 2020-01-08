@@ -60,11 +60,12 @@ class DonationUpdateReferenceCommand extends Command
 
         $count = 0;
         foreach ($this->getDonations() as $result) {
+            /** @var Donation $donation */
             $donation = reset($result);
 
             $reference = $this->donationRequestUtils->buildDonationReference(
                 $donation->getUuid(),
-                sprintf('%s %s', $donation->getFirstName(), $donation->getLastName())
+                $donation->getDonator()->getFullName(),
             );
 
             $donation->setPayboxOrderRef($reference);

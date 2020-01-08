@@ -39,7 +39,8 @@ abstract class AbstractDonationCountCalculator extends AbstractDonationCalculato
 
         if ($this->isAdherentOnly()) {
             $qb
-                ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.emailAddress = donation.emailAddress')
+                ->innerJoin('donation.donator', 'donator')
+                ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.emailAddress = donator.emailAddress')
                 ->andWhere('adherent.adherent = true')
             ;
         }
@@ -69,7 +70,8 @@ abstract class AbstractDonationCountCalculator extends AbstractDonationCalculato
 
         if ($this->isAdherentOnly()) {
             $qb
-                ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.emailAddress = donation.emailAddress')
+                ->innerJoin('donation.donator', 'donator')
+                ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'adherent.emailAddress = donator.emailAddress')
                 ->andWhere('adherent.adherent = true')
             ;
         }

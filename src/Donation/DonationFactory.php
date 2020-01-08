@@ -4,6 +4,7 @@ namespace AppBundle\Donation;
 
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Donator;
 
 class DonationFactory
 {
@@ -16,16 +17,12 @@ class DonationFactory
         $this->donationRequestUtils = $donationRequestUtils;
     }
 
-    public function createFromDonationRequest(DonationRequest $request): Donation
+    public function createFromDonationRequest(DonationRequest $request, Donator $donator): Donation
     {
         return new Donation(
             $request->getUuid(),
             $request->getType(),
             $request->getAmount() * 100,
-            $request->getGender(),
-            $request->getFirstName(),
-            $request->getLastName(),
-            $request->getEmailAddress(),
             $this->addressFactory->createFlexible(
                 $request->getCountry(),
                 $request->getPostalCode(),
@@ -38,7 +35,8 @@ class DonationFactory
                 $request->getUuid(),
                 $request->getFirstName().' '.$request->getLastName()
             ),
-            $request->getNationality()
+            $request->getNationality(),
+            $donator
         );
     }
 }
