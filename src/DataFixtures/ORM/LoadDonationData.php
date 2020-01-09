@@ -45,6 +45,7 @@ class LoadDonationData extends Fixture
         $donation4 = $this->createDonation($donator2, 100., PayboxPaymentSubscription::UNLIMITED);
 
         $transactionNormal = $this->createTransaction($donationNormal);
+        $transactionMonthlyError = $this->createTransaction($donationMonthly, Transaction::PAYBOX_CARD_UNAUTHORIZED);
         $transactionMonthly = $this->createTransaction($donationMonthly);
         $transaction0 = $this->createTransaction($donation0);
         $transaction1 = $this->createTransaction($donation1);
@@ -54,9 +55,14 @@ class LoadDonationData extends Fixture
 
         $donation3->stopSubscription();
 
+        $this->setDonateAt($transactionMonthlyError, '-30 day');
         $this->setDonateAt($transaction2, '-1 day');
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
+
+        $donationMonthly->setLastSuccessfulDonation();
+        $donation0->setLastSuccessfulDonation();
+        $donation3->setLastSuccessfulDonation();
 
         $manager->persist($donator0);
         $manager->persist($donator1);
@@ -71,6 +77,7 @@ class LoadDonationData extends Fixture
         $manager->persist($donation4);
 
         $manager->persist($transactionNormal);
+        $manager->persist($transactionMonthlyError);
         $manager->persist($transactionMonthly);
         $manager->persist($transaction0);
         $manager->persist($transaction1);
@@ -117,15 +124,20 @@ class LoadDonationData extends Fixture
         return $donator;
     }
 
-    public function createTransaction(Donation $donation): Transaction
-    {
+    public function createTransaction(
+        Donation $donation,
+        string $resultCode = Transaction::PAYBOX_SUCCESS,
+        string $dateModifier = null
+    ): Transaction {
+        $date = new Chronos($dateModifier);
+
         return $donation->processPayload([
-            'result' => '00000',
+            'result' => $resultCode,
             'authorization' => 'test',
             'subscription' => $donation->getDuration() ? Uuid::uuid1()->toString() : null,
             'transaction' => Uuid::uuid4()->toString(),
-            'date' => '02022018',
-            'time' => '15:22:33',
+            'date' => $date->format('dmY'),
+            'time' => $date->format('H:i:s'),
         ]);
     }
 

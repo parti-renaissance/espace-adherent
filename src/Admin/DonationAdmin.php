@@ -132,25 +132,39 @@ class DonationAdmin extends AbstractAdmin
                     ],
                 ],
             ])
-            ->add(
-                'status',
-                'doctrine_orm_choice',
-                [
-                    'label' => 'Statut',
-                    'show_filter' => true,
-                ],
-                ChoiceType::class,
-                [
+            ->add('type', null, [
+                'label' => 'Type',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
                     'choices' => [
-                        'donation.status.'.Donation::STATUS_WAITING_CONFIRMATION => Donation::STATUS_WAITING_CONFIRMATION,
-                        'donation.status.'.Donation::STATUS_SUBSCRIPTION_IN_PROGRESS => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
-                        'donation.status.'.Donation::STATUS_ERROR => Donation::STATUS_ERROR,
-                        'donation.status.'.Donation::STATUS_CANCELED => Donation::STATUS_CANCELED,
-                        'donation.status.'.Donation::STATUS_FINISHED => Donation::STATUS_FINISHED,
-                        'donation.status.'.Donation::STATUS_REFUNDED => Donation::STATUS_REFUNDED,
+                        Donation::TYPE_CB,
+                        Donation::TYPE_CHECK,
+                        Donation::TYPE_TRANSFER,
                     ],
-                ]
-            )
+                    'choice_label' => function (string $choice) {
+                        return 'donation.type.'.$choice;
+                    },
+                ],
+            ])
+            ->add('status', null, [
+                'label' => 'Statut',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        Donation::STATUS_WAITING_CONFIRMATION,
+                        Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
+                        Donation::STATUS_ERROR,
+                        Donation::STATUS_CANCELED,
+                        Donation::STATUS_FINISHED,
+                        Donation::STATUS_REFUNDED,
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return 'donation.status.'.$choice;
+                    },
+                ],
+            ])
             ->add('tags', ModelFilter::class, [
                 'label' => 'Tags',
                 'show_filter' => true,

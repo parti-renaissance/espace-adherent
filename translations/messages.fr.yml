@@ -481,20 +481,27 @@ document.upload.success: Le document a été uploadé avec succès.
 donation.type.cb: Carte bleue
 donation.type.check: Chèque
 donation.type.transfer: Virement
-
-silence_republican.referent_tags.label: Zones concernées par le silence républicain
-silence_republican.help: L'heure du silence se déclare sur l'heure de Paris. Si un silence a lieu à New-York de 12h à 16h, vous devez le déclarer de 18h à 22h car il y a -6h entre les 2 fuseaux horaires.
-Republican Silence List: Liste des Silences Républicains
-
-#
-# Donations
-#
 donation.status.waiting_confirmation: En attente de confirmation
 donation.status.subscription_in_progress: Souscription en cours
 donation.status.refunded: Remboursé
 donation.status.canceled: Souscription annulée/désabonnée
 donation.status.finished: Don terminé avec succes
 donation.status.error: Erreur
+
+#
+# Transactions
+#
+transaction.result_code.00000: Succès
+transaction.result_code.00001: Erreur de connection
+transaction.result_code.00003: Erreur interne
+transaction.result_code.00004: Numéro de carte invalide
+transaction.result_code.00008: Date de fin de carte invalide
+transaction.result_code.000021: Carte non autorisée
+transaction.result_code.000030: Délai d'attente dépassé
+
+silence_republican.referent_tags.label: Zones concernées par le silence républicain
+silence_republican.help: L'heure du silence se déclare sur l'heure de Paris. Si un silence a lieu à New-York de 12h à 16h, vous devez le déclarer de 18h à 22h car il y a -6h entre les 2 fuseaux horaires.
+Republican Silence List: Liste des Silences Républicains
 
 #
 # Deputy

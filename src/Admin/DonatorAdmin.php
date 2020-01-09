@@ -85,7 +85,8 @@ class DonatorAdmin extends AbstractAdmin
                             $date = $donation->getCreatedAt();
 
                             return sprintf(
-                                '%d€ le %s à %s (%s)',
+                                '[%s] %d€ le %s à %s (%s)',
+                                $this->trans('donation.type.'.$donation->getType(), []),
                                 $donation->getAmountInEuros(),
                                 $date->format('d/m/Y'),
                                 $date->format('H:i'),
@@ -178,7 +179,7 @@ class DonatorAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
-            ->add('lastDonation', null, [
+            ->add('lastSuccessfulDonation', null, [
                 'label' => 'Dernier don réussi',
                 'template' => 'admin/donator/list_last_donation.html.twig',
             ])
