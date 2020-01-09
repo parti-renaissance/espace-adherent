@@ -6,6 +6,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Entity\Projection\ReferentManagedUser;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
+use AppBundle\Repository\ReferentTagRepository;
 use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Andx;
@@ -43,7 +44,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
-        $this->withReferentZoneCondition($qb, $filter->getReferentTags());
+        $this->withZoneCondition($qb, $filter->getReferentTags());
 
         if ($queryAreaCode = $filter->getCityAsArray()) {
             $areaCodeExpression = $qb->expr()->orX();
@@ -175,14 +176,18 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         ;
 
         return (int) $this
-            ->withReferentZoneCondition($qb, $referentTags)
+            ->withZoneCondition($qb, $referentTags)
             ->getQuery()
             ->getSingleScalarResult()
         ;
     }
 
-    private function withReferentZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'u'): QueryBuilder
+    private function withZoneCondition(QueryBuilder $qb, array $referentTags, string $alias = 'u'): QueryBuilder
     {
+        if (1 === \count($referentTags) && ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === ($tag = current($referentTags))->getCode()) {
+            return $qb->andWhere("${alias}.country != 'FR'");
+        }
+
         $tagsFilter = $qb->expr()->orX();
 
         foreach ($referentTags as $key => $tag) {

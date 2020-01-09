@@ -77,11 +77,16 @@ class CommitteeMembershipCollection extends ArrayCollection
         });
     }
 
-    public function getMembershipsForApprovedCommittees(): self
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function getMembershipsForApprovedCommittees(): array
     {
-        return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->getCommittee()->isApproved();
-        });
+        return array_values(
+            $this->filter(function (CommitteeMembership $membership) {
+                return $membership->getCommittee()->isApproved();
+            })->toArray()
+        );
     }
 
     public function getCommitteeMembershipsInWaitingForApproval(): self

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Security\Voter;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
+use AppBundle\Repository\ReferentTagRepository;
 
 class ManagedUserVoter extends AbstractAdherentVoter
 {
@@ -13,14 +15,12 @@ class ManagedUserVoter extends AbstractAdherentVoter
         return self::IS_MANAGED_USER === $attribute && $subject instanceof Adherent;
     }
 
-    /**
-     * @var Adherent
-     */
     protected function doVoteOnAttribute(string $attribute, Adherent $user, $adherent): bool
     {
         $isGranted = false;
 
         // Check Referent role
+        /** @var Adherent $adherent */
         if ($user->isReferent() || $user->isCoReferent()) {
             $isGranted = (bool) array_intersect(
                 $adherent->getReferentTagCodes(),
@@ -38,10 +38,9 @@ class ManagedUserVoter extends AbstractAdherentVoter
 
         // Check Senator role
         if (!$isGranted && $user->isSenator()) {
-            $isGranted = (bool) array_intersect(
-                $adherent->getReferentTagCodes(),
-                [$user->getSenatorArea()->getDepartmentTag()->getCode()]
-            );
+            $code = $user->getSenatorArea()->getDepartmentTag()->getCode();
+            $isGranted = (bool) array_intersect($adherent->getReferentTagCodes(), [$code])
+                || (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code && Address::FRANCE !== $adherent->getCountry());
         }
 
         return $isGranted;
