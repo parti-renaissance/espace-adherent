@@ -11,13 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/donation")
+ *
+ * @Security("has_role('ROLE_ADMIN_DONATORS')")
  */
 class AdminDonationController extends Controller
 {
     /**
      * @Route("/file/{id}", name="app_admin_donation_file", methods="GET")
-     *
-     * @Security("has_role('ROLE_ADMIN_DONATORS')")
      */
     public function fileAction(Donation $donation, Filesystem $storage): Response
     {
