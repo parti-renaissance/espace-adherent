@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.status == constant('ENABLED', object) %}
+        <span class="label label-default">Activé</span>
+    {% elseif object.status == constant('DISABLED', object) %}
+        <span class="label label-danger">Desactivé</span>
+    {% endif %}
+{% endblock %}

@@ -241,6 +241,29 @@
             <argument />
         </service>
 
+        <service id="app.admin.nomenclature_senator" class="AppBundle\Admin\Nomenclature\SenatorAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Sénateurs" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\Nomenclature\Senator</argument>
+            <argument />
+
+            <call method="setStorage">
+                <argument type="service" id="app.storage" />
+            </call>
+
+            <call method="setGlide">
+                <argument type="service" id="app.glide" />
+            </call>
+        </service>
+
+        <service id="app.admin.nomenclature_senator_area" class="AppBundle\Admin\Nomenclature\SenatorAreaAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Zones Sénateurs" group="Politique" />
+            <argument />
+            <argument>AppBundle\Entity\Nomenclature\SenatorArea</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.referent" class="AppBundle\Admin\ReferentAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Référents" group="Territoire" />
 
