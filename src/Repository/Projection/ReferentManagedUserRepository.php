@@ -9,6 +9,7 @@ use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\ReferentTagRepository;
 use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -23,6 +24,9 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         parent::__construct($registry, ReferentManagedUser::class);
     }
 
+    /**
+     * @return ReferentManagedUser[]|PaginatorInterface
+     */
     public function searchByFilter(ManagedUsersFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
         return new ApiPaginator(new Paginator($this
@@ -33,6 +37,11 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
             ->useResultCache(true)
             ->setResultCacheLifetime(1800)
         ));
+    }
+
+    public function getExportQueryBuilder(ManagedUsersFilter $filter): Query
+    {
+        return $this->createFilterQueryBuilder($filter)->getQuery();
     }
 
     private function createFilterQueryBuilder(ManagedUsersFilter $filter): QueryBuilder

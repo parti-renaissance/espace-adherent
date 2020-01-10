@@ -123,6 +123,12 @@
         </div>
     </div>
 
+    <div class="b__nudge--bottom-small">
+        <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue">Exporter en CSV</a>
+
+        <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
+    </div>
+
     <div class="datagrid">
         <div class="b__nudge--bottom-larger">
             <table class="datagrid__table-manager">
@@ -175,20 +181,19 @@
                             </div>
                         </td>
                         <td>
-                            {% set isBasicAdherent = true %}
-                            {%- if user.citizenProjectsOrganizer -%}
-                                {% set isBasicAdherent = false %}
-                                Porteur de projet<br />
-                            {% endif %}
-                            {%- if user.isCommitteeSupervisor -%}
-                                {% set isBasicAdherent = false %}
-                                Animateur local<br />
-                            {% endif %}
-                            {%- if user.isCommitteeHost -%}
-                                {% set isBasicAdherent = false %}
-                                Co-animateur local<br />
-                            {% endif %}
-                            {%- if isBasicAdherent -%}
+                            {%- if user.citizenProjectsOrganizer or user.isCommitteeSupervisor or user.isCommitteeHost -%}
+                                {% if user.citizenProjectsOrganizer %}
+                                    Porteur de projet<br />
+                                {% endif %}
+
+                                {% if user.isCommitteeSupervisor %}
+                                    Animateur local<br />
+                                {% endif %}
+
+                                {% if user.isCommitteeHost %}
+                                    Co-animateur local<br />
+                                {% endif %}
+                            {%- else -%}
                                 Adhérent
                             {% endif %}
                         </td>
