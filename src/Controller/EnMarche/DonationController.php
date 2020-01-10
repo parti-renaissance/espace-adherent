@@ -153,6 +153,8 @@ class DonationController extends Controller
 
         $membershipRegistrationProcess->terminate();
 
+        $emailAddress = $donation->getDonator()->getEmailAddress();
+
         return $this->render('donation/result.html.twig', [
             'successful' => $successful,
             'nb_adherent' => $adherentRepository->countAdherents(),
@@ -160,12 +162,12 @@ class DonationController extends Controller
             'donation' => $donation,
             'retry_url' => $retryUrl,
             'is_registration' => $request->query->get('is_registration'),
-            'is_adherent' => $adherentRepository->isAdherent($donation->getDonator()->getEmailAddress()),
-            'is_newsletter_subscribed' => $newsletterSubscriptionRepository->isSubscribed($donation->getDonator()->getEmailAddress()),
+            'is_adherent' => $adherentRepository->isAdherent($emailAddress),
+            'is_newsletter_subscribed' => $newsletterSubscriptionRepository->isSubscribed($emailAddress),
             'newsletter_form' => $this
                 ->createForm(
                     NewsletterSubscriptionType::class,
-                    new NewsletterSubscription($donation->getDonator()->getEmailAddress(), $donation->getPostalCode(), $donation->getCountry())
+                    new NewsletterSubscription($emailAddress, $donation->getPostalCode(), $donation->getCountry())
                 )
                 ->createView(),
         ]);
