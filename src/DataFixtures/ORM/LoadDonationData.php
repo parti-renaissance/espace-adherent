@@ -32,15 +32,20 @@ class LoadDonationData extends Fixture
         /** @var Adherent $adherent2 */
         $adherent2 = $this->getReference('adherent-3');
 
-        $donationNormal = $this->createDonation($adherent0);
-        $donationMonthly = $this->createDonation($adherent0, 42., PayboxPaymentSubscription::UNLIMITED);
-        $donation0 = $this->createDonation($adherent1, 50.);
-        $donation1 = $this->createDonation($adherent2, 50.);
-        $donation2 = $this->createDonation($adherent2, 40.);
-        $donation3 = $this->createDonation($adherent2, 60., PayboxPaymentSubscription::UNLIMITED);
-        $donation4 = $this->createDonation($adherent2, 100., PayboxPaymentSubscription::UNLIMITED);
+        $donator0 = $this->createDonator('000050', $adherent0);
+        $donator1 = $this->createDonator('000051', $adherent1);
+        $donator2 = $this->createDonator('000052', $adherent2);
+
+        $donationNormal = $this->createDonation($donator0);
+        $donationMonthly = $this->createDonation($donator0, 42., PayboxPaymentSubscription::UNLIMITED);
+        $donation0 = $this->createDonation($donator1, 50.);
+        $donation1 = $this->createDonation($donator2, 50.);
+        $donation2 = $this->createDonation($donator2, 40.);
+        $donation3 = $this->createDonation($donator2, 60., PayboxPaymentSubscription::UNLIMITED);
+        $donation4 = $this->createDonation($donator2, 100., PayboxPaymentSubscription::UNLIMITED);
 
         $transactionNormal = $this->createTransaction($donationNormal);
+        $transactionMonthlyError = $this->createTransaction($donationMonthly, Transaction::PAYBOX_CARD_UNAUTHORIZED);
         $transactionMonthly = $this->createTransaction($donationMonthly);
         $transaction0 = $this->createTransaction($donation0);
         $transaction1 = $this->createTransaction($donation1);
@@ -50,13 +55,18 @@ class LoadDonationData extends Fixture
 
         $donation3->stopSubscription();
 
+        $this->setDonateAt($transactionMonthlyError, '-30 day');
         $this->setDonateAt($transaction2, '-1 day');
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
 
-        $donator0 = $this->createDonator($donationNormal, '000050', $adherent0);
-        $donator1 = $this->createDonator($donation0, '000051', $adherent1);
-        $donator2 = $this->createDonator($donation4, '000052', $adherent2);
+        $donationMonthly->markAsSuccessfulDonation();
+        $donation0->markAsSuccessfulDonation();
+        $donation3->markAsSuccessfulDonation();
+
+        $manager->persist($donator0);
+        $manager->persist($donator1);
+        $manager->persist($donator2);
 
         $manager->persist($donationNormal);
         $manager->persist($donationMonthly);
@@ -67,6 +77,7 @@ class LoadDonationData extends Fixture
         $manager->persist($donation4);
 
         $manager->persist($transactionNormal);
+        $manager->persist($transactionMonthlyError);
         $manager->persist($transactionMonthly);
         $manager->persist($transaction0);
         $manager->persist($transaction1);
@@ -74,66 +85,59 @@ class LoadDonationData extends Fixture
         $manager->persist($transaction3);
         $manager->persist($transaction4);
 
-        $manager->persist($donator0);
-        $manager->persist($donator1);
-        $manager->persist($donator2);
-
         $manager->flush();
     }
 
     public function createDonation(
-        Adherent $adherent,
+        Donator $donator,
         float $amount = 50.0,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB
     ): Donation {
-        $donation = new Donation(
+        return new Donation(
             $uuid = Uuid::uuid4(),
             $type,
             $amount * 100,
-            $adherent->getGender(),
-            $adherent->getFirstName(),
-            $adherent->getLastName(),
-            $adherent->getEmailAddress(),
-            $adherent->getPostAddress(),
+            $donator->getAdherent()->getPostAddress(),
             '127.0.0.1',
             $duration,
-            $uuid->toString().'_'.$this->slugify->slugify($adherent->getFullName()),
-            Address::FRANCE
+            $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
+            Address::FRANCE,
+            $donator
         );
-
-        return $donation;
     }
 
-    public function createDonator(Donation $donation, string $accountId, ?Adherent $adherent): Donator
+    public function createDonator(string $accountId, Adherent $adherent): Donator
     {
         $donator = new Donator(
-            $donation->getLastName(),
-            $donation->getFirstName(),
-            $donation->getCityName(),
-            $donation->getCountry(),
-            $donation->getEmailAddress()
+            $adherent->getLastName(),
+            $adherent->getFirstName(),
+            $adherent->getCityName(),
+            $adherent->getCountry(),
+            $adherent->getEmailAddress(),
+            $adherent->getGender()
         );
 
         $donator->setIdentifier($accountId);
-        $donator->addDonation($donation);
-
-        if ($adherent) {
-            $donator->setAdherent($adherent);
-        }
+        $donator->setAdherent($adherent);
 
         return $donator;
     }
 
-    public function createTransaction(Donation $donation): Transaction
-    {
+    public function createTransaction(
+        Donation $donation,
+        string $resultCode = Transaction::PAYBOX_SUCCESS,
+        string $dateModifier = null
+    ): Transaction {
+        $date = new Chronos($dateModifier);
+
         return $donation->processPayload([
-            'result' => '00000',
+            'result' => $resultCode,
             'authorization' => 'test',
             'subscription' => $donation->getDuration() ? Uuid::uuid1()->toString() : null,
             'transaction' => Uuid::uuid4()->toString(),
-            'date' => '02022018',
-            'time' => '15:22:33',
+            'date' => $date->format('dmY'),
+            'time' => $date->format('H:i:s'),
         ]);
     }
 

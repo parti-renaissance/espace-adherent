@@ -58,6 +58,7 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_APPLICATION_REQUEST',
             'ROLE_ADMIN_CHEZ_VOUS',
             'ROLE_ADMIN_ELECTED_REPRESENTATIVES_REGISTER',
+            'ROLE_ADMIN_DONATORS',
             'ROLE_ADMIN_PROGRAMMATIC_FOUNDATION',
         ];
 

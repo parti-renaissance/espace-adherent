@@ -115,10 +115,10 @@ class DonationControllerTest extends WebTestCase
 
         /* @var Donation $donation */
         $this->assertEquals(3000, $donation->getAmount());
-        $this->assertSame('male', $donation->getGender());
-        $this->assertSame('Doe', $donation->getLastName());
-        $this->assertSame('John', $donation->getFirstName());
-        $this->assertSame('test@paybox.com', $donation->getEmailAddress());
+        $this->assertSame('male', $donation->getDonator()->getGender());
+        $this->assertSame('Doe', $donation->getDonator()->getLastName());
+        $this->assertSame('John', $donation->getDonator()->getFirstName());
+        $this->assertSame('test@paybox.com', $donation->getDonator()->getEmailAddress());
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());
@@ -204,6 +204,10 @@ class DonationControllerTest extends WebTestCase
 
         // Donation should have been completed
         $this->getEntityManager(Donation::class)->refresh($donation);
+
+        $donator = $donation->getDonator();
+        $this->getEntityManager(Donator::class)->refresh($donator);
+
         $this->assertFalse($donation->hasError());
         if ($donation->hasSubscription()) {
             $this->assertTrue($donation->isSubscriptionInProgress());
@@ -214,16 +218,14 @@ class DonationControllerTest extends WebTestCase
             $this->expectExceptionMessage('Donation without subscription can\'t have next donation date.');
             $donation->nextDonationAt();
         }
-        /** @var Transaction[] $transactions */
-        $transactions = $this->transactionRepository->findBy(['donation' => $donation]);
+        $transactions = $donation->getTransactions();
         $this->assertCount(1, $transactions);
-        $transaction = $transactions[0];
+        $transaction = $transactions->first();
         self::assertSame('00000', $transaction->getPayboxResultCode());
         self::assertSame('XXXXXX', $transaction->getPayboxAuthorizationCode());
 
-        $donator = $donation->getDonator();
         $this->assertInstanceOf(Donator::class, $donator);
-        $this->assertSame($donator->getEmailAddress(), $donation->getEmailAddress());
+        $this->assertSame($donator->getEmailAddress(), $donation->getDonator()->getEmailAddress());
         $this->assertEquals($donator->getLastDonationDate(), $donation->getCreatedAt());
         $this->assertSame('000053', $donator->getIdentifier());
 
@@ -268,10 +270,10 @@ class DonationControllerTest extends WebTestCase
 
         /* @var Donation $donation */
         $this->assertEquals(3000, $donation->getAmount());
-        $this->assertSame('male', $donation->getGender());
-        $this->assertSame('Doe', $donation->getLastName());
-        $this->assertSame('John', $donation->getFirstName());
-        $this->assertSame('test@paybox.com', $donation->getEmailAddress());
+        $this->assertSame('male', $donation->getDonator()->getGender());
+        $this->assertSame('Doe', $donation->getDonator()->getLastName());
+        $this->assertSame('John', $donation->getDonator()->getFirstName());
+        $this->assertSame('test@paybox.com', $donation->getDonator()->getEmailAddress());
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());

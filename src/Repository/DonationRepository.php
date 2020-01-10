@@ -31,7 +31,8 @@ class DonationRepository extends ServiceEntityRepository
     public function findAllSubscribedDonationByEmail(string $email): array
     {
         return $this->createQueryBuilder('donation')
-            ->andWhere('donation.emailAddress = :email')
+            ->innerJoin('donation.donator', 'donator')
+            ->andWhere('donator.emailAddress = :email')
             ->andWhere('donation.duration != :duration')
             ->andWhere('donation.status = :status')
             ->andWhere('donation.subscriptionEndedAt IS NULL')
@@ -49,7 +50,8 @@ class DonationRepository extends ServiceEntityRepository
     public function findLastSubscriptionEndedDonationByEmail(string $email): ?Donation
     {
         return $this->createQueryBuilder('donation')
-            ->andWhere('donation.emailAddress = :email')
+            ->innerJoin('donation.donator', 'donator')
+            ->andWhere('donator.emailAddress = :email')
             ->andWhere('donation.subscriptionEndedAt IS NOT NULL')
             ->setParameter('email', $email)
             ->orderBy('donation.subscriptionEndedAt', 'DESC')

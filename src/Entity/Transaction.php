@@ -84,7 +84,7 @@ class Transaction
     /**
      * @var Donation
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Donation")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Donation", inversedBy="transactions")
      */
     private $donation;
 

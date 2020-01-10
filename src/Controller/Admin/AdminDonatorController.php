@@ -13,13 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/donator")
+ *
+ * @Security("has_role('ROLE_ADMIN_DONATORS')")
  */
 class AdminDonatorController extends Controller
 {
     /**
      * @Route("/merge", name="app_admin_donator_merge", methods={"GET", "POST"})
-     *
-     * @Security("has_role('ROLE_ADMIN_DONATORS')")
      */
     public function mergeAction(Request $request): Response
     {

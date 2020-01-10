@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="donations", indexes={
  *     @ORM\Index(name="donation_uuid_idx", columns={"uuid"}),
- *     @ORM\Index(name="donation_email_idx", columns={"email_address"}),
  *     @ORM\Index(name="donation_duration_idx", columns={"duration"}),
  *     @ORM\Index(name="donation_status_idx", columns={"status"})
  * })
@@ -32,7 +31,6 @@ class Donation implements GeoPointInterface
     use EntityIdentityTrait;
     use EntityCrudTrait;
     use EntityPostAddressTrait;
-    use EntityPersonNameTrait;
 
     public const STATUS_WAITING_CONFIRMATION = 'waiting_confirmation';
     public const STATUS_SUBSCRIPTION_IN_PROGRESS = 'subscription_in_progress';
@@ -61,16 +59,6 @@ class Donation implements GeoPointInterface
      * @ORM\Column(type="smallint", options={"default": 0})
      */
     private $duration;
-
-    /**
-     * @ORM\Column(length=6)
-     */
-    private $gender;
-
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    private $emailAddress;
 
     /**
      * We keep this property for legacy datas
@@ -169,8 +157,16 @@ class Donation implements GeoPointInterface
      * @var Donator|null
      *
      * @ORM\ManyToOne(targetEntity="Donator", inversedBy="donations")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $donator;
+
+    /**
+     * @var Transaction[]
+     *
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation")
+     */
+    private $transactions;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DonationTag")
@@ -181,10 +177,6 @@ class Donation implements GeoPointInterface
         UuidInterface $uuid = null,
         string $type = null,
         int $amount = null,
-        string $gender = null,
-        string $firstName = null,
-        string $lastName = null,
-        ?string $emailAddress = null,
         PostAddress $postAddress = null,
         ?string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
@@ -196,10 +188,6 @@ class Donation implements GeoPointInterface
         $this->uuid = $uuid;
         $this->type = $type;
         $this->amount = $amount;
-        $this->gender = $gender;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->emailAddress = $emailAddress;
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new Chronos();
@@ -209,14 +197,13 @@ class Donation implements GeoPointInterface
         $this->nationality = $nationality;
         $this->donator = $donator;
         $this->tags = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function __toString(): string
     {
         return sprintf(
-            '%s %s (%.2f €) (%s)',
-            $this->lastName,
-            $this->firstName,
+            '%.2f € (%s)',
             $this->amount / 100,
             $this->type
         );
@@ -234,6 +221,8 @@ class Donation implements GeoPointInterface
         } else {
             $this->status = self::STATUS_ERROR;
         }
+
+        $this->addTransaction($transaction);
 
         return $transaction;
     }
@@ -279,16 +268,6 @@ class Donation implements GeoPointInterface
         $this->amount = $amountInEuros * 100;
     }
 
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function getEmailAddress(): ?string
-    {
-        return $this->emailAddress;
-    }
-
     public function getClientIp(): ?string
     {
         return $this->clientIp;
@@ -301,11 +280,15 @@ class Donation implements GeoPointInterface
 
     public function getRetryPayload(): array
     {
+        if (!$donator = $this->donator) {
+            throw new \LogicException('Can not build a retry payload for this donation without a donator');
+        }
+
         $payload = [
-            'ge' => $this->gender,
-            'ln' => $this->lastName,
-            'fn' => $this->firstName,
-            'em' => urlencode($this->emailAddress),
+            'ge' => $donator->getGender(),
+            'ln' => $donator->getLastName(),
+            'fn' => $donator->getFirstName(),
+            'em' => urlencode($donator->getEmailAddress()),
             'co' => $this->getCountry(),
             'na' => $this->getNationality(),
             'pc' => $this->getPostalCode(),
@@ -426,6 +409,26 @@ class Donation implements GeoPointInterface
     public function setDonator(?Donator $donator): void
     {
         $this->donator = $donator;
+    }
+
+    /**
+     * @return Transaction[]|Collection
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): void
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+        }
+    }
+
+    public function markAsSuccessfulDonation(): void
+    {
+        $this->donator->setLastSuccessfulDonation($this);
     }
 
     public function getTags(): Collection

@@ -158,10 +158,12 @@ class ImportDonationsCommand extends Command
             }
 
             $donator = new Donator(
-                $firstName,
                 $lastName,
+                $firstName,
                 $cityName,
-                self::COUNTRIES_MAP[$country]
+                self::COUNTRIES_MAP[$country],
+                null,
+                self::GENDERS_MAP[$gender]
             );
 
             $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
@@ -170,10 +172,6 @@ class ImportDonationsCommand extends Command
                 Uuid::uuid4(),
                 self::TYPES_MAP[$type],
                 $amount,
-                self::GENDERS_MAP[$gender],
-                $firstName,
-                $lastName,
-                null,
                 $this->postAddressFactory->createFlexible(
                     self::COUNTRIES_MAP[$country],
                     $postalCode,

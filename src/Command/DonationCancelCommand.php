@@ -69,7 +69,7 @@ class DonationCancelCommand extends Command
                 if (!$this->io->confirm(sprintf(
                     'Are you sure you want to cancel the recurring donation id(%d) from email "%s"?',
                     $donation->getId(),
-                    $donation->getEmailAddress()
+                    $donation->getDonator()->getEmailAddress()
                 ))) {
                     continue;
                 }
@@ -80,13 +80,13 @@ class DonationCancelCommand extends Command
                 $this->io->success(sprintf(
                     'The recurring donation id(%d) from email "%s" has been canceled successfully.',
                     $donation->getId(),
-                    $donation->getEmailAddress()
+                    $donation->getDonator()->getEmailAddress()
                 ));
             } catch (PayboxPaymentUnsubscriptionException $e) {
                 $this->io->error(sprintf(
                     'Subscription donation id(%d) from user email %s have an error: %s',
                     $donation->getId(),
-                    $donation->getEmailAddress(),
+                    $donation->getDonator()->getEmailAddress(),
                     $e->getMessage()
                 ));
             }

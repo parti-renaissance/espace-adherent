@@ -36,7 +36,7 @@ class PayboxFormFactory
 
         $parameters = [
             'PBX_CMD' => $donation->getPayboxOrderRefWithSuffix(),
-            'PBX_PORTEUR' => $donation->getEmailAddress(),
+            'PBX_PORTEUR' => $donation->getDonator()->getEmailAddress(),
             'PBX_TOTAL' => $donation->getAmount(),
             'PBX_DEVISE' => '978',
             'PBX_RETOUR' => 'id:R;authorization:A;result:E;transaction:S;amount:M;date:W;time:Q;card_type:C;card_end:D;card_print:H;subscription:B',

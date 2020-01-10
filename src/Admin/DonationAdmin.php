@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -117,25 +118,53 @@ class DonationAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add(
-                'status',
-                'doctrine_orm_choice',
-                [
-                    'label' => 'Statut',
-                    'show_filter' => true,
-                ],
-                ChoiceType::class,
-                [
-                    'choices' => [
-                        'donation.status.'.Donation::STATUS_WAITING_CONFIRMATION => Donation::STATUS_WAITING_CONFIRMATION,
-                        'donation.status.'.Donation::STATUS_SUBSCRIPTION_IN_PROGRESS => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
-                        'donation.status.'.Donation::STATUS_ERROR => Donation::STATUS_ERROR,
-                        'donation.status.'.Donation::STATUS_CANCELED => Donation::STATUS_CANCELED,
-                        'donation.status.'.Donation::STATUS_FINISHED => Donation::STATUS_FINISHED,
-                        'donation.status.'.Donation::STATUS_REFUNDED => Donation::STATUS_REFUNDED,
+            ->add('donator', ModelAutocompleteFilter::class, [
+                'label' => 'Donateur',
+                'show_filter' => true,
+                'field_options' => [
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'identifier',
+                        'firstName',
+                        'lastName',
+                        'emailAddress',
                     ],
-                ]
-            )
+                ],
+            ])
+            ->add('type', null, [
+                'label' => 'Type',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        Donation::TYPE_CB,
+                        Donation::TYPE_CHECK,
+                        Donation::TYPE_TRANSFER,
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return 'donation.type.'.$choice;
+                    },
+                ],
+            ])
+            ->add('status', null, [
+                'label' => 'Statut',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        Donation::STATUS_WAITING_CONFIRMATION,
+                        Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
+                        Donation::STATUS_ERROR,
+                        Donation::STATUS_CANCELED,
+                        Donation::STATUS_FINISHED,
+                        Donation::STATUS_REFUNDED,
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return 'donation.status.'.$choice;
+                    },
+                ],
+            ])
             ->add('tags', ModelFilter::class, [
                 'label' => 'Tags',
                 'show_filter' => true,

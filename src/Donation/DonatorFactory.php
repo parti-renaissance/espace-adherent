@@ -13,7 +13,8 @@ class DonatorFactory
             $request->getFirstName(),
             $request->getCityName(),
             $request->getCountry(),
-            $request->getEmailAddress()
+            $request->getEmailAddress(),
+            $request->getGender()
         );
     }
 }
