@@ -69,7 +69,7 @@ class TransactionSubscriber implements EventSubscriberInterface
         $transaction = $donation->processPayload($payload);
 
         if ($transaction->isSuccessful()) {
-            $donation->setLastSuccessfulDonation();
+            $donation->markAsSuccessfulDonation();
         }
 
         $this->manager->persist($transaction);

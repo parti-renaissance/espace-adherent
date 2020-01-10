@@ -426,7 +426,7 @@ class Donation implements GeoPointInterface
         }
     }
 
-    public function setLastSuccessfulDonation(): void
+    public function markAsSuccessfulDonation(): void
     {
         $this->donator->setLastSuccessfulDonation($this);
     }
