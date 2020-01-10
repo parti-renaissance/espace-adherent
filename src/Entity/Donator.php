@@ -118,7 +118,8 @@ class Donator
     /**
      * @var Donation|null
      *
-     * @ORM\ManyToOne(targetEntity="Donation")
+     * @ORM\OneToOne(targetEntity="Donation")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $referenceDonation;
 
