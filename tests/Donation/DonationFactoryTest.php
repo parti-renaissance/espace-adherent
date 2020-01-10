@@ -38,11 +38,12 @@ class DonationFactoryTest extends TestCase
         $request->setAddress('2, Rue de la République');
         $request->setDuration(0);
 
-        $donator = $this->createMock(Donator::class);
-        $donator->method('getGender')->willReturn('male');
-        $donator->method('getFirstName')->willReturn('Damien');
-        $donator->method('getLastName')->willReturn('DUPONT');
-        $donator->method('getEmailAddress')->willReturn('m.dupont@example.fr');
+        $donator = $this->createConfiguredMock(Donator::class, [
+            'getGender' => 'male',
+            'getFirstName' => 'Damien',
+            'getLastName' => 'DUPONT',
+            'getEmailAddress' => 'm.dupont@example.fr',
+        ]);
 
         $factory = $this->createFactory();
         $donation = $factory->createFromDonationRequest($request, $donator);
