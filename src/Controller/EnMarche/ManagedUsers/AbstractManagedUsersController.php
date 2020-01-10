@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\ManagedUsers;
 
+use AppBundle\Exporter\ManagedUsersExporter;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\Projection\ReferentManagedUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,9 +21,9 @@ abstract class AbstractManagedUsersController extends Controller
     }
 
     /**
-     * @Route("/utilisateurs", name="list", methods={"GET"})
+     * @Route("/utilisateurs.{_format}", name="list", methods={"GET"}, defaults={"_format": "html"}, requirements={"_format": "html|csv|xls"})
      */
-    public function listAction(Request $request): Response
+    public function listAction(Request $request, string $_format, ManagedUsersExporter $exporter): Response
     {
         $form = $this
             ->createFilterForm($filter = $this->createFilterModel())
@@ -31,6 +32,10 @@ abstract class AbstractManagedUsersController extends Controller
 
         if ($form->isSubmitted() && !$form->isValid()) {
             $filter = $this->createFilterModel();
+        }
+
+        if ('html' !== $_format) {
+            return $exporter->getResponse($_format, $filter);
         }
 
         $users = $this->managedUsersRepository->searchByFilter($filter, $request->query->getInt('page', 1));

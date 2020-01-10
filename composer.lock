@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57be2ee670a704bedb10aaaeebfd2d43",
+    "content-hash": "1474e93549bfbf3abae757df1622eb02",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -62,6 +62,7 @@
                 "translatable",
                 "translation"
             ],
+            "abandoned": "knplabs/doctrine-behaviors",
             "time": "2019-02-11T18:24:09+00:00"
         },
         {
@@ -8989,16 +8990,16 @@
         },
         {
             "name": "sonata-project/exporter",
-            "version": "1.9.0",
+            "version": "1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "c20cb476179d6b6e5902859c7be9512198e5a552"
+                "reference": "a4925e3569fb3fa710fa7c6fecd85b6281c55f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/c20cb476179d6b6e5902859c7be9512198e5a552",
-                "reference": "c20cb476179d6b6e5902859c7be9512198e5a552",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/a4925e3569fb3fa710fa7c6fecd85b6281c55f57",
+                "reference": "a4925e3569fb3fa710fa7c6fecd85b6281c55f57",
                 "shasum": ""
             },
             "require": {
@@ -9032,7 +9033,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Exporter\\": "src/"
+                    "Exporter\\": "aliases/",
+                    "Sonata\\Exporter\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -9055,7 +9057,7 @@
                 "export",
                 "xls"
             ],
-            "time": "2018-05-10T11:12:53+00:00"
+            "time": "2019-04-17T21:05:17+00:00"
         },
         {
             "name": "spomky-labs/otphp",

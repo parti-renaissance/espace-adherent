@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Projection;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Subscription\SubscriptionTypeEnum;
+use AppBundle\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -425,5 +426,24 @@ class ReferentManagedUser
     public function hasSmsSubscriptionType(): bool
     {
         return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+    }
+
+    public function getCommitteesAsString(string $separator = ' / '): string
+    {
+        return implode($separator, $this->getCommittees());
+    }
+
+    public function getGenderLabel(): string
+    {
+        switch ($this->gender) {
+            case Genders::MALE:
+                return 'Homme';
+
+            case Genders::FEMALE:
+                return 'Femme';
+
+            default:
+                return 'Autre';
+        }
     }
 }
