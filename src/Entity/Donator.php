@@ -111,6 +111,7 @@ class Donator
      * @var Donation|null
      *
      * @ORM\OneToOne(targetEntity="Donation")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $lastSuccessfulDonation;
 
