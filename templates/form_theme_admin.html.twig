@@ -49,17 +49,6 @@
     {% endfor %}
 {% endblock %}
 
-{% block _summary_skills_entry_name_row %}
-    {% spaceless %}
-        <div class="summary-skill">
-            {{ block('form_errors') }}
-            <span class="skill-remove">X</span>
-            <span class="skill-value">&nbsp;{% if value is not empty %}{{ value }}{% endif %}</span>
-            {{ block('hidden_widget') }}
-        </div>
-    {% endspaceless %}
-{% endblock %}
-
 {% block app_admin_donator_radio_referenceDonation_referenceDonation_entry_widget %}
     {% set currentReferenceDonation = form.parent.parent.vars.value.referenceDonation %}
     {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
