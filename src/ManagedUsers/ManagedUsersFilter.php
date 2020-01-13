@@ -329,25 +329,29 @@ class ManagedUsersFilter
 
     public function toArray(): array
     {
-        return [
-            'gender' => $this->gender,
-            'ageMin' => $this->ageMin,
-            'ageMax' => $this->ageMax,
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
-            'city' => $this->city,
-            'interests' => $this->interests,
-            'registeredSince' => $this->registeredSince,
-            'registeredUntil' => $this->registeredUntil,
-            'includeAdherentsNoCommittee' => $this->includeAdherentsNoCommittee,
-            'includeAdherentsInCommittee' => $this->includeAdherentsInCommittee,
-            'includeCommitteeSupervisors' => $this->includeCommitteeSupervisors,
-            'includeCommitteeHosts' => $this->includeCommitteeHosts,
-            'includeCitizenProjectHosts' => $this->includeCitizenProjectHosts,
-            'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
-            'emailSubscription' => $this->emailSubscription,
-            'sort' => $this->sort,
-            'order' => $this->order,
-        ];
+        return array_merge(
+            [
+                'gender' => $this->gender,
+                'ageMin' => $this->ageMin,
+                'ageMax' => $this->ageMax,
+                'firstName' => $this->firstName,
+                'lastName' => $this->lastName,
+                'city' => $this->city,
+                'interests' => $this->interests,
+                'registeredSince' => $this->registeredSince,
+                'registeredUntil' => $this->registeredUntil,
+                'referentTags' => 1 === \count($this->referentTags) ? current($this->referentTags)->getId() : null,
+                'emailSubscription' => $this->emailSubscription,
+                'sort' => $this->sort,
+                'order' => $this->order,
+            ],
+            array_filter([
+                'includeAdherentsNoCommittee' => $this->includeAdherentsNoCommittee,
+                'includeAdherentsInCommittee' => $this->includeAdherentsInCommittee,
+                'includeCommitteeSupervisors' => $this->includeCommitteeSupervisors,
+                'includeCommitteeHosts' => $this->includeCommitteeHosts,
+                'includeCitizenProjectHosts' => $this->includeCitizenProjectHosts,
+            ])
+        );
     }
 }

@@ -181,21 +181,7 @@
                             </div>
                         </td>
                         <td>
-                            {%- if user.citizenProjectsOrganizer or user.isCommitteeSupervisor or user.isCommitteeHost -%}
-                                {% if user.citizenProjectsOrganizer %}
-                                    Porteur de projet<br />
-                                {% endif %}
-
-                                {% if user.isCommitteeSupervisor %}
-                                    Animateur local<br />
-                                {% endif %}
-
-                                {% if user.isCommitteeHost %}
-                                    Co-animateur local<br />
-                                {% endif %}
-                            {%- else -%}
-                                Adhérent
-                            {% endif %}
+                            {{ user.getUserRoleLabels('<br />')|raw }}
                         </td>
                         <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
                         <td>
