@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -165,6 +166,7 @@ class Donation implements GeoPointInterface
      * @var Transaction[]
      *
      * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation")
+     * @ORM\OrderBy({"payboxDateTime": "DESC"})
      */
     private $transactions;
 
@@ -185,7 +187,7 @@ class Donation implements GeoPointInterface
         Donator $donator = null,
         \DateTimeInterface $createdAt = null
     ) {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->amount = $amount;
         $this->postAddress = $postAddress;
@@ -426,7 +428,7 @@ class Donation implements GeoPointInterface
         }
     }
 
-    public function markAsSuccessfulDonation(): void
+    public function markAsLastSuccessfulDonation(): void
     {
         $this->donator->setLastSuccessfulDonation($this);
     }
@@ -504,5 +506,20 @@ class Donation implements GeoPointInterface
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getLastSuccessDate(): ?\DateTimeInterface
+    {
+        if (self::TYPE_CB === $this->type) {
+            foreach ($this->transactions as $transaction) {
+                if ($transaction->isSuccessful()) {
+                    return $transaction->getPayboxDateTime();
+                }
+            }
+
+            return null;
+        }
+
+        return $this->createdAt;
     }
 }

@@ -274,6 +274,9 @@ class Donator
         return $donation->getAmountInEuros();
     }
 
+    /**
+     * @return Donation[]|Collection
+     */
     public function getDonations(): Collection
     {
         return $this->donations;

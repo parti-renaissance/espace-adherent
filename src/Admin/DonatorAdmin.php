@@ -2,7 +2,9 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Donation\DonatorManager;
 use AppBundle\Entity\Donation;
+use AppBundle\Entity\Donator;
 use AppBundle\Entity\DonatorTag;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Repository\DonationRepository;
@@ -24,6 +26,15 @@ class DonatorAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'id',
     ];
+
+    private $donatorManager;
+
+    public function __construct(string $code, string $class, string $baseControllerName, DonatorManager $donatorManager)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->donatorManager = $donatorManager;
+    }
 
     public function configureActionButtons($action, $object = null)
     {
@@ -194,5 +205,15 @@ class DonatorAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    /**
+     * @param Donator $donator
+     */
+    public function prePersist($donator)
+    {
+        parent::prePersist($donator);
+
+        $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
     }
 }

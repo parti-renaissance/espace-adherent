@@ -60,9 +60,9 @@ class LoadDonationData extends Fixture
         $this->setDonateAt($transaction3, '-100 day');
         $this->setDonateAt($transaction4, '-50 day');
 
-        $donationMonthly->markAsSuccessfulDonation();
-        $donation0->markAsSuccessfulDonation();
-        $donation3->markAsSuccessfulDonation();
+        $donationMonthly->markAsLastSuccessfulDonation();
+        $donation0->markAsLastSuccessfulDonation();
+        $donation3->markAsLastSuccessfulDonation();
 
         $manager->persist($donator0);
         $manager->persist($donator1);

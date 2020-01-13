@@ -18,15 +18,16 @@ class DonatorSubscriber implements EventSubscriberInterface
     {
         return [
             DonationEvents::CREATED => ['attachAdherent'],
+            DonationEvents::DONATOR_UPDATED => ['checkLastSuccessfulDonation'],
         ];
     }
 
     /**
      * Match and attach an adherent with a donator
      */
-    public function attachAdherent(DonationWasCreatedEvent $donation): void
+    public function attachAdherent(DonationWasCreatedEvent $event): void
     {
-        $donator = $donation->getDonation()->getDonator();
+        $donator = $event->getDonation()->getDonator();
 
         if (!$donator->isAdherent()) {
             $donator->setAdherent($this->adherentRepository->findOneForMatching(
@@ -34,6 +35,26 @@ class DonatorSubscriber implements EventSubscriberInterface
                 $donator->getFirstName(),
                 $donator->getLastName()
             ));
+        }
+    }
+
+    public function checkLastSuccessfulDonation(DonatorWasUpdatedEvent $event): void
+    {
+        $donator = $event->getDonator();
+
+        foreach ($donator->getDonations() as $donation) {
+            if (!$lastSuccessDate = $donation->getLastSuccessDate()) {
+                continue;
+            }
+
+            $lastSuccessfulDonation = $donator->getLastSuccessfulDonation();
+
+            if (
+                !$lastSuccessfulDonation
+                || $lastSuccessfulDonation->getLastSuccessDate() < $donation->getLastSuccessDate()
+            ) {
+                $donation->markAsLastSuccessfulDonation();
+            }
         }
     }
 }

@@ -2,8 +2,11 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Donation\DonationEvents;
+use AppBundle\Donation\DonatorWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -14,6 +17,7 @@ use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -30,12 +34,22 @@ class DonationAdmin extends AbstractAdmin
     ];
 
     private $storage;
+    private $em;
+    private $dispatcher;
 
-    public function __construct(string $code, string $class, string $baseControllerName, Filesystem $storage)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        Filesystem $storage,
+        EntityManagerInterface $em,
+        EventDispatcherInterface $dispatcher
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->storage = $storage;
+        $this->em = $em;
+        $this->dispatcher = $dispatcher;
     }
 
     protected function configureFormFields(FormMapper $form)
@@ -219,6 +233,8 @@ class DonationAdmin extends AbstractAdmin
         parent::prePersist($donation);
 
         $this->handleFile($donation);
+
+        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donation->getDonator()));
     }
 
     /**
@@ -229,6 +245,14 @@ class DonationAdmin extends AbstractAdmin
         parent::preUpdate($donation);
 
         $this->handleFile($donation);
+
+        $originalObject = $this->em->getUnitOfWork()->getOriginalEntityData($donation);
+
+        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donation->getDonator()));
+
+        if ($donation->getDonator() !== $originalObject['donator']) {
+            $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($originalObject['donator']));
+        }
     }
 
     /**
