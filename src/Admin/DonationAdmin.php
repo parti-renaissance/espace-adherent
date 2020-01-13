@@ -235,7 +235,10 @@ class DonationAdmin extends AbstractAdmin
 
         $this->handleFile($donation);
 
-        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donation->getDonator()));
+        $donator = $donation->getDonator();
+
+        $donator->addDonation($donation);
+        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donator));
     }
 
     /**
@@ -274,6 +277,11 @@ class DonationAdmin extends AbstractAdmin
         if ($this->storage->has($filePath)) {
             $this->storage->delete($filePath);
         }
+
+        $donator = $donation->getDonator();
+
+        $donator->removeDonation($donation);
+        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donator));
     }
 
     public function handleFile(Donation $donation): void
