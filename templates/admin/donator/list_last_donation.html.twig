@@ -5,7 +5,7 @@
 {% block field %}
     {% if value %}
         {{ value.amountInEuros|localizedcurrency('EUR') }}
-        le {{ value.createdAt|localizeddate }}
+        le {{ value.lastSuccessDate|localizeddate }}
     {% else %}
         <span class="label label-danger">Aucun don réussi pour l'instant</span>
     {% endif %}

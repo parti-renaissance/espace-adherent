@@ -6,6 +6,7 @@ use AppBundle\Donation\DonationEvents;
 use AppBundle\Donation\DonatorWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
+use AppBundle\Entity\Donator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
@@ -246,12 +247,18 @@ class DonationAdmin extends AbstractAdmin
 
         $this->handleFile($donation);
 
+        $newDonator = $donation->getDonator();
+
+        $newDonator->addDonation($donation);
+        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($newDonator));
+
         $originalObject = $this->em->getUnitOfWork()->getOriginalEntityData($donation);
+        /** @var Donator $originalDonator */
+        $originalDonator = $originalObject['donator'];
 
-        $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($donation->getDonator()));
-
-        if ($donation->getDonator() !== $originalObject['donator']) {
-            $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($originalObject['donator']));
+        if ($newDonator !== $originalDonator) {
+            $originalDonator->removeDonation($donation);
+            $this->dispatcher->dispatch(DonationEvents::DONATOR_UPDATED, new DonatorWasUpdatedEvent($originalDonator));
         }
     }
 

@@ -41,6 +41,7 @@ class DonatorSubscriber implements EventSubscriberInterface
     public function checkLastSuccessfulDonation(DonatorWasUpdatedEvent $event): void
     {
         $donator = $event->getDonator();
+        $donator->setLastSuccessfulDonation(null);
 
         foreach ($donator->getDonations() as $donation) {
             if (!$lastSuccessDate = $donation->getLastSuccessDate()) {
