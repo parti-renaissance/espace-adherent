@@ -4,7 +4,7 @@ namespace AppBundle\Controller\EnMarche\ManagedUsers;
 
 use AppBundle\Exporter\ManagedUsersExporter;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Repository\Projection\ManagedUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ abstract class AbstractManagedUsersController extends Controller
 {
     private $managedUsersRepository;
 
-    public function __construct(ReferentManagedUserRepository $managedUsersRepository)
+    public function __construct(ManagedUserRepository $managedUsersRepository)
     {
         $this->managedUsersRepository = $managedUsersRepository;
     }

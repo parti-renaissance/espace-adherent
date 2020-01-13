@@ -15,7 +15,7 @@
                 <argument key="Psr\Log\LoggerInterface" type="service" id="logger" />
                 <argument key="Symfony\Component\Validator\Validator\ValidatorInterface" type="service" id="validator" />
                 <argument key="AppBundle\Repository\AdherentRepository" type="service" id="AppBundle\Repository\AdherentRepository"/>
-                <argument key="AppBundle\Repository\Projection\ReferentManagedUserRepository" type="service" id="AppBundle\Repository\Projection\ReferentManagedUserRepository"/>
+                <argument key="AppBundle\Repository\Projection\ManagedUserRepository" type="service" id="AppBundle\Repository\Projection\ManagedUserRepository"/>
             </argument>
 
             <tag name="container.service_locator" />
@@ -54,7 +54,7 @@
                 <argument type="service" id="app.mailer.campaign"/>
             </call>
             <call method="setReferentManagedUserRepository">
-                <argument type="service" id="AppBundle\Repository\Projection\ReferentManagedUserRepository"/>
+                <argument type="service" id="AppBundle\Repository\Projection\ManagedUserRepository"/>
             </call>
             <call method="setReferentMessageRepository">
                 <argument type="service" id="AppBundle\Repository\ReferentManagedUsersMessageRepository"/>

@@ -14,14 +14,14 @@ use Ramsey\Uuid\UuidInterface;
  * The table is populated on a regular basis by a background worker to improve performance
  * of SQL queries.
  *
- * @ORM\Table(name="projection_referent_managed_users", indexes={
- *     @ORM\Index(name="projection_referent_managed_users_search", columns={"status", "postal_code", "country"})
+ * @ORM\Table(name="projection_managed_users", indexes={
+ *     @ORM\Index(name="projection_managed_users_search", columns={"status", "postal_code", "country"})
  * })
- * @ORM\Entity(readOnly=true, repositoryClass="AppBundle\Repository\Projection\ReferentManagedUserRepository")
+ * @ORM\Entity(readOnly=true, repositoryClass="AppBundle\Repository\Projection\ManagedUserRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
-class ReferentManagedUser
+class ManagedUser
 {
     public const STATUS_READY = 1;
     public const TYPE_ADHERENT = 'adherent';
