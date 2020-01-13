@@ -46,7 +46,7 @@ class LoadReferentTagData extends Fixture
         }
 
         foreach (UnitedNationsBundle::getCountries() as $countryCode => $countryName) {
-            $this->createReferentTag($manager, $countryName, $countryCode);
+            $this->createReferentTag($manager, $countryName, $countryCode, ReferentTag::TYPE_COUNTRY);
         }
 
         $this->createReferentTag($manager, 'Français de l\'Étranger', ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG);
