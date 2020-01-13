@@ -4,7 +4,7 @@ namespace AppBundle\Repository\Projection;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\Projection\ManagedUser;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\ReferentTagRepository;
 use AppBundle\Repository\ReferentTrait;
@@ -15,17 +15,17 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReferentManagedUserRepository extends ServiceEntityRepository
+class ManagedUserRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
 
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ReferentManagedUser::class);
+        parent::__construct($registry, ManagedUser::class);
     }
 
     /**
-     * @return ReferentManagedUser[]|PaginatorInterface
+     * @return ManagedUser[]|PaginatorInterface
      */
     public function searchByFilter(ManagedUsersFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
@@ -49,7 +49,7 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('u')
             ->where('u.status = :status')
-            ->setParameter('status', ReferentManagedUser::STATUS_READY)
+            ->setParameter('status', ManagedUser::STATUS_READY)
             ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
         ;
 
@@ -133,23 +133,23 @@ class ReferentManagedUserRepository extends ServiceEntityRepository
 
         if ($filter->includeAdherentsNoCommittee()) {
             $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = 0');
-            $qb->setParameter('type_anc', ReferentManagedUser::TYPE_ADHERENT);
+            $qb->setParameter('type_anc', ManagedUser::TYPE_ADHERENT);
         }
 
         if ($filter->includeAdherentsInCommittee()) {
             $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = 1');
-            $qb->setParameter('type_aic', ReferentManagedUser::TYPE_ADHERENT);
+            $qb->setParameter('type_aic', ManagedUser::TYPE_ADHERENT);
         }
 
         if ($filter->includeCommitteeHosts()) {
             $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = 1');
-            $qb->setParameter('type_h', ReferentManagedUser::TYPE_ADHERENT);
+            $qb->setParameter('type_h', ManagedUser::TYPE_ADHERENT);
         }
 
         if ($filter->includeCommitteeSupervisors()) {
             $and = new Andx();
             $and->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
-            $qb->setParameter('type_s', ReferentManagedUser::TYPE_ADHERENT);
+            $qb->setParameter('type_s', ManagedUser::TYPE_ADHERENT);
 
             $supervisorExpression = $qb->expr()->orX();
             foreach ($filter->getReferentTags() as $key => $code) {

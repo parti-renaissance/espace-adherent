@@ -2,14 +2,14 @@
 
 namespace AppBundle\Mailer\Message;
 
-use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\Projection\ManagedUser;
 use AppBundle\Referent\ReferentMessage as ReferentMessageModel;
 use Ramsey\Uuid\Uuid;
 
 final class ReferentMessage extends Message
 {
     /**
-     * @param ReferentManagedUser[] $recipients
+     * @param ManagedUser[] $recipients
      *
      * @return ReferentMessage
      */

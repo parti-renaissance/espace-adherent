@@ -3,7 +3,7 @@
 namespace AppBundle\Exporter;
 
 use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Repository\Projection\ManagedUserRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\DoctrineORMQuerySourceIterator;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ class ManagedUsersExporter
     private $exporter;
     private $repository;
 
-    public function __construct(SonataExporter $exporter, ReferentManagedUserRepository $repository)
+    public function __construct(SonataExporter $exporter, ManagedUserRepository $repository)
     {
         $this->exporter = $exporter;
         $this->repository = $repository;

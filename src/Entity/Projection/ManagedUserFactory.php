@@ -2,11 +2,11 @@
 
 namespace AppBundle\Entity\Projection;
 
-class ReferentManagedUserFactory
+class ManagedUserFactory
 {
-    public function createFromArray(array $data): ReferentManagedUser
+    public function createFromArray(array $data): ManagedUser
     {
-        return new ReferentManagedUser(
+        return new ManagedUser(
             $data['status'],
             $data['type'],
             $data['original_id'],

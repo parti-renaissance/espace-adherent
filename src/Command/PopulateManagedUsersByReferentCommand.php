@@ -29,7 +29,7 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $sqlFromCommitteeMembership = <<<'SQL'
-          INSERT INTO projection_referent_managed_users
+          INSERT INTO projection_managed_users
             (status, type, original_id, email, postal_code, city, country, first_name, last_name, age, phone, 
             committees, is_committee_member, is_committee_host, is_committee_supervisor, committee_postal_code, 
             subscribed_tags, subscription_types, created_at, gender, interests, supervisor_tags, citizen_projects, 
@@ -145,8 +145,8 @@ class PopulateManagedUsersByReferentCommand extends ContainerAwareCommand
             FROM adherents a
 SQL;
 
-        $sqlStatus = 'UPDATE projection_referent_managed_users SET status = status + 1';
-        $sqlDeleteOld = 'DELETE FROM projection_referent_managed_users WHERE status >= 2';
+        $sqlStatus = 'UPDATE projection_managed_users SET status = status + 1';
+        $sqlDeleteOld = 'DELETE FROM projection_managed_users WHERE status >= 2';
 
         try {
             $stmt = $this->manager->getConnection()->prepare($sqlFromCommitteeMembership);

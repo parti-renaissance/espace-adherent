@@ -2,10 +2,10 @@
 
 namespace Tests\AppBundle\Repository;
 
-use AppBundle\Entity\Projection\ReferentManagedUser;
+use AppBundle\Entity\Projection\ManagedUser;
 use AppBundle\Entity\ReferentTag;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Repository\Projection\ManagedUserRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -15,14 +15,14 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
  * @group functional
  * @group referent
  */
-class ReferentManagedUserRepositoryTest extends WebTestCase
+class ManagedUserRepositoryTest extends WebTestCase
 {
     use ControllerTestTrait;
 
     /**
-     * @var ReferentManagedUserRepository
+     * @var ManagedUserRepository
      */
-    private $referentManagedUserRepository;
+    private $managedUserRepository;
 
     /**
      * @var ObjectRepository
@@ -36,7 +36,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
             $this->referentTagRepository->findOneBy(['code' => '77']),
         ]);
 
-        $this->assertCount(3, $this->referentManagedUserRepository->searchByFilter($filter));
+        $this->assertCount(3, $this->managedUserRepository->searchByFilter($filter));
     }
 
     /**
@@ -50,7 +50,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         ]);
         $filter->setEmailSubscription($onlyEmailSubscribers);
 
-        $this->assertCount($count, $this->referentManagedUserRepository->searchByFilter($filter));
+        $this->assertCount($count, $this->managedUserRepository->searchByFilter($filter));
     }
 
     public function providesOnlyEmailSubscribers(): \Generator
@@ -65,7 +65,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
         parent::setUp();
 
         $this->container = $this->getContainer();
-        $this->referentManagedUserRepository = $this->getRepository(ReferentManagedUser::class);
+        $this->managedUserRepository = $this->getRepository(ManagedUser::class);
         $this->referentTagRepository = $this->getRepository(ReferentTag::class);
     }
 
@@ -73,7 +73,7 @@ class ReferentManagedUserRepositoryTest extends WebTestCase
     {
         $this->kill();
 
-        $this->referentManagedUserRepository = null;
+        $this->managedUserRepository = null;
         $this->referentTagRepository = null;
 
         parent::tearDown();

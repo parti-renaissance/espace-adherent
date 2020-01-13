@@ -6,7 +6,7 @@ use AppBundle\Entity\ReferentManagedUsersMessage;
 use AppBundle\Mailer\MailerService;
 use AppBundle\Mailer\Message\ReferentMessage as Message;
 use AppBundle\Referent\ReferentMessage;
-use AppBundle\Repository\Projection\ReferentManagedUserRepository;
+use AppBundle\Repository\Projection\ManagedUserRepository;
 use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -25,7 +25,7 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
      */
     private $referentMessageRepository;
     /**
-     * @var ReferentManagedUserRepository
+     * @var ManagedUserRepository
      */
     private $referentManagedUserRepository;
 
@@ -110,12 +110,12 @@ class ReferentMessageDispatcherConsumer extends AbstractConsumer
         return $this->mailer;
     }
 
-    public function setReferentManagedUserRepository(ReferentManagedUserRepository $referentManagedUserRepository): void
+    public function setReferentManagedUserRepository(ManagedUserRepository $referentManagedUserRepository): void
     {
         $this->referentManagedUserRepository = $referentManagedUserRepository;
     }
 
-    public function getReferentManagedUserRepository(): ReferentManagedUserRepository
+    public function getReferentManagedUserRepository(): ManagedUserRepository
     {
         return $this->referentManagedUserRepository;
     }

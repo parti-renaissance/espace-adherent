@@ -2,8 +2,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Projection\ReferentManagedUser;
-use AppBundle\Entity\Projection\ReferentManagedUserFactory;
+use AppBundle\Entity\Projection\ManagedUser;
+use AppBundle\Entity\Projection\ManagedUserFactory;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -11,17 +11,17 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadReferentManagedUserData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadManagedUserData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 
     public function load(ObjectManager $manager)
     {
-        $referentManagedUserFactory = $this->getReferentManagedUserFactory();
+        $managedUserFactory = $this->getManagedUserFactory();
 
-        $managedUser1 = $referentManagedUserFactory->createFromArray([
-            'status' => ReferentManagedUser::STATUS_READY,
-            'type' => ReferentManagedUser::TYPE_ADHERENT,
+        $managedUser1 = $managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'type' => ManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-1')->getId(),
             'uuid' => $this->getReference('adherent-1')->getUuid(),
             'email' => $this->getReference('adherent-1')->getEmailAddress(),
@@ -40,9 +40,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements ContainerAw
             'gender' => 'male',
         ]);
 
-        $managedUser2 = $referentManagedUserFactory->createFromArray([
-            'status' => ReferentManagedUser::STATUS_READY,
-            'type' => ReferentManagedUser::TYPE_ADHERENT,
+        $managedUser2 = $managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'type' => ManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-13')->getId(),
             'uuid' => $this->getReference('adherent-13')->getUuid(),
             'email' => $this->getReference('adherent-13')->getEmailAddress(),
@@ -62,9 +62,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements ContainerAw
             'gender' => 'male',
         ]);
 
-        $managedUser3 = $referentManagedUserFactory->createFromArray([
-            'status' => ReferentManagedUser::STATUS_READY,
-            'type' => ReferentManagedUser::TYPE_ADHERENT,
+        $managedUser3 = $managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'type' => ManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-5')->getId(),
             'uuid' => $this->getReference('adherent-5')->getUuid(),
             'email' => $this->getReference('adherent-5')->getEmailAddress(),
@@ -79,7 +79,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements ContainerAw
             'is_committee_host' => 1,
             'is_committee_supervisor' => 0,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
-            'subscribedTags' => '92',
+            'subscribedTags' => '92,59',
             'created_at' => '2017-06-02 15:34:12',
             'gender' => 'female',
             'citizenProjects' => [
@@ -87,9 +87,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements ContainerAw
             ],
         ]);
 
-        $managedUser4 = $referentManagedUserFactory->createFromArray([
-            'status' => ReferentManagedUser::STATUS_READY,
-            'type' => ReferentManagedUser::TYPE_ADHERENT,
+        $managedUser4 = $managedUserFactory->createFromArray([
+            'status' => ManagedUser::STATUS_READY,
+            'type' => ManagedUser::TYPE_ADHERENT,
             'original_id' => $this->getReference('adherent-7')->getId(),
             'uuid' => $this->getReference('adherent-7')->getUuid(),
             'email' => $this->getReference('adherent-7')->getEmailAddress(),
@@ -105,7 +105,7 @@ class LoadReferentManagedUserData extends AbstractFixture implements ContainerAw
             'is_committee_host' => 0,
             'is_committee_supervisor' => 1,
             'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
-            'subscribedTags' => '77',
+            'subscribedTags' => '77,59',
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',
             'supervisor_tags' => [
@@ -127,9 +127,9 @@ class LoadReferentManagedUserData extends AbstractFixture implements ContainerAw
         $manager->flush();
     }
 
-    private function getReferentManagedUserFactory(): ReferentManagedUserFactory
+    private function getManagedUserFactory(): ManagedUserFactory
     {
-        return new ReferentManagedUserFactory();
+        return new ManagedUserFactory();
     }
 
     public function getDependencies()
