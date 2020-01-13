@@ -73,7 +73,7 @@ wait-for-db:
 db: vendor wait-for-db                                                                                 ## Reset the database and load fixtures
 	$(CONSOLE) doctrine:database:drop --force --if-exists
 	$(CONSOLE) doctrine:database:create --if-not-exists
-	$(CONSOLE) doctrine:database:import -n -- dump/dump-2018.sql
+	$(CONSOLE) doctrine:database:import -n -- dump/dump-2019.sql
 	$(CONSOLE) doctrine:migrations:migrate -n
 	$(CONSOLE) doctrine:fixtures:load -n
 
@@ -153,7 +153,7 @@ tfp-db: wait-for-db                                                             
 	$(EXEC) rm -rf /tmp/data.db || true
 	$(CONSOLE) doctrine:database:drop --force --if-exists --env=test
 	$(CONSOLE) doctrine:database:create --env=test
-	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2018.sql
+	$(CONSOLE) doctrine:database:import --env=test -n -- dump/dump-2019.sql
 	$(CONSOLE) doctrine:migration:migrate -n --env=test
 	$(CONSOLE) doctrine:schema:validate --env=test
 	$(CONSOLE) doctrine:fixtures:load --env=test -n
