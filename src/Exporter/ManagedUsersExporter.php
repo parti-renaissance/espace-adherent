@@ -39,6 +39,7 @@ class ManagedUsersExporter
             'Nom' => 'lastName',
             'Âge' => 'age',
             'Genre' => 'getGenderLabel',
+            'Rôle' => 'getUserRoleLabels',
             'Commune' => 'city',
             'Code postal' => 'postalCode',
             'Pays' => 'country',

@@ -446,4 +446,27 @@ class ManagedUser
                 return 'Autre';
         }
     }
+
+    public function getUserRoleLabels($separator = ' / '): string
+    {
+        if ($this->citizenProjectsOrganizer || $this->isCommitteeSupervisor || $this->isCommitteeHost) {
+            $roles = [];
+
+            if ($this->citizenProjectsOrganizer) {
+                $roles[] = 'Porteur de projet';
+            }
+
+            if ($this->isCommitteeSupervisor) {
+                $roles[] = 'Animateur local';
+            }
+
+            if ($this->isCommitteeHost) {
+                $roles[] = 'Co-animateur local';
+            }
+
+            return implode($separator, $roles);
+        }
+
+        return 'Adherent';
+    }
 }
