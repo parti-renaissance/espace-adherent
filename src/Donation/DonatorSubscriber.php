@@ -3,15 +3,21 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Repository\AdherentRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DonatorSubscriber implements EventSubscriberInterface
 {
     private $adherentRepository;
+    /**
+     * @var ObjectManager
+     */
+    private $em;
 
-    public function __construct(AdherentRepository $adherentRepository)
+    public function __construct(AdherentRepository $adherentRepository, ObjectManager $em)
     {
         $this->adherentRepository = $adherentRepository;
+        $this->em = $em;
     }
 
     public static function getSubscribedEvents()
@@ -48,14 +54,13 @@ class DonatorSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            $lastSuccessfulDonation = $donator->getLastSuccessfulDonation();
+            $currentSuccessfulDonation = $donator->getLastSuccessfulDonation();
 
-            if (
-                !$lastSuccessfulDonation
-                || $lastSuccessfulDonation->getLastSuccessDate() < $donation->getLastSuccessDate()
-            ) {
+            if (!$currentSuccessfulDonation || $currentSuccessfulDonation->getLastSuccessDate() < $lastSuccessDate) {
                 $donation->markAsLastSuccessfulDonation();
             }
         }
+
+        $this->em->flush();
     }
 }

@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\DonationListener"})
  *
  * @Algolia\Index(autoIndex=false)
  */
