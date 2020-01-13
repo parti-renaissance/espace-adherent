@@ -1,10 +1,11 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
+{% import 'admin/donation/_macros.html.twig' as macros %}
+
 {% block field %}
     {% if value %}
         {{ value.amountInEuros|localizedcurrency('EUR') }}
-        le {{ value.createdAt|localizeddate('short', 'none') }}
-        ({{ ('donation.status.' ~ value.status)|trans }})
+        le {{ value.createdAt|localizeddate }}
     {% else %}
         <span class="label label-danger">Aucun don réussi pour l'instant</span>
     {% endif %}

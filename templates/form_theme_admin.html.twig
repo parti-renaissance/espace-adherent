@@ -22,6 +22,8 @@
 {% endblock %}
 
 {% block app_admin_donator_radio_referenceDonation_referenceDonation_entry_widget %}
+    {% import 'admin/donation/_macros.html.twig' as macros %}
+
     {% set currentReferenceDonation = form.parent.parent.vars.value.referenceDonation %}
     {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
 
@@ -40,7 +42,8 @@
 
                 <strong>
                     Don {% if donation.hasSubscription %}récurrent {% endif %}de
-                    {{ donation.amountInEuros|localizedcurrency('EUR')|replace({',00' : ''}) }}
+                    {{ donation.amountInEuros|localizedcurrency('EUR') }}
+                    le {{ donation.createdAt|localizeddate }}
                 </strong>
 
                 <a href="{{ path('admin_app_donation_edit', { id: form.vars.value }) }}" target="_blank">
@@ -49,38 +52,10 @@
 
                 <ul>
                     <li>
-                        Type:
-                        <span class="badge
-                            {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') %}
-                                bg-blue
-                            {% elseif donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CHECK') %}
-                                bg-green
-                            {% elseif donation.type is constant('AppBundle\\Entity\\Donation::TYPE_TRANSFER') %}
-                                bg-purple
-                            {% endif %}
-                            ">
-                            {{ ('donation.type.'~donation.type)|trans }}
-                        </span>
+                        Type: {{ macros.get_donation_type_badge(donation.type) }}
                     </li>
                     <li>
-                        Statut:
-                        <span class="badge
-                            {% if donation.status is constant('AppBundle\\Entity\\Donation::STATUS_FINISHED') %}
-                                bg-green
-                            {% elseif donation.status is constant('AppBundle\\Entity\\Donation::STATUS_SUBSCRIPTION_IN_PROGRESS') %}
-                                bg-teal
-                            {% elseif donation.status is constant('AppBundle\\Entity\\Donation::STATUS_FINISHED') %}
-                                bg-teal
-                            {% elseif donation.status is constant('AppBundle\\Entity\\Donation::STATUS_CANCELED') %}
-                                bg-fuchsia
-                            {% elseif donation.status is constant('AppBundle\\Entity\\Donation::STATUS_ERROR') %}
-                                bg-red
-                            {% elseif donation.status is constant('AppBundle\\Entity\\Donation::STATUS_REFUNDED') %}
-                                bg-yellow
-                            {% endif %}
-                            ">
-                            {{ ('donation.status.'~donation.status)|trans }}
-                        </span>
+                        Statut: {{ macros.get_donation_status_badge(donation.status) }}
                     </li>
                     {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') and donation.hasSubscription and not donation.transactions.isEmpty %}
                         <li>

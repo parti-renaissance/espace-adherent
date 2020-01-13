@@ -185,6 +185,11 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('amountInEuros', NumberType::class, [
                 'label' => 'Montant',
+                'template' => 'admin/donation/list_amount.html.twig',
+            ])
+            ->add('type', null, [
+                'label' => 'Type',
+                'template' => 'admin/donation/list_type.html.twig',
             ])
             ->add('status', null, [
                 'label' => 'Statut du don',
