@@ -127,4 +127,9 @@ class ReferentTag
     {
         $this->type = $type;
     }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
 }

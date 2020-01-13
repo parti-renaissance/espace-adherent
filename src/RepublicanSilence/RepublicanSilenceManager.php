@@ -2,7 +2,10 @@
 
 namespace AppBundle\RepublicanSilence;
 
+use AppBundle\Address\Address;
+use AppBundle\Entity\ReferentTag;
 use AppBundle\Entity\RepublicanSilence;
+use AppBundle\Repository\ReferentTagRepository;
 use AppBundle\Repository\RepublicanSilenceRepository;
 use Psr\SimpleCache\CacheInterface;
 
@@ -50,7 +53,7 @@ class RepublicanSilenceManager
         $silences = $this->getRepublicanSilencesForDate(new \DateTime());
 
         foreach ($silences as $silence) {
-            if (array_intersect($silence->getReferentTagCodes(), $referentTagCodes)) {
+            if ($this->matchSilence($silence, $referentTagCodes)) {
                 return true;
             }
         }
@@ -66,5 +69,24 @@ class RepublicanSilenceManager
     private function getCacheKey(\DateTimeInterface $date): string
     {
         return self::CACHE_PREFIX_KEY.$date->format('d-m-Y');
+    }
+
+    private function matchSilence(RepublicanSilence $silence, array $referentTagCodes): bool
+    {
+        if (array_intersect($silence->getReferentTagCodes(), $referentTagCodes)) {
+            return true;
+        }
+
+        if (
+            \in_array(ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG, $referentTagCodes, true)
+            && !$silence->getReferentTags()->filter(static function (ReferentTag $tag) {
+                return ReferentTag::TYPE_COUNTRY === $tag->getType()
+                    && Address::FRANCE !== $tag->getCode();
+            })->isEmpty()
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
