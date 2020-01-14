@@ -38,6 +38,18 @@ class DonationAdmin extends AbstractAdmin
         $this->storage = $storage;
     }
 
+    /**
+     * @param Donation|null $object
+     */
+    public function hasAccess($action, $object = null)
+    {
+        if ('delete' === $action && Donation::TYPE_CB === $object->getType()) {
+            return false;
+        }
+
+        return parent::hasAccess($action, $object);
+    }
+
     protected function configureFormFields(FormMapper $form)
     {
         $typeChoices = [
@@ -238,10 +250,12 @@ class DonationAdmin extends AbstractAdmin
     {
         parent::postRemove($donation);
 
-        $filePath = $donation->getFilePathWithDirectory();
+        if ($donation->hasFileUploaded()) {
+            $filePath = $donation->getFilePathWithDirectory();
 
-        if ($this->storage->has($filePath)) {
-            $this->storage->delete($filePath);
+            if ($this->storage->has($filePath)) {
+                $this->storage->delete($filePath);
+            }
         }
     }
 

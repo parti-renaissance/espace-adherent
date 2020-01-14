@@ -43,6 +43,12 @@ class LoadDonationData extends Fixture
         $donation2 = $this->createDonation($donator2, 40.);
         $donation3 = $this->createDonation($donator2, 60., PayboxPaymentSubscription::UNLIMITED);
         $donation4 = $this->createDonation($donator2, 100., PayboxPaymentSubscription::UNLIMITED);
+        $donationCheck = $this->createDonation(
+            $donator0,
+            30.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CHECK
+        );
 
         $transactionNormal = $this->createTransaction($donationNormal);
         $transactionMonthlyError = $this->createTransaction($donationMonthly, Transaction::PAYBOX_CARD_UNAUTHORIZED);
@@ -75,6 +81,7 @@ class LoadDonationData extends Fixture
         $manager->persist($donation2);
         $manager->persist($donation3);
         $manager->persist($donation4);
+        $manager->persist($donationCheck);
 
         $manager->persist($transactionNormal);
         $manager->persist($transactionMonthlyError);

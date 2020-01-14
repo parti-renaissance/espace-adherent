@@ -164,7 +164,7 @@ security:
             - ROLE_APP_ADMIN_ELECTION_CREATE
             - ROLE_APP_ADMIN_ELECTION_DELETE
 
-        ROLE_ADMIN_DONATORS:
+        ROLE_ADMIN_FINANCE:
             - ROLE_APP_ADMIN_DONATOR_ALL
             - ROLE_APP_ADMIN_DONATOR_TAG_ALL
             - ROLE_APP_ADMIN_DONATION_ALL
@@ -294,7 +294,6 @@ security:
             - ROLE_ADMIN_REPORTS
             - ROLE_ADMIN_PROCURATIONS
             - ROLE_ADMIN_ELECTIONS
-            - ROLE_ADMIN_DONATIONS
             - ROLE_ADMIN_EMAIL
             - ROLE_ADMIN_ADHERENT_TAGS
             - ROLE_ADMIN_REFERENT_TAGS
@@ -313,7 +312,7 @@ security:
             - ROLE_ADMIN_IDEAS_WORKSHOP
             - ROLE_ADMIN_APPLICATION_REQUEST
             - ROLE_ADMIN_CHEZ_VOUS
-            - ROLE_ADMIN_DONATORS
+            - ROLE_ADMIN_FINANCE
             - ROLE_ADMIN_PROGRAMMATIC_FOUNDATION
 
     access_decision_manager:
