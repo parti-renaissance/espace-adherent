@@ -1,37 +1,7 @@
 {% extends '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig' %}
 
 {% block sonata_type_model_autocomplete_ajax_request_parameters %}
-    return {
-    //search term
-    '{{ req_param_name_search }}': term,
+    {% set sonata_admin = sonata_admin|merge({admin: null}) %}
 
-    // page size
-    '{{ req_param_name_items_per_page }}': {{ items_per_page }},
-
-    // page number
-    '{{ req_param_name_page_number }}': page,
-
-    // admin
-    {% if sonata_admin.admin is not empty %}
-        'uniqid': '{{ sonata_admin.admin.uniqid }}',
-        'admin_code': '{{ sonata_admin.admin.code }}',
-    {% elseif admin_code %}
-        'admin_code':  '{{ admin_code }}',
-    {% endif %}
-
-    // subclass
-    {% if app.request.query.get('subclass') %}
-        'subclass': '{{ app.request.query.get('subclass') }}',
-    {% endif %}
-
-    'field':  'donator'
-
-    // other parameters
-    {% if req_params is not empty %},
-        {%- for key, value in req_params -%}
-            '{{- key -}}': '{{- value -}}'
-            {%- if not loop.last -%}, {% endif -%}
-        {%- endfor -%}
-    {% endif %}
-    };
+    {{ parent() }}
 {% endblock %}

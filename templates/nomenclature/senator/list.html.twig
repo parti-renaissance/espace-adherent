@@ -1,0 +1,95 @@
+{% extends 'legislatives/layout.html.twig' %}
+
+{% block page_title 'Le trombinoscope des sénateurs' %}
+{% block meta_description 'Présentation de la liste des sénateurs de La République En Marche !' %}
+{% block canonical_url url('app_nomenclature_senator_list') %}
+{% block navMap %}{% endblock %}
+{% block open_graph_image (homepage_url ~ static_asset('pages-sharers/referents-share.jpg', {'q': 80, 'w': 1200, 'h': 630, 'fit': 'crop'}))|raw %}
+
+{% block redirection %}
+    <div class="background--darker">
+        <div class="l__wrapper space--10-0">
+            <a href="{{ path('app_our_organization') }}" class="back-to-list icon--with-text text--summary link--white">
+                {{ include('components/caret--left.html.twig') }}
+                Retour au site &nbsp;<strong><em>En Marche !</em></strong>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            App.runReferentsList();
+        });
+    </script>
+{% endblock %}
+
+{% block content__inner %}
+    <header class="l__wrapper--medium text--center space--60-0">
+        <h1 class="text--large text--pink">
+            Je découvre les sénateurs/sénatrices de <em>La République En Marche !</em>
+        </h1>
+    </header>
+
+    <div class="l__wrapper--medium b__nudge--bottom-large legislatives__form">
+        <div class="label text--summary text--block text--uppercase">
+          Rechercher par :
+        </div>
+
+        <input type="text" id="search" placeholder="Nom ou prénom..." />
+
+        <div class="l__row">
+            <select id="department" class="form">
+                <option value="" selected="selected">Tous les territoires</option>
+                {% for group, zones in groupedZones %}
+                    <optgroup label="{{ group }}">
+                        {% for zone in zones %}
+                            <option value="{{ zone.id }}">{{ zone.name }}</option>
+                        {% endfor %}
+                    </optgroup>
+                {% endfor %}
+            </select>
+            <i class="fa fa-angle-down b__nudge--right"></i>
+        </div>
+
+    </div>
+
+    <div class="l__wrapper--medium l__row l__row--h-stretch l__row--wrap">
+        <div class="legislatives__no_results hidden">
+            Aucun résultat
+        </div>
+
+        {% for senator in senators %}
+            <div class="legislatives__trombi__item legislatives_candidate"
+                 data-zone="{{ senator.areasIdAsString }}"
+                 data-name="{{ senator.fullName }}"
+            >
+                <a href="{{ path('app_nomenclature_senator_show', {'slug': senator.slug}) }}"
+                   title="{{ senator.fullName }}"
+                   class="legislatives__trombi__item__visual link--no-decor progressive-background"
+                    {% if senator.profilePicture  %}
+                        data-sd="{{ media_asset(senator.profilePicture, {'w': 50, 'q': 20}) }}"
+                        data-hd="{{ media_asset(senator.profilePicture, {'w': 640, 'q': 70}) }}"
+                    {% else  %}
+                        data-sd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 50, 'q': 20}) }}"
+                        data-hd="{{ static_asset('legislatives/unknown-referent.jpg', {'w': 320, 'q': 70}) }}"
+                   {% endif %}
+                >
+                    <div class="text--white">
+                        <h1 class="text--medium-small">{{ senator.fullName }}</h1>
+                        <span class="text--body">{{ senator.areaLabel }}</span>
+                    </div>
+                </a>
+                {% if senator.hasWebPages %}
+                    {{ include('referent/nomination/_referent_links.html.twig', {
+                        'links_container_class': 'legislatives__social l__row l__row--h-stretch space--10-15',
+                        'website_url_class': 'link--no-decor',
+                        'social_networks_container_class': 'list__links--svgs',
+                        'show_name': false
+                    }) }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

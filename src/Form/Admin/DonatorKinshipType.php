@@ -37,6 +37,9 @@ class DonatorKinshipType extends AbstractType
                 'class' => Donator::class,
                 'template' => 'admin/donator/donator_type_model_autocomplete.html.twig',
                 'admin_code' => 'app.admin.donation',
+                'req_params' => [
+                    'field' => 'donator',
+                ],
             ])
             ->add('kinship', TextType::class, [
                 'label' => 'Lien de parenté',
