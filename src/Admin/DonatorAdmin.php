@@ -46,6 +46,13 @@ class DonatorAdmin extends AbstractAdmin
         ]);
     }
 
+    public function configureBatchActions($actions)
+    {
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
     protected function configureFormFields(FormMapper $form)
     {
         $form
@@ -195,7 +202,7 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Adresse e-mail',
             ])
             ->add('lastSuccessfulDonation', null, [
-                'label' => 'Dernier don réussi',
+                'label' => 'Date du dernier don',
                 'sortable' => true,
                 'sort_field_mapping' => ['fieldName' => 'createdAt'],
                 'sort_parent_association_mappings' => [
@@ -214,6 +221,23 @@ class DonatorAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function getExportFields()
+    {
+        return [
+            'ID' => 'id',
+            'Numéro donateur' => 'identifier',
+            'Nom' => 'lastName',
+            'Prénom' => 'firstName',
+            'Civilité' => 'gender',
+            'Adresse e-mail' => 'emailAddress',
+            'Ville' => 'city',
+            'Pays' => 'country',
+            'Commentaire' => 'comment',
+            'Adresse de référence' => 'getReferenceAddress',
+            'Tags' => 'getTagsAsString'
+        ];
     }
 
     /**

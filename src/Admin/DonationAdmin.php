@@ -50,6 +50,13 @@ class DonationAdmin extends AbstractAdmin
         return parent::hasAccess($action, $object);
     }
 
+    public function configureBatchActions($actions)
+    {
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
     protected function configureFormFields(FormMapper $form)
     {
         $typeChoices = [
@@ -221,6 +228,26 @@ class DonationAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    public function getExportFields()
+    {
+        return [
+            'ID' => 'id',
+            'Montant' => 'amountInEuros',
+            'Date' => 'createdAt',
+            'Type' => 'type',
+            'Status' => 'status',
+            'Numéro donateur' => 'donator.identifier',
+            'Nom' => 'donator.lastName',
+            'Prénom' => 'donator.firstName',
+            'Civilité' => 'donator.gender',
+            'Adresse e-mail' => 'donator.emailAddress',
+            'Ville du donateur' => 'donator.city',
+            'Pays du donateur' => 'donator.country',
+            'Adresse de référence' => 'donator.getReferenceAddress',
+            'Tags du donateur' => 'donator.getTagsAsString'
+        ];
     }
 
     /**

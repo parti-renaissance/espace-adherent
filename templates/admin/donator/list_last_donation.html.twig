@@ -6,6 +6,7 @@
     {% if value %}
         {{ value.amountInEuros|localizedcurrency('EUR') }}
         le {{ value.lastSuccessDate|localizeddate }}
+        {{ macros.get_donation_type_badge(value.type) }}
     {% else %}
         <span class="label label-danger">Aucun don réussi pour l'instant</span>
     {% endif %}
