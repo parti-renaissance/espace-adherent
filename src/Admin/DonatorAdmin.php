@@ -6,6 +6,7 @@ use AppBundle\Donation\DonatorManager;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
 use AppBundle\Entity\DonatorTag;
+use AppBundle\Form\Admin\DonatorKinshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Repository\DonationRepository;
@@ -18,6 +19,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class DonatorAdmin extends AbstractAdmin
 {
@@ -119,6 +121,19 @@ class DonatorAdmin extends AbstractAdmin
                 ->end()
             ;
         }
+
+        $form
+            ->with('Liens')
+                ->add('kinships', CollectionType::class, [
+                    'entry_type' => DonatorKinshipType::class,
+                    'required' => false,
+                    'label' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -236,7 +251,7 @@ class DonatorAdmin extends AbstractAdmin
             'Pays' => 'country',
             'Commentaire' => 'comment',
             'Adresse de référence' => 'getReferenceAddress',
-            'Tags' => 'getTagsAsString'
+            'Tags' => 'getTagsAsString',
         ];
     }
 

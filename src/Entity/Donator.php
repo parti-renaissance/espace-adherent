@@ -128,6 +128,15 @@ class Donator
      */
     private $tags;
 
+    /**
+     * @var DonatorKinship[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity=DonatorKinship::class, mappedBy="donator", cascade={"all"})
+     *
+     * @Assert\Valid
+     */
+    private $kinships;
+
     public function __construct(
         string $lastName = null,
         string $firstName = null,
@@ -141,9 +150,10 @@ class Donator
         $this->city = $city;
         $this->country = $country;
         $this->emailAddress = $emailAddress;
+        $this->gender = $gender;
         $this->donations = new ArrayCollection();
         $this->tags = new ArrayCollection();
-        $this->gender = $gender;
+        $this->kinships = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -313,6 +323,11 @@ class Donator
         $this->tags->removeElement($tag);
     }
 
+    public function getTagsAsString(): string
+    {
+        return implode(', ', $this->tags->toArray());
+    }
+
     public function getLastSuccessfulDonation(): ?Donation
     {
         return $this->lastSuccessfulDonation;
@@ -354,5 +369,24 @@ class Donator
         }
 
         return null;
+    }
+
+    public function getKinships(): ?Collection
+    {
+        return $this->kinships;
+    }
+
+    public function addKinship(DonatorKinship $kinship): void
+    {
+        if (!$this->kinships->contains($kinship)) {
+            $kinship->setDonator($this);
+
+            $this->kinships->add($kinship);
+        }
+    }
+
+    public function removeKinship(DonatorKinship $kinship): void
+    {
+        $this->kinships->removeElement($kinship);
     }
 }

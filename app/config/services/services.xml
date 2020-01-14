@@ -687,5 +687,7 @@
         </service>
 
         <service id="AppBundle\Command\ImportProgrammaticFoundationCommand" />
+
+        <service id="AppBundle\Form\Admin\DonatorKinshipType" />
     </services>
 </container>

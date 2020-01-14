@@ -43,7 +43,7 @@ class DonationAdmin extends AbstractAdmin
      */
     public function hasAccess($action, $object = null)
     {
-        if ('delete' === $action && Donation::TYPE_CB === $object->getType()) {
+        if ($object && 'delete' === $action && Donation::TYPE_CB === $object->getType()) {
             return false;
         }
 
@@ -246,7 +246,7 @@ class DonationAdmin extends AbstractAdmin
             'Ville du donateur' => 'donator.city',
             'Pays du donateur' => 'donator.country',
             'Adresse de référence' => 'donator.getReferenceAddress',
-            'Tags du donateur' => 'donator.getTagsAsString'
+            'Tags du donateur' => 'donator.getTagsAsString',
         ];
     }
 
