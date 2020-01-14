@@ -6,6 +6,7 @@ use AppBundle\Donation\DonatorManager;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
 use AppBundle\Entity\DonatorTag;
+use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Repository\DonationRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -53,6 +54,9 @@ class DonatorAdmin extends AbstractAdmin
                     'label' => 'Numéro donateur',
                     'disabled' => true,
                     'help' => 'Généré automatiquement à la création',
+                ])
+                ->add('gender', GenderType::class, [
+                    'label' => 'Genre',
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',
@@ -192,6 +196,11 @@ class DonatorAdmin extends AbstractAdmin
             ])
             ->add('lastSuccessfulDonation', null, [
                 'label' => 'Dernier don réussi',
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'createdAt'],
+                'sort_parent_association_mappings' => [
+                    ['fieldName' => 'lastSuccessfulDonation'],
+                ],
                 'template' => 'admin/donator/list_last_donation.html.twig',
             ])
             ->add('tags', null, [
