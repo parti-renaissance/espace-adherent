@@ -23,6 +23,7 @@ class DonationFactory
             $request->getUuid(),
             $request->getType(),
             $request->getAmount() * 100,
+            new \DateTimeImmutable(),
             $this->addressFactory->createFlexible(
                 $request->getCountry(),
                 $request->getPostalCode(),

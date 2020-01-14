@@ -58,6 +58,13 @@ class Donation implements GeoPointInterface
     private $amount;
 
     /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $donatedAt;
+
+    /**
      * @ORM\Column(type="smallint", options={"default": 0})
      */
     private $duration;
@@ -180,6 +187,7 @@ class Donation implements GeoPointInterface
         UuidInterface $uuid = null,
         string $type = null,
         int $amount = null,
+        \DateTimeInterface $donatedAt = null,
         PostAddress $postAddress = null,
         ?string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
@@ -191,6 +199,7 @@ class Donation implements GeoPointInterface
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->amount = $amount;
+        $this->donatedAt = $donatedAt ?? new Chronos();
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new Chronos();
@@ -206,9 +215,9 @@ class Donation implements GeoPointInterface
     public function __toString(): string
     {
         return sprintf(
-            '%.2f € (%s)',
+            '%.2f € [%s]',
             $this->amount / 100,
-            $this->type
+            $this->donatedAt->format('Y/m/d H:i:s')
         );
     }
 
@@ -241,6 +250,11 @@ class Donation implements GeoPointInterface
         return $this->type;
     }
 
+    public function isCB(): bool
+    {
+        return self::TYPE_CB === $this->type;
+    }
+
     public function getAmount(): ?int
     {
         return $this->amount;
@@ -269,6 +283,16 @@ class Donation implements GeoPointInterface
     public function setAmountInEuros(int $amountInEuros): void
     {
         $this->amount = $amountInEuros * 100;
+    }
+
+    public function getDonatedAt(): ?\DateTimeInterface
+    {
+        return $this->donatedAt;
+    }
+
+    public function setDonatedAt(\DateTimeInterface $donatedAt): void
+    {
+        $this->donatedAt = $donatedAt;
     }
 
     public function getClientIp(): ?string
@@ -317,7 +341,7 @@ class Donation implements GeoPointInterface
             $fromDay = new \DateTime();
         }
 
-        $donationDate = clone $this->createdAt;
+        $donationDate = clone $this->donatedAt;
 
         return $donationDate->modify(
             sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
@@ -511,7 +535,7 @@ class Donation implements GeoPointInterface
 
     public function getLastSuccessDate(): ?\DateTimeInterface
     {
-        if (self::TYPE_CB === $this->type) {
+        if ($this->isCB()) {
             foreach ($this->transactions as $transaction) {
                 if ($transaction->isSuccessful()) {
                     return $transaction->getPayboxDateTime();
@@ -521,6 +545,6 @@ class Donation implements GeoPointInterface
             return null;
         }
 
-        return $this->createdAt;
+        return $this->donatedAt;
     }
 }

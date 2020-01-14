@@ -43,7 +43,7 @@ class DonationAdmin extends AbstractAdmin
      */
     public function hasAccess($action, $object = null)
     {
-        if ($object && 'delete' === $action && Donation::TYPE_CB === $object->getType()) {
+        if ($object && 'delete' === $action && $object->isCB()) {
             return false;
         }
 
@@ -59,14 +59,8 @@ class DonationAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form)
     {
-        $typeChoices = [
-            'donation.type.'.Donation::TYPE_CHECK => Donation::TYPE_CHECK,
-            'donation.type.'.Donation::TYPE_TRANSFER => Donation::TYPE_TRANSFER,
-        ];
-
-        if (!$this->isCurrentRoute('create')) {
-            $typeChoices['donation.type.'.Donation::TYPE_CB] = Donation::TYPE_CB;
-        }
+        /** @var Donation $donation */
+        $donation = $this->getSubject();
 
         $form
             ->with('Informations générales', ['class' => 'col-md-6'])
@@ -84,23 +78,33 @@ class DonationAdmin extends AbstractAdmin
                 ->add('type', ChoiceType::class, [
                     'label' => 'Type',
                     'disabled' => !$this->isCurrentRoute('create'),
-                    'choices' => $typeChoices,
+                    'choices' => $this->getTypeChoices(),
+                    'choice_label' => function (string $choice) {
+                        return 'donation.type.'.$choice;
+                    },
                 ])
                 ->add('amountInEuros', FormNumberType::class, [
                     'label' => 'Montant',
                     'disabled' => !$this->isCurrentRoute('create'),
                 ])
+                ->add('donatedAt', null, [
+                    'label' => 'Date du don',
+                    'disabled' => $donation->isCB(),
+                ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut du don',
-                    'disabled' => !$this->isCurrentRoute('create'),
+                    'disabled' => $donation->isCB(),
                     'choices' => [
-                        'donation.status.'.Donation::STATUS_WAITING_CONFIRMATION => Donation::STATUS_WAITING_CONFIRMATION,
-                        'donation.status.'.Donation::STATUS_SUBSCRIPTION_IN_PROGRESS => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
-                        'donation.status.'.Donation::STATUS_ERROR => Donation::STATUS_ERROR,
-                        'donation.status.'.Donation::STATUS_CANCELED => Donation::STATUS_CANCELED,
-                        'donation.status.'.Donation::STATUS_FINISHED => Donation::STATUS_FINISHED,
-                        'donation.status.'.Donation::STATUS_REFUNDED => Donation::STATUS_REFUNDED,
+                        Donation::STATUS_WAITING_CONFIRMATION,
+                        Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
+                        Donation::STATUS_ERROR,
+                        Donation::STATUS_CANCELED,
+                        Donation::STATUS_FINISHED,
+                        Donation::STATUS_REFUNDED,
                     ],
+                    'choice_label' => function (string $choice) {
+                        return 'donation.status.'.$choice;
+                    },
                 ])
                 ->add('checkNumber', null, [
                     'label' => 'Numéro de chèque',
@@ -156,11 +160,7 @@ class DonationAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => [
-                        Donation::TYPE_CB,
-                        Donation::TYPE_CHECK,
-                        Donation::TYPE_TRANSFER,
-                    ],
+                    'choices' => $this->getTypeChoices(),
                     'choice_label' => function (string $choice) {
                         return 'donation.type.'.$choice;
                     },
@@ -315,5 +315,19 @@ class DonationAdmin extends AbstractAdmin
         $donation->setFilenameFromUploadedFile();
 
         $this->storage->put($donation->getFilePathWithDirectory(), file_get_contents($donation->getFile()->getPathname()));
+    }
+
+    private function getTypeChoices(): array
+    {
+        $choices = [
+            Donation::TYPE_CHECK,
+            Donation::TYPE_TRANSFER,
+        ];
+
+        if (!$this->isCurrentRoute('create')) {
+            $choices[] = Donation::TYPE_CB;
+        }
+
+        return $choices;
     }
 }

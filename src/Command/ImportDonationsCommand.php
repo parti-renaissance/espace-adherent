@@ -172,6 +172,7 @@ class ImportDonationsCommand extends Command
                 Uuid::uuid4(),
                 self::TYPES_MAP[$type],
                 $amount,
+                $donatedAt,
                 $this->postAddressFactory->createFlexible(
                     self::COUNTRIES_MAP[$country],
                     $postalCode,
@@ -182,8 +183,7 @@ class ImportDonationsCommand extends Command
                 PayboxPaymentSubscription::NONE,
                 null,
                 self::COUNTRIES_MAP[$country],
-                $donator,
-                $donatedAt
+                $donator
             );
 
             if (Donation::TYPE_TRANSFER === self::TYPES_MAP[$type] && !empty($transferNumber)) {

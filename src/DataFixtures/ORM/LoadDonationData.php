@@ -99,12 +99,14 @@ class LoadDonationData extends Fixture
         Donator $donator,
         float $amount = 50.0,
         int $duration = PayboxPaymentSubscription::NONE,
-        string $type = Donation::TYPE_CB
+        string $type = Donation::TYPE_CB,
+        string $donatedAt = null
     ): Donation {
         return new Donation(
             $uuid = Uuid::uuid4(),
             $type,
             $amount * 100,
+            $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
             $donator->getAdherent()->getPostAddress(),
             '127.0.0.1',
             $duration,

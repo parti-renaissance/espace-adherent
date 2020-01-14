@@ -55,25 +55,16 @@ class DonationTest extends TestCase
 
     private function createDonation(string $donatedAt = null): Donation
     {
-        $donation = new Donation(
+        return new Donation(
             Uuid::uuid4(),
             'cb',
             '10',
+            $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
             $this->createMock(PostAddress::class),
             '127.0.0.1',
             PayboxPaymentSubscription::UNLIMITED,
             '10'
         );
-
-        if ($donatedAt) {
-            $reflectObject = new \ReflectionObject($donation);
-            $reflectProp = $reflectObject->getProperty('createdAt');
-            $reflectProp->setAccessible(true);
-            $reflectProp->setValue($donation, \DateTime::createFromFormat('Y/m/d H:i:s', $donatedAt));
-            $reflectProp->setAccessible(false);
-        }
-
-        return $donation;
     }
 
     public function processPayloadProvider(): iterable
@@ -84,6 +75,7 @@ class DonationTest extends TestCase
                 $uuid,
                 'cb',
                 '10',
+                \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
                 $this->createMock(PostAddress::class),
                 '127.0.0.1',
                 PayboxPaymentSubscription::NONE,
@@ -108,6 +100,7 @@ class DonationTest extends TestCase
                 $uuid,
                 'cb',
                 '10',
+                \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2018/02/02 15:16:17'),
                 $this->createMock(PostAddress::class),
                 '127.0.0.1',
                 PayboxPaymentSubscription::UNLIMITED,
