@@ -132,4 +132,9 @@ class ReferentTag
     {
         return $this->type;
     }
+
+    public function isDistrictTag(): bool
+    {
+        return self::TYPE_DISTRICT === $this->type;
+    }
 }

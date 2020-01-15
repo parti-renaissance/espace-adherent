@@ -190,12 +190,12 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param ReferentTag[] $referentTags
+     *
      * @return Event[]
      */
-    public function findManagedBy(Adherent $referent): array
+    public function findManagedBy(array $referentTags): array
     {
-        $this->checkReferent($referent);
-
         $qb = $this->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
@@ -207,7 +207,7 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('published', true)
         ;
 
-        $this->applyReferentGeoFilter($qb, $referent, 'e');
+        $this->applyGeoFilter($qb, $referentTags, 'e');
 
         return $qb->getQuery()->getResult();
     }

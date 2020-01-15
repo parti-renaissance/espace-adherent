@@ -37,7 +37,7 @@
         status: event.status|trans([], 'forms'),
         beginAt: event.beginAt|date('d/m/Y H:i'),
         category: event.categoryName,
-        postalCode: event.postalCode,
+        postalCode: event.country == 'FR' ? event.postalCode : event.postalCode ~ ' (' ~ event.countryName ~ ')',
         organizer: event.organizer ? event.organizer.fullName : 'un ancien adhérent',
         participants: event.participantsCount,
         menu: event.active ? menu : []

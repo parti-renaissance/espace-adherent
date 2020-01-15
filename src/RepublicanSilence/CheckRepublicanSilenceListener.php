@@ -35,6 +35,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
         // Deputy Space
         'app_message_deputy_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
+        'app_deputy_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_DEPUTY,
 
         // Municipal Space
         'app_municipal_chief_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_MUNICIPAL_CHIEF,
@@ -42,6 +43,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
         // Senator Space
         'app_message_senator_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
+        'app_senator_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
     ];
 
     private $tokenStorage;
