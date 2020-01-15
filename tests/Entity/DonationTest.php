@@ -53,16 +53,19 @@ class DonationTest extends TestCase
         );
     }
 
-    private function createDonation(string $donatedAt = null): Donation
-    {
+    private function createDonation(
+        string $donatedAt = null,
+        string $type = Donation::TYPE_CB,
+        string $duration = PayboxPaymentSubscription::UNLIMITED
+    ): Donation {
         return new Donation(
             Uuid::uuid4(),
-            'cb',
+            $type,
             '10',
             $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
             $this->createMock(PostAddress::class),
             '127.0.0.1',
-            PayboxPaymentSubscription::UNLIMITED,
+            $duration,
             '10'
         );
     }
@@ -167,5 +170,79 @@ class DonationTest extends TestCase
         self::assertFalse($donation->isSubscriptionInProgress());
         self::assertFalse($donation->isFinished());
         self::assertTrue($donation->isCanceled());
+    }
+
+    public function testDatesForCB(): void
+    {
+        $donation = $this->createDonation('2020/01/12 12:30:00', Donation::TYPE_CB, PayboxPaymentSubscription::UNLIMITED);
+
+        // No transaction yet
+        self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertNull($donation->getLastSuccessDate());
+
+        $donation->processPayload([
+            'result' => Transaction::PAYBOX_SUCCESS,
+            'transaction' => '42',
+            'date' => '12012020',
+            'time' => '12:31:00',
+            'authorization' => 'XXXXXX',
+            'subscription' => '21',
+        ]);
+
+        // Last successful transaction should be used as last success date
+        self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertSame('2020/01/12 12:31:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
+
+        $donation->processPayload([
+            'result' => Transaction::PAYBOX_SUCCESS,
+            'transaction' => '42',
+            'date' => '12012020',
+            'time' => '11:31:00',
+            'authorization' => 'XXXXXX',
+            'subscription' => '21',
+        ]);
+
+        // Previous successful transaction should not be used as last success date
+        self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertSame('2020/01/12 12:31:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
+
+        $donation->processPayload([
+            'result' => Transaction::PAYBOX_CARD_NUMBER_INVALID,
+            'transaction' => '42',
+            'date' => '14012020',
+            'time' => '15:00:00',
+            'authorization' => 'XXXXXX',
+            'subscription' => '21',
+        ]);
+
+        // Transaction in error should not be used as last success date
+        self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertSame('2020/01/12 12:31:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
+
+        $donation->processPayload([
+            'result' => Transaction::PAYBOX_SUCCESS,
+            'transaction' => '42',
+            'date' => '14012020',
+            'time' => '15:00:00',
+            'authorization' => 'XXXXXX',
+            'subscription' => '21',
+        ]);
+
+        // New successful transaction should be used as last success date
+        self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertSame('2020/01/14 15:00:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
+    }
+
+    public function testDatesForCheckAndTransfer(): void
+    {
+        $donation = $this->createDonation('2020/01/12 12:30:00', Donation::TYPE_CHECK, PayboxPaymentSubscription::NONE);
+
+        self::assertSame('2020/01/12 12:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertSame('2020/01/12 12:30:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
+
+        $donation->setDonatedAt(\DateTimeImmutable::createFromFormat('Y/m/d H:i:s', '2020/01/02 09:30:00'));
+
+        self::assertSame('2020/01/02 09:30:00', $donation->getDonatedAt()->format('Y/m/d H:i:s'));
+        self::assertSame('2020/01/02 09:30:00', $donation->getLastSuccessDate()->format('Y/m/d H:i:s'));
     }
 }

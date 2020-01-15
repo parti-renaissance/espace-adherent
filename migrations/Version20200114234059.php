@@ -18,10 +18,12 @@ final class Version20200114234059 extends AbstractMigration
         $this->addSql('ALTER TABLE donation_transactions DROP FOREIGN KEY FK_723705D14DC1279C');
         $this->addSql('ALTER TABLE donation_transactions CHANGE donation_id donation_id INT UNSIGNED NOT NULL');
         $this->addSql('ALTER TABLE donation_transactions ADD CONSTRAINT FK_89D6D36B4DC1279C FOREIGN KEY (donation_id) REFERENCES donations (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE donations ADD last_success_date DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE donations DROP last_success_date');
         $this->addSql('DROP TABLE donator_kinship');
         $this->addSql('ALTER TABLE donation_transactions DROP FOREIGN KEY FK_89D6D36B4DC1279C');
         $this->addSql('ALTER TABLE donation_transactions CHANGE donation_id donation_id INT UNSIGNED DEFAULT NULL');

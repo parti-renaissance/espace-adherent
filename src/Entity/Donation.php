@@ -65,6 +65,13 @@ class Donation implements GeoPointInterface
     private $donatedAt;
 
     /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastSuccessDate;
+
+    /**
      * @ORM\Column(type="smallint", options={"default": 0})
      */
     private $duration;
@@ -199,7 +206,7 @@ class Donation implements GeoPointInterface
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->amount = $amount;
-        $this->donatedAt = $donatedAt ?? new \DateTimeImmutable();
+        $this->setDonatedAt($donatedAt ?? new \DateTimeImmutable());
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new Chronos();
@@ -227,6 +234,12 @@ class Donation implements GeoPointInterface
 
         if ($transaction->isSuccessful()) {
             $this->status = self::STATUS_FINISHED;
+
+            $transactionDateTime = $transaction->getPayboxDateTime();
+            if ($transactionDateTime > $this->lastSuccessDate) {
+                $this->lastSuccessDate = $transactionDateTime;
+            }
+
             if (PayboxPaymentSubscription::NONE !== $this->duration) {
                 $this->status = self::STATUS_SUBSCRIPTION_IN_PROGRESS;
             }
@@ -293,6 +306,10 @@ class Donation implements GeoPointInterface
     public function setDonatedAt(\DateTimeInterface $donatedAt): void
     {
         $this->donatedAt = $donatedAt;
+
+        if (!$this->isCB()) {
+            $this->lastSuccessDate = $donatedAt;
+        }
     }
 
     public function getClientIp(): ?string
@@ -535,16 +552,6 @@ class Donation implements GeoPointInterface
 
     public function getLastSuccessDate(): ?\DateTimeInterface
     {
-        if ($this->isCB()) {
-            foreach ($this->transactions as $transaction) {
-                if ($transaction->isSuccessful()) {
-                    return $transaction->getPayboxDateTime();
-                }
-            }
-
-            return null;
-        }
-
-        return $this->donatedAt;
+        return $this->lastSuccessDate;
     }
 }
