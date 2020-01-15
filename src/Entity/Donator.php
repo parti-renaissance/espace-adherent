@@ -306,6 +306,25 @@ class Donator
         $this->donations->removeElement($donation);
     }
 
+    public function getSuccessfulDonations(): ArrayCollection
+    {
+        $successfulDonations = $this->donations->filter(function (Donation $donation) {
+            return null !== $donation->getLastSuccessDate();
+        });
+
+        $iterator = $successfulDonations->getIterator();
+        $iterator->uasort(function (Donation $donationA, Donation $donationB) {
+            return $donationA->getLastSuccessDate() < $donationB->getLastSuccessDate() ? 1 : -1;
+        });
+
+        return new ArrayCollection($iterator->getArrayCopy());
+    }
+
+    public function computeLastSuccessfulDonation(): void
+    {
+        $this->lastSuccessfulDonation = $this->getSuccessfulDonations()->first() ?? null;
+    }
+
     public function getTags(): Collection
     {
         return $this->tags;

@@ -214,8 +214,8 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Statut du don',
                 'template' => 'admin/donation/list_status.html.twig',
             ])
-            ->add('createdAt', null, [
-                'label' => 'Date de création',
+            ->add('donatedAt', null, [
+                'label' => 'Date',
             ])
             ->add('tags', null, [
                 'label' => 'Tags',

@@ -85,6 +85,7 @@ class Transaction
      * @var Donation
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Donation", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $donation;
 

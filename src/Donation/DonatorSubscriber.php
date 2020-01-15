@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class DonatorSubscriber implements EventSubscriberInterface
 {
     private $adherentRepository;
+
     /**
      * @var ObjectManager
      */
@@ -47,19 +48,8 @@ class DonatorSubscriber implements EventSubscriberInterface
     public function checkLastSuccessfulDonation(DonatorWasUpdatedEvent $event): void
     {
         $donator = $event->getDonator();
-        $donator->setLastSuccessfulDonation(null);
 
-        foreach ($donator->getDonations() as $donation) {
-            if (!$lastSuccessDate = $donation->getLastSuccessDate()) {
-                continue;
-            }
-
-            $currentSuccessfulDonation = $donator->getLastSuccessfulDonation();
-
-            if (!$currentSuccessfulDonation || $currentSuccessfulDonation->getLastSuccessDate() < $lastSuccessDate) {
-                $donation->markAsLastSuccessfulDonation();
-            }
-        }
+        $donator->computeLastSuccessfulDonation();
 
         $this->em->flush();
     }

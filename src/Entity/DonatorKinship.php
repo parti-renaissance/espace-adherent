@@ -30,6 +30,8 @@ class DonatorKinship
     private $donator;
 
     /**
+     * @Assert\NotBlank(message="Veuillez spécifier un Donateur à associer.")
+     *
      * @ORM\ManyToOne(targetEntity=Donator::class)
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -38,7 +40,7 @@ class DonatorKinship
     /**
      * @ORM\Column(length=100, nullable=false)
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Veuillez spécifier un lien de parenté.")
      * @Assert\Length(
      *     min=2,
      *     max=100,

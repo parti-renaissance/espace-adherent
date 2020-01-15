@@ -173,7 +173,7 @@ class Donation implements GeoPointInterface
     /**
      * @var Transaction[]
      *
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation", cascade={"all"})
      * @ORM\OrderBy({"payboxDateTime": "DESC"})
      */
     private $transactions;
@@ -194,12 +194,12 @@ class Donation implements GeoPointInterface
         string $payboxOrderRef = null,
         string $nationality = null,
         Donator $donator = null,
-        \DateTimeInterface $createdAt = null
+        \DateTimeImmutable $createdAt = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->amount = $amount;
-        $this->donatedAt = $donatedAt ?? new Chronos();
+        $this->donatedAt = $donatedAt ?? new \DateTimeImmutable();
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new Chronos();

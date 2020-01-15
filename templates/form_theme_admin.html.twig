@@ -43,7 +43,7 @@
                 <strong>
                     Don {% if donation.hasSubscription %}récurrent {% endif %}de
                     {{ donation.amountInEuros|localizedcurrency('EUR') }}
-                    le {{ donation.createdAt|localizeddate }}
+                    le {{ donation.donatedAt|localizeddate }}
                 </strong>
 
                 <a href="{{ path('admin_app_donation_edit', { id: form.vars.value }) }}" target="_blank">
