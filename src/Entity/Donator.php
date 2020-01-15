@@ -322,7 +322,9 @@ class Donator
 
     public function computeLastSuccessfulDonation(): void
     {
-        $this->lastSuccessfulDonation = $this->getSuccessfulDonations()->first() ?? null;
+        $lastSuccessfulDonation = $this->getSuccessfulDonations()->first();
+
+        $this->lastSuccessfulDonation = false !== $lastSuccessfulDonation ? $lastSuccessfulDonation : null;
     }
 
     public function getTags(): Collection
