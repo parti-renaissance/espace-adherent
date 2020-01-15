@@ -10,8 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/projets-qui-marchent")
- *
- * @Security("is_granted('ROLE_PROGRAMMATIC_FOUNDATION')")
  */
 class ProgrammaticFoundationController extends Controller
 {

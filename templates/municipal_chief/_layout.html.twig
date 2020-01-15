@@ -64,11 +64,9 @@
                                 <a href="{{ path('app_message_municipal_chief_list') }}">Mes messages</a>
                             </li>
 
-                            {% if is_granted('ROLE_PROGRAMMATIC_FOUNDATION') %}
-                                <li>
-                                    <a href="{{ path('app_approaches') }}">Projets qui marchent</a>
-                                </li>
-                            {% endif %}
+                            <li>
+                                <a href="{{ path('app_approaches') }}">Projets qui marchent</a>
+                            </li>
 
                             {% if municipal_site_is_enabled(app.user) %}
                                 <li>
