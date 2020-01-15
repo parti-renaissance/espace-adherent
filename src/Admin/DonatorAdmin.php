@@ -159,8 +159,8 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Adresse e-mail',
                 'show_filter' => true,
             ])
-            ->add('Nationalité', ChoiceFilter::class, [
-                'label' => 'Country',
+            ->add('country', ChoiceFilter::class, [
+                'label' => 'Nationalité',
                 'show_filter' => true,
                 'field_type' => CountryType::class,
                 'field_options' => [
