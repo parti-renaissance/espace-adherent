@@ -367,10 +367,6 @@ HELP
                     'label' => 'Accès à "La maison des impressions"',
                     'required' => false,
                 ])
-                ->add('programmaticFoundationPrivilege', null, [
-                    'label' => 'Accès au socle programmatique',
-                    'required' => false,
-                ])
             ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
                 ->add('managedDistrict', AvailableDistrictAutocompleteType::class, [
@@ -643,12 +639,6 @@ HELP
                     if (\in_array(AdherentRoleEnum::PRINT_PRIVILEGE, $value['value'], true)) {
                         $where->add("$alias.printPrivilege = :printPrivilege");
                         $qb->setParameter('printPrivilege', true);
-                    }
-
-                    // Print privilege
-                    if (\in_array(AdherentRoleEnum::PROGRAMMATIC_FOUNDATION_PRIVILEGE, $value['value'], true)) {
-                        $where->add("$alias.programmaticFoundationPrivilege = :programmaticFoundationPrivilege");
-                        $qb->setParameter('programmaticFoundationPrivilege', true);
                     }
 
                     if ($where->count()) {
