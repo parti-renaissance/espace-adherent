@@ -2,6 +2,9 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Donation\DonationEvents;
+use AppBundle\Donation\DonationWasCreatedEvent;
+use AppBundle\Donation\DonationWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -14,8 +17,10 @@ use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -30,12 +35,19 @@ class DonationAdmin extends AbstractAdmin
     ];
 
     private $storage;
+    private $dispatcher;
 
-    public function __construct(string $code, string $class, string $baseControllerName, Filesystem $storage)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        Filesystem $storage,
+        EventDispatcher $dispatcher
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->storage = $storage;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -113,6 +125,20 @@ class DonationAdmin extends AbstractAdmin
                 ->add('transferNumber', null, [
                     'label' => 'Numéro de virement',
                     'disabled' => !$this->isCurrentRoute('create'),
+                ])
+            ->end()
+            ->with('Adresse', ['class' => 'col-md-5'])
+                ->add('postAddress.address', null, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', null, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', null, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', CountryType::class, [
+                    'label' => 'Pays',
                 ])
             ->end()
             ->with('Fichier', ['class' => 'col-md-6'])
@@ -258,6 +284,8 @@ class DonationAdmin extends AbstractAdmin
         parent::prePersist($donation);
 
         $this->handleFile($donation);
+
+        $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation));
     }
 
     /**
@@ -268,6 +296,8 @@ class DonationAdmin extends AbstractAdmin
         parent::preUpdate($donation);
 
         $this->handleFile($donation);
+
+        $this->dispatcher->dispatch(DonationEvents::UPDATED, new DonationWasUpdatedEvent($donation));
     }
 
     /**
