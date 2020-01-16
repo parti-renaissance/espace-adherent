@@ -7,10 +7,8 @@ use AppBundle\Deputy\DeputyMessage;
 use AppBundle\Deputy\DeputyMessageNotifier;
 use AppBundle\Form\DeputyMessageType;
 use AppBundle\Referent\ManagedCommitteesExporter;
-use AppBundle\Referent\ManagedEventsExporter;
 use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,18 +49,6 @@ class DeputyController extends Controller
         return $this->render('deputy/users_message.html.twig', [
             'results_count' => $adherentRepository->countAllInDistrict($currentUser->getManagedDistrict()),
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/evenements", name="app_deputy_events", methods={"GET"})
-     */
-    public function listEventsAction(EventRepository $eventRepository, ManagedEventsExporter $eventsExporter): Response
-    {
-        $this->disableInProduction();
-
-        return $this->render('deputy/events_list.html.twig', [
-            'managedEventsJson' => $eventsExporter->exportAsJson($eventRepository->findAllInDistrict($this->getUser()->getManagedDistrict())),
         ]);
     }
 
