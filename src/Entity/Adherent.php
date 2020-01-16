@@ -429,15 +429,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $printPrivilege = false;
 
     /**
-     * Access to programmatic foundation
-     *
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
-    private $programmaticFoundationPrivilege = false;
-
-    /**
      * @var Collection|AdherentCharterInterface[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AdherentCharter\AbstractAdherentCharter", mappedBy="adherent", cascade={"all"})
@@ -648,10 +639,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->hasPrintPrivilege()) {
             $roles[] = 'ROLE_PRINT_PRIVILEGE';
-        }
-
-        if ($this->hasProgrammaticFoundationPrivilege()) {
-            $roles[] = 'ROLE_PROGRAMMATIC_FOUNDATION';
         }
 
         return array_merge($roles, $this->roles);
@@ -1678,16 +1665,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return $this->municipalChiefManagedArea instanceof MunicipalChiefManagedArea
             && $this->municipalChiefManagedArea->getInseeCode();
-    }
-
-    public function setProgrammaticFoundationPrivilege(bool $programmaticFoundationPrivilege): void
-    {
-        $this->programmaticFoundationPrivilege = $programmaticFoundationPrivilege;
-    }
-
-    public function hasProgrammaticFoundationPrivilege(): bool
-    {
-        return $this->programmaticFoundationPrivilege;
     }
 
     public function getMunicipalChiefManagedArea(): ?MunicipalChiefManagedArea
