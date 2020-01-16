@@ -4,6 +4,7 @@ namespace AppBundle\Controller\EnMarche\EventManager;
 
 use AppBundle\Address\GeoCoder;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Event;
 use AppBundle\Event\EventCommand;
 use AppBundle\Event\EventCommandHandler;
 use AppBundle\Event\EventRegistrationCommand;
@@ -81,8 +82,6 @@ abstract class AbstractEventManagerController extends Controller
 
     abstract protected function getEvents(string $type = null): array;
 
-    abstract protected function getEventClassName(): string;
-
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
         return $this->render($template, array_merge(
@@ -97,5 +96,10 @@ abstract class AbstractEventManagerController extends Controller
     protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
         return $this->redirectToRoute("app_event_manager_{$this->getSpaceType()}_${subName}", $parameters);
+    }
+
+    protected function getEventClassName(): string
+    {
+        return Event::class;
     }
 }

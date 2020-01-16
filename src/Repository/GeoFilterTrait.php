@@ -14,19 +14,24 @@ trait GeoFilterTrait
             return;
         }
 
-        $codes = array_map(function (ReferentTag $tag) {
-            return $tag->getCode();
-        }, $referent->getManagedArea()->getTags()->toArray());
-
-        $this->applyGeoFilter($qb, $codes, $alias);
+        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), $alias);
     }
 
-    private function applyGeoFilter(QueryBuilder $qb, array $codes, string $alias): void
+    /**
+     * @param ReferentTag[] $referentTags
+     */
+    public function applyGeoFilter(QueryBuilder $qb, array $referentTags, string $alias): void
     {
         $codesFilter = $qb->expr()->orX();
 
-        foreach ($codes as $key => $code) {
-            if (is_numeric($code)) {
+        foreach ($referentTags as $key => $tag) {
+            $code = $tag->getCode();
+
+            if (is_numeric($code) || $tag->isDistrictTag()) {
+                if ($tag->isDistrictTag()) {
+                    $code = substr($code, 6, 2);
+                }
+
                 // Postal code prefix
                 $codesFilter->add(
                     $qb->expr()->andX(
@@ -40,6 +45,8 @@ trait GeoFilterTrait
                 // Country
                 $codesFilter->add($qb->expr()->eq("$alias.postAddress.country", ":code_$key"));
                 $qb->setParameter("code_$key", $code);
+            } elseif (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code) {
+                $codesFilter->add("$alias.postAddress.country != 'FR'");
             }
         }
 

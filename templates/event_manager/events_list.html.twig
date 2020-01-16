@@ -84,10 +84,10 @@
         </a>
     </div>
 
-    {% if space_name == constant('AppBundle\\Event\\EventManagerSpaceEnum::REFERENT') %}
+    {% if space_name != constant('AppBundle\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
         <div class="datagrid__table__tabs">
             <div class="datagrid__table__tabs__items">
-                {% if is_active_route(app.request, 'app_referent_event_manager_events') %}
+                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events") %}
                     <h3>Tous les événements</h3>
                 {% else %}
                     <h3><a href="{{ path("app_#{space_name}_event_manager_events") }}">Tous les événements</a></h3>
@@ -95,7 +95,7 @@
 
                 <span class="separator"></span>
 
-                {% if is_active_route(app.request, 'app_referent_event_manager_events_mine') %}
+                {% if is_active_route(app.request, "app_#{space_name}_event_manager_events_mine") %}
                     <h3>Mes événements</h3>
                 {% else %}
                     <h3><a href="{{ path("app_#{space_name}_event_manager_events_mine") }}">Mes événements</a></h3>

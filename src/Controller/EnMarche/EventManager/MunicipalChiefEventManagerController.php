@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */
-class EventManagerMunicipalChief extends AbstractEventManagerController
+class MunicipalChiefEventManagerController extends AbstractEventManagerController
 {
     private $repository;
 
