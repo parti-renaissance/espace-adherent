@@ -87,9 +87,10 @@ class LoadDonationData extends Fixture
             60.,
             PayboxPaymentSubscription::UNLIMITED,
             Donation::TYPE_CB,
-            '2020/01/05 15:00:00'
+            '2019/12/05 15:00:00'
         );
         $this->createTransaction($donation3);
+        $this->createTransaction($donation3, Transaction::PAYBOX_SUCCESS, '+1 month');
         $donation3->stopSubscription();
 
         $donation4 = $this->createDonation(

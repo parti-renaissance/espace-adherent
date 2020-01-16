@@ -19,7 +19,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -169,7 +171,6 @@ class DonatorAdmin extends AbstractAdmin
             ])
             ->add('isAdherent', CallbackFilter::class, [
                 'label' => 'Est adhérent ?',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'required' => false,
@@ -199,7 +200,6 @@ class DonatorAdmin extends AbstractAdmin
             ])
             ->add('isSubscriber', CallbackFilter::class, [
                 'label' => 'Type de don',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'required' => false,
@@ -270,7 +270,6 @@ class DonatorAdmin extends AbstractAdmin
             ])
             ->add('donationStatus', CallbackFilter::class, [
                 'label' => 'Status de don',
-                'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
                     'required' => false,
@@ -302,9 +301,12 @@ class DonatorAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('lastSuccessfulDonation.lastSuccessDate', DateRangeFilter::class, [
+                'label' => 'Date du dernier don',
+                'field_type' => DateRangePickerType::class,
+            ])
             ->add('tags', ModelFilter::class, [
                 'label' => 'Tags',
-                'show_filter' => true,
                 'field_options' => [
                     'class' => DonatorTag::class,
                     'multiple' => true,
@@ -336,6 +338,13 @@ class DonatorAdmin extends AbstractAdmin
             ->add('lastSuccessfulDonation', null, [
                 'label' => 'Date du dernier don',
                 'template' => 'admin/donator/list_last_donation.html.twig',
+                'sortable' => true,
+                'sort_field_mapping' => [
+                    'fieldName' => 'lastSuccessDate',
+                ],
+                'sort_parent_association_mappings' => [
+                    ['fieldName' => 'lastSuccessfulDonation'],
+                ],
             ])
             ->add('tags', null, [
                 'label' => 'Tags',
