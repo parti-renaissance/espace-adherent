@@ -1,3 +1,24 @@
+@mixin pf-button {
+    display: inline-block;
+    border: 1px solid $lines-grey;
+    font-size: 14px;
+    color: $dark;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: bold;
+    margin-right: 5px;
+    font-family: $font-roboto;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    .icn {
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+}
+
 .programmatic-foundation {
     position: relative;
     padding-bottom: 100px;
@@ -111,6 +132,12 @@
                 opacity: 0.4;
                 margin: 0 10px;
             }
+        }
+    }
+
+    &__ressources {
+        a {
+            @include pf-button;
         }
     }
 
@@ -452,23 +479,7 @@
                 border-bottom: 1px solid $gray--mystic;
 
                 a {
-                    display: inline-block;
-                    border: 1px solid $lines-grey;
-                    font-size: 14px;
-                    color: $dark;
-                    padding: 6px 12px;
-                    border-radius: 50px;
-                    font-weight: bold;
-                    margin-right: 5px;
-
-                    &:hover {
-                        text-decoration: none;
-                    }
-
-                    .icn {
-                        vertical-align: middle;
-                        margin-right: 5px;
-                    }
+                    @include pf-button;
 
                     &.copied {
                         position: relative;
