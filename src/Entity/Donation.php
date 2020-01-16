@@ -554,4 +554,9 @@ class Donation implements GeoPointInterface
     {
         return $this->lastSuccessDate;
     }
+
+    public function setPostAddress(PostAddress $address): void
+    {
+        $this->postAddress = $address;
+    }
 }

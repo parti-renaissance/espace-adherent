@@ -7,6 +7,7 @@ use AppBundle\Donation\DonationWasCreatedEvent;
 use AppBundle\Donation\DonationWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
+use AppBundle\Entity\PostAddress;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -23,6 +24,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DonationAdmin extends AbstractAdmin
@@ -127,20 +131,53 @@ class DonationAdmin extends AbstractAdmin
                     'disabled' => !$this->isCurrentRoute('create'),
                 ])
             ->end()
-            ->with('Adresse', ['class' => 'col-md-5'])
-                ->add('postAddress.address', null, [
+        ;
+        if ($this->isCurrentRoute('create')) {
+            $form
+                ->with('Adresse', ['class' => 'col-md-5'])
+                    ->add('address', TextType::class, [
+                        'label' => 'Rue',
+                        'mapped' => false,
+                    ])
+                    ->add('postalCode', TextType::class, [
+                        'label' => 'Code postal',
+                        'mapped' => false,
+                    ])
+                    ->add('cityName', TextType::class, [
+                        'label' => 'Ville',
+                        'mapped' => false,
+                    ])
+                    ->add('country', CountryType::class, [
+                        'label' => 'Pays',
+                        'mapped' => false,
+                    ])
+                ->end()
+            ;
+
+            $formMapper
+                ->getFormBuilder()
+                ->addEventListener(FormEvents::SUBMIT, [$this, 'buildPostAddress'])
+            ;
+        } else {
+            $form
+                ->with('Adresse', ['class' => 'col-md-5'])
+                ->add('address.address', TextType::class, [
                     'label' => 'Rue',
                 ])
-                ->add('postAddress.postalCode', null, [
+                ->add('address.postalCode', TextType::class, [
                     'label' => 'Code postal',
                 ])
-                ->add('postAddress.cityName', null, [
+                ->add('address.cityName', TextType::class, [
                     'label' => 'Ville',
                 ])
-                ->add('postAddress.country', CountryType::class, [
+                ->add('address.country', CountryType::class, [
                     'label' => 'Pays',
                 ])
-            ->end()
+                ->end()
+            ;
+        }
+
+        $form
             ->with('Fichier', ['class' => 'col-md-6'])
                 ->add('file', FileType::class, [
                     'required' => false,
@@ -263,7 +300,7 @@ class DonationAdmin extends AbstractAdmin
             'Montant' => 'amountInEuros',
             'Date' => 'createdAt',
             'Type' => 'type',
-            'Status' => 'status',
+            'Statut' => 'status',
             'Numéro donateur' => 'donator.identifier',
             'Nom' => 'donator.lastName',
             'Prénom' => 'donator.firstName',
@@ -314,6 +351,34 @@ class DonationAdmin extends AbstractAdmin
                 $this->storage->delete($filePath);
             }
         }
+    }
+
+    public function buildPostAddress(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        /** @var Donation $donation */
+        $donation = $event->getData();
+
+        $country = $form->get('country')->getData();
+        $postalCode = $form->get('postalCode')->getData();
+        $city = $form->get('cityName')->getData();
+        $street = $form->get('address')->getData();
+
+        if (PostAddress::FRANCE === $country) {
+            $address = PostAddress::createFrenchAddress(
+                $street,
+                $postalCode
+            );
+        } else {
+            $address = PostAddress::createForeignAddress(
+                $country,
+                $postalCode,
+                $city,
+                $street
+            );
+        }
+
+        $donation->setPostAddress($address);
     }
 
     public function handleFile(Donation $donation): void
