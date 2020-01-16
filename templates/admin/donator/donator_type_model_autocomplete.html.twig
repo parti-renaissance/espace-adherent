@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig' %}
+
+{% block sonata_type_model_autocomplete_ajax_request_parameters %}
+    {% set sonata_admin = sonata_admin|merge({admin: null}) %}
+
+    {{ parent() }}
+{% endblock %}

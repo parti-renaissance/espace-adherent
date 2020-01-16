@@ -2,6 +2,9 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Donation\DonationEvents;
+use AppBundle\Donation\DonationWasCreatedEvent;
+use AppBundle\Donation\DonationWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -14,8 +17,10 @@ use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -30,24 +35,44 @@ class DonationAdmin extends AbstractAdmin
     ];
 
     private $storage;
+    private $dispatcher;
 
-    public function __construct(string $code, string $class, string $baseControllerName, Filesystem $storage)
-    {
+    public function __construct(
+        string $code,
+        string $class,
+        string $baseControllerName,
+        Filesystem $storage,
+        EventDispatcher $dispatcher
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->storage = $storage;
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * @param Donation|null $object
+     */
+    public function hasAccess($action, $object = null)
+    {
+        if ($object && 'delete' === $action && $object->isCB()) {
+            return false;
+        }
+
+        return parent::hasAccess($action, $object);
+    }
+
+    public function configureBatchActions($actions)
+    {
+        unset($actions['delete']);
+
+        return $actions;
     }
 
     protected function configureFormFields(FormMapper $form)
     {
-        $typeChoices = [
-            'donation.type.'.Donation::TYPE_CHECK => Donation::TYPE_CHECK,
-            'donation.type.'.Donation::TYPE_TRANSFER => Donation::TYPE_TRANSFER,
-        ];
-
-        if (!$this->isCurrentRoute('create')) {
-            $typeChoices['donation.type.'.Donation::TYPE_CB] = Donation::TYPE_CB;
-        }
+        /** @var Donation $donation */
+        $donation = $this->getSubject();
 
         $form
             ->with('Informations générales', ['class' => 'col-md-6'])
@@ -65,23 +90,33 @@ class DonationAdmin extends AbstractAdmin
                 ->add('type', ChoiceType::class, [
                     'label' => 'Type',
                     'disabled' => !$this->isCurrentRoute('create'),
-                    'choices' => $typeChoices,
+                    'choices' => $this->getTypeChoices(),
+                    'choice_label' => function (string $choice) {
+                        return 'donation.type.'.$choice;
+                    },
                 ])
                 ->add('amountInEuros', FormNumberType::class, [
                     'label' => 'Montant',
                     'disabled' => !$this->isCurrentRoute('create'),
                 ])
+                ->add('donatedAt', null, [
+                    'label' => 'Date du don',
+                    'disabled' => $donation->isCB(),
+                ])
                 ->add('status', ChoiceType::class, [
                     'label' => 'Statut du don',
-                    'disabled' => !$this->isCurrentRoute('create'),
+                    'disabled' => $donation->isCB(),
                     'choices' => [
-                        'donation.status.'.Donation::STATUS_WAITING_CONFIRMATION => Donation::STATUS_WAITING_CONFIRMATION,
-                        'donation.status.'.Donation::STATUS_SUBSCRIPTION_IN_PROGRESS => Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
-                        'donation.status.'.Donation::STATUS_ERROR => Donation::STATUS_ERROR,
-                        'donation.status.'.Donation::STATUS_CANCELED => Donation::STATUS_CANCELED,
-                        'donation.status.'.Donation::STATUS_FINISHED => Donation::STATUS_FINISHED,
-                        'donation.status.'.Donation::STATUS_REFUNDED => Donation::STATUS_REFUNDED,
+                        Donation::STATUS_WAITING_CONFIRMATION,
+                        Donation::STATUS_SUBSCRIPTION_IN_PROGRESS,
+                        Donation::STATUS_ERROR,
+                        Donation::STATUS_CANCELED,
+                        Donation::STATUS_FINISHED,
+                        Donation::STATUS_REFUNDED,
                     ],
+                    'choice_label' => function (string $choice) {
+                        return 'donation.status.'.$choice;
+                    },
                 ])
                 ->add('checkNumber', null, [
                     'label' => 'Numéro de chèque',
@@ -90,6 +125,20 @@ class DonationAdmin extends AbstractAdmin
                 ->add('transferNumber', null, [
                     'label' => 'Numéro de virement',
                     'disabled' => !$this->isCurrentRoute('create'),
+                ])
+            ->end()
+            ->with('Adresse', ['class' => 'col-md-5'])
+                ->add('postAddress.address', null, [
+                    'label' => 'Rue',
+                ])
+                ->add('postAddress.postalCode', null, [
+                    'label' => 'Code postal',
+                ])
+                ->add('postAddress.cityName', null, [
+                    'label' => 'Ville',
+                ])
+                ->add('postAddress.country', CountryType::class, [
+                    'label' => 'Pays',
                 ])
             ->end()
             ->with('Fichier', ['class' => 'col-md-6'])
@@ -137,11 +186,7 @@ class DonationAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => [
-                        Donation::TYPE_CB,
-                        Donation::TYPE_CHECK,
-                        Donation::TYPE_TRANSFER,
-                    ],
+                    'choices' => $this->getTypeChoices(),
                     'choice_label' => function (string $choice) {
                         return 'donation.type.'.$choice;
                     },
@@ -185,13 +230,18 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('amountInEuros', NumberType::class, [
                 'label' => 'Montant',
+                'template' => 'admin/donation/list_amount.html.twig',
+            ])
+            ->add('type', null, [
+                'label' => 'Type',
+                'template' => 'admin/donation/list_type.html.twig',
             ])
             ->add('status', null, [
                 'label' => 'Statut du don',
                 'template' => 'admin/donation/list_status.html.twig',
             ])
-            ->add('createdAt', null, [
-                'label' => 'Date de création',
+            ->add('donatedAt', null, [
+                'label' => 'Date',
             ])
             ->add('tags', null, [
                 'label' => 'Tags',
@@ -206,6 +256,26 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
+    public function getExportFields()
+    {
+        return [
+            'ID' => 'id',
+            'Montant' => 'amountInEuros',
+            'Date' => 'createdAt',
+            'Type' => 'type',
+            'Status' => 'status',
+            'Numéro donateur' => 'donator.identifier',
+            'Nom' => 'donator.lastName',
+            'Prénom' => 'donator.firstName',
+            'Civilité' => 'donator.gender',
+            'Adresse e-mail' => 'donator.emailAddress',
+            'Ville du donateur' => 'donator.city',
+            'Pays du donateur' => 'donator.country',
+            'Adresse de référence' => 'donator.getReferenceAddress',
+            'Tags du donateur' => 'donator.getTagsAsString',
+        ];
+    }
+
     /**
      * @param Donation $donation
      */
@@ -214,6 +284,8 @@ class DonationAdmin extends AbstractAdmin
         parent::prePersist($donation);
 
         $this->handleFile($donation);
+
+        $this->dispatcher->dispatch(DonationEvents::CREATED, new DonationWasCreatedEvent($donation));
     }
 
     /**
@@ -224,6 +296,8 @@ class DonationAdmin extends AbstractAdmin
         parent::preUpdate($donation);
 
         $this->handleFile($donation);
+
+        $this->dispatcher->dispatch(DonationEvents::UPDATED, new DonationWasUpdatedEvent($donation));
     }
 
     /**
@@ -233,10 +307,12 @@ class DonationAdmin extends AbstractAdmin
     {
         parent::postRemove($donation);
 
-        $filePath = $donation->getFilePathWithDirectory();
+        if ($donation->hasFileUploaded()) {
+            $filePath = $donation->getFilePathWithDirectory();
 
-        if ($this->storage->has($filePath)) {
-            $this->storage->delete($filePath);
+            if ($this->storage->has($filePath)) {
+                $this->storage->delete($filePath);
+            }
         }
     }
 
@@ -269,5 +345,19 @@ class DonationAdmin extends AbstractAdmin
         $donation->setFilenameFromUploadedFile();
 
         $this->storage->put($donation->getFilePathWithDirectory(), file_get_contents($donation->getFile()->getPathname()));
+    }
+
+    private function getTypeChoices(): array
+    {
+        $choices = [
+            Donation::TYPE_CHECK,
+            Donation::TYPE_TRANSFER,
+        ];
+
+        if (!$this->isCurrentRoute('create')) {
+            $choices[] = Donation::TYPE_CB;
+        }
+
+        return $choices;
     }
 }

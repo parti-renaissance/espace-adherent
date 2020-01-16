@@ -53,8 +53,8 @@ class TransactionSubscriberTest extends WebTestCase
     {
         $transactions = $this->transactionRepository->findAllSuccessfulTransactionByEmail('jacques.picard@en-marche.fr');
 
-        // b/c there are initial transactions when donationFixtures are loaded then 1+3 = 4
-        static::assertCount(4, $transactions);
+        // b/c there are initial transactions when donationFixtures are loaded then 1+4 = 5
+        static::assertCount(5, $transactions);
     }
 
     private function createSignature(array $params): string

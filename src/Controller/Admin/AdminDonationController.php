@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/donation")
  *
- * @Security("has_role('ROLE_ADMIN_DONATORS')")
+ * @Security("has_role('ROLE_ADMIN_FINANCE')")
  */
 class AdminDonationController extends Controller
 {

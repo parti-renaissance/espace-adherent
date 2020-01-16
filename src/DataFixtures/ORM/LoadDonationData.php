@@ -8,7 +8,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
 use AppBundle\Entity\Transaction;
-use Cake\Chronos\Chronos;
 use Cocur\Slugify\Slugify;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -25,86 +24,93 @@ class LoadDonationData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        /** @var Adherent $adherent0 */
-        $adherent0 = $this->getReference('adherent-1');
-        /** @var Adherent $adherent1 */
-        $adherent1 = $this->getReference('adherent-4');
-        /** @var Adherent $adherent2 */
-        $adherent2 = $this->getReference('adherent-3');
+        $donator0 = $this->createDonator('000050', $this->getReference('adherent-1'));
+        $donator1 = $this->createDonator('000051', $this->getReference('adherent-4'));
+        $donator2 = $this->createDonator('000052', $this->getReference('adherent-3'));
 
-        $donator0 = $this->createDonator('000050', $adherent0);
-        $donator1 = $this->createDonator('000051', $adherent1);
-        $donator2 = $this->createDonator('000052', $adherent2);
+        $donationNormal = $this->createDonation(
+            $donator0,
+            50.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CB,
+            '2020/01/01 10:30:00'
+        );
+        $this->createTransaction($donationNormal);
 
-        $donationNormal = $this->createDonation($donator0);
-        $donationMonthly = $this->createDonation($donator0, 42., PayboxPaymentSubscription::UNLIMITED);
-        $donation0 = $this->createDonation($donator1, 50.);
-        $donation1 = $this->createDonation($donator2, 50.);
-        $donation2 = $this->createDonation($donator2, 40.);
-        $donation3 = $this->createDonation($donator2, 60., PayboxPaymentSubscription::UNLIMITED);
-        $donation4 = $this->createDonation($donator2, 100., PayboxPaymentSubscription::UNLIMITED);
+        $donationMonthly = $this->createDonation(
+            $donator0,
+            42.,
+            PayboxPaymentSubscription::UNLIMITED,
+            Donation::TYPE_CB,
+            '2019/12/01 11:00:00'
+        );
+        $this->createTransaction($donationMonthly, Transaction::PAYBOX_CARD_UNAUTHORIZED);
+        $this->createTransaction($donationMonthly, Transaction::PAYBOX_SUCCESS, '+1 month');
 
-        $transactionNormal = $this->createTransaction($donationNormal);
-        $transactionMonthlyError = $this->createTransaction($donationMonthly, Transaction::PAYBOX_CARD_UNAUTHORIZED);
-        $transactionMonthly = $this->createTransaction($donationMonthly);
-        $transaction0 = $this->createTransaction($donation0);
-        $transaction1 = $this->createTransaction($donation1);
-        $transaction2 = $this->createTransaction($donation2);
-        $transaction3 = $this->createTransaction($donation3);
-        $transaction4 = $this->createTransaction($donation4);
+        $this->createDonation(
+            $donator0,
+            30.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CHECK,
+            '2019/01/12 12:00:00'
+        );
 
+        $donation0 = $this->createDonation(
+            $donator1,
+            50.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CB,
+            '2020/01/02 13:37:00'
+        );
+        $this->createTransaction($donation0);
+
+        $donation1 = $this->createDonation(
+            $donator2,
+            50.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CB,
+            '2019/12/04 12:00:00'
+        );
+        $this->createTransaction($donation1);
+
+        $donation2 = $this->createDonation(
+            $donator2,
+            40.,
+            PayboxPaymentSubscription::NONE,
+            Donation::TYPE_CB,
+            '2020/01/04 12:30:00'
+        );
+        $this->createTransaction($donation2);
+
+        $donation3 = $this->createDonation(
+            $donator2,
+            60.,
+            PayboxPaymentSubscription::UNLIMITED,
+            Donation::TYPE_CB,
+            '2019/12/05 15:00:00'
+        );
+        $this->createTransaction($donation3);
+        $this->createTransaction($donation3, Transaction::PAYBOX_SUCCESS, '+1 month');
         $donation3->stopSubscription();
 
-        $this->setDonateAt($transactionMonthlyError, '-30 day');
-        $this->setDonateAt($transaction2, '-1 day');
-        $this->setDonateAt($transaction3, '-100 day');
-        $this->setDonateAt($transaction4, '-50 day');
+        $donation4 = $this->createDonation(
+            $donator2,
+            100.,
+            PayboxPaymentSubscription::UNLIMITED,
+            Donation::TYPE_CB,
+            '2020/01/06 19:00:00'
+        );
+        $this->createTransaction($donation4);
 
-        $donationMonthly->markAsSuccessfulDonation();
-        $donation0->markAsSuccessfulDonation();
-        $donation3->markAsSuccessfulDonation();
+        $donator0->computeLastSuccessfulDonation();
+        $donator1->computeLastSuccessfulDonation();
+        $donator2->computeLastSuccessfulDonation();
 
         $manager->persist($donator0);
         $manager->persist($donator1);
         $manager->persist($donator2);
 
-        $manager->persist($donationNormal);
-        $manager->persist($donationMonthly);
-        $manager->persist($donation0);
-        $manager->persist($donation1);
-        $manager->persist($donation2);
-        $manager->persist($donation3);
-        $manager->persist($donation4);
-
-        $manager->persist($transactionNormal);
-        $manager->persist($transactionMonthlyError);
-        $manager->persist($transactionMonthly);
-        $manager->persist($transaction0);
-        $manager->persist($transaction1);
-        $manager->persist($transaction2);
-        $manager->persist($transaction3);
-        $manager->persist($transaction4);
-
         $manager->flush();
-    }
-
-    public function createDonation(
-        Donator $donator,
-        float $amount = 50.0,
-        int $duration = PayboxPaymentSubscription::NONE,
-        string $type = Donation::TYPE_CB
-    ): Donation {
-        return new Donation(
-            $uuid = Uuid::uuid4(),
-            $type,
-            $amount * 100,
-            $donator->getAdherent()->getPostAddress(),
-            '127.0.0.1',
-            $duration,
-            $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
-            Address::FRANCE,
-            $donator
-        );
     }
 
     public function createDonator(string $accountId, Adherent $adherent): Donator
@@ -124,30 +130,51 @@ class LoadDonationData extends Fixture
         return $donator;
     }
 
+    public function createDonation(
+        Donator $donator,
+        float $amount = 50.0,
+        int $duration = PayboxPaymentSubscription::NONE,
+        string $type = Donation::TYPE_CB,
+        string $donatedAt = null
+    ): Donation {
+        $donation = new Donation(
+            $uuid = Uuid::uuid4(),
+            $type,
+            $amount * 100,
+            $donatedAt ? \DateTimeImmutable::createFromFormat('Y/m/d H:i:s', $donatedAt) : new \DateTimeImmutable(),
+            $donator->getAdherent()->getPostAddress(),
+            '127.0.0.1',
+            $duration,
+            $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
+            Address::FRANCE,
+            $donator
+        );
+
+        $donator->addDonation($donation);
+
+        return $donation;
+    }
+
     public function createTransaction(
         Donation $donation,
         string $resultCode = Transaction::PAYBOX_SUCCESS,
         string $dateModifier = null
     ): Transaction {
-        $date = new Chronos($dateModifier);
+        /** @var \DateTimeImmutable $donatedAt */
+        $donatedAt = $donation->getDonatedAt();
+
+        if ($dateModifier) {
+            $donatedAt = $donatedAt->modify($dateModifier);
+        }
 
         return $donation->processPayload([
             'result' => $resultCode,
             'authorization' => 'test',
             'subscription' => $donation->getDuration() ? Uuid::uuid1()->toString() : null,
             'transaction' => Uuid::uuid4()->toString(),
-            'date' => $date->format('dmY'),
-            'time' => $date->format('H:i:s'),
+            'date' => $donatedAt->format('dmY'),
+            'time' => $donatedAt->format('H:i:s'),
         ]);
-    }
-
-    public function setDonateAt(Transaction $transaction, string $modifier): void
-    {
-        $reflectTransaction = new \ReflectionObject($transaction);
-        $reflectTransactionAt = $reflectTransaction->getProperty('payboxDateTime');
-        $reflectTransactionAt->setAccessible(true);
-        $reflectTransactionAt->setValue($transaction, new Chronos($modifier));
-        $reflectTransactionAt->setAccessible(false);
     }
 
     public function getDependencies()

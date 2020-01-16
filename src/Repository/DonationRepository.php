@@ -66,6 +66,7 @@ class DonationRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('donation')
             ->andWhere('donation.donator = :donator')
+            ->addOrderBy('donation.donatedAt', 'DESC')
             ->setParameter('donator', $donator)
         ;
     }

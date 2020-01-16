@@ -92,6 +92,8 @@ class DonationUpdateReferenceCommand extends Command
     {
         return $this
             ->createDonationQueryBuilder()
+            ->andWhere('donation.type = :type')
+            ->setParameter('type', Donation::TYPE_CB)
             ->getQuery()
             ->iterate()
         ;

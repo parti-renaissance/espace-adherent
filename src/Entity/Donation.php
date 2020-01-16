@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\DonationListener"})
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -54,6 +56,20 @@ class Donation implements GeoPointInterface
      * @ORM\Column(type="integer")
      */
     private $amount;
+
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $donatedAt;
+
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastSuccessDate;
 
     /**
      * @ORM\Column(type="smallint", options={"default": 0})
@@ -164,7 +180,8 @@ class Donation implements GeoPointInterface
     /**
      * @var Transaction[]
      *
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation")
+     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation", cascade={"all"})
+     * @ORM\OrderBy({"payboxDateTime": "DESC"})
      */
     private $transactions;
 
@@ -177,17 +194,19 @@ class Donation implements GeoPointInterface
         UuidInterface $uuid = null,
         string $type = null,
         int $amount = null,
+        \DateTimeInterface $donatedAt = null,
         PostAddress $postAddress = null,
         ?string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
         string $payboxOrderRef = null,
         string $nationality = null,
         Donator $donator = null,
-        \DateTimeInterface $createdAt = null
+        \DateTimeImmutable $createdAt = null
     ) {
-        $this->uuid = $uuid;
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->amount = $amount;
+        $this->setDonatedAt($donatedAt ?? new \DateTimeImmutable());
         $this->postAddress = $postAddress;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new Chronos();
@@ -203,9 +222,9 @@ class Donation implements GeoPointInterface
     public function __toString(): string
     {
         return sprintf(
-            '%.2f € (%s)',
+            '%.2f € [%s]',
             $this->amount / 100,
-            $this->type
+            $this->donatedAt->format('Y/m/d H:i:s')
         );
     }
 
@@ -215,6 +234,12 @@ class Donation implements GeoPointInterface
 
         if ($transaction->isSuccessful()) {
             $this->status = self::STATUS_FINISHED;
+
+            $transactionDateTime = $transaction->getPayboxDateTime();
+            if ($transactionDateTime > $this->lastSuccessDate) {
+                $this->lastSuccessDate = $transactionDateTime;
+            }
+
             if (PayboxPaymentSubscription::NONE !== $this->duration) {
                 $this->status = self::STATUS_SUBSCRIPTION_IN_PROGRESS;
             }
@@ -236,6 +261,11 @@ class Donation implements GeoPointInterface
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    public function isCB(): bool
+    {
+        return self::TYPE_CB === $this->type;
     }
 
     public function getAmount(): ?int
@@ -266,6 +296,20 @@ class Donation implements GeoPointInterface
     public function setAmountInEuros(int $amountInEuros): void
     {
         $this->amount = $amountInEuros * 100;
+    }
+
+    public function getDonatedAt(): ?\DateTimeInterface
+    {
+        return $this->donatedAt;
+    }
+
+    public function setDonatedAt(\DateTimeInterface $donatedAt): void
+    {
+        $this->donatedAt = $donatedAt;
+
+        if (!$this->isCB()) {
+            $this->lastSuccessDate = $donatedAt;
+        }
     }
 
     public function getClientIp(): ?string
@@ -314,7 +358,7 @@ class Donation implements GeoPointInterface
             $fromDay = new \DateTime();
         }
 
-        $donationDate = clone $this->createdAt;
+        $donationDate = clone $this->donatedAt;
 
         return $donationDate->modify(
             sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
@@ -426,7 +470,7 @@ class Donation implements GeoPointInterface
         }
     }
 
-    public function markAsSuccessfulDonation(): void
+    public function markAsLastSuccessfulDonation(): void
     {
         $this->donator->setLastSuccessfulDonation($this);
     }
@@ -504,5 +548,10 @@ class Donation implements GeoPointInterface
     public function setComment(?string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    public function getLastSuccessDate(): ?\DateTimeInterface
+    {
+        return $this->lastSuccessDate;
     }
 }

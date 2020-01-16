@@ -3,30 +3,38 @@
 namespace AppBundle\Donation;
 
 use AppBundle\Repository\AdherentRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DonatorSubscriber implements EventSubscriberInterface
 {
     private $adherentRepository;
 
-    public function __construct(AdherentRepository $adherentRepository)
+    /**
+     * @var ObjectManager
+     */
+    private $em;
+
+    public function __construct(AdherentRepository $adherentRepository, ObjectManager $em)
     {
         $this->adherentRepository = $adherentRepository;
+        $this->em = $em;
     }
 
     public static function getSubscribedEvents()
     {
         return [
             DonationEvents::CREATED => ['attachAdherent'],
+            DonationEvents::DONATOR_UPDATED => ['checkLastSuccessfulDonation'],
         ];
     }
 
     /**
      * Match and attach an adherent with a donator
      */
-    public function attachAdherent(DonationWasCreatedEvent $donation): void
+    public function attachAdherent(DonationWasCreatedEvent $event): void
     {
-        $donator = $donation->getDonation()->getDonator();
+        $donator = $event->getDonation()->getDonator();
 
         if (!$donator->isAdherent()) {
             $donator->setAdherent($this->adherentRepository->findOneForMatching(
@@ -35,5 +43,14 @@ class DonatorSubscriber implements EventSubscriberInterface
                 $donator->getLastName()
             ));
         }
+    }
+
+    public function checkLastSuccessfulDonation(DonatorWasUpdatedEvent $event): void
+    {
+        $donator = $event->getDonator();
+
+        $donator->computeLastSuccessfulDonation();
+
+        $this->em->flush();
     }
 }

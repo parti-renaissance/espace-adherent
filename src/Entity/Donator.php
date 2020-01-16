@@ -128,6 +128,15 @@ class Donator
      */
     private $tags;
 
+    /**
+     * @var DonatorKinship[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity=DonatorKinship::class, mappedBy="donator", cascade={"all"})
+     *
+     * @Assert\Valid
+     */
+    private $kinships;
+
     public function __construct(
         string $lastName = null,
         string $firstName = null,
@@ -141,9 +150,10 @@ class Donator
         $this->city = $city;
         $this->country = $country;
         $this->emailAddress = $emailAddress;
+        $this->gender = $gender;
         $this->donations = new ArrayCollection();
         $this->tags = new ArrayCollection();
-        $this->gender = $gender;
+        $this->kinships = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -274,6 +284,9 @@ class Donator
         return $donation->getAmountInEuros();
     }
 
+    /**
+     * @return Donation[]|Collection
+     */
     public function getDonations(): Collection
     {
         return $this->donations;
@@ -293,6 +306,27 @@ class Donator
         $this->donations->removeElement($donation);
     }
 
+    public function getSuccessfulDonations(): ArrayCollection
+    {
+        $successfulDonations = $this->donations->filter(function (Donation $donation) {
+            return null !== $donation->getLastSuccessDate();
+        });
+
+        $iterator = $successfulDonations->getIterator();
+        $iterator->uasort(function (Donation $donationA, Donation $donationB) {
+            return $donationA->getLastSuccessDate() < $donationB->getLastSuccessDate() ? 1 : -1;
+        });
+
+        return new ArrayCollection($iterator->getArrayCopy());
+    }
+
+    public function computeLastSuccessfulDonation(): void
+    {
+        $lastSuccessfulDonation = $this->getSuccessfulDonations()->first();
+
+        $this->lastSuccessfulDonation = false !== $lastSuccessfulDonation ? $lastSuccessfulDonation : null;
+    }
+
     public function getTags(): Collection
     {
         return $this->tags;
@@ -308,6 +342,11 @@ class Donator
     public function removeTag(DonatorTag $tag): void
     {
         $this->tags->removeElement($tag);
+    }
+
+    public function getTagsAsString(): string
+    {
+        return implode(', ', $this->tags->toArray());
     }
 
     public function getLastSuccessfulDonation(): ?Donation
@@ -351,5 +390,24 @@ class Donator
         }
 
         return null;
+    }
+
+    public function getKinships(): ?Collection
+    {
+        return $this->kinships;
+    }
+
+    public function addKinship(DonatorKinship $kinship): void
+    {
+        if (!$this->kinships->contains($kinship)) {
+            $kinship->setDonator($this);
+
+            $this->kinships->add($kinship);
+        }
+    }
+
+    public function removeKinship(DonatorKinship $kinship): void
+    {
+        $this->kinships->removeElement($kinship);
     }
 }

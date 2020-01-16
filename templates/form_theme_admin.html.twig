@@ -21,35 +21,9 @@
     </span>
 {% endblock %}
 
-{% block app_admin_donator_referenceDonation_entity_referenceDonation_widget %}
-    {% for donationChoice in form %}
-        <div>
-            {{ form_row(donationChoice) }}
-
-            {% set index = donationChoice.vars.value %}
-
-            {% if index is not empty %}
-                {% set donation = form.vars.choices[index].data %}
-
-
-                {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') and not donation.transactions.isEmpty %}
-                    <ul>
-                        {% for transaction in donation.transactions %}
-                            <li>
-                                <span class="badge {% if transaction.isSuccessful %}bg-green{% else %}bg-red{% endif %}">
-                                    {{ ('transaction.result_code.' ~ transaction.payboxResultCode)|trans }}
-                                </span>
-                                le {{ transaction.payboxDateTime|localizeddate }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endif %}
-        </div>
-    {% endfor %}
-{% endblock %}
-
 {% block app_admin_donator_radio_referenceDonation_referenceDonation_entry_widget %}
+    {% import 'admin/donation/_macros.html.twig' as macros %}
+
     {% set currentReferenceDonation = form.parent.parent.vars.value.referenceDonation %}
     {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
 
@@ -64,9 +38,42 @@
         </label>
         <span class="control-label__text">
             {% if form.vars.value %}
+                {% set donation = form.parent.vars.choices[form.vars.value].data %}
+
+                <strong>
+                    Don {% if donation.hasSubscription %}récurrent {% endif %}de
+                    {{ donation.amountInEuros|localizedcurrency('EUR') }}
+                    le {{ donation.donatedAt|localizeddate }}
+                </strong>
+
                 <a href="{{ path('admin_app_donation_edit', { id: form.vars.value }) }}" target="_blank">
-                    {{ form.vars.label }}
+                    Voir le détail
                 </a>
+
+                <ul>
+                    <li>
+                        Type: {{ macros.get_donation_type_badge(donation.type) }}
+                    </li>
+                    <li>
+                        Statut: {{ macros.get_donation_status_badge(donation.status) }}
+                    </li>
+                    {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') and donation.hasSubscription and not donation.transactions.isEmpty %}
+                        <li>
+                            Transactions:
+                            <br>
+                            <ul>
+                                {% for transaction in donation.transactions %}
+                                    <li>
+                                        <span class="badge {% if transaction.isSuccessful %}bg-green{% else %}bg-red{% endif %}">
+                                            {{ ('transaction.result_code.' ~ transaction.payboxResultCode)|trans }}
+                                        </span>
+                                        le {{ transaction.payboxDateTime|localizeddate }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
             {% else %}
                 {{ form.vars.label }}
             {% endif %}

@@ -30,7 +30,7 @@ class TransactionRepositoryTest extends WebTestCase
             ->execute()
         ;
 
-        static::assertSame(25000, $this->transactionRepository->getTotalAmountInCentsByEmail('jacques.picard@en-marche.fr'));
+        static::assertSame(31000, $this->transactionRepository->getTotalAmountInCentsByEmail('jacques.picard@en-marche.fr'));
     }
 
     protected function setUp()

@@ -481,6 +481,8 @@ document.upload.success: Le document a été uploadé avec succès.
 donation.type.cb: Carte bleue
 donation.type.check: Chèque
 donation.type.transfer: Virement
+donation.type.ponctual: Ponctuel
+donation.type.recurrent: Récurrent
 donation.status.waiting_confirmation: En attente de confirmation
 donation.status.subscription_in_progress: Souscription en cours
 donation.status.refunded: Remboursé
