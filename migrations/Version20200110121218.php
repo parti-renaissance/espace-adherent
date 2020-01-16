@@ -11,7 +11,7 @@ final class Version20200110121218 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE donations DROP FOREIGN KEY FK_CDE98962831BACAF');
         $this->addSql('DROP INDEX donation_email_idx ON donations');
-        $this->addSql('ALTER TABLE donations DROP gender, DROP email_address, DROP first_name, DROP last_name, CHANGE donator_id donator_id INT UNSIGNED NOT NULL');
+        $this->addSql('ALTER TABLE donations DROP email_address, DROP first_name, DROP last_name, CHANGE donator_id donator_id INT UNSIGNED NOT NULL');
         $this->addSql('ALTER TABLE donations ADD CONSTRAINT FK_CDE98962831BACAF FOREIGN KEY (donator_id) REFERENCES donators (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE donators DROP INDEX IDX_A902FDD7ABF665A8, ADD UNIQUE INDEX UNIQ_A902FDD7ABF665A8 (reference_donation_id)');
         $this->addSql('ALTER TABLE donators DROP FOREIGN KEY FK_A902FDD7ABF665A8');
@@ -25,6 +25,7 @@ final class Version20200110121218 extends AbstractMigration
             )
 SQL
         );
+        $this->addSql('ALTER TABLE donations DROP gender');
         $this->addSql('ALTER TABLE donators ADD CONSTRAINT FK_A902FDD7DE59CB1A FOREIGN KEY (last_successful_donation_id) REFERENCES donations (id) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE donators ADD CONSTRAINT FK_A902FDD7ABF665A8 FOREIGN KEY (reference_donation_id) REFERENCES donations (id) ON DELETE SET NULL');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A902FDD7DE59CB1A ON donators (last_successful_donation_id)');
