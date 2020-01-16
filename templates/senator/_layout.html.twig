@@ -32,11 +32,11 @@
                                 <a href="{{ path("app_message_senator_list", route_params|default({})) }}">Mes messages</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_senator_event_manager_*') ? 'active' }}">
-                                <a href="{{ path('app_senator_event_manager_events') }}">Événements</a>
-                            </li>
-
                             {% if is_canary_enabled() %}
+                                <li class="{{ is_active_route(app.request, 'app_senator_event_manager_*') ? 'active' }}">
+                                    <a href="{{ path('app_senator_event_manager_events') }}">Événements</a>
+                                </li>
+
                                 <li class="{{ is_active_route(app.request, 'app_senator_managed_users_list') ? 'active' }}">
                                     <a href="{{ path('app_senator_managed_users_list') }}">Adhérents</a>
                                 </li>
