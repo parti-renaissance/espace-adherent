@@ -53,7 +53,7 @@ export default class ProgrammaticFoundation extends React.Component {
                         />
 
                         <div className="programmatic-foundation__contact">
-                            Vous souhaitez partager un projet inspirant ou suggérer une mesure nouvelle ?
+                            Vous souhaitez partager un projet illustratif ou suggérer une mesure nouvelle ?
                             Vous avez une remarque ou une question sur une mesure ou un projet ?
                             Contactez l'équipe programme à <a className="text--blue--dark link--no-decor" href="mailto:idees@en-marche.fr">idees@en-marche.fr</a>
                             <img
@@ -79,14 +79,14 @@ export default class ProgrammaticFoundation extends React.Component {
                                 <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                     <path fill="#7B889B" d="M5.5632955,2.44999999 L5.5632955,3.55000001 L2.55,3.55 L2.55,13.449 L12.449,13.449 L12.45,10.6170839 L13.55,10.6170839 L13.55,14.55 L1.44999999,14.55 L1.44999999,2.44999999 L5.5632955,2.44999999 Z M13.55,2.44999999 L13.55,7.55000001 L12.45,7.55000001 L12.449,4.327 L8,8.77781748 L7.22218252,8 L11.672,3.55 L8.44999999,3.55000001 L8.44999999,2.44999999 L13.55,2.44999999 Z"/>
                                 </svg>
-                                Le recueil
+                                300 projets qui marchent
                             </a>
                         </div>
 
                         <div className="l__row l__row--h-stretch l__row--wrap">
                             <div className="programmatic-foundation__legend">
                                 <span className="legend-item basic-measure">Mesure</span>
-                                <span className="legend-item project">Projet inspirant</span>
+                                <span className="legend-item project">Projet illustratif</span>
                             </div>
                         </div>
 

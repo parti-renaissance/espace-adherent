@@ -47,7 +47,7 @@ export default class Measure extends React.Component {
     renderProjects() {
         return (
             <div className="programmatic-foundation__children programmatic-foundation__projects">
-                <div className="programmatic-foundation__items-type">Projets inspirants</div>
+                <div className="programmatic-foundation__items-type">Projets illustratifs</div>
                 {this.props.measure.projects.map((project, index) => {
                     return <Project
                         key={index+project.uuid}

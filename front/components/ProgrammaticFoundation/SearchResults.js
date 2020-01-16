@@ -42,7 +42,7 @@ export default class SearchResults extends React.Component {
     renderProjectsContent() {
         return (
             <div className="projects">
-                <div className="programmatic-foundation__items-type">Projets inspirants</div>
+                <div className="programmatic-foundation__items-type">Projets illustratifs</div>
                 <div className="programmatic-foundation__children programmatic-foundation__projects">
                     {this.props.projects.map((project, index) => {
                         return <Project
