@@ -8,6 +8,7 @@ use AppBundle\Donation\DonationWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
 use AppBundle\Entity\PostAddress;
+use AppBundle\Entity\Transaction;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -16,8 +17,11 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -214,6 +218,86 @@ class DonationAdmin extends AbstractAdmin
                         return 'donation.status.'.$choice;
                     },
                 ],
+            ])
+            ->add('date', CallbackFilter::class, [
+                'label' => 'Date de don',
+                'field_type' => DateRangePickerType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (empty($dates = $value['value'])) {
+                        return false;
+                    }
+
+                    $start = $dates['start'] ?? null;
+                    $end = $dates['end'] ?? null;
+
+                    if (!$start && !$end) {
+                        return false;
+                    }
+
+                    $qb
+                        ->getQueryBuilder()
+                        ->leftJoin("$alias.transactions", 'transactions')
+                    ;
+
+                    if ($start) {
+                        $startExpression = $qb
+                            ->expr()
+                            ->orX()
+                            ->add(
+                                $qb
+                                    ->expr()
+                                    ->andX()
+                                    ->add("$alias.type = :type_cb")
+                                    ->add('transactions.payboxDateTime >= :start_date')
+                                    ->add('transactions.payboxResultCode = :success_code')
+                            )
+                            ->add(
+                                $qb
+                                    ->expr()
+                                    ->andX()
+                                    ->add("$alias.type != :type_cb")
+                                    ->add("$alias.donatedAt >= :start_date")
+                            )
+                        ;
+
+                        $qb
+                            ->andWhere($startExpression)
+                            ->setParameter('start_date', $start)
+                        ;
+                    }
+
+                    if ($end) {
+                        $endExpression = $qb
+                            ->expr()
+                            ->orX()
+                            ->add(
+                                $qb
+                                    ->expr()
+                                    ->andX()
+                                    ->add("$alias.type = :type_cb")
+                                    ->add('transactions.payboxDateTime <= :end_date')
+                                    ->add('transactions.payboxResultCode = :success_code')
+                            )
+                            ->add(
+                                $qb
+                                    ->expr()
+                                    ->andX()
+                                    ->add("$alias.type != :type_cb")
+                                    ->add("$alias.donatedAt <= :end_date")
+                            )
+                        ;
+
+                        $qb
+                            ->andWhere($endExpression)
+                            ->setParameter('end_date', $end)
+                        ;
+                    }
+
+                    $qb->setParameter('type_cb', Donation::TYPE_CB);
+                    $qb->setParameter('success_code', Transaction::PAYBOX_SUCCESS);
+
+                    return true;
+                },
             ])
             ->add('tags', ModelFilter::class, [
                 'label' => 'Tags',
