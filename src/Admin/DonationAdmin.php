@@ -7,6 +7,7 @@ use AppBundle\Donation\DonationWasCreatedEvent;
 use AppBundle\Donation\DonationWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
+use AppBundle\Entity\PostAddress;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -130,15 +131,19 @@ class DonationAdmin extends AbstractAdmin
             ->with('Adresse', ['class' => 'col-md-5'])
                 ->add('postAddress.address', null, [
                     'label' => 'Rue',
+                    'required' => true,
                 ])
                 ->add('postAddress.postalCode', null, [
                     'label' => 'Code postal',
+                    'required' => true,
                 ])
                 ->add('postAddress.cityName', null, [
                     'label' => 'Ville',
+                    'required' => true,
                 ])
                 ->add('postAddress.country', CountryType::class, [
                     'label' => 'Pays',
+                    'required' => true,
                 ])
             ->end()
             ->with('Fichier', ['class' => 'col-md-6'])
@@ -314,6 +319,15 @@ class DonationAdmin extends AbstractAdmin
                 $this->storage->delete($filePath);
             }
         }
+    }
+
+    public function getNewInstance()
+    {
+        /** @var Donation $donation */
+        $donation = parent::getNewInstance();
+        $donation->setPostAddress(PostAddress::createEmptyAddress());
+
+        return $donation;
     }
 
     public function handleFile(Donation $donation): void
