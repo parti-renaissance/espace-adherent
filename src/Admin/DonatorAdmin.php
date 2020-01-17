@@ -60,6 +60,15 @@ class DonatorAdmin extends AbstractAdmin
         return $actions;
     }
 
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $query->leftJoin('o.donations', 'donations');
+
+        return $query;
+    }
+
     protected function configureFormFields(FormMapper $form)
     {
         $form
@@ -109,18 +118,6 @@ class DonatorAdmin extends AbstractAdmin
                         'placeholder' => 'Dernier don en date',
                         'query_builder' => function (DonationRepository $repository) {
                             return $repository->getSubscriptionsForDonatorQueryBuilder($this->getSubject());
-                        },
-                        'choice_label' => function (Donation $donation) {
-                            $date = $donation->getCreatedAt();
-
-                            return sprintf(
-                                '[%s] %d€ le %s à %s (%s)',
-                                $this->trans('donation.type.'.$donation->getType(), []),
-                                $donation->getAmountInEuros(),
-                                $date->format('d/m/Y'),
-                                $date->format('H:i'),
-                                $this->trans('donation.status.'.$donation->getStatus(), [])
-                            );
                         },
                     ])
                 ->end()
@@ -216,7 +213,6 @@ class DonatorAdmin extends AbstractAdmin
                         case 'ponctual':
                             $qb
                                 ->getQueryBuilder()
-                                ->leftJoin("$alias.donations", 'donations')
                                 ->andWhere('donations.duration = :duration')
                                 ->setParameter('duration', PayboxPaymentSubscription::NONE)
                             ;
@@ -226,7 +222,6 @@ class DonatorAdmin extends AbstractAdmin
                         case 'recurrent':
                             $qb
                                 ->getQueryBuilder()
-                                ->leftJoin("$alias.donations", 'donations')
                                 ->andWhere('donations.duration != :duration')
                                 ->setParameter('duration', PayboxPaymentSubscription::NONE)
                             ;
@@ -260,7 +255,6 @@ class DonatorAdmin extends AbstractAdmin
 
                     $qb
                         ->getQueryBuilder()
-                        ->leftJoin("$alias.donations", 'donations')
                         ->andWhere('donations.type IN (:types)')
                         ->setParameter('types', $types)
                     ;
@@ -293,7 +287,6 @@ class DonatorAdmin extends AbstractAdmin
 
                     $qb
                         ->getQueryBuilder()
-                        ->leftJoin("$alias.donations", 'donations')
                         ->andWhere('donations.status IN (:status)')
                         ->setParameter('status', $status)
                     ;
