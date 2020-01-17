@@ -65,7 +65,6 @@ class Measure
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProgrammaticFoundation\SubApproach", inversedBy="measures")
-     * @ORM\OrderBy({"position": "ASC"})
      * @Assert\NotNull(message="programmatic_foundation.parent.required.measure")
      */
     private $subApproach;
@@ -77,6 +76,7 @@ class Measure
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
+     * @ORM\OrderBy({"position": "ASC"})
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $projects;

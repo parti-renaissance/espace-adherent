@@ -64,7 +64,6 @@ class SubApproach
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProgrammaticFoundation\Approach", inversedBy="subApproaches")
-     * @ORM\OrderBy({"position": "ASC"})
      * @Assert\NotNull(message="programmatic_foundation.parent.required.sub_approach")
      */
     private $approach;
@@ -76,6 +75,7 @@ class SubApproach
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
+     * @ORM\OrderBy({"position": "ASC"})
      * @SymfonySerializer\Groups({"approach_list_read"})
      */
     private $measures;
