@@ -234,7 +234,6 @@ class UnitedNationsBundle
         'VN',
         'VU',
         'WS',
-        'XK',
         'YE',
         'ZA',
         'ZM',
