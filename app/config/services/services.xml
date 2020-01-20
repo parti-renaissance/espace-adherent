@@ -331,6 +331,9 @@
         <service id="AppBundle\Command\NotifyIdeaAuthorAboutContributionsCommand">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
         </service>
+        <service id="AppBundle\Command\SendAdhesionReportCommand">
+            <argument key="$mailer" type="service" id="app.mailer.transactional" />
+        </service>
         <service id="AppBundle\Command\BindDeputiesToDistrictsCommand" />
         <service id="AppBundle\Command\MigrateSubscriptionTypeCommand" />
         <service id="AppBundle\Command\MailchimpSyncAllAdherentsCommand" />
