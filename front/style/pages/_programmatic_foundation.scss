@@ -1,24 +1,3 @@
-@mixin pf-button {
-    display: inline-block;
-    border: 1px solid $lines-grey;
-    font-size: 14px;
-    color: $dark;
-    padding: 6px 12px;
-    border-radius: 50px;
-    font-weight: bold;
-    margin-right: 5px;
-    font-family: $font-roboto;
-
-    &:hover {
-        text-decoration: none;
-    }
-
-    .icn {
-        vertical-align: middle;
-        margin-right: 5px;
-    }
-}
-
 .programmatic-foundation {
     position: relative;
     padding-bottom: 100px;
@@ -136,8 +115,70 @@
     }
 
     &__ressources {
-        a {
-            @include pf-button;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .thumbnail {
+            box-sizing: border-box;
+            display: flex;
+            position: relative;
+            align-items: flex-end;
+            height: 140px;
+            border-radius: 3px;
+            overflow: hidden;
+            width: 100%;
+            background-image: url('/images/programmatic-foundation-thumbnail.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            border: none;
+            padding: 20px;
+
+            @media (min-width: $mobile) {
+                width: 48.5%;
+            }
+
+            &--one {
+                background-position: center top;
+                margin-bottom: 24px;
+
+                @media (min-width: $mobile) {
+                    margin-bottom: 0;
+                }
+            }
+
+            &--two {
+                background-position: center top 65%;
+            }
+
+            &__content {
+                color: $white;
+                font-size: 18px;
+                font-weight: bold;
+                font-family: $font-roboto;
+                z-index: 1;
+            }
+
+            &:before {
+                @include animate-gradient($gradient, 1);
+            }
+
+            &:after {
+                @include animate-gradient($gradient-hover, 0);
+            }
+
+            &:hover {
+                &:before {
+                    opacity: 0;
+                }
+                &:after {
+                    opacity: 1;
+                }
+
+                svg {
+                    opacity: 1;
+                }
+            }
         }
     }
 
@@ -479,7 +520,24 @@
                 border-bottom: 1px solid $gray--mystic;
 
                 a {
-                    @include pf-button;
+                    display: inline-block;
+                    border: 1px solid $lines-grey;
+                    font-size: 14px;
+                    color: $dark;
+                    padding: 6px 12px;
+                    border-radius: 50px;
+                    font-weight: bold;
+                    margin-right: 5px;
+                    font-family: $font-roboto;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    .icn {
+                        vertical-align: middle;
+                        margin-right: 5px;
+                    }
 
                     &.copied {
                         position: relative;
