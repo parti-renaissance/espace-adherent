@@ -7,7 +7,6 @@ use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
 use AppBundle\Entity\DonatorTag;
-use AppBundle\Entity\Transaction;
 use AppBundle\Form\Admin\DonatorKinshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
@@ -299,7 +298,6 @@ class DonatorAdmin extends AbstractAdmin
                                     ->andX()
                                     ->add('donations.type = :type_cb')
                                     ->add('transactions.payboxDateTime >= :start_date')
-                                    ->add('transactions.payboxResultCode = :success_code')
                             )
                             ->add(
                                 $qb
@@ -326,7 +324,6 @@ class DonatorAdmin extends AbstractAdmin
                                     ->andX()
                                     ->add('donations.type = :type_cb')
                                     ->add('transactions.payboxDateTime <= :end_date')
-                                    ->add('transactions.payboxResultCode = :success_code')
                             )
                             ->add(
                                 $qb
@@ -344,7 +341,6 @@ class DonatorAdmin extends AbstractAdmin
                     }
 
                     $qb->setParameter('type_cb', Donation::TYPE_CB);
-                    $qb->setParameter('success_code', Transaction::PAYBOX_SUCCESS);
 
                     return true;
                 },

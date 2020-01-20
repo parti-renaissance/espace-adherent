@@ -8,7 +8,6 @@ use AppBundle\Donation\DonationWasUpdatedEvent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\Transaction;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -252,7 +251,6 @@ class DonationAdmin extends AbstractAdmin
                                     ->andX()
                                     ->add("$alias.type = :type_cb")
                                     ->add('transactions.payboxDateTime >= :start_date')
-                                    ->add('transactions.payboxResultCode = :success_code')
                             )
                             ->add(
                                 $qb
@@ -279,7 +277,6 @@ class DonationAdmin extends AbstractAdmin
                                     ->andX()
                                     ->add("$alias.type = :type_cb")
                                     ->add('transactions.payboxDateTime <= :end_date')
-                                    ->add('transactions.payboxResultCode = :success_code')
                             )
                             ->add(
                                 $qb
@@ -297,7 +294,6 @@ class DonationAdmin extends AbstractAdmin
                     }
 
                     $qb->setParameter('type_cb', Donation::TYPE_CB);
-                    $qb->setParameter('success_code', Transaction::PAYBOX_SUCCESS);
 
                     return true;
                 },
