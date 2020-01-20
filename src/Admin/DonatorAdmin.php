@@ -171,7 +171,6 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Est adhérent ?',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'required' => false,
                     'choices' => [
                         'yes',
                         'no',
@@ -196,11 +195,10 @@ class DonatorAdmin extends AbstractAdmin
                     }
                 },
             ])
-            ->add('isSubscriber', CallbackFilter::class, [
+            ->add('donations.duration', CallbackFilter::class, [
                 'label' => 'Type de don',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'required' => false,
                     'choices' => [
                         'ponctual',
                         'recurrent',
@@ -233,12 +231,11 @@ class DonatorAdmin extends AbstractAdmin
                     }
                 },
             ])
-            ->add('paymentMethod', CallbackFilter::class, [
+            ->add('donations.type', ChoiceFilter::class, [
                 'label' => 'Méthode de paiement',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'required' => false,
                     'multiple' => true,
                     'choices' => [
                         Donation::TYPE_CB,
@@ -249,25 +246,11 @@ class DonatorAdmin extends AbstractAdmin
                         return 'donation.type.'.$choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (empty($types = $value['value'])) {
-                        return false;
-                    }
-
-                    $qb
-                        ->getQueryBuilder()
-                        ->andWhere('donations.type IN (:types)')
-                        ->setParameter('types', $types)
-                    ;
-
-                    return true;
-                },
             ])
-            ->add('donationStatus', CallbackFilter::class, [
-                'label' => 'Status de don',
+            ->add('donations.status', ChoiceFilter::class, [
+                'label' => 'Statut de don',
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'required' => false,
                     'multiple' => true,
                     'choices' => [
                         Donation::STATUS_REFUNDED,
@@ -278,22 +261,9 @@ class DonatorAdmin extends AbstractAdmin
                         Donation::STATUS_WAITING_CONFIRMATION,
                     ],
                     'choice_label' => function (string $choice) {
-                        return 'donation.type.'.$choice;
+                        return 'donation.status.'.$choice;
                     },
                 ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
-                    if (empty($status = $value['value'])) {
-                        return false;
-                    }
-
-                    $qb
-                        ->getQueryBuilder()
-                        ->andWhere('donations.status IN (:status)')
-                        ->setParameter('status', $status)
-                    ;
-
-                    return true;
-                },
             ])
             ->add('lastSuccessfulDonation.lastSuccessDate', DateRangeFilter::class, [
                 'label' => 'Date du dernier don',

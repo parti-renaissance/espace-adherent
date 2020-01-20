@@ -19,6 +19,7 @@ use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
@@ -190,7 +191,7 @@ class DonationAdmin extends AbstractAdmin
                     ],
                 ],
             ])
-            ->add('type', null, [
+            ->add('type', ChoiceFilter::class, [
                 'label' => 'Type',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
@@ -199,9 +200,10 @@ class DonationAdmin extends AbstractAdmin
                     'choice_label' => function (string $choice) {
                         return 'donation.type.'.$choice;
                     },
+                    'multiple' => true,
                 ],
             ])
-            ->add('status', null, [
+            ->add('status', ChoiceFilter::class, [
                 'label' => 'Statut',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
@@ -217,6 +219,7 @@ class DonationAdmin extends AbstractAdmin
                     'choice_label' => function (string $choice) {
                         return 'donation.status.'.$choice;
                     },
+                    'multiple' => true,
                 ],
             ])
             ->add('date', CallbackFilter::class, [
