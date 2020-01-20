@@ -115,22 +115,34 @@ Feature:
     And I should have 1 email "ApprovedIdeaCommentMessage" for "carl999@example.fr" with payload:
     """
     {
-      "FromEmail": "atelier-des-idees@en-marche.fr",
-      "FromName": "La République En Marche !",
-      "Subject": "Votre contribution à une proposition a été approuvée par son auteur !",
-      "MJ-TemplateID": "645030",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
+      "template_name": "approved-idea-comment",
+      "template_content": [],
+      "message": {
+        "subject": "Votre contribution à une proposition a été approuvée par son auteur !",
+        "from_email": "atelier-des-idees@en-marche.fr",
+        "global_merge_vars": [
           {
-              "Email": "carl999@example.fr",
-              "Name": "Carl Mirabeau",
-              "Vars": {
-                  "first_name": "Carl",
-                  "idea_name": "Faire la paix",
-                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
-              }
+            "name": "first_name",
+            "content": "Carl"
+          },
+          {
+            "name": "idea_name",
+            "content": "Faire la paix"
+          },
+          {
+            "name": "idea_link",
+            "content": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
           }
-      ]
+        ],
+        "from_name": "La République En Marche !",
+        "to": [
+          {
+            "email": "carl999@example.fr",
+            "type": "to",
+            "name": "Carl Mirabeau"
+          }
+        ]
+      }
     }
     """
     When I send a "PUT" request to "/api/ideas-workshop/threads/dfd6a2f2-5579-421f-96ac-98993d0edea1/disapprove"

@@ -17,7 +17,7 @@ class EmailTemplateFactory
         $this->templateClass = $templateClass;
     }
 
-    public function createFromMessage(Message $message): EmailTemplate
+    public function createFromMessage(Message $message): AbstractEmailTemplate
     {
         $callable = [$this->templateClass, 'createWithMessage'];
 

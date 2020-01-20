@@ -13,10 +13,9 @@ final class InstitutionalEventInvitationMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '704914',
             $referent->getEmailAddress(),
             self::escape($referent->getFullName()),
-            '',
+            'Invitation pour '.self::escape($institutionalEvent->getName()),
             [
                 'institutional_event_name' => self::escape($institutionalEvent->getName()),
                 'institutional_event_type' => self::escape($institutionalEvent->getCategoryName()),
@@ -42,19 +41,5 @@ final class InstitutionalEventInvitationMessage extends Message
         }
 
         return $message;
-    }
-
-    private static function formatDate(\DateTimeInterface $date, string $format): string
-    {
-        $formatter = new \IntlDateFormatter(
-            'fr_FR',
-            \IntlDateFormatter::NONE,
-            \IntlDateFormatter::NONE,
-            $date->getTimezone(),
-            \IntlDateFormatter::GREGORIAN,
-            $format
-        );
-
-        return $formatter->format($date);
     }
 }

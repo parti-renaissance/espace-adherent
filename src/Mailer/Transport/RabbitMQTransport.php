@@ -2,7 +2,7 @@
 
 namespace AppBundle\Mailer\Transport;
 
-use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailTemplate;
 use AppBundle\Producer\MailerProducerInterface;
 
 class RabbitMQTransport implements TransportInterface
@@ -14,7 +14,7 @@ class RabbitMQTransport implements TransportInterface
         $this->producer = $producer;
     }
 
-    public function sendTemplateEmail(EmailTemplate $email): void
+    public function sendTemplateEmail(AbstractEmailTemplate $email): void
     {
         $this->producer->scheduleEmail($email);
     }

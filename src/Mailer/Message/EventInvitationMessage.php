@@ -12,7 +12,6 @@ final class EventInvitationMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '132747',
             $invite->getEmail(),
             self::escape($invite->getFullName()),
             $invite->getFullName().' vous invite à un événement En Marche !',

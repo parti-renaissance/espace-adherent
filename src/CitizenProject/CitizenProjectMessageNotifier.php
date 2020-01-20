@@ -102,8 +102,8 @@ class CitizenProjectMessageNotifier implements EventSubscriberInterface
         $this->mailer->sendMessage(CitizenProjectCreationConfirmationMessage::create(
             $creator,
             $citizenProject,
-            $this->generateUrl('app_citizen_action_manager_create', [
-                'project_slug' => $citizenProject->getSlug(),
+            $this->generateUrl('app_citizen_project_show', [
+                'slug' => $citizenProject->getSlug(),
             ])
         ));
     }

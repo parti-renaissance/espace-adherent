@@ -21,19 +21,19 @@ final class CitizenProjectNewFollowerMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '274966',
             $host->getEmailAddress(),
             $host->getFullName(),
             'Un nouveau membre a rejoint votre projet citoyen !',
             self::getTemplateVars($citizenProject, $newFollower),
-            [],
+            self::getRecipientVars($host),
             $newFollower->getEmailAddress()
         );
 
         foreach ($hosts as $host) {
             $message->addRecipient(
                 $host->getEmailAddress(),
-                $host->getFullName()
+                $host->getFullName(),
+                self::getRecipientVars($host)
             );
         }
 
@@ -49,5 +49,10 @@ final class CitizenProjectNewFollowerMessage extends Message
             'follower_age' => $newFollower->getAge() ?? 'n/a',
             'follower_city' => $newFollower->getCityName() ?? 'n/a',
         ];
+    }
+
+    private static function getRecipientVars(Adherent $host): array
+    {
+        return ['animator_firstname' => self::escape($host->getFirstName())];
     }
 }

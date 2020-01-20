@@ -2,9 +2,9 @@
 
 namespace AppBundle\Producer;
 
-use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailTemplate;
 
 interface MailerProducerInterface
 {
-    public function scheduleEmail(EmailTemplate $mail): void;
+    public function scheduleEmail(AbstractEmailTemplate $mail): void;
 }

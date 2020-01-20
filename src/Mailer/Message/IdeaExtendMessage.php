@@ -11,7 +11,6 @@ final class IdeaExtendMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '716215',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre proposition a 10 jours supplémentaires pour des contributions !',

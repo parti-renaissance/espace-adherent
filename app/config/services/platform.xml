@@ -68,8 +68,6 @@
             <argument type="service" id="app.mailer.transactional"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="AppBundle\Membership\AdherentRegistry"/>
-            <argument type="service" id="AppBundle\Membership\AdherentManager"/>
-            <argument type="service" id="app.committee.manager"/>
             <argument type="service" id="AppBundle\Referent\ReferentTagManager"/>
             <argument type="service" id="AppBundle\Membership\MembershipRegistrationProcess"/>
             <argument type="service" id="AppBundle\History\EmailSubscriptionHistoryHandler"/>

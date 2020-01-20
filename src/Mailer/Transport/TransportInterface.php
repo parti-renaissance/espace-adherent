@@ -2,12 +2,12 @@
 
 namespace AppBundle\Mailer\Transport;
 
-use AppBundle\Mailer\EmailTemplate;
+use AppBundle\Mailer\AbstractEmailTemplate;
 
 interface TransportInterface
 {
     /**
      * Delivers the email to the recipients.
      */
-    public function sendTemplateEmail(EmailTemplate $email): void;
+    public function sendTemplateEmail(AbstractEmailTemplate $email): void;
 }

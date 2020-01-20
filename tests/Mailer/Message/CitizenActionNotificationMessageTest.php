@@ -27,8 +27,6 @@ class CitizenActionNotificationMessageTest extends AbstractEventMessageTest
             self::ATTEND_EVENT_URL
         );
 
-        $this->assertInstanceOf(CitizenActionNotificationMessage::class, $message);
-        $this->assertSame('326404', $message->getTemplate());
         $this->assertCount(1, $message->getRecipients());
         $this->assertSame('[Projets citoyens] Une nouvelle action citoyenne au sein de votre projet citoyen !', $message->getSubject());
         $this->assertCount(7, $message->getVars());
@@ -65,8 +63,6 @@ class CitizenActionNotificationMessageTest extends AbstractEventMessageTest
             self::ATTEND_EVENT_URL
         );
 
-        $this->assertInstanceOf(CitizenActionNotificationMessage::class, $message);
-        $this->assertSame('326404', $message->getTemplate());
         $this->assertCount(1, $message->getRecipients());
         $this->assertSame('[Projets citoyens] Une nouvelle action citoyenne au sein de votre projet citoyen !', $message->getSubject());
         $this->assertCount(7, $message->getVars());

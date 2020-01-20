@@ -21,11 +21,8 @@ class AdherentTerminateMembershipMessageTest extends TestCase
 
         $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);
 
-        $this->assertInstanceOf(AdherentTerminateMembershipMessage::class, $message);
-        $this->assertSame('187353', $message->getTemplate());
+        $this->assertSame('adherent-terminate-membership', $message->generateTemplateName());
         $this->assertSame('Votre départ d\'En Marche !', $message->getSubject());
-        $this->assertCount(1, $message->getVars());
-        $this->assertSame(['target_firstname' => ''], $message->getVars());
 
         $recipient = $message->getRecipient(0);
         $this->assertInstanceOf(MessageRecipient::class, $recipient);

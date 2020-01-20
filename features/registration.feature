@@ -55,21 +55,35 @@ Feature:
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "jp@test.com",
-            "Name": "Jean-Pierre Durand",
-            "Vars": {
-              "first_name": "Jean-Pierre",
-              "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
-            }
-        }
-      ]
+      "template_name": "adherent-account-activation",
+      "template_content": [],
+      "message": {
+        "subject": "Confirmez votre compte En-Marche.fr",
+        "from_email": "contact@en-marche.fr",
+        "merge_vars": [
+          {
+            "rcpt": "jp@test.com",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jean-Pierre"
+              },
+              {
+                "name": "activation_link",
+                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+              }
+            ]
+          }
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "jp@test.com",
+            "type": "to",
+            "name": "Jean-Pierre Durand"
+          }
+        ]
+      }
     }
     """
 
@@ -121,21 +135,35 @@ Feature:
     And I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
     """
     {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-      "Email": "jp@test.com",
-          "Name": "Jean-Pierre Durand",
-          "Vars": {
-            "first_name": "Jean-Pierre",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+      "template_name": "adherent-account-activation",
+      "template_content": [],
+      "message": {
+        "subject": "Confirmez votre compte En-Marche.fr",
+        "from_email": "contact@en-marche.fr",
+        "merge_vars": [
+          {
+            "rcpt": "jp@test.com",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Jean-Pierre"
+              },
+              {
+                "name": "activation_link",
+                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+              }
+            ]
           }
-        }
-      ]
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "jp@test.com",
+            "type": "to",
+            "name": "Jean-Pierre Durand"
+          }
+        ]
+      }
     }
     """
 
@@ -198,23 +226,31 @@ Feature:
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
     """
     {
-        "FromEmail":"contact@en-marche.fr",
-        "FromName":"En Marche !",
-        "Subject":"Et maintenant ?",
-        "MJ-TemplateID":"54673",
-        "MJ-TemplateLanguage":true,
-        "Recipients":[
-            {
-                "Email":"jp@test.com",
-                "Name":"Jean-Pierre Durand",
-                "Vars":{
-                    "adherents_count":1,
-                    "committees_count":0,
-                    "target_firstname":"Jean-Pierre",
-                    "target_lastname":"Durand"
-                }
-            }
+      "template_name": "adherent-account-confirmation",
+      "template_content": [],
+      "message": {
+        "subject": "Et maintenant ?",
+        "from_email": "contact@en-marche.fr",
+        "merge_vars": [
+          {
+            "rcpt": "jp@test.com",
+            "vars": [
+              {
+                "name": "target_firstname",
+                "content": "Jean-Pierre"
+              }
+            ]
+          }
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "jp@test.com",
+            "type": "to",
+            "name": "Jean-Pierre Durand"
+          }
         ]
+      }
     }
     """
     And I clean the "api_sync" queue
@@ -356,21 +392,35 @@ Feature:
     And I should have 1 email "AdherentAccountActivationMessage" for "simple-user-not-activated@example.ch" with payload:
     """
     {
-      "FromEmail": "contact@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Confirmez votre compte En-Marche.fr",
-      "MJ-TemplateID": "292269",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-      "Email": "simple-user-not-activated@example.ch",
-          "Name": "Simple User",
-          "Vars": {
-            "first_name": "Simple",
-            "activation_link": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+      "template_name": "adherent-account-activation",
+      "template_content": [],
+      "message": {
+        "subject": "Confirmez votre compte En-Marche.fr",
+        "from_email": "contact@en-marche.fr",
+        "merge_vars": [
+          {
+            "rcpt": "simple-user-not-activated@example.ch",
+            "vars": [
+              {
+                "name": "first_name",
+                "content": "Simple"
+              },
+              {
+                "name": "activation_link",
+                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@\/@string@"
+              }
+            ]
           }
-        }
-      ]
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "simple-user-not-activated@example.ch",
+            "type": "to",
+            "name": "Simple User"
+          }
+        ]
+      }
     }
     """
 

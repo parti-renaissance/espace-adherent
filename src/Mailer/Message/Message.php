@@ -6,6 +6,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class Message
 {
+    private const MESSAGE_CLASS_SUFFIX = 'Message';
+
     protected $uuid;
     protected $vars;
     protected $subject;
@@ -31,22 +33,22 @@ class Message
      */
     final public function __construct(
         UuidInterface $uuid,
-        string $template,
         string $recipientEmail,
         $recipientName,
         string $subject,
         array $commonVars = [],
         array $recipientVars = [],
-        string $replyTo = null
+        string $replyTo = null,
+        string $template = null
     ) {
         $this->uuid = $uuid;
         $this->recipients = [];
-        $this->template = $template;
         $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->cc = [];
         $this->bcc = [];
+        $this->template = $template;
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
     }
@@ -69,7 +71,7 @@ class Message
         return $this->subject;
     }
 
-    final public function getTemplate(): string
+    final public function getTemplate(): ?string
     {
         return $this->template;
     }
@@ -81,10 +83,7 @@ class Message
 
     final public function addRecipient(string $recipientEmail, $recipientName = null, array $vars = []): void
     {
-        $key = mb_strtolower($recipientEmail);
-        $vars = array_merge($this->vars, $vars);
-
-        $this->recipients[$key] = new MessageRecipient($recipientEmail, $recipientName, $vars);
+        $this->recipients[mb_strtolower($recipientEmail)] = new MessageRecipient($recipientEmail, $recipientName, $vars);
     }
 
     /**
@@ -160,5 +159,33 @@ class Message
     public function setReplyTo(string $replyTo): void
     {
         $this->replyTo = $replyTo;
+    }
+
+    /**
+     * Transforms the mail class name from `CamelCase` to `snake_case` and remove Message word from the end
+     */
+    public function generateTemplateName(): string
+    {
+        $parts = explode('\\', static::class);
+
+        return strtolower(
+            preg_replace(
+                sprintf('#-%s$#', self::MESSAGE_CLASS_SUFFIX), // Remove _Message from the end
+                '',
+                ltrim(preg_replace('#[A-Z]([A-Z](?![a-z]))*#', '-$0', end($parts)), '-')
+            )
+        );
+    }
+
+    protected static function formatDate(\DateTimeInterface $date, string $format): string
+    {
+        return (new \IntlDateFormatter(
+            'fr_FR',
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::NONE,
+            $date->getTimezone(),
+            \IntlDateFormatter::GREGORIAN,
+            $format
+        ))->format($date);
     }
 }

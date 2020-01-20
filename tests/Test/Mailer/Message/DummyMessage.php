@@ -11,11 +11,13 @@ class DummyMessage extends Message
     {
         return new self(
             Uuid::fromString('99999999-9999-9999-9999-999999999999'),
-            '66666',
             'dummy@example.tld',
             'Dummy User',
             'Dummy Message',
-            ['dummy' => 'ymmud']
+            ['dummy' => 'ymmud'],
+            [],
+            null,
+            '66666'
         );
     }
 }

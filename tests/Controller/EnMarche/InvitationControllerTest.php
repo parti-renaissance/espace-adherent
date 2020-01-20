@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Invite;
-use AppBundle\Mailer\Message\InvitationMessage;
+use AppBundle\Mailer\Message\MovementInvitationMessage;
 use AppBundle\Repository\InvitationRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +62,7 @@ class InvitationControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(InvitationMessage::class));
+        $this->assertCount(1, $this->getEmailRepository()->findMessages(MovementInvitationMessage::class));
 
         // Try another time with the same email (should fail)
         $crawler = $this->client->request(Request::METHOD_GET, '/invitation');

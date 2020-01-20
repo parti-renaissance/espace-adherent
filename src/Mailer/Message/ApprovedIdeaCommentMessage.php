@@ -11,7 +11,6 @@ final class ApprovedIdeaCommentMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '645030',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre contribution à une proposition a été approuvée par son auteur !',

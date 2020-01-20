@@ -12,7 +12,6 @@ final class ProcurationProxyReminderMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '133881',
             $request->getEmailAddress(),
             null,
             'RAPPEL : votre procuration',
@@ -32,7 +31,6 @@ final class ProcurationProxyReminderMessage extends Message
         $proxy = $request->getFoundProxy();
 
         return [
-            'target_firstname' => self::escape($request->getFirstNames()),
             'info_link' => $infoUrl,
             'elections' => implode(', ', $request->getElectionRoundLabels()),
             'voter_first_name' => self::escape($proxy->getFirstNames()),

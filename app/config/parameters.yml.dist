@@ -33,10 +33,7 @@ parameters:
     env(RECAPTCHA_PUBLIC_KEY):  ''
     env(RECAPTCHA_PRIVATE_KEY): ''
 
-    env(MAILJET_TRANSACTIONAL_PUBLIC_KEY):     ''
-    env(MAILJET_TRANSACTIONAL_PRIVATE_KEY):    ''
-    env(MAILJET_CAMPAIGN_PUBLIC_KEY):          ''
-    env(MAILJET_CAMPAIGN_PRIVATE_KEY):         ''
+    env(MANDRILL_API_KEY):      ''
 
     env(GMAPS_API_KEY):         ''
 

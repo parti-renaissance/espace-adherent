@@ -3,7 +3,7 @@
 namespace AppBundle\BoardMember;
 
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\BoardMemberMessage as Message;
+use AppBundle\Mailer\Message\BoardMemberContactAdherentsMessage;
 
 class BoardMemberMessageNotifier
 {
@@ -26,8 +26,8 @@ class BoardMemberMessageNotifier
         }
     }
 
-    private function createMessage(BoardMemberMessage $message, array $recipients): Message
+    private function createMessage(BoardMemberMessage $message, array $recipients): BoardMemberContactAdherentsMessage
     {
-        return Message::createFromModel($message, $recipients);
+        return BoardMemberContactAdherentsMessage::createFromModel($message, $recipients);
     }
 }

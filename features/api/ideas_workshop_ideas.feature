@@ -455,21 +455,30 @@ Feature:
     And I should have 1 email "IdeaPublishMessage" for "benjyd@aol.com" with payload:
     """
     {
-      "FromEmail": "atelier-des-idees@en-marche.fr",
-      "FromName": "La République En Marche !",
-      "Subject": "Votre proposition a bien été publiée !",
-      "MJ-TemplateID": "645027",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
+      "template_name": "idea-publish",
+      "template_content": [],
+      "message": {
+        "subject": "Votre proposition a bien été publiée !",
+        "from_email": "atelier-des-idees@en-marche.fr",
+        "global_merge_vars": [
           {
-              "Email": "benjyd@aol.com",
-              "Name": "Benjamin Duroc",
-              "Vars": {
-                  "first_name": "Benjamin",
-                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/aa093ce6-8b20-4d86-bfbc-91a73fe47285"
-              }
+            "name": "first_name",
+            "content": "Benjamin"
+          },
+          {
+            "name": "idea_link",
+            "content": "http://test.enmarche.code/atelier-des-idees/proposition/aa093ce6-8b20-4d86-bfbc-91a73fe47285"
           }
-      ]
+        ],
+        "from_name": "La République En Marche !",
+        "to": [
+          {
+            "email": "benjyd@aol.com",
+            "type": "to",
+            "name": "Benjamin Duroc"
+          }
+        ]
+      }
     }
     """
 
@@ -503,21 +512,30 @@ Feature:
     And I should have 1 email "IdeaExtendMessage" for "jacques.picard@en-marche.fr" with payload:
     """
     {
-      "FromEmail": "atelier-des-idees@en-marche.fr",
-      "FromName": "La République En Marche !",
-      "Subject": "Votre proposition a 10 jours supplémentaires pour des contributions !",
-      "MJ-TemplateID": "716215",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
+      "template_name": "idea-extend",
+      "template_content": [],
+      "message": {
+        "subject": "Votre proposition a 10 jours supplémentaires pour des contributions !",
+        "from_email": "atelier-des-idees@en-marche.fr",
+        "global_merge_vars": [
           {
-              "Email": "jacques.picard@en-marche.fr",
-              "Name": "Jacques Picard",
-              "Vars": {
-                  "first_name": "Jacques",
-                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
-              }
+            "name": "first_name",
+            "content": "Jacques"
+          },
+          {
+            "name": "idea_link",
+            "content": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
           }
-      ]
+        ],
+        "from_name": "La République En Marche !",
+        "to": [
+          {
+            "email": "jacques.picard@en-marche.fr",
+            "type": "to",
+            "name": "Jacques Picard"
+          }
+        ]
+      }
     }
     """
 

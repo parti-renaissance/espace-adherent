@@ -4,7 +4,7 @@ namespace AppBundle\Invitation;
 
 use AppBundle\Entity\Invite;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\InvitationMessage;
+use AppBundle\Mailer\Message\MovementInvitationMessage;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,6 +26,6 @@ class InvitationRequestHandler
         $this->entityManager->persist($invite);
         $this->entityManager->flush();
 
-        $this->mailer->sendMessage(InvitationMessage::createFromInvite($invite));
+        $this->mailer->sendMessage(MovementInvitationMessage::createFromInvite($invite));
     }
 }

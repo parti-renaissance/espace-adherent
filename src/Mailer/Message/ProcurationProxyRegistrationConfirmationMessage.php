@@ -11,7 +11,6 @@ final class ProcurationProxyRegistrationConfirmationMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '744669',
             $procurationProxy->getEmailAddress(),
             null,
             'Vous souhaitez être mandataire'

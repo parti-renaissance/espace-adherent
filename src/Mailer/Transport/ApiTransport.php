@@ -2,8 +2,8 @@
 
 namespace AppBundle\Mailer\Transport;
 
+use AppBundle\Mailer\AbstractEmailTemplate;
 use AppBundle\Mailer\EmailClientInterface;
-use AppBundle\Mailer\EmailTemplate;
 
 class ApiTransport implements TransportInterface
 {
@@ -14,7 +14,7 @@ class ApiTransport implements TransportInterface
         $this->client = $client;
     }
 
-    public function sendTemplateEmail(EmailTemplate $email): void
+    public function sendTemplateEmail(AbstractEmailTemplate $email): void
     {
         $email->delivered($this->client->sendEmail(json_encode($email)));
     }

@@ -4,7 +4,8 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\IdeaContributionsMessage;
+use AppBundle\Mailer\Message\IdeaNotificationContributionsMessage;
+use AppBundle\Mailer\Message\IdeaNotificationWithoutContributionsMessage;
 use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -96,7 +97,7 @@ class NotifyIdeaAuthorAboutContributionsCommand extends Command
     private function sendMail(Idea $idea): void
     {
         if ($idea->getCommentsCount() > 0) {
-            $message = IdeaContributionsMessage::createWithContributions(
+            $message = IdeaNotificationContributionsMessage::create(
                 $idea->getAuthor(),
                 $idea->getName(),
                 $this->urlGenerator->generate(
@@ -108,7 +109,7 @@ class NotifyIdeaAuthorAboutContributionsCommand extends Command
                 $idea->getCommentsCount()
             );
         } else {
-            $message = IdeaContributionsMessage::createWithoutContributions(
+            $message = IdeaNotificationWithoutContributionsMessage::create(
                 $idea->getAuthor(),
                 $idea->getName(),
                 $this->urlGenerator->generate(

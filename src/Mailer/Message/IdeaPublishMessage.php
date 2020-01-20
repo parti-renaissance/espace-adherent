@@ -11,7 +11,6 @@ final class IdeaPublishMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '645027',
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Votre proposition a bien été publiée !',

@@ -11,7 +11,6 @@ final class ProcurationRequestRegistrationConfirmationMessage extends Message
     {
         $message = new self(
             Uuid::uuid4(),
-            '744709',
             $request->getEmailAddress(),
             null,
             'Vous souhaitez trouver un mandataire pour les élections européennes'

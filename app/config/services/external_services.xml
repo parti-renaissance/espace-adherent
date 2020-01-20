@@ -26,10 +26,8 @@
             <argument type="service" id="app.mailer.message_factory.transactional"/>
         </service>
 
-        <service id="app.mailer.transactional_client" class="AppBundle\Mailjet\EmailClient" public="false">
-            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
-            <argument>%env(MAILJET_TRANSACTIONAL_PUBLIC_KEY)%</argument>
-            <argument>%env(MAILJET_TRANSACTIONAL_PRIVATE_KEY)%</argument>
+        <service id="app.mailer.transactional_client" class="AppBundle\Mandrill\EmailClient" public="false">
+            <argument type="service" id="csa_guzzle.client.mandrill_api"/>
         </service>
 
         <service id="app.mailer.transport.rabbitmq_transactional" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
@@ -39,7 +37,7 @@
         <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
-            <argument>AppBundle\Mailjet\EmailTemplate</argument>
+            <argument>AppBundle\Mandrill\EmailTemplate</argument>
         </service>
 
         <!-- Mailer (campaign) -->
@@ -49,10 +47,8 @@
             <argument type="service" id="app.mailer.message_factory.campaign"/>
         </service>
 
-        <service id="app.mailer.campaign_client" class="AppBundle\Mailjet\EmailClient" public="false">
-            <argument type="service" id="csa_guzzle.client.mailjet_api"/>
-            <argument>%env(MAILJET_CAMPAIGN_PUBLIC_KEY)%</argument>
-            <argument>%env(MAILJET_CAMPAIGN_PRIVATE_KEY)%</argument>
+        <service id="app.mailer.campaign_client" class="AppBundle\Mandrill\EmailClient" public="false">
+            <argument type="service" id="csa_guzzle.client.mandrill_api"/>
         </service>
 
         <service id="app.mailer.transport.rabbitmq_campaign" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
@@ -62,7 +58,7 @@
         <service id="app.mailer.message_factory.campaign" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
             <argument>%campaign_sender_email%</argument>
             <argument>%campaign_sender_name%</argument>
-            <argument>AppBundle\Mailjet\EmailTemplate</argument>
+            <argument>AppBundle\Mandrill\EmailTemplate</argument>
         </service>
 
         <service id="AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber">

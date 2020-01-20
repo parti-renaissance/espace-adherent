@@ -17,7 +17,6 @@ final class CitizenActionContactParticipantsMessage extends Message
 
         $message = new self(
             Uuid::uuid4(),
-            '275088',
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
             "[Action citoyenne] $subject",

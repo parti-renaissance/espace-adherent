@@ -52,7 +52,7 @@
                         {% for email in emails|slice(0, 2) %}
                             <li>
                                 <div class="list-title">
-                                    {{ email.requestPayload.Subject }}
+                                    {{ email.requestPayload.message.subject }}
                                     <span class="pull-right">{{ email.Recipients|length }}</span>
                                 </div>
                                 <div class="list-subtitle">

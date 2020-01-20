@@ -4,13 +4,12 @@ namespace AppBundle\Mailer\Message;
 
 use AppBundle\Entity\Invite;
 
-final class InvitationMessage extends Message
+final class MovementInvitationMessage extends Message
 {
     public static function createFromInvite(Invite $invite): self
     {
         return new self(
             $invite->getUuid(),
-            '108243',
             $invite->getEmail(),
             null,
             sprintf('%s vous invite à rejoindre En Marche.', self::escape($invite->getSenderFullName())),

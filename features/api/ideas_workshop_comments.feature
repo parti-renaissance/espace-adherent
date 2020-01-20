@@ -155,22 +155,34 @@ Feature:
     And I should have 1 email "ApprovedIdeaCommentMessage" for "benjyd@aol.com" with payload:
     """
     {
-      "FromEmail": "atelier-des-idees@en-marche.fr",
-      "FromName": "La République En Marche !",
-      "Subject": "Votre contribution à une proposition a été approuvée par son auteur !",
-      "MJ-TemplateID": "645030",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
+      "template_name": "approved-idea-comment",
+      "template_content": [],
+      "message": {
+        "subject": "Votre contribution à une proposition a été approuvée par son auteur !",
+        "from_email": "atelier-des-idees@en-marche.fr",
+        "global_merge_vars": [
           {
-              "Email": "benjyd@aol.com",
-              "Name": "Benjamin Duroc",
-              "Vars": {
-                  "first_name": "Benjamin",
-                  "idea_name": "Faire la paix",
-                  "idea_link": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
-              }
+            "name": "first_name",
+            "content": "Benjamin"
+          },
+          {
+            "name": "idea_name",
+            "content": "Faire la paix"
+          },
+          {
+            "name": "idea_link",
+            "content": "http://test.enmarche.code/atelier-des-idees/proposition/e4ac3efc-b539-40ac-9417-b60df432bdc5"
           }
-      ]
+        ],
+        "from_name": "La République En Marche !",
+        "to": [
+          {
+            "email": "benjyd@aol.com",
+            "type": "to",
+            "name": "Benjamin Duroc"
+          }
+        ]
+      }
     }
     """
     When I send a "PUT" request to "/api/ideas-workshop/thread_comments/b99933f3-180c-4248-82f8-1b0eb950740d/disapprove"

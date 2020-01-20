@@ -24,21 +24,37 @@ Feature: Manage citizen projects from admin pannel
     And I should have 1 email "CitizenProjectApprovalConfirmationMessage" for "benjyd@aol.com" with payload:
     """
     {
-      "FromEmail": "projetscitoyens@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Votre projet citoyen a \u00e9t\u00e9 publi\u00e9. \u00c0 vous de jouer !",
-      "MJ-TemplateID": "244444",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "benjyd@aol.com",
-            "Name": "Benjamin Duroc",
-            "Vars": {
-              "citizen_project_name":"Le projet citoyen à Marseille",
-              "target_firstname":"Benjamin"
-            }
-        }
-      ]
+      "template_name": "citizen-project-approval-confirmation",
+      "template_content": [],
+      "message": {
+        "subject": "Votre projet citoyen a été publié. À vous de jouer !",
+        "from_email": "projetscitoyens@en-marche.fr",
+        "global_merge_vars": [
+          {
+            "name": "citizen_project_name",
+            "content": "Le projet citoyen à Marseille"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "benjyd@aol.com",
+            "vars": [
+              {
+                "name": "target_firstname",
+                "content": "Benjamin"
+              }
+            ]
+          }
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "benjyd@aol.com",
+            "type": "to",
+            "name": "Benjamin Duroc"
+          }
+        ]
+      }
     }
     """
 
@@ -60,22 +76,41 @@ Feature: Manage citizen projects from admin pannel
     And I should have 1 email "TurnkeyProjectApprovalConfirmationMessage" for "laura@deloche.com" with payload:
     """
     {
-      "FromEmail": "projetscitoyens@en-marche.fr",
-      "FromName": "En Marche !",
-      "Subject": "Votre projet citoyen a \u00e9t\u00e9 publi\u00e9. \u00c0 vous de jouer !",
-      "MJ-TemplateID": "538132",
-      "MJ-TemplateLanguage": true,
-      "Recipients": [
-        {
-          "Email": "laura@deloche.com",
-            "Name": "Laura Deloche",
-            "Vars": {
-              "citizen_project_name":"Un stage pour tous",
-              "kit_url":"http:\/\/test.enmarche.code\/projets-citoyens\/13003-un-stage-pour-tous-1#citizen-project-files",
-              "target_firstname":"Laura"
-            }
-        }
-      ]
+      "template_name": "turnkey-project-approval-confirmation",
+      "template_content": [],
+      "message": {
+        "subject": "Votre projet citoyen a été publié. À vous de jouer !",
+        "from_email": "projetscitoyens@en-marche.fr",
+        "global_merge_vars": [
+          {
+            "name": "citizen_project_name",
+            "content": "Un stage pour tous"
+          },
+          {
+            "name": "kit_url",
+            "content": "http://test.enmarche.code/projets-citoyens/13003-un-stage-pour-tous-1#citizen-project-files"
+          }
+        ],
+        "merge_vars": [
+          {
+            "rcpt": "laura@deloche.com",
+            "vars": [
+              {
+                "name": "target_firstname",
+                "content": "Laura"
+              }
+            ]
+          }
+        ],
+        "from_name": "En Marche !",
+        "to": [
+          {
+            "email": "laura@deloche.com",
+            "type": "to",
+            "name": "Laura Deloche"
+          }
+        ]
+      }
     }
     """
 
