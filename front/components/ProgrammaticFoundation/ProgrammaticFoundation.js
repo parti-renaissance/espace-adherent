@@ -42,7 +42,7 @@ export default class ProgrammaticFoundation extends React.Component {
                             />
                         </a>
 
-                        <div className="text--body b__nudge--top"><strong>Filtrer</strong></div>
+                        <div className="text--body b__nudge--top b__nudge--bottom"><strong>Filtrer</strong></div>
 
                         <SearchBar
                             filterText={this.state.filterText}
@@ -69,17 +69,15 @@ export default class ProgrammaticFoundation extends React.Component {
                 <div className="programmatic-foundation__right">
 
                         <div className="programmatic-foundation__ressources b__nudge--top-40">
-                            <a href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/12_idees_emblematiques.pdf" target="_blank">
-                                <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                    <path fill="#7B889B" d="M5.5632955,2.44999999 L5.5632955,3.55000001 L2.55,3.55 L2.55,13.449 L12.449,13.449 L12.45,10.6170839 L13.55,10.6170839 L13.55,14.55 L1.44999999,14.55 L1.44999999,2.44999999 L5.5632955,2.44999999 Z M13.55,2.44999999 L13.55,7.55000001 L12.45,7.55000001 L12.449,4.327 L8,8.77781748 L7.22218252,8 L11.672,3.55 L8.44999999,3.55000001 L8.44999999,2.44999999 L13.55,2.44999999 Z"/>
-                                </svg>
-                                Les 12 idées emblématiques
+                            <a className="thumbnail thumbnail--one" href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/recueil_municipales.pdf" target="_blank">
+                                <div className="thumbnail__content">
+                                    300 projets qui marchent : le recueil →
+                                </div>
                             </a>
-                            <a href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/recueil_municipales.pdf" target="_blank">
-                                <svg className="icn" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                    <path fill="#7B889B" d="M5.5632955,2.44999999 L5.5632955,3.55000001 L2.55,3.55 L2.55,13.449 L12.449,13.449 L12.45,10.6170839 L13.55,10.6170839 L13.55,14.55 L1.44999999,14.55 L1.44999999,2.44999999 L5.5632955,2.44999999 Z M13.55,2.44999999 L13.55,7.55000001 L12.45,7.55000001 L12.449,4.327 L8,8.77781748 L7.22218252,8 L11.672,3.55 L8.44999999,3.55000001 L8.44999999,2.44999999 L13.55,2.44999999 Z"/>
-                                </svg>
-                                300 projets qui marchent
+                            <a className="thumbnail thumbnail--two" href="https://storage.googleapis.com/en-marche-fr/pole_idees/Municipales/12_idees_emblematiques.pdf" target="_blank">
+                                <div className="thumbnail__content">
+                                    Les 12 idées emblématiques →
+                                </div>
                             </a>
                         </div>
 
@@ -89,8 +87,6 @@ export default class ProgrammaticFoundation extends React.Component {
                                 <span className="legend-item project">Projet illustratif</span>
                             </div>
                         </div>
-
-                        {/*<a href="#" className="text--body text--blue--dark link--no-decor text--bold">Télécharger les mesures phares</a>*/}
 
                         {this.state.isLoading ?
                             <Loader title="Chargement..." wrapperClassName="text--body space--30-0 text--center"/> :
