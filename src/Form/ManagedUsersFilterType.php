@@ -44,6 +44,9 @@ class ManagedUsersFilterType extends AbstractType
                     'common.adherent.subscribed' => true,
                     'common.adherent.unsubscribed' => false,
                 ],
+                'choice_value' => function ($choice) {
+                    return false === $choice ? '0' : (string) $choice;
+                },
             ])
 
             ->add('sort', HiddenType::class, ['required' => false])
