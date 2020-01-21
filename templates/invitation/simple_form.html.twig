@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Inviter une connaissance' %}
+{% block canonical_url url('invitation_form') %}
+
+{% block content %}
+    <main>
+        <section class="l__wrapper--500">
+            <div class="invitation-page">
+                <h2>J'invite une connaissance à rejoindre La République En Marche !</h2>
+
+                <div class="invitation-page__form">
+                    {{ form_start(form) }}
+
+                    {{ form_errors(form) }}
+
+                    <p class="text--small">Avant d'envoyer ce message d'invitation, assurez-vous d'avoir obtenu l'autorisation de son destinataire.</p>
+
+                    <div class="form__row">
+                        {{ form_label(form.email, 'L\'adresse email de la personne que vous souhaitez inviter') }}
+                        {{ form_errors(form.email) }}
+                        {{ form_widget(form.email, { attr: { class: 'form--full' } }) }}
+                    </div>
+
+                    <div class="form__row">
+                        {{ form_label(form.message, 'Message d\'invitation') }}
+                        {{ form_errors(form.message) }}
+                        {{ form_widget(form.message, { attr: { class: 'form--full form__field--textarea-120' } }) }}
+                    </div>
+
+                    <div class="text--center">
+                        {{ form_widget(form.submit, { label: 'Envoyer l\'invitation' }) }}
+                    </div>
+
+                    <p class="text--small text--gray">
+                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de gérer les informations relatives aux invitations de contacts de l’utilisateur et de permettre à LaREM de vous envoyer des communications politiques.
+                        Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                        Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante La République En Marche, 63 rue Sainte-Anne, 75002 Paris, France et <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+                    </p>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
