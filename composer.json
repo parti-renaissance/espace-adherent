@@ -97,7 +97,7 @@
         "symfony/http-foundation": "3.4.*",
         "symfony/http-kernel": "3.4.*",
         "symfony/inflector": "3.4.*",
-        "symfony/intl": "3.4.*",
+        "symfony/intl": "^4.3",
         "symfony/messenger": "4.2",
         "symfony/monolog-bridge": "3.4.*",
         "symfony/monolog-bundle": "^3.3",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1474e93549bfbf3abae757df1622eb02",
+    "content-hash": "d697d6003829bf2a829bdf43a043529c",
     "packages": [
         {
             "name": "a2lix/i18n-doctrine-bundle",
@@ -10548,24 +10548,24 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v3.4.35",
+            "version": "v4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "3f40bc99590a5f2bb125d8f3c88ac0b9a0a2ee1b"
+                "reference": "727fed5372915b5ea5e8177070f5e7e547063f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/3f40bc99590a5f2bb125d8f3c88ac0b9a0a2ee1b",
-                "reference": "3f40bc99590a5f2bb125d8f3c88ac0b9a0a2ee1b",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/727fed5372915b5ea5e8177070f5e7e547063f24",
+                "reference": "727fed5372915b5ea5e8177070f5e7e547063f24",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8",
+                "php": "^7.1.3",
                 "symfony/polyfill-intl-icu": "~1.0"
             },
             "require-dev": {
-                "symfony/filesystem": "~2.8|~3.0|~4.0"
+                "symfony/filesystem": "^3.4|^4.0|^5.0"
             },
             "suggest": {
                 "ext-intl": "to use the component with locales other than \"en\""
@@ -10573,7 +10573,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -10619,7 +10619,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2019-10-04T18:48:33+00:00"
+            "time": "2019-11-26T23:16:41+00:00"
         },
         {
             "name": "symfony/messenger",
