@@ -69,7 +69,7 @@ class SendAdhesionReportCommand extends Command
         foreach ($adherents as $adherent) {
             if ($adherent->isReferent()) {
                 $this->executeForTags(
-                    $qb,
+                    clone $qb,
                     $adherent->getManagedArea()->getTags()->toArray(),
                     SubscriptionTypeEnum::REFERENT_EMAIL,
                     $adherent,
@@ -79,7 +79,7 @@ class SendAdhesionReportCommand extends Command
 
             if ($adherent->isDeputy()) {
                 $this->executeForTags(
-                    $qb,
+                    clone $qb,
                     [$adherent->getManagedDistrict()->getReferentTag()],
                     SubscriptionTypeEnum::DEPUTY_EMAIL,
                     $adherent,
@@ -89,7 +89,7 @@ class SendAdhesionReportCommand extends Command
 
             if ($adherent->isSenator()) {
                 $this->executeForTags(
-                    $qb,
+                    clone $qb,
                     [$adherent->getSenatorArea()->getDepartmentTag()],
                     SubscriptionTypeEnum::SENATOR_EMAIL,
                     $adherent,
@@ -143,7 +143,7 @@ class SendAdhesionReportCommand extends Command
 
         $countNewAdherents = $qb->getQuery()->getSingleScalarResult();
 
-        $countSubscribedNewAdherents = (clone $qb)
+        $countSubscribedNewAdherents = $qb
             ->innerJoin('a.subscriptionTypes', 'subscriptionType')
             ->andWhere('subscriptionType.code = :subscription_code AND a.emailUnsubscribed = :false')
             ->setParameter('false', false)
@@ -196,7 +196,7 @@ class SendAdhesionReportCommand extends Command
         if (array_filter($tags, function (ReferentTag $tag) {
             return ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $tag->getCode();
         })) {
-            $zoneCondition->add(sprintf("%s.country != 'FR'", $alias));
+            $zoneCondition->add(sprintf("%s.postAddress.country != 'FR'", $alias));
         }
 
         $zoneCondition->add('tags IN (:tags)');
