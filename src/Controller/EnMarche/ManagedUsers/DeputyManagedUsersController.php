@@ -4,7 +4,7 @@ namespace AppBundle\Controller\EnMarche\ManagedUsers;
 
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
-use AppBundle\Form\ManagedUsersFilterType;
+use AppBundle\Form\ManagedUsers\ManagedUsersFilterType;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

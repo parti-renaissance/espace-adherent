@@ -20,6 +20,7 @@ class ManagedUserFactory
             isset($data['birthday']) ? \is_int($data['birthday']) ?: $this->getAge($data['birthday']) : null,
             $data['phone'] ?? null,
             $data['committees'] ?? null,
+            $data['committee_uuids'] ?? null,
             $data['is_committee_member'],
             $data['is_committee_host'],
             $data['is_committee_supervisor'],

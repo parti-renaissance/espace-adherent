@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\EnMarche\ManagedUsers;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Form\ManagedUsersFilterType;
+use AppBundle\Form\ManagedUsers\ReferentManagedUsersFilterType;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -27,7 +27,7 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
 
     protected function createFilterForm(ManagedUsersFilter $filter = null): FormInterface
     {
-        return $this->createForm(ManagedUsersFilterType::class, $filter, [
+        return $this->createForm(ReferentManagedUsersFilterType::class, $filter, [
             'method' => Request::METHOD_GET,
             'csrf_protection' => false,
         ]);

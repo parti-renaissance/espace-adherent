@@ -139,6 +139,13 @@ class ManagedUser
     private $committees;
 
     /**
+     * @var string[]|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $committeeUuids;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -221,6 +228,7 @@ class ManagedUser
         int $age = null,
         PhoneNumber $phone = null,
         string $committees = null,
+        array $committeeUuids = null,
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
         int $isCommitteeSupervisor = 0,
@@ -247,6 +255,7 @@ class ManagedUser
         $this->age = $age;
         $this->phone = $phone;
         $this->committees = $committees;
+        $this->committeeUuids = $committeeUuids;
         $this->isCommitteeMember = $isCommitteeMember;
         $this->isCommitteeHost = $isCommitteeHost;
         $this->isCommitteeSupervisor = $isCommitteeSupervisor;
@@ -291,11 +300,6 @@ class ManagedUser
     public function getAdherentUuid(): ?UuidInterface
     {
         return $this->adherentUuid;
-    }
-
-    public function setAdherentUuid(?UuidInterface $adherentUuid): void
-    {
-        $this->adherentUuid = $adherentUuid;
     }
 
     public function getEmail(): string
@@ -383,29 +387,14 @@ class ManagedUser
         return $this->gender;
     }
 
-    public function setGender(?string $gender): void
-    {
-        $this->gender = $gender;
-    }
-
     public function getInterests(): array
     {
         return $this->interests;
     }
 
-    public function setInterests(array $interests): void
-    {
-        $this->interests = $interests;
-    }
-
     public function getSupervisorTags(): array
     {
         return $this->supervisorTags;
-    }
-
-    public function setSupervisorTags(array $supervisorTags): void
-    {
-        $this->supervisorTags = $supervisorTags;
     }
 
     public function getCitizenProjects(): ?array
@@ -426,6 +415,11 @@ class ManagedUser
     public function hasSmsSubscriptionType(): bool
     {
         return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+    }
+
+    public function getCommitteeUuids(): ?array
+    {
+        return $this->committeeUuids;
     }
 
     public function getCommitteesAsString(string $separator = ' / '): string

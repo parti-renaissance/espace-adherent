@@ -196,6 +196,7 @@
 
         <!-- Form -->
         <service id="AppBundle\Form\MyReferentTagChoiceType"/>
+        <service id="AppBundle\Form\MyReferentCommitteeChoiceType"/>
         <service id="AppBundle\Form\MyCommitteeChoiceType"/>
         <service id="AppBundle\Form\CitizenProjectCommandType"/>
         <service id="AppBundle\Form\EventListener\AmpSynchronisedListener"/>
