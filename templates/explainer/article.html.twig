@@ -11,8 +11,6 @@
 
 {% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
 
-{% block final_javascripts include('bot/_javascript.html.twig') %}
-
 {% block content %}
     <main class="content b__nudge--bottom">
         <section class="programme b__nudge--bottom">
