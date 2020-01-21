@@ -4,18 +4,11 @@
 {% block canonical_url url('invitation_form') %}
 
 {% block content %}
-
     <main class="invitation-result">
-        <h2>Votre invitation a bien été envoyée</h2>
+        <h2>Invitation à adhérer à LaREM</h2>
 
-        <p>
-            Votre invitation à {{ invite.firstName }} {{ invite.lastName }} de rejoindre En Marche a bien été envoyée.
-            Merci !
-        </p>
+        <p>Votre invitation à rejoindre La République En Marche a bien été envoyée. Merci !</p>
 
-        <p>
-            <a href="{{ path('homepage') }}" class="btn btn--blue">Retourner à l'accueil</a>
-        </p>
+        <p><a href="{{ path('homepage') }}" class="btn btn--blue">Retourner à l'accueil</a></p>
     </main>
-
 {% endblock %}

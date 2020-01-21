@@ -14,13 +14,18 @@ class InvitationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if (!$options['from_adherent']) {
+            $builder
+                ->add('lastName', TextType::class, [
+                    'filter_emojis' => true,
+                ])
+                ->add('firstName', TextType::class, [
+                    'filter_emojis' => true,
+                ])
+            ;
+        }
+
         $builder
-            ->add('lastName', TextType::class, [
-                'filter_emojis' => true,
-            ])
-            ->add('firstName', TextType::class, [
-                'filter_emojis' => true,
-            ])
             ->add('email', EmailType::class)
             ->add('message', TextareaType::class, [
                 'filter_emojis' => true,
@@ -31,10 +36,14 @@ class InvitationType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Invite::class,
-            'translation_domain' => false,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => Invite::class,
+                'translation_domain' => false,
+                'from_adherent' => false,
+            ])
+            ->setAllowedTypes('from_adherent', 'bool')
+        ;
     }
 
     public function getBlockPrefix()

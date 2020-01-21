@@ -19,17 +19,21 @@
 
                     {{ form_errors(form) }}
 
-                    <div class="form__row">
-                        {{ form_label(form.lastName, 'Votre nom') }}
-                        {{ form_errors(form.lastName) }}
-                        {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full' } }) }}
-                    </div>
+                    {% if form.lastName is defined %}
+                        <div class="form__row">
+                            {{ form_label(form.lastName, 'Votre nom') }}
+                            {{ form_errors(form.lastName) }}
+                            {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full' } }) }}
+                        </div>
 
-                    <div class="form__row">
-                        {{ form_label(form.firstName, 'Votre prénom') }}
-                        {{ form_errors(form.firstName) }}
-                        {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full' } }) }}
-                    </div>
+                        <div class="form__row">
+                            {{ form_label(form.firstName, 'Votre prénom') }}
+                            {{ form_errors(form.firstName) }}
+                            {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full' } }) }}
+                        </div>
+                    {% else %}
+                        <p class="text--small">Avant d'envoyer ce message d'invitation, assurez-vous d'avoir obtenu l'autorisation de son destinataire.</p>
+                    {% endif %}
 
                     <div class="form__row">
                         {{ form_label(form.email, 'L\'adresse email de la personne que vous souhaitez inviter') }}
@@ -68,12 +72,6 @@
                     {{ form_end(form) }}
                 </div>
             </div>
-        </section>
-    </main>
-
-    <main>
-        <section class="l__wrapper">
-            {{ form(form) }}
         </section>
     </main>
 
