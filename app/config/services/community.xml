@@ -18,7 +18,7 @@
         </service>
 
         <!-- Invitation -->
-        <service id="app.invitation_request_handler" class="AppBundle\Invitation\InvitationRequestHandler">
+        <service id="AppBundle\Invitation\InvitationRequestHandler">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="app.mailer.campaign" />
         </service>

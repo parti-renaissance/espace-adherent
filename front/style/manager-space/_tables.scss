@@ -156,6 +156,17 @@
     overflow-x: auto;
 }
 
+.datagrid__action {
+    &--wrapper {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    &--align-right {
+        margin-left: auto;
+    }
+}
+
 .datagrid__table-manager {
     width: 100%;
     min-width: 700px;

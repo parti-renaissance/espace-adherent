@@ -123,10 +123,12 @@
         </div>
     </div>
 
-    <div class="b__nudge--bottom-small">
+    <div class="b__nudge--bottom-small datagrid__action--wrapper">
         <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue">Exporter en CSV</a>
 
         <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
+
+        <a href="{{ path('app_adherent_invitation') }}" class="btn-secondary btn-secondary--blue datagrid__action--align-right">Inviter à adhérer</a>
     </div>
 
     <div class="datagrid">
