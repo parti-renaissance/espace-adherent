@@ -1,5 +1,5 @@
 .select2 {
-    &.select2-container { font-family: $font-roboto; }
+    &.select2-container { font-family: $font-roboto; width: 100% !important;}
     &.select2-container--default {
 
         // -------------------
@@ -64,7 +64,8 @@
         &.em-filters {
 
             .select2-selection {
-                &--multiple {
+                &--multiple,
+                &--single {
                     box-sizing: border-box;
                     display: block;
                     @include filter-field-text;
@@ -116,6 +117,14 @@
                             }
                         }
                     }
+                }
+
+                &--single {
+                    background: $white url(/images/icons/icn-form-select.svg) no-repeat right 10px center;
+                }
+
+                &__arrow {
+                    display: none;
                 }
             }
 

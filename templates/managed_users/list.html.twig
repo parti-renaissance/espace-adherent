@@ -13,7 +13,7 @@
 
     {% include 'managed_users/filter_form.html.twig' %}
 
-    <div class="b__nudge--bottom-small datagrid__action--wrapper">
+    <div class="b__nudge--bottom datagrid__action--wrapper">
         <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray(), '_format': 'csv'}) }}" class="btn-secondary btn-secondary--blue">Exporter en CSV</a>
 
         <a href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray(), '_format': 'xls'}) }}" class="btn-secondary btn-secondary--blue">Exporter en XLS</a>
