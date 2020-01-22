@@ -9,6 +9,22 @@
 
         <p>Votre invitation à rejoindre La République En Marche a bien été envoyée. Merci !</p>
 
-        <p><a href="{{ path('homepage') }}" class="btn btn--blue">Retourner à l'accueil</a></p>
+        <p>
+            {% set back_url = path('homepage') %}
+
+            {% if type is defined %}
+                {% if type == 'referent' %}
+                    {% set back_url = path('app_referent_managed_users_list') %}
+                {% elseif type == 'supervisor' %}
+                    {% set back_url = path('app_committee_space_dashboard') %}
+                {% elseif type == 'deputy' %}
+                    {% set back_url = path('app_deputy_managed_users_list') %}
+                {% elseif type == 'senator' %}
+                    {% set back_url = path('app_senator_managed_users_list') %}
+                {% endif %}
+            {% endif %}
+
+            <a href="{{ back_url }}" class="btn btn--blue">Retourner à l'accueil</a>
+        </p>
     </main>
 {% endblock %}

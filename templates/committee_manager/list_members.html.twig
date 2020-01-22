@@ -110,7 +110,7 @@
                 <a href="{{ path('app_committee_manager_list_members', {filter: filter.toArray}|merge({slug: committee.slug, export: true})) }}" id="members-export-button" class="btn-secondary btn-secondary--blue">Exporter tout</a>
             {% endif %}
 
-            <a href="{{ path('app_adherent_invitation') }}" class="btn-secondary btn-secondary--blue datagrid__action--align-right">Inviter à adhérer</a>
+            <a href="{{ path('app_supervisor_adherent_invitation') }}" class="btn-secondary btn-secondary--blue datagrid__action--align-right">Inviter à adhérer</a>
         </div>
 
         {% set order = filter.order and filter.order == 'DESC' ? 'ASC' : 'DESC' %}
