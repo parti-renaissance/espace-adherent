@@ -2,6 +2,7 @@
 
 namespace AppBundle\ManagedUsers;
 
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -118,6 +119,11 @@ class ManagedUsersFilter
      * @Assert\Choice(choices={"a", "d"})
      */
     private $order = 'd';
+
+    /**
+     * @var Committee|null
+     */
+    private $committee;
 
     public function __construct(string $subscriptionType = null, array $referentTags = [])
     {
@@ -327,6 +333,16 @@ class ManagedUsersFilter
         $this->order = $order;
     }
 
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setCommittee(?Committee $committee): void
+    {
+        $this->committee = $committee;
+    }
+
     public function toArray(): array
     {
         return array_merge(
@@ -344,6 +360,7 @@ class ManagedUsersFilter
                 'emailSubscription' => $this->emailSubscription,
                 'sort' => $this->sort,
                 'order' => $this->order,
+                'committee' => $this->committee ? $this->committee->getUuidAsString() : null,
             ],
             array_filter([
                 'includeAdherentsNoCommittee' => $this->includeAdherentsNoCommittee,
