@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\AdherentMessage\Filter;
 
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -70,6 +71,13 @@ class ReferentUserFilter extends AbstractUserFilter
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $contactOnlyRunningMates = false;
+
+    /**
+     * @var Committee
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     */
+    private $committee;
 
     public function __construct(array $referentTags)
     {
@@ -168,5 +176,15 @@ class ReferentUserFilter extends AbstractUserFilter
     public function setContactOnlyRunningMates(bool $contactOnlyRunningMates): void
     {
         $this->contactOnlyRunningMates = $contactOnlyRunningMates;
+    }
+
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function setCommittee(Committee $committee): void
+    {
+        $this->committee = $committee;
     }
 }
