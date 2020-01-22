@@ -5,6 +5,7 @@ namespace AppBundle\Form\AdherentMessage;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MemberInterestsChoiceType;
+use AppBundle\Form\MyReferentCommitteeChoiceType;
 use AppBundle\Form\MyReferentTagChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -38,6 +39,7 @@ class ReferentFilterType extends AbstractType
             ->add('registeredSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('contactOnlyVolunteers', CheckboxType::class, ['required' => false])
+            ->add('committee', MyReferentCommitteeChoiceType::class, ['required' => false])
         ;
 
         if (false === $options['is_referent_from_paris']) {

@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 
@@ -11,7 +12,8 @@ class CommitteeConditionBuilder extends AbstractStaticSegmentConditionBuilder
 {
     public function support(AdherentMessageFilterInterface $filter): bool
     {
-        return $filter instanceof CommitteeFilter;
+        return $filter instanceof CommitteeFilter
+            || ($filter instanceof ReferentUserFilter && $filter->getCommittee());
     }
 
     /**
