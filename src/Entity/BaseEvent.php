@@ -33,6 +33,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     "citizen_action": "AppBundle\Entity\CitizenAction",
  *     "institutional_event": "AppBundle\Entity\InstitutionalEvent",
  *     "municipal_event": "AppBundle\Entity\MunicipalEvent",
+ *     "consular_event": "AppBundle\Entity\ConsularEvent",
  * })
  *
  * @Algolia\Index
