@@ -33,55 +33,24 @@ class ConsularDistrict
     private $countries;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array")
+     */
+    private $cities;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=6)
      */
     private $code;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     */
-    private $number;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(length=50)
-     */
-    private $name;
-
-    /**
-     * @var GeoData
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\GeoData", cascade={"all"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $geoData;
-
-    /**
-     * @var ReferentTag|null
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ReferentTag")
-     */
-    private $referentTag;
-
-    public function __construct(
-        array $countries,
-        string $name,
-        string $code,
-        int $number,
-        GeoData $geoData,
-        ReferentTag $referentTag = null
-    ) {
+    public function __construct(array $countries, array $cities, string $code)
+    {
         $this->countries = $countries;
+        $this->cities = $cities;
         $this->code = $code;
-        $this->name = $name;
-        $this->number = $number;
-        $this->geoData = $geoData;
-        $this->referentTag = $referentTag;
     }
 
     public function getId(): ?int
@@ -109,46 +78,34 @@ class ConsularDistrict
         $this->countries = array_map('trim', explode(',', $countries));
     }
 
+    public function getCities(): array
+    {
+        return $this->cities;
+    }
+
+    public function setCities(array $cities): void
+    {
+        $this->cities = $cities;
+    }
+
+    public function getCitiesAsString(): string
+    {
+        return implode(', ', $this->cities);
+    }
+
+    public function setCitiesAsString(string $cities): void
+    {
+        $this->cities = array_map('trim', explode(',', $cities));
+    }
+
     public function getCode(): string
     {
         return $this->code;
     }
 
-    public function getNumber(): int
-    {
-        return $this->number;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getGeoData(): GeoData
-    {
-        return $this->geoData;
-    }
-
-    public function setGeoData(GeoData $geoData): void
-    {
-        $this->geoData = $geoData;
-    }
-
-    public function getReferentTag(): ?ReferentTag
-    {
-        return $this->referentTag;
-    }
-
-    public function setReferentTag(ReferentTag $referentTag): void
-    {
-        $this->referentTag = $referentTag;
-    }
-
-    public function update(array $countries, string $name, GeoData $geoData): self
+    public function update(array $countries): self
     {
         $this->countries = $countries;
-        $this->name = $name;
-        $this->geoData = $geoData;
 
         return $this;
     }
@@ -156,11 +113,10 @@ class ConsularDistrict
     public function getFullName(): string
     {
         return sprintf(
-            '%s, %s%s circonscription (%s)',
-            $this->name,
-            $this->number,
-            1 === $this->number ? 'ère' : 'ème',
-            substr_replace($this->code, '-', -3, 1)
+            '%s, %s%s circonscription',
+            $this->getCountriesAsString,
+            $this->code,
+            1 === $this->code ? 'ère' : 'ème'
         );
     }
 

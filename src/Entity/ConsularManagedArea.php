@@ -23,15 +23,15 @@ class ConsularManagedArea
     private $id;
 
     /**
-     * @var ReferentTag[]|ArrayCollection
+     * @var ConsularDistrict[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ConsularDistrict")
      */
-    private $districtTag;
+    private $consularDistrict;
 
     public function __construct()
     {
-        $this->districtTag = new ArrayCollection();
+        $this->consularDistrict = new ArrayCollection();
     }
 
     public function getId(): int
@@ -39,22 +39,22 @@ class ConsularManagedArea
         return $this->id;
     }
 
-    public function getDistrictTags(): ArrayCollection
+    public function getConsularDistricts(): ArrayCollection
     {
-        return $this->districtTag;
+        return $this->consularDistrict;
     }
 
-    public function addDistrictTag(ReferentTag $tag): void
+    public function addConsularDistrict(ReferentTag $tag): void
     {
-        if (!$this->districtTag->contains($tag)) {
-            $this->districtTag->add($tag);
+        if (!$this->consularDistrict->contains($tag)) {
+            $this->consularDistrict->add($tag);
         }
     }
 
-    public function removeDistrictTag(ReferentTag $tag): void
+    public function removeConsularDistrict(ReferentTag $tag): void
     {
-        if ($this->districtTag->contains($tag)) {
-            $this->districtTag->remove($tag);
+        if ($this->consularDistrict->contains($tag)) {
+            $this->consularDistrict->remove($tag);
         }
     }
 }
