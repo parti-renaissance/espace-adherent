@@ -25,7 +25,7 @@
                 </li>
 
                 {% if committee.isApproved %}
-                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host', 'app_committee_contact_members']) ? 'active' }}">
+                    <li class="{{ is_active_route(app.request, ['app_committee_manager_list_members', 'app_committee_demote_host', 'app_committee_promote_host', 'app_committee_contact_members', 'app_supervisor_adherent_invitation']) ? 'active' }}">
                         <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}">Adhérents</a>
                     </li>
 

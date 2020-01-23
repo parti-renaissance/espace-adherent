@@ -68,7 +68,7 @@
                                 <a href="{{ path('app_referent_citizen_projects') }}">Projets citoyens</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_referent_managed_users_list') ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, ['app_referent_managed_users_list', 'app_referent_adherent_invitation']) ? 'active' }}">
                                 <a href="{{ path('app_referent_managed_users_list') }}">Adhérents</a>
                             </li>
 

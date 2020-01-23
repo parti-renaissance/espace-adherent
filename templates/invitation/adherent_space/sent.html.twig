@@ -1,0 +1,8 @@
+{% extends 'invitation/adherent_space/_layout.html.twig' %}
+
+{% block page_title 'Votre invitation a bien été envoyée' %}
+{% block canonical_url url('invitation_form') %}
+
+{% block invitation_content %}
+    {% include 'invitation/_confirmation.html.twig' with {back_url: back_url} %}
+{% endblock %}
