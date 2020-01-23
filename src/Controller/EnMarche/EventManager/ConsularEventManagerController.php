@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\EnMarche\EventManager;
 
 use AppBundle\Event\EventManagerSpaceEnum;
-use AppBundle\Repository\MunicipalEventRepository;
+use AppBundle\Repository\ConsularEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,7 +16,7 @@ class ConsularEventManagerController extends AbstractEventManagerController
 {
     private $repository;
 
-    public function __construct(MunicipalEventRepository $repository)
+    public function __construct(ConsularEventRepository $repository)
     {
         $this->repository = $repository;
     }
