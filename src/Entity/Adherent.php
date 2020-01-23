@@ -442,6 +442,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $senatorArea;
 
+    /**
+     * @var ConsularManagedArea|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ConsularManagedArea", cascade={"all"}, orphanRemoval=true)
+     */
+    private $consularManagedArea;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -575,6 +582,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isSenator()) {
             $roles[] = 'ROLE_SENATOR';
+        }
+
+        if ($this->isConsular()) {
+            $roles[] = 'ROLE_CONSULAR';
         }
 
         if ($this->isAdherentMessageRedactor()) {
@@ -1587,6 +1598,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->senatorArea = $senatorArea;
     }
 
+    public function getConsularManagedArea(): ?ConsularManagedArea
+    {
+        return $this->consularManagedArea;
+    }
+
+    public function setConsularManagedArea(?ConsularManagedArea $consularManagedArea): void
+    {
+        $this->consularManagedArea = $consularManagedArea;
+    }
+
     public function isCommentsCguAccepted(): bool
     {
         return $this->commentsCguAccepted;
@@ -1753,5 +1774,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isSenator(): bool
     {
         return !empty($this->senatorArea);
+    }
+
+    public function isConsular(): bool
+    {
+        return !empty($this->consularManagedArea);
     }
 }
