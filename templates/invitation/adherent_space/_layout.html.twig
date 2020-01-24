@@ -1,0 +1,27 @@
+{% extends base_template %}
+
+{% block invitation_main_block %}
+    <main>
+        <section class="b__nudge--bottom-huge">
+            {% set back_url = path('homepage') %}
+
+            {% if type is defined %}
+                {% if type == 'referent' %}
+                    {% set back_url = path('app_referent_managed_users_list') %}
+                {% elseif type == 'supervisor' %}
+                    {% set back_url = path('app_committee_manager_list_members', {slug: committee.slug}) %}
+                {% elseif type == 'deputy' %}
+                    {% set back_url = path('app_deputy_managed_users_list') %}
+                {% elseif type == 'senator' %}
+                    {% set back_url = path('app_senator_managed_users_list') %}
+                {% endif %}
+            {% endif %}
+
+            <a href="{{ back_url }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+                ⟵ Retour
+            </a>
+
+            {% block invitation_content %}{% endblock %}
+        </section>
+    </main>
+{% endblock %}

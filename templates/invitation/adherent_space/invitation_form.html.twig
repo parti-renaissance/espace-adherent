@@ -1,13 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'invitation/adherent_space/_layout.html.twig' %}
 
-{% block page_title 'Inviter une connaissance' %}
-{% block canonical_url url('invitation_form') %}
-
-{% block content %}
+{% block invitation_content %}
     <main>
-        <section class="l__wrapper--slim space--60-0">
+        <section class="l__wrapper--slim">
             <div class="em-form">
-                <h2 class="text--medium b__nudge--bottom-larger font-roboto">J'invite une connaissance à rejoindre La République En Marche !</h2>
+                <h2>J'invite une connaissance à rejoindre La République En Marche !</h2>
 
                 <div class="invitation-page__form">
                     {{ form_start(form) }}

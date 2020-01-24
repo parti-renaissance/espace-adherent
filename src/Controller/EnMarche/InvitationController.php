@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\Invite;
 use AppBundle\Form\InvitationType;
 use AppBundle\Form\SimpleInvitationType;
@@ -44,12 +45,10 @@ class InvitationController extends Controller
     }
 
     /**
-     * @var Adherent
-     *
      * @Route("/espace-referent/invitation", name="app_referent_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "referent"})
-     * @Route("/espace-comite/invitation", name="app_supervisor_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "supervisor"})
      * @Route("/espace-depute/invitation", name="app_deputy_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "deputy"})
      * @Route("/espace-senateur/invitation", name="app_senator_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "senator"})
+     * @Route("/espace-comite/{slug}/invitation", name="app_supervisor_adherent_invitation", methods={"GET", "POST"}, defaults={"type": "supervisor"})
      *
      * @Security("is_granted('ROLE_ADHERENT')")
      */
@@ -57,8 +56,10 @@ class InvitationController extends Controller
         Request $request,
         UserInterface $adherent,
         InvitationRequestHandler $handler,
-        string $type
+        string $type,
+        ?Committee $committee = null
     ): Response {
+        /** @var Adherent $adherent */
         $invite = new Invite();
         $invite->setFirstName($adherent->getFirstName());
         $invite->setLastName($adherent->getLastName());
@@ -76,14 +77,24 @@ class InvitationController extends Controller
 
             $handler->handle($invite, $request);
 
-            return $this->render('invitation/sent.html.twig', [
+            return $this->render('invitation/adherent_space/sent.html.twig', [
                 'invite' => $invite,
+                'committee' => $committee,
                 'type' => $type,
+                'base_template' => $this->getBaseTemplatePath($type),
             ]);
         }
 
-        return $this->render('invitation/simple_form.html.twig', [
+        return $this->render('invitation/adherent_space/invitation_form.html.twig', [
             'form' => $form->createView(),
+            'committee' => $committee,
+            'type' => $type,
+            'base_template' => $this->getBaseTemplatePath($type),
         ]);
+    }
+
+    private function getBaseTemplatePath(string $type): string
+    {
+        return 'invitation/adherent_space/_base_'.$type.'_space.html.twig';
     }
 }
