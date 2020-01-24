@@ -46,7 +46,7 @@ Feature: Manage citizen projects from admin pannel
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "benjyd@aol.com",
@@ -102,7 +102,7 @@ Feature: Manage citizen projects from admin pannel
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "laura@deloche.com",

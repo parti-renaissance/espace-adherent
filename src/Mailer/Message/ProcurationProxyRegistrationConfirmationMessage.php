@@ -9,15 +9,11 @@ final class ProcurationProxyRegistrationConfirmationMessage extends Message
 {
     public static function create(ProcurationProxy $procurationProxy): self
     {
-        $message = new self(
+        return new self(
             Uuid::uuid4(),
             $procurationProxy->getEmailAddress(),
             null,
             'Vous souhaitez être mandataire'
         );
-
-        $message->setSenderName('La République En Marche !');
-
-        return $message;
     }
 }

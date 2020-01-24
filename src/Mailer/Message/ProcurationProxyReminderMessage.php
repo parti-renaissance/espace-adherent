@@ -18,15 +18,12 @@ final class ProcurationProxyReminderMessage extends Message
             self::createRecipientVariables($request, $infoUrl)
         );
 
-        $message->setSenderName('La République En Marche !');
-
-        $proxy = $request->getFoundProxy();
-        $message->addRecipient($proxy->getEmailAddress());
+        $message->addRecipient($request->getFoundProxy()->getEmailAddress());
 
         return $message;
     }
 
-    public static function createRecipientVariables(ProcurationRequest $request, string $infoUrl)
+    public static function createRecipientVariables(ProcurationRequest $request, string $infoUrl): array
     {
         $proxy = $request->getFoundProxy();
 

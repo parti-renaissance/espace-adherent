@@ -28,7 +28,6 @@ final class ProcurationProxyFoundMessage extends Message
             ]
         );
 
-        $message->setSenderName('La République En Marche !');
         $message->addCC($request->getFoundBy()->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
         $message->setReplyTo($proxy->getEmailAddress());

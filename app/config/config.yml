@@ -17,9 +17,9 @@ parameters:
     enable_canary:                        "%env(ENABLE_CANARY)%"
     procurations_reply_to_email:          'procurations@en-marche.fr'
     transactional_sender_email:           'contact@en-marche.fr'
-    transactional_sender_name:            'En Marche !'
+    transactional_sender_name:            'La République En Marche !'
     campaign_sender_email:                'jemarche@en-marche.fr'
-    campaign_sender_name:                 'En Marche !'
+    campaign_sender_name:                 'La République En Marche !'
     feed_ttl:                             60 # in minutes
     legislatives_financial_hotline_email: 'comptes.legislatives@en-marche.fr'
     legislatives_standard_hotline_email:  'campagne.legislatives@en-marche.fr'
