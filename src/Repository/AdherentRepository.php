@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Coordinator\CoordinatorManagedAreaUtils;
@@ -711,6 +712,21 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function refresh(Adherent $adherent): void
     {
         $this->getEntityManager()->refresh($adherent);
+    }
+
+    public function findPaginatedForInseeCodes(array $inseeCodes, int $page = 1, int $maxItemPerPage = 10): ApiPaginator
+    {
+        $page = $page < 1 ? 1 : $page;
+
+        return new ApiPaginator(new Paginator($this
+            ->createQueryBuilder('a')
+            ->where("FIND_IN_SET(SUBSTRING_INDEX(a.postAddress.city, '-', -1), :insee_codes) > 0")
+            ->andWhere('a.adherent = 1')
+            ->setFirstResult(($page - 1) * $maxItemPerPage)
+            ->setMaxResults($maxItemPerPage)
+            ->setParameter('insee_codes', implode(',', $inseeCodes))
+            ->getQuery()
+        ));
     }
 
     public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Adherent

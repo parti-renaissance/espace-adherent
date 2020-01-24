@@ -136,3 +136,15 @@ Feature:
     And I click the "#survey_form_questions_0_question_type .form__checkbox:nth-child(3) > label" selector
     And I press "Enregistrer le questionnaire local"
     Then I should see "Le questionnaire a bien été enregistré."
+
+  Scenario Outline: I list adherent living in the cities I manage
+    Given I am logged as "<user>"
+    And I am on "/espace-municipales-2020/adherents"
+    And I wait 10 seconds until I see "Identité"
+    Then I should see "<shouldSee>"
+    And I should not see "<shouldNotSee>"
+
+    Examples:
+      | user                               | shouldSee         | shouldNotSee      |
+      | municipal-chief@en-marche-dev.fr   | Dusse Jean-Claude | Morin Bernard     |
+      | municipal-chief-3@en-marche-dev.fr | Morin Bernard     | Dusse Jean-Claude |
