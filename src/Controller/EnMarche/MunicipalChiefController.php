@@ -6,6 +6,7 @@ use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\AdherentMessage\StatisticsAggregator;
 use AppBundle\ApplicationRequest\ApplicationRequestRepository;
 use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Repository\AdherentMessageRepository;
 use AppBundle\Repository\AdherentRepository;
@@ -27,6 +28,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class MunicipalChiefController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route(name="_home", methods={"GET"})
      */
@@ -119,9 +122,12 @@ class MunicipalChiefController extends Controller
         UserInterface $municipalChief,
         AdherentRepository $adherentRepository
     ): Response {
+        $this->disableInProduction();
+
+        /** @var Adherent $municipalChief */
         return $this->render('municipal_chief/adherent/list.html.twig', [
             'results' => $adherentRepository->findPaginatedForInseeCodes(
-                $municipalChief->getMunicipalChiefManagedArea()->getCodes(),
+                (array) $municipalChief->getMunicipalChiefManagedArea()->getInseeCode(),
                 $request->query->getInt('page')
             ),
         ]);

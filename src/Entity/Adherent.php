@@ -837,6 +837,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasSubscriptionType(SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
     }
 
+    public function hasSmsSubscriptionType(): bool
+    {
+        return $this->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);
+    }
+
     /**
      * Activates the Adherent account with the provided activation token.
      *

@@ -20,6 +20,7 @@
                     <tr>
                         <th style="width: 100px;">Identité</th>
                         <th style="width: 100px;">Téléphone</th>
+                        <th style="width: 100px;">SMS/MMS</th>
                         <th style="width: 100px;">Commune</th>
                         <th style="width: 150px;" class="datagrid__table__col--hide-mobile">Adhésion le</th>
                     </tr>
@@ -37,6 +38,12 @@
                             </div>
                         </td>
                         <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+                        <td>
+                            {% set hasSmsSubscriptionType = user.hasSmsSubscriptionType %}
+                            <span class="status status__{{ hasSmsSubscriptionType ? '1' : '2' }}">
+                                {{ (hasSmsSubscriptionType ? 'global.yes' : 'global.no')|trans }}
+                            </span>
+                        </td>
                         <td>{{ user.cityName }}<br />{{ user.postalCode }}</td>
                         <td class="datagrid__table__col--hide-mobile">
                             {{ user.registeredAt|date('d/m/Y H:i') }}
