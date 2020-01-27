@@ -31,6 +31,9 @@ class ProcurationProxy
     private const NO_AVAILABLE_ROUND = 'Aucun';
     private const ALL_AVAILABLE_ROUNDS = 'Tous les tours proposés';
 
+    private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
+    private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -645,6 +648,9 @@ class ProcurationProxy
         return implode("\n", $availableRounds->toArray());
     }
 
+    /**
+     * @return ProcurationRequest[]|Collection
+     */
     public function getFoundRequests(): Collection
     {
         return $this->foundRequests;
@@ -660,6 +666,7 @@ class ProcurationProxy
 
     private function removeFoundRequest(ProcurationRequest $procurationRequest): void
     {
+        $procurationRequest->setFoundProxy(null);
         $this->foundRequests->removeElement($procurationRequest);
     }
 
@@ -737,63 +744,47 @@ class ProcurationProxy
         return $this->frenchRequestAvailable;
     }
 
-    private function setFrenchRequestAvailable(bool $frenchRequestAvailable): void
-    {
-        $this->frenchRequestAvailable = $frenchRequestAvailable;
-    }
-
     public function isForeignRequestAvailable(): bool
     {
         return $this->foreignRequestAvailable;
     }
 
-    private function setForeignRequestAvailable(bool $foreignRequestAvailable): void
-    {
-        $this->foreignRequestAvailable = $foreignRequestAvailable;
-    }
-
     public function process(ProcurationRequest $request): void
     {
-        $proxiesUsedCount = $this->getFoundRequests()->count();
-        $remainingProxiesCount = $this->proxiesCount - $proxiesUsedCount;
-
-        if (1 === $remainingProxiesCount) {
-            $this->setFrenchRequestAvailable(false);
-            $this->setForeignRequestAvailable(false);
-        } else {
-            if ('FR' === $this->getVoteCountry()) {
-                $this->setFrenchRequestAvailable(false);
-            } else {
-                if (2 === $remainingProxiesCount && !$this->isFrenchRequestAvailable()) {
-                    $this->setForeignRequestAvailable(false);
-                }
-            }
-        }
-
         $this->addFoundRequest($request);
+
+        $this->processAvailabilities();
     }
 
     public function unprocess(ProcurationRequest $request): void
     {
-        $proxiesUsedCount = $this->getFoundRequests()->count();
-        $remainingProxiesCount = $this->proxiesCount - $proxiesUsedCount;
-
-        if (1 === $this->getFoundRequests()->count()) {
-            $this->setFrenchRequestAvailable(true);
-            $this->setForeignRequestAvailable(true);
-        } else {
-            if ('FR' === $this->getVoteCountry()) {
-                $this->setFrenchRequestAvailable(true);
-            } else {
-                $this->setForeignRequestAvailable(true);
-
-                if (0 === $remainingProxiesCount) {
-                    $this->setFrenchRequestAvailable(true);
-                }
-            }
-        }
-
         $this->removeFoundRequest($request);
+
+        $this->processAvailabilities();
+    }
+
+    private function processAvailabilities(): void
+    {
+        $this->processFrenchAvailability();
+        $this->processForeignAvailability();
+    }
+
+    private function processFrenchAvailability(): void
+    {
+        $this->frenchRequestAvailable = $this->hasFreeSlots() && !$this->isProxyForFrenchRequest();
+    }
+
+    private function processForeignAvailability(): void
+    {
+        $this->foreignRequestAvailable = $this->hasFreeSlots()
+            && $this->getForeignRequestsLimit() > $this->countForeignRequests();
+    }
+
+    private function getForeignRequestsLimit(): int
+    {
+        return 'FR' === $this->getVoteCountry()
+            ? self::MAX_FOREIGN_REQUESTS_FROM_FRANCE
+            : self::MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY;
     }
 
     public function isReachable(): bool
@@ -814,5 +805,32 @@ class ProcurationProxy
     public function setState(?string $state): void
     {
         $this->state = $state;
+    }
+
+    private function hasFreeSlots(): bool
+    {
+        return 0 < ($this->proxiesCount - $this->foundRequests->count());
+    }
+
+    private function isProxyForFrenchRequest(): bool
+    {
+        foreach ($this->getFoundRequests() as $request) {
+            if (true === $request->isRequestFromFrance()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function countForeignRequests(): int
+    {
+        return $this
+            ->getFoundRequests()
+            ->filter(function (ProcurationRequest $request) {
+                return false === $request->isRequestFromFrance();
+            })
+            ->count()
+        ;
     }
 }

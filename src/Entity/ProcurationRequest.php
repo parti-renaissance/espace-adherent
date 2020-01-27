@@ -391,6 +391,7 @@ class ProcurationRequest
             $this->foundProxy->unprocess($this);
         }
 
+        $this->foundBy = null;
         $this->processed = false;
         $this->processedAt = null;
     }
