@@ -7,6 +7,7 @@ use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\Event;
 use AppBundle\Mailer\Message\EventCancellationMessage;
 use AppBundle\Mailer\Message\EventContactMembersMessage;
+use AppBundle\Mailer\Message\EventUpdateMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -121,6 +122,7 @@ class EventManagerControllerTest extends WebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
+        $this->assertCountMails(1, EventUpdateMessage::class);
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();

@@ -44,6 +44,8 @@ class EventCommandHandler
 
     public function handleUpdate(Event $event, EventCommand $command)
     {
+        $this->dispatcher->dispatch(Events::EVENT_PRE_UPDATE, new EventEvent($command->getAuthor(), $event));
+
         $this->factory->updateFromEventCommand($event, $command);
 
         $this->manager->flush();

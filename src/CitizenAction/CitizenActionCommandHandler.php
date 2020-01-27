@@ -35,6 +35,8 @@ class CitizenActionCommandHandler
 
     public function handleUpdate(CitizenActionCommand $command, CitizenAction $action): CitizenAction
     {
+        $this->dispatcher->dispatch(Events::CITIZEN_ACTION_PRE_UPDATE, new CitizenActionEvent($action));
+
         $this->factory->updateFromCitizenActionCommand($command, $action);
 
         $this->manager->flush();
