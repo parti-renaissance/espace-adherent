@@ -28,8 +28,6 @@ final class CitizenActionContactParticipantsMessage extends Message
             $organizer->getEmailAddress()
         );
 
-        $message->setSenderName(sprintf('%s %s', $organizer->getFirstName(), $organizer->getLastName()));
-
         foreach ($recipients as $recipient) {
             if (!$recipient instanceof EventRegistration) {
                 throw new \InvalidArgumentException('This message builder requires a collection of EventRegistration instances');

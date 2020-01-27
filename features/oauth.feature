@@ -160,7 +160,7 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "jp@test.com",

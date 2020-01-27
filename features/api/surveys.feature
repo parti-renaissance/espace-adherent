@@ -169,7 +169,7 @@ Feature:
             "content": "Ernestino"
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "ernestino@bonsoirini.fr",
@@ -242,7 +242,7 @@ Feature:
             "content": "Ernestino"
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "ernestino@bonsoirini.fr",

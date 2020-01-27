@@ -22,7 +22,6 @@ final class ProcurationProxyCancelledMessage extends Message
             ]
         );
 
-        $message->setSenderName('La République En Marche !');
         $message->addCC($proxy->getEmailAddress());
 
         return $message;

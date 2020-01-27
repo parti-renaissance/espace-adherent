@@ -75,7 +75,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "jp@test.com",
@@ -155,7 +155,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "jp@test.com",
@@ -242,7 +242,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "jp@test.com",
@@ -412,7 +412,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "En Marche !",
+        "from_name": "La R\u00e9publique En Marche !",
         "to": [
           {
             "email": "simple-user-not-activated@example.ch",

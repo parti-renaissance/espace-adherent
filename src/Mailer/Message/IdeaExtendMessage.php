@@ -21,7 +21,6 @@ final class IdeaExtendMessage extends Message
         );
 
         $message->setSenderEmail('atelier-des-idees@en-marche.fr');
-        $message->setSenderName('La République En Marche !');
 
         return $message;
     }
