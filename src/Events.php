@@ -8,6 +8,7 @@ final class Events
     public const COMMITTEE_UPDATED = 'committee.updated';
     public const COMMITTEE_DELETED = 'committee.deleted';
     public const EVENT_CREATED = 'event.created';
+    public const EVENT_PRE_UPDATE = 'event.pre_update';
     public const EVENT_UPDATED = 'event.updated';
     public const EVENT_DELETED = 'event.deleted';
     public const EVENT_CANCELLED = 'event.cancelled';
@@ -17,6 +18,7 @@ final class Events
     public const INSTITUTIONAL_EVENT_CANCELLED = 'institutional_event.cancelled';
     public const EVENT_REGISTRATION_CREATED = 'event_registration_created';
     public const CITIZEN_ACTION_CREATED = 'citizen_action.created';
+    public const CITIZEN_ACTION_PRE_UPDATE = 'citizen_action.pre_update';
     public const CITIZEN_ACTION_UPDATED = 'citizen_action.updated';
     public const CITIZEN_ACTION_DELETED = 'citizen_action.deleted';
     public const CITIZEN_ACTION_CANCELLED = 'citizen_action.cancelled';

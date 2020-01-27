@@ -281,6 +281,11 @@ class CitizenActionAdmin extends AbstractAdmin
         ;
     }
 
+    public function preUpdate($object)
+    {
+        $this->eventDispatcher->dispatch(Events::CITIZEN_ACTION_PRE_UPDATE, new CitizenActionEvent($object, $object->getOrganizer()));
+    }
+
     public function postUpdate($object)
     {
         $this->referentTagManager->assignReferentLocalTags($object);

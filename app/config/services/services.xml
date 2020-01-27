@@ -187,7 +187,9 @@
             <argument key="$apiPathPrefix">%env(API_PATH_PREFIX)%</argument>
         </service>
         <service id="AppBundle\EventListener\RecordReferentLastVisitListener" />
-
+        <service id="AppBundle\EventListener\SendEventUpdateNotificationListener">
+            <argument key="$mailer" type="service" id="app.mailer.transactional"/>
+        </service>
         <!-- EventSubscriber -->
         <service id="AppBundle\EventSubscriber\CommentsCguSubscriber"/>
 

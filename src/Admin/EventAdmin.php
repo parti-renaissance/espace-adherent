@@ -136,6 +136,11 @@ class EventAdmin extends AbstractAdmin
         ;
     }
 
+    public function preUpdate($object)
+    {
+        $this->dispatcher->dispatch(Events::EVENT_PRE_UPDATE, new EventEvent($object->getOrganizer(), $object));
+    }
+
     public function postUpdate($object)
     {
         $this->referentTagManager->assignReferentLocalTags($object);
