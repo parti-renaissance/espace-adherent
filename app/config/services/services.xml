@@ -328,6 +328,7 @@
         <service id="AppBundle\Command\ImportElectedRepresentativesRegisterCommand"/>
         <service id="AppBundle\Command\UnregisterAdherentsCommand"/>
         <service id="AppBundle\Command\UpdateDistrictGeoPolygonCommand"/>
+        <service id="AppBundle\Command\ImportConsularDistrictCommand"/>
         <service id="AppBundle\Command\NotifyIdeaAuthorCommand">
             <argument key="$mailer" type="service" id="app.mailer.transactional"/>
         </service>

@@ -2,13 +2,16 @@
 
 namespace AppBundle\Entity;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ConsularDistrictRepository")
  * @ORM\Table(
- *     name="consular_districts"
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="consular_district_code_unique", columns="code")}
  * )
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ConsularDistrict
 {
@@ -38,15 +41,30 @@ class ConsularDistrict
     /**
      * @var string
      *
-     * @ORM\Column(length=6)
+     * @ORM\Column
      */
     private $code;
 
-    public function __construct(array $countries, array $cities, string $code)
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint")
+     */
+    private $number;
+
+    /**
+     * @var
+     *
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $points;
+
+    public function __construct(array $countries, array $cities, string $code, int $number)
     {
         $this->countries = $countries;
         $this->cities = $cities;
         $this->code = $code;
+        $this->number = $number;
     }
 
     public function getId(): ?int
@@ -64,16 +82,6 @@ class ConsularDistrict
         $this->countries = $countries;
     }
 
-    public function getCountriesAsString(): string
-    {
-        return implode(', ', $this->countries);
-    }
-
-    public function setCountriesAsString(string $countries): void
-    {
-        $this->countries = array_map('trim', explode(',', $countries));
-    }
-
     public function getCities(): array
     {
         return $this->cities;
@@ -84,40 +92,35 @@ class ConsularDistrict
         $this->cities = $cities;
     }
 
-    public function getCitiesAsString(): string
-    {
-        return implode(', ', $this->cities);
-    }
-
-    public function setCitiesAsString(string $cities): void
-    {
-        $this->cities = array_map('trim', explode(',', $cities));
-    }
-
     public function getCode(): string
     {
         return $this->code;
     }
 
-    public function update(array $countries): self
+    public function getPoints(): ?array
     {
-        $this->countries = $countries;
-
-        return $this;
+        return $this->points;
     }
 
-    public function getFullName(): string
+    public function update(self $district): void
     {
-        return sprintf(
-            '%s, %s%s circonscription',
-            $this->getCountriesAsString,
-            $this->code,
-            1 === $this->code ? 'ère' : 'ème'
-        );
+        $this->countries = $district->getCountries();
+        $this->cities = $district->getCities();
+        $this->code = $district->getCode();
+        $this->points = $district->getPoints();
     }
 
-    public function __toString(): string
+    public function clearPoints(): void
     {
-        return $this->getFullName();
+        $this->points = [];
+    }
+
+    public function addPoint(float $latitude, float $longitude, string $label = null): void
+    {
+        $this->points[] = [
+            $latitude,
+            $longitude,
+            $label,
+        ];
     }
 }
