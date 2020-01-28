@@ -113,7 +113,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('GV6H  GB', trim($crawler->filter('#request-vote-city')->text()));
         $this->assertSame('Camden', trim($crawler->filter('#request-vote-office')->text()));
         $this->assertSame('4Q Covent Garden', trim($crawler->filter('#request-address')->text()));
-        $this->assertSame('GV6H  FR', trim($crawler->filter('#request-city')->text()));
+        $this->assertSame('GV6H  GB', trim($crawler->filter('#request-city')->text()));
         $this->assertSame('Pour raison de santé', trim($crawler->filter('#request-reason')->text()));
 
         // I see request potential proxies
@@ -138,7 +138,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('GV6H  GB', trim($crawler->filter('#proxy-vote-city')->text()));
         $this->assertSame('Camden', trim($crawler->filter('#proxy-vote-office')->text()));
         $this->assertSame('4Q Covent Garden', trim($crawler->filter('#proxy-address')->text()));
-        $this->assertSame('GV6H  FR', trim($crawler->filter('#proxy-city')->text()));
+        $this->assertSame('GV6H  GB', trim($crawler->filter('#proxy-city')->text()));
 
         $this->client->submit($crawler->filter('form[name=app_associate]')->form());
 
