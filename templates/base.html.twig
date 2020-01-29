@@ -130,6 +130,15 @@
         </script>
         <!-- END Display Upgrade Message for IE 10 or Less -->
 
+        <div class="flash notice-flashes">
+            <div class="flash__inner">
+                Nous rencontrons actuellement un problème technique avec notre système d'envoi de mails.
+                Nous mettons tout en oeuvre pour trouver une solution.
+                <br>
+                Veuillez nous excuser pour la gêne occasionnée.
+            </div>
+        </div>
+
         {% block flash_message %}
             {% for message in app.flashes('info') %}
                 <div class="flash notice-flashes">
