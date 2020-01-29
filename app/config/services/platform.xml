@@ -36,6 +36,8 @@
             <argument type="service" id="geocoder"/>
         </service>
 
+        <service id="AppBundle\Geocoder\GeocodableInterface" alias="app.geocoder" />
+
         <service id="app.geocoder.cache_adapter" alias="cache.redis_doctrine_provider" />
 
         <service id="app.geocoder.coordinates_factory" class="AppBundle\Geocoder\CoordinatesFactory" />
