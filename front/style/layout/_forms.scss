@@ -492,8 +492,7 @@ label {
     }
 }
 
-.flash,
-.flash_error {
+.flash {
     background-color: $yellow;
 
     &__inner {

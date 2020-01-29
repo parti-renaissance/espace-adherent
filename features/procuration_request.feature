@@ -11,7 +11,6 @@ Feature:
     Given I am on "/procuration/choisir/demande"
     And I click the ".cc-btn" selector
     When I click the ".form__label" selector
-    And wait until I see "Continuer"
     And I press "Continuer"
     Then I should be on "procuration/je-demande/mon-lieu-de-vote"
 
