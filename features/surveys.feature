@@ -50,7 +50,6 @@ Feature:
   Scenario: I can see the national surveys list and show the statistics
     Given I am logged as "damien.schmidt@example.ch"
     When I am on "/espace-responsable-jecoute/questionnaires-nationaux"
-    And I press "OK"
     And I should see "Questionnaires nationaux"
     And I should see "Questionnaire national numéro 1"
     Given I hover "table.datagrid__table-manager tbody tr td div.action-menu-oval"
