@@ -208,7 +208,7 @@ abstract class AbstractMessageController extends Controller
     /**
      * @Route("/{uuid}/send", name="send", methods={"GET"})
      *
-     * @Security("is_granted('IS_AUTHOR_OF', message)")
+     * @Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")
      */
     public function sendMessageAction(
         AbstractAdherentMessage $message,

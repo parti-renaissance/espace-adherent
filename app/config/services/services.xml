@@ -271,6 +271,16 @@
             <argument key="$classOrAlias" type="string">AppBundle\Entity\Administrator</argument>
         </service>
         <service id="AppBundle\Security\QrCodeResponseFactory"/>
+        <service id="AppBundle\Security\Voter\AdherentMessageLimitVoter" />
+
+        <service id="AppBundle\AdherentMessage\MessageLimiter">
+            <argument type="collection">
+                <argument key="referent">%adherent_message_referent_limit%</argument>
+                <argument key="committee">%adherent_message_committee_limit%</argument>
+                <argument key="deputy">%adherent_message_deputy_limit%</argument>
+                <argument key="senator">%adherent_message_senator_limit%</argument>
+            </argument>
+        </service>
 
         <!-- Serializer -->
         <service id="AppBundle\Serializer\CitizenProjectSerializerSubscriber">
