@@ -119,7 +119,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         // I see request potential proxies
         $proxies = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
 
-        $this->assertSame('Jean-Michel Gastro', trim($proxies->first()->text()));
+        $this->assertSame('Jean-Marc Gastro', trim($proxies->first()->text()));
 
         // Associate the request with the proxy
         $linkNode = $crawler->filter('#associate-link-8');
@@ -131,8 +131,8 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         // I see proxy data
-        $this->assertSame('Monsieur Jean-Michel Gastro', trim($crawler->filter('#proxy-author')->text()));
-        $this->assertSame('jeanmichel.gastro@example.es', trim($crawler->filter('#proxy-email')->text()));
+        $this->assertSame('Monsieur Jean-Marc Gastro', trim($crawler->filter('#proxy-author')->text()));
+        $this->assertSame('jeanmarc.gastro@example.es', trim($crawler->filter('#proxy-email')->text()));
         $this->assertSame('+44 234567891', trim($crawler->filter('#proxy-phone')->text()));
         $this->assertSame('21/12/1989', trim($crawler->filter('#proxy-birthdate')->text()));
         $this->assertSame('GV6H  GB', trim($crawler->filter('#proxy-vote-city')->text()));
@@ -148,7 +148,7 @@ class ProcurationManagerControllerTest extends WebTestCase
 
         $this->isSuccessful($this->client->getResponse());
 
-        $this->assertSame('Demande associée à Jean-Michel Gastro', trim($crawler->filter('.procuration-manager__request__col-right h4')->text()));
+        $this->assertSame('Demande associée à Jean-Marc Gastro', trim($crawler->filter('.procuration-manager__request__col-right h4')->text()));
 
         // Deassociate
         $linkNode = $crawler->filter('#request-deassociate');
@@ -171,7 +171,7 @@ class ProcurationManagerControllerTest extends WebTestCase
 
         $proxies = $crawler->filter('.datagrid__table tbody tr td.proxy_name strong');
 
-        $this->assertSame('Jean-Michel Gastro', trim($proxies->first()->text()));
+        $this->assertSame('Jean-Marc Gastro', trim($proxies->first()->text()));
     }
 
     public function testProcurationManagerProxiesList()
@@ -185,7 +185,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertCount(3, $crawler->filter('.datagrid__table tbody tr'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Léa Bouquet")'));
         $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Emmanuel Harquin")'));
-        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Jean-Michel Gastro")'));
+        $this->assertCount(1, $crawler->filter('.datagrid__table td:contains("Jean-Marc Gastro")'));
     }
 
     public function testProcurationManagerProxiesListAssociated()

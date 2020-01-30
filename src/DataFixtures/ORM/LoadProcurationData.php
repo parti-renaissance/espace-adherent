@@ -3,23 +3,20 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Election;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumber;
 
-class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
+class LoadProcurationData extends AbstractFixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $electionsRepository = $manager->getRepository(Election::class);
-
-        $presidentialElections = $electionsRepository->findOneBy(['name' => 'Élections Présidentielles 2017']);
-        $legislativeElections = $electionsRepository->findOneBy(['name' => 'Élections Législatives 2017']);
-        $partialLegislativeElections = $electionsRepository->findOneBy(['name' => 'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise']);
+        $presidentialElections = $this->getReference('elections-presidential');
+        $legislativeElections = $this->getReference('elections-legislative');
+        $partialLegislativeElections = $this->getReference('elections-partial-legislative');
 
         $manager->persist($this->createRequest(
             'male',
@@ -463,9 +460,9 @@ class LoadProcurationData implements FixtureInterface, DependentFixtureInterface
         $manager->persist($this->createProxyProposal(
             $referent,
             'male',
-            'Jean-Michel',
+            'Jean-Marc',
             'Gastro',
-            'jeanmichel.gastro@example.es',
+            'jeanmarc.gastro@example.es',
             '4Q Covent Garden',
             'GV6H',
             'London',

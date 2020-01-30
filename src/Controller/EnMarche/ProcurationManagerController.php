@@ -196,7 +196,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/associer/{proxyId}",
-     *     requirements={"id": "\d+"},
+     *     requirements={"id": "\d+", "proxyId": "\d+"},
      *     name="app_procuration_manager_request_associate",
      *     methods={"GET", "POST"}
      * )

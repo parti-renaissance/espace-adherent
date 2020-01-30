@@ -204,9 +204,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for proxy in matchingProxies %}
-                            {% set score = proxy.score %}
-                            {% set proxy = proxy.data %}
+                        {% for matchingProxy in matchingProxies %}
+                            {% set score = matchingProxy.score %}
+                            {% set proxy = matchingProxy.data %}
 
                             <tr>
                                 <td style="border: 0;"></td>

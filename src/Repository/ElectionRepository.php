@@ -3,11 +3,17 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Election;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class ElectionRepository extends EntityRepository
+class ElectionRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Election::class);
+    }
+
     public function createAllComingNextByRoundDateQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('e')
