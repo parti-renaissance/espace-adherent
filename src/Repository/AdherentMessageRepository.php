@@ -76,22 +76,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         string $status = null,
         int $page = 1
     ): PaginatorInterface {
-        $queryBuilder = $this->createQueryBuilder('message');
-
-        $this
-            ->withAuthor($queryBuilder, $adherent)
-            ->withMessageType($queryBuilder, $type)
-            ->orderByDate($queryBuilder)
-        ;
-
-        if ($status) {
-            $queryBuilder
-                ->andWhere('message.status = :status')
-                ->setParameter('status', $status)
-            ;
-        }
-
-        return $this->configurePaginator($queryBuilder, $page);
+        return $this->configurePaginator($this->createListQueryBuilder($adherent, $type, $status), $page);
     }
 
     /**
@@ -103,18 +88,9 @@ class AdherentMessageRepository extends ServiceEntityRepository
         string $status = null,
         int $page = 1
     ): PaginatorInterface {
-        $queryBuilder = $this->createQueryBuilder('message');
+        $queryBuilder = $this->createListQueryBuilder($adherent, AdherentMessageTypeEnum::COMMITTEE, $status);
 
-        $this
-            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::COMMITTEE)
-            ->withAuthor($queryBuilder, $adherent)
-            ->withCommittee($queryBuilder, $committee)
-            ->orderByDate($queryBuilder)
-        ;
-
-        if ($status) {
-            $this->withStatus($queryBuilder, $status);
-        }
+        $this->withCommittee($queryBuilder, $committee);
 
         return $this->configurePaginator($queryBuilder, $page);
     }
@@ -128,65 +104,50 @@ class AdherentMessageRepository extends ServiceEntityRepository
         string $status = null,
         int $page = 1
     ): PaginatorInterface {
-        $queryBuilder = $this->createQueryBuilder('message');
+        $queryBuilder = $this->createListQueryBuilder($adherent, AdherentMessageTypeEnum::CITIZEN_PROJECT, $status);
 
-        $this
-            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::CITIZEN_PROJECT)
-            ->withAuthor($queryBuilder, $adherent)
-            ->withCitizenProject($queryBuilder, $citizenProject)
-            ->orderByDate($queryBuilder)
-        ;
-
-        if ($status) {
-            $this->withStatus($queryBuilder, $status);
-        }
+        $this->withCitizenProject($queryBuilder, $citizenProject);
 
         return $this->configurePaginator($queryBuilder, $page);
     }
 
-    public function countTotalMessage(Adherent $adherent, string $type): int
+    public function countTotalMessage(Adherent $adherent, string $type, bool $currentMonthOnly = false): int
     {
-        $queryBuilder = $this
-            ->createQueryBuilder('message')
-            ->select('COUNT(message.id)')
+        return (int) $this
+            ->createCountQueryBuilder($adherent, $type, $currentMonthOnly)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
+    }
 
-        $this
-            ->withAuthor($queryBuilder, $adherent)
-            ->withMessageType($queryBuilder, $type)
-        ;
+    public function countTotalCitizenProjectMessage(
+        Adherent $adherent,
+        CitizenProject $citizenProject,
+        bool $currentMonthOnly = false
+    ): int {
+        $queryBuilder = $this->createCountQueryBuilder(
+            $adherent,
+            AdherentMessageTypeEnum::CITIZEN_PROJECT,
+            $currentMonthOnly
+        );
+
+        $this->withCitizenProject($queryBuilder, $citizenProject);
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    public function countTotalCitizenProjectMessage(Adherent $adherent, CitizenProject $citizenProject): int
-    {
-        $queryBuilder = $this
-            ->createQueryBuilder('message')
-            ->select('COUNT(message.id)')
-        ;
+    public function countTotalCommitteeMessage(
+        Adherent $adherent,
+        Committee $committee,
+        bool $currentMonthOnly = false
+    ): int {
+        $queryBuilder = $this->createCountQueryBuilder(
+            $adherent,
+            AdherentMessageTypeEnum::COMMITTEE,
+            $currentMonthOnly
+        );
 
-        $this
-            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::CITIZEN_PROJECT)
-            ->withAuthor($queryBuilder, $adherent)
-            ->withCitizenProject($queryBuilder, $citizenProject)
-        ;
-
-        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
-    }
-
-    public function countTotalCommitteeMessage(Adherent $adherent, Committee $committee): int
-    {
-        $queryBuilder = $this
-            ->createQueryBuilder('message')
-            ->select('COUNT(message.id)')
-        ;
-
-        $this
-            ->withMessageType($queryBuilder, AdherentMessageTypeEnum::COMMITTEE)
-            ->withAuthor($queryBuilder, $adherent)
-            ->withCommittee($queryBuilder, $committee)
-        ;
+        $this->withCommittee($queryBuilder, $committee);
 
         return (int) $queryBuilder->getQuery()->getSingleScalarResult();
     }
@@ -268,5 +229,61 @@ class AdherentMessageRepository extends ServiceEntityRepository
         $queryBuilder->orderBy("$alias.createdAt", $order);
 
         return $this;
+    }
+
+    private function forCurrentMonthOnly(QueryBuilder $queryBuilder, string $alias = 'message'): self
+    {
+        $now = new \DateTime();
+
+        $queryBuilder
+            ->andWhere("$alias.sentAt >= :start_date AND $alias.sentAt <= :end_date")
+            ->setParameter('start_date', ($now->modify('first day of this month')->format('Y-m-d 00:00:00')))
+            ->setParameter('end_date', ($now->modify('last day of this month')->format('Y-m-d 23:59:59')))
+        ;
+
+        return $this;
+    }
+
+    private function createCountQueryBuilder(Adherent $adherent, string $type, bool $currentMonthOnly): QueryBuilder
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('message')
+            ->select('COUNT(message.id)')
+        ;
+
+        $this
+            ->withAuthor($queryBuilder, $adherent)
+            ->withMessageType($queryBuilder, $type)
+        ;
+
+        if ($currentMonthOnly) {
+            $this->forCurrentMonthOnly($queryBuilder);
+        }
+
+        return $queryBuilder;
+    }
+
+    private function createListQueryBuilder(Adherent $adherent, string $type, string $status = null): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilder('message')
+            ->leftJoin('message.mailchimpCampaigns', 'mc')
+            ->leftJoin('message.filter', 'f')
+            ->addSelect('mc', 'f')
+        ;
+
+        $this
+            ->withAuthor($queryBuilder, $adherent)
+            ->withMessageType($queryBuilder, $type)
+            ->orderByDate($queryBuilder)
+        ;
+
+        if ($status) {
+            $queryBuilder
+                ->andWhere('message.status = :status')
+                ->setParameter('status', $status)
+            ;
+        }
+
+        return $queryBuilder;
     }
 }

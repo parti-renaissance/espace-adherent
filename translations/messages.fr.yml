@@ -565,6 +565,10 @@ adherent_message.referent: Message référent
 adherent_message.deputy: Message député
 adherent_message.host: Message co-animateur
 adherent_message.supervisor: Message animateur
+adherent_message.limit.committee: animateurs
+adherent_message.limit.referent: référents
+adherent_message.limit.deputy: députés
+adherent_message.limit.senator: sénateurs
 draft: Brouillon
 sent: Envoyé
 
