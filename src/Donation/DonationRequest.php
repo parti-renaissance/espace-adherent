@@ -108,7 +108,7 @@ class DonationRequest
     private $nationality;
 
     /**
-     * @Assert\Length(max=12)
+     * @Assert\Regex(pattern="/^[\d]{6}$/", message="donation.code.invalid")
      */
     private $code;
 

@@ -183,6 +183,7 @@ class ImportDonationsCommand extends Command
                 PayboxPaymentSubscription::NONE,
                 null,
                 self::COUNTRIES_MAP[$country],
+                null,
                 $donator
             );
 

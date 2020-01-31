@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -122,8 +123,8 @@ class DonationRequestType extends AbstractType
             ->add('country', UnitedNationsCountryType::class, [
                 'preferred_choices' => [Address::FRANCE],
             ])
-            ->add('code', TextType::class, [
-                'filter_emojis' => true,
+            ->add('code', IntegerType::class, [
+                'required' => false,
             ])
             ->add('isPhysicalPerson', CheckboxType::class, [
                 'mapped' => false,

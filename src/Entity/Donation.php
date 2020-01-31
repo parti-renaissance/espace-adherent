@@ -140,7 +140,7 @@ class Donation implements GeoPointInterface
     private $nationality;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(nullable=true, length=6)
      */
     private $code;
 

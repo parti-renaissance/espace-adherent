@@ -231,6 +231,9 @@ class DonatorAdmin extends AbstractAdmin
                     }
                 },
             ])
+            ->add('donations.code', null, [
+                'label' => 'Code don',
+            ])
             ->add('donations.type', ChoiceFilter::class, [
                 'label' => 'Méthode de paiement',
                 'show_filter' => true,

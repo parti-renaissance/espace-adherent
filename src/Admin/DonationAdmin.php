@@ -105,6 +105,9 @@ class DonationAdmin extends AbstractAdmin
                     'label' => 'Montant',
                     'disabled' => !$this->isCurrentRoute('create'),
                 ])
+                ->add('code', null, [
+                    'label' => 'Code don',
+                ])
                 ->add('donatedAt', null, [
                     'label' => 'Date du don',
                     'disabled' => $donation->isCB(),
@@ -190,6 +193,9 @@ class DonationAdmin extends AbstractAdmin
                         'emailAddress',
                     ],
                 ],
+            ])
+            ->add('code', null, [
+                'label' => 'Code don',
             ])
             ->add('type', ChoiceFilter::class, [
                 'label' => 'Type',
@@ -332,6 +338,9 @@ class DonationAdmin extends AbstractAdmin
                 'label' => 'Statut du don',
                 'template' => 'admin/donation/list_status.html.twig',
             ])
+            ->add('code', null, [
+                'label' => 'Code don',
+            ])
             ->add('donatedAt', null, [
                 'label' => 'Date',
             ])
@@ -353,6 +362,7 @@ class DonationAdmin extends AbstractAdmin
         return [
             'ID' => 'id',
             'Montant' => 'amountInEuros',
+            'Code don' => 'code',
             'Date' => 'createdAt',
             'Type' => 'type',
             'Status' => 'status',
