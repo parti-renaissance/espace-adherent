@@ -113,8 +113,8 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
                             $recipient,
                             $event->getOrganizer(),
                             $event,
-                            $this->urlGenerator->generate($eventRoute, ['slug' => $event->getSlug()]),
-                            $this->urlGenerator->generate($icalEventRoute, ['slug' => $event->getSlug()])
+                            $this->urlGenerator->generate($eventRoute, ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL),
+                            $this->urlGenerator->generate($icalEventRoute, ['slug' => $event->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL)
                         )
                     );
                 }
