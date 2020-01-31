@@ -33,7 +33,8 @@ class LoadDonationData extends Fixture
             50.,
             PayboxPaymentSubscription::NONE,
             Donation::TYPE_CB,
-            '2020/01/01 10:30:00'
+            '2020/01/01 10:30:00',
+            '123456'
         );
         $this->createTransaction($donationNormal);
 
@@ -60,7 +61,8 @@ class LoadDonationData extends Fixture
             50.,
             PayboxPaymentSubscription::NONE,
             Donation::TYPE_CB,
-            '2020/01/02 13:37:00'
+            '2020/01/02 13:37:00',
+            '654321'
         );
         $this->createTransaction($donation0);
 
@@ -78,7 +80,8 @@ class LoadDonationData extends Fixture
             40.,
             PayboxPaymentSubscription::NONE,
             Donation::TYPE_CB,
-            '2020/01/04 12:30:00'
+            '2020/01/04 12:30:00',
+            '654321'
         );
         $this->createTransaction($donation2);
 
@@ -135,7 +138,8 @@ class LoadDonationData extends Fixture
         float $amount = 50.0,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB,
-        string $donatedAt = null
+        string $donatedAt = null,
+        string $code = null
     ): Donation {
         $donation = new Donation(
             $uuid = Uuid::uuid4(),
@@ -147,6 +151,7 @@ class LoadDonationData extends Fixture
             $duration,
             $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
             Address::FRANCE,
+            $code,
             $donator
         );
 

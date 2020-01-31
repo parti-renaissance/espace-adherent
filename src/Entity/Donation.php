@@ -140,6 +140,11 @@ class Donation implements GeoPointInterface
     private $nationality;
 
     /**
+     * @ORM\Column(nullable=true, length=6)
+     */
+    private $code;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
@@ -200,6 +205,7 @@ class Donation implements GeoPointInterface
         int $duration = PayboxPaymentSubscription::NONE,
         string $payboxOrderRef = null,
         string $nationality = null,
+        string $code = null,
         Donator $donator = null,
         \DateTimeImmutable $createdAt = null
     ) {
@@ -214,6 +220,7 @@ class Donation implements GeoPointInterface
         $this->payboxOrderRef = $payboxOrderRef;
         $this->status = self::STATUS_WAITING_CONFIRMATION;
         $this->nationality = $nationality;
+        $this->code = $code;
         $this->donator = $donator;
         $this->tags = new ArrayCollection();
         $this->transactions = new ArrayCollection();
@@ -443,6 +450,11 @@ class Donation implements GeoPointInterface
     public function setNationality(string $nationality): void
     {
         $this->nationality = $nationality;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
     }
 
     public function getDonator(): ?Donator
