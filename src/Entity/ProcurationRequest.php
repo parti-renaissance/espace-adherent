@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
+use AppBundle\Utils\AreaUtils;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -148,7 +149,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=15, groups={"profile"})
      * @Assert\Expression(
-     *     "(this.getCountry() == 'FR' and value != null) or (this.getCountry() != 'FR' and value == null)",
+     *     "(this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"profile"}
      * )
@@ -180,7 +181,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=255, groups={"profile"})
      * @Assert\Expression(
-     *     "(this.getCountry() == 'FR' and value == null) or (this.getCountry() != 'FR' and value != null)",
+     *     "not (this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"profile"}
      * )
@@ -195,7 +196,7 @@ class ProcurationRequest
      * @Assert\NotBlank(groups={"profile"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"profile"})
      */
-    private $country = 'FR';
+    private $country = AreaUtils::CODE_FRANCE;
 
     /**
      * @var PhoneNumber
@@ -235,7 +236,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=15, groups={"vote"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == 'FR' and value != null) or (this.getVoteCountry() != 'FR' and value == null)",
+     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"vote"}
      * )
@@ -268,7 +269,7 @@ class ProcurationRequest
      * @Assert\NotBlank(groups={"vote"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"vote"})
      */
-    private $voteCountry = 'FR';
+    private $voteCountry = AreaUtils::CODE_FRANCE;
 
     /**
      * @var string

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
+use AppBundle\Utils\AreaUtils;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -138,7 +139,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getCountry() == 'FR' and value != null) or (this.getCountry() != 'FR' and value == null)",
+     *     "(this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -170,7 +171,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getCountry() == 'FR' and value == null) or (this.getCountry() != 'FR' and value != null)",
+     *     "not (this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"front"}
      * )
@@ -185,7 +186,7 @@ class ProcurationProxy
      * @Assert\NotBlank(groups={"front"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
      */
-    private $country = 'FR';
+    private $country = AreaUtils::CODE_FRANCE;
 
     /**
      * @var PhoneNumber
@@ -225,7 +226,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == 'FR' and value != null) or (this.getVoteCountry() != 'FR' and value == null)",
+     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -258,7 +259,7 @@ class ProcurationProxy
      * @Assert\NotBlank(groups={"front"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
      */
-    private $voteCountry = 'FR';
+    private $voteCountry = AreaUtils::CODE_FRANCE;
 
     /**
      * @var string
@@ -322,7 +323,7 @@ class ProcurationProxy
      *     groups={"front"}
      * )
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == 'FR' and value <= 2) or (this.getVoteCountry() != 'FR' and value <= 3)",
+     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 2) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 3)",
      *     message="procuration.vote_country.conditions",
      *     groups={"front"}
      * )
@@ -661,13 +662,17 @@ class ProcurationProxy
         if (!$this->foundRequests->contains($procurationRequest)) {
             $this->foundRequests->add($procurationRequest);
             $procurationRequest->setFoundProxy($this);
+
+            $this->processAvailabilities();
         }
     }
 
     private function removeFoundRequest(ProcurationRequest $procurationRequest): void
     {
-        $procurationRequest->setFoundProxy(null);
         $this->foundRequests->removeElement($procurationRequest);
+        $procurationRequest->setFoundProxy(null);
+
+        $this->processAvailabilities();
     }
 
     public function isDisabled(): bool
@@ -716,7 +721,7 @@ class ProcurationProxy
             return false;
         }
 
-        if ('FR' === $this->voteCountry && 0 !== strpos($request->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
+        if (AreaUtils::CODE_FRANCE === $this->voteCountry && 0 !== strpos($request->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
             return false;
         }
 
@@ -752,13 +757,11 @@ class ProcurationProxy
     public function process(ProcurationRequest $request): void
     {
         $this->addFoundRequest($request);
-        $this->processAvailabilities();
     }
 
     public function unprocess(ProcurationRequest $request): void
     {
         $this->removeFoundRequest($request);
-        $this->processAvailabilities();
     }
 
     private function processAvailabilities(): void
@@ -780,7 +783,7 @@ class ProcurationProxy
 
     private function getForeignRequestsLimit(): int
     {
-        return 'FR' === $this->getVoteCountry()
+        return AreaUtils::CODE_FRANCE === $this->getVoteCountry()
             ? self::MAX_FOREIGN_REQUESTS_FROM_FRANCE
             : self::MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY;
     }

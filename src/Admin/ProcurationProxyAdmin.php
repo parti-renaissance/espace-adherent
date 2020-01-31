@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Utils\AreaUtils;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -109,6 +110,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Tours', ['class' => 'col-md-6'])
+                ->add('proxiesCount', null, [
+                    'label' => 'Nombre de procurations proposées',
+                ])
                 ->add('electionRounds', null, [
                     'label' => 'Proposés',
                 ])
@@ -152,7 +156,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ])
         ;
 
-        if ('FR' != $this->getSubject()->getCountry()) {
+        if (AreaUtils::CODE_FRANCE !== $this->getSubject()->getCountry()) {
             $showMapper
                 ->add('stage', null, [
                     'label' => 'État/Province',
@@ -178,6 +182,9 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Tours', ['class' => 'col-md-6'])
+                ->add('proxiesCount', null, [
+                    'label' => 'Nombre de procurations proposées',
+                ])
                 ->add('electionRounds', null, [
                     'label' => 'Proposés',
                 ])
