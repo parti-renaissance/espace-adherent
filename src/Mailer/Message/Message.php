@@ -83,6 +83,10 @@ class Message
 
     final public function addRecipient(string $recipientEmail, $recipientName = null, array $vars = []): void
     {
+        if (!$recipientEmail) {
+            return;
+        }
+
         $this->recipients[mb_strtolower($recipientEmail)] = new MessageRecipient($recipientEmail, $recipientName, $vars);
     }
 
