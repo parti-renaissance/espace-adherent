@@ -46,11 +46,9 @@
                                 <a href="{{ path('app_municipal_chief_candidate_running_mate_list') }}">Candidats</a>
                             </li>
 
-                            {% if is_canary_enabled()    %}
-                                <li class="{{ is_active_route(app.request, 'app_municipal_chief_adherents_*') ? 'active' }}">
-                                    <a href="{{ path('app_municipal_chief_adherents_list') }}">Adhérents</a>
-                                </li>
-                            {% endif %}
+                            <li class="{{ is_active_route(app.request, 'app_municipal_chief_adherents_*') ? 'active' }}">
+                                <a href="{{ path('app_municipal_chief_adherents_list') }}">Adhérents</a>
+                            </li>
 
                             <li class="{{ is_active_route(app.request, 'app_municipal_chief_event_manager_*') ? 'active' }}">
                                 <a href="{{ path('app_municipal_chief_event_manager_events') }}">Événements</a>
