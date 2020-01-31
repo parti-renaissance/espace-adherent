@@ -752,14 +752,12 @@ class ProcurationProxy
     public function process(ProcurationRequest $request): void
     {
         $this->addFoundRequest($request);
-
         $this->processAvailabilities();
     }
 
     public function unprocess(ProcurationRequest $request): void
     {
         $this->removeFoundRequest($request);
-
         $this->processAvailabilities();
     }
 
