@@ -1,52 +1,84 @@
-<form method="get">
-    <input type="hidden" name="{{ constant('PARAMETER_STATUS', filters) }}" value="{{ filters.status }}" />
-    <div class="l__row l__row--top l__mobile--col">
-        <div class="l__col--grow-1 b__nudge--right">
-            <label>
-                Nom de famille :<br />
-                <input type="text" name="{{ constant('PARAMETER_LAST_NAME', filters) }}" value="{{ filters.lastName }}"
-                       class="form form__field form--full">
-            </label>
-        </div>
+<div class="manager-space">
+    <div class="manager__filters">
+        <div class="manager__filters__form">
 
-        <div class="l__col--grow-1 b__nudge--right">
-            <label>
-                Pays du vote :<br />
-                <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="form form__field form--full">
-                    <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>
-                    {% for code, label in filters.countries %}
-                        <option value="{{ code }}" {{ filters.country == code ? 'selected="selected"' }}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-        </div>
+            <form method="get">
 
-        <div class="l__col--grow-1 b__nudge--right">
-            <label>
-                Ville (ou code postal) du vote :<br />
-                <input type="text" name="{{ constant('PARAMETER_CITY', filters) }}" value="{{ filters.city }}"
-                       class="form form__field form--full">
-            </label>
-        </div>
+                <h4 class="manager__filters__subtitle">Filtrer par</h4>
 
-        <div class="l__col--grow-1 b__nudge--right">
-            <label>
-                Tour concerné :<br />
-                <select name="{{ constant('PARAMETER_ELECTION_ROUND', filters) }}" class="form form__field form--full">
-                    <option value="" {{ filters.electionRound is empty ? 'selected="selected"' }}></option>
-                    {% for id, round in election_rounds %}
-                        <option value="{{ round.id }}" {{ filters.electionRound is same as(round.id) ? 'selected="selected"' }}>{{ round.label }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-        </div>
+                <input type="hidden" name="{{ constant('PARAMETER_STATUS', filters) }}" value="{{ filters.status }}" />
 
-        <div style="width: 220px;">
-            <br />
-            <button type="submit" class="btn btn--blue b__nudge--right">Filtrer</button>
-            {% if filters.hasData %}
-                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'status': filters.status})) }}">Annuler</a>
-            {% endif %}
+
+                <div class="manager__filters__row">
+
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label>
+                                    <span class="filter__label">Pays du vote :</span>
+                                    <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="filter__field form form__field">
+                                        <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>
+                                        {% for code, label in filters.countries %}
+                                            <option value="{{ code }}" {{ filters.country == code ? 'selected="selected"' }}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="filter__row">
+                                <label>
+                                    <span class="filter__label">Nom de famille :</span>
+                                    <input type="text" name="{{ constant('PARAMETER_LAST_NAME', filters) }}" value="{{ filters.lastName }}"
+                                           class="filter__field form form__field">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label>
+                                    <span class="filter__label">Ville (ou code postal) du vote :</span>
+                                    <input type="text" name="{{ constant('PARAMETER_CITY', filters) }}" value="{{ filters.city }}"
+                                           class="filter__field form form__field">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                <label>
+                                    <span class="filter__label">Tour concerné :</span>
+                                    <select name="{{ constant('PARAMETER_ELECTION_ROUND', filters) }}" class="filter__field form form__field">
+                                        <option value="" {{ filters.electionRound is empty ? 'selected="selected"' }}></option>
+                                        {% for id, round in election_rounds %}
+                                            <option value="{{ round.id }}" {{ filters.electionRound is same as(round.id) ? 'selected="selected"' }}>{{ round.label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+
+                    {% if filters.hasData %}
+                        <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'status': filters.status})) }}"
+                           class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">
+                            Annuler
+                        </a>
+                    {% endif %}
+                </div>
+
+            </form>
+
         </div>
     </div>
-</form>
+</div>
