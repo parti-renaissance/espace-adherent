@@ -65,6 +65,21 @@
     line-height: normal;
 }
 
+@mixin em-form-error {
+    color: $error;
+    font-family: $font-roboto;
+    margin: 0;
+    margin-top: 5px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    line-height: normal;
+
+    & a {
+        color: $error;
+        border-color: $error;
+    }
+}
+
 @mixin em-form-select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -210,6 +225,7 @@
 
         .em-form__label { @include em-form-label; }
         .em-form__legend { @include em-form-legend; }
+        .em-form--error { @include em-form-error; }
 
         .character-count { @include em-form-chars-count; }
 
