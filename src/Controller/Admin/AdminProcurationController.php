@@ -51,8 +51,11 @@ class AdminProcurationController extends Controller
      *
      * @Route("/request/{id}/deassociate", name="app_admin_procuration_request_deassociate", methods={"GET", "POST"})
      */
-    public function deassociateAction(Request $sfRequest, ProcurationRequest $request): Response
-    {
+    public function deassociateAction(
+        Request $sfRequest,
+        ProcurationRequest $request,
+        ProcurationManager $manager
+    ): Response {
         if (!$request->getFoundProxy()) {
             return $this->redirectAfterDeassociation($sfRequest);
         }
@@ -63,7 +66,7 @@ class AdminProcurationController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(ProcurationManager::class)->unprocessProcurationRequest($request);
+            $manager->unprocessProcurationRequest($request);
 
             return $this->redirectAfterDeassociation($sfRequest);
         }

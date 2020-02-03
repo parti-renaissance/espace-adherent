@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Intl\FranceCitiesBundle;
+use AppBundle\Utils\AreaUtils;
 use AppBundle\Validator\Recaptcha as AssertRecaptcha;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,6 +31,9 @@ class ProcurationProxy
 
     private const NO_AVAILABLE_ROUND = 'Aucun';
     private const ALL_AVAILABLE_ROUNDS = 'Tous les tours proposés';
+
+    private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
+    private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
 
     /**
      * @ORM\Column(type="integer")
@@ -135,7 +139,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getCountry() == 'FR' and value != null) or (this.getCountry() != 'FR' and value == null)",
+     *     "(this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -167,7 +171,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getCountry() == 'FR' and value == null) or (this.getCountry() != 'FR' and value != null)",
+     *     "not (this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"front"}
      * )
@@ -182,7 +186,7 @@ class ProcurationProxy
      * @Assert\NotBlank(groups={"front"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
      */
-    private $country = 'FR';
+    private $country = AreaUtils::CODE_FRANCE;
 
     /**
      * @var PhoneNumber
@@ -222,7 +226,7 @@ class ProcurationProxy
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == 'FR' and value != null) or (this.getVoteCountry() != 'FR' and value == null)",
+     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"front"}
      * )
@@ -255,7 +259,7 @@ class ProcurationProxy
      * @Assert\NotBlank(groups={"front"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"front"})
      */
-    private $voteCountry = 'FR';
+    private $voteCountry = AreaUtils::CODE_FRANCE;
 
     /**
      * @var string
@@ -316,12 +320,16 @@ class ProcurationProxy
      * @Assert\Range(
      *     min=1,
      *     max=3,
-     *     groups={"front"}
+     *     groups={"front", "Default"}
      * )
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == 'FR' and value <= 2) or (this.getVoteCountry() != 'FR' and value <= 3)",
+     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 2) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 3)",
      *     message="procuration.vote_country.conditions",
-     *     groups={"front"}
+     *     groups={"front", "Default"}
+     * )
+     * @Assert\Expression(
+     *     "this.getFoundRequests().count() <= value",
+     *     message="procuration.proxies_count.already_associated"
      * )
      *
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
@@ -645,6 +653,9 @@ class ProcurationProxy
         return implode("\n", $availableRounds->toArray());
     }
 
+    /**
+     * @return ProcurationRequest[]|Collection
+     */
     public function getFoundRequests(): Collection
     {
         return $this->foundRequests;
@@ -655,12 +666,17 @@ class ProcurationProxy
         if (!$this->foundRequests->contains($procurationRequest)) {
             $this->foundRequests->add($procurationRequest);
             $procurationRequest->setFoundProxy($this);
+
+            $this->processAvailabilities();
         }
     }
 
     private function removeFoundRequest(ProcurationRequest $procurationRequest): void
     {
         $this->foundRequests->removeElement($procurationRequest);
+        $procurationRequest->setFoundProxy(null);
+
+        $this->processAvailabilities();
     }
 
     public function isDisabled(): bool
@@ -709,7 +725,7 @@ class ProcurationProxy
             return false;
         }
 
-        if ('FR' === $this->voteCountry && 0 !== strpos($request->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
+        if (AreaUtils::CODE_FRANCE === $this->voteCountry && 0 !== strpos($request->getVotePostalCode(), substr($this->votePostalCode, 0, 2))) {
             return false;
         }
 
@@ -737,63 +753,43 @@ class ProcurationProxy
         return $this->frenchRequestAvailable;
     }
 
-    private function setFrenchRequestAvailable(bool $frenchRequestAvailable): void
-    {
-        $this->frenchRequestAvailable = $frenchRequestAvailable;
-    }
-
     public function isForeignRequestAvailable(): bool
     {
         return $this->foreignRequestAvailable;
     }
 
-    private function setForeignRequestAvailable(bool $foreignRequestAvailable): void
-    {
-        $this->foreignRequestAvailable = $foreignRequestAvailable;
-    }
-
     public function process(ProcurationRequest $request): void
     {
-        $proxiesUsedCount = $this->getFoundRequests()->count();
-        $remainingProxiesCount = $this->proxiesCount - $proxiesUsedCount;
-
-        if (1 === $remainingProxiesCount) {
-            $this->setFrenchRequestAvailable(false);
-            $this->setForeignRequestAvailable(false);
-        } else {
-            if ('FR' === $this->getVoteCountry()) {
-                $this->setFrenchRequestAvailable(false);
-            } else {
-                if (2 === $remainingProxiesCount && !$this->isFrenchRequestAvailable()) {
-                    $this->setForeignRequestAvailable(false);
-                }
-            }
-        }
-
         $this->addFoundRequest($request);
     }
 
     public function unprocess(ProcurationRequest $request): void
     {
-        $proxiesUsedCount = $this->getFoundRequests()->count();
-        $remainingProxiesCount = $this->proxiesCount - $proxiesUsedCount;
-
-        if (1 === $this->getFoundRequests()->count()) {
-            $this->setFrenchRequestAvailable(true);
-            $this->setForeignRequestAvailable(true);
-        } else {
-            if ('FR' === $this->getVoteCountry()) {
-                $this->setFrenchRequestAvailable(true);
-            } else {
-                $this->setForeignRequestAvailable(true);
-
-                if (0 === $remainingProxiesCount) {
-                    $this->setFrenchRequestAvailable(true);
-                }
-            }
-        }
-
         $this->removeFoundRequest($request);
+    }
+
+    public function processAvailabilities(): void
+    {
+        $this->processFrenchAvailability();
+        $this->processForeignAvailability();
+    }
+
+    private function processFrenchAvailability(): void
+    {
+        $this->frenchRequestAvailable = $this->hasFreeSlots() && !$this->isProxyForFrenchRequest();
+    }
+
+    private function processForeignAvailability(): void
+    {
+        $this->foreignRequestAvailable = $this->hasFreeSlots()
+            && $this->getForeignRequestsLimit() > $this->countForeignRequests();
+    }
+
+    private function getForeignRequestsLimit(): int
+    {
+        return AreaUtils::CODE_FRANCE === $this->getVoteCountry()
+            ? self::MAX_FOREIGN_REQUESTS_FROM_FRANCE
+            : self::MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY;
     }
 
     public function isReachable(): bool
@@ -814,5 +810,32 @@ class ProcurationProxy
     public function setState(?string $state): void
     {
         $this->state = $state;
+    }
+
+    private function hasFreeSlots(): bool
+    {
+        return 0 < ($this->proxiesCount - $this->foundRequests->count());
+    }
+
+    private function isProxyForFrenchRequest(): bool
+    {
+        foreach ($this->getFoundRequests() as $request) {
+            if (true === $request->isRequestFromFrance()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function countForeignRequests(): int
+    {
+        return $this
+            ->getFoundRequests()
+            ->filter(function (ProcurationRequest $request) {
+                return false === $request->isRequestFromFrance();
+            })
+            ->count()
+        ;
     }
 }

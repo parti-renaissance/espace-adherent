@@ -2,13 +2,20 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\ElectionRound;
 use AppBundle\Procuration\ElectionContext;
 use AppBundle\Procuration\Exception\InvalidProcurationFlowException;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class ElectionRoundRepository extends EntityRepository
+class ElectionRoundRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ElectionRound::class);
+    }
+
     public function createQueryBuilderFromElectionContext(ElectionContext $context): QueryBuilder
     {
         if (!$ids = $context->getCachedIds()) {

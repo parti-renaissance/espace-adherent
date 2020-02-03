@@ -14,6 +14,7 @@ abstract class ProcurationFilters
     public const PARAMETER_PAGE = 'page';
     public const PARAMETER_ELECTION_ROUND = 'round';
     public const PARAMETER_STATUS = 'status';
+    public const PARAMETER_LAST_NAME = 'last_name';
 
     private const PER_PAGE = 30;
 
@@ -22,6 +23,7 @@ abstract class ProcurationFilters
     private $city;
     private $electionRound;
     private $status;
+    private $lastName;
 
     final private function __construct()
     {
@@ -49,6 +51,10 @@ abstract class ProcurationFilters
 
         if ($page = $request->query->getInt(self::PARAMETER_PAGE, 1)) {
             $filters->setCurrentPage($page);
+        }
+
+        if ($lastName = $request->query->get(self::PARAMETER_LAST_NAME)) {
+            $filters->setLastName($lastName);
         }
 
         return $filters;
@@ -123,6 +129,16 @@ abstract class ProcurationFilters
         return $this->status;
     }
 
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
     public function getCountries(): array
     {
         return UnitedNationsBundle::getCountries();
@@ -130,7 +146,7 @@ abstract class ProcurationFilters
 
     public function hasData(): bool
     {
-        return $this->country || $this->city || $this->electionRound;
+        return $this->country || $this->city || $this->electionRound || $this->lastName;
     }
 
     public function apply(QueryBuilder $qb, string $alias): void
@@ -169,6 +185,13 @@ abstract class ProcurationFilters
             ;
         }
 
+        if ($this->lastName) {
+            $qb
+                ->andWhere("$alias.lastName LIKE :last_name")
+                ->setParameter('last_name', '%'.strtolower($this->lastName).'%')
+            ;
+        }
+
         $qb
             ->setFirstResult(($this->currentPage - 1) * self::PER_PAGE)
             ->setMaxResults(self::PER_PAGE)
@@ -196,6 +219,10 @@ abstract class ProcurationFilters
 
         if ($this->status) {
             $parameters[self::PARAMETER_STATUS] = $this->status;
+        }
+
+        if ($this->lastName) {
+            $parameters[self::PARAMETER_LAST_NAME] = $this->lastName;
         }
 
         return $parameters ?? [];

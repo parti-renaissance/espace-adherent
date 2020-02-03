@@ -4,10 +4,10 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Election;
 use AppBundle\Entity\ElectionRound;
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadElectionData implements FixtureInterface
+class LoadElectionData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
@@ -99,6 +99,10 @@ INTRODUCTION
         $manager->persist($legislativeElections);
         $manager->persist($partialLegislativeElections);
         $manager->flush();
+
+        $this->setReference('elections-presidential', $presidentialElections);
+        $this->setReference('elections-legislative', $legislativeElections);
+        $this->setReference('elections-partial-legislative', $partialLegislativeElections);
     }
 
     private function createElection(string $name, string $introduction): Election

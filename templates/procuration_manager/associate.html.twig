@@ -79,12 +79,12 @@
                     rounds: request.electionRounds,
                 }, with_context=false) }}
             </div>
-            {{ include('procuration/_request_reasons.html.twig', { request: request }, with_context=false) }}
+
             <div class="profile-label">
                 Raison de la demande
             </div>
             <div class="profile-value">
-                {{ include('procuration/_request_reasons.html.twig', { request: request }) }}
+                {{ include('procuration/_request_reasons.html.twig', { request: request }, with_context=false) }}
             </div>
         </div>
 

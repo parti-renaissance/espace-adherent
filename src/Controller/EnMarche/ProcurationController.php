@@ -13,6 +13,8 @@ use AppBundle\Form\Procuration\ProcurationRequestType;
 use AppBundle\Procuration\ElectionContext;
 use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Procuration\ProcurationSession;
+use AppBundle\Repository\AdherentRepository;
+use AppBundle\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,12 +28,14 @@ class ProcurationController extends Controller
     /**
      * @Route(name="app_procuration_landing", methods={"GET"})
      */
-    public function landingAction(ProcurationSession $procurationSession): Response
-    {
+    public function landingAction(
+        ProcurationSession $procurationSession,
+        ElectionRepository $electionRepository
+    ): Response {
         $procurationSession->endRequest(); // Back to landing should reset the flow
 
         return $this->render('procuration/landing.html.twig', [
-            'next_election' => $this->getDoctrine()->getRepository(Election::class)->findComingNextElection(),
+            'next_election' => $electionRepository->findComingNextElection(),
         ]);
     }
 
@@ -140,7 +144,8 @@ class ProcurationController extends Controller
     public function proxyProposalAction(
         Request $request,
         ProcurationSession $procurationSession,
-        ProcurationManager $procurationManager
+        ProcurationManager $procurationManager,
+        AdherentRepository $adherentRepository
     ): Response {
         if (!$procurationSession->hasElectionContext()) {
             return $this->redirectToRoute('app_procuration_choose_election', ['action' => ElectionContext::ACTION_PROPOSAL]);
@@ -150,7 +155,7 @@ class ProcurationController extends Controller
 
         if ($referentUuid = $request->query->get('uuid')) {
             try {
-                $referent = $this->getDoctrine()->getRepository(Adherent::class)->findOneByValidUuid($referentUuid);
+                $referent = $adherentRepository->findOneByValidUuid($referentUuid);
             } catch (InvalidUuidException $e) {
             } finally {
                 if (isset($e) || !$referent instanceof Adherent || !$referent->canBeProxy()) {

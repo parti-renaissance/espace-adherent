@@ -227,6 +227,8 @@ procuration.vote_country.conditions.other: Attention, vous ne pouvez être manda
 procuration.vote_country.conditions.conditions: Merci de bien vouloir remplir la condition ci-dessous.
 procuration.state.not_empty: Vous devez remplir l'État/Province si le pays de résidence n'est pas en France.
 procuration.postal_code.not_empty: Pour la France, la saisie du code postal est obligatoire.
+procuration.vote_country.conditions: Un mandataire ne peut se proposer plus de 2 fois pour un vote en France, et 3 fois pour un vote à l'étranger.
+procuration.proxies_count.already_associated: Si vous voulez réduire le nombre de procurations disponibles pour ce mandataire, vous devez d'abord lui dissocier des demandes.
 
 #
 # Event
