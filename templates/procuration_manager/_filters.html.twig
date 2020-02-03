@@ -3,6 +3,14 @@
     <div class="l__row l__row--top l__mobile--col">
         <div class="l__col--grow-1 b__nudge--right">
             <label>
+                Nom de famille :<br />
+                <input type="text" name="{{ constant('PARAMETER_LAST_NAME', filters) }}" value="{{ filters.lastName }}"
+                       class="form form__field form--full">
+            </label>
+        </div>
+
+        <div class="l__col--grow-1 b__nudge--right">
+            <label>
                 Pays du vote :<br />
                 <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="form form__field form--full">
                     <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>

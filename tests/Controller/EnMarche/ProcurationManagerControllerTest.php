@@ -245,6 +245,18 @@ class ProcurationManagerControllerTest extends WebTestCase
 
         $this->assertCount(4, $crawler->filter('.datagrid__table tbody tr'));
 
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_LAST_NAME => 'Amoitie']));
+
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_LAST_NAME => 'moitié']));
+
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationRequestFilters::PARAMETER_LAST_NAME => 'Tran']));
+
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
+
         $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
 
         $this->assertCount(5, $crawler->filter('.datagrid__table tbody tr'));
@@ -277,6 +289,7 @@ class ProcurationManagerControllerTest extends WebTestCase
             ProcurationProxyProposalFilters::PARAMETER_COUNTRY => null,
             ProcurationProxyProposalFilters::PARAMETER_CITY => null,
             ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => null,
+            ProcurationProxyProposalFilters::PARAMETER_LAST_NAME => null,
         ];
 
         $form = $crawler->selectButton('Filtrer')->form();
@@ -307,6 +320,18 @@ class ProcurationManagerControllerTest extends WebTestCase
         $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_ELECTION_ROUND => 10]));
 
         $this->assertCount(2, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_LAST_NAME => 'harquin']));
+
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_LAST_NAME => 'Harq']));
+
+        $this->assertCount(1, $crawler->filter('.datagrid__table tbody tr'));
+
+        $crawler = $this->client->submit($form, array_merge($formValues, [ProcurationProxyProposalFilters::PARAMETER_LAST_NAME => 'Tran']));
+
+        $this->assertCount(0, $crawler->filter('.datagrid__table tbody tr'));
 
         $crawler = $this->client->click($crawler->selectLink('Annuler')->link());
 
