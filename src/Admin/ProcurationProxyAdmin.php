@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Utils\AreaUtils;
@@ -33,6 +34,16 @@ class ProcurationProxyAdmin extends AbstractAdmin
         }
 
         return parent::getTemplate($name);
+    }
+
+    /**
+     * @param ProcurationProxy $procurationProxy
+     */
+    public function preUpdate($procurationProxy)
+    {
+        parent::preUpdate($procurationProxy);
+
+        $procurationProxy->processAvailabilities();
     }
 
     protected function configureRoutes(RouteCollection $collection)

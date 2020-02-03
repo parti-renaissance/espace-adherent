@@ -320,12 +320,16 @@ class ProcurationProxy
      * @Assert\Range(
      *     min=1,
      *     max=3,
-     *     groups={"front"}
+     *     groups={"front", "Default"}
      * )
      * @Assert\Expression(
      *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 2) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value <= 3)",
      *     message="procuration.vote_country.conditions",
-     *     groups={"front"}
+     *     groups={"front", "Default"}
+     * )
+     * @Assert\Expression(
+     *     "this.getFoundRequests().count() <= value",
+     *     message="procuration.proxies_count.already_associated"
      * )
      *
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
@@ -764,7 +768,7 @@ class ProcurationProxy
         $this->removeFoundRequest($request);
     }
 
-    private function processAvailabilities(): void
+    public function processAvailabilities(): void
     {
         $this->processFrenchAvailability();
         $this->processForeignAvailability();
