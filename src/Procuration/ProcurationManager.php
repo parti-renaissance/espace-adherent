@@ -10,7 +10,6 @@ use AppBundle\Procuration\Event\ProcurationProxyEvent;
 use AppBundle\Procuration\Event\ProcurationRequestEvent;
 use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
 use AppBundle\Procuration\Filter\ProcurationRequestFilters;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\ProcurationProxyRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,20 +19,17 @@ class ProcurationManager
 {
     private $procurationRequestRepository;
     private $procurationProxyRepository;
-    private $adherentRepository;
     private $manager;
     private $dispatcher;
 
     public function __construct(
         ProcurationRequestRepository $procurationRequestRepository,
         ProcurationProxyRepository $procurationProxyRepository,
-        AdherentRepository $adherentRepository,
         EntityManagerInterface $manager,
         EventDispatcherInterface $dispatcher
     ) {
         $this->procurationRequestRepository = $procurationRequestRepository;
         $this->procurationProxyRepository = $procurationProxyRepository;
-        $this->adherentRepository = $adherentRepository;
         $this->manager = $manager;
         $this->dispatcher = $dispatcher;
     }
@@ -144,8 +140,6 @@ class ProcurationManager
 
     public function createProcurationProxy(ProcurationProxy $proxy): void
     {
-        $this->processReliability($proxy);
-
         $this->manager->persist($proxy);
         $this->manager->flush();
 
@@ -158,41 +152,5 @@ class ProcurationManager
         $this->manager->flush();
 
         $this->dispatcher->dispatch(ProcurationEvents::REQUEST_REGISTRATION, new ProcurationRequestEvent($request));
-    }
-
-    private function processReliability(ProcurationProxy $proxy): void
-    {
-        if (!$adherent = $this->adherentRepository->findOneByEmail($proxy->getEmailAddress())) {
-            return;
-        }
-
-        if (
-            $adherent->isReferent()
-            || $adherent->isCoReferent()
-            || $adherent->isSenator()
-            || $adherent->isDeputy()
-            || $adherent->isCoordinator()
-            || $adherent->isMunicipalChief()
-        ) {
-            $proxy->setRepresentativeReliability();
-
-            return;
-        }
-
-        if (
-            $adherent->isHost()
-            || $adherent->isCitizenProjectAdministrator()
-            || $adherent->isCoordinatorCommitteeSector()
-            || $adherent->isCoordinatorCitizenProjectSector()
-            || $adherent->isJecouteManager()
-            || $adherent->isAssessorManager()
-            || $adherent->isProcurationManager()
-        ) {
-            $proxy->setActivistReliability();
-
-            return;
-        }
-
-        $proxy->setAdherentReliability();
     }
 }
