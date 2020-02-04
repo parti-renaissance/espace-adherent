@@ -167,6 +167,7 @@
         <service id="AppBundle\EventListener\ProcurationMailerSubscriber">
             <argument key="$mailer" type="service" id="app.mailer.transactional" />
         </service>
+        <service id="AppBundle\EventListener\ProcurationReliabilitySubscriber"/>
         <service id="AppBundle\EventListener\ControllerListener">
             <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" priority="8" />
         </service>
@@ -226,6 +227,7 @@
 
         <!-- Procuration -->
         <service id="AppBundle\Procuration\ProcurationManager" public="true" />
+        <service id="AppBundle\Procuration\ProcurationReliabilityProcessor" public="true" />
         <service id="AppBundle\Procuration\ProcurationRequestSerializer" />
         <service id="AppBundle\Procuration\ProcurationSession" />
 

@@ -29,6 +29,11 @@ class ProcurationProxy
     public const ACTION_DISABLE = 'desactiver';
     public const ACTIONS_URI_REGEX = self::ACTION_ENABLE.'|'.self::ACTION_DISABLE;
 
+    private const RELIABILITY_UNKNOWN = 1;
+    private const RELIABILITY_ADHERENT = 4;
+    private const RELIABILITY_ACTIVIST = 6;
+    private const RELIABILITY_REPRESENTATIVE = 8;
+
     private const NO_AVAILABLE_ROUND = 'Aucun';
     private const ALL_AVAILABLE_ROUNDS = 'Tous les tours proposés';
 
@@ -64,7 +69,7 @@ class ProcurationProxy
      *
      * @ORM\Column(type="smallint")
      */
-    private $reliability = 0;
+    private $reliability = self::RELIABILITY_UNKNOWN;
 
     /**
      * @var string|null
@@ -363,10 +368,6 @@ class ProcurationProxy
         $this->phone = static::createPhoneNumber();
         $this->electionRounds = new ArrayCollection();
         $this->foundRequests = new ArrayCollection();
-
-        if (!$this->referent) {
-            $this->reliability = -1;
-        }
     }
 
     public function __toString()
@@ -837,5 +838,20 @@ class ProcurationProxy
             })
             ->count()
         ;
+    }
+
+    public function setRepresentativeReliability(): void
+    {
+        $this->reliability = self::RELIABILITY_REPRESENTATIVE;
+    }
+
+    public function setActivistReliability(): void
+    {
+        $this->reliability = self::RELIABILITY_ACTIVIST;
+    }
+
+    public function setAdherentReliability(): void
+    {
+        $this->reliability = self::RELIABILITY_ADHERENT;
     }
 }
