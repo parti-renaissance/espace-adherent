@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VotePlaceRepository")
  *
  * @UniqueEntity(fields={"code"})
  *
@@ -262,5 +262,10 @@ class VotePlace
     public function setSubstituteOfficeAvailable(bool $substituteOfficeAvailable): void
     {
         $this->substituteOfficeAvailable = $substituteOfficeAvailable;
+    }
+
+    public function equals(self $place): bool
+    {
+        return $this->id === $place->getId();
     }
 }

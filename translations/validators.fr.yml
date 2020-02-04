@@ -352,6 +352,7 @@ assessor.assessor_city.not_blank: Vous devez spécifier la ville du bureau de vo
 assessor.assessor_postal_code.not_blank: Vous devez spécifier le code postal du bureau de vote pour laquelle vous voulez devenir assesseur.
 
 assessor.vote_place_wishes.not_blank: Vous devez choisir au moins un bureau de vote.
+assessor.unique_vote_place_association: L'adhérent est déjà assesseur dans un autre bureau de vote.
 
 #
 # Vote Place

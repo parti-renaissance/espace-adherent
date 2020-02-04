@@ -2,7 +2,7 @@
 
 namespace AppBundle\Repository;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\BoardMember\BoardMemberFilter;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Coordinator\CoordinatorManagedAreaUtils;
@@ -39,6 +39,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
+    use PaginatorTrait;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -714,19 +715,19 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->getEntityManager()->refresh($adherent);
     }
 
-    public function findPaginatedForInseeCodes(array $inseeCodes, int $page = 1, int $maxItemPerPage = 10): ApiPaginator
-    {
-        $page = $page < 1 ? 1 : $page;
-
-        return new ApiPaginator(new Paginator($this
+    public function findPaginatedForInseeCodes(
+        array $inseeCodes,
+        int $page = 1,
+        int $maxItemPerPage = 10
+    ): PaginatorInterface {
+        $qb = $this
             ->createQueryBuilder('a')
             ->where("FIND_IN_SET(SUBSTRING_INDEX(a.postAddress.city, '-', -1), :insee_codes) > 0")
             ->andWhere('a.adherent = 1')
-            ->setFirstResult(($page - 1) * $maxItemPerPage)
-            ->setMaxResults($maxItemPerPage)
             ->setParameter('insee_codes', implode(',', $inseeCodes))
-            ->getQuery()
-        ));
+        ;
+
+        return $this->configurePaginator($qb, $page, $maxItemPerPage);
     }
 
     public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Adherent
@@ -816,5 +817,24 @@ SQL;
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    /**
+     * @return Adherent[]
+     */
+    public function findAssessorsForVotePlaces(array $votePlaces): array
+    {
+        return array_column(
+            $this->createQueryBuilder('a')
+                ->addSelect('pl.id AS votePlaceId')
+                ->innerJoin('a.assessorRole', 'ar')
+                ->innerJoin('ar.votePlace', 'pl')
+                ->where('pl IN (:places)')
+                ->setParameter('places', $votePlaces)
+                ->getQuery()
+                ->getResult(),
+            0,
+            'votePlaceId'
+        );
     }
 }

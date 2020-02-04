@@ -241,6 +241,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $assessorManagedArea;
 
     /**
+     * @var AssessorRoleAssociation|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AssessorRoleAssociation", cascade={"all"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $assessorRole;
+
+    /**
      * @var BoardMember|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
@@ -624,6 +632,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ASSESSOR_MANAGER';
         }
 
+        if ($this->isAssessor()) {
+            $roles[] = 'ROLE_ASSESSOR';
+        }
+
         if ($this->isJecouteManager()) {
             $roles[] = 'ROLE_JECOUTE_MANAGER';
         }
@@ -681,6 +693,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isCoordinator()
             || $this->isProcurationManager()
             || $this->isAssessorManager()
+            || $this->isAssessor()
             || $this->isJecouteManager()
             || $this->isHost()
             || $this->isCitizenProjectAdministrator()
@@ -1118,6 +1131,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->assessorManagedArea = $assessorManagedArea;
     }
 
+    public function getAssessorRole(): ?AssessorRoleAssociation
+    {
+        return $this->assessorRole;
+    }
+
+    public function setAssessorRole(?AssessorRoleAssociation $assessorRole): void
+    {
+        $this->assessorRole = $assessorRole;
+    }
+
     public function getBoardMember(): ?BoardMember
     {
         return $this->boardMember;
@@ -1212,6 +1235,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isAssessorManager(): bool
     {
         return $this->assessorManagedArea instanceof AssessorManagedArea && !empty($this->assessorManagedArea->getCodes());
+    }
+
+    public function isAssessor(): bool
+    {
+        return !empty($this->assessorRole);
     }
 
     public function canBeProxy(): bool
