@@ -31,7 +31,7 @@ class ProcurationProxy
 
     private const RELIABILITY_UNKNOWN = 1;
     private const RELIABILITY_ADHERENT = 4;
-    private const RELIABILITY_ACTIVIST = 5;
+    private const RELIABILITY_ACTIVIST = 6;
     private const RELIABILITY_REPRESENTATIVE = 8;
 
     private const NO_AVAILABLE_ROUND = 'Aucun';

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Procuration;
 
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Repository\AdherentRepository;
 
@@ -16,7 +17,9 @@ class ProcurationReliabilityProcessor
 
     public function process(ProcurationProxy $proxy): void
     {
-        if (!$adherent = $this->adherentRepository->findOneByEmail($proxy->getEmailAddress())) {
+        $adherent = $this->adherentRepository->findOneByEmail($proxy->getEmailAddress());
+
+        if (!$adherent instanceof Adherent || !$adherent->isAdherent()) {
             return;
         }
 
@@ -25,7 +28,7 @@ class ProcurationReliabilityProcessor
             || $adherent->isCoReferent()
             || $adherent->isSenator()
             || $adherent->isDeputy()
-            || $adherent->isCoordinator()
+            || $adherent->isCoordinatorCommitteeSector()
             || $adherent->isMunicipalChief()
         ) {
             $proxy->setRepresentativeReliability();
@@ -36,7 +39,6 @@ class ProcurationReliabilityProcessor
         if (
             $adherent->isHost()
             || $adherent->isCitizenProjectAdministrator()
-            || $adherent->isCoordinatorCommitteeSector()
             || $adherent->isCoordinatorCitizenProjectSector()
             || $adherent->isJecouteManager()
             || $adherent->isAssessorManager()

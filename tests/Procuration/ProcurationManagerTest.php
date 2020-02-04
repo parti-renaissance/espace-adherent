@@ -29,7 +29,6 @@ class ProcurationManagerTest extends WebTestCase
 
     /**
      * @dataProvider provideMatchingProcurationProxies
-     * @group debug
      */
     public function testGetMatchingProcurationProxies(string $requestEmail, array $expectedMatchingProxies): void
     {

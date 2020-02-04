@@ -227,6 +227,7 @@
 
         <!-- Procuration -->
         <service id="AppBundle\Procuration\ProcurationManager" public="true" />
+        <service id="AppBundle\Procuration\ProcurationReliabilityProcessor" public="true" />
         <service id="AppBundle\Procuration\ProcurationRequestSerializer" />
         <service id="AppBundle\Procuration\ProcurationSession" />
 
