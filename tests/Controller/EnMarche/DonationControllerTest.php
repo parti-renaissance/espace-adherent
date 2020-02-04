@@ -277,7 +277,7 @@ class DonationControllerTest extends WebTestCase
         $this->assertSame('FR', $donation->getCountry());
         $this->assertSame('06000', $donation->getPostalCode());
         $this->assertSame('Nice', $donation->getCityName());
-        $this->assertSame('FR', $donation->getNationality());
+        $this->assertSame('FR', $donation->getDonator()->getNationality());
         $this->assertSame('9 rue du Lycée', $donation->getAddress());
         $this->assertSame($duration, $donation->getDuration());
 

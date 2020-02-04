@@ -2,7 +2,6 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Address\Address;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
@@ -124,7 +123,8 @@ class LoadDonationData extends Fixture
             $adherent->getCityName(),
             $adherent->getCountry(),
             $adherent->getEmailAddress(),
-            $adherent->getGender()
+            $adherent->getGender(),
+            $adherent->getNationality()
         );
 
         $donator->setIdentifier($accountId);
@@ -150,7 +150,6 @@ class LoadDonationData extends Fixture
             '127.0.0.1',
             $duration,
             $uuid->toString().'_'.$this->slugify->slugify($donator->getFullName()),
-            Address::FRANCE,
             $code,
             $donator
         );

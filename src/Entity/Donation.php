@@ -45,6 +45,16 @@ class Donation implements GeoPointInterface
     public const TYPE_CHECK = 'check';
     public const TYPE_TRANSFER = 'transfer';
 
+    public const BENEFICIARY_AFEMA = 'AFEMA';
+    public const BENEFICIARY_AFCPEM = 'AFCPEM';
+    public const BENEFICIARY_RENAISSANCE = 'Renaissance';
+
+    public const BENEFICIARY_CHOICES = [
+        self::BENEFICIARY_AFEMA,
+        self::BENEFICIARY_AFCPEM,
+        self::BENEFICIARY_RENAISSANCE,
+    ];
+
     /**
      * @var string
      *
@@ -135,14 +145,19 @@ class Donation implements GeoPointInterface
     private $transferNumber;
 
     /**
-     * @ORM\Column(length=2, nullable=true)
-     */
-    private $nationality;
-
-    /**
      * @ORM\Column(nullable=true, length=6)
      */
     private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(options={"default": Donation::BENEFICIARY_AFEMA})
+     *
+     * @Assert\NotBlank
+     * @Assert\Choice(choices=Donation::BENEFICIARY_CHOICES)
+     */
+    private $beneficiary = self::BENEFICIARY_AFEMA;
 
     /**
      * @var string|null
@@ -204,10 +219,10 @@ class Donation implements GeoPointInterface
         ?string $clientIp = null,
         int $duration = PayboxPaymentSubscription::NONE,
         string $payboxOrderRef = null,
-        string $nationality = null,
         string $code = null,
         Donator $donator = null,
-        \DateTimeImmutable $createdAt = null
+        \DateTimeImmutable $createdAt = null,
+        string $beneficiary = self::BENEFICIARY_AFEMA
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
@@ -219,9 +234,9 @@ class Donation implements GeoPointInterface
         $this->duration = $duration;
         $this->payboxOrderRef = $payboxOrderRef;
         $this->status = self::STATUS_WAITING_CONFIRMATION;
-        $this->nationality = $nationality;
         $this->code = $code;
         $this->donator = $donator;
+        $this->beneficiary = $beneficiary;
         $this->tags = new ArrayCollection();
         $this->transactions = new ArrayCollection();
     }
@@ -341,7 +356,7 @@ class Donation implements GeoPointInterface
             'fn' => $donator->getFirstName(),
             'em' => urlencode($donator->getEmailAddress()),
             'co' => $this->getCountry(),
-            'na' => $this->getNationality(),
+            'na' => $donator->getNationality(),
             'pc' => $this->getPostalCode(),
             'ci' => $this->getCityName(),
             'ad' => urlencode($this->getAddress()),
@@ -442,19 +457,24 @@ class Donation implements GeoPointInterface
         return $this->updatedAt;
     }
 
-    public function getNationality(): ?string
-    {
-        return $this->nationality;
-    }
-
-    public function setNationality(string $nationality): void
-    {
-        $this->nationality = $nationality;
-    }
-
     public function getCode(): ?string
     {
         return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
+    }
+
+    public function getBeneficiary(): string
+    {
+        return $this->beneficiary;
+    }
+
+    public function setBeneficiary(string $beneficiary): void
+    {
+        $this->beneficiary = $beneficiary;
     }
 
     public function getDonator(): ?Donator

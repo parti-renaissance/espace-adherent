@@ -17,7 +17,12 @@
     {% set donator = form.parent.vars.value %}
 
     <span class="help-block sonata-ba-field-help">
-        Adresse courante: {{ donator.referenceAddress }}
+        Adresse courante:
+        {% if donator.referenceAddress %}
+            {{ donator.referenceAddress }}
+        {% else %}
+            Aucun don réussi / Aucun don de référence selectionné
+        {% endif %}
     </span>
 {% endblock %}
 

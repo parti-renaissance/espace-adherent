@@ -91,6 +91,9 @@ class DonatorAdmin extends AbstractAdmin
                 ->add('emailAddress', null, [
                     'label' => 'Adresse e-mail',
                 ])
+                ->add('nationality', UnitedNationsCountryType::class, [
+                    'label' => 'Nationalité',
+                ])
             ->end()
             ->with('Adresse', ['class' => 'col-md-6'])
                 ->add('city', null, [
@@ -112,7 +115,7 @@ class DonatorAdmin extends AbstractAdmin
 
         if (!$this->isCurrentRoute('create')) {
             $form
-                ->with('Dons', ['class' => 'col-md-6'])
+                ->with('Dons', ['class' => 'col-md-8'])
                     ->add('referenceDonation', null, [
                         'label' => 'Sélectionnez le don de référence',
                         'expanded' => true,
@@ -126,7 +129,7 @@ class DonatorAdmin extends AbstractAdmin
         }
 
         $form
-            ->with('Liens', ['class' => 'col-md-6'])
+            ->with('Liens', ['class' => 'col-md-4'])
                 ->add('kinships', CollectionType::class, [
                     'entry_type' => DonatorKinshipType::class,
                     'required' => false,
@@ -159,8 +162,16 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Adresse e-mail',
                 'show_filter' => true,
             ])
-            ->add('country', ChoiceFilter::class, [
+            ->add('nationality', ChoiceFilter::class, [
                 'label' => 'Nationalité',
+                'show_filter' => true,
+                'field_type' => CountryType::class,
+                'field_options' => [
+                    'multiple' => true,
+                ],
+            ])
+            ->add('country', ChoiceFilter::class, [
+                'label' => 'Pays de résidence',
                 'show_filter' => true,
                 'field_type' => CountryType::class,
                 'field_options' => [
@@ -382,6 +393,9 @@ class DonatorAdmin extends AbstractAdmin
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',
             ])
+            ->add('nationality', null, [
+                'label' => 'Nationalité',
+            ])
             ->add('lastSuccessfulDonation', null, [
                 'label' => 'Date du dernier don',
                 'template' => 'admin/donator/list_last_donation.html.twig',
@@ -415,6 +429,7 @@ class DonatorAdmin extends AbstractAdmin
             'Prénom' => 'firstName',
             'Civilité' => 'gender',
             'Adresse e-mail' => 'emailAddress',
+            'Nationalité' => 'nationality',
             'Ville' => 'city',
             'Pays' => 'country',
             'Commentaire' => 'comment',

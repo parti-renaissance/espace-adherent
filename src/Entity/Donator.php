@@ -82,6 +82,13 @@ class Donator
     private $country = 'FR';
 
     /**
+     * @ORM\Column(length=2, nullable=true)
+     *
+     * @Assert\Country
+     */
+    private $nationality;
+
+    /**
      * @ORM\Column(nullable=true)
      *
      * @Assert\Email(message="common.email.invalid")
@@ -143,7 +150,8 @@ class Donator
         string $city = null,
         string $country = null,
         string $emailAddress = null,
-        string $gender = null
+        string $gender = null,
+        string $nationality = null
     ) {
         $this->lastName = $lastName;
         $this->firstName = $firstName;
@@ -151,6 +159,7 @@ class Donator
         $this->country = $country;
         $this->emailAddress = $emailAddress;
         $this->gender = $gender;
+        $this->nationality = $nationality;
         $this->donations = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->kinships = new ArrayCollection();
@@ -244,6 +253,16 @@ class Donator
     public function setCountry(?string $country): void
     {
         $this->country = $country;
+    }
+
+    public function getNationality(): ?string
+    {
+        return $this->nationality;
+    }
+
+    public function setNationality(string $nationality): void
+    {
+        $this->nationality = $nationality;
     }
 
     public function getEmailAddress(): ?string

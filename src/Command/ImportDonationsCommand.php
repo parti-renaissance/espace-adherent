@@ -129,15 +129,17 @@ class ImportDonationsCommand extends Command
             $gender = $row['gender'];
             $firstName = $row['firstName'];
             $lastName = $row['lastName'];
+            $email = $row['email'];
             $address = $row['address'];
             $postalCode = str_pad($row['postalCode'], 5, '0', \STR_PAD_LEFT);
             $cityName = $row['cityName'];
             $country = mb_strtolower(trim($row['country']));
+            $nationality = mb_strtolower(trim($row['nationality']));
             $type = $row['type'];
             $amount = $row['amount'];
             $transferNumber = $row['transfer_number'];
             $checkNumber = $row['check_number'];
-            $donatedAt = \DateTimeImmutable::createFromFormat('m/d/Y', $row['date']);
+            $donatedAt = \DateTimeImmutable::createFromFormat('d/m/Y', $row['date']);
 
             if (!\array_key_exists($type, self::TYPES_MAP)) {
                 $this->io->text("\"$type\" is not a valid transaction type.");
@@ -157,13 +159,20 @@ class ImportDonationsCommand extends Command
                 continue;
             }
 
+            if (!\array_key_exists($nationality, self::COUNTRIES_MAP)) {
+                $this->io->text("\"$nationality\" is not a valid nationality.");
+
+                continue;
+            }
+
             $donator = new Donator(
                 $lastName,
                 $firstName,
                 $cityName,
                 self::COUNTRIES_MAP[$country],
-                null,
-                self::GENDERS_MAP[$gender]
+                $email,
+                self::GENDERS_MAP[$gender],
+                self::COUNTRIES_MAP[$nationality]
             );
 
             $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
@@ -182,7 +191,6 @@ class ImportDonationsCommand extends Command
                 null,
                 PayboxPaymentSubscription::NONE,
                 null,
-                self::COUNTRIES_MAP[$country],
                 null,
                 $donator
             );

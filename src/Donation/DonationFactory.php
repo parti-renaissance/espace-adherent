@@ -36,7 +36,6 @@ class DonationFactory
                 $request->getUuid(),
                 $request->getFirstName().' '.$request->getLastName()
             ),
-            $request->getNationality(),
             $request->getCode(),
             $donator
         );

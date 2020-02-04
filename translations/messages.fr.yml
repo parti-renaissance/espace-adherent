@@ -488,6 +488,9 @@ donation.status.refunded: Remboursé
 donation.status.canceled: Souscription annulée/désabonnée
 donation.status.finished: Don terminé avec succes
 donation.status.error: Erreur
+donation.beneficiary.afema: Mouvement/En Marche/LaRem
+donation.beneficiary.afcpem: Présidentielle 2017
+donation.beneficiary.renaissance: Européenne 2019
 
 #
 # Transactions

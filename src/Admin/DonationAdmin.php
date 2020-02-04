@@ -108,6 +108,14 @@ class DonationAdmin extends AbstractAdmin
                 ->add('code', null, [
                     'label' => 'Code don',
                 ])
+                ->add('beneficiary', ChoiceType::class, [
+                    'label' => 'Bénéficiaire',
+                    'disabled' => !$this->isCurrentRoute('create'),
+                    'choices' => Donation::BENEFICIARY_CHOICES,
+                    'choice_label' => function (string $choice) {
+                        return 'donation.beneficiary.'.mb_strtolower($choice);
+                    },
+                ])
                 ->add('donatedAt', null, [
                     'label' => 'Date du don',
                     'disabled' => $donation->isCB(),
@@ -196,6 +204,17 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('code', null, [
                 'label' => 'Code don',
+            ])
+            ->add('beneficiary', ChoiceFilter::class, [
+                'label' => 'Bénéficiaire',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => Donation::BENEFICIARY_CHOICES,
+                    'choice_label' => function (string $choice) {
+                        return 'donation.beneficiary.'.mb_strtolower($choice);
+                    },
+                    'multiple' => true,
+                ],
             ])
             ->add('type', ChoiceFilter::class, [
                 'label' => 'Type',
@@ -341,6 +360,10 @@ class DonationAdmin extends AbstractAdmin
             ->add('code', null, [
                 'label' => 'Code don',
             ])
+            ->add('beneficiary', null, [
+                'label' => 'Bénéficiaire',
+                'template' => 'admin/donation/list_beneficiary.html.twig',
+            ])
             ->add('donatedAt', null, [
                 'label' => 'Date',
             ])
@@ -363,6 +386,7 @@ class DonationAdmin extends AbstractAdmin
             'ID' => 'id',
             'Montant' => 'amountInEuros',
             'Code don' => 'code',
+            'Bénéficiarie' => 'beneficiary',
             'Date' => 'createdAt',
             'Type' => 'type',
             'Status' => 'status',
@@ -373,6 +397,7 @@ class DonationAdmin extends AbstractAdmin
             'Adresse e-mail' => 'donator.emailAddress',
             'Ville du donateur' => 'donator.city',
             'Pays du donateur' => 'donator.country',
+            'Nationalité du donateur' => 'donator.nationality',
             'Adresse de référence' => 'donator.getReferenceAddress',
             'Tags du donateur' => 'donator.getTagsAsString',
         ];
