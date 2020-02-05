@@ -65,7 +65,7 @@ https://sentry.io
 
 Outil de logging des erreurs de la plateforme.
 
-#### Rasmey UUID Doctrine
+#### Ramsey UUID Doctrine
 
 https://github.com/ramsey/uuid-doctrine
 
