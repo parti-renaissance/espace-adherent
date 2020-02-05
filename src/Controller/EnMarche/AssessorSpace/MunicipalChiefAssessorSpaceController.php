@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche\AssessorSpace;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Intl\FranceCitiesBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -24,6 +25,20 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
 
     protected function getVotePlacesPaginator(int $page): PaginatorInterface
     {
+        return $this->votePlaceRepository->findAllForPostalCode(
+            $this->getMunicipalChiefZonePostalCode(),
+            $page,
+            self::PAGE_LIMIT
+        );
+    }
+
+    protected function getExportFilter(): AssessorRequestExportFilter
+    {
+        return new AssessorRequestExportFilter([], [$this->getMunicipalChiefZonePostalCode()]);
+    }
+
+    private function getMunicipalChiefZonePostalCode(): string
+    {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
@@ -35,10 +50,6 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
             throw new \InvalidArgumentException(sprintf('[MunicipalChief] City with insee code "%s" is not identified', $inseeCode));
         }
 
-        return $this->votePlaceRepository->findAllForPostalCode(
-            $cityData['postal_code'],
-            $page,
-            self::PAGE_LIMIT
-        );
+        return $cityData['postal_code'];
     }
 }
