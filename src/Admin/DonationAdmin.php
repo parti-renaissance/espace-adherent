@@ -386,7 +386,7 @@ class DonationAdmin extends AbstractAdmin
             'ID' => 'id',
             'Montant' => 'amountInEuros',
             'Code don' => 'code',
-            'Bénéficiarie' => 'beneficiary',
+            'Bénéficiaire' => 'beneficiary',
             'Date' => 'createdAt',
             'Type' => 'type',
             'Status' => 'status',
