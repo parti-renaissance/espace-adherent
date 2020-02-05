@@ -66,6 +66,7 @@
             </call>
         </service>
         <service id="AppBundle\Validator\UniqueTurnkeyProjectPinnedValidator" />
+        <service id="AppBundle\Validator\UniqueVotePlaceAssessorValidator" />
         <service id="AppBundle\Validator\ValidAdherentCoReferentValidator" />
 
         <!-- Biography -->
@@ -142,6 +143,7 @@
 
         <!-- Assessor -->
         <service id="AppBundle\Assessor\AssessorRequestFactory" />
+        <service id="AppBundle\Assessor\AssessorRole\AssessorAssociationManager" />
         <service id="AppBundle\Assessor\AssessorRequestHandler">
             <argument type="service" id="state_machine.assessor_request" />
         </service>
@@ -149,6 +151,8 @@
             <argument type="service" id="app.mailer.transactional"/>
         </service>
         <service id="AppBundle\Form\AssessorRequestType" />
+        <service id="AppBundle\Form\AssessorRoleAssociationType" />
+        <service id="AppBundle\Form\DataTransformer\EmailToAdherentTransformer" />
 
         <!-- ApplicationRequest -->
         <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler" />

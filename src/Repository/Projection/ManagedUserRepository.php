@@ -2,22 +2,22 @@
 
 namespace AppBundle\Repository\Projection;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Entity\Projection\ManagedUser;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
+use AppBundle\Repository\PaginatorTrait;
 use AppBundle\Repository\ReferentTagRepository;
 use AppBundle\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ManagedUserRepository extends ServiceEntityRepository
 {
     use ReferentTrait;
+    use PaginatorTrait;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -29,14 +29,17 @@ class ManagedUserRepository extends ServiceEntityRepository
      */
     public function searchByFilter(ManagedUsersFilter $filter, int $page = 1, int $limit = 100): PaginatorInterface
     {
-        return new ApiPaginator(new Paginator($this
-            ->createFilterQueryBuilder($filter)
-            ->setFirstResult((($page < 1 ? 1 : $page) - 1) * $limit)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->useResultCache(true)
-            ->setResultCacheLifetime(1800)
-        ));
+        return $this->configurePaginator(
+            $this->createFilterQueryBuilder($filter),
+            $page,
+            $limit,
+            static function (Query $query) {
+                $query
+                    ->useResultCache(true)
+                    ->setResultCacheLifetime(1800)
+                ;
+            }
+        );
     }
 
     public function getExportQueryBuilder(ManagedUsersFilter $filter): Query

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPlatformPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Collection\AdherentCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
@@ -15,12 +14,13 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CommitteeMembershipRepository extends ServiceEntityRepository
 {
+    use PaginatorTrait;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, CommitteeMembership::class);
@@ -342,8 +342,6 @@ SQL
             ->addSelect('GROUP_CONCAT(st.code) AS HIDDEN st_codes')
             ->leftJoin('a.subscriptionTypes', 'st')
             ->groupBy('a.id')
-            ->setMaxResults($limit)
-            ->setFirstResult(($offset = ($page - 1) * $limit) < 0 ? 0 : $offset)
         ;
 
         if ($filter) {
@@ -430,7 +428,7 @@ SQL
             return $qb->getQuery()->getResult();
         }
 
-        return new ApiPlatformPaginator(new DoctrinePaginator($qb));
+        return $this->configurePaginator($qb, $page, $limit);
     }
 
     /**

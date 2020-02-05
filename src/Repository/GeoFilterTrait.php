@@ -20,8 +20,13 @@ trait GeoFilterTrait
     /**
      * @param ReferentTag[] $referentTags
      */
-    public function applyGeoFilter(QueryBuilder $qb, array $referentTags, string $alias): void
-    {
+    public function applyGeoFilter(
+        QueryBuilder $qb,
+        array $referentTags,
+        string $alias,
+        string $countryColumn = 'postAddress.country',
+        string $postalCodeColumn = 'postAddress.postalCode'
+    ): void {
         $codesFilter = $qb->expr()->orX();
 
         foreach ($referentTags as $key => $tag) {
@@ -35,18 +40,18 @@ trait GeoFilterTrait
                 // Postal code prefix
                 $codesFilter->add(
                     $qb->expr()->andX(
-                        $alias.'.postAddress.country = \'FR\'',
-                        $qb->expr()->like("$alias.postAddress.postalCode", ":code_$key")
+                        "${alias}.${countryColumn} = 'FR'",
+                        $qb->expr()->like("${alias}.${postalCodeColumn}", ":code_$key")
                     )
                 );
 
                 $qb->setParameter("code_$key", "$code%");
             } elseif (2 === \mb_strlen($code)) {
                 // Country
-                $codesFilter->add($qb->expr()->eq("$alias.postAddress.country", ":code_$key"));
+                $codesFilter->add($qb->expr()->eq("${alias}.${countryColumn}", ":code_$key"));
                 $qb->setParameter("code_$key", $code);
             } elseif (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code) {
-                $codesFilter->add("$alias.postAddress.country != 'FR'");
+                $codesFilter->add("${alias}.${countryColumn} != 'FR'");
             }
         }
 

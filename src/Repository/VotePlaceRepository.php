@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\Filter\VotePlaceFilters;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AssessorOfficeEnum;
@@ -12,6 +13,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class VotePlaceRepository extends AbstractAssessorRepository
 {
+    use GeoFilterTrait;
+    use PaginatorTrait;
+
     public const ALIAS = 'vp';
 
     public function __construct(RegistryInterface $registry)
@@ -148,5 +152,30 @@ class VotePlaceRepository extends AbstractAssessorRepository
             ->getQuery()
             ->getResult()
          ;
+    }
+
+    /**
+     * @return VotePlace[]|PaginatorInterface
+     */
+    public function findAllForTags(array $tags, int $page, int $limit = 50): PaginatorInterface
+    {
+        $qb = $this->createQueryBuilder(self::ALIAS);
+
+        $this->applyGeoFilter($qb, $tags, self::ALIAS, 'country', 'postalCode');
+
+        return $this->configurePaginator($qb, $page, $limit);
+    }
+
+    /**
+     * @return VotePlace[]|PaginatorInterface
+     */
+    public function findAllForPostalCode(string $postalCode, int $page, int $limit): PaginatorInterface
+    {
+        $qb = $this->createQueryBuilder(self::ALIAS)
+            ->where(self::ALIAS.'.postalCode LIKE :postal_codes')
+            ->setParameter('postal_codes', sprintf('%%%s%%', $postalCode))
+        ;
+
+        return $this->configurePaginator($qb, $page, $limit);
     }
 }

@@ -1,0 +1,57 @@
+{% extends 'assessor_space/_layout.html.twig' %}
+
+{% block assessor_content %}
+    <section>
+        <p class="alert alert--tips b__nudge--bottom-20">
+            Attention, les assesseurs peuvent être assignés aux bureaux de vote par le référent ou le chef de file des municipales.<br/>
+            Vous avez donc accès au même formulaire !
+        </p>
+
+        {{ form_start(form) }}
+            <div class="text--right b__nudge--bottom">
+                <button type="submit" class="btn btn--blue--soft">Sauvegarder les choix</button>
+            </div>
+
+            {% if not form.vars.valid %}
+                <p class="text--error text--center">Le formulaire n'est pas valide</p>
+            {% endif %}
+
+            <table class="datagrid__table-manager">
+                <thead>
+                    <tr>
+                        <td>Bureau de vote</td>
+                        <td>Adhérent - Assesseur</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, place in vote_places %}
+                        <tr>
+                            <td>
+                                <strong>{{ place.name }}</strong><br/>
+                                <span class="text--small">
+                                    {{ place.address }}<br/>
+                                    {{ place.city }} {{ place.country|countryName }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if form[index] is defined %}
+                                    {{ form_row(form[index]) }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text--right b__nudge--top-15">
+                <button type="submit" class="btn btn--blue--soft">Sauvegarder les choix</button>
+            </div>
+
+        {{ form_end(form) }}
+
+        {% include 'components/_modern_pagination.html.twig' with {
+            current_page: vote_places.currentPage,
+            total_pages: vote_places.lastPage
+        } %}
+    </section>
+{% endblock %}

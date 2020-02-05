@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Paginator as ApiPaginator;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
@@ -19,11 +18,11 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
 class AdherentMessageRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait;
+    use PaginatorTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -184,19 +183,6 @@ class AdherentMessageRepository extends ServiceEntityRepository
         ;
 
         return $this;
-    }
-
-    private function configurePaginator(QueryBuilder $queryBuilder, int $page, int $limit = 30): PaginatorInterface
-    {
-        if ($page < 1) {
-            $page = 1;
-        }
-
-        return new ApiPaginator(new DoctrinePaginator($queryBuilder
-            ->setMaxResults($limit)
-            ->setFirstResult(($page - 1) * $limit)
-            ->getQuery()
-        ));
     }
 
     private function withCitizenProject(

@@ -86,6 +86,10 @@
                                 </li>
                             {% endif %}
 
+                            <li class="{{ is_active_route(app.request, 'app_assessors_referent_*') ? 'active' }}">
+                                <a href="{{ path('app_assessors_referent_attribution_form') }}">Assesseurs</a>
+                            </li>
+
                             <li class="{{ is_active_route(app.request, 'app_message_referent_*') ? 'menu-right active' : 'menu-right' }}">
                                 <a href="{{ path('app_message_referent_list') }}">Mes messages</a>
                             </li>
