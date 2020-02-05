@@ -2,6 +2,12 @@
 
 {% block assessor_content %}
     <section>
+        <div class="text--right">
+            Export Assesseurs:&nbsp;
+            <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'xls'}) }}" class=link--blue">XLS</a>
+            •
+            <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'csv'}) }}" class=link--blue">CSV</a>
+        </div>
         <p class="alert alert--tips b__nudge--bottom-20">
             Attention, les assesseurs peuvent être assignés aux bureaux de vote par le référent ou le chef de file des municipales.<br/>
             Vous avez donc accès au même formulaire !

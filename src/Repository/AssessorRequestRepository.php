@@ -2,15 +2,20 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssessorRequestFilters;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AssessorRequest;
 use AppBundle\Entity\VotePlace;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class AssessorRequestRepository extends AbstractAssessorRepository
 {
+    use GeoFilterTrait;
+
     private const ALIAS = 'ar';
 
     public function __construct(RegistryInterface $registry)
@@ -149,5 +154,27 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         }
 
         return $qb->andWhere($codesFilter);
+    }
+
+    public function getExportQueryBuilder(AssessorRequestExportFilter $filter): Query
+    {
+        $qb = $this->createQueryBuilder(self::ALIAS);
+
+        if ($tags = $filter->getTags()) {
+            $this->applyGeoFilter($qb, $tags, self::ALIAS, 'assessorCountry', 'assessorPostalCode');
+        }
+
+        if ($postalCodes = $filter->getPostalCodes()) {
+            $exp = new Orx();
+
+            foreach ($postalCodes as $index => $code) {
+                $exp->add(self::ALIAS.'.assessorPostalCode = :postal_code_'.$index);
+                $qb->setParameter('postal_code_'.$index, $code);
+            }
+
+            $qb->andWhere($exp);
+        }
+
+        return $qb->getQuery();
     }
 }

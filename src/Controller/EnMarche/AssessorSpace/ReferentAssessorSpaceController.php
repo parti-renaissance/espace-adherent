@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche\AssessorSpace;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +31,13 @@ class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
             $referent->getManagedArea()->getTags()->toArray(),
             $page,
             self::PAGE_LIMIT
+        );
+    }
+
+    protected function getExportFilter(): AssessorRequestExportFilter
+    {
+        return new AssessorRequestExportFilter(
+            $this->getUser()->getManagedArea()->getTags()->toArray()
         );
     }
 }

@@ -4,7 +4,9 @@ namespace AppBundle\Controller\EnMarche\AssessorSpace;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
+use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Entity\VotePlace;
+use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Repository\VotePlaceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,6 +53,14 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/export.{_format}", name="_export", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
+     */
+    public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
+    {
+        return $exporter->getResponse($_format, $this->getExportFilter());
+    }
+
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
         return $this->render($template, array_merge(
@@ -68,4 +78,6 @@ abstract class AbstractAssessorSpaceController extends AbstractController
      * @return VotePlace[]|PaginatorInterface
      */
     abstract protected function getVotePlacesPaginator(int $page): PaginatorInterface;
+
+    abstract protected function getExportFilter(): AssessorRequestExportFilter;
 }
