@@ -22,6 +22,19 @@ class ElectionAdmin extends AbstractAdmin
             ->add('introduction', TextareaType::class, [
                 'label' => 'Introduction',
                 'filter_emojis' => true,
+                'attr' => ['class' => 'content-editor', 'rows' => 20],
+            ])
+            ->add('proposalContent', TextareaType::class, [
+                'label' => 'Contenu affiché avant le bouton pour les propositions',
+                'required' => false,
+                'filter_emojis' => true,
+                'attr' => ['class' => 'content-editor', 'rows' => 20],
+            ])
+            ->add('requestContent', TextareaType::class, [
+                'label' => 'Contenu affiché avant le bouton pour les demandes',
+                'required' => false,
+                'filter_emojis' => true,
+                'attr' => ['class' => 'content-editor', 'rows' => 20],
             ])
             ->add('rounds', CollectionType::class, [
                 'label' => 'Tours',

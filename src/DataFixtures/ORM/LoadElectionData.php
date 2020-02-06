@@ -23,7 +23,17 @@ class LoadElectionData extends AbstractFixture
 <div class="text--body">
     Si vous ne votez pas en France métropolitaine, <a href="https://www.diplomatie.gouv.fr/fr/services-aux-citoyens/droit-de-vote-et-elections-a-l-etranger/elections-europeennes-2019-mode-d-emploi-pour-les-francais-residant-a-l-62666" class="link--white">renseignez-vous sur les dates</a>.
 </div>
-INTRODUCTION
+INTRODUCTION,
+            <<<PROPOSALCONTENT
+<h2 class="text--medium text--bold b__nudge--bottom-small">
+    Je suis présent(e) le 26 mai.
+</h2>
+PROPOSALCONTENT,
+            <<<REQUESTCONTENT
+<h2 class="text--medium text--bold b__nudge--bottom-small">
+    Je ne suis pas présent(e) le 26 mai.
+</h2>
+REQUESTCONTENT
         );
         $this->createRound(
             $presidentialElections,
@@ -50,7 +60,17 @@ INTRODUCTION
 <div class="text--body">
     Si vous ne votez pas en France métropolitaine, <a href="https://www.diplomatie.gouv.fr/fr/services-aux-citoyens/droit-de-vote-et-elections-a-l-etranger/elections-europeennes-2019-mode-d-emploi-pour-les-francais-residant-a-l-62666" class="link--white">renseignez-vous sur les dates</a>.
 </div>
-INTRODUCTION
+INTRODUCTION,
+            <<<PROPOSALCONTENT
+<h2 class="text--medium text--bold b__nudge--bottom-small">
+    Je suis présent(e) ce jour d'election.
+</h2>
+PROPOSALCONTENT,
+            <<<REQUESTCONTENT
+<h2 class="text--medium text--bold b__nudge--bottom-small">
+    Je ne suis pas présent(e) ce jour d'election.
+</h2>
+REQUESTCONTENT
         );
         $this->createRound(
             $legislativeElections,
@@ -77,7 +97,17 @@ INTRODUCTION
 <div class="text--body">
     Si vous ne votez pas en France métropolitaine, <a href="https://www.diplomatie.gouv.fr/fr/services-aux-citoyens/droit-de-vote-et-elections-a-l-etranger/elections-europeennes-2019-mode-d-emploi-pour-les-francais-residant-a-l-62666" class="link--white">renseignez-vous sur les dates</a>.
 </div>
-INTRODUCTION
+INTRODUCTION,
+            <<<PROPOSALCONTENT
+<h2 class="text--medium text--bold b__nudge--bottom-small">
+    Je suis présent(e) ce jour d'election.
+</h2>
+PROPOSALCONTENT,
+            <<<REQUESTCONTENT
+<h2 class="text--medium text--bold b__nudge--bottom-small">
+    Je ne suis pas présent(e) ce jour d'election.
+</h2>
+REQUESTCONTENT
         );
         // We need this election to always be in the future for tests to pass
         // less than 3 days to trigger a reminder
@@ -105,11 +135,17 @@ INTRODUCTION
         $this->setReference('elections-partial-legislative', $partialLegislativeElections);
     }
 
-    private function createElection(string $name, string $introduction): Election
-    {
+    private function createElection(
+        string $name,
+        string $introduction,
+        string $proposalContent,
+        string $requestContent
+    ): Election {
         $election = new Election();
         $election->setName($name);
         $election->setIntroduction($introduction);
+        $election->setProposalContent($proposalContent);
+        $election->setRequestContent($requestContent);
 
         return $election;
     }

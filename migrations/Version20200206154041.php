@@ -9,6 +9,12 @@ final class Version20200206154041 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE 
+          elections 
+        ADD 
+          proposal_content LONGTEXT DEFAULT NULL, 
+        ADD 
+          request_content LONGTEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE procuration_proxies DROP FOREIGN KEY FK_9B5E777A35E47E35');
         $this->addSql('DROP INDEX IDX_9B5E777A35E47E35 ON procuration_proxies');
         $this->addSql('ALTER TABLE 
@@ -23,6 +29,7 @@ final class Version20200206154041 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE elections DROP proposal_content, DROP request_content');
         $this->addSql('ALTER TABLE 
           procuration_proxies 
         ADD 

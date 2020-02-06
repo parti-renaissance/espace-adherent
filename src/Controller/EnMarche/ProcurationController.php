@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Election;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Form\Procuration\ElectionContextType;

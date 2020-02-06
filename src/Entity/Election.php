@@ -48,6 +48,20 @@ class Election
     private $introduction = '';
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $proposalContent;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $requestContent;
+
+    /**
      * @var ElectionRound[]|Collection
      *
      * @ORM\OneToMany(targetEntity="ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
@@ -84,6 +98,26 @@ class Election
     public function setIntroduction(string $introduction): void
     {
         $this->introduction = $introduction;
+    }
+
+    public function getProposalContent(): ?string
+    {
+        return $this->proposalContent;
+    }
+
+    public function setProposalContent(?string $proposalContent): void
+    {
+        $this->proposalContent = $proposalContent;
+    }
+
+    public function getRequestContent(): ?string
+    {
+        return $this->requestContent;
+    }
+
+    public function setRequestContent(?string $requestContent): void
+    {
+        $this->requestContent = $requestContent;
     }
 
     /**
