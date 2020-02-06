@@ -108,7 +108,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         $this->assertSame('Demande en attente', trim($crawler->filter('.procuration-manager__request__col-left h4')->text()));
         $this->assertSame('Monsieur Jean-Michel Amoitié', trim($crawler->filter('#request-author')->text()));
         $this->assertSame('jeanmichel.amoitié@example.es', trim($crawler->filter('#request-email')->text()));
-        $this->assertSame('+44 234567891', trim($crawler->filter('#request-phone')->text()));
+        $this->assertSame('+44 7911 123457', trim($crawler->filter('#request-phone')->text()));
         $this->assertSame('20/12/1989', trim($crawler->filter('#request-birthdate')->text()));
         $this->assertSame('GV6H  GB', trim($crawler->filter('#request-vote-city')->text()));
         $this->assertSame('Camden', trim($crawler->filter('#request-vote-office')->text()));
@@ -133,7 +133,7 @@ class ProcurationManagerControllerTest extends WebTestCase
         // I see proxy data
         $this->assertSame('Monsieur Jean-Marc Gastro', trim($crawler->filter('#proxy-author')->text()));
         $this->assertSame('jeanmarc.gastro@example.es', trim($crawler->filter('#proxy-email')->text()));
-        $this->assertSame('+44 234567891', trim($crawler->filter('#proxy-phone')->text()));
+        $this->assertSame('+44 7911 123465', trim($crawler->filter('#proxy-phone')->text()));
         $this->assertSame('21/12/1989', trim($crawler->filter('#proxy-birthdate')->text()));
         $this->assertSame('GV6H  GB', trim($crawler->filter('#proxy-vote-city')->text()));
         $this->assertSame('Camden', trim($crawler->filter('#proxy-vote-office')->text()));

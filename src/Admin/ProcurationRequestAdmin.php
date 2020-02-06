@@ -89,15 +89,27 @@ class ProcurationRequestAdmin extends AbstractAdmin
                     'label' => 'Tours',
                 ])
                 ->add('reason', ChoiceType::class, [
+                    'label' => 'Raison',
                     'choices' => [
-                        'Parce que je réside dans une commune différente de celle où je suis inscrit(e) sur une liste électorale' => ProcurationRequest::REASON_RESIDENCY,
-                        'Parce que je suis en vacances' => ProcurationRequest::REASON_HOLIDAYS,
-                        'En raison d’obligations professionnelles' => ProcurationRequest::REASON_PROFESSIONAL,
-                        'En raison d’un handicap' => ProcurationRequest::REASON_HANDICAP,
-                        'Pour raison de santé' => ProcurationRequest::REASON_HEALTH,
-                        'En raison d’assistance apportée à une personne malade ou infirme' => ProcurationRequest::REASON_HELP,
-                        'En raison d’obligations de formation' => ProcurationRequest::REASON_TRAINING,
+                        ProcurationRequest::REASON_RESIDENCY,
+                        ProcurationRequest::REASON_HOLIDAYS,
+                        ProcurationRequest::REASON_PROFESSIONAL,
+                        ProcurationRequest::REASON_HANDICAP,
+                        ProcurationRequest::REASON_HEALTH,
+                        ProcurationRequest::REASON_HELP,
+                        ProcurationRequest::REASON_TRAINING,
                     ],
+                    'choice_label' => function (string $choice) {
+                        return 'procuration_request.reasons.'.$choice;
+                    },
+                ])
+                ->add('requestFromFrance', ChoiceType::class, [
+                    'label' => 'Établissement de la procuration',
+                    'choices' => [
+                        'France' => true,
+                        'Étranger' => false,
+                    ],
+                    'expanded' => true,
                 ])
             ->end()
         ;
@@ -167,6 +179,14 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ->with('Procuration', ['class' => 'col-md-4'])
                 ->add('electionRounds', null, [
                     'label' => 'Tours',
+                ])
+                ->add('reason', null, [
+                    'label' => 'Raison',
+                    'template' => 'admin/procuration/request_show_reason.html.twig',
+                ])
+                ->add('requestFromFrance', null, [
+                    'label' => 'Établissement de la procuration',
+                    'template' => 'admin/procuration/request_show_requestFromFrance.html.twig',
                 ])
             ->end()
             ->with('Mailing', ['class' => 'col-md-4'])

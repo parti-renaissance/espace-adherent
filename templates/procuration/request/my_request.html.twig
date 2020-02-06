@@ -100,6 +100,13 @@
                     {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
                 </div>
 
+                <div class="profile-label">
+                    Établissement de la procuration
+                </div>
+                <div class="profile-value">
+                    {{ request.requestFromFrance ? 'France' : 'Étranger' }}
+                </div>
+
                 {% if request.electionRoundsCount is same as(0) %}
                     <div class="profile-label">
                         Aucun scrutin concerné
