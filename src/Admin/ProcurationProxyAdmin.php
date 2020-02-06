@@ -27,15 +27,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
-    public function getTemplate($name)
-    {
-        if ('list' === $name) {
-            return 'admin/procuration/list_invitations_link.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
     /**
      * @param ProcurationProxy $procurationProxy
      */

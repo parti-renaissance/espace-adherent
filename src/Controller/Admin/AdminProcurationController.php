@@ -5,7 +5,6 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\ProcurationRequest;
 use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Procuration\ProcurationRequestSerializer;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\ProcurationRequestRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,18 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminProcurationController extends Controller
 {
-    /**
-     * List the procuration referents invitations URLs.
-     *
-     * @Route("/referents-invitation-urls", name="app_admin_procuration_referents_invitations_urls", methods={"GET"})
-     */
-    public function referentsInvitationUrlsAction(AdherentRepository $repository): Response
-    {
-        return $this->render('admin/procuration/referents_invitation_urls.html.twig', [
-            'referents' => $repository->findReferents(),
-        ]);
-    }
-
     /**
      * @Route("/export", methods={"GET"})
      */

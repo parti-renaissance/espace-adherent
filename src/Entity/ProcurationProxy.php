@@ -48,14 +48,6 @@ class ProcurationProxy
     private $id;
 
     /**
-     * The referent who invited this proxy.
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $referent;
-
-    /**
      * The associated found request(s).
      *
      * @var ArrayCollection
@@ -294,24 +286,6 @@ class ProcurationProxy
     private $disabled = false;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Length(max=100, groups={"front"})
-     */
-    private $inviteSourceName = '';
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Length(max=100, groups={"front"})
-     */
-    private $inviteSourceFirstName = '';
-
-    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"front"})
@@ -362,9 +336,8 @@ class ProcurationProxy
      */
     public $reachable = false;
 
-    public function __construct(?Adherent $referent)
+    public function __construct()
     {
-        $this->referent = $referent;
         $this->phone = static::createPhoneNumber();
         $this->electionRounds = new ArrayCollection();
         $this->foundRequests = new ArrayCollection();
@@ -405,16 +378,6 @@ class ProcurationProxy
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getReferent(): ?Adherent
-    {
-        return $this->referent;
-    }
-
-    public function setReferent(Adherent $referent = null): void
-    {
-        $this->referent = $referent;
     }
 
     public function getReliability(): ?int
@@ -698,26 +661,6 @@ class ProcurationProxy
     public function disable(): void
     {
         $this->disabled = true;
-    }
-
-    public function getInviteSourceName(): ?string
-    {
-        return $this->inviteSourceName;
-    }
-
-    public function setInviteSourceName(?string $inviteSourceName): void
-    {
-        $this->inviteSourceName = $inviteSourceName;
-    }
-
-    public function getInviteSourceFirstName(): ?string
-    {
-        return $this->inviteSourceFirstName;
-    }
-
-    public function setInviteSourceFirstName(?string $inviteSourceFirstName): void
-    {
-        $this->inviteSourceFirstName = $inviteSourceFirstName;
     }
 
     public function matchesRequest(ProcurationRequest $request): bool

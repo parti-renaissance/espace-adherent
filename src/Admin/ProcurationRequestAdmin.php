@@ -29,15 +29,6 @@ class ProcurationRequestAdmin extends AbstractAdmin
         'validation_groups' => ['admin'],
     ];
 
-    public function getTemplate($name)
-    {
-        if ('list' === $name) {
-            return 'admin/procuration/list_invitations_link.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

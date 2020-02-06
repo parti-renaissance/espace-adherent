@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
@@ -422,7 +421,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->assertCount($initialProcurationProxyCount, $this->procurationProxyRepostitory->findAll(), 'There should not be any proposal at the moment');
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::REFERENT_1_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -506,7 +505,7 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::REFERENT_1_UUID, $this->client);
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci', $this->client);
 
         $this->client->followRedirect();
 
@@ -619,7 +618,7 @@ class ProcurationControllerTest extends WebTestCase
         $this->setElectionContext();
 
         // Initial form
-        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::REFERENT_1_UUID);
+        $crawler = $this->client->request(Request::METHOD_GET, '/procuration/je-propose');
 
         $this->isSuccessful($this->client->getResponse());
 
@@ -657,21 +656,12 @@ class ProcurationControllerTest extends WebTestCase
         ]));
 
         // Redirected to thanks
-        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci?uuid='.LoadAdherentData::REFERENT_1_UUID, $this->client);
+        $this->assertClientIsRedirectedTo('/procuration/je-propose/merci', $this->client);
 
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
         $this->assertCount($initialProcurationProxyCount + 1, $this->procurationProxyRepostitory->findAll(), 'Procuration request should have been saved');
-    }
-
-    public function testProcurationProposalManagerUuid()
-    {
-        $this->setElectionContext();
-
-        $this->client->request(Request::METHOD_GET, '/procuration/je-propose?uuid='.LoadAdherentData::ADHERENT_4_UUID);
-
-        $this->isSuccessful($this->client->getResponse());
     }
 
     public function testMyRequestRequiresProcessedRequest()

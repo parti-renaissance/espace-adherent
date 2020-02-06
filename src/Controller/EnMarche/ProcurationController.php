@@ -6,14 +6,12 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Election;
 use AppBundle\Entity\ProcurationProxy;
 use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Exception\InvalidUuidException;
 use AppBundle\Form\Procuration\ElectionContextType;
 use AppBundle\Form\Procuration\ProcurationProxyType;
 use AppBundle\Form\Procuration\ProcurationRequestType;
 use AppBundle\Procuration\ElectionContext;
 use AppBundle\Procuration\ProcurationManager;
 use AppBundle\Procuration\ProcurationSession;
-use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -144,27 +142,13 @@ class ProcurationController extends Controller
     public function proxyProposalAction(
         Request $request,
         ProcurationSession $procurationSession,
-        ProcurationManager $procurationManager,
-        AdherentRepository $adherentRepository
+        ProcurationManager $procurationManager
     ): Response {
         if (!$procurationSession->hasElectionContext()) {
             return $this->redirectToRoute('app_procuration_choose_election', ['action' => ElectionContext::ACTION_PROPOSAL]);
         }
 
-        $referent = null;
-
-        if ($referentUuid = $request->query->get('uuid')) {
-            try {
-                $referent = $adherentRepository->findOneByValidUuid($referentUuid);
-            } catch (InvalidUuidException $e) {
-            } finally {
-                if (isset($e) || !$referent instanceof Adherent || !$referent->canBeProxy()) {
-                    return $this->redirectToRoute('app_procuration_proxy_proposal');
-                }
-            }
-        }
-
-        $proposal = new ProcurationProxy($referent);
+        $proposal = new ProcurationProxy();
         $proposal->recaptcha = $request->request->get('g-recaptcha-response');
 
         $user = $this->getUser();
@@ -182,9 +166,7 @@ class ProcurationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $procurationManager->createProcurationProxy($proposal);
 
-            return $this->redirectToRoute('app_procuration_proposal_thanks', [
-                'uuid' => $referentUuid,
-            ]);
+            return $this->redirectToRoute('app_procuration_proposal_thanks');
         }
 
         return $this->render('procuration/proxy/proposal.html.twig', [
@@ -195,11 +177,9 @@ class ProcurationController extends Controller
     /**
      * @Route("/je-propose/merci", name="app_procuration_proposal_thanks", methods={"GET"})
      */
-    public function proposalThanksAction(Request $request): Response
+    public function proposalThanksAction(): Response
     {
-        return $this->render('procuration/proxy/thanks.html.twig', [
-            'uuid' => $request->query->get('uuid'),
-        ]);
+        return $this->render('procuration/proxy/thanks.html.twig');
     }
 
     /**
