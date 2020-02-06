@@ -60,4 +60,9 @@ trait ElectionRoundsCollectionTrait
     {
         return $this->electionRounds->contains($round);
     }
+
+    public function getElection(): Election
+    {
+        return $this->electionRounds->current()->getElection();
+    }
 }

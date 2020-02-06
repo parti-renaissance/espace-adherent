@@ -13,7 +13,8 @@ final class ProcurationRequestRegistrationConfirmationMessage extends Message
             Uuid::uuid4(),
             $request->getEmailAddress(),
             null,
-            'Vous souhaitez trouver un mandataire pour les élections européennes'
+            'Vous souhaitez trouver un mandataire pour les prochaines élections',
+            ['election' => $request->getElection()->getName()]
         );
     }
 }
