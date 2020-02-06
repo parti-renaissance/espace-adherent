@@ -39,11 +39,13 @@ class DonationRequestHandler
 
     public function handle(DonationRequest $donationRequest): Donation
     {
-        if (!$donator = $this->donatorRepository->findOneForMatching(
+        if ($donator = $this->donatorRepository->findOneForMatching(
             $donationRequest->getEmailAddress(),
             $donationRequest->getFirstName(),
             $donationRequest->getLastName()
         )) {
+
+        } else {
             $donator = $this->createDonator($donationRequest);
         }
 

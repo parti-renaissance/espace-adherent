@@ -7,6 +7,7 @@ use AppBundle\Donation\DonatorManager;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
+use AppBundle\Repository\DonatorRepository;
 use AppBundle\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -23,11 +24,6 @@ class ImportDonationsCommand extends Command
     protected static $defaultName = 'app:donations:import';
 
     private const BATCH_SIZE = 250;
-
-    private $storage;
-    private $postAddressFactory;
-    private $donatorManager;
-    private $em;
 
     private const TYPES_MAP = [
         'chèque' => Donation::TYPE_CHECK,
@@ -88,16 +84,24 @@ class ImportDonationsCommand extends Command
      */
     private $io;
 
+    private $storage;
+    private $postAddressFactory;
+    private $donatorManager;
+    private $em;
+    private $donatorRepository;
+
     public function __construct(
         FilesystemInterface $storage,
         PostAddressFactory $postAddressFactory,
         DonatorManager $donatorManager,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        DonatorRepository $donatorRepository
     ) {
         $this->storage = $storage;
         $this->postAddressFactory = $postAddressFactory;
         $this->donatorManager = $donatorManager;
         $this->em = $em;
+        $this->donatorRepository = $donatorRepository;
 
         parent::__construct();
     }
@@ -126,20 +130,21 @@ class ImportDonationsCommand extends Command
 
         $line = 0;
         foreach ($csv as $row) {
+            $beneficiary = $row['beneficiary'];
+            $donatedAt = \DateTimeImmutable::createFromFormat('d/m/Y', $row['date']);
             $gender = $row['gender'];
             $firstName = $row['firstName'];
             $lastName = $row['lastName'];
-            $email = $row['email'];
             $address = $row['address'];
             $postalCode = str_pad($row['postalCode'], 5, '0', \STR_PAD_LEFT);
             $cityName = $row['cityName'];
             $country = mb_strtolower(trim($row['country']));
-            $nationality = mb_strtolower(trim($row['nationality']));
-            $type = $row['type'];
             $amount = $row['amount'];
-            $transferNumber = $row['transfer_number'];
-            $checkNumber = $row['check_number'];
-            $donatedAt = \DateTimeImmutable::createFromFormat('d/m/Y', $row['date']);
+            $type = $row['type'];
+            $depositNumber = $row['depositNumber'];
+            $checkNumber = $row['checkNumber'];
+            $nationality = mb_strtolower(trim($row['nationality']));
+            $email = $row['email'];
 
             if (!\array_key_exists($type, self::TYPES_MAP)) {
                 $this->io->text("\"$type\" is not a valid transaction type.");
@@ -165,17 +170,30 @@ class ImportDonationsCommand extends Command
                 continue;
             }
 
-            $donator = new Donator(
-                $lastName,
-                $firstName,
-                $cityName,
-                self::COUNTRIES_MAP[$country],
-                $email,
-                self::GENDERS_MAP[$gender],
-                self::COUNTRIES_MAP[$nationality]
-            );
+            if (!in_array($beneficiary, Donation::BENEFICIARY_CHOICES, true)) {
+                $this->io->text("\"$beneficiary\" is not a valid beneficiary.");
 
-            $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
+                continue;
+            }
+
+            if (!empty($email)) {
+                $donator = $this->donatorRepository->findOneForMatching($email, $firstName, $lastName);
+            }
+
+            if (!$donator) {
+                $donator = new Donator(
+                    $lastName,
+                    $firstName,
+                    $cityName,
+                    self::COUNTRIES_MAP[$country],
+                    $email,
+                    self::GENDERS_MAP[$gender],
+                    self::COUNTRIES_MAP[$nationality]
+                );
+
+                $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
+            }
+
 
             $donation = new Donation(
                 Uuid::uuid4(),
@@ -192,7 +210,9 @@ class ImportDonationsCommand extends Command
                 PayboxPaymentSubscription::NONE,
                 null,
                 null,
-                $donator
+                $donator,
+                null,
+                $beneficiary
             );
 
             if (Donation::TYPE_TRANSFER === self::TYPES_MAP[$type] && !empty($transferNumber)) {
