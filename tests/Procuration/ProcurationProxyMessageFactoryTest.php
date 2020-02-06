@@ -164,7 +164,7 @@ class ProcurationProxyMessageFactoryTest extends TestCase
 
         $this->assertInstanceOf(ProcurationRequestRegistrationConfirmationMessage::class, $message);
         $this->assertSame('procurations@en-marche-dev.fr', $message->getReplyTo());
-        $this->assertSame('Vous souhaitez trouver un mandataire pour les élections européennes', $message->getSubject());
+        $this->assertSame('Vous souhaitez trouver un mandataire pour les prochaines élections', $message->getSubject());
         $this->assertSame('marieb.dumont@gmail.tld', $message->getRecipient(0)->getEmailAddress());
     }
 

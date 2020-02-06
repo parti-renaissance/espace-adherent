@@ -13,7 +13,8 @@ final class ProcurationProxyRegistrationConfirmationMessage extends Message
             Uuid::uuid4(),
             $procurationProxy->getEmailAddress(),
             null,
-            'Vous souhaitez être mandataire'
+            'Vous souhaitez être mandataire',
+            ['election' => $procurationProxy->getElection()->getName()]
         );
     }
 }
