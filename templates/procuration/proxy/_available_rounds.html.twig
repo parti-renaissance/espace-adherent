@@ -1,0 +1,11 @@
+{% set rounds = proxy.availableRounds %}
+
+{% if rounds.isEmpty %}
+    Aucun tour disponible
+{% else %}
+    <ul class="circle">
+        {% for round in rounds %}
+            <li>{{ round.label }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

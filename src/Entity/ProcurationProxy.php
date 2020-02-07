@@ -34,9 +34,6 @@ class ProcurationProxy
     private const RELIABILITY_ACTIVIST = 6;
     private const RELIABILITY_REPRESENTATIVE = 8;
 
-    private const NO_AVAILABLE_ROUND = 'Aucun';
-    private const ALL_AVAILABLE_ROUNDS = 'Tous les tours proposés';
-
     private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
 
@@ -579,42 +576,11 @@ class ProcurationProxy
      */
     public function getAvailableRounds(): Collection
     {
-        if ($this->foundRequests->isEmpty()) {
-            return $this->electionRounds;
+        if (0 === $this->countFreeSlots()) {
+            return new ArrayCollection();
         }
 
-        $availableRounds = new ArrayCollection();
-
-        for ($i = 0; $i < $this->proxiesCount; ++$i) {
-            foreach ($this->electionRounds as $round) {
-                $availableRounds->add($round);
-            }
-        }
-
-        foreach ($this->foundRequests as $procurationRequest) {
-            foreach ($procurationRequest->getElectionRounds() as $round) {
-                if ($availableRounds->contains($round)) {
-                    $availableRounds->removeElement($round);
-                }
-            }
-        }
-
-        return $availableRounds;
-    }
-
-    public function getAvailableRoundsAsString(): string
-    {
-        $availableRounds = $this->getAvailableRounds();
-
-        if ($this->electionRounds->count() === $availableRounds->count()) {
-            return self::ALL_AVAILABLE_ROUNDS;
-        }
-
-        if ($availableRounds->isEmpty()) {
-            return self::NO_AVAILABLE_ROUND;
-        }
-
-        return implode("\n", $availableRounds->toArray());
+        return $this->electionRounds;
     }
 
     /**
@@ -758,7 +724,12 @@ class ProcurationProxy
 
     private function hasFreeSlots(): bool
     {
-        return 0 < ($this->proxiesCount - $this->foundRequests->count());
+        return 0 < $this->countFreeSlots();
+    }
+
+    public function countFreeSlots(): int
+    {
+        return $this->proxiesCount - $this->foundRequests->count();
     }
 
     private function isProxyForFrenchRequest(): bool

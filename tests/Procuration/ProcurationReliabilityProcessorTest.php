@@ -25,7 +25,7 @@ class ProcurationReliabilityProcessorTest extends WebTestCase
      */
     public function testProcess(string $email, int $expectedReliability): void
     {
-        $proxy = new ProcurationProxy(null);
+        $proxy = new ProcurationProxy();
         $proxy->setEmailAddress($email);
 
         $this->assertSame(1, $proxy->getReliability());

@@ -190,9 +190,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ->add('electionRounds', null, [
                     'label' => 'Proposés',
                 ])
-                ->add('availableRoundsAsString', null, [
-                    'label' => 'Disponibles',
-                ])
             ->end()
             ->with('Mailing', ['class' => 'col-md-4'])
                 ->add('reachable', null, [
