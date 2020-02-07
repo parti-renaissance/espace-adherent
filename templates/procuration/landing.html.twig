@@ -28,9 +28,8 @@
                 <section class="procuration__content l__wrapper--500 l__col space--60-0 text--center">
                     {% if next_election %}
                         <div class="b__nudge--bottom-60">
-                            <h2 class="text--medium text--bold b__nudge--bottom-small">
-                                Je suis présent(e) le 26 mai.
-                            </h2>
+                            {{ next_election.proposalContent|raw }}
+
                             <div class="b__nudge--bottom text--summary">
                                 Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
                             </div>
@@ -39,9 +38,8 @@
                             </a>
                         </div>
                         <div>
-                            <h2 class="text--medium text--bold b__nudge--bottom-small">
-                                Je ne suis pas présent(e) le 26 mai.
-                            </h2>
+                            {{ next_election.requestContent|raw }}
+
                             <div class="b__nudge--bottom text--summary">
                                 Un(e) habitant(e) de ma ville va voter en mon nom.
                             </div>

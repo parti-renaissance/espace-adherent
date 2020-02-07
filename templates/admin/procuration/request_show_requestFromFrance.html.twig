@@ -1,0 +1,5 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+    {{ object.requestFromFrance ? 'France' : 'Étranger' }}
+{% endblock %}

@@ -84,6 +84,13 @@
             </div>
 
             <div class="profile-label">
+                Établissement de la procuration
+            </div>
+            <div class="profile-value">
+                {{ request.requestFromFrance ? 'France' : 'Étranger' }}
+            </div>
+
+            <div class="profile-label">
                 Lieu de résidence
             </div>
             <div class="profile-value">
@@ -169,10 +176,10 @@
                     </div>
 
                     <div class="profile-label">
-                        Disponibilités
+                        Disponibilités ({{ request.foundProxy.countFreeSlots }})
                     </div>
                     <div class="profile-value">
-                        {{ request.foundProxy.getAvailableRoundsAsString|nl2br }}
+                        {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: request.foundProxy } %}
                     </div>
                 {% endif %}
             {% else %}
@@ -232,8 +239,8 @@
                                         </a>
                                     {% endif %}
                                     <br />
-                                    <em>Disponibilités :</em><br />
-                                    {{ proxy.getAvailableRoundsAsString|nl2br }}
+                                    <em>Disponibilités ({{ proxy.countFreeSlots }}):</em><br />
+                                    {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy } %}
                                 </td>
                                 <td class="datagrid__table__col--left">
                                     <em>Lieu de vote :</em><br />

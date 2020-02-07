@@ -34,9 +34,6 @@ class ProcurationProxy
     private const RELIABILITY_ACTIVIST = 6;
     private const RELIABILITY_REPRESENTATIVE = 8;
 
-    private const NO_AVAILABLE_ROUND = 'Aucun';
-    private const ALL_AVAILABLE_ROUNDS = 'Tous les tours proposés';
-
     private const MAX_FOREIGN_REQUESTS_FROM_FRANCE = 2;
     private const MAX_FOREIGN_REQUESTS_FROM_FOREIGN_COUNTRY = 3;
 
@@ -46,14 +43,6 @@ class ProcurationProxy
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * The referent who invited this proxy.
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
-    private $referent;
 
     /**
      * The associated found request(s).
@@ -294,24 +283,6 @@ class ProcurationProxy
     private $disabled = false;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Length(max=100, groups={"front"})
-     */
-    private $inviteSourceName = '';
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
-     *
-     * @Assert\Length(max=100, groups={"front"})
-     */
-    private $inviteSourceFirstName = '';
-
-    /**
      * @var string
      *
      * @Assert\NotBlank(message="common.recaptcha.invalid_message", groups={"front"})
@@ -362,9 +333,8 @@ class ProcurationProxy
      */
     public $reachable = false;
 
-    public function __construct(?Adherent $referent)
+    public function __construct()
     {
-        $this->referent = $referent;
         $this->phone = static::createPhoneNumber();
         $this->electionRounds = new ArrayCollection();
         $this->foundRequests = new ArrayCollection();
@@ -405,16 +375,6 @@ class ProcurationProxy
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getReferent(): ?Adherent
-    {
-        return $this->referent;
-    }
-
-    public function setReferent(Adherent $referent = null): void
-    {
-        $this->referent = $referent;
     }
 
     public function getReliability(): ?int
@@ -616,42 +576,11 @@ class ProcurationProxy
      */
     public function getAvailableRounds(): Collection
     {
-        if ($this->foundRequests->isEmpty()) {
-            return $this->electionRounds;
+        if (0 === $this->countFreeSlots()) {
+            return new ArrayCollection();
         }
 
-        $availableRounds = new ArrayCollection();
-
-        for ($i = 0; $i < $this->proxiesCount; ++$i) {
-            foreach ($this->electionRounds as $round) {
-                $availableRounds->add($round);
-            }
-        }
-
-        foreach ($this->foundRequests as $procurationRequest) {
-            foreach ($procurationRequest->getElectionRounds() as $round) {
-                if ($availableRounds->contains($round)) {
-                    $availableRounds->removeElement($round);
-                }
-            }
-        }
-
-        return $availableRounds;
-    }
-
-    public function getAvailableRoundsAsString(): string
-    {
-        $availableRounds = $this->getAvailableRounds();
-
-        if ($this->electionRounds->count() === $availableRounds->count()) {
-            return self::ALL_AVAILABLE_ROUNDS;
-        }
-
-        if ($availableRounds->isEmpty()) {
-            return self::NO_AVAILABLE_ROUND;
-        }
-
-        return implode("\n", $availableRounds->toArray());
+        return $this->electionRounds;
     }
 
     /**
@@ -698,26 +627,6 @@ class ProcurationProxy
     public function disable(): void
     {
         $this->disabled = true;
-    }
-
-    public function getInviteSourceName(): ?string
-    {
-        return $this->inviteSourceName;
-    }
-
-    public function setInviteSourceName(?string $inviteSourceName): void
-    {
-        $this->inviteSourceName = $inviteSourceName;
-    }
-
-    public function getInviteSourceFirstName(): ?string
-    {
-        return $this->inviteSourceFirstName;
-    }
-
-    public function setInviteSourceFirstName(?string $inviteSourceFirstName): void
-    {
-        $this->inviteSourceFirstName = $inviteSourceFirstName;
     }
 
     public function matchesRequest(ProcurationRequest $request): bool
@@ -815,7 +724,12 @@ class ProcurationProxy
 
     private function hasFreeSlots(): bool
     {
-        return 0 < ($this->proxiesCount - $this->foundRequests->count());
+        return 0 < $this->countFreeSlots();
+    }
+
+    public function countFreeSlots(): int
+    {
+        return $this->proxiesCount - $this->foundRequests->count();
     }
 
     private function isProxyForFrenchRequest(): bool

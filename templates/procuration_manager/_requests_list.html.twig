@@ -11,8 +11,8 @@
             </span>
             <br>
             <span class="datagrid__table__col--hide-mobile">
-                <em>Lieu de résidence :</em><br>
-                {{ request.data.postalCode }} {{ request.data.cityName }}{% if request.data.state %} {{ request.data.state }}{% endif %} {{ request.data.country }}
+                <em>Établissement de la procuration :</em><br>
+                {{ request.data.requestFromFrance ? 'France' : 'Étranger' }}
             </span>
         </td>
         <td>

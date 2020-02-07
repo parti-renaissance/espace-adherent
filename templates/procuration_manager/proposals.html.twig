@@ -10,12 +10,6 @@
 
 {% block procuration_manager_content %}
 
-    Votre lien d'invitation (à partager uniquement aux mandataires de confiance) :<br />
-    <input type="text" class="form form--full form__field"
-           value="{{ url('app_procuration_proxy_proposal', { uuid: app.user.uuid.toString }) }}" />
-
-    <hr />
-
     {{ include('procuration_manager/_filters.html.twig') }}
 
     <hr />

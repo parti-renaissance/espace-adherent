@@ -1,10 +1,11 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    <em>Lieu de résidence :</em> {{ object.postalCode }} {{ object.cityName }}, {{ object.country }}<br />
     <em>Lieu de vote :</em> {{ object.votePostalCode }} {{ object.voteCityName }}, {{ object.voteCountry }}
     {% if object.voteOffice %}
         <br />
         <em>Bureau :</em> {{ object.voteOffice }}
     {% endif %}
+    <br>
+    <em>Établissement de la procuration :</em> {{ object.requestFromFrance ? 'France' : 'Étranger' }}<br />
 {% endblock %}

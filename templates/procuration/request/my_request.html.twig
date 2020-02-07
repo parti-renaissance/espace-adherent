@@ -40,7 +40,7 @@
 
         <div class="text--center b__nudge--bottom-60">
             Pour toute question, contactez-nous à
-            <a href="mailto:procurations@en-marche.fr">procurations@en-marche.fr</a>
+            <a href="mailto:contact@en-marche.fr">contact@en-marche.fr</a>
         </div>
 
         <div class="l__row l__tablet--col l__row--center l__row--top">
@@ -98,6 +98,13 @@
                 <div class="profile-value">
                     {{ request.address }}<br />
                     {{ request.postalCode }} {{ request.cityName }} {{ request.country }}
+                </div>
+
+                <div class="profile-label">
+                    Établissement de la procuration
+                </div>
+                <div class="profile-value">
+                    {{ request.requestFromFrance ? 'France' : 'Étranger' }}
                 </div>
 
                 {% if request.electionRoundsCount is same as(0) %}

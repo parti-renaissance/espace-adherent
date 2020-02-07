@@ -27,15 +27,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
         '_sort_by' => 'createdAt',
     ];
 
-    public function getTemplate($name)
-    {
-        if ('list' === $name) {
-            return 'admin/procuration/list_invitations_link.html.twig';
-        }
-
-        return parent::getTemplate($name);
-    }
-
     /**
      * @param ProcurationProxy $procurationProxy
      */
@@ -198,9 +189,6 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ])
                 ->add('electionRounds', null, [
                     'label' => 'Proposés',
-                ])
-                ->add('availableRoundsAsString', null, [
-                    'label' => 'Disponibles',
                 ])
             ->end()
             ->with('Mailing', ['class' => 'col-md-4'])

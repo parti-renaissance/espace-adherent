@@ -116,6 +116,8 @@ ul, li {
 
 ul {
     list-style: none;
+
+    &.circle { list-style: circle; }
 }
 
 hr {

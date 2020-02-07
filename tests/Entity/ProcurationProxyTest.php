@@ -8,110 +8,37 @@ use AppBundle\Entity\ProcurationRequest;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group procuration
+ */
 class ProcurationProxyTest extends TestCase
 {
-    /**
-     * @dataProvider provideTestCases
-     */
-    public function testGetAvailableRoundsCount(
-        int $proxiesCount,
-        int $requestElectionRoundsCount,
-        int $proxyElectionRoundsCount,
-        int $expectedAvailableElectionRoundsCount
-    ) {
-        $maxElectionRound = $requestElectionRoundsCount > $proxyElectionRoundsCount
-            ? $requestElectionRoundsCount
-            : $proxyElectionRoundsCount
-        ;
-
-        $electionRounds = [];
-        for ($i = 0; $i < $maxElectionRound; ++$i) {
-            array_push($electionRounds, new ElectionRound());
-        }
-
-        $request = new ProcurationRequest();
-        $request->setElectionRounds(\array_slice($electionRounds, 0, $requestElectionRoundsCount));
-
-        $proxy = new ProcurationProxy(null);
-        $proxy->setProxiesCount($proxiesCount);
-        $proxy->process($request);
-        $proxy->setElectionRounds(\array_slice($electionRounds, 0, $proxyElectionRoundsCount));
-
-        $this->assertCount($expectedAvailableElectionRoundsCount, $available = $proxy->getAvailableRounds());
-    }
-
-    public function provideTestCases(): \Generator
+    public function testGetAvailableRounds(): void
     {
-        // For one request max by procuration proxy
-        yield 'One election for the request and one for the proxy should not give available election' => [
-            1, 1, 1, 0,
-        ];
-        yield 'One election for the request and two for the proxy should give one available election' => [
-            1, 1, 2, 1,
-        ];
-        yield 'One election for the request and three for the proxy should give two available elections' => [
-            1, 1, 3, 2,
-        ];
-        yield 'Two elections for the request and two for the proxy should not give available election' => [
-            1, 2, 2, 0,
-        ];
-        yield 'Two elections for the request and three for the proxy should give one available election' => [
-            1, 2, 3, 1,
-        ];
-        yield 'Three elections for the request and three for the proxy should not give available election' => [
-            1, 3, 3, 0,
-        ];
+        $round1 = $this->createMock(ElectionRound::class);
+        $round2 = $this->createMock(ElectionRound::class);
 
-        // For two requests max by procuration proxy
-        yield 'One election for the request and two for the proxy should give three available elections' => [
-            2, 1, 2, 3,
-        ];
-        yield 'One election for the request and three for the proxy should give five available elections' => [
-            2, 1, 3, 5,
-        ];
-        yield 'Two elections for the request and two for the proxy should give two available elections' => [
-            2, 2, 2, 2,
-        ];
-        yield 'Two elections for the request and three for the proxy should give four available elections' => [
-            2, 2, 3, 4,
-        ];
-        yield 'Three elections for the request and three for the proxy should give three available elections' => [
-            2, 3, 3, 3,
-        ];
+        $proxy = new ProcurationProxy();
+        $proxy->setProxiesCount(2);
 
-        // For three requests max by procuration proxy
-        yield 'One election for the request and two for the proxy should give five available elections' => [
-            3, 1, 2, 5,
-        ];
-        yield 'One election for the request and three for the proxy should give height available elections' => [
-            3, 1, 3, 8,
-        ];
-        yield 'Two elections for the request and two for the proxy should give four available elections' => [
-            3, 2, 2, 4,
-        ];
-        yield 'Two elections for the request and three for the proxy should give seven available elections' => [
-            3, 2, 3, 7,
-        ];
-        yield 'Three elections for the request and three for the proxy should give six available elections' => [
-            3, 3, 3, 6,
-        ];
-    }
+        $this->assertEmpty($proxy->getAvailableRounds());
 
-    public function testGetAvailableRounds()
-    {
-        $round1 = new ElectionRound();
-        $round2 = new ElectionRound();
-        $round3 = new ElectionRound();
+        $proxy->addElectionRound($round1);
+        $proxy->addElectionRound($round2);
 
-        $request = new ProcurationRequest();
-        $request->setElectionRounds([$round1, $round3]);
+        $this->assertCount(2, $proxy->getAvailableRounds());
+        $this->assertSame([$round1, $round2], $proxy->getAvailableRounds()->toArray());
 
-        $proxy = new ProcurationProxy(null);
-        $proxy->process($request);
-        $proxy->setElectionRounds([$round1, $round2, $round3]);
+        $request1 = new ProcurationRequest();
+        $request1->process($proxy);
 
-        $this->assertCount(1, $available = $proxy->getAvailableRounds());
-        $this->assertSame($round2, $available->first());
+        $this->assertCount(2, $proxy->getAvailableRounds());
+        $this->assertSame([$round1, $round2], $proxy->getAvailableRounds()->toArray());
+
+        $request2 = new ProcurationRequest();
+        $request2->process($proxy);
+
+        $this->assertEmpty($proxy->getAvailableRounds());
     }
 
     public function testGetAvailableRoundsWithoutRequest()
@@ -120,7 +47,7 @@ class ProcurationProxyTest extends TestCase
         $round2 = $this->createMock(ElectionRound::class);
         $round3 = $this->createMock(ElectionRound::class);
 
-        $proxy = new ProcurationProxy(null);
+        $proxy = new ProcurationProxy();
         $proxy->setElectionRounds([$round1, $round2, $round3]);
 
         $this->assertEquals(new ArrayCollection([$round1, $round2, $round3]), $proxy->getAvailableRounds());
@@ -149,7 +76,7 @@ class ProcurationProxyTest extends TestCase
             ->method('getElectionRounds')
         ;
 
-        $proxy = new ProcurationProxy(null);
+        $proxy = new ProcurationProxy();
         $proxy->setVoteCountry($voteCountry);
         $proxy->setVotePostalCode($votePostalCode);
 

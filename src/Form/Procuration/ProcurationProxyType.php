@@ -55,12 +55,6 @@ class ProcurationProxyType extends AbstractProcurationType
             ->add('electionRounds', ElectionRoundsChoiceType::class, [
                 'election_context' => $options['election_context'],
             ])
-            ->add('inviteSourceName', TextType::class, [
-                'required' => false,
-            ])
-            ->add('inviteSourceFirstName', TextType::class, [
-                'required' => false,
-            ])
             ->add('reachable', CheckboxType::class, [
                 'required' => false,
             ])

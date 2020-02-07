@@ -27,7 +27,7 @@
             </span>
         </td>
         <td class="datagrid__table__col--left">
-            {{ proxy.getAvailableRoundsAsString|nl2br }}
+            {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy } %}
         </td>
         <td class="datagrid__table__col--hide-mobile">
             {{ proxy.createdAt|date('d/m/Y H:i') }}

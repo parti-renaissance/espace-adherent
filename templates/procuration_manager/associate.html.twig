@@ -144,11 +144,11 @@
             </div>
 
             <div class="profile-label">
-                Disponibilités
+                Disponibilités ({{ proxy.countFreeSlots }})
             </div>
             <div class="profile-value">
                 <span id="proxy-election">
-                    {{ proxy.getAvailableRoundsAsString|nl2br }}}
+                    {% include 'procuration/proxy/_available_rounds.html.twig' with { proxy: proxy } %}
                 </span>
             </div>
         </div>

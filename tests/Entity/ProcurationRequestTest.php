@@ -10,7 +10,7 @@ class ProcurationRequestTest extends TestCase
 {
     public function testProcessAndUnprocessWithFrenchProxy()
     {
-        $proxy = new ProcurationProxy(null);
+        $proxy = new ProcurationProxy();
         $proxy->setVoteCountry('FR');
         $proxy->setProxiesCount(2);
 
@@ -51,7 +51,7 @@ class ProcurationRequestTest extends TestCase
 
     public function testProcessAndUnprocessWithForeignProxy()
     {
-        $proxy = new ProcurationProxy(null);
+        $proxy = new ProcurationProxy();
         $proxy->setVoteCountry('GB');
         $proxy->setProxiesCount(3);
 
@@ -115,7 +115,7 @@ class ProcurationRequestTest extends TestCase
         bool $expectedFrenchAvailability,
         bool $expectedForeignAvailability
     ): void {
-        $proxy = new ProcurationProxy(null);
+        $proxy = new ProcurationProxy();
         $proxy->setVoteCountry($proxyVoteCountry);
         $proxy->setProxiesCount($proxiesCount);
 
