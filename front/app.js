@@ -217,9 +217,9 @@ class App {
         });
     }
 
-    runMessageFilters(messageId, synchronized, recipientCount) {
+    runMessageFilters(messageId, synchronized, recipientCount, sendLocked) {
         System.import('pages/message_filters').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'), messageId, synchronized, recipientCount);
+            module.default(this.get('api'), messageId, synchronized, recipientCount, sendLocked);
         });
     }
 

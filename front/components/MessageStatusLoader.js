@@ -53,13 +53,23 @@ export default class MessageStatusLoader extends React.Component {
     renderActionBlock() {
         if (this.state.recipientCount) {
             return <div>
-                <p className="text--medium-small">
-                    Vous allez envoyer un message à&nbsp;
-                    <span className="text--bold text--blue--dark">{numberFormat(this.state.recipientCount)}</span>
-                    &nbsp;contact{1 < this.state.recipientCount ? 's' : ''} !
-                </p>
+                    {this.props.sendLocked ?
+                        <p className="text--medium-small">
+                            Vous avez atteint la limite d'envoi de mails pour ce mois-ci
+                        </p> :
+                        <p className="text--medium-small">
+                            Vous allez envoyer un message à&nbsp;
+                            <span className="text--bold text--blue--dark">
+                                {numberFormat(this.state.recipientCount)}
+                            </span>
+                            &nbsp;contact{1 < this.state.recipientCount ? 's' : ''} !
+                        </p>
+                    }
                 <p>
-                    <a href="./send" className="btn btn--blue btn--large-and-full b__nudge--top">Envoyer</a>
+                    <a href={this.props.sendLocked ? '#' : './send'}
+                       className={`btn btn--large-and-full b__nudge--top${
+                        this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}>Envoyer
+                    </a>
                     <a
                         href="./visualiser?f"
                         className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
@@ -116,6 +126,7 @@ MessageStatusLoader.defaultProps = {
     synchronized: false,
     recipientCount: null,
     withResetButton: false,
+    sendLocked: false,
 };
 
 MessageStatusLoader.propsType = {
@@ -124,4 +135,5 @@ MessageStatusLoader.propsType = {
     synchronized: PropTypes.bool,
     recipientCount: PropTypes.integer,
     withResetButton: PropTypes.bool,
+    sendLocked: PropTypes.bool,
 };

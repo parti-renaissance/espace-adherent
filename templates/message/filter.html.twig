@@ -31,7 +31,8 @@
                 App.runMessageFilters(
                     '{{ message.uuid|e('js') }}',
                     {{ message.synchronized ? 'true' : 'false' }},
-                    {{ message.recipientCount|e('js') }}
+                    {{ message.recipientCount|e('js') }},
+                    {{ not is_granted(constant('AppBundle\\Security\\Voter\\AdherentMessageLimitVoter::USER_CAN_SEND_MESSAGE'), message) ? 'true' : 'false' }}
                 );
             });
         </script>

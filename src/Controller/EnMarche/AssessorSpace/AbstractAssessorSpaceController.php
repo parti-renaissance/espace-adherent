@@ -5,17 +5,20 @@ namespace AppBundle\Controller\EnMarche\AssessorSpace;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Repository\VotePlaceRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractAssessorSpaceController extends AbstractController
+abstract class AbstractAssessorSpaceController extends Controller
 {
+    use CanaryControllerTrait;
+
     protected const PAGE_LIMIT = 10;
 
     protected $votePlaceRepository;
@@ -30,6 +33,8 @@ abstract class AbstractAssessorSpaceController extends AbstractController
      */
     public function votePlaceAttributionAction(Request $request, AssessorAssociationManager $manager): Response
     {
+        $this->disableInProduction();
+
         $paginator = $this->getVotePlacesPaginator($request->query->getInt('page', 1));
 
         $form = $this
@@ -58,6 +63,8 @@ abstract class AbstractAssessorSpaceController extends AbstractController
      */
     public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
     {
+        $this->disableInProduction();
+
         return $exporter->getResponse($_format, $this->getExportFilter());
     }
 
