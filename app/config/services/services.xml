@@ -408,6 +408,8 @@
             </argument>
         </service>
 
+        <service id="AppBundle\Election\ElectionManager" />
+
         <!-- Deputy -->
         <service id="AppBundle\Command\CreateReferentTagsForDistrictsCommand" />
         <service id="AppBundle\Command\UpdateReferentTagsForDistrictsOnAdherentsCommand" />

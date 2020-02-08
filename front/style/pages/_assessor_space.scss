@@ -1,0 +1,12 @@
+.vote-result-percent-field,
+.vote-result-percent-list-field {
+    &:after {
+        content: attr(data-percent);
+        position: absolute;
+        color: $green--ocean;
+        font-size: 20px;
+        right: 30px;
+        top: 50px;
+        line-height: 1;
+    }
+}
