@@ -13,64 +13,70 @@
 
 {% block content %}
     <main>
-        <section class="assessor-manager">
-            <header class="l__wrapper--slim b__nudge--bottom-large">
-                <h1 class="text--center text--large">
-                    Espace responsable assesseur
-                </h1>
-                <p class="text--center">
-                    Zones gérées : {{ app.user.assessorManagedAreaCodesAsString }}
-                </p>
-                <div class="form__row text--center">
-                    <a id="vote-places-export" href="{{ path('app_assessor_manager_vote_places_export') }}" class="btn btn--blue btn--small">
-                        Exporter les bureaux de vote traités
-                    </a>
+        <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <p>Vous gérez : <span>{{ app.user.assessorManagedAreaCodesAsString }}</span></p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            Espace responsable assesseur
+                        </h1>
+                        <div class="direct-actions">
+                            <a id="vote-places-export" href="{{ path('app_assessor_manager_vote_places_export') }}" class="btn btn--blue">Exporter les bureaux de vote traités</a>
+                        </div>
+                    </div>
+
+                    <nav class="manager-header__menu">
+                        {% set pages = [
+                            {
+                                route: 'app_assessor_manager_requests',
+                                status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::UNPROCESSED'),
+                                label: 'Demandes à traiter'
+                            },
+                            {
+                                route: 'app_assessor_manager_requests',
+                                status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::PROCESSED'),
+                                label: 'Demandes traitées'
+                            },
+                            {
+                                route: 'app_assessor_manager_vote_places',
+                                status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::UNASSOCIATED'),
+                                label: 'Bureaux de vote disponibles'
+                            },
+                            {
+                                route: 'app_assessor_manager_vote_places',
+                                status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
+                                label: 'Bureaux de vote assignés'
+                            },
+                            {
+                                route: 'app_assessor_manager_requests',
+                                status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
+                                label: 'Demandes désactivées'
+                            }
+                        ] %}
+
+                        <ul>
+                            {% for page in pages %}
+                                <li class="{{ is_active_route(app.request, page.route) and filters.status == page.status ? 'active' }}">
+                                    <a href="{{ path(page.route, { status: page.status }) }}">
+                                        {{ page.label }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </nav>
                 </div>
             </header>
 
-            <div class="l__wrapper assessor-manager__content">
-                {% set pages = [
-                    {
-                        route: 'app_assessor_manager_requests',
-                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::UNPROCESSED'),
-                        label: 'Demandes à traiter'
-                    },
-                    {
-                        route: 'app_assessor_manager_requests',
-                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::PROCESSED'),
-                        label: 'Demandes traitées'
-                    },
-                    {
-                        route: 'app_assessor_manager_vote_places',
-                        status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::UNASSOCIATED'),
-                        label: 'Bureaux de vote disponibles'
-                    },
-                    {
-                        route: 'app_assessor_manager_vote_places',
-                        status: constant('AppBundle\\Assessor\\Filter\\VotePlaceFilters::ASSOCIATED'),
-                        label: 'Bureaux de vote assignés'
-                    },
-                    {
-                        route: 'app_assessor_manager_requests',
-                        status: constant('AppBundle\\Assessor\\Filter\\AssessorRequestFilters::DISABLED'),
-                        label: 'Demandes désactivées'
-                    }
-                ] %}
-
-                <ul class="assessor-manager__tabs">
-                    {% for page in pages %}
-                        <li class="{{ is_active_route(app.request, page.route) and filters.status == page.status ? 'active' }}">
-                            <a href="{{ path(page.route, { status: page.status }) }}">
-                                {{ page.label }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                <hr />
-
+            <div class="l__wrapper assessor-manager__content text--body">
                 {% block assessor_manager_content %}{% endblock %}
             </div>
+
         </section>
     </main>
 {% endblock %}
