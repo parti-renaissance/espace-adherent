@@ -24,6 +24,6 @@ class MessageLimiter
 
     public function getLimit(string $messageType): ?int
     {
-        return $this->messagesLimits[$messageType] ?: null;
+        return $this->messagesLimits[$messageType] ?? null;
     }
 }
