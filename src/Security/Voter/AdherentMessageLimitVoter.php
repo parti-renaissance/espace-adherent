@@ -23,8 +23,12 @@ class AdherentMessageLimitVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
+        if (!$this->limiter->support($messageType = $subject->getType())) {
+            return self::ACCESS_GRANTED;
+        }
+
         /** @var AdherentMessageInterface $subject */
-        $limit = $this->limiter->getLimit($messageType = $subject->getType());
+        $limit = $this->limiter->getLimit($messageType);
 
         switch ($messageType) {
             case AdherentMessageTypeEnum::COMMITTEE:
@@ -54,7 +58,6 @@ class AdherentMessageLimitVoter extends AbstractAdherentVoter
     {
         return self::USER_CAN_SEND_MESSAGE === $attribute
             && $subject instanceof AdherentMessageInterface
-            && $this->limiter->support($subject->getType())
         ;
     }
 }
