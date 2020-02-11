@@ -41,7 +41,7 @@
             <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
         </li>
         <li>
-            <a href="https://en-marche.fr/municipales"><strong>Municipales 2020</strong></a>
+            <a href="{{ path('app_static_page', { slug: 'municipales' }) }}"><strong>Municipales 2020</strong></a>
         </li>
         <div class="l__row">
             <div class="nav-dropdown nav-dropdown__mrg--0">
@@ -66,7 +66,7 @@
                         <a href="{{ path('page_campus') }}">Formation</a>
                     </li>
                     <li>
-                        <a href="https://mooc.en-marche.fr/sengager-a-la-republique-en-marche">S'engager à LaREM</a>
+                        <a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a>
                     </li>
                     <li>
                         <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
