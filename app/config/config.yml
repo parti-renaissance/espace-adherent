@@ -90,6 +90,7 @@ twig:
         algolia_blacklist:      "%env(ALGOLIA_BLACKLIST)%"
         url_help_en_marche:     "https://aide.en-marche.fr"
         project_dir:            "%kernel.project_dir%"
+        mooc_host:              "%env(MOOC_BASE_URL)%"
         em_api_host:            "%env(EM_API_HOST)%"
         dpt_api_host:           "%env(DPT_API_HOST)%"
         adherent_interests:     "%adherent_interests%"

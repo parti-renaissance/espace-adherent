@@ -69,7 +69,7 @@
                     <a href="{{ path('page_emmanuel_macron') }}">Emmanuel Macron</a>
                 </li>
                 <li>
-                    <a href="https://en-marche.fr/le-mouvement/fonctionnement">Notre fonctionnement</a>
+                    <a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a>
                 </li>
                 <li>
                     <a href="{{ path('our_referents_homepage') }}">Nos référents</a>
@@ -107,17 +107,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="https://mooc.en-marche.fr/faire-de-son-coup-de-fourchette-un-acte-politique" rel="noopener noreferrer" target="_blank">
-                        Le MOOC sur l'alimentation
+                    <a href="https://formation.en-marche.fr" rel="noopener noreferrer" target="_blank">
+                        Les formations du mouvement
                     </a>
                 </li>
-                <li>
-                    <li>
-                        <a href="https://microlearning.en-marche.fr" rel="noopener noreferrer" target="_blank">
-                            Les microlearning
-                        </a>
-                    </li>
-                </ul>
+            </ul>
                 <ul class="list__links list__links--col list__links--no-decor">
                     <li>
                         <h4>
@@ -151,6 +145,9 @@
                         <h4>
                             <a href="{{ path('page_le_mouvement_devenez_benevole') }}" class="text--bold text--medium-small">S'engager</a>
                         </h4>
+                    </li>
+                    <li>
+                        <a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a>
                     </li>
                     <li>
                         <a href="{{ path('app_membership_join') }}">Adhérer en ligne</a>
@@ -235,7 +232,7 @@
                         <a href="{{ path('page_politique_cookies') }}">Politique de Cookies</a>
                     </li>
                     <li>
-                        <a href="https://en-marche.fr/politique-protection-donnees" rel="noopener noreferrer" target="_blank">Politique de Protection des Données</a>
+                        <a href="{{ path('app_static_page', { slug: 'politique-protection-donnees' }) }}" rel="noopener noreferrer" target="_blank">Politique de Protection des Données</a>
                     </li>
                 </ul>
                 <ul class="list__links text--gray">

@@ -129,7 +129,7 @@
                     <a href="{{ path('app_our_organization') }}">Notre organisation</a>
                 </li>
                 <li>
-                    <a href="https://en-marche.fr/le-mouvement/fonctionnement">Notre fonctionnement</a>
+                    <a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a>
                 </li>
                 <li>
                     <a href="{{ path('our_referents_homepage') }}">Nos référents</a>
@@ -152,7 +152,7 @@
 
             <ul class="b__nudge--bottom">
                 <li>
-                    <a href="https://en-marche.fr/municipales"><strong>Municipales 2020</strong></a>
+                    <a href="{{ path('app_static_page', { slug: 'municipales' }) }}"><strong>Municipales 2020</strong></a>
                 </li>
             </ul>
 
@@ -172,6 +172,9 @@
                 </li>
                 <li>
                     <a href="{{ path('page_campus') }}">Formation</a>
+                </li>
+                <li>
+                    <a href="{{ mooc_host }}/sengager-a-la-republique-en-marche">S'engager à LaREM</a>
                 </li>
                 <li>
                     <a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a>
