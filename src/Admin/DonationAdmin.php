@@ -363,9 +363,15 @@ class DonationAdmin extends AbstractAdmin
             'ID' => 'id',
             'Montant' => 'amountInEuros',
             'Code don' => 'code',
-            'Date' => 'createdAt',
+            'Date' => 'getCreatedAtAsString',
             'Type' => 'type',
+            'Don récurrent' => 'hasSubscription',
             'Status' => 'status',
+            'Nationalité' => 'nationality',
+            'Adresse' => 'postAddress.address',
+            'CP' => 'postAddress.postalCode',
+            'Ville' => 'postAddress.cityName',
+            'Pays' => 'postAddress.country',
             'Numéro donateur' => 'donator.identifier',
             'Nom' => 'donator.lastName',
             'Prénom' => 'donator.firstName',
@@ -375,6 +381,7 @@ class DonationAdmin extends AbstractAdmin
             'Pays du donateur' => 'donator.country',
             'Adresse de référence' => 'donator.getReferenceAddress',
             'Tags du donateur' => 'donator.getTagsAsString',
+            'Transactions' => 'getSubscriptionTransactionsAsString',
         ];
     }
 

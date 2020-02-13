@@ -23,6 +23,16 @@ class Transaction
     public const PAYBOX_CARD_UNAUTHORIZED = '000021';
     public const PAYBOX_PAYMENT_PAGE_TIMEOUT = '000030';
 
+    private const PAYBOX_RESULT_LABELS = [
+        self::PAYBOX_SUCCESS => 'Succès',
+        self::PAYBOX_CONNECTION_FAILED => 'Problème de connexion',
+        self::PAYBOX_INTERNAL_ERROR => 'Erreur interne',
+        self::PAYBOX_CARD_NUMBER_INVALID => 'Numéro de carte invalide',
+        self::PAYBOX_CARD_END_DATE_INVALID => 'Date d\'expiration de carte invalide',
+        self::PAYBOX_CARD_UNAUTHORIZED => 'Carte non autorisée',
+        self::PAYBOX_PAYMENT_PAGE_TIMEOUT => 'Timeout',
+    ];
+
     /**
      * @var int
      *
@@ -107,6 +117,11 @@ class Transaction
         }
     }
 
+    public function __toString()
+    {
+        return '['.$this->getPayboxResultLabel().'] '.$this->payboxDateTime->format('Y/m/d H:i:s');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,6 +130,11 @@ class Transaction
     public function getPayboxResultCode(): ?string
     {
         return $this->payboxResultCode;
+    }
+
+    public function getPayboxResultLabel(): ?string
+    {
+        return self::PAYBOX_RESULT_LABELS[$this->payboxResultCode] ?? null;
     }
 
     public function getPayboxAuthorizationCode(): ?string
