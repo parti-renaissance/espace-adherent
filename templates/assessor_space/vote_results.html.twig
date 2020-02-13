@@ -35,7 +35,7 @@
 
                 <p class="alert alert--tips">{{ vote_result.electionRound.label }}</p>
 
-                {{ form_start(form) }}
+                {{ form_start(form, { attr: { class: 'em-form' } }) }}
 
                     <div class="text--right b__nudge--bottom-small">
                         <button class="btn btn--blue--soft" type="submit">Sauvegarder</button>
@@ -89,6 +89,7 @@
                 allow_down: false,
                 add_at_the_end: true,
                 add: '<div class="b__nudge--top-40"><a href="#" class="btn btn-info">+</a></div>',
+                remove: false,
             });
 
             var percentUpdateHandle = function (percentElement, value, total) {
