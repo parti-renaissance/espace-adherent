@@ -6,6 +6,7 @@ use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use AppBundle\Form\DonationRequestType;
+use AppBundle\Validator\FrenchAddressOrNationalityDonation;
 use AppBundle\Validator\MaxFiscalYearDonation;
 use AppBundle\Validator\MaxMonthDonation;
 use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
@@ -19,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueDonationSubscription
  * @MaxMonthDonation
+ * @FrenchAddressOrNationalityDonation
  */
 class DonationRequest
 {
