@@ -133,6 +133,10 @@ donation.max_fiscal_month_donation: Votre don mensuel ne peut dépasser {{ max_a
 donation.amount.greater_than_0: La valeur minimale d'un don est de 0.01 €.
 donation.amount.less_than_7500: La valeur maximale d'un don est de 7500 €.
 donation.code.invalid: Le code doit être composé de 6 chiffres.
+donation.french_address_or_nationality_donation: |
+  Nous sommes désolés mais votre don ne peut pas être finalisé, nous ne pouvons accepter que les dons des personnes ayant <b>la nationalité française</b> ou <b>le foyer fiscal en France</b>.
+  <br><br>
+  L’article 11-4 de la loi N° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique énonce qu’ « Une personne physique peut verser un don à un parti ou groupement politique si elle est de nationalité française ou si elle réside en France ».
 
 #
 # Newsletter
