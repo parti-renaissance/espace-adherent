@@ -247,7 +247,7 @@ class Donation implements GeoPointInterface
                 $this->lastSuccessDate = $transactionDateTime;
             }
 
-            if (PayboxPaymentSubscription::NONE !== $this->duration) {
+            if ($this->hasSubscription()) {
                 $this->status = self::STATUS_SUBSCRIPTION_IN_PROGRESS;
             }
         } else {
@@ -327,6 +327,11 @@ class Donation implements GeoPointInterface
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getCreatedAtAsString(): string
+    {
+        return $this->createdAt->format('Y/m/d H:i:s');
     }
 
     public function getRetryPayload(): array
@@ -570,5 +575,14 @@ class Donation implements GeoPointInterface
     public function setPostAddress(PostAddress $postAddress): void
     {
         $this->postAddress = $postAddress;
+    }
+
+    public function getSubscriptionTransactionsAsString(): ?string
+    {
+        if (!$this->hasSubscription()) {
+            return null;
+        }
+
+        return implode(', ', $this->transactions->toArray());
     }
 }
