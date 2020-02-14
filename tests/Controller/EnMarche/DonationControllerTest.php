@@ -377,6 +377,59 @@ class DonationControllerTest extends WebTestCase
         $this->assertClientIsRedirectedTo('/don', $this->client);
     }
 
+    /**
+     * @dataProvider provideForeignersLivingOutsideFranceCanNotDonate
+     */
+    public function testCanForeignersLivingOutsideFranceCanNotDonate(string $nationality, string $country): void
+    {
+        $crawler = $this->client->request('GET', '/don/coordonnees?montant=30');
+
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
+
+        $crawler = $this->client->submit($crawler->filter('form[name=app_donation]')->form([
+            'app_donation' => [
+                'gender' => 'male',
+                'lastName' => 'Doe',
+                'firstName' => 'John',
+                'emailAddress' => 'test@paybox.com',
+                'address' => '9 rue du Lycée',
+                'country' => $country,
+                'nationality' => $nationality,
+                'postalCode' => '06000',
+                'cityName' => 'Nice',
+                'isPhysicalPerson' => true,
+                'hasFrenchNationality' => true,
+                'personalDataCollection' => true,
+            ],
+        ]));
+
+        $this->assertStatusCode(200, $this->client);
+        $this->assertCount(1, $errors = $crawler->filter('.form__error'));
+
+        $error = $errors->first()->text();
+        $this->assertContains(
+            'Nous sommes désolés mais votre don ne peut pas être finalisé, '
+            .'nous ne pouvons accepter que les dons des personnes ayant la nationalité française '
+            .'ou le foyer fiscal en France.',
+            $error
+        );
+        $this->assertContains(
+            'L’article 11-4 de la loi N° 88-227 du 11 mars 1988 '
+            .'relative à la transparence financière de la vie politique énonce qu’ '
+            .'« Une personne physique peut verser un don à un parti ou groupement politique '
+            .'si elle est de nationalité française ou si elle réside en France ».',
+            $error
+        );
+    }
+
+    public function provideForeignersLivingOutsideFranceCanNotDonate(): iterable
+    {
+        yield ['DE', 'DE'];
+        yield ['DE', 'GB'];
+        yield ['GB', 'DE'];
+        yield ['GB', 'GB'];
+    }
+
     public function testCallbackWithNoId()
     {
         $this->client->request(Request::METHOD_GET, '/don/callback/token');
