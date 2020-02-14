@@ -373,7 +373,7 @@ class DonationRequest
         return $this->nationality;
     }
 
-    public function setNationality(string $nationality): void
+    public function setNationality(?string $nationality): void
     {
         $this->nationality = $nationality;
     }
