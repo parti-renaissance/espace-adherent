@@ -595,6 +595,7 @@ class CommitteeManagerControllerTest extends WebTestCase
             $committee,
             CommitteeMembership::COMMITTEE_FOLLOWER
         );
+        $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com');
         $this->client->request('GET', '/espace-adherent/creer-mon-comite');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -604,6 +605,7 @@ class CommitteeManagerControllerTest extends WebTestCase
             CommitteeMembership::COMMITTEE_HOST
         );
 
+        $this->authenticateAsAdherent($this->client, 'martine.lindt@gmail.com');
         $this->client->request('GET', '/espace-adherent/creer-mon-comite');
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
 
