@@ -15,15 +15,16 @@ final class AdherentAccountActivationReminderMessage extends Message
             $adherent->getFullName(),
             'Confirmez votre compte En-Marche.fr',
             [],
-            static::getRecipientVars($adherent->getFirstName(), $confirmationLink)
+            static::getRecipientVars($adherent, $confirmationLink)
         );
     }
 
-    private static function getRecipientVars(string $firstName, string $confirmationLink): array
+    private static function getRecipientVars(Adherent $adherent, string $confirmationLink): array
     {
         return [
-            'first_name' => self::escape($firstName),
+            'first_name' => self::escape($adherent->getFirstName()),
             'activation_link' => $confirmationLink,
+            'registered_at' => self::formatDate($adherent->getRegisteredAt(), 'd/m/Y'),
         ];
     }
 }
