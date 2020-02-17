@@ -24,7 +24,7 @@ final class AdherentAccountActivationReminderMessage extends Message
         return [
             'first_name' => self::escape($adherent->getFirstName()),
             'activation_link' => $confirmationLink,
-            'registered_at' => self::formatDate($adherent->getRegisteredAt(), 'd/m/Y'),
+            'registered_at' => self::formatDate($adherent->getRegisteredAt(), 'd/MM/yyyy'),
         ];
     }
 }
