@@ -343,6 +343,7 @@ class CommitteeManager
             $manager->flush();
         }
 
+        $this->dispatcher->dispatch(Events::COMMITTEE_NEW_FOLLOWER, new FollowCommitteeEvent($adherent, $committee));
         $this->dispatcher->dispatch(Events::COMMITTEE_UPDATED, new CommitteeEvent($committee));
     }
 
