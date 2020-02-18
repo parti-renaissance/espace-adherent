@@ -34,36 +34,37 @@ class RedirectionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $requestUri = $event->getRequest()->getRequestUri();
+        $path = $event->getRequest()->getPathInfo();
         /* @var RedirectToInterface $handler */
         foreach ($this->handlers as $handler) {
-            if ($handler->handle($event, $requestUri, Response::HTTP_MOVED_PERMANENTLY)) {
+            if ($handler->handle($event, $path, Response::HTTP_MOVED_PERMANENTLY)) {
                 return;
             }
         }
 
-        $pathInfo = $event->getRequest()->getPathInfo();
-        if ('/' !== substr($pathInfo, -1)) {
+        if ('/' !== substr($path, -1)) {
             return;
         }
 
         $handled = false;
 
         // Do the same handling for the same URL but without trailing slash
-        $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
-
-        if (empty($url)) {
+        $path = rtrim($path, ' /');
+        if (empty($path)) {
             return;
         }
 
         foreach ($this->handlers as $handler) {
-            if ($handled = $handler->handle($event, $url, Response::HTTP_MOVED_PERMANENTLY)) {
+            if ($handled = $handler->handle($event, $path, Response::HTTP_MOVED_PERMANENTLY)) {
                 break;
             }
         }
 
         if (!$handled) {
-            $event->setResponse(new RedirectResponse(rtrim($url, '/'), Response::HTTP_MOVED_PERMANENTLY));
+            $event->setResponse(new RedirectResponse(
+                str_replace($event->getRequest()->getPathInfo(), $path, $event->getRequest()->getRequestUri()),
+                Response::HTTP_MOVED_PERMANENTLY
+            ));
         }
     }
 
