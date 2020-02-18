@@ -283,3 +283,18 @@
         })|raw -}}
     </div>
 {% endblock %}
+
+{% block _vote_result_lists_entry_widget %}
+    <div class="l__row">
+        <div class="l__col l__col--half">
+            <div class="form__row">
+                {{ form_row(form.label, {attr: {class: 'form--full'}}) }}
+            </div>
+        </div>
+        <div class="l__col l__col--half b__nudge--left-medium">
+            <div class="form__row vote-result-percent-list-field">
+                {{ form_row(form.votes, {attr: {class: 'form--full'}}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

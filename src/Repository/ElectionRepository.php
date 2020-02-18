@@ -34,15 +34,4 @@ class ElectionRepository extends ServiceEntityRepository
 
         return $elections[0] ?? null;
     }
-
-    /**
-     * @return Election[]
-     */
-    public function findAllComingNextByRoundDate(): array
-    {
-        return $this->createAllComingNextByRoundDateQueryBuilder()
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }

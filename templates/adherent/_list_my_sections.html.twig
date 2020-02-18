@@ -54,3 +54,8 @@
         <a href="{{ path('app_jecoute_manager_local_surveys_list') }}">Espace responsable J'écoute</a>
     </li>
 {% endif %}
+{% if app.user.isAssessor %}
+    <li>
+        <a href="{{ path('app_assessor_space_vote_results') }}">Espace Assesseur</a>
+    </li>
+{% endif %}
