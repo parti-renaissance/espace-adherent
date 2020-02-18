@@ -78,7 +78,7 @@ class HomeControllerTest extends WebTestCase
 
     public function testDynamicRedirections(): void
     {
-        $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301/');
+        $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301/?test=123');
 
         $this->assertClientIsRedirectedTo('/evenements', $this->client, false, true);
 
