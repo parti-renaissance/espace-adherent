@@ -553,6 +553,10 @@
         </service>
         <service id="AppBundle\Validator\MandatoryQuestionValidator" />
 
+        <service id="AppBundle\Logging\CurrentUserProcessor">
+            <tag name="monolog.processor" method="processRecord" />
+        </service>
+
         <!-- ParamConverter -->
         <service id="AppBundle\ParamConverter\DoctrineQueryStringParamConverter">
             <tag name="request.param_converter" converter="querystring" priority="false" />

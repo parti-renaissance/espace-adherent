@@ -2,29 +2,22 @@
 
 namespace AppBundle\Logging;
 
-use Symfony\Component\DependencyInjection\ServiceLocator;
-use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Core\Security;
 
 class CurrentUserProcessor
 {
-    private $locator;
+    private $security;
 
-    public function __construct(ServiceLocator $locator)
+    public function __construct(Security $security)
     {
-        $this->locator = $locator;
+        $this->security = $security;
     }
 
-    public function processRecord(array $record)
+    public function processRecord(array $record): array
     {
-        $tokenStorage = $this->locator->get('security.token_storage');
-        $authorizationChecker = $this->locator->get('security.authorization_checker');
+        $user = $this->security->getUser();
 
-        $token = $tokenStorage->getToken();
-        $record['extra']['user'] = 'anonymous';
-
-        if (null !== $token && $authorizationChecker->isGranted(AuthenticatedVoter::IS_AUTHENTICATED_REMEMBERED)) {
-            $record['extra']['user'] = $token->getUsername();
-        }
+        $record['extra']['user'] = $user ? $user->getUsername() : 'anonymous';
 
         return $record;
     }

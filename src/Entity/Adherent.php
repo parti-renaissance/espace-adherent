@@ -30,6 +30,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,12 +65,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
+ * @ORM\EntityListeners({"AppBundle\EntityListener\RevokeCoReferentRoleListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
@@ -1593,12 +1595,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $this->id,
             $this->emailAddress,
             $this->password,
+            $this->getRoles(),
         ]);
     }
 
     public function unserialize($serialized)
     {
-        list($this->id, $this->emailAddress, $this->password) = unserialize($serialized);
+        list($this->id, $this->emailAddress, $this->password, $this->roles) = unserialize($serialized);
     }
 
     public function setRemindSent(bool $remindSent): void
@@ -1812,5 +1815,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isConsular(): bool
     {
         return !empty($this->consularManagedArea);
+    }
+
+    /**
+     * @param UserInterface|self $user
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        return $this->id === $user->getId() && $this->roles === $user->getRoles();
     }
 }
