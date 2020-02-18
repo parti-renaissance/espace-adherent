@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Assessor\Filter\VotePlaceFilters;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AssessorOfficeEnum;
@@ -157,23 +158,45 @@ class VotePlaceRepository extends AbstractAssessorRepository
     /**
      * @return VotePlace[]|PaginatorInterface
      */
-    public function findAllForTags(array $tags, int $page, int $limit = 50): PaginatorInterface
+    public function findAllForFilter(AssociationVotePlaceFilter $filter, int $page, int $limit): PaginatorInterface
     {
         $qb = $this->createQueryBuilder(self::ALIAS);
 
-        $this->applyGeoFilter($qb, $tags, self::ALIAS, 'country', 'postalCode');
+        if ($tags = $filter->getTags()) {
+            $this->applyGeoFilter($qb, $tags, self::ALIAS, 'country', 'postalCode');
+        }
 
-        return $this->configurePaginator($qb, $page, $limit);
-    }
+        if ($postalCode = $filter->getPostalCode()) {
+            $qb
+                ->andWhere(self::ALIAS.'.postalCode LIKE :postal_codes')
+                ->setParameter('postal_codes', sprintf('%%%s%%', $postalCode))
+            ;
+        }
 
-    /**
-     * @return VotePlace[]|PaginatorInterface
-     */
-    public function findAllForPostalCode(string $postalCode, int $page, int $limit): PaginatorInterface
-    {
-        $qb = $this->createQueryBuilder(self::ALIAS)
-            ->where(self::ALIAS.'.postalCode LIKE :postal_codes')
-            ->setParameter('postal_codes', sprintf('%%%s%%', $postalCode))
+        if ($city = $filter->getCity()) {
+            $qb
+                ->andWhere(self::ALIAS.'.city LIKE :city')
+                ->setParameter('city', sprintf('%s%%', $city))
+            ;
+        }
+
+        if ($country = $filter->getCountry()) {
+            $qb
+                ->andWhere(self::ALIAS.'.country = :country')
+                ->setParameter('country', $country)
+            ;
+        }
+
+        if ($name = $filter->getName()) {
+            $qb
+                ->andWhere(self::ALIAS.'.name LIKE :name')
+                ->setParameter('name', sprintf('%%%s%%', $name))
+            ;
+        }
+
+        $qb
+            ->orderBy(self::ALIAS.'.city', 'ASC')
+            ->addOrderBy(self::ALIAS.'.name', 'ASC')
         ;
 
         return $this->configurePaginator($qb, $page, $limit);

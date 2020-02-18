@@ -13,6 +13,53 @@
             Vous avez donc accès au même formulaire !
         </p>
 
+        <div class="manager__filters">
+            <div class="manager__filters__form">
+                {{ form_start(filter_form) }}
+
+                {{ form_errors(filter_form) }}
+
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                {{ form_row(filter_form.name, {label: 'Bureau de vote', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if filter_form.vars.form_type_class == 'AppBundle\\Form\\Assessor\\ReferentVotePlaceFilterType' %}
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+                                <div class="filter__row">
+                                    {{ form_row(filter_form.city, {label: 'Ville', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez une ville'}}) }}
+                                </div>
+
+                                <div class="filter__row">
+                                    {{ form_row(filter_form.country, {label: 'Pays', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Sélectionnez un pays'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="manager__filters__section">
+                            <div class="manager__filters__group">
+                                <div class="filter__row">
+                                    {{ form_row(filter_form.postalCode, {label: 'Code postal', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un code postal'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                    <a href="{{ path("app_assessors_#{space_type}_attribution_form") }}" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
+                </div>
+
+                {{ form_end(filter_form) }}
+            </div>
+        </div>
+
         {{ form_start(form) }}
             <div class="text--right b__nudge--bottom">
                 <button type="submit" class="btn btn--blue--soft">Sauvegarder les choix</button>
@@ -33,7 +80,7 @@
                     {% for index, place in vote_places %}
                         <tr>
                             <td>
-                                <strong>{{ place.name }}</strong><br/>
+                                <strong>{{ place.name }}</strong> ({{ place.code|split('_', 2)|last }})<br/>
                                 <span class="text--small">
                                     {{ place.address }}<br/>
                                     {{ place.city }} {{ place.country|countryName }}
@@ -43,6 +90,13 @@
                                 {% if form[index] is defined %}
                                     {{ form_row(form[index]) }}
                                 {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="text--center">
+                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                Aucun résultat
                             </td>
                         </tr>
                     {% endfor %}
@@ -57,7 +111,8 @@
 
         {% include 'components/_modern_pagination.html.twig' with {
             current_page: vote_places.currentPage,
-            total_pages: vote_places.lastPage
+            total_pages: vote_places.lastPage,
+            pagination_route_params: route_params
         } %}
     </section>
 {% endblock %}

@@ -5,12 +5,14 @@ namespace AppBundle\Controller\EnMarche\AssessorSpace;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
+use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Repository\VotePlaceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +37,13 @@ abstract class AbstractAssessorSpaceController extends Controller
     {
         $this->disableInProduction();
 
-        $paginator = $this->getVotePlacesPaginator($request->query->getInt('page', 1));
+        $filterForm = $this->createFilterForm($filter = $this->createFilter())->handleRequest($request);
+
+        if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
+            $filter = $this->createFilter();
+        }
+
+        $paginator = $this->getVotePlacesPaginator($request->query->getInt('page', 1), $filter);
 
         $form = $this
             ->createForm(AssessorVotePlaceListType::class, $manager->getAssociationValueObjectsFromVotePlaces(
@@ -49,12 +57,17 @@ abstract class AbstractAssessorSpaceController extends Controller
 
             $this->addFlash('info', 'Modifications ont bien été sauvegardés');
 
-            return $this->redirectToRoute(sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()));
+            return $this->redirectToRoute(
+                sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()),
+                $this->getRouteParams($request)
+            );
         }
 
         return $this->renderTemplate('assessor_space/attribution_form.html.twig', [
             'vote_places' => $paginator,
             'form' => $form->createView(),
+            'filter_form' => $filterForm->createView(),
+            'route_params' => $this->getRouteParams($request),
         ]);
     }
 
@@ -81,10 +94,32 @@ abstract class AbstractAssessorSpaceController extends Controller
 
     abstract protected function getSpaceType(): string;
 
+    abstract protected function getExportFilter(): AssessorRequestExportFilter;
+
+    abstract protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface;
+
+    abstract protected function createFilter(): AssociationVotePlaceFilter;
+
     /**
      * @return VotePlace[]|PaginatorInterface
      */
-    abstract protected function getVotePlacesPaginator(int $page): PaginatorInterface;
+    private function getVotePlacesPaginator(int $page, AssociationVotePlaceFilter $filter): PaginatorInterface
+    {
+        return $this->votePlaceRepository->findAllForFilter($filter, $page, self::PAGE_LIMIT);
+    }
 
-    abstract protected function getExportFilter(): AssessorRequestExportFilter;
+    private function getRouteParams(Request $request): array
+    {
+        $params = [];
+
+        if ($request->query->has('f')) {
+            $params['f'] = (array) $request->query->get('f');
+        }
+
+        if ($request->query->has('page')) {
+            $params['page'] = $request->query->getInt('page');
+        }
+
+        return $params;
+    }
 }
