@@ -23,6 +23,10 @@
         {% endif %}
 
         {% if object.isAssessorManager %}
+            <span class="label label-primary" style="padding: 2px;">Responsable assesseurs</span><br/>
+        {% endif %}
+
+        {% if object.isAssessor %}
             <span class="label label-primary" style="padding: 2px;">Assesseur</span><br/>
         {% endif %}
 

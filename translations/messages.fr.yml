@@ -71,6 +71,7 @@ procuration_manager: responsable procuration
 assessor_manager: responsable assesseur
 jecoute_manager: Responsable J'écoute
 assessors_manager: Responsable assesseurs
+assessor: Assesseur
 user: utilisateur
 citizen_project_holder: porteur de projet
 municipal_chief: Candidat Municipales 2020 🇫🇷
