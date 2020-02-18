@@ -12,28 +12,30 @@
 
     {{ include('assessor_manager/_filters.html.twig') }}
 
-    <hr />
-
     {% if 0 == votePlaces|length %}
-        <div class="text--body text--center">
-            {% if constant('UNASSOCIATED', filters) == filters.status %}
-                Vous n'avez pas encore de bureau de vote disponible.
-            {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                Vous n'avez pas encore de bureau de vote associé à une demande d'assesseur.
-            {% endif %}
+        <div class="datagrid__pre-table b__nudge--bottom-larger">
+            <h3>
+                {% if constant('UNASSOCIATED', filters) == filters.status %}
+                    Vous n'avez pas encore de bureau de vote disponible.
+                {% elseif constant('ASSOCIATED', filters) == filters.status %}
+                    Vous n'avez pas encore de bureau de vote associé à une demande d'assesseur.
+                {% endif %}
+            </h3>
         </div>
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large assessor_vote_places_total_count">
-            {% if constant('UNASSOCIATED', filters) == filters.status %}
-                {{ 'vote_place.unassociated.choices'|transchoice(total_count) }}
-            {% elseif constant('ASSOCIATED', filters) == filters.status %}
-                {{ 'vote_place.associated.choices'|transchoice(total_count) }}
-            {% endif %}
+        <div class="datagrid__pre-table b__nudge--bottom-larger assessor_vote_places_total_count">
+            <h3>
+                {% if constant('UNASSOCIATED', filters) == filters.status %}
+                    {{ 'vote_place.unassociated.choices'|transchoice(total_count) }}
+                {% elseif constant('ASSOCIATED', filters) == filters.status %}
+                    {{ 'vote_place.associated.choices'|transchoice(total_count) }}
+                {% endif %}
+            </h3>
         </div>
     {% endif %}
 
     {% if votePlaces|length %}
-        <table class="datagrid__table datagrid__table--bordered-rows">
+        <table class="datagrid__table-manager managed__list__table">
             <thead>
             <tr>
                 <th class="datagrid__table__col--hide-mobile" style="width: 70px;">Numéro</th>

@@ -12,26 +12,29 @@
 
     {{ include('assessor_manager/_filters_assessor_requests.html.twig') }}
 
-    <hr />
 
     {% if 0 == requests|length %}
-        <div class="text--body text--center">
-            {% if constant('PROCESSED', filters) == filters.status %}
-                Vous n'avez pas encore de demande d'assesseur traitée.
-            {% else %}
-                Vous n'avez pas encore de demande d'assesseur à traiter.
-            {% endif %}
+        <div class="datagrid__pre-table b__nudge--bottom-larger">
+            <h3>
+                {% if constant('PROCESSED', filters) == filters.status %}
+                    Vous n'avez pas encore de demande d'assesseur traitée.
+                {% else %}
+                    Vous n'avez pas encore de demande d'assesseur à traiter.
+                {% endif %}
+            </h3>
         </div>
     {% else %}
-        <div class="text--body text--center assessor_requests_total_count b__nudge--top-10">
-            {% if constant('PROCESSED', filters) == filters.status %}
-                {{ 'assessor.processed.choices'|transchoice(total_count) }}
-            {% else %}
-                {{ 'assessor.unprocessed.choices'|transchoice(total_count) }}
-            {% endif %}
+        <div class="datagrid__pre-table b__nudge--bottom-larger">
+            <h3>
+                {% if constant('PROCESSED', filters) == filters.status %}
+                    {{ 'assessor.processed.choices'|transchoice(total_count) }}
+                {% else %}
+                    {{ 'assessor.unprocessed.choices'|transchoice(total_count) }}
+                {% endif %}
+            </h3>
         </div>
         {% if constant('UNPROCESSED', filters) == filters.status %}
-            <div class="text-body text--left b__nudge--top-10 b__nudge--bottom-small">
+            <div class="alert alert--tips b__nudge--bottom-60">
                 Vous pouvez assigner un assesseur à n'importe quel bureau de vote du département (ou du pays dans le cas des FDE).<br/>
                 Néanmoins, veuillez tenir compte du fait que les bureaux de vote souhaités sont listés dans l'ordre des
                 préférences du demandeur.<br/>
@@ -41,7 +44,7 @@
     {% endif %}
 
     {% if requests|length %}
-        <table class="datagrid__table datagrid__table--bordered-rows">
+        <table class="datagrid__table-manager managed__list__table">
             <thead>
             <tr>
                 <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>

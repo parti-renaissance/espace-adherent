@@ -611,6 +611,12 @@ HELP
                         $where->add('assessorManagedArea IS NOT NULL AND assessorManagedArea.codes IS NOT NULL');
                     }
 
+                    // Assessor
+                    if (\in_array(AdherentRoleEnum::ASSESSOR, $value['value'], true)) {
+                        $qb->leftJoin(sprintf('%s.assessorRole', $alias), 'assessorRole');
+                        $where->add('assessorRole IS NOT NULL AND assessorRole.votePlace IS NOT NULL');
+                    }
+
                     // J'écoute Manager
                     if (\in_array(AdherentRoleEnum::JECOUTE_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.jecouteManagedArea', $alias), 'jecouteManagedArea');

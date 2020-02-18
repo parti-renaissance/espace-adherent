@@ -1,47 +1,64 @@
-<form method="get">
-   <div class="l__row l__row--top l__mobile--col">
-        {% block filter_content %}{% endblock %}
+<div class="manager__filters">
+    <div class="manager__filters__form">
+        <form method="get">
+        <h4 class="manager__filters__subtitle">Filtrer par</h4>
+            <div class="manager__filters__row">
 
-       <input type="hidden" name="{{ constant('PARAMETER_STATUS', filters) }}" value="{{ filters.status }}" />
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        {% block filter_content %}{% endblock %}
+                        <input type="hidden" name="{{ constant('PARAMETER_STATUS', filters) }}" value="{{ filters.status }}" />
+                    </div>
+                    <div class="filter__row">
+                        <label class="filter__label">
+                            Nom / Numéro du bureau de vote :
+                        </label>
+                        <input type="text"
+                               name="{{ constant('PARAMETER_VOTE_PLACE', filters) }}"
+                               value="{{ filters.votePlace }}"
+                               class="filter__field form form__field">
 
-       <div class="l__col--grow-1 b__nudge--right">
-           <label>
-               Nom / Numéro du bureau de vote :<br />
-               <input type="text"
-                      name="{{ constant('PARAMETER_VOTE_PLACE', filters) }}"
-                      value="{{ filters.votePlace }}"
-                      class="form form__field form--full">
-           </label>
-       </div>
+                    </div>
+                </div>
 
-       <div class="l__col--grow-1 b__nudge--right">
-           <label>
-               Ville / Code Postal :<br />
-               <input type="text"
-                      name="{{ constant('PARAMETER_CITY', filters) }}"
-                      value="{{ filters.city }}"
-                      class="form form__field form--full">
-           </label>
-       </div>
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">
+                                Ville / Code Postal :
+                            </label>
+                            <input type="text"
+                                   name="{{ constant('PARAMETER_CITY', filters) }}"
+                                   value="{{ filters.city }}"
+                                   class="filter__field form form__field">
+                        </div>
+                    </div>
+                </div>
 
-       <div class="l__col--grow-1 b__nudge--right">
-           <label>
-               Pays :<br />
-               <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="form form__field form--full">
-                   <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>
-                   {% for code, label in filters.countries %}
-                       <option value="{{ code }}" {{ filters.country == code ? 'selected="selected"' }}>{{ label }}</option>
-                   {% endfor %}
-               </select>
-           </label>
-       </div>
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            <label class="filter__label">
+                                Pays :
+                            </label>
+                            <select name="{{ constant('PARAMETER_COUNTRY', filters) }}" class="filter__field form form__field">
+                                <option value="" {{ filters.country is empty ? 'selected="selected"' }}></option>
+                                {% for code, label in filters.countries %}
+                                    <option value="{{ code }}" {{ filters.country == code ? 'selected="selected"' }}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-        <div style="width: 220px;">
-            <br />
-            <button type="submit" class="btn btn--blue b__nudge--right">Filtrer</button>
-            {% if filters.hasData %}
-                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'status': filters.status})) }}">Annuler</a>
-            {% endif %}
-        </div>
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                {% if filters.hasData %}
+                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'status': filters.status})) }}" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
+                {% endif %}
+            </div>
+        </form>
     </div>
-</form>
+</div>
