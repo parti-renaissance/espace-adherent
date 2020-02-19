@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="assessor_requests")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AssessorRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

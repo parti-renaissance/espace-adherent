@@ -189,7 +189,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
         if ($name = $filter->getName()) {
             $qb
-                ->andWhere(self::ALIAS.'.name LIKE :name')
+                ->andWhere(sprintf('%s.name LIKE :name OR %s.alias LIKE :name', self::ALIAS, self::ALIAS))
                 ->setParameter('name', sprintf('%%%s%%', $name))
             ;
         }

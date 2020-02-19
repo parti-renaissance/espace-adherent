@@ -23,7 +23,7 @@
                     <div class="manager__filters__section">
                         <div class="manager__filters__group">
                             <div class="filter__row">
-                                {{ form_row(filter_form.name, {label: 'Bureau de vote', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                                {{ form_row(filter_form.name, {label: 'Bureau de vote (ou alias)', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
                             </div>
                         </div>
                     </div>
@@ -73,6 +73,7 @@
                 <thead>
                     <tr>
                         <td>Bureau de vote</td>
+                        <td>Bureau de vote - Alias</td>
                         <td>Adhérent - Assesseur</td>
                     </tr>
                 </thead>
@@ -88,13 +89,18 @@
                             </td>
                             <td>
                                 {% if form[index] is defined %}
-                                    {{ form_row(form[index]) }}
+                                    {{ form_row(form[index].votePlace) }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if form[index] is defined %}
+                                    {{ form_row(form[index].adherent) }}
                                 {% endif %}
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="2" class="text--center">
+                            <td colspan="3" class="text--center">
                                 <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                 Aucun résultat
                             </td>
