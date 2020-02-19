@@ -43,6 +43,13 @@ class VotePlace
     private $name;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $alias;
+
+    /**
      * @var string
      *
      * @ORM\Column(length=10, unique=true)
@@ -157,6 +164,16 @@ class VotePlace
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(?string $alias): void
+    {
+        $this->alias = $alias;
     }
 
     public function getLabel(): string

@@ -2,10 +2,11 @@
 
 namespace AppBundle\Controller\EnMarche\AssessorSpace;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
-use AppBundle\Entity\Adherent;
+use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
+use AppBundle\Form\Assessor\ReferentVotePlaceFilterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,22 +23,24 @@ class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
         return self::SPACE_NAME;
     }
 
-    protected function getVotePlacesPaginator(int $page): PaginatorInterface
-    {
-        /** @var Adherent $referent */
-        $referent = $this->getUser();
-
-        return $this->votePlaceRepository->findAllForTags(
-            $referent->getManagedArea()->getTags()->toArray(),
-            $page,
-            self::PAGE_LIMIT
-        );
-    }
-
     protected function getExportFilter(): AssessorRequestExportFilter
     {
         return new AssessorRequestExportFilter(
             $this->getUser()->getManagedArea()->getTags()->toArray()
         );
+    }
+
+    protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface
+    {
+        return $this->createForm(ReferentVotePlaceFilterType::class, $filter);
+    }
+
+    protected function createFilter(): AssociationVotePlaceFilter
+    {
+        $filter = new AssociationVotePlaceFilter();
+
+        $filter->setTags($this->getUser()->getManagedArea()->getTags()->toArray());
+
+        return $filter;
     }
 }

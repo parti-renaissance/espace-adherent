@@ -359,6 +359,9 @@ assessor.assessor_postal_code.not_blank: Vous devez spécifier le code postal du
 
 assessor.vote_place_wishes.not_blank: Vous devez choisir au moins un bureau de vote.
 assessor.unique_vote_place_association: L'adhérent est déjà assesseur dans un autre bureau de vote.
+assessor.adherent_association.adherent_not_found: Adhérent avec cet e-mail n'existe pas
+assessor.adherent_association.assessor_request_not_found: Adhérent n'a pas de candidature Assesseur avec cet e-mail
+assessor.adherent_association.wrong_vote_place: Candidature liée à l'adhérent n'est pas compatible avec ce bureau de vote
 
 #
 # Vote Place

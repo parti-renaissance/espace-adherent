@@ -2,11 +2,13 @@
 
 namespace AppBundle\Controller\EnMarche\AssessorSpace;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
+use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Entity\Adherent;
+use AppBundle\Form\Assessor\DefaultVotePlaceFilterType;
 use AppBundle\Intl\FranceCitiesBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -23,18 +25,23 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
         return self::SPACE_NAME;
     }
 
-    protected function getVotePlacesPaginator(int $page): PaginatorInterface
-    {
-        return $this->votePlaceRepository->findAllForPostalCode(
-            $this->getMunicipalChiefZonePostalCode(),
-            $page,
-            self::PAGE_LIMIT
-        );
-    }
-
     protected function getExportFilter(): AssessorRequestExportFilter
     {
         return new AssessorRequestExportFilter([], [$this->getMunicipalChiefZonePostalCode()]);
+    }
+
+    protected function createFilter(): AssociationVotePlaceFilter
+    {
+        $filter = new AssociationVotePlaceFilter();
+
+        $filter->setPostalCode($this->getMunicipalChiefZonePostalCode());
+
+        return $filter;
+    }
+
+    protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface
+    {
+        return $this->createForm(DefaultVotePlaceFilterType::class, $filter);
     }
 
     private function getMunicipalChiefZonePostalCode(): string

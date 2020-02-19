@@ -152,7 +152,9 @@
         </service>
         <service id="AppBundle\Form\AssessorRequestType" />
         <service id="AppBundle\Form\AssessorRoleAssociationType" />
+        <service id="AppBundle\Form\AssociationVotePlaceType" />
         <service id="AppBundle\Form\DataTransformer\EmailToAdherentTransformer" />
+        <service id="AppBundle\Validator\ValidAdherentForVotePlaceValidator" />
 
         <!-- ApplicationRequest -->
         <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler" />
