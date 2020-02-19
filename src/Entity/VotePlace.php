@@ -121,6 +121,13 @@ class VotePlace
      */
     private $substituteOfficeAvailable = true;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $enabled = true;
+
     public function __construct()
     {
         $this->assessorRequests = new ArrayCollection();
@@ -226,6 +233,11 @@ class VotePlace
         return $this->code;
     }
 
+    public function getInseeCode(): string
+    {
+        return current(explode('_', $this->code, 2));
+    }
+
     public function setCode(string $code): void
     {
         $this->code = $code;
@@ -284,5 +296,15 @@ class VotePlace
     public function equals(self $place): bool
     {
         return $this->id === $place->getId();
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

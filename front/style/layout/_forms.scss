@@ -493,7 +493,13 @@ label {
 }
 
 .flash {
-    background-color: $yellow;
+    &--info {
+        background-color: $yellow;
+    }
+
+    &--error {
+        background-color: $pink--light;
+    }
 
     &__inner {
         @include wrapper;

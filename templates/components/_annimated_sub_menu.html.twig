@@ -1,0 +1,18 @@
+<div class="action-menu-oval">
+    <a href="javascript:void(0);">
+        <span class="oval"></span>
+        <span class="oval"></span>
+        <span class="oval"></span>
+    </a>
+    <div class="action-dropdown-menu--bounce">
+        <div class="action-dropdown-menu--content">
+            {% for item in items %}
+                <a href="{{ item.href }}"
+                    {% for attr,value in item.linkAttr|default({class: 'row-action'}) %}
+                        {{ attr }}="{{ value }}"
+                    {% endfor %}
+                >{{ item.label|raw }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -72,20 +72,29 @@
             <table class="datagrid__table-manager">
                 <thead>
                     <tr>
-                        <td>Bureau de vote</td>
+                        <td class="space--0-15">Bureau de vote</td>
                         <td>Bureau de vote - Alias</td>
                         <td>Adhérent - Assesseur</td>
+                        <td>Actions</td>
                     </tr>
                 </thead>
                 <tbody>
                     {% for index, place in vote_places %}
                         <tr>
                             <td>
-                                <strong>{{ place.name }}</strong> ({{ place.code|split('_', 2)|last }})<br/>
-                                <span class="text--small">
-                                    {{ place.address }}<br/>
-                                    {{ place.city }} {{ place.country|countryName }}
-                                </span>
+                                <div class="l__row l__row--h-start">
+                                    <div class="l__col">
+                                        <span class="cursor--pointer status {{ place.enabled ? 'status__1' : 'status__2' }}" title="{{ place.enabled ? 'Activé' : 'Désactivé' }}"></span>
+                                    </div>
+
+                                    <div class="l__col">
+                                        <strong>{{ place.name }}</strong> ({{ place.code|split('_', 2)|last }})<br/>
+                                        <span class="text--small">
+                                            {{ place.address }}<br/>
+                                            {{ place.city }}, {{ place.country|countryName }}
+                                        </span>
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 {% if form[index] is defined %}
@@ -97,10 +106,23 @@
                                     {{ form_row(form[index].adherent) }}
                                 {% endif %}
                             </td>
+                            <td>
+                                {% set items = [
+                                    {
+                                        href: path("app_assessors_#{space_type}_" ~ (place.enabled ? 'disable' : 'enable') ~ "_vote_place", {id: place.id}|merge(route_params)),
+                                        label: place.enabled ? 'Désactiver' : 'Activer',
+                                        linkAttr: {
+                                            class: 'row-action text--dark link--no-decor',
+                                        }
+                                    }
+                                ] %}
+
+                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="3" class="text--center">
+                            <td colspan="4" class="text--center">
                                 <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                 Aucun résultat
                             </td>

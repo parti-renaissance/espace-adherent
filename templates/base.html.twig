@@ -131,9 +131,11 @@
         <!-- END Display Upgrade Message for IE 10 or Less -->
 
         {% block flash_message %}
-            {% for message in app.flashes('info') %}
-                <div class="flash notice-flashes">
-                    <div class="flash__inner">{{ message|trans }}</div>
+            {% for label, messages in app.flashes(['info', 'error']) %}
+                <div class="flash flash--{{ label }} notice-flashes">
+                    {% for message in messages %}
+                        <div class="flash__inner">{{ message|trans }}</div>
+                    {% endfor %}
                 </div>
             {% endfor %}
         {% endblock %}
