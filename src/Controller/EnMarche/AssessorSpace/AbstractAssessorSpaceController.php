@@ -8,13 +8,18 @@ use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\AssessorRoleAssociation;
+use AppBundle\Entity\Election;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
+use AppBundle\Exporter\VoteResultsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Form\CreateVotePlaceType;
+use AppBundle\Repository\ElectionRepository;
 use AppBundle\Repository\VotePlaceRepository;
+use AppBundle\Repository\VoteResultRepository;
 use AppBundle\Security\Voter\ManageVotePlaceVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,10 +33,12 @@ abstract class AbstractAssessorSpaceController extends Controller
     protected const PAGE_LIMIT = 10;
 
     protected $votePlaceRepository;
+    protected $voteResultRepository;
 
-    public function __construct(VotePlaceRepository $votePlaceRepository)
+    public function __construct(VotePlaceRepository $votePlaceRepository, VoteResultRepository $voteResultRepository)
     {
         $this->votePlaceRepository = $votePlaceRepository;
+        $this->voteResultRepository = $voteResultRepository;
     }
 
     /**
@@ -136,6 +143,21 @@ abstract class AbstractAssessorSpaceController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/resultats/export.{_format}", name="_results_export", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
+     */
+    public function exportResultsAction(
+        string $_format,
+        VoteResultsExporter $exporter,
+        ElectionRepository $electionRepository
+    ): Response {
+        $this->disableInProduction();
+
+        $election = $electionRepository->findComingNextElection();
+
+        return $exporter->getResponse($_format, $this->getVoteResultsExportQuery($election));
+    }
+
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
         return $this->render($template, array_merge(
@@ -154,6 +176,8 @@ abstract class AbstractAssessorSpaceController extends Controller
     abstract protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface;
 
     abstract protected function createFilter(): AssociationVotePlaceFilter;
+
+    abstract protected function getVoteResultsExportQuery(Election $election): Query;
 
     /**
      * @return VotePlace[]|PaginatorInterface
