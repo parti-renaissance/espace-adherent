@@ -177,18 +177,30 @@ class VoteResult
         $this->lists[] = ['label' => $label, 'votes' => $votes];
     }
 
-    public function getAbstentionsPercentage(): float
+    public function getAbstentionsPercentage(): ?float
     {
+        if (0 === $this->registered) {
+            return null;
+        }
+
         return ($this->abstentions / $this->registered) * 100;
     }
 
-    public function getExpressedPercentage(): float
+    public function getExpressedPercentage(): ?float
     {
+        if (0 === $this->registered) {
+            return null;
+        }
+
         return ($this->expressed / $this->registered) * 100;
     }
 
-    public function getVotersPercentage(): float
+    public function getVotersPercentage(): ?float
     {
+        if (0 === $this->registered) {
+            return null;
+        }
+
         return ($this->voters / $this->registered) * 100;
     }
 }

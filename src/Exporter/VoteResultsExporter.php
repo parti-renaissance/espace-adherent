@@ -28,17 +28,21 @@ class VoteResultsExporter
                     /** @var VoteResult $voteResult */
                     $voteResult = $data[0];
 
+                    $abstentionsPercentage = $voteResult->getAbstentionsPercentage();
+                    $expressedPercentage = $voteResult->getExpressedPercentage();
+                    $votersPercentage = $voteResult->getVotersPercentage();
+
                     $fields = [
                         'Ville' => $voteResult->getVotePlace()->getCity(),
                         'Bureau' => $voteResult->getVotePlace()->getName(),
                         'Tour' => $voteResult->getElectionRound(),
                         'Inscrits' => $voteResult->getRegistered(),
                         'Abstentions' => $voteResult->getAbstentions(),
-                        '% abstentions' => $voteResult->getAbstentionsPercentage().' %',
+                        '% abstentions' => $abstentionsPercentage ? $abstentionsPercentage.' %' : null,
                         'Exprimés' => $voteResult->getExpressed(),
-                        '% exprimés' => $voteResult->getExpressedPercentage().' %',
+                        '% exprimés' => $expressedPercentage ? $expressedPercentage.' %' : null,
                         'Votants' => $voteResult->getVoters(),
-                        '% votants' => $voteResult->getVotersPercentage().' %',
+                        '% votants' => $votersPercentage ? $votersPercentage.' %' : null,
                     ];
 
                     $listIndex = 1;

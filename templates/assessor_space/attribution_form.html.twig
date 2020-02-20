@@ -2,13 +2,12 @@
 
 {% block assessor_content %}
     <section>
-        {% if is_canary_enabled() %}
-            <div class="text--right">
-                <a href="{{ path("app_assessors_#{space_type}_results_export") }}" class=link--blue">
-                    Télécharger les résultats de l'élection courante
-                </a>
-            </div>
-        {% endif %}
+        <div class="text--right">
+            Export des résultats:&nbsp;
+            <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'xls'}) }}" class=link--blue">XLS</a>
+            •
+            <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'csv'}) }}" class=link--blue">CSV</a>
+        </div>
 
         <div class="text--right">
             Export Assesseurs:&nbsp;
