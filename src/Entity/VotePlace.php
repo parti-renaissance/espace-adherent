@@ -54,7 +54,7 @@ class VotePlace
      *
      * @ORM\Column(length=10, unique=true)
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Il semble que le code postal ou la ville est incorrecte")
      * @Assert\Length(max=10)
      */
     private $code;
@@ -100,7 +100,7 @@ class VotePlace
      *
      * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace")
      *
-     * @Assert\Choice(
+     * @Assert\Count(
      *     max=VotePlace::MAX_ASSESSOR_REQUESTS,
      *     maxMessage="vote_place.assessor_request.max"
      * )
@@ -163,7 +163,7 @@ class VotePlace
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -188,7 +188,7 @@ class VotePlace
         return (string) !empty($this->name) ? $this->name : $this->code;
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }

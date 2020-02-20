@@ -11,6 +11,7 @@ use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
+use AppBundle\Form\CreateVotePlaceType;
 use AppBundle\Repository\VotePlaceRepository;
 use AppBundle\Security\Voter\ManageVotePlaceVoter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -109,6 +110,30 @@ abstract class AbstractAssessorSpaceController extends Controller
             sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()),
             $this->getRouteParams($request)
         );
+    }
+
+    /**
+     * @Route("/bureaux-de-vote/ajouter", name="_create_vote_place", methods={"GET", "POST"})
+     */
+    public function createVotePlaceAction(Request $request, EntityManagerInterface $manager): Response
+    {
+        $form = $this
+            ->createForm(CreateVotePlaceType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($form->getData());
+            $manager->flush();
+
+            $this->addFlash('info', 'Nouveau bureau de vote a bien été ajouté');
+
+            return $this->redirectToRoute(sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()));
+        }
+
+        return $this->renderTemplate('assessor_space/create_vote_place.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     protected function renderTemplate(string $template, array $parameters = []): Response

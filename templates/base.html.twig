@@ -115,7 +115,7 @@
         <!-- START Display Upgrade Message for IE 10 or Less -->
         <!-- [if lte IE 9]>
             {% block ie_warning %}
-                <div class="flash notice-flashes">
+                <div class="flash flash--info">
                     <div class="flash__inner">
                         Pensez à mettre à jour votre navigateur web ou le changer <a href="https://browsehappy.com" target="_blank">ici</a> pour visualiser correctement le site.
                         <a href="#" class="link--no--decor" onClick="document.cookie = 'dismiss_ie_warning=true;';this.parentNode.parentNode.removeChild(this.parentNode);">&times;</a>
@@ -132,11 +132,13 @@
 
         {% block flash_message %}
             {% for label, messages in app.flashes(['info', 'error']) %}
-                <div class="flash flash--{{ label }} notice-flashes">
-                    {% for message in messages %}
-                        <div class="flash__inner">{{ message|trans }}</div>
-                    {% endfor %}
-                </div>
+                {% if messages|length %}
+                    <div class="flash flash--{{ label }}">
+                        {% for message in messages %}
+                            <div class="flash__inner">{{ message|trans }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endblock %}
 

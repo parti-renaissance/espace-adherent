@@ -209,4 +209,16 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
         return $this->configurePaginator($qb, $page, $limit);
     }
+
+    public function findLastByCodePrefix(string $codePrefix): ?VotePlace
+    {
+        return $this->createQueryBuilder('vp')
+            ->where('vp.code LIKE :code')
+            ->setParameter('code', $codePrefix.'_%')
+            ->setMaxResults(1)
+            ->orderBy('vp.code', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

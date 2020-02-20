@@ -1,0 +1,43 @@
+{% extends 'assessor_space/_layout.html.twig' %}
+
+{% block assessor_content %}
+    <section class="l__wrapper--slim">
+        <h3 class="text--center b__nudge--bottom-large">Ajouter un nouveau bureau de vote</h3>
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="l__row">
+                <div class="l__col l__col--half form__row">
+                    {{ form_row(form.name, {label: 'Nom', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez son nom'}}) }}
+                </div>
+
+                <div class="l__col l__col--half form__row b__nudge--left-small">
+                    {{ form_row(form.alias, {label: 'Alias', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez son alias (optionnel)'}}) }}
+                </div>
+            </div>
+
+            <div class="form__row">
+                {{ form_row(form.address, {label: 'Adresse', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez son adresse'}}) }}
+            </div>
+
+            <div class="l__row">
+                <div class="l__col l__col--half form__row">
+                    {{ form_row(form.postalCode, {label: 'Code postal', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez son code postal'}}) }}
+                </div>
+
+                <div class="l__col l__col--half form__row b__nudge--left-small">
+                    {{ form_row(form.city, {label: 'Ville', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez sa ville'}}) }}
+                </div>
+            </div>
+
+            <div class="form__row">
+                {{ form_row(form.country, {label: 'Pays', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez son pays'}}) }}
+            </div>
+
+            <div class="b__nudge--top-15 text--center">
+                <button type="submit" class="btn btn--blue--soft">Sauvegarder</button>
+            </div>
+
+        {{ form_end(form) }}
+    </section>
+{% endblock %}
