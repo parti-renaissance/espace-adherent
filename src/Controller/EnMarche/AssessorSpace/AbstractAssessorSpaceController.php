@@ -7,10 +7,14 @@ use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Controller\CanaryControllerTrait;
+use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
+use AppBundle\Form\CreateVotePlaceType;
 use AppBundle\Repository\VotePlaceRepository;
+use AppBundle\Security\Voter\ManageVotePlaceVoter;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,6 +83,57 @@ abstract class AbstractAssessorSpaceController extends Controller
         $this->disableInProduction();
 
         return $exporter->getResponse($_format, $this->getExportFilter());
+    }
+
+    /**
+     * @Route("/bureaux-de-vote/{id}/desactiver", name="_disable_vote_place", methods={"GET"}, defaults={"enabled": false})
+     * @Route("/bureaux-de-vote/{id}/activer", name="_enable_vote_place", methods={"GET"}, defaults={"enabled": true})
+     */
+    public function toggleVotePlaceStatusAction(
+        bool $enabled,
+        VotePlace $votePlace,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $this->denyAccessUnlessGranted(ManageVotePlaceVoter::MANAGE_VOTE_PLACE, $votePlace);
+
+        if (false === $enabled && $entityManager->getRepository(AssessorRoleAssociation::class)->findOneBy(['votePlace' => $votePlace])) {
+            $this->addFlash('error', 'Vous ne pouvez pas désactiver un bureau de vote attribué. Veuillez d’abord y supprimer le mail de l’assesseur');
+        } else {
+            $votePlace->setEnabled($enabled);
+            $entityManager->flush();
+
+            $this->addFlash('info', sprintf('Bureau de vote "%s" a bien été '.($enabled ? 'activé' : 'désactivé'), $votePlace->getName()));
+        }
+
+        return $this->redirectToRoute(
+            sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()),
+            $this->getRouteParams($request)
+        );
+    }
+
+    /**
+     * @Route("/bureaux-de-vote/ajouter", name="_create_vote_place", methods={"GET", "POST"})
+     */
+    public function createVotePlaceAction(Request $request, EntityManagerInterface $manager): Response
+    {
+        $form = $this
+            ->createForm(CreateVotePlaceType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($form->getData());
+            $manager->flush();
+
+            $this->addFlash('info', 'Nouveau bureau de vote a bien été ajouté');
+
+            return $this->redirectToRoute(sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()));
+        }
+
+        return $this->renderTemplate('assessor_space/create_vote_place.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     protected function renderTemplate(string $template, array $parameters = []): Response

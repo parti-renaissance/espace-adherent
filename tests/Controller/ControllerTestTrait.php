@@ -107,12 +107,12 @@ trait ControllerTestTrait
         return null;
     }
 
-    protected function seeFlashMessage(Crawler $crawler, ?string $message = null): bool
+    protected function seeFlashMessage(Crawler $crawler, ?string $message = null, string $level = 'info'): bool
     {
-        $flash = $crawler->filter('.notice-flashes');
+        $flash = $crawler->filter('.flash--'.$level);
 
         if ($message) {
-            $this->assertSame($message, trim($flash->text()));
+            self::assertSame($message, trim($flash->text()));
         }
 
         return 1 === \count($flash);

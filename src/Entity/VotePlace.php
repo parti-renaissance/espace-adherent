@@ -54,7 +54,7 @@ class VotePlace
      *
      * @ORM\Column(length=10, unique=true)
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Il semble que le code postal ou la ville est incorrecte")
      * @Assert\Length(max=10)
      */
     private $code;
@@ -100,7 +100,7 @@ class VotePlace
      *
      * @ORM\OneToMany(targetEntity="AssessorRequest", mappedBy="votePlace")
      *
-     * @Assert\Choice(
+     * @Assert\Count(
      *     max=VotePlace::MAX_ASSESSOR_REQUESTS,
      *     maxMessage="vote_place.assessor_request.max"
      * )
@@ -120,6 +120,13 @@ class VotePlace
      * @ORM\Column(type="boolean")
      */
     private $substituteOfficeAvailable = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $enabled = true;
 
     public function __construct()
     {
@@ -156,7 +163,7 @@ class VotePlace
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -181,7 +188,7 @@ class VotePlace
         return (string) !empty($this->name) ? $this->name : $this->code;
     }
 
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -224,6 +231,11 @@ class VotePlace
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getInseeCode(): string
+    {
+        return current(explode('_', $this->code, 2));
     }
 
     public function setCode(string $code): void
@@ -284,5 +296,15 @@ class VotePlace
     public function equals(self $place): bool
     {
         return $this->id === $place->getId();
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

@@ -201,7 +201,7 @@ class ReferentControllerTest extends WebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertContains(
             'Le nouvel événement institutionnel a bien été créé.',
-            $this->client->getCrawler()->filter('div.notice-flashes')->html()
+            $this->client->getCrawler()->filter('div.flash--info')->html()
         );
 
         $this->assertCountMails(1, InstitutionalEventInvitationMessage::class, 'referent@en-marche-dev.fr');

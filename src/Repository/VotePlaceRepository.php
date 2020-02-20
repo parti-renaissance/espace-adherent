@@ -127,7 +127,11 @@ class VotePlaceRepository extends AbstractAssessorRepository
         return  $this
             ->createQueryBuilder('votePlace')
             ->andWhere('votePlace.country = :country')
-            ->setParameter('country', $country)
+            ->andWhere('votePlace.enabled = :true')
+            ->setParameters([
+                'country' => $country,
+                'true' => true,
+            ])
             ->getQuery()
             ->getResult()
         ;
@@ -138,7 +142,11 @@ class VotePlaceRepository extends AbstractAssessorRepository
         return  $this
             ->createQueryBuilder('votePlace')
             ->andWhere('FIND_IN_SET(:postalCode, votePlace.postalCode) > 0')
-            ->setParameter('postalCode', $postalCode)
+            ->andWhere('votePlace.enabled = :true')
+            ->setParameters([
+                'postalCode' => $postalCode,
+                'true' => true,
+            ])
             ->getQuery()
             ->getResult()
         ;
@@ -200,5 +208,17 @@ class VotePlaceRepository extends AbstractAssessorRepository
         ;
 
         return $this->configurePaginator($qb, $page, $limit);
+    }
+
+    public function findLastByCodePrefix(string $codePrefix): ?VotePlace
+    {
+        return $this->createQueryBuilder('vp')
+            ->where('vp.code LIKE :code')
+            ->setParameter('code', $codePrefix.'_%')
+            ->setMaxResults(1)
+            ->orderBy('vp.code', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }

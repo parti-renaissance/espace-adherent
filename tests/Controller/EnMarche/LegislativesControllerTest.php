@@ -65,7 +65,7 @@ class LegislativesControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('#legislatives_campaign_contact_form')->count());
-        $this->assertSame(0, $crawler->filter('.notice-flashes')->count());
+        $this->assertSame(0, $crawler->filter('.flash--info')->count());
         $this->assertSame(7, $crawler->filter('#legislatives_campaign_contact_form .form__error')->count());
         $this->assertCount(0, $this->emailRepository->findMessages(LegislativeCampaignContactMessage::class));
 
