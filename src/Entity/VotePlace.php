@@ -185,7 +185,14 @@ class VotePlace
 
     public function getLabel(): string
     {
-        return (string) !empty($this->name) ? $this->name : $this->code;
+        $codeParts = explode('_', $this->code);
+
+        return sprintf(
+            '%s, %s, %s',
+            $this->alias ?? $this->name,
+            $this->address,
+            end($codeParts)
+        );
     }
 
     public function getAddress(): ?string
