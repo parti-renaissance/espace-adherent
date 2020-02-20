@@ -251,6 +251,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $assessorRole;
 
     /**
+     * @var MunicipalManagerRoleAssociation|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MunicipalManagerRoleAssociation", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $municipalManagerRole;
+
+    /**
      * @var BoardMember|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
@@ -636,6 +644,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isAssessor()) {
             $roles[] = 'ROLE_ASSESSOR';
+        }
+
+        if ($this->isMunicipalManager()) {
+            $roles[] = 'ROLE_MUNICIPAL_MANAGER';
         }
 
         if ($this->isJecouteManager()) {
@@ -1143,6 +1155,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->assessorRole = $assessorRole;
     }
 
+    public function getMunicipalManagerRole(): ?MunicipalManagerRoleAssociation
+    {
+        return $this->municipalManagerRole;
+    }
+
+    public function setMunicipalManagerRole(?MunicipalManagerRoleAssociation $municipalManagerRole): void
+    {
+        $this->municipalManagerRole = $municipalManagerRole;
+    }
+
     public function getBoardMember(): ?BoardMember
     {
         return $this->boardMember;
@@ -1242,6 +1264,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isAssessor(): bool
     {
         return !empty($this->assessorRole);
+    }
+
+    public function isMunicipalManager(): bool
+    {
+        return !empty($this->municipalManagerRole);
+    }
+
+    public function revokeMunicipalManager(): void
+    {
+        $this->municipalManagerRole = null;
     }
 
     public function canBeProxy(): bool

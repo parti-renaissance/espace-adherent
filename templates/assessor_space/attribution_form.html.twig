@@ -2,15 +2,29 @@
 
 {% block assessor_content %}
     <section>
+        {% if app.user.isReferent %}
+            <div class="datagrid__table__tabs">
+                <div class="datagrid__table__tabs__items">
+                    <h3>Bureaux de votes</h3>
+                    <span class="separator"></span>
+                    <h3>
+                        <a href="{{ path('app_assessors_referent_municipal_manager_attribution_form') }}">
+                            Communes
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="text--right">
-            Export des résultats:&nbsp;
+            Export des résultats par bureau de vote:&nbsp;
             <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'xls'}) }}" class=link--blue">XLS</a>
             •
             <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'csv'}) }}" class=link--blue">CSV</a>
         </div>
 
         <div class="text--right">
-            Export Assesseurs:&nbsp;
+            Export de la liste des candidatures au poste d’assesseur:&nbsp;
             <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'xls'}) }}" class=link--blue">XLS</a>
             •
             <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'csv'}) }}" class=link--blue">CSV</a>

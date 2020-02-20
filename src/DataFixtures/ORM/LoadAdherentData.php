@@ -14,6 +14,7 @@ use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\MunicipalChiefManagedArea;
+use AppBundle\Entity\MunicipalManagerRoleAssociation;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ReferentTeamMember;
 use AppBundle\Entity\SenatorArea;
@@ -55,6 +56,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
     public const DEPUTY_2_UUID = 'ccd87fb0-7d98-433f-81e1-3dd8b14f79c0';
     public const SENATOR_UUID = '021268fe-d4b3-44a7-bce9-c001191249a7';
     public const ASSESSOR_UUID = 'ae341e67-6e4c-4ead-b4be-1ade6693d512';
+    public const MUNICIPAL_MANAGER_UUID = 'c2ba1ce4-e103-415f-a67a-260b8c651b55';
 
     public const COMMITTEE_1_UUID = '515a56c0-bde8-56ef-b90c-4745b1c93818';
     public const COMMITTEE_2_UUID = '182d8586-8b05-4b70-a727-704fa701e816';
@@ -666,6 +668,22 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $assessor->setAssessorRole(new AssessorRoleAssociation($this->getReference('vote-place-lille-wazemmes')));
         $this->addReference('assessor-1', $assessor);
 
+        $municipalManager = $adherentFactory->createFromArray([
+            'uuid' => self::MUNICIPAL_MANAGER_UUID,
+            'password' => self::DEFAULT_PASSWORD,
+            'email' => 'responsable-communale@en-marche-dev.fr',
+            'gender' => 'male',
+            'first_name' => 'Bob',
+            'last_name' => 'Responsable Communale',
+            'address' => PostAddress::createFrenchAddress('12 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
+            'birthdate' => '1983-08-27',
+            'position' => 'employed',
+            'phone' => '33 673654350',
+            'registered_at' => '2019-07-10 09:19:00',
+        ]);
+        $municipalManager->setMunicipalManagerRole(new MunicipalManagerRoleAssociation([$this->getReference('city-lille')]));
+        $this->addReference('municipal-manager-1', $municipalManager);
+
         // Create adherents accounts activation keys
         $key1 = AdherentActivationToken::generate($adherent1);
         $key2 = AdherentActivationToken::generate($adherent2);
@@ -696,6 +714,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $key27 = AdherentActivationToken::generate($adherent18);
         $key28 = AdherentActivationToken::generate($senator_59);
         $key29 = AdherentActivationToken::generate($assessor);
+        $key30 = AdherentActivationToken::generate($municipalManager);
 
         // Enable some adherents accounts
         $adherent2->activate($key2, '2016-11-16 20:54:13');
@@ -726,6 +745,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalChief2->activate($key24, '2019-06-10 09:19:00');
         $municipalChief3->activate($key25, '2019-06-10 09:19:00');
         $assessor->activate($key29, '2019-06-10 09:19:00');
+        $municipalManager->activate($key30, '2019-07-10 09:19:00');
 
         // Create some default committees and make people join them
         $committeeFactory = $this->getCommitteeFactory();
@@ -900,6 +920,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent17);
         $manager->persist($adherent18);
         $manager->persist($assessor);
+        $manager->persist($municipalManager);
 
         // For Organizational chart: adherent which is co-referent in the referent@en-marche-dev.fr team
         $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
@@ -1007,6 +1028,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             LoadReferentTagData::class,
             LoadSubscriptionTypeData::class,
             LoadVotePlaceData::class,
+            LoadCityData::class,
         ];
     }
 }

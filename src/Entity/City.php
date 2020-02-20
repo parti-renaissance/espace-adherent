@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Utils\AreaUtils;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,18 +49,35 @@ class City
     private $inseeCode;
 
     /**
-     * @var Adherent|null
+     * @var string|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     * @ORM\Column(length=10)
+     *
+     * @Assert\NotBlank(message="city.postal_code.not_blank")
+     * @Assert\Length(max="10", maxMessage="city.postal_code.max_length")
      */
-    private $municipalManager;
+    private $postalCode;
 
-    public function __construct(string $name = null, string $inseeCode = null, Adherent $municipalManager = null)
-    {
+    /**
+     * @var string
+     *
+     * @ORM\Column(length=2)
+     *
+     * @Assert\NotBlank(message="city.country.not_blank")
+     * @Assert\Country(message="city.country.invalid")
+     */
+    private $country = AreaUtils::CODE_FRANCE;
+
+    public function __construct(
+        string $name = null,
+        string $inseeCode = null,
+        string $postalCode = null,
+        string $country = AreaUtils::CODE_FRANCE
+    ) {
         $this->name = $name;
         $this->inseeCode = $inseeCode ? self::normalizeCode($inseeCode) : null;
-        $this->municipalManager = $municipalManager;
+        $this->postalCode = $postalCode ? self::normalizeCode($postalCode) : null;
+        $this->country = $country;
     }
 
     public function __toString()
@@ -92,18 +110,33 @@ class City
         $this->inseeCode = self::normalizeCode($inseeCode);
     }
 
-    public function getMunicipalManager(): ?Adherent
+    public function getPostalCode(): ?string
     {
-        return $this->municipalManager;
+        return $this->postalCode;
     }
 
-    public function setMunicipalManager(?Adherent $municipalManager): void
+    public function setPostalCode(?string $postalCode): void
     {
-        $this->municipalManager = $municipalManager;
+        $this->postalCode = $postalCode;
+    }
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
     }
 
     public static function normalizeCode(string $inseeCode): string
     {
         return str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
+    }
+
+    public function equals(self $city): bool
+    {
+        return $this->id === $city->getId();
     }
 }
