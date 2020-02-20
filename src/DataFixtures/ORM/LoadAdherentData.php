@@ -394,6 +394,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent17->setPosition(ActivityPositions::EMPLOYED);
         $adherent17->setStatus(Adherent::ENABLED);
         $adherent17->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $this->addReference('municipal-manager-lille', $adherent17);
 
         $adherent18 = $adherentFactory->createFromArray([
             'uuid' => self::ADHERENT_18_UUID,
@@ -412,6 +413,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $adherent18->setPosition(ActivityPositions::EMPLOYED);
         $adherent18->setStatus(Adherent::ENABLED);
         $adherent18->setSubscriptionTypes($this->getStandardSubscriptionTypes());
+        $this->addReference('municipal-manager-roubaix', $adherent18);
 
         $referent = $adherentFactory->createFromArray([
             'uuid' => self::REFERENT_1_UUID,

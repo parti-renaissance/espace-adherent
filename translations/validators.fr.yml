@@ -420,3 +420,13 @@ programmatic_foundation.parent.required.measure: Une mesure doit être liée à 
 programmatic_foundation.parent.required.project: Un projet doit être lié à une mesure
 
 senator_area.invalid_area_choice: Choix de circonscription du Sénateur est invalide
+
+#
+# Municipal Managers
+#
+city.name.not_blank: Veuillez spécifier un nom de ville.
+city.name.max_length: Le nom ne doit pas faire plus de {{ limit }} caractères.
+city.insee_code.not_blank: Veuillez spécifier un code INSEE.
+city.insee_code.max_length: Le code INSEE ne doit pas faire plus de {{ limit }} caractères.
+city.insee_code.unique: Il existe déjà une ville avec ce code INSEE.
+city.municipal_manager.already_assigned: Cet adhérent est déjà responsable communale d'une autre commune.
