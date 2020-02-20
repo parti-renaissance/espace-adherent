@@ -24,7 +24,7 @@ class VoteResult
     /**
      * @var VotePlace
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="voteResults")
      * @ORM\JoinColumn(nullable=false)
      */
     private $votePlace;
@@ -202,5 +202,15 @@ class VoteResult
         }
 
         return ($this->voters / $this->registered) * 100;
+    }
+
+    public function isComplete(): bool
+    {
+        return $this->registered && $this->abstentions && $this->expressed && $this->voters && !empty($this->lists);
+    }
+
+    public function isPartial(): bool
+    {
+        return $this->registered || $this->abstentions || $this->expressed || $this->voters || !empty($this->lists);
     }
 }

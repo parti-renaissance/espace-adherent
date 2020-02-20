@@ -83,6 +83,7 @@
                         <td class="space--0-15">Bureau de vote</td>
                         <td>Bureau de vote - Alias</td>
                         <td>Adhérent - Assesseur</td>
+                        <td>État</td>
                         <td>Actions</td>
                     </tr>
                 </thead>
@@ -114,6 +115,21 @@
                                     {{ form_row(form[index].adherent) }}
                                 {% endif %}
                             </td>
+                            <td class="status__1">
+                                {% set results_status = place.getResultStatus(current_election_round) %}
+
+                                <span class="cursor--pointer status
+                                    {% if results_status is constant('RESULTS_COMPLETED', place) %}
+                                        status__1
+                                    {% elseif results_status is constant('RESULTS_PARTIAL', place) %}
+                                        status__4
+                                    {% else %}
+                                        status__3
+                                    {% endif %}
+                                    " title="{{ ('vote_place.results.' ~ results_status)|trans }}">
+                                    {{ ('vote_place.results.' ~ results_status)|trans }}
+                                </span>
+                            </td>
                             <td>
                                 {% set items = [
                                     {
@@ -130,7 +146,7 @@
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="4" class="text--center">
+                            <td colspan="5" class="text--center">
                                 <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                 Aucun résultat
                             </td>

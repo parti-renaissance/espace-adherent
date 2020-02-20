@@ -22,6 +22,9 @@ class VotePlace
     use EntityTimestampableTrait;
 
     public const MAX_ASSESSOR_REQUESTS = 2;
+    public const RESULTS_EMPTY = 'empty';
+    public const RESULTS_PARTIAL = 'partial';
+    public const RESULTS_COMPLETED = 'completed';
 
     /**
      * @var int
@@ -128,9 +131,17 @@ class VotePlace
      */
     private $enabled = true;
 
+    /**
+     * @var VoteResult[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VoteResult", mappedBy="votePlace", fetch="EXTRA_LAZY")
+     */
+    private $voteResults;
+
     public function __construct()
     {
         $this->assessorRequests = new ArrayCollection();
+        $this->voteResults = new ArrayCollection();
     }
 
     public static function create(
@@ -306,5 +317,29 @@ class VotePlace
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getResultStatus(ElectionRound $electionRound): string
+    {
+        $voteResults = $this->voteResults->filter(function (VoteResult $voteResult) use ($electionRound) {
+            return $electionRound === $voteResult->getElectionRound();
+        });
+
+        if ($voteResults->isEmpty()) {
+            return self::RESULTS_EMPTY;
+        }
+
+        /** @var VoteResult $voteResult */
+        $voteResult = $voteResults->first();
+
+        if ($voteResult->isComplete()) {
+            return self::RESULTS_COMPLETED;
+        }
+
+        if ($voteResult->isPartial()) {
+            return self::RESULTS_PARTIAL;
+        }
+
+        return self::RESULTS_EMPTY;
     }
 }

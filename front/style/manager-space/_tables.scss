@@ -300,6 +300,13 @@
                             border: 2px solid $status-red;
                         }
                     }
+
+                    &__4 {
+                        color: $status-orange;
+                        &:before {
+                            border: 2px solid $status-orange;
+                        }
+                    }
                 }
 
                 a:not(.row-action) {
