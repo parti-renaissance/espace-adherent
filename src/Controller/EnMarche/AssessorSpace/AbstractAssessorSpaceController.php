@@ -8,11 +8,13 @@ use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\AssessorRoleAssociation;
+use AppBundle\Entity\Election;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Exporter\VoteResultsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Form\CreateVotePlaceType;
+use AppBundle\Repository\ElectionRepository;
 use AppBundle\Repository\VotePlaceRepository;
 use AppBundle\Repository\VoteResultRepository;
 use AppBundle\Security\Voter\ManageVotePlaceVoter;
@@ -144,11 +146,16 @@ abstract class AbstractAssessorSpaceController extends Controller
     /**
      * @Route("/resultats/export.{_format}", name="_results_export", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
      */
-    public function exportResultsAction(string $_format, VoteResultsExporter $exporter): Response
-    {
+    public function exportResultsAction(
+        string $_format,
+        VoteResultsExporter $exporter,
+        ElectionRepository $electionRepository
+    ): Response {
         $this->disableInProduction();
 
-        return $exporter->getResponse($_format, $this->getVoteResultsExportQuery());
+        $election = $electionRepository->findComingNextElection();
+
+        return $exporter->getResponse($_format, $this->getVoteResultsExportQuery($election));
     }
 
     protected function renderTemplate(string $template, array $parameters = []): Response
@@ -170,7 +177,7 @@ abstract class AbstractAssessorSpaceController extends Controller
 
     abstract protected function createFilter(): AssociationVotePlaceFilter;
 
-    abstract protected function getVoteResultsExportQuery(): Query;
+    abstract protected function getVoteResultsExportQuery(Election $election): Query;
 
     /**
      * @return VotePlace[]|PaginatorInterface

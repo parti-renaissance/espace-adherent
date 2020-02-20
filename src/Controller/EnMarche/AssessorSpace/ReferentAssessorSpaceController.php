@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche\AssessorSpace;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Election;
 use AppBundle\Form\Assessor\ReferentVotePlaceFilterType;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -46,9 +47,9 @@ class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
         return $filter;
     }
 
-    protected function getVoteResultsExportQuery(): Query
+    protected function getVoteResultsExportQuery(Election $election): Query
     {
-        return $this->voteResultRepository->getReferentExportQuery($this->getReferentTags());
+        return $this->voteResultRepository->getReferentExportQuery($election, $this->getReferentTags());
     }
 
     private function getReferentTags(): array
