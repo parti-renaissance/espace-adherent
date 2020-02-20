@@ -10,11 +10,14 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Exporter\AssessorsExporter;
+use AppBundle\Exporter\VoteResultsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Form\CreateVotePlaceType;
 use AppBundle\Repository\VotePlaceRepository;
+use AppBundle\Repository\VoteResultRepository;
 use AppBundle\Security\Voter\ManageVotePlaceVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,10 +31,12 @@ abstract class AbstractAssessorSpaceController extends Controller
     protected const PAGE_LIMIT = 10;
 
     protected $votePlaceRepository;
+    protected $voteResultRepository;
 
-    public function __construct(VotePlaceRepository $votePlaceRepository)
+    public function __construct(VotePlaceRepository $votePlaceRepository, VoteResultRepository $voteResultRepository)
     {
         $this->votePlaceRepository = $votePlaceRepository;
+        $this->voteResultRepository = $voteResultRepository;
     }
 
     /**
@@ -136,6 +141,16 @@ abstract class AbstractAssessorSpaceController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/resultats/export", name="_results_export", methods={"GET"})
+     */
+    public function exportResultsAction(VoteResultsExporter $exporter): Response
+    {
+        $this->disableInProduction();
+
+        return $exporter->getResponse($this->getVoteResultsExportQuery());
+    }
+
     protected function renderTemplate(string $template, array $parameters = []): Response
     {
         return $this->render($template, array_merge(
@@ -154,6 +169,8 @@ abstract class AbstractAssessorSpaceController extends Controller
     abstract protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface;
 
     abstract protected function createFilter(): AssociationVotePlaceFilter;
+
+    abstract protected function getVoteResultsExportQuery(): Query;
 
     /**
      * @return VotePlace[]|PaginatorInterface

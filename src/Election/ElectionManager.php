@@ -53,6 +53,8 @@ class ElectionManager
 
         if (!$result) {
             $result = new VoteResult($votePlace, $round, $adherent);
+
+            $result->addList('', 0);
         }
 
         return $result;

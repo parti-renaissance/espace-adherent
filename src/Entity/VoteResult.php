@@ -24,7 +24,7 @@ class VoteResult
     /**
      * @var VotePlace
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\VotePlace")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace")
      * @ORM\JoinColumn(nullable=false)
      */
     private $votePlace;
@@ -85,8 +85,6 @@ class VoteResult
         $this->votePlace = $votePlace;
         $this->electionRound = $electionRound;
         $this->author = $author;
-
-        $this->addList('', 0);
     }
 
     public function getId(): ?int
@@ -174,8 +172,23 @@ class VoteResult
         $this->lists = $lists;
     }
 
-    private function addList(string $label, int $votes): void
+    public function addList(string $label, int $votes): void
     {
         $this->lists[] = ['label' => $label, 'votes' => $votes];
+    }
+
+    public function getAbstentionsPercentage(): float
+    {
+        return ($this->abstentions / $this->registered) * 100;
+    }
+
+    public function getExpressedPercentage(): float
+    {
+        return ($this->expressed / $this->registered) * 100;
+    }
+
+    public function getVotersPercentage(): float
+    {
+        return ($this->voters / $this->registered) * 100;
     }
 }

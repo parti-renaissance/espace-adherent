@@ -116,13 +116,15 @@ REQUESTCONTENT
             $partialLegislativeElections,
             '1er tour des éléctions législatives partielles pour la 1ère circonscription du Val-d\'Oise 2018',
             'Dimanche 28 janvier 2018',
-            $nextTime->format('d-m-Y')
+            $nextTime->format('d-m-Y'),
+            'round-1-legislatives',
         );
         $this->createRound(
             $partialLegislativeElections,
             '2e tour des éléctions législatives partielles pour la 1ère circonscription du Val-d\'Oise 2018',
             'Dimanche 4 février 2018',
-            $nextTime->modify('+1 week')->format('d-m-Y')
+            $nextTime->modify('+1 week')->format('d-m-Y'),
+            'round-2-legislatives',
         );
 
         $manager->persist($presidentialElections);
@@ -150,13 +152,22 @@ REQUESTCONTENT
         return $election;
     }
 
-    private function createRound(Election $election, string $label, string $description, string $date): void
-    {
+    private function createRound(
+        Election $election,
+        string $label,
+        string $description,
+        string $date,
+        string $reference = null
+    ): void {
         $round = new ElectionRound();
         $round->setLabel($label);
         $round->setDescription($description);
         $round->setDate(date_create_from_format('d-m-Y', $date));
 
         $election->addRound($round);
+
+        if ($reference) {
+            $this->setReference($reference, $round);
+        }
     }
 }
