@@ -142,13 +142,13 @@ abstract class AbstractAssessorSpaceController extends Controller
     }
 
     /**
-     * @Route("/resultats/export", name="_results_export", methods={"GET"})
+     * @Route("/resultats/export.{_format}", name="_results_export", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
      */
-    public function exportResultsAction(VoteResultsExporter $exporter): Response
+    public function exportResultsAction(string $_format, VoteResultsExporter $exporter): Response
     {
         $this->disableInProduction();
 
-        return $exporter->getResponse($this->getVoteResultsExportQuery());
+        return $exporter->getResponse($_format, $this->getVoteResultsExportQuery());
     }
 
     protected function renderTemplate(string $template, array $parameters = []): Response

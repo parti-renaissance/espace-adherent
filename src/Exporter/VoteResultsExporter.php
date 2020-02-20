@@ -17,11 +17,11 @@ class VoteResultsExporter
         $this->exporter = $exporter;
     }
 
-    public function getResponse(Query $query): Response
+    public function getResponse(string $format, Query $query): Response
     {
         return $this->exporter->getResponse(
-            'xls',
-            sprintf('resultats-votes--%s.xls', date('d-m-Y--H-i')),
+            $format,
+            sprintf('resultats-votes--%s.%s', date('d-m-Y--H-i'), $format),
             new IteratorCallbackSourceIterator(
                 $query->iterate(),
                 function (array $data) {
