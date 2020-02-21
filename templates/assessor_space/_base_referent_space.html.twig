@@ -4,7 +4,7 @@
     <div class="datagrid__table__tabs">
         <div class="datagrid__table__tabs__items">
             <h3>
-                {% if app.request.attributes.get('_route') is same as ('app_assessors_referent_attribution_form') %}
+                {% if is_active_route(app.request, 'app_assessors_referent_attribution_form') %}
                     Bureaux de votes
                 {% else %}
                     <a href="{{ path('app_assessors_referent_attribution_form') }}">
@@ -14,7 +14,7 @@
             </h3>
             <span class="separator"></span>
             <h3>
-                {% if app.request.attributes.get('_route') is same as ('app_assessors_referent_municipal_manager_attribution_form') %}
+                {% if is_active_route(app.request, 'app_assessors_referent_municipal_manager_attribution_form') %}
                     Communes
                 {% else %}
                     <a href="{{ path('app_assessors_referent_municipal_manager_attribution_form') }}">

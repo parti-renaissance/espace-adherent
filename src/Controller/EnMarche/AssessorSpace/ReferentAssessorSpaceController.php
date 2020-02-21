@@ -82,7 +82,7 @@ class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
     private function createCityFilter(): AssociationCityFilter
     {
         $filter = new AssociationCityFilter();
-        $filter->setTags($this->getUser()->getManagedArea()->getTags()->toArray());
+        $filter->setTags($this->getReferentTags());
 
         return $filter;
     }
