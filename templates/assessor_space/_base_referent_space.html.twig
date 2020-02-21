@@ -1,5 +1,29 @@
 {% extends 'referent/_layout.html.twig' %}
 
 {% block referent_content %}
+    <div class="datagrid__table__tabs">
+        <div class="datagrid__table__tabs__items">
+            <h3>
+                {% if app.request.attributes.get('_route') is same as ('app_assessors_referent_attribution_form') %}
+                    Bureaux de votes
+                {% else %}
+                    <a href="{{ path('app_assessors_referent_attribution_form') }}">
+                        Bureaux de votes
+                    </a>
+                {% endif %}
+            </h3>
+            <span class="separator"></span>
+            <h3>
+                {% if app.request.attributes.get('_route') is same as ('app_assessors_referent_municipal_manager_attribution_form') %}
+                    Communes
+                {% else %}
+                    <a href="{{ path('app_assessors_referent_municipal_manager_attribution_form') }}">
+                        Communes
+                    </a>
+                {% endif %}
+            </h3>
+        </div>
+    </div>
+
     {% block assessor_space_main_block %}{% endblock %}
 {% endblock %}

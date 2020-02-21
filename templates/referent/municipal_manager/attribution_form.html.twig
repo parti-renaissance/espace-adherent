@@ -1,19 +1,7 @@
-{% extends 'referent/_layout.html.twig' %}
+{% extends 'assessor_space/_base_referent_space.html.twig' %}
 
-{% block referent_content %}
+{% block assessor_space_main_block %}
     <section>
-        <div class="datagrid__table__tabs">
-            <div class="datagrid__table__tabs__items">
-                <h3>
-                    <a href="{{ path('app_assessors_referent_attribution_form') }}">
-                        Bureaux de votes
-                    </a>
-                </h3>
-                <span class="separator"></span>
-                <h3>Communes</h3>
-            </div>
-        </div>
-
         <div class="manager__filters">
             <div class="manager__filters__form">
                 {{ form_start(filter_form) }}
