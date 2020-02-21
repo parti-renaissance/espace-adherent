@@ -70,7 +70,7 @@ abstract class AbstractAssessorSpaceController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->handleUpdate($form->getData());
 
-            $this->addFlash('info', 'Modifications ont bien été sauvegardés');
+            $this->addFlash('info', 'Les modifications ont bien été sauvegardées');
 
             return $this->redirectToRoute(
                 sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()),
@@ -192,7 +192,7 @@ abstract class AbstractAssessorSpaceController extends Controller
         return $this->votePlaceRepository->findAllForFilter($filter, $page, self::PAGE_LIMIT);
     }
 
-    private function getRouteParams(Request $request): array
+    protected function getRouteParams(Request $request): array
     {
         $params = [];
 

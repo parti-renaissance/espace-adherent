@@ -352,6 +352,14 @@
             <argument type="service" id="AppBundle\Repository\ReportRepository" />
         </service>
 
+        <service id="app.admin.city" class="AppBundle\Admin\CityAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Communes" group="Territoire" />
+
+            <argument />
+            <argument>AppBundle\Entity\City</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Finances

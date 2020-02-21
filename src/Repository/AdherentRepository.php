@@ -9,6 +9,7 @@ use AppBundle\Coordinator\CoordinatorManagedAreaUtils;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CitizenProject;
+use AppBundle\Entity\City;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
@@ -836,5 +837,35 @@ SQL;
             0,
             'votePlaceId'
         );
+    }
+
+    /**
+     * @var City[]|array
+     *
+     * @return Adherent[]
+     */
+    public function findMunicipalManagersForCities(array $cities): array
+    {
+        /** @var Adherent[]|array $adherents */
+        $adherents = $this
+            ->createQueryBuilder('a')
+            ->innerJoin('a.municipalManagerRole', 'mmr')
+            ->innerJoin('mmr.cities', 'c')
+            ->where('c IN (:cities)')
+            ->setParameter('cities', $cities)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $data = [];
+        foreach ($cities as $city) {
+            foreach ($adherents as $adherent) {
+                if ($adherent->getMunicipalManagerRole()->getCities()->contains($city)) {
+                    $data[$city->getId()] = $adherent;
+                }
+            }
+        }
+
+        return $data;
     }
 }
