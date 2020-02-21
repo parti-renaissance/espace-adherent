@@ -7,6 +7,7 @@ use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Controller\CanaryControllerTrait;
+use AppBundle\Election\ElectionManager;
 use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\Election;
 use AppBundle\Entity\VotePlace;
@@ -44,8 +45,11 @@ abstract class AbstractAssessorSpaceController extends Controller
     /**
      * @Route("/bureaux-de-vote", name="_attribution_form", methods={"GET", "POST"})
      */
-    public function votePlaceAttributionAction(Request $request, AssessorAssociationManager $manager): Response
-    {
+    public function votePlaceAttributionAction(
+        Request $request,
+        AssessorAssociationManager $manager,
+        ElectionManager $electionManager
+    ): Response {
         $this->disableInProduction();
 
         $filterForm = $this->createFilterForm($filter = $this->createFilter())->handleRequest($request);
@@ -75,6 +79,7 @@ abstract class AbstractAssessorSpaceController extends Controller
         }
 
         return $this->renderTemplate('assessor_space/attribution_form.html.twig', [
+            'current_election_round' => $electionManager->getCurrentElectionRound(),
             'vote_places' => $paginator,
             'form' => $form->createView(),
             'filter_form' => $filterForm->createView(),
