@@ -1,0 +1,93 @@
+{% extends 'election_vote_results/_layout.html.twig' %}
+
+{% block vote_results_content %}
+    {% form_theme form with ['jquery.collection.html.twig'] %}
+
+    <p class="alert alert--tips">{{ vote_result.electionRound.label }}</p>
+
+    {{ form_start(form, { attr: { class: 'em-form' } }) }}
+
+        <div class="text--right b__nudge--bottom-small">
+            <button class="btn btn--blue--soft" type="submit">Sauvegarder</button>
+        </div>
+
+        <div class="l__row manager__filters">
+            <div class="l__col l__col--half">
+                <div class="form__row">
+                    {{ form_row(form.registered, {label: 'Inscrits'}) }}
+                </div>
+
+                <div class="form__row vote-result-percent-field">
+                    {{ form_row(form.expressed, {label: 'Exprimés', attr: {'data-percent-base-field-id': 'vote_result_registered'}}) }}
+                </div>
+            </div>
+
+            <div class="l__col l__col--half b__nudge--left-medium">
+                <div class="form__row vote-result-percent-field">
+                    {{ form_row(form.abstentions, {label: 'Abstentions', attr: {'data-percent-base-field-id': 'vote_result_registered'}}) }}
+                </div>
+
+                <div class="form__row vote-result-percent-field">
+                    {{ form_row(form.voters, {label: 'Votants', attr: {'data-percent-base-field-id': 'vote_result_registered'}}) }}
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div>
+            {{ form_row(form.lists, {label: 'Résultats:', attr: {class: 'vote-result-list-collection'}}) }}
+        </div>
+
+        <div class="text--right">
+            <button class="btn btn--blue--soft" type="submit">Sauvegarder</button>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.collection.js') }}"></script>
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            $('.vote-result-list-collection').collection({
+                allow_up: false,
+                allow_down: false,
+                add_at_the_end: true,
+                add: '<div class="b__nudge--top-40"><a href="#" class="btn btn-info">+</a></div>',
+                remove: false,
+                init_with_n_elements: 1,
+            });
+
+            var percentUpdateHandle = function (percentElement, value, total) {
+                percentElement.setAttribute('data-percent', (total == 0 ? 0 : (value * 100 / total)).toFixed(2) + ' %');
+            };
+
+            $('.vote-result-percent-field input').on('change', function (event) {
+                percentUpdateHandle(
+                    $(event.currentTarget).parent().parent().get(0),
+                    event.currentTarget.value,
+                    $('#vote_result_registered').val()
+                );
+            });
+
+            $(document).on('change', '.vote-result-percent-list-field input.form__field', function (event) {
+                percentUpdateHandle(
+                    $(event.currentTarget).parent().parent().get(0),
+                    event.currentTarget.value,
+                    $('#vote_result_voters').val()
+                );
+            });
+
+            $('#vote_result_registered').on('change', function () {
+                $('.vote-result-percent-field input').trigger('change');
+            }).trigger('change');
+
+            $('#vote_result_voters').on('change', function () {
+                $('.vote-result-percent-list-field input').trigger('change');
+            }).trigger('change');
+        });
+    </script>
+{% endblock %}

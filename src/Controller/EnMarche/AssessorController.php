@@ -43,7 +43,7 @@ class AssessorController extends Controller
             return $this->redirectToRoute('app_assessor_request');
         }
 
-        return $this->render('assessor/request.html.twig', [
+        return $this->render('assessor_request/index.html.twig', [
             'assessorRequest' => $assessorRequestCommand,
             'votePlaceWishesLabels' => $assessorResquestHandler->getVotePlaceWishesLabels($assessorRequestCommand),
             'form' => $form->createView(),

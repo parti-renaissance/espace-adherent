@@ -1,9 +1,37 @@
-{% extends base_template %}
+{% extends 'base.html.twig' %}
 
-{% block assessor_space_main_block %}
+{% block page_title 'Espace assesseur' %}
+{% block canonical_url url('app_vote_results_assessor_index') %}
+
+{% block content %}
     <main>
-        <section class="b__nudge--bottom-huge">
-            {% block assessor_content %}{% endblock %}
+        <section class="manager-space procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            {% set vote_place = app.user.assessorRole.votePlace %}
+                            <p>Vous êtes responsable du bureau de vote : <span>{{ vote_place.name }} - {{ vote_place.city }}</span></p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_vote_results_assessor_index') ? 'active' }}">
+                                <a href="{{ path('app_vote_results_assessor_index') }}">Résultats</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content text--body">
+                {% block assessor_content %}{% endblock %}
+            </div>
         </section>
     </main>
 {% endblock %}

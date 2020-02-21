@@ -78,7 +78,7 @@ abstract class AbstractAssessorSpaceController extends Controller
             );
         }
 
-        return $this->renderTemplate('assessor_space/attribution_form.html.twig', [
+        return $this->renderTemplate('assessor_attribution/index.html.twig', [
             'current_election_round' => $electionManager->getCurrentElectionRound(),
             'vote_places' => $paginator,
             'form' => $form->createView(),
@@ -107,6 +107,8 @@ abstract class AbstractAssessorSpaceController extends Controller
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        $this->disableInProduction();
+
         $this->denyAccessUnlessGranted(ManageVotePlaceVoter::MANAGE_VOTE_PLACE, $votePlace);
 
         if (false === $enabled && $entityManager->getRepository(AssessorRoleAssociation::class)->findOneBy(['votePlace' => $votePlace])) {
@@ -115,7 +117,7 @@ abstract class AbstractAssessorSpaceController extends Controller
             $votePlace->setEnabled($enabled);
             $entityManager->flush();
 
-            $this->addFlash('info', sprintf('Bureau de vote "%s" a bien été '.($enabled ? 'activé' : 'désactivé'), $votePlace->getName()));
+            $this->addFlash('info', sprintf('Le bureau de vote "%s" a bien été '.($enabled ? 'activé' : 'désactivé'), $votePlace->getName()));
         }
 
         return $this->redirectToRoute(
@@ -129,6 +131,8 @@ abstract class AbstractAssessorSpaceController extends Controller
      */
     public function createVotePlaceAction(Request $request, EntityManagerInterface $manager): Response
     {
+        $this->disableInProduction();
+
         $form = $this
             ->createForm(CreateVotePlaceType::class)
             ->handleRequest($request)
@@ -138,12 +142,12 @@ abstract class AbstractAssessorSpaceController extends Controller
             $manager->persist($form->getData());
             $manager->flush();
 
-            $this->addFlash('info', 'Nouveau bureau de vote a bien été ajouté');
+            $this->addFlash('info', 'Le nouveau bureau de vote a bien été ajouté');
 
             return $this->redirectToRoute(sprintf('app_assessors_%s_attribution_form', $this->getSpaceType()));
         }
 
-        return $this->renderTemplate('assessor_space/create_vote_place.html.twig', [
+        return $this->renderTemplate('assessor_attribution/create_vote_place.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -168,7 +172,7 @@ abstract class AbstractAssessorSpaceController extends Controller
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('assessor_space/_base_%s_space.html.twig', $spaceType = $this->getSpaceType()),
+                'base_template' => sprintf('assessor_attribution/_base_%s_space.html.twig', $spaceType = $this->getSpaceType()),
                 'space_type' => $spaceType,
             ]
         ));

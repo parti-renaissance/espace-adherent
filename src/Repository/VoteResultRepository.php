@@ -3,6 +3,8 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Election;
+use AppBundle\Entity\ElectionRound;
+use AppBundle\Entity\VotePlace;
 use AppBundle\Entity\VoteResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -46,6 +48,21 @@ class VoteResultRepository extends ServiceEntityRepository
             ->innerJoin('election_round.election', 'election')
             ->andWhere('election = :election')
             ->setParameter('election', $election)
+        ;
+    }
+
+    public function findOneForVotePlace(VotePlace $votePlace, ElectionRound $round): ?VoteResult
+    {
+        return $this->createQueryBuilder('vr')
+            ->where('vr.votePlace = :vote_place')
+            ->andWhere('vr.electionRound = :round')
+            ->setParameters([
+                'vote_place' => $votePlace,
+                'round' => $round,
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
 }

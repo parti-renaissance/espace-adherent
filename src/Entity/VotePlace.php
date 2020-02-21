@@ -196,13 +196,11 @@ class VotePlace
 
     public function getLabel(): string
     {
-        $codeParts = explode('_', $this->code);
-
         return sprintf(
             '%s, %s, %s',
             $this->alias ?? $this->name,
             $this->address,
-            end($codeParts)
+            $this->getLocalCode()
         );
     }
 
@@ -249,6 +247,11 @@ class VotePlace
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function getLocalCode(): string
+    {
+        return explode('_', $this->code, 2)[1];
     }
 
     public function getInseeCode(): string
