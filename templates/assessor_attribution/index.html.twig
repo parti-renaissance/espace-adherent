@@ -83,6 +83,7 @@
                         <td class="space--0-15">Bureau de vote</td>
                         <td>Bureau de vote - Alias</td>
                         <td>Adhérent - Assesseur</td>
+                        <td>Téléphone</td>
                         <td>État</td>
                         <td>Actions</td>
                     </tr>
@@ -113,6 +114,15 @@
                             <td>
                                 {% if form[index] is defined %}
                                     {{ form_row(form[index].adherent) }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if form[index] is defined %}
+                                    {% set adherent = form[index].vars.data.adherent %}
+
+                                    {% if adherent and adherent.phone %}
+                                        {{ adherent.phone|phone_number_format }}
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             <td class="status__1">
