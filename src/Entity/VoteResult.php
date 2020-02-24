@@ -38,14 +38,6 @@ class VoteResult
     private $electionRound;
 
     /**
-     * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
-
-    /**
      * @var int
      *
      * @ORM\Column(type="integer")
@@ -80,11 +72,10 @@ class VoteResult
      */
     private $lists = [];
 
-    public function __construct(VotePlace $votePlace, ElectionRound $electionRound, Adherent $author)
+    public function __construct(VotePlace $votePlace, ElectionRound $electionRound)
     {
         $this->votePlace = $votePlace;
         $this->electionRound = $electionRound;
-        $this->author = $author;
     }
 
     public function getId(): ?int
@@ -110,16 +101,6 @@ class VoteResult
     public function setElectionRound(ElectionRound $electionRound): void
     {
         $this->electionRound = $electionRound;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
     }
 
     public function getRegistered(): ?int

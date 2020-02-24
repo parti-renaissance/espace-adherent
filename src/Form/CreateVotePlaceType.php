@@ -31,7 +31,7 @@ class CreateVotePlaceType extends AbstractType
             ->add('city', TextType::class)
             ->add('postalCode', TextType::class)
             ->add('country', UnitedNationsCountryType::class, [
-                'placeholder' => 'Sélectionner un pays',
+                'placeholder' => 'Sélectionnez un pays',
                 'preferred_choices' => [Address::FRANCE],
             ])
         ;
@@ -63,7 +63,7 @@ class CreateVotePlaceType extends AbstractType
             $codeParts = [
                 $codePrefix,
                 str_pad(
-                    $lastVotePlace ? explode('_', $lastVotePlace->getCode())[1] + 1 : 1,
+                    $lastVotePlace ? $lastVotePlace->getLocalCode() + 1 : 1,
                     4,
                     '0',
                     \STR_PAD_LEFT

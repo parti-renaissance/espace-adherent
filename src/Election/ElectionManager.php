@@ -2,7 +2,6 @@
 
 namespace AppBundle\Election;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Entity\VoteResult;
@@ -41,20 +40,12 @@ class ElectionManager
         return $selectedRound;
     }
 
-    public function getVoteResultForCurrentElectionRound(VotePlace $votePlace, Adherent $adherent): ?VoteResult
+    public function getVoteResultForCurrentElectionRound(VotePlace $votePlace): ?VoteResult
     {
-        $round = $this->getCurrentElectionRound();
-
-        $result = $this->voteResultRepository->findOneBy([
-            'votePlace' => $votePlace,
-            'author' => $adherent,
-            'electionRound' => $round,
-        ]);
-
-        if (!$result) {
-            $result = new VoteResult($votePlace, $round, $adherent);
+        if (!$round = $this->getCurrentElectionRound()) {
+            return null;
         }
 
-        return $result;
+        return $this->voteResultRepository->findOneForVotePlace($votePlace, $round) ?? new VoteResult($votePlace, $round);
     }
 }
