@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mes activités' %}
+
+{% block content %}
+    <main class="search">
+        <header class="l__wrapper space--60-0 text--center">
+            <h1 class="text--large search-title">{{ block('page_title') }}</h1>
+            <ul class="search__toggle">
+                <li class="text--medium"><a href="#">Mes comités</a></li>
+                <li class="text--medium"><a href="#">Mes événement</a></li>
+            </ul>
+            <h2 class="text--body text--normal">Les événements auxquels je me suis inscrit(e)</h2>
+            <div class="actions">
+                <a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}"
+                   class="btn btn--blue" rel="noopener noreferrer">
+                    Événements à venir
+                </a>
+                <a href="{{ path('app_adherent_events', {type: 'past'}) }}"
+                   class="btn btn--blue" rel="noopener noreferrer">
+                    Événements passés
+                </a>
+            </div>
+        </header>
+        {% block tab %}
+        {% endblock %}
+    </main>
+{% endblock %}

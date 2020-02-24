@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -19,6 +20,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         @ORM\UniqueConstraint(
  *             name="adherent_has_joined_committee",
  *             columns={"adherent_id", "committee_id"}
+ *         ),
+ *         @ORM\UniqueConstraint(
+ *             name="adherent_votes_in_committee",
+ *             columns={"adherent_id", "enable_vote"}
  *         )
  *     },
  *     indexes={
@@ -26,6 +31,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeMembershipRepository")
+ * @UniqueEntity(
+ *     fields={"adherent", "enableVote"},
+ *     repositoryMethod="findEnabledVotingCommittee"
+ * )
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -84,6 +93,15 @@ class CommitteeMembership
      * @ORM\Column(type="datetime")
      */
     private $joinedAt;
+
+    /**
+     * Indicates if the adherent votes in this committee
+     *
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $enableVote;
 
     private function __construct(
         UuidInterface $uuid,
@@ -203,6 +221,21 @@ class CommitteeMembership
     public function setPrivilege(string $privilege): void
     {
         $this->privilege = $privilege;
+    }
+
+    public function isVotingCommittee(): bool
+    {
+        return true === $this->enableVote;
+    }
+
+    public function enableVote(): void
+    {
+        $this->enableVote = true;
+    }
+
+    public function disableVote(): void
+    {
+        $this->enableVote = null;
     }
 
     public function isPromotableHost(): bool

@@ -203,6 +203,17 @@ class CommitteeManager
         return $this->getMembershipRepository()->findMembership($adherent, $committee);
     }
 
+    public function getCommitteeMembershipsForAdherent(Adherent $adherent): ?CommitteeMembershipCollection
+    {
+        // Optimization to prevent a SQL query if the current adherent already
+        // has a loaded list of related committee memberships entities.
+        if ($adherent->hasLoadedMemberships()) {
+            return $adherent->getMemberships();
+        }
+
+        return $this->getMembershipRepository()->findMemberships($adherent);
+    }
+
     /**
      * Promotes an adherent to be a host of a committee.
      */
@@ -364,6 +375,51 @@ class CommitteeManager
         if ($membership) {
             $this->doUnfollowCommittee($membership, $committee);
         }
+    }
+
+    /**
+     * Makes an adherent vote in one committee.
+     *
+     * @param Adherent  $adherent  The follower
+     * @param Committee $committee The committee to follow
+     */
+    public function enableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    {
+        $membership = $this->getCommitteeMembership($adherent, $committee);
+
+        if ($membership) {
+            if ($existingMembership = $this->getMembershipRepository()->findVotingMembership($adherent)) {
+                $existingMembership->disableVote();
+            }
+            $membership->enableVote();
+
+            $this->getManager()->flush();
+        }
+
+        return $membership;
+    }
+
+    /**
+     * Makes an adherent cease voting in one committee.
+     *
+     * @param Adherent  $adherent  The follower
+     * @param Committee $committee The committee to follow
+     */
+    public function disableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    {
+        if ($adherent->hasLoadedMemberships()) {
+            $membership = $adherent->getMembershipFor($committee);
+        } else {
+            $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
+        }
+
+        if ($membership) {
+            $membership->disableVote();
+
+            $this->getManager()->flush();
+        }
+
+        return $membership;
     }
 
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void

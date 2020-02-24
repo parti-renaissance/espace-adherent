@@ -5,6 +5,7 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Contact\ContactMessage;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
@@ -198,6 +199,18 @@ class AdherentController extends Controller
         return $this->render('adherent/create_citizen_project.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/mes-comites", name="app_adherent_committees", methods={"GET"})
+     */
+    public function committeesAction(CommitteeManager $manager): Response
+    {
+        $memberships = $manager->getCommitteeMembershipsForAdherent($this->getUser());
+
+        return $this->render('adherent/committees.html.twig', [
+            'committeeMemberships' => $memberships,
         ]);
     }
 
