@@ -49,6 +49,8 @@ class ValidAdherentForVotePlaceValidator extends ConstraintValidator
                 ->atPath('adherent')
                 ->addViolation()
             ;
+
+            return;
         }
 
         /** @var Adherent $user */

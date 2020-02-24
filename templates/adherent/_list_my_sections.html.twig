@@ -59,3 +59,8 @@
         <a href="{{ path('app_vote_results_assessor_index') }}">Espace Assesseur</a>
     </li>
 {% endif %}
+{% if app.user.isMunicipalManager %}
+    <li>
+        <a href="{{ path('app_assessors_municipal_manager_attribution_form') }}">Espace Responsable communal</a>
+    </li>
+{% endif %}

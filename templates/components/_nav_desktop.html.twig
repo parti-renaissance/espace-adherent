@@ -248,7 +248,8 @@
     is_granted('ROLE_ASSESSOR_MANAGER') or
     is_granted('ROLE_MUNICIPAL_CHIEF') or
     is_granted('ROLE_JECOUTE_MANAGER') or
-    is_granted('ROLE_ASSESSOR')
+    is_granted('ROLE_ASSESSOR') or
+    is_granted('ROLE_MUNICIPAL_MANAGER')
 %}
     {% set totalSections =
         (app.user.isSupervisor or app.user.isHost) +
@@ -262,6 +263,7 @@
         app.user.isMunicipalChief +
         app.user.isJecouteManager +
         app.user.isAssessor +
+        app.user.isMunicipalManager +
         is_granted('ROLE_CITIZEN_PROJECT_ADMINISTRATOR')
     %}
 

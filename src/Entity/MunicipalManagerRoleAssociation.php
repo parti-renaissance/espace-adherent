@@ -60,4 +60,22 @@ class MunicipalManagerRoleAssociation
     {
         $this->cities->removeElement($city);
     }
+
+    public function getPostalCodes(): array
+    {
+        $codes = [];
+
+        foreach ($this->cities as $city) {
+            $codes = array_merge($codes, $city->getPostalCodes());
+        }
+
+        return array_values(array_unique($codes));
+    }
+
+    public function getInseeCodes(): array
+    {
+        return $this->cities->map(static function (City $city) {
+            return $city->getInseeCode();
+        })->toArray();
+    }
 }

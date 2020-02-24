@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon espace Responsable communal' %}
+
+{% block banner '' %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="el manager-information">
+                            <p>Vous gérez : <span>{{ app.user.municipalManagerRole.cities|join(', ') }}</span></p>
+                        </div>
+                        <div class="el">
+                            <p class="report">🐛 Bug ? Nouveau besoin ?
+                                <a href="mailto:cellule.technique.municipales&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, 'app_assessors_municipal_manager_*') ? 'active' }}">
+                                <a href="{{ path('app_assessors_municipal_manager_attribution_form') }}">Assesseurs</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                {% block municipal_manager_content %}{% endblock %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -715,6 +715,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isDeputy()
             || $this->isSenator()
             || $this->isMunicipalChief()
+            || $this->isMunicipalManager()
         ;
     }
 

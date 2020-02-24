@@ -219,6 +219,11 @@ class VotePlace
         return $this->postalCode;
     }
 
+    public function getPostalCodesAsArray(): array
+    {
+        return explode(',', $this->postalCode);
+    }
+
     public function setPostalCode(?string $postalCode): void
     {
         $this->postalCode = $postalCode;
