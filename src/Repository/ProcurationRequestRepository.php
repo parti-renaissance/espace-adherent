@@ -89,11 +89,12 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             return [];
         }
 
-        $qb = $this->createQueryBuilder('pr');
+        $qb = $this->createQueryBuilder($alias = 'pr');
 
-        $filters->apply($qb, 'pr');
+        $filters->apply($qb, $alias);
 
         $requests = $this->addAndWhereManagedBy($qb, $manager)
+            ->addGroupBy("$alias.id")
             ->getQuery()
             ->getArrayResult()
         ;

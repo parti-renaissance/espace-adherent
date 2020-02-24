@@ -33,7 +33,7 @@ class VoteResult
      * @var ElectionRound
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectionRound")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $electionRound;
 
