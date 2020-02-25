@@ -50,10 +50,10 @@ abstract class AbstractAssessorSpaceController extends Controller
         AssessorAssociationManager $manager,
         ElectionManager $electionManager
     ): Response {
-        $filterForm = $this->createFilterForm($filter = $this->createFilter())->handleRequest($request);
+        $filterForm = $this->createVotePlaceListFilterForm($filter = $this->createVotePlaceListFilter())->handleRequest($request);
 
         if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
-            $filter = $this->createFilter();
+            $filter = $this->createVotePlaceListFilter();
         }
 
         $paginator = $this->getVotePlacesPaginator($request->query->getInt('page', 1), $filter);
@@ -90,7 +90,7 @@ abstract class AbstractAssessorSpaceController extends Controller
      */
     public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
     {
-        return $exporter->getResponse($_format, $this->getExportFilter());
+        return $exporter->getResponse($_format, $this->getAssessorRequestExportFilter());
     }
 
     /**
@@ -172,11 +172,11 @@ abstract class AbstractAssessorSpaceController extends Controller
 
     abstract protected function getSpaceType(): string;
 
-    abstract protected function getExportFilter(): AssessorRequestExportFilter;
+    abstract protected function getAssessorRequestExportFilter(): AssessorRequestExportFilter;
 
-    abstract protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface;
+    abstract protected function createVotePlaceListFilterForm(AssociationVotePlaceFilter $filter): FormInterface;
 
-    abstract protected function createFilter(): AssociationVotePlaceFilter;
+    abstract protected function createVotePlaceListFilter(): AssociationVotePlaceFilter;
 
     abstract protected function getVoteResultsExportQuery(Election $election): Query;
 

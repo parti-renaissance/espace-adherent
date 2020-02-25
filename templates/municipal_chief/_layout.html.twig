@@ -72,7 +72,7 @@
                                 <a href="{{ path('app_approaches') }}">Projets qui marchent</a>
                             </li>
 
-                            <li class="{{ is_active_route(app.request, 'app_assessors_municipal_chief_*') ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, ['app_assessors_municipal_chief_*', 'app_vote_results_municipal_chief_index']) ? 'active' }}">
                                 <a href="{{ path('app_assessors_municipal_chief_attribution_form') }}">Assesseurs</a>
                             </li>
 

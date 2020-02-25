@@ -27,43 +27,41 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
         return self::SPACE_NAME;
     }
 
-    protected function getExportFilter(): AssessorRequestExportFilter
+    protected function getAssessorRequestExportFilter(): AssessorRequestExportFilter
     {
-        return new AssessorRequestExportFilter([], [$this->getMunicipalChiefZonePostalCode()]);
-    }
-
-    protected function createFilter(): AssociationVotePlaceFilter
-    {
-        $filter = new AssociationVotePlaceFilter();
-
-        $filter->setPostalCode($this->getMunicipalChiefZonePostalCode());
-
-        return $filter;
-    }
-
-    protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface
-    {
-        return $this->createForm(DefaultVotePlaceFilterType::class, $filter);
-    }
-
-    protected function getVoteResultsExportQuery(Election $election): Query
-    {
-        return $this->voteResultRepository->getMunicipalChiefExportQuery($election, $this->getMunicipalChiefZonePostalCode());
-    }
-
-    private function getMunicipalChiefZonePostalCode(): string
-    {
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
-
         $cityData = FranceCitiesBundle::getCityDataFromInseeCode(
-            $inseeCode = $adherent->getMunicipalChiefManagedArea()->getInseeCode()
+            $inseeCode = $this->getMunicipalChiefZoneInseeCode()
         );
 
         if (!$cityData) {
             throw new \InvalidArgumentException(sprintf('[MunicipalChief] City with insee code "%s" is not identified', $inseeCode));
         }
 
-        return $cityData['postal_code'];
+        return new AssessorRequestExportFilter([], [$cityData['postal_code']]);
+    }
+
+    protected function createVotePlaceListFilter(): AssociationVotePlaceFilter
+    {
+        $filter = new AssociationVotePlaceFilter();
+
+        $filter->setInseeCodes([$this->getUser()->getMunicipalChiefManagedArea()->getInseeCode()]);
+
+        return $filter;
+    }
+
+    protected function createVotePlaceListFilterForm(AssociationVotePlaceFilter $filter): FormInterface
+    {
+        return $this->createForm(DefaultVotePlaceFilterType::class, $filter);
+    }
+
+    protected function getVoteResultsExportQuery(Election $election): Query
+    {
+        return $this->voteResultRepository->getExportQueryByInseeCode($election, $this->getMunicipalChiefZoneInseeCode());
+    }
+
+    private function getMunicipalChiefZoneInseeCode(): string
+    {
+        /** @var Adherent $adherent */
+        return $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode();
     }
 }

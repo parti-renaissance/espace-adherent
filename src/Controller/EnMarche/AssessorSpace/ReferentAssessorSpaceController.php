@@ -92,19 +92,19 @@ class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
         return self::SPACE_NAME;
     }
 
-    protected function getExportFilter(): AssessorRequestExportFilter
+    protected function getAssessorRequestExportFilter(): AssessorRequestExportFilter
     {
         return new AssessorRequestExportFilter(
             $this->getUser()->getManagedArea()->getTags()->toArray()
         );
     }
 
-    protected function createFilterForm(AssociationVotePlaceFilter $filter): FormInterface
+    protected function createVotePlaceListFilterForm(AssociationVotePlaceFilter $filter): FormInterface
     {
         return $this->createForm(ReferentVotePlaceFilterType::class, $filter);
     }
 
-    protected function createFilter(): AssociationVotePlaceFilter
+    protected function createVotePlaceListFilter(): AssociationVotePlaceFilter
     {
         $filter = new AssociationVotePlaceFilter();
 
