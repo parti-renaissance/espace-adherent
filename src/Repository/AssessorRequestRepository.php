@@ -8,7 +8,6 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AssessorRequest;
 use AppBundle\Entity\VotePlace;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -165,14 +164,10 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         }
 
         if ($postalCodes = $filter->getPostalCodes()) {
-            $exp = new Orx();
-
-            foreach ($postalCodes as $index => $code) {
-                $exp->add(self::ALIAS.'.assessorPostalCode = :postal_code_'.$index);
-                $qb->setParameter('postal_code_'.$index, $code);
-            }
-
-            $qb->andWhere($exp);
+            $qb
+                ->andWhere(self::ALIAS.'.assessorPostalCode IN (:postal_codes)')
+                ->setParameter('postal_codes', $postalCodes)
+            ;
         }
 
         return $qb->getQuery();

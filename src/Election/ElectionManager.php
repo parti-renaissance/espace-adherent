@@ -19,9 +19,9 @@ class ElectionManager
         $this->voteResultRepository = $voteResultRepository;
     }
 
-    public function getCurrentElectionRound(): ?ElectionRound
+    public function getClosestElectionRound(): ?ElectionRound
     {
-        if (!$election = $this->electionRepository->findComingNextElection()) {
+        if (!$election = $this->electionRepository->findClosestElection()) {
             return null;
         }
 
@@ -42,7 +42,7 @@ class ElectionManager
 
     public function getVoteResultForCurrentElectionRound(VotePlace $votePlace): ?VoteResult
     {
-        if (!$round = $this->getCurrentElectionRound()) {
+        if (!$round = $this->getClosestElectionRound()) {
             return null;
         }
 

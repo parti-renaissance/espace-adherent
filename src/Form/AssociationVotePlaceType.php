@@ -55,8 +55,8 @@ class AssociationVotePlaceType extends AbstractType implements DataTransformerIn
             /** @var VotePlace $votePlace */
             $votePlace = $this->votePlaceRepository->find($value['votePlace']);
 
-            if (isset($value['alias']) && $value['alias'] !== $votePlace->getName()) {
-                $votePlace->setAlias($value['alias']);
+            if (isset($value['alias'])) {
+                $votePlace->setAlias($value['alias'] !== $votePlace->getName() ? $value['alias'] : null);
             }
 
             return $votePlace;

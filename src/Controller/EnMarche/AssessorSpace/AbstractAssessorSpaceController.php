@@ -77,7 +77,7 @@ abstract class AbstractAssessorSpaceController extends Controller
         }
 
         return $this->renderTemplate('assessor_attribution/index.html.twig', [
-            'current_election_round' => $electionManager->getCurrentElectionRound(),
+            'current_election_round' => $electionManager->getClosestElectionRound(),
             'vote_places' => $paginator,
             'form' => $form->createView(),
             'filter_form' => $filterForm->createView(),

@@ -22,7 +22,7 @@ class VoteResultRepository extends ServiceEntityRepository
 
     public function getReferentExportQuery(Election $election, array $referentTags): Query
     {
-        $qb = $this->createElectionQueryBuilder($election);
+        $qb = $this->createElectionQueryBuilder($election, 'vote_result');
 
         $this->applyGeoFilter($qb, $referentTags, 'vote_place', 'country', 'postalCode');
 
@@ -31,24 +31,20 @@ class VoteResultRepository extends ServiceEntityRepository
 
     public function getExportQueryByInseeCodes(Election $election, array $inseeCodes): Query
     {
-        $qb = $this->createElectionQueryBuilder($election);
-
-        $orx = new Query\Expr\Orx();
-
-        foreach ($inseeCodes as $index => $inseeCode) {
-            $orx->add('vote_place.code LIKE :insee_code_'.$index);
-            $qb->setParameter('insee_code_'.$index, $inseeCode.'_%');
-        }
-
-        return $qb->andWhere($orx)->getQuery();
+        return $this
+            ->createElectionQueryBuilder($election, $alias = 'vote_result')
+            ->andWhere('SUBSTRING_INDEX('.$alias.'.code, \'_\', 1) IN (:insee_codes)')
+            ->setParameter('insee_codes', $inseeCodes)
+            ->getQuery()
+        ;
     }
 
-    private function createElectionQueryBuilder(Election $election): QueryBuilder
+    private function createElectionQueryBuilder(Election $election, string $alias = 'vote_result'): QueryBuilder
     {
         return $this
-            ->createQueryBuilder('vote_result')
-            ->innerJoin('vote_result.votePlace', 'vote_place')
-            ->innerJoin('vote_result.electionRound', 'election_round')
+            ->createQueryBuilder($alias)
+            ->innerJoin($alias.'.votePlace', 'vote_place')
+            ->innerJoin($alias.'.electionRound', 'election_round')
             ->innerJoin('election_round.election', 'election')
             ->andWhere('election = :election')
             ->setParameter('election', $election)
