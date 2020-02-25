@@ -17,9 +17,9 @@ class AssociationVotePlaceFilter
     private $city;
 
     /**
-     * @var string|null
+     * @var string[]|null
      */
-    private $postalCode;
+    private $postalCodes;
 
     /**
      * @var string|null
@@ -56,14 +56,14 @@ class AssociationVotePlaceFilter
         $this->city = $city;
     }
 
-    public function getPostalCode(): ?string
+    public function getPostalCodes(): ?array
     {
-        return $this->postalCode;
+        return $this->postalCodes;
     }
 
-    public function setPostalCode(?string $postalCode): void
+    public function setPostalCodes(?array $postalCodes): void
     {
-        $this->postalCode = $postalCode;
+        $this->postalCodes = $postalCodes;
     }
 
     public function getCountry(): ?string

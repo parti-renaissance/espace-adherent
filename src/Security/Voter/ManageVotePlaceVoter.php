@@ -12,9 +12,11 @@ class ManageVotePlaceVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
+        $result = false;
+
         /** @var VotePlace $subject */
         if ($adherent->isReferent()) {
-            return (bool) array_intersect(
+            $result = (bool) array_intersect(
                 $adherent->getManagedAreaTagCodes(),
                 array_merge(
                     [$subject->getCountry()],
@@ -23,11 +25,15 @@ class ManageVotePlaceVoter extends AbstractAdherentVoter
             );
         }
 
-        if ($adherent->isMunicipalChief()) {
-            return $subject->getInseeCode() === $adherent->getMunicipalChiefManagedArea()->getInseeCode();
+        if (false === $result && $adherent->isMunicipalChief()) {
+            $result = $subject->getInseeCode() === $adherent->getMunicipalChiefManagedArea()->getInseeCode();
         }
 
-        return false;
+        if (false === $result && $adherent->isMunicipalManager()) {
+            $result = (bool) array_intersect($subject->getPostalCodesAsArray(), $adherent->getMunicipalManagerRole()->getPostalCodes());
+        }
+
+        return $result;
     }
 
     protected function supports($attribute, $subject)

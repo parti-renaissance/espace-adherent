@@ -29,14 +29,18 @@ class VoteResultRepository extends ServiceEntityRepository
         return $qb->getQuery();
     }
 
-    public function getExportQueryByInseeCode(Election $election, string $inseeCode): Query
+    public function getExportQueryByInseeCodes(Election $election, array $inseeCodes): Query
     {
-        return $this
-            ->createElectionQueryBuilder($election)
-            ->andWhere('vote_place.code LIKE :insee_code')
-            ->setParameter('insee_code', $inseeCode.'_%')
-            ->getQuery()
-        ;
+        $qb = $this->createElectionQueryBuilder($election);
+
+        $orx = new Query\Expr\Orx();
+
+        foreach ($inseeCodes as $index => $inseeCode) {
+            $orx->add('vote_place.code LIKE :insee_code_'.$index);
+            $qb->setParameter('insee_code_'.$index, $inseeCode.'_%');
+        }
+
+        return $qb->andWhere($orx)->getQuery();
     }
 
     private function createElectionQueryBuilder(Election $election): QueryBuilder

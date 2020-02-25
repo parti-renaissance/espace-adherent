@@ -7,20 +7,19 @@ use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Election;
 use AppBundle\Form\Assessor\DefaultVotePlaceFilterType;
-use AppBundle\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-municipales-2020/assesseurs", name="app_assessors_municipal_chief")
+ * @Route(path="/espace-responsable-communal/assesseurs", name="app_assessors_municipal_manager")
  *
- * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
+ * @Security("is_granted('ROLE_MUNICIPAL_MANAGER')")
  */
-class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceController
+class MunicipalManagerAssessorSpaceController extends AbstractAssessorSpaceController
 {
-    private const SPACE_NAME = 'municipal_chief';
+    private const SPACE_NAME = 'municipal_manager';
 
     protected function getSpaceType(): string
     {
@@ -29,22 +28,14 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
 
     protected function getAssessorRequestExportFilter(): AssessorRequestExportFilter
     {
-        $cityData = FranceCitiesBundle::getCityDataFromInseeCode(
-            $inseeCode = $this->getMunicipalChiefZoneInseeCode()
-        );
-
-        if (!$cityData) {
-            throw new \InvalidArgumentException(sprintf('[MunicipalChief] City with insee code "%s" is not identified', $inseeCode));
-        }
-
-        return new AssessorRequestExportFilter([], [$cityData['postal_code']]);
+        return new AssessorRequestExportFilter([], $this->getMunicipalManagerZonePostalCodes());
     }
 
     protected function createVotePlaceListFilter(): AssociationVotePlaceFilter
     {
         $filter = new AssociationVotePlaceFilter();
 
-        $filter->setInseeCodes([$this->getUser()->getMunicipalChiefManagedArea()->getInseeCode()]);
+        $filter->setInseeCodes($this->getMunicipalManagerZoneInseeCodes());
 
         return $filter;
     }
@@ -58,13 +49,23 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
     {
         return $this->voteResultRepository->getExportQueryByInseeCodes(
             $election,
-            [$this->getMunicipalChiefZoneInseeCode()]
+            $this->getMunicipalManagerZoneInseeCodes()
         );
     }
 
-    private function getMunicipalChiefZoneInseeCode(): string
+    private function getMunicipalManagerZonePostalCodes(): array
     {
         /** @var Adherent $adherent */
-        return $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode();
+        $adherent = $this->getUser();
+
+        return $adherent->getMunicipalManagerRole()->getPostalCodes();
+    }
+
+    private function getMunicipalManagerZoneInseeCodes(): array
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        return $adherent->getMunicipalManagerRole()->getInseeCodes();
     }
 }

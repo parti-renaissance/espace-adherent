@@ -186,11 +186,15 @@ class VotePlaceRepository extends AbstractAssessorRepository
             $qb->andWhere($orx);
         }
 
-        if ($postalCode = $filter->getPostalCode()) {
-            $qb
-                ->andWhere(self::ALIAS.'.postalCode LIKE :postal_codes')
-                ->setParameter('postal_codes', sprintf('%%%s%%', $postalCode))
-            ;
+        if ($postalCodes = $filter->getPostalCodes()) {
+            $orx = new Orx();
+
+            foreach ($postalCodes as $index => $postalCode) {
+                $orx->add(sprintf('FIND_IN_SET(:postal_code_%s, %s.postalCode) > 0', $index, self::ALIAS));
+                $qb->setParameter('postal_code_'.$index, $postalCode);
+            }
+
+            $qb->andWhere($orx);
         }
 
         if ($city = $filter->getCity()) {
