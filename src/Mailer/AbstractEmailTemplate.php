@@ -17,6 +17,8 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
     protected $recipients;
     protected $template;
     protected $vars;
+    /** @var bool|null */
+    protected $preserveRecipients;
 
     private $httpRequestPayload;
     private $httpResponsePayload;
@@ -68,6 +70,8 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
             $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
         }
 
+        $email->setPreserveRecipients($message->getPreserveRecipients());
+
         return $email;
     }
 
@@ -107,4 +111,9 @@ abstract class AbstractEmailTemplate implements \JsonSerializable
     abstract public function addRecipient(string $email, string $name = null, array $vars = []);
 
     abstract public function getBody(): array;
+
+    private function setPreserveRecipients(?bool $preserveRecipients): void
+    {
+        $this->preserveRecipients = $preserveRecipients;
+    }
 }

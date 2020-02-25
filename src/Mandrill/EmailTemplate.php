@@ -45,6 +45,10 @@ final class EmailTemplate extends AbstractEmailTemplate
             $body['message']['from_name'] = $this->senderName;
         }
 
+        if (null !== $this->preserveRecipients) {
+            $body['message']['preserve_recipients'] = (bool) $this->preserveRecipients;
+        }
+
         foreach ($this->cc as $cc) {
             $this->recipients[] = [
                 'email' => $cc,

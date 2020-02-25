@@ -20,6 +20,11 @@ class Message
     protected $bcc;
 
     /**
+     * @var bool|null
+     */
+    protected $preserveRecipients;
+
+    /**
      * Message constructor.
      *
      * @param UuidInterface $uuid           The unique identifier of this message
@@ -163,6 +168,16 @@ class Message
     public function setReplyTo(string $replyTo): void
     {
         $this->replyTo = $replyTo;
+    }
+
+    public function getPreserveRecipients(): ?bool
+    {
+        return $this->preserveRecipients;
+    }
+
+    public function setPreserveRecipients(?bool $preserveRecipients): void
+    {
+        $this->preserveRecipients = $preserveRecipients;
     }
 
     /**
