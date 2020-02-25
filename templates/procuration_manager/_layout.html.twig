@@ -5,59 +5,70 @@
 
 {% block content %}
     <main>
-        <section class="procuration-manager">
-            <header class="l__wrapper--slim b__nudge--bottom-large">
-                <h1 class="text--center text--large">
-                    Espace responsable procuration
-                </h1>
-                <p class="text--center">
-                    Zones gérées : {{ app.user.procurationManagedAreaCodesAsString }}
-                </p>
+        <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <p>Vous gérez : <span>{{ app.user.procurationManagedAreaCodesAsString }}</span></p>
+                        </div>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            Espace responsable procuration
+                        </h1>
+                        <div class="direct-actions">
+                            <a id="vote-places-export" href="{{ path('app_assessor_manager_vote_places_export') }}" class="btn btn--blue">Exporter les bureaux de vote traités</a>
+                        </div>
+                    </div>
+
+                    <nav class="manager-header__menu">
+                        {% set pages = [
+                            {
+                                route: 'app_procuration_manager_requests',
+                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
+                                label: 'Demandes à traiter'
+                            },
+                            {
+                                route: 'app_procuration_manager_requests',
+                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
+                                label: 'Demandes traitées'
+                            },
+                            {
+                                route: 'app_procuration_manager_proposals',
+                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
+                                label: 'Mandataires disponibles'
+                            },
+                            {
+                                route: 'app_procuration_manager_proposals',
+                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
+                                label: 'Mandataires traités'
+                            },
+                            {
+                                route: 'app_procuration_manager_proposals',
+                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED'),
+                                label: 'Mandataires désactivés'
+                            }
+                        ] %}
+
+                        <ul>
+                            {% for page in pages %}
+                                <li class="{{ is_active_route(app.request, page.route) and filters.status == page.status ? 'active' }}">
+                                    <a href="{{ path(page.route, { status: page.status }) }}">
+                                        {{ page.label }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </nav>
+                </div>
             </header>
 
-            <div class="l__wrapper procuration-manager__content">
-                {% set pages = [
-                    {
-                        route: 'app_procuration_manager_requests',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
-                        label: 'Demandes à traiter'
-                    },
-                    {
-                        route: 'app_procuration_manager_requests',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
-                        label: 'Demandes traitées'
-                    },
-                    {
-                        route: 'app_procuration_manager_proposals',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
-                        label: 'Mandataires disponibles'
-                    },
-                    {
-                        route: 'app_procuration_manager_proposals',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
-                        label: 'Mandataires traités'
-                    },
-                    {
-                        route: 'app_procuration_manager_proposals',
-                        status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED'),
-                        label: 'Mandataires désactivés'
-                    }
-                ] %}
-
-                <ul class="procuration-manager__tabs">
-                    {% for page in pages %}
-                        <li class="{{ is_active_route(app.request, page.route) and filters.status == page.status ? 'active' }}">
-                            <a href="{{ path(page.route, { status: page.status }) }}">
-                                {{ page.label }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                <hr />
-
+            <div class="l__wrapper text--body">
                 {% block procuration_manager_content %}{% endblock %}
             </div>
+
         </section>
     </main>
 {% endblock %}

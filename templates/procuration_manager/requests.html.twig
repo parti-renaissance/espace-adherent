@@ -12,10 +12,8 @@
 
     {{ include('procuration_manager/_filters.html.twig') }}
 
-    <hr />
-
     {% if 0 == requests|length %}
-        <div class="text--body text--center">
+        <div class="alert alert--tips b__nudge--bottom-60">
             {% if constant('PROCESSED', filters) == filters.status %}
                 Vous n'avez pas encore de demande de procuration traitée.
             {% else %}
@@ -23,7 +21,7 @@
             {% endif %}
         </div>
     {% else %}
-        <div class="text--body text--center b__nudge--bottom-large procuration_requests_total_count">
+        <div class="alert alert--tips b__nudge--bottom-60 procuration_requests_total_count">
             {% if constant('PROCESSED', filters) == filters.status %}
                 {{ '{1} Vous avez une demande de procuration traitée.|[2, Inf[ Vous avez %count% demandes de procuration traitées.'|transchoice(total_count) }}
             {% else %}
@@ -33,7 +31,7 @@
     {% endif %}
 
     {% if requests|length %}
-        <table class="datagrid__table datagrid__table--bordered-rows">
+        <table class="datagrid__table-manager">
             <thead>
             <tr>
                 <th class="datagrid__table__col--hide-mobile" width="100px">Numéro</th>
