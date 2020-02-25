@@ -50,8 +50,6 @@ abstract class AbstractAssessorSpaceController extends Controller
         AssessorAssociationManager $manager,
         ElectionManager $electionManager
     ): Response {
-        $this->disableInProduction();
-
         $filterForm = $this->createFilterForm($filter = $this->createFilter())->handleRequest($request);
 
         if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
@@ -92,8 +90,6 @@ abstract class AbstractAssessorSpaceController extends Controller
      */
     public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
     {
-        $this->disableInProduction();
-
         return $exporter->getResponse($_format, $this->getExportFilter());
     }
 
@@ -107,8 +103,6 @@ abstract class AbstractAssessorSpaceController extends Controller
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $this->disableInProduction();
-
         $this->denyAccessUnlessGranted(ManageVotePlaceVoter::MANAGE_VOTE_PLACE, $votePlace);
 
         if (false === $enabled && $entityManager->getRepository(AssessorRoleAssociation::class)->findOneBy(['votePlace' => $votePlace])) {
@@ -131,8 +125,6 @@ abstract class AbstractAssessorSpaceController extends Controller
      */
     public function createVotePlaceAction(Request $request, EntityManagerInterface $manager): Response
     {
-        $this->disableInProduction();
-
         $form = $this
             ->createForm(CreateVotePlaceType::class)
             ->handleRequest($request)

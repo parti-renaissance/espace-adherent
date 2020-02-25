@@ -54,7 +54,7 @@
         <a href="{{ path('app_jecoute_manager_local_surveys_list') }}">Espace responsable J'écoute</a>
     </li>
 {% endif %}
-{% if app.user.isAssessor %}
+{% if is_canary_enabled() and app.user.isAssessor %}
     <li>
         <a href="{{ path('app_vote_results_assessor_index') }}">Espace Assesseur</a>
     </li>
