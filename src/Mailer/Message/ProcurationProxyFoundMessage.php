@@ -31,6 +31,7 @@ final class ProcurationProxyFoundMessage extends Message
         $message->addCC($request->getFoundBy()->getEmailAddress());
         $message->addCC($proxy->getEmailAddress());
         $message->setReplyTo($proxy->getEmailAddress());
+        $message->setPreserveRecipients(true);
 
         return $message;
     }
