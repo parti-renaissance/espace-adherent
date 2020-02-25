@@ -13,7 +13,7 @@ class LoadCityData extends Fixture
         $manager->persist($city1 = $this->createCity(
             'Lille',
             '59350',
-            '59000',
+            ['59000'],
             'FR'
         ));
         $this->addReference('city-lille', $city1);
@@ -21,29 +21,29 @@ class LoadCityData extends Fixture
         $manager->persist($this->createCity(
             'Roubaix',
             '59512',
-            '59100',
+            ['59100'],
             'FR'
         ));
 
         $manager->persist($this->createCity(
             'Seclin',
             '59560',
-            '59113',
+            ['59113'],
             'FR',
         ));
 
         $manager->persist($this->createCity(
             'Roquefort-les-Pins',
             '06105',
-            '06330',
+            ['06330'],
             'FR'
         ));
 
         $manager->flush();
     }
 
-    private function createCity(string $name, string $inseeCode, string $postalCode, string $country): City
+    private function createCity(string $name, string $inseeCode, array $postalCodes, string $country): City
     {
-        return new City($name, $inseeCode, $postalCode, $country);
+        return new City($name, $inseeCode, $postalCodes, $country);
     }
 }

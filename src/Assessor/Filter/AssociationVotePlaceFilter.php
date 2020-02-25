@@ -31,6 +31,11 @@ class AssociationVotePlaceFilter
      */
     private $tags = [];
 
+    /**
+     * @var array
+     */
+    private $inseeCodes = [];
+
     public function getName(): ?string
     {
         return $this->name;
@@ -79,5 +84,15 @@ class AssociationVotePlaceFilter
     public function setTags(array $tags): void
     {
         $this->tags = $tags;
+    }
+
+    public function getInseeCodes(): array
+    {
+        return $this->inseeCodes;
+    }
+
+    public function setInseeCodes(array $inseeCodes): void
+    {
+        $this->inseeCodes = $inseeCodes;
     }
 }

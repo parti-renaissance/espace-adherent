@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="cities")
  *
  * @UniqueEntity("inseeCode", message="city.insee_code.unique")
- * @UniqueEntity("municipalManager", message="city.municipal_manager.already_assigned")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -49,14 +48,14 @@ class City
     private $inseeCode;
 
     /**
-     * @var string|null
+     * @var array|null
      *
-     * @ORM\Column(length=10)
+     * @ORM\Column(type="simple_array")
      *
      * @Assert\NotBlank(message="city.postal_code.not_blank")
-     * @Assert\Length(max="10", maxMessage="city.postal_code.max_length")
+     * @Assert\Count(min="1")
      */
-    private $postalCode;
+    private $postalCodes;
 
     /**
      * @var string
@@ -66,17 +65,17 @@ class City
      * @Assert\NotBlank(message="city.country.not_blank")
      * @Assert\Country(message="city.country.invalid")
      */
-    private $country = AreaUtils::CODE_FRANCE;
+    private $country;
 
     public function __construct(
         string $name = null,
         string $inseeCode = null,
-        string $postalCode = null,
+        array $postalCodes = null,
         string $country = AreaUtils::CODE_FRANCE
     ) {
         $this->name = $name;
         $this->inseeCode = $inseeCode ? self::normalizeCode($inseeCode) : null;
-        $this->postalCode = $postalCode ? self::normalizeCode($postalCode) : null;
+        $this->postalCodes = $postalCodes;
         $this->country = $country;
     }
 
@@ -110,14 +109,14 @@ class City
         $this->inseeCode = self::normalizeCode($inseeCode);
     }
 
-    public function getPostalCode(): ?string
+    public function getPostalCodes(): ?array
     {
-        return $this->postalCode;
+        return $this->postalCodes;
     }
 
-    public function setPostalCode(?string $postalCode): void
+    public function setPostalCodes(?array $postalCodes): void
     {
-        $this->postalCode = $postalCode;
+        $this->postalCodes = $postalCodes;
     }
 
     public function getCountry(): string

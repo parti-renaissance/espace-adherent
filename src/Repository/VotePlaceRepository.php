@@ -9,6 +9,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AssessorOfficeEnum;
 use AppBundle\Entity\AssessorRequest;
 use AppBundle\Entity\VotePlace;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -172,6 +173,17 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
         if ($tags = $filter->getTags()) {
             $this->applyGeoFilter($qb, $tags, self::ALIAS, 'country', 'postalCode');
+        }
+
+        if ($inseeCodes = $filter->getInseeCodes()) {
+            $orx = new Orx();
+
+            foreach ($inseeCodes as $index => $inseeCode) {
+                $orx->add(self::ALIAS.'.code LIKE :insee_code_'.$index);
+                $qb->setParameter('insee_code_'.$index, $inseeCode.'_%');
+            }
+
+            $qb->andWhere($orx);
         }
 
         if ($postalCode = $filter->getPostalCode()) {

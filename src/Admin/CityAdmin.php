@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -36,16 +37,18 @@ class CityAdmin extends AbstractAdmin
                 ->add('inseeCode', TextType::class, [
                     'label' => 'Code INSEE',
                 ])
-                ->add('postalCode', TextType::class, [
-                    'label' => 'Code postal',
+                ->add('postalCodes', CollectionType::class, [
+                    'entry_type' => TextType::class,
+                    'label' => 'Codes postaux',
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
                 ])
                 ->add('country', CountryType::class, [
                     'label' => 'Pays',
                 ])
             ->end()
         ;
-
-        $formMapper->getFormBuilder()->get('municipalManager')->addModelTransformer($this->emailToAdherentTransformer);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -59,7 +62,7 @@ class CityAdmin extends AbstractAdmin
                 'label' => 'Code INSEE',
                 'show_filter' => true,
             ])
-            ->add('postalCode', null, [
+            ->add('postalCodes', null, [
                 'label' => 'Code postal',
                 'show_filter' => true,
             ])
@@ -83,8 +86,8 @@ class CityAdmin extends AbstractAdmin
             ->add('inseeCode', null, [
                 'label' => 'Code INSEE',
             ])
-            ->add('postalCode', null, [
-                'label' => 'Code postal',
+            ->add('postalCodes', 'array', [
+                'label' => 'Codes postaux',
             ])
             ->add('country', null, [
                 'label' => 'Pays',
@@ -105,7 +108,7 @@ class CityAdmin extends AbstractAdmin
             'ID' => 'id',
             'Nom' => 'name',
             'Code INSEE' => 'inseeCode',
-            'Code postal' => 'postalCode',
+            'Code postal' => 'postalCodes',
             'Pays' => 'country',
         ];
     }

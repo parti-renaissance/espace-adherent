@@ -29,12 +29,12 @@ class VoteResultRepository extends ServiceEntityRepository
         return $qb->getQuery();
     }
 
-    public function getMunicipalChiefExportQuery(Election $election, string $postalCode): Query
+    public function getExportQueryByInseeCode(Election $election, string $inseeCode): Query
     {
         return $this
             ->createElectionQueryBuilder($election)
-            ->andWhere('FIND_IN_SET(:postal_code, vote_place.postalCode) > 0')
-            ->setParameter('postal_code', $postalCode)
+            ->andWhere('vote_place.code LIKE :insee_code')
+            ->setParameter('insee_code', $inseeCode.'_%')
             ->getQuery()
         ;
     }
