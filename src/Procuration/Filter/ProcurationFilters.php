@@ -174,7 +174,6 @@ abstract class ProcurationFilters
 
         $qb
             ->leftJoin("$alias.electionRounds", 'rounds')
-            ->addSelect('rounds')
             ->andWhere('rounds.date >= CURRENT_DATE()')
         ;
 
