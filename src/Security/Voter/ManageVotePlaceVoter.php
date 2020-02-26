@@ -5,6 +5,7 @@ namespace AppBundle\Security\Voter;
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\VotePlace;
+use AppBundle\Intl\FranceCitiesBundle;
 
 class ManageVotePlaceVoter extends AbstractAdherentVoter
 {
@@ -26,11 +27,17 @@ class ManageVotePlaceVoter extends AbstractAdherentVoter
         }
 
         if (false === $result && $adherent->isMunicipalChief()) {
-            $result = $subject->getInseeCode() === $adherent->getMunicipalChiefManagedArea()->getInseeCode();
+            $result =
+                $subject->getInseeCode() === ($inseeCode = $adherent->getMunicipalChiefManagedArea()->getInseeCode())
+                || (
+                    isset(FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode])
+                    && \array_key_exists($subject->getInseeCode(), FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode])
+                )
+            ;
         }
 
         if (false === $result && $adherent->isMunicipalManager()) {
-            $result = (bool) array_intersect($subject->getPostalCodesAsArray(), $adherent->getMunicipalManagerRole()->getPostalCodes());
+            $result = \in_array($subject->getInseeCode(), $adherent->getMunicipalManagerRole()->getInseeCodes(), true);
         }
 
         return $result;

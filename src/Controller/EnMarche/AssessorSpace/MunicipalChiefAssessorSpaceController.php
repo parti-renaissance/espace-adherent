@@ -4,7 +4,6 @@ namespace AppBundle\Controller\EnMarche\AssessorSpace;
 
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Election;
 use AppBundle\Form\Assessor\DefaultVotePlaceFilterType;
 use AppBundle\Intl\FranceCitiesBundle;
@@ -29,15 +28,20 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
 
     protected function getAssessorRequestExportFilter(): AssessorRequestExportFilter
     {
-        $cityData = FranceCitiesBundle::getCityDataFromInseeCode(
-            $inseeCode = $this->getMunicipalChiefZoneInseeCode()
-        );
+        $inseeCodes = $this->getMunicipalChiefZoneInseeCodes();
+        $postalCodes = [];
 
-        if (!$cityData) {
+        foreach ($inseeCodes as $inseeCode) {
+            if ($cityData = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode)) {
+                $postalCodes[] = $cityData['postal_code'];
+            }
+        }
+
+        if (!$postalCodes) {
             throw new \InvalidArgumentException(sprintf('[MunicipalChief] City with insee code "%s" is not identified', $inseeCode));
         }
 
-        return new AssessorRequestExportFilter([], [$cityData['postal_code']]);
+        return new AssessorRequestExportFilter([], $postalCodes);
     }
 
     protected function createVotePlaceListFilter(): AssociationVotePlaceFilter
@@ -58,13 +62,18 @@ class MunicipalChiefAssessorSpaceController extends AbstractAssessorSpaceControl
     {
         return $this->voteResultRepository->getExportQueryByInseeCodes(
             $election,
-            [$this->getMunicipalChiefZoneInseeCode()]
+            $this->getMunicipalChiefZoneInseeCodes()
         );
     }
 
-    private function getMunicipalChiefZoneInseeCode(): string
+    private function getMunicipalChiefZoneInseeCodes(): array
     {
-        /** @var Adherent $adherent */
-        return $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode();
+        $inseeCode = $this->getUser()->getMunicipalChiefManagedArea()->getInseeCode();
+
+        if (isset(FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode])) {
+            return array_keys(FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[$inseeCode]);
+        }
+
+        return [$inseeCode];
     }
 }

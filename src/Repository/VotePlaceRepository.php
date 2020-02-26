@@ -176,14 +176,10 @@ class VotePlaceRepository extends AbstractAssessorRepository
         }
 
         if ($inseeCodes = $filter->getInseeCodes()) {
-            $orx = new Orx();
-
-            foreach ($inseeCodes as $index => $inseeCode) {
-                $orx->add(self::ALIAS.'.code LIKE :insee_code_'.$index);
-                $qb->setParameter('insee_code_'.$index, $inseeCode.'_%');
-            }
-
-            $qb->andWhere($orx);
+            $qb
+                ->andWhere('SUBSTRING_INDEX('.self::ALIAS.'.code, \'_\', 1) IN (:insee_codes)')
+                ->setParameter('insee_codes', $inseeCodes)
+            ;
         }
 
         if ($postalCodes = $filter->getPostalCodes()) {

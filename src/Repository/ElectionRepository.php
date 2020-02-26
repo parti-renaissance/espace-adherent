@@ -34,4 +34,17 @@ class ElectionRepository extends ServiceEntityRepository
 
         return $elections[0] ?? null;
     }
+
+    public function findClosestElection(): ?Election
+    {
+        return $this->createQueryBuilder('e')
+            ->addSelect('round')
+            ->innerJoin('e.rounds', 'round')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('ABS(TIMESTAMPDIFF(SECOND, round.date, :now))', 'ASC')
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+        ;
+    }
 }

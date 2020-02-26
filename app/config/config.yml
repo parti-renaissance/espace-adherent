@@ -148,6 +148,7 @@ doctrine:
         dql:
             datetime_functions:
                 year_month: DoctrineExtensions\Query\Mysql\YearMonth
+                timestampdiff: DoctrineExtensions\Query\Mysql\TimestampDiff
             numeric_functions:
                 acos: DoctrineExtensions\Query\Mysql\Acos
                 cos: DoctrineExtensions\Query\Mysql\Cos
