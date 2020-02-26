@@ -96,7 +96,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         $requests = $this->addAndWhereManagedBy($qb, $manager)
             ->addGroupBy("$alias.id")
             ->getQuery()
-            ->getArrayResult()
+            ->getResult()
         ;
 
         if ($filters->matchUnprocessedRequests()) {
@@ -148,13 +148,16 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->andWhere('pp.reliability >= 0')
         ;
 
+        /**
+         * @var ProcurationRequest
+         */
         foreach ($requests as $key => $request) {
-            $proxiesCountQuery = $this->andWhereRoundsMatch(clone $qb, $request['electionRounds']);
-            $proxiesCountQuery = ProcurationProxyRepository::addAndWhereCountryConditions($proxiesCountQuery, $request['requestFromFrance']);
+            $proxiesCountQuery = $this->andWhereRoundsMatch(clone $qb, $request->getElectionRounds()->toArray());
+            $proxiesCountQuery = ProcurationProxyRepository::addAndWhereCountryConditions($proxiesCountQuery, $request->isRequestFromFrance());
 
-            $proxiesCountQuery->setParameter('votePostalCodePrefix', substr($request['votePostalCode'], 0, 2));
-            $proxiesCountQuery->setParameter('voteCityName', $request['voteCityName']);
-            $proxiesCountQuery->setParameter('voteCountry', $request['voteCountry']);
+            $proxiesCountQuery->setParameter('votePostalCodePrefix', substr($request->getVotePostalCode(), 0, 2));
+            $proxiesCountQuery->setParameter('voteCityName', $request->getVoteCityName());
+            $proxiesCountQuery->setParameter('voteCountry', $request->getVoteCountry());
 
             $requests[$key] = [
                 'data' => $request,
@@ -254,7 +257,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
         foreach ($electionRounds as $i => $round) {
             $matches[] = ":round_$i MEMBER OF pp.electionRounds";
-            $qb->setParameter("round_$i", $round['id']);
+            $qb->setParameter("round_$i", $round);
         }
 
         return $qb->andWhere($qb->expr()->andX(...$matches));
