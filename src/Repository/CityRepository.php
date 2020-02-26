@@ -30,8 +30,15 @@ class CityRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder(self::ALIAS);
 
-        if ($tags = $filter->getTags()) {
-            $this->applyGeoFilter($qb, $tags, self::ALIAS, 'country', 'inseeCode');
+        if ($managedTags = $filter->getManagedTags()) {
+            $this->applyGeoFilter($qb, $managedTags, self::ALIAS, 'country', 'inseeCode');
+        }
+
+        if ($managedInseeCode = $filter->getManagedInseeCode()) {
+            $qb
+                ->andWhere(self::ALIAS.'.inseeCode = :managed_insee_code')
+                ->setParameter('managed_insee_code', $managedInseeCode)
+            ;
         }
 
         if ($name = $filter->getName()) {
@@ -48,13 +55,6 @@ class CityRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($country = $filter->getCountry()) {
-            $qb
-                ->andWhere(self::ALIAS.'.country = :country')
-                ->setParameter('country', $country)
-            ;
-        }
-
         $municipalManagerFirstName = $filter->getMunicipalManagerFirstName();
         $municipalManagerLastName = $filter->getMunicipalManagerLastName();
         $municipalManagerEmail = $filter->getMunicipalManagerEmail();
@@ -65,7 +65,7 @@ class CityRepository extends ServiceEntityRepository
                     MunicipalManagerRoleAssociation::class,
                     'municipal_manager_role',
                     Join::WITH,
-                    self::ALIAS.' = municipal_manager_role.city'
+                    self::ALIAS.' MEMBER OF municipal_manager_role.cities'
                 )
                 ->leftJoin(
                     Adherent::class,

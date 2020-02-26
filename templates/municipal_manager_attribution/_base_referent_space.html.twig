@@ -1,24 +1,24 @@
-{% extends 'municipal_chief/_layout.html.twig' %}
+{% extends 'referent/_layout.html.twig' %}
 
-{% block municipal_chief_content %}
+{% block referent_content %}
     {% if is_canary_enabled() %}
         <div class="datagrid__table__tabs">
             <div class="datagrid__table__tabs__items">
                 <h3>
-                    {% if is_active_route(app.request, 'app_assessors_municipal_chief_attribution_form') %}
+                    {% if is_active_route(app.request, 'app_assessors_referent_attribution_form') %}
                         Bureaux de votes
                     {% else %}
-                        <a href="{{ path('app_assessors_municipal_chief_attribution_form') }}">
+                        <a href="{{ path('app_assessors_referent_attribution_form') }}">
                             Bureaux de votes
                         </a>
                     {% endif %}
                 </h3>
                 <span class="separator"></span>
                 <h3>
-                    {% if is_active_route(app.request, 'app_municipal_manager_municipal_chief_attribution_form') %}
+                    {% if is_active_route(app.request, 'app_municipal_manager_referent_attribution_form') %}
                         Communes
                     {% else %}
-                        <a href="{{ path('app_municipal_manager_municipal_chief_attribution_form') }}">
+                        <a href="{{ path('app_municipal_manager_referent_attribution_form') }}">
                             Communes
                         </a>
                     {% endif %}
@@ -27,5 +27,5 @@
         </div>
     {% endif %}
 
-    {% block assessor_attribution_main_block %}{% endblock %}
+    {% block municipal_manager_attribution_main_block %}{% endblock %}
 {% endblock %}

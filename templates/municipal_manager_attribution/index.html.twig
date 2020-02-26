@@ -1,0 +1,148 @@
+{% extends 'municipal_manager_attribution/_layout.html.twig' %}
+
+{% block municipal_manager_attribution_main_block %}
+    <section>
+        <div class="manager__filters">
+            <div class="manager__filters__form">
+                {{ form_start(filter_form) }}
+
+                {{ form_errors(filter_form) }}
+
+                <div class="manager__filters__row">
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                {{ form_row(filter_form.name, {
+                                    label: 'Nom de ville',
+                                    label_attr: { class: 'filter__label' },
+                                    attr: { class: 'filter__field', placeholder: 'Saisissez un nom' }
+                                }) }}
+                            </div>
+
+                            <div class="filter__row">
+                                {{ form_row(filter_form.inseeCode, {
+                                    label: 'Code INSEE',
+                                    label_attr: { class: 'filter__label' },
+                                    attr: { class: 'filter__field', placeholder: 'Saisissez un code INSEE'}
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                {{ form_row(filter_form.municipalManagerFirstName, {
+                                    label: 'Prénom du responsable communale',
+                                    label_attr: { class: 'filter__label' },
+                                    attr: { class: 'filter__field', placeholder: 'Saisissez un prénom' }
+                                }) }}
+                            </div>
+
+                            <div class="filter__row">
+                                {{ form_row(filter_form.municipalManagerLastName, {
+                                    label: 'Nom du responsable communale',
+                                    label_attr: { class: 'filter__label' },
+                                    attr: { class: 'filter__field', placeholder: 'Sélectionnez un nom' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="manager__filters__section">
+                        <div class="manager__filters__group">
+                            <div class="filter__row">
+                                {{ form_row(filter_form.municipalManagerEmail, {
+                                    label: 'Email du responsable communale',
+                                    label_attr: { class: 'filter__label' },
+                                    attr: { class: 'filter__field', placeholder: 'Saisissez un email' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__actions b__nudge--top">
+                    <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                    <a href="{{ path("app_municipal_manager_#{space_type}_attribution_form") }}" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">
+                        Réinitialiser le filtre
+                    </a>
+                </div>
+
+                {{ form_end(filter_form) }}
+            </div>
+        </div>
+
+        {{ form_start(form) }}
+            <div class="text--right b__nudge--bottom">
+                <button type="submit" class="btn btn--blue--soft">Sauvegarder les choix</button>
+            </div>
+
+            {% if not form.vars.valid %}
+                <p class="text--error text--center">Le formulaire n'est pas valide</p>
+            {% endif %}
+
+            <table class="datagrid__table-manager">
+                <thead>
+                    <tr>
+                        <td class="space--0-15">Ville</td>
+                        <td>Adhérent - Responsable communale</td>
+                        <td>Téléphone</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, city in cities %}
+                        <tr>
+                            <td>
+                                <div class="l__row l__row--h-start">
+                                    <div class="l__col">
+                                        <strong>{{ city.name }} ({{ city.inseeCode }})</strong>
+                                        <br>
+                                        <span class="text--small">
+                                            {{ city.postalCodes|first }}, {{ city.country|countryName }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% if form[index] is defined %}
+                                    {{ form_row(form[index].city) }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if form[index] is defined %}
+                                    {{ form_row(form[index].adherent) }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if form[index] is defined %}
+                                    {% set adherent = form[index].vars.data.adherent %}
+
+                                    {% if adherent and adherent.phone %}
+                                        {{ adherent.phone|phone_number_format }}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3" class="text--center">
+                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                Aucun résultat
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text--right b__nudge--top-15">
+                <button type="submit" class="btn btn--blue--soft">Sauvegarder les choix</button>
+            </div>
+
+        {{ form_end(form) }}
+
+        {% include 'components/_modern_pagination.html.twig' with {
+            current_page: cities.currentPage,
+            total_pages: cities.lastPage,
+            pagination_route_params: route_params
+        } %}
+    </section>
+{% endblock %}

@@ -19,11 +19,6 @@ class AssociationCityFilter
     /**
      * @var string|null
      */
-    private $country;
-
-    /**
-     * @var string|null
-     */
     private $municipalManagerFirstName;
 
     /**
@@ -37,9 +32,14 @@ class AssociationCityFilter
     private $municipalManagerEmail;
 
     /**
+     * @var string|null
+     */
+    private $managedInseeCode;
+
+    /**
      * @var ReferentTag[]
      */
-    private $tags = [];
+    private $managedTags = [];
 
     public function getName(): ?string
     {
@@ -59,16 +59,6 @@ class AssociationCityFilter
     public function setInseeCode(?string $inseeCode): void
     {
         $this->inseeCode = $inseeCode;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?string $country): void
-    {
-        $this->country = $country;
     }
 
     public function getMunicipalManagerFirstName(): ?string
@@ -101,13 +91,23 @@ class AssociationCityFilter
         $this->municipalManagerEmail = $municipalManagerEmail;
     }
 
-    public function getTags(): array
+    public function getManagedInseeCode(): ?string
     {
-        return $this->tags;
+        return $this->managedInseeCode;
     }
 
-    public function setTags(array $tags): void
+    public function setManagedInseeCode(?string $managedInseeCode): void
     {
-        $this->tags = $tags;
+        $this->managedInseeCode = $managedInseeCode;
+    }
+
+    public function getManagedTags(): array
+    {
+        return $this->managedTags;
+    }
+
+    public function setManagedTags(array $managedTags): void
+    {
+        $this->managedTags = $managedTags;
     }
 }

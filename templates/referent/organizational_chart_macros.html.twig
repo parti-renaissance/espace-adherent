@@ -35,6 +35,9 @@
                             {% if ref_person_link.isJecouteManager %}
                                 <span class="referent-person-link">{{ 'common.jecoute_manager'|trans }}</span>
                             {% endif %}
+                            {% if ref_person_link.isMunicipalManagerSupervisor %}
+                                <span class="referent-person-link">{{ 'referent.municipal_managers_access'|trans }}</span>
+                            {% endif %}
                         {% endif %}
                 {% if editable %}
                     </a>

@@ -79,6 +79,14 @@
             </span>
             <br/>
         {% endif %}
+
+        {% if object.isMunicipalManager %}
+            <span class="label label-primary" style="padding: 2px;">Responsable communale</span>
+        {% endif %}
+
+        {% if object.isMunicipalManagerSupervisor %}
+            <span class="label label-primary" style="padding: 2px;">Responsable attribution</span>
+        {% endif %}
     {% elseif object.isAdherent %}
         <span class="label label-primary">Adhérent</span>
     {% else %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon espace superviseur de responsable communaux' %}
+{% block canonical_url url('app_municipal_manager_municipal_manager_supervisor_attribution_form') %}
+
+{% block banner '' %}
+
+{% block content %}
+    {% set managedAreaTags = app.user.municipalManagerSupervisorRole.referent.managedArea.tags|join(', ') %}
+    <main>
+        <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <div class="manager-information">
+                            <p>Vous gérez : <span>{{ managedAreaTags }}</span></p>
+                        </div>
+                        <p class="report">🐛 Bug ? Nouveau besoin ?
+                            <a href="https://t.me/joinchat/EmY0e1J2fyTv4Fd-cHEMHg" target="_blank" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                        </p>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+                </div>
+            </header>
+
+            <div class="l__wrapper procuration-manager__content text--body">
+                {% block municipal_manager_supervisor_content %}{% endblock %}
+            </div>
+
+            <div id="managerOnScroll" class="manager__fixed-bar">
+                <div class="l__wrapper manager__fixed-bar__content">
+                    <p>Vous gérez : <span>{{ managedAreaTags }}</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+
+    {% if js is not defined %}
+        {% import 'javascript.js.twig' as js %}
+    {% endif %}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.manager_sticky_header('#managerOnScroll') }}
+        });
+    </script>
+{% endblock %}
