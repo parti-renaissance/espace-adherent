@@ -3,6 +3,10 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Election\ListTotalResult;
+use AppBundle\Entity\Election\VoteResultListCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -66,16 +70,18 @@ class VoteResult
     private $expressed = 0;
 
     /**
-     * @var array
+     * @var ListTotalResult[]|Collection
      *
-     * @ORM\Column(type="json")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Election\ListTotalResult", cascade={"all"})
      */
-    private $lists = [];
+    private $listTotalResults;
 
     public function __construct(VotePlace $votePlace, ElectionRound $electionRound)
     {
         $this->votePlace = $votePlace;
         $this->electionRound = $electionRound;
+
+        $this->listTotalResults = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,21 +149,6 @@ class VoteResult
         $this->expressed = $expressed;
     }
 
-    public function getLists(): array
-    {
-        return $this->lists;
-    }
-
-    public function setLists(array $lists): void
-    {
-        $this->lists = $lists;
-    }
-
-    public function addList(string $label, int $votes): void
-    {
-        $this->lists[] = ['label' => $label, 'votes' => $votes];
-    }
-
     public function getAbstentionsPercentage(): ?float
     {
         if (0 === $this->registered) {
@@ -193,5 +184,26 @@ class VoteResult
     public function isPartial(): bool
     {
         return $this->registered || $this->abstentions || $this->expressed || $this->voters || !empty($this->lists);
+    }
+
+    /**
+     * @return ListTotalResult[]
+     */
+    public function getListTotalResults(): array
+    {
+        return $this->listTotalResults->toArray();
+    }
+
+    public function updateLists(VoteResultListCollection $listCollection): void
+    {
+        $currentLists = $this->listTotalResults->map(static function (ListTotalResult $totalResult) {
+            return $totalResult->getList();
+        });
+
+        foreach ($listCollection->getLists() as $newListToAdd) {
+            if (!$currentLists->contains($newListToAdd)) {
+                $this->listTotalResults->add(new ListTotalResult($newListToAdd));
+            }
+        }
     }
 }

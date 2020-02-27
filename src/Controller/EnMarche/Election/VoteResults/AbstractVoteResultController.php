@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ElectionVoteResults;
+namespace AppBundle\Controller\EnMarche\Election\VoteResults;
 
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Election\ElectionManager;

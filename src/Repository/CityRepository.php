@@ -101,4 +101,19 @@ class CityRepository extends ServiceEntityRepository
 
         return $this->configurePaginator($qb, $page, $limit);
     }
+
+    /**
+     * @return City[]
+     */
+    public function findByInseeCodes(array $inseeCodes): array
+    {
+        return $this
+            ->createQueryBuilder('c')
+            ->where('c.inseeCode IN (:insee_codes)')
+            ->setParameter('insee_codes', $inseeCodes)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

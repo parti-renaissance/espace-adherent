@@ -156,6 +156,7 @@
         <service id="AppBundle\Form\DataTransformer\EmailToAdherentTransformer" />
         <service id="AppBundle\Validator\ValidAdherentForVotePlaceValidator" />
         <service id="AppBundle\Form\MunicipalManagerCityAssociationType" />
+        <service id="AppBundle\Form\ListTotalResultType" />
 
         <!-- ApplicationRequest -->
         <service id="AppBundle\ApplicationRequest\ApplicationRequestHandler" />

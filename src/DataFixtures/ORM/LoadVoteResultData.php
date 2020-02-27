@@ -26,12 +26,7 @@ class LoadVoteResultData extends Fixture
             1000,
             300,
             500,
-            400,
-            [
-                'Liste A' => '200',
-                'Liste B' => '150',
-                'Liste C' => '50',
-            ]
+            400
         ));
 
         $manager->persist($this->createVoteResult(
@@ -40,11 +35,7 @@ class LoadVoteResultData extends Fixture
             1000,
             200,
             600,
-            500,
-            [
-                'Liste A' => '350',
-                'Liste B' => '150',
-            ]
+            500
         ));
 
         $manager->flush();
@@ -64,18 +55,13 @@ class LoadVoteResultData extends Fixture
         int $registered,
         int $abstentions,
         int $voters,
-        int $expressed,
-        array $lists
+        int $expressed
     ): VoteResult {
         $voteResult = new VoteResult($votePlace, $electionRound);
         $voteResult->setRegistered($registered);
         $voteResult->setAbstentions($abstentions);
         $voteResult->setVoters($voters);
         $voteResult->setExpressed($expressed);
-
-        foreach ($lists as $label => $votes) {
-            $voteResult->addList($label, $votes);
-        }
 
         return $voteResult;
     }

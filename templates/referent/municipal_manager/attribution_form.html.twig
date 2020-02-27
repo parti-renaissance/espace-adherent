@@ -70,6 +70,7 @@
                         <td class="space--0-15">Ville</td>
                         <td>Adhérent - Responsable communale</td>
                         <td>Téléphone</td>
+                        <td>Action</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,7 +82,7 @@
                                         <strong>{{ city.name }} ({{ city.inseeCode }})</strong>
                                         <br>
                                         <span class="text--small">
-                                            {{ city.postalCode }}, {{ city.country|countryName }}
+                                            {{ city.postalCodes|join('/') }}, {{ city.country|countryName }}
                                         </span>
                                     </div>
                                 </div>
@@ -103,10 +104,21 @@
                                     {% endif %}
                                 {% endif %}
                             </td>
+                            <td>
+                                {% set items = [{
+                                    href: path('app_vote_result_list_referent_edit', {id: city.id}),
+                                    label: 'Éditer les listes',
+                                    linkAttr: {
+                                        class: 'row-action',
+                                    }
+                                }] %}
+
+                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                            </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="3" class="text--center">
+                            <td colspan="4" class="text--center">
                                 <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
                                 Aucun résultat
                             </td>

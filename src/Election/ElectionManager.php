@@ -5,18 +5,28 @@ namespace AppBundle\Election;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Entity\VoteResult;
+use AppBundle\Repository\Election\VoteResultListCollectionRepository;
 use AppBundle\Repository\ElectionRepository;
 use AppBundle\Repository\VoteResultRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ElectionManager
 {
+    private $entityManager;
     private $electionRepository;
     private $voteResultRepository;
+    private $listCollectionRepository;
 
-    public function __construct(ElectionRepository $electionRepository, VoteResultRepository $voteResultRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ElectionRepository $electionRepository,
+        VoteResultRepository $voteResultRepository,
+        VoteResultListCollectionRepository $listCollectionRepository
+    ) {
+        $this->entityManager = $entityManager;
         $this->electionRepository = $electionRepository;
         $this->voteResultRepository = $voteResultRepository;
+        $this->listCollectionRepository = $listCollectionRepository;
     }
 
     public function getClosestElectionRound(): ?ElectionRound
@@ -46,6 +56,15 @@ class ElectionManager
             return null;
         }
 
-        return $this->voteResultRepository->findOneForVotePlace($votePlace, $round) ?? new VoteResult($votePlace, $round);
+        $voteResult = $this->voteResultRepository->findOneForVotePlace($votePlace, $round) ?? new VoteResult($votePlace, $round);
+
+        $listsCollection = $this->listCollectionRepository->findOneByCityInseeCode($votePlace->getInseeCode());
+
+        if ($listsCollection) {
+            $voteResult->updateLists($listsCollection);
+            $this->entityManager->flush();
+        }
+
+        return $voteResult;
     }
 }
