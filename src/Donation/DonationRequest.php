@@ -44,7 +44,7 @@ class DonationRequest
      *     strict=true
      * )
      */
-    public $gender = Genders::FEMALE;
+    public $gender;
 
     /**
      * @Assert\NotBlank

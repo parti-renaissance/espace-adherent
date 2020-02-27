@@ -102,7 +102,11 @@
 
                 <div class="em-form__row">
                     <div class="em-form__group em-form__checkbox--inline">
-                        {{ form_widget(form.gender, { attr: { class: 'form__radio'} }) }}
+                        <div class="form__radio">
+                            {% for choice in form.gender %}
+                                {{ form_row(choice, { label_attr: { id: 'donation_gender_'~choice.vars.value }}) }}
+                            {% endfor %}
+                        </div>
                         {{ form_errors(form.gender) }}
                     </div>
                 </div>
