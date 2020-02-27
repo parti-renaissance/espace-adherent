@@ -59,6 +59,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
+    And I click the "donation_gender_male" element
     And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
@@ -98,6 +99,7 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
+    And I click the "donation_gender_male" element
     And I press "Finaliser mon don"
     Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYpagepaiement.cgi" wait otherwise
     And I should see "Numéro de carte"
@@ -134,13 +136,14 @@ Feature: The goal is to donate one time or multiple time with a subscription
     And I click the "donation_check_label" element
     And I click the "donation_check_nationality_label" element
     And I click the "field-personal-data-collection" element
+    And I click the "donation_gender_male" element
     And I press "Finaliser mon don"
     Then I should be on "/don/coordonnees?montant=50&abonnement=1"
     And I should see "Vous faites déjà un don mensuel à La République En Marche ! Vous pouvez nous contacter pour l’annuler ou faire un nouveau don unique."
 
     When I follow "faire un nouveau don unique"
     Then I should be on "/don/coordonnees?montant=50"
-    And the "app_donation[gender]" field should contain "female"
+    And the "app_donation[gender]" field should contain "male"
     And the "Nom" field should contain "Jean"
     And the "Prénom" field should contain "Dupont"
     And the "Adresse e-mail" field should contain "jean.dupont@en-marche.fr"
