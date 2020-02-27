@@ -40996,7 +40996,7 @@ class FranceCitiesBundle
                 '75120' => 'Paris 20e',
             ],
             '75116' => [
-                '75116' => 'Paris 16',
+                '75116' => 'Paris 16e',
             ],
             '76000' => [
                 '76540' => 'Rouen',
