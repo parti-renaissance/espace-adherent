@@ -48819,7 +48819,7 @@ class FranceCitiesBundle
                 '94041' => 'Ivry-sur-Seine',
             ],
             '94210' => [
-                '94068' => 'Saint maur des fosses',
+                '94068' => 'Saint-Maur-des-Fossés',
             ],
             '94220' => [
                 '94018' => 'Charenton-le-Pont',
