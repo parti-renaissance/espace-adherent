@@ -883,11 +883,11 @@
             </call>
         </service>
 
-        <service id="app.admin.elected.representatives.register" class="AppBundle\Admin\ElectedRepresentativesRegisterAdmin">
+        <service id="app.admin.elected.representative" class="AppBundle\Admin\ElectedRepresentativeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Politique" />
 
             <argument />
-            <argument>AppBundle\Entity\ElectedRepresentativesRegister</argument>
+            <argument>AppBundle\Entity\ElectedRepresentative\ElectedRepresentative</argument>
             <argument />
         </service>
 
@@ -1066,6 +1066,14 @@
 
             <argument />
             <argument>AppBundle\Entity\JeMarcheReport</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.elected.representatives.register" class="AppBundle\Admin\ElectedRepresentativesRegisterAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Archives" />
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentativesRegister</argument>
             <argument />
         </service>
 

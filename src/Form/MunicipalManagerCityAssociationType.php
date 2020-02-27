@@ -3,24 +3,18 @@
 namespace AppBundle\Form;
 
 use AppBundle\Form\DataTransformer\CityToInseeCodeTransformer;
-use AppBundle\Form\DataTransformer\EmailToAdherentTransformer;
 use AppBundle\MunicipalManager\MunicipalManagerAssociationValueObject;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MunicipalManagerCityAssociationType extends AbstractType
 {
-    private $adherentTransformer;
     private $cityTransformer;
 
-    public function __construct(
-        EmailToAdherentTransformer $adherentTransformer,
-        CityToInseeCodeTransformer $cityTransformer
-    ) {
-        $this->adherentTransformer = $adherentTransformer;
+    public function __construct(CityToInseeCodeTransformer $cityTransformer)
+    {
         $this->cityTransformer = $cityTransformer;
     }
 
@@ -28,7 +22,7 @@ class MunicipalManagerCityAssociationType extends AbstractType
     {
         $builder
             ->add('city', HiddenType::class)
-            ->add('adherent', EmailType::class, [
+            ->add('adherent', AdherentEmailType::class, [
                 'label' => false,
                 'required' => false,
                 'attr' => [
@@ -40,7 +34,6 @@ class MunicipalManagerCityAssociationType extends AbstractType
         ;
 
         $builder->get('city')->addModelTransformer($this->cityTransformer);
-        $builder->get('adherent')->addModelTransformer($this->adherentTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

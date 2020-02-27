@@ -36,6 +36,7 @@ group: un groupe
 person: un membre
 global.yes: Oui
 global.no: Non
+global.maybe: Peut-être
 Choices: Choix possibles
 Survey List: Liste des questionnaires locaux
 number_of_days: '%days% jour|%days% jours'
