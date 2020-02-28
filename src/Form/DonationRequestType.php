@@ -114,6 +114,7 @@ class DonationRequestType extends AbstractType
             ->add('emailAddress', EmailType::class)
             ->add('nationality', CountryType::class, [
                 'preferred_choices' => [Address::FRANCE],
+                'placeholder' => 'Nationalité',
             ])
             ->add('address', TextType::class)
             ->add('postalCode', TextType::class)
