@@ -3,11 +3,11 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Form\ElectionRoundType;
+use AppBundle\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ElectionAdmin extends AbstractAdmin
@@ -19,22 +19,25 @@ class ElectionAdmin extends AbstractAdmin
                 'label' => 'Nom',
                 'filter_emojis' => true,
             ])
-            ->add('introduction', TextareaType::class, [
+            ->add('introduction', PurifiedTextareaType::class, [
                 'label' => 'Introduction',
                 'filter_emojis' => true,
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
+                'purifier_type' => 'enrich_content',
+                'attr' => ['class' => 'ck-editor'],
             ])
-            ->add('proposalContent', TextareaType::class, [
+            ->add('proposalContent', PurifiedTextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les propositions',
                 'required' => false,
                 'filter_emojis' => true,
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
+                'purifier_type' => 'enrich_content',
+                'attr' => ['class' => 'ck-editor'],
             ])
-            ->add('requestContent', TextareaType::class, [
+            ->add('requestContent', PurifiedTextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les demandes',
                 'required' => false,
                 'filter_emojis' => true,
-                'attr' => ['class' => 'content-editor', 'rows' => 20],
+                'purifier_type' => 'enrich_content',
+                'attr' => ['class' => 'ck-editor'],
             ])
             ->add('rounds', CollectionType::class, [
                 'label' => 'Tours',
