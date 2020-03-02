@@ -182,6 +182,7 @@ stof_doctrine_extensions:
             sluggable: true
             softdeleteable: true
             timestampable: true
+            blameable: true
             sortable: true
 
 a2lix_translation_form:

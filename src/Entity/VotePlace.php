@@ -334,6 +334,17 @@ class VotePlace
         $this->enabled = $enabled;
     }
 
+    public function getResultForElectionRound(ElectionRound $electionRound): ?VoteResult
+    {
+        foreach ($this->voteResults as $voteResult) {
+            if ($voteResult->getElectionRound() === $electionRound) {
+                return $voteResult;
+            }
+        }
+
+        return null;
+    }
+
     public function getResultStatus(ElectionRound $electionRound): string
     {
         $voteResults = $this->voteResults->filter(function (VoteResult $voteResult) use ($electionRound) {

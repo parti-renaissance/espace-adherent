@@ -62,6 +62,11 @@ class ElectionManager
 
         if ($listsCollection) {
             $voteResult->updateLists($listsCollection);
+
+            if (!$voteResult->getId()) {
+                $this->entityManager->persist($voteResult);
+            }
+
             $this->entityManager->flush();
         }
 

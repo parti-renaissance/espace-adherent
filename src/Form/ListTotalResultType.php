@@ -48,6 +48,8 @@ class ListTotalResultType extends AbstractType implements DataTransformerInterfa
         if (isset($value['id'])) {
             $object = $this->em->getReference(ListTotalResult::class, $value['id']);
             $object->setTotal((int) ($value['total'] ?? 0));
+
+            return $object;
         }
 
         return $value;
