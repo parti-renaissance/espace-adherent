@@ -379,15 +379,10 @@ class CommitteeManager
 
     /**
      * Makes an adherent vote in one committee.
-     *
-     * @param Adherent  $adherent  The follower
-     * @param Committee $committee The committee to follow
      */
     public function enableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
     {
-        $membership = $this->getCommitteeMembership($adherent, $committee);
-
-        if ($membership) {
+        if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
             if ($existingMembership = $this->getMembershipRepository()->findVotingMembership($adherent)) {
                 $existingMembership->disableVote();
             }
@@ -401,19 +396,10 @@ class CommitteeManager
 
     /**
      * Makes an adherent cease voting in one committee.
-     *
-     * @param Adherent  $adherent  The follower
-     * @param Committee $committee The committee to follow
      */
     public function disableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
     {
-        if ($adherent->hasLoadedMemberships()) {
-            $membership = $adherent->getMembershipFor($committee);
-        } else {
-            $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
-        }
-
-        if ($membership) {
+        if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
             $membership->disableVote();
 
             $this->getManager()->flush();

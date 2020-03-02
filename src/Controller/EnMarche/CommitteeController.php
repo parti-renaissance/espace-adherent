@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Committee\CommitteeManager;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
@@ -16,7 +17,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 /**
  * @Route("/comites/{slug}")
@@ -24,6 +24,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 class CommitteeController extends Controller
 {
     use EntityControllerTrait;
+    use CanaryControllerTrait;
 
     /**
      * @Route(name="app_committee_show", methods={"GET"})
@@ -178,12 +179,10 @@ class CommitteeController extends Controller
     /**
      * @Route("/voter", name="app_committee_vote", condition="request.request.has('token')", methods={"POST"})
      */
-    public function voteAction(
-        Request $request,
-        Committee $committee,
-        CommitteeManager $manager,
-        CsrfTokenManager $tokenManager
-    ): Response {
+    public function voteAction(Request $request, Committee $committee, CommitteeManager $manager): Response
+    {
+        $this->disableInProduction();
+
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to vote committee.');
         }
@@ -199,12 +198,10 @@ class CommitteeController extends Controller
     /**
      * @Route("/ne-plus-voter", name="app_committee_unvote", condition="request.request.has('token')", methods={"POST"})
      */
-    public function unvoteAction(
-        Request $request,
-        Committee $committee,
-        CommitteeManager $manager,
-        CsrfTokenManager $tokenManager
-    ): Response {
+    public function unvoteAction(Request $request, Committee $committee, CommitteeManager $manager): Response
+    {
+        $this->disableInProduction();
+
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to vote committee.');
         }
