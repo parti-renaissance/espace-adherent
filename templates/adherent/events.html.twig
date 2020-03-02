@@ -1,24 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent/activities.html.twig' %}
 
 {% block page_title 'Mes activités' %}
 
-{% block content %}
-    <main class="search">
-        <header class="l__wrapper space--60-0 text--center">
-            <h1 class="text--large search-title">{{ block('page_title') }}</h1>
-            <h2 class="text--body text--normal">Les événements auxquels je me suis inscrit(e)</h2>
-            <div class="actions">
-                <a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}"
-                   class="btn btn--blue" rel="noopener noreferrer">
-                    Événements à venir
-                </a>
-                <a href="{{ path('app_adherent_events', {type: 'past'}) }}"
-                   class="btn btn--blue" rel="noopener noreferrer">
-                    Événements passés
-                </a>
-            </div>
-        </header>
-
+{% block tab %}
         <div class="l__wrapper">
             {% if registrations|length == 0 %}
                 <div class="text--center b__nudge--bottom-60">
@@ -106,5 +90,4 @@
             </div>
             {% endif %}
         </div>
-    </main>
 {% endblock %}

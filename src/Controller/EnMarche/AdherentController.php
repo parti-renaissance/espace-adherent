@@ -5,7 +5,9 @@ namespace AppBundle\Controller\EnMarche;
 use AppBundle\CitizenProject\CitizenProjectCreationCommand;
 use AppBundle\CitizenProject\CitizenProjectPermissions;
 use AppBundle\Committee\CommitteeCreationCommand;
+use AppBundle\Committee\CommitteeManager;
 use AppBundle\Contact\ContactMessage;
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
@@ -49,6 +51,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AdherentController extends Controller
 {
+    use CanaryControllerTrait;
+
     /**
      * @Route("/accueil", name="app_adherent_home", methods={"GET"})
      */
@@ -198,6 +202,18 @@ class AdherentController extends Controller
         return $this->render('adherent/create_citizen_project.html.twig', [
             'form' => $form->createView(),
             'adherent' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/mes-comites", name="app_adherent_committees", methods={"GET"})
+     */
+    public function committeesAction(CommitteeManager $manager, UserInterface $adherent): Response
+    {
+        $this->disableInProduction();
+
+        return $this->render('adherent/committees.html.twig', [
+            'committeeMemberships' => $manager->getCommitteeMembershipsForAdherent($adherent),
         ]);
     }
 

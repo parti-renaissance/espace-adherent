@@ -1,0 +1,143 @@
+{% extends 'adherent/activities.html.twig' %}
+
+{% block page_title 'Mes activités' %}
+
+{% block tab %}
+{% set votingCommitteeName = '' %}
+    <div class="l__wrapper">
+        {% for membership in committeeMemberships %}
+            <div class="committee-committee search__results__row l__row l__row--h-stretch l__row--v-center search__results__row--referent-committee">
+                <div class="search__results__info l__col l__col--v-stretch l__col--left">
+                    <div class="search__results__meta">
+                        <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
+                            <a class="link--no-decor"
+                               href="{{ path("app_committee_show", { slug: membership.committee.slug }) }}">
+                                {{ membership.committee.name }}
+                            </a>
+                        </h2>
+                        <div>
+                            <span class="text--small text--bold">{{ membership.committee.getCityName }}</span>
+                            {{ 'committee.members_count'|transchoice(membership.committee.membersCount) }}
+                        </div>
+                    </div>
+
+                    <div class="search__results__cta">
+                        <button role="button"
+                                class="btn btn--blue committee-action-button"
+                                id="committee-toggle-membership-{{ loop.index0 }}"
+                                data-action="quitter"
+                                data-slug="{{ membership.committee.slug }}"
+                                data-csrf-token="{{ csrf_token('committee.unfollow') }}">
+                            <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
+                            Quitter ce comité
+                        </button>
+                        <a href="{{ path("app_committee_show", { slug: membership.committee.slug }) }}"
+                           class="btn btn--ghosting--blue" target="_blank" rel="noopener noreferrer">
+                            Voir
+                        </a>
+                    </div>
+                </div>
+
+                <div class="switch-wrapper">
+                    {% if membership.isVotingCommittee %}
+                    {% set votingCommitteeName = membership.committee.name %}
+                    <button role="button"
+                            class="btn btn--ghosting--blue committee-action-button"
+                            id="committee-toggle-vote-{{ loop.index0 }}"
+                            data-action="ne-plus-voter"
+                            data-slug="{{ membership.committee.slug }}"
+                            data-csrf-token="{{ csrf_token('committee.vote') }}">
+                        <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
+                        Ne plus voter dans ce comité
+                    </button>
+                    {% else %}
+                        {% if votingCommitteeName is not empty %}
+                        <button role="button"
+                                class="btn btn--blue committee-toggle-button"
+                                id="committee-toggle-vote-{{ loop.index0 }}"
+                                data-slug="{{ membership.committee.slug }}">
+                            <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
+                            Voter dans ce comité
+                        </button>
+                        {% else %}
+                        <button role="button"
+                                class="btn btn--blue committee-action-button"
+                                id="committee-toggle-vote-{{ loop.index0 }}"
+                                data-action="voter"
+                                data-slug="{{ membership.committee.slug }}"
+                                data-csrf-token="{{ csrf_token('committee.vote') }}">
+                            <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
+                            Voter dans ce comité
+                        </button>
+                        {% endif %}
+                    <p class="error-label text--error"></p>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <div class="text--center b__nudge--bottom-60">
+                Vous n'êtes inscrit(e) dans aucun comité pour le moment.<br />
+                <a href="{{ path('app_search_committees') }}">Découvrez les comités proches de chez vous !</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="em-modal" style="display: none">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <span class="close"></span>
+                Vous êtes sur le point de changer de comité. Vous ne pourrez plus voter dans le comité {{ votingCommitteeName }}, êtes-vous sûr de vouloir changer de comité de vote?
+            <button role="button"
+                    class="btn btn--blue committee-action-button"
+                    id="committee-toggle-vote-modal"
+                    data-action="voter"
+                    data-csrf-token="{{ csrf_token('committee.vote') }}">
+                <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
+            Changer de comité de vote
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        Kernel.onLoad(function(di) {
+            const toggleModal = (e) => {
+                let modal = dom('.em-modal');
+                modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+            }
+            var api = di.get('api');
+
+            findAll(document, '.committee-toggle-button').forEach(function (button) {
+                on(button, 'click', function () {
+                    dom('.em-modal button').setAttribute('data-slug', button.getAttribute('data-slug'));
+                    toggleModal();
+                });
+            });
+
+            on(dom('.modal-background'), 'click', toggleModal);
+            on(dom('.close'), 'click', toggleModal);
+
+            findAll(document, '.committee-action-button').forEach(function (button) {
+                on(button, 'click', function () {
+                    removeClass(find(button, '.btn-loader'), 'visually-hidden');
+                    button.disabled = true;
+
+                    api.toggleCommitteeMembership(
+                        button.getAttribute('data-slug'),
+                        button.getAttribute('data-action'),
+                        button.getAttribute('data-csrf-token'),
+                        function (response) {
+                            if (response === null) {
+                                button.parentNode.querySelector('.error-label').innerText = 'Vous ne pouvez pas voter dans ce comité';
+                                addClass(find(button, '.btn-loader'), 'visually-hidden');
+                                button.disabled = false;
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    );
+                });
+            });
+        });
+    </script>
+{% endblock %}
