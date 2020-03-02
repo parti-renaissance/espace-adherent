@@ -26,12 +26,13 @@ class VoteResultType extends AbstractType
             ->add('expressed', IntegerType::class, [
                 'attr' => ['min' => 0],
             ])
-            ->add('lists', CollectionType::class, [
-                'entry_type' => VoteResultListType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
+            ->add('listTotalResults', CollectionType::class, [
+                'entry_type' => ListTotalResultType::class,
+                'allow_add' => false,
+                'allow_delete' => false,
+                'entry_options' => [
+                    'label' => false,
+                ],
             ])
         ;
     }

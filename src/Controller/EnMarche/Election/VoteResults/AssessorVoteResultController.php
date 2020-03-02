@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ElectionVoteResults;
+namespace AppBundle\Controller\EnMarche\Election\VoteResults;
 
 use AppBundle\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

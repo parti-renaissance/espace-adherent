@@ -284,25 +284,50 @@
     </div>
 {% endblock %}
 
-{% block _vote_result_lists_entry_widget %}
+{% block _vote_result_listTotalResults_entry_widget %}
     <div class="l__row">
         <div class="l__col l__col--half">
             <div class="form__row">
-                {{ form_row(form.label, {attr: {class: 'form--full'}}) }}
+                {{ form_row(form.listLabel, {label: 'Libellé', attr: {class: 'form--full'}}) }}
             </div>
         </div>
         <div class="l__col l__col--half b__nudge--left-medium">
             <div class="form__row vote-result-percent-list-field">
-                {{ form_row(form.votes, {attr: {class: 'form--full'}}) }}
+                {{ form_row(form.total, {label: 'Votants', attr: {class: 'form--full'}}) }}
+                {{ form_row(form.id) }}
             </div>
         </div>
+    </div>
+{% endblock %}
 
-        {% if not form.vars.disabled %}
+{% block _vote_result_list_collection_lists_entry_row %}
+    <div class="l__row l__row--center">
+        <div class="l__col l__col--grow-1">
+            <div class="form__row">
+                {{ form_widget(form.label, {attr: {placeholder: 'Libellé'}}) }}
+            </div>
+        </div>
+        <div class="l__col l__col--grow-1 b__nudge--left-medium">
+            <div class="form__row">
+                {{ form_widget(form.nuance, {attr: {placeholder: 'Nuance'}}) }}
+            </div>
+        </div>
+        <div class="l__col l__col--grow-1 b__nudge--left-medium">
+            <div class="form__row">
+                {{ form_widget(form.adherentCount, {attr: {placeholder: 'Nombre d\'adhérents'}}) }}
+            </div>
+        </div>
+        <div class="l__col l__col--grow-1 b__nudge--left-medium">
+            <div class="form__row">
+                {{ form_widget(form.eligibleCount, {attr: {placeholder: 'Nombre d\'adhérents en position éligible'}}) }}
+            </div>
+        </div>
+        <div class="l__col l__col--top b__nudge--left-medium">
             <div class="em-form__action-container">
-                <a href="#" class="em-form__action b__nudge--top-10 em-form__action--remove collection-remove">
+                <a href="#" class="em-form__action b__nudge--bottom em-form__action--remove collection-remove">
                     <i class="fa fa-trash"></i>
                 </a>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}

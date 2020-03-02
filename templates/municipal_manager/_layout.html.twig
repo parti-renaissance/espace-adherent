@@ -26,7 +26,7 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, 'app_assessors_municipal_manager_*') ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, ['app_assessors_municipal_manager_*', 'app_vote_result_list_municipal_manager_edit']) ? 'active' }}">
                                 <a href="{{ path('app_assessors_municipal_manager_attribution_form') }}">Assesseurs</a>
                             </li>
                         </ul>
