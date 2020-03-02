@@ -123,7 +123,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         $query = $qb->where('cm.adherent = :adherent')
             ->andWhere($qb->expr()->eq('cm.enableVote', true))
             ->setParameter('adherent', $adherent)
-            ->addOrderBy('cm.privilege', 'DESC')
             ->getQuery()
         ;
 
@@ -563,18 +562,5 @@ SQL
     public function isAdherentInCommittee(Adherent $adherent, Committee $committee): bool
     {
         return 0 !== $this->count(['adherent' => $adherent, 'committee' => $committee]);
-    }
-
-    public function findEnabledVotingCommittee(array $criteria): array
-    {
-        // If we try to persist a committee membership without voting enabled, no need to check
-        if (false === $criteria['enableVote']) {
-            return [];
-        }
-
-        return $this->findBy([
-            'adherent' => $criteria['adherent'],
-            'enableVote' => true,
-        ]);
     }
 }

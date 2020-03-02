@@ -6,7 +6,6 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -31,10 +30,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     }
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeMembershipRepository")
- * @UniqueEntity(
- *     fields={"adherent", "enableVote"},
- *     repositoryMethod="findEnabledVotingCommittee"
- * )
  *
  * @Algolia\Index(autoIndex=false)
  */
