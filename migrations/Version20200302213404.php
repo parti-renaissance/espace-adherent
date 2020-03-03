@@ -17,9 +17,19 @@ final class Version20200302213404 extends AbstractMigration
         ADD 
           updated_by_id INT UNSIGNED DEFAULT NULL, 
         ADD 
-          created_at DATETIME NOT NULL, 
+          created_at DATETIME DEFAULT NULL, 
         ADD 
-          updated_at DATETIME NOT NULL');
+          updated_at DATETIME DEFAULT NULL');
+
+        $this->addSql('UPDATE vote_result SET created_at = NOW(), updated_at = NOW()');
+
+        $this->addSql('ALTER TABLE 
+          vote_result 
+        CHANGE 
+          created_at created_at DATETIME NOT NULL, 
+        CHANGE 
+          updated_at updated_at DATETIME NOT NULL');
+
         $this->addSql('ALTER TABLE 
           vote_result 
         ADD 
