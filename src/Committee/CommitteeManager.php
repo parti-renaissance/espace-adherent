@@ -385,6 +385,7 @@ class CommitteeManager
         if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
             if ($existingMembership = $this->getMembershipRepository()->findVotingMembership($adherent)) {
                 $existingMembership->disableVote();
+                $this->getManager()->flush();
             }
             $membership->enableVote();
 
