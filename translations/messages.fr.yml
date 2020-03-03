@@ -76,6 +76,7 @@ user: utilisateur
 citizen_project_holder: porteur de projet
 municipal_chief: Candidat Municipales 2020 🇫🇷
 municipal_manager: Responsable communal
+election_results_reporter: Rapporteur résultats
 print_privilege: Accès LMI
 
 adherent.registration.success: |

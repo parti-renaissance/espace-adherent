@@ -666,6 +666,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $assessor->setAssessorRole(new AssessorRoleAssociation($this->getReference('vote-place-lille-wazemmes')));
+        $assessor->setElectionResultsReporter(true);
         $this->addReference('assessor-1', $assessor);
 
         $municipalManager = $adherentFactory->createFromArray([

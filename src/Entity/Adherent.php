@@ -467,6 +467,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $consularManagedArea;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $electionResultsReporter = false;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -678,6 +685,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_PRINT_PRIVILEGE';
         }
 
+        if ($this->isElectionResultsReporter()) {
+            $roles[] = 'ROLE_ELECTION_RESULTS_REPORTER';
+        }
+
         return array_merge($roles, $this->roles);
     }
 
@@ -716,6 +727,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isSenator()
             || $this->isMunicipalChief()
             || $this->isMunicipalManager()
+            || $this->isElectionResultsReporter()
         ;
     }
 
@@ -1856,5 +1868,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isEqualTo(UserInterface $user)
     {
         return $this->id === $user->getId() && $this->roles === $user->getRoles();
+    }
+
+    public function isElectionResultsReporter(): bool
+    {
+        return $this->electionResultsReporter;
+    }
+
+    public function setElectionResultsReporter(bool $electionResultsReporter): void
+    {
+        $this->electionResultsReporter = $electionResultsReporter;
     }
 }

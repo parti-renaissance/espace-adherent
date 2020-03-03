@@ -368,6 +368,12 @@ HELP
                     'required' => false,
                 ])
             ->end()
+            ->with('Élections 🇫🇷', ['class' => 'col-md-6'])
+                ->add('electionResultsReporter', null, [
+                    'label' => 'Accès au formulaire de remontée des résultats du ministère de l\'Intérieur',
+                    'required' => false,
+                ])
+            ->end()
             ->with('Mandat électif', ['class' => 'col-md-6'])
                 ->add('managedDistrict', AvailableDistrictAutocompleteType::class, [
                     'label' => 'Circonscription député',
@@ -621,6 +627,12 @@ HELP
                     if (\in_array(AdherentRoleEnum::MUNICIPAL_MANAGER, $value['value'], true)) {
                         $qb->leftJoin(sprintf('%s.municipalManagerRole', $alias), 'municipalManagerRole');
                         $where->add('municipalManagerRole IS NOT NULL');
+                    }
+
+                    // Election results reporter
+                    if (\in_array(AdherentRoleEnum::ELECTION_RESULTS_REPORTER, $value['value'], true)) {
+                        $where->add(sprintf('%s.electionResultsReporter = :election_result_reporter', $alias));
+                        $qb->setParameter('election_result_reporter', true);
                     }
 
                     // J'écoute Manager

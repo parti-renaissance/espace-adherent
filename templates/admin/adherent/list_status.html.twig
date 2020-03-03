@@ -62,6 +62,10 @@
             <span class="label label-primary" style="padding: 2px;">Responsable communal</span><br/>
         {% endif %}
 
+        {% if object.isElectionResultsReporter %}
+            <span class="label label-primary" style="padding: 2px;">Rapporteur résultats</span><br/>
+        {% endif %}
+
         {% if object.isMunicipalChief %}
             <span class="label label-primary" style="padding: 2px;">
                 Candidat Municipales 2020 🇫🇷
