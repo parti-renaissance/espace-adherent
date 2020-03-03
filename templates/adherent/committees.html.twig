@@ -32,7 +32,7 @@
                                 data-slug="{{ membership.committee.slug }}"
                                 data-csrf-token="{{ csrf_token('committee.unfollow') }}">
                             <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
-                            Ne plus suivre
+                            Quitter ce comité
                         </button>
                     </div>
                     <div class="right">
@@ -90,7 +90,7 @@
             </div>
         {% endfor %}
     </div>
-    <div class="em-modal" style="">
+    <div class="em-modal" style="display: none;">
         <div class="modal-background"></div>
         <div class="modal-content">
             <span class="close"></span>
