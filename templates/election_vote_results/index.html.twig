@@ -3,6 +3,8 @@
 {% block vote_results_content %}
     {% form_theme form with ['jquery.collection.html.twig'] %}
 
+    <p>Résultats du bureau de vote: <strong>{{ vote_result.votePlace.label }}</strong></p>
+
     <p class="alert alert--tips">{{ vote_result.electionRound.label }}</p>
 
     {{ form_start(form, { attr: { class: 'em-form' } }) }}
@@ -10,6 +12,16 @@
         <div class="text--right b__nudge--bottom-small">
             <button class="btn btn--blue--soft" type="submit">Sauvegarder</button>
         </div>
+
+        {% if vote_result.updatedBy is defined %}
+            <p class="text--small text--silver-gray text--right">
+                dernière modification effectuée par <strong>{{ app.user == vote_result.updatedBy ? 'vous' : vote_result.updatedBy.fullName }}</strong>
+
+                {% if vote_result.updatedAt is defined %}
+                    , le {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy HH:mm") }}
+                {% endif %}
+            </p>
+        {% endif %}
 
         <div class="l__row manager__filters">
             <div class="l__col l__col--half">

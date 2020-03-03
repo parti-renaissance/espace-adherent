@@ -88,7 +88,7 @@
                         <td class="space--0-15">Bureau de vote</td>
                         <td>Bureau de vote - Alias</td>
                         <td>Adhérent - Assesseur</td>
-                        <td>Téléphone</td>
+                        <td>Dernière<br/>modification</td>
                         <td>État</td>
                         <td>Actions</td>
                     </tr>
@@ -116,18 +116,32 @@
                                     {{ form_row(form[index].votePlace) }}
                                 {% endif %}
                             </td>
-                            <td>
+                            <td class="text--center">
                                 {% if form[index] is defined %}
                                     {{ form_row(form[index].adherent) }}
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if form[index] is defined %}
+
                                     {% set adherent = form[index].vars.data.adherent %}
 
                                     {% if adherent and adherent.phone %}
-                                        <a href="tel:{{ adherent.phone|phone_number_format }}">{{ adherent.phone|phone_number_format }}</a>
+                                        {% set phone_number = adherent.phone|phone_number_format %}
+                                        <div class="b__nudge--top-10">
+                                            <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+                                        </div>
                                     {% endif %}
+                                {% endif %}
+                            </td>
+                            <td class="text--center">
+                                {% set vote_result = place.getResultForElectionRound(current_election_round) %}
+                                {% if vote_result and vote_result.updatedBy %}
+                                    <strong>{{ app.user == vote_result.updatedBy ? 'Vous' : vote_result.updatedBy.fullName }}</strong>
+                                    {% if vote_result.updatedAt %}
+                                        <br/>
+                                        <span class="text--small">
+                                            {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy HH:mm") }}
+                                        </span>
+                                    {% endif %}
+                                {% else %}
+                                    ~
                                 {% endif %}
                             </td>
                             <td class="status__1">

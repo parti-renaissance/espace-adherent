@@ -8,6 +8,8 @@ use AppBundle\Entity\Election\VoteResultListCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VoteResultRepository")
@@ -16,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class VoteResult
 {
+    use TimestampableEntity;
+
     /**
      * @var int
      *
@@ -72,9 +76,27 @@ class VoteResult
     /**
      * @var ListTotalResult[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Election\ListTotalResult", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\ListTotalResult", mappedBy="voteResult", cascade={"all"})
      */
     private $listTotalResults;
+
+    /**
+     * @var Adherent|null
+     *
+     * @Gedmo\Blameable(on="create")
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     */
+    protected $createdBy;
+
+    /**
+     * @var Adherent|null
+     *
+     * @Gedmo\Blameable(on="update")
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     */
+    protected $updatedBy;
 
     public function __construct(VotePlace $votePlace, ElectionRound $electionRound)
     {
@@ -202,8 +224,36 @@ class VoteResult
 
         foreach ($listCollection->getLists() as $newListToAdd) {
             if (!$currentLists->contains($newListToAdd)) {
-                $this->listTotalResults->add(new ListTotalResult($newListToAdd));
+                $listTotalResult = new ListTotalResult($newListToAdd);
+                $listTotalResult->setVoteResult($this);
+
+                $this->listTotalResults->add($listTotalResult);
             }
         }
+    }
+
+    public function setListTotalResults(array $listTotalResults): void
+    {
+        $this->listTotalResults = new ArrayCollection($listTotalResults);
+    }
+
+    public function getCreatedBy(): ?Adherent
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?Adherent $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    public function getUpdatedBy(): ?Adherent
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?Adherent $updatedBy): void
+    {
+        $this->updatedBy = $updatedBy;
     }
 }

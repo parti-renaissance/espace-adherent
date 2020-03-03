@@ -188,6 +188,9 @@
         <service id="AppBundle\EventListener\ManageReferentTeamMembersListener">
             <tag name="doctrine.event_subscriber"/>
         </service>
+        <service id="AppBundle\Election\Listener\VoteResultBlameableListener">
+            <tag name="doctrine.event_subscriber"/>
+        </service>
         <service id="AppBundle\EventSubscriber\ChangeIdeaAuthorCategoryListener">
             <tag name="doctrine.event_listener" event="preUpdate" lazy="true" />
             <tag name="doctrine.event_listener" event="postUpdate" lazy="true" />
