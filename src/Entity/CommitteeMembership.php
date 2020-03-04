@@ -98,6 +98,13 @@ class CommitteeMembership
      */
     private $enableVote;
 
+    /**
+     * @var CommitteeCandidacy|null
+     *
+     * @ORM\OneToOne(targetEntity="CommitteeCandidacy", cascade={"all"}, orphanRemoval=true)
+     */
+    private $committeeCandidacy;
+
     private function __construct(
         UuidInterface $uuid,
         Committee $committee,
@@ -216,6 +223,21 @@ class CommitteeMembership
     public function setPrivilege(string $privilege): void
     {
         $this->privilege = $privilege;
+    }
+
+    public function getCommitteeCandidacy(): ?CommitteeCandidacy
+    {
+        return $this->committeeCandidacy;
+    }
+
+    public function setCommitteeCandidacy(CommitteeCandidacy $committeeCandidacy): void
+    {
+        $this->committeeCandidacy = $committeeCandidacy;
+    }
+
+    public function removeCandidacy(): void
+    {
+        $this->committeeCandidacy = null;
     }
 
     public function isVotingCommittee(): bool

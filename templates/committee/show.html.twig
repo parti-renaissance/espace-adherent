@@ -73,21 +73,29 @@
             {% endif %}
 
             {% if has_role_adherent %}
-            var toggleMembershipButton = dom('#committee-toggle-membership');
-            var toggleMembershipLoader = dom('#committee-follow-btn-loader');
-
-            toggleMembershipButton && on(toggleMembershipButton, 'click', function () {
-                toggleMembershipLoader.style.display = 'inline';
-                toggleMembershipButton.disabled = true;
-
-                di.get('api').toggleCommitteeMembership(
-                    committeeSlug,
-                    toggleMembershipButton.getAttribute('data-action'),
-                    toggleMembershipButton.getAttribute('data-csrf-token'),
-                    function (result) {
-                        window.location.reload();
+            findAll(document, '.committee-action-button').forEach(function (button) {
+                on(button, 'click', function () {
+                    let loader = find(button, '.btn-loader');
+                    if (loader) {
+                        removeClass(loader, 'visually-hidden');
                     }
-                );
+                    button.disabled = true;
+
+                    di.get('api').toggleCommitteeMembership(
+                        committeeSlug,
+                        button.getAttribute('data-action'),
+                        button.getAttribute('data-csrf-token'),
+                        function (response) {
+                            if (response === null) {
+                                button.parentNode.querySelector('.error-label').innerText = 'Vous ne pouvez pas candidater dans ce comité';
+                                addClass(find(button, '.btn-loader'), 'visually-hidden');
+                                button.disabled = false;
+                            } else {
+                                window.location.reload();
+                            }
+                        }
+                    );
+                });
             });
             {% endif %}
         });
@@ -130,7 +138,7 @@
             </div>
         {% elseif can_follow(committee) %}
             <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-follow btn--no-wrap"
+                    class="btn btn--no-border btn--text-blue committee-follow btn--no-wrap committee-action-button"
                     id="committee-toggle-membership"
                     data-action="rejoindre"
                     data-csrf-token="{{ csrf_token('committee.follow') }}">
@@ -139,7 +147,7 @@
             </button>
         {% elseif can_unfollow(committee) %}
             <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap"
+                    class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap committee-action-button"
                     id="committee-toggle-membership"
                     data-action="quitter"
                     data-csrf-token="{{ csrf_token('committee.unfollow') }}">
@@ -196,6 +204,36 @@
             </div>
         </section>
     {% else %}
+        {% if committee.committeeElection and is_voting_committee(app.user, committee) %}
+        <section class="election-box">
+            <div>
+                <h2>Candidater pour participer au Conseil Territorial</h2>
+            </div>
+            <div>
+            {% if is_candidate(app.user, committee) %}
+                <button role="button"
+                        class="btn btn--blue committee-follow btn--no-wrap committee-action-button"
+                        id="committee-toggle-candidacy"
+                        data-action="retirer-sa-candidature"
+                        data-csrf-token="{{ csrf_token('committee.uncandidate') }}">
+                    <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                    Je retire ma candidature
+                </button>
+                <p class="error-label"></p>
+            {% else %}
+                <button role="button"
+                        class="btn btn--blue committee-follow btn--no-wrap committee-action-button"
+                        id="committee-toggle-candidacy"
+                        data-action="candidater"
+                        data-csrf-token="{{ csrf_token('committee.candidate') }}">
+                    <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                    Je candidate
+                </button>
+                <p class="error-label"></p>
+            {% endif %}
+            </div>
+        </section>
+        {% endif %}
         <section class="committee__timeline" id="committee-timeline">
             <h2 class=" space--20-0 b__nudge--top-40">
                 Messages des animateurs

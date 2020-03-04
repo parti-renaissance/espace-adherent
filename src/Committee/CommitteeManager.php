@@ -9,6 +9,7 @@ use AppBundle\Committee\Event\UnfollowCommitteeEvent;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeCandidacy;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\Reporting\CommitteeMembershipAction;
@@ -384,8 +385,7 @@ class CommitteeManager
     {
         if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
             if ($existingMembership = $this->getMembershipRepository()->findVotingMembership($adherent)) {
-                $existingMembership->disableVote();
-                $this->getManager()->flush();
+                $this->disableVoteInCommittee($adherent, $existingMembership->getCommittee());
             }
             $membership->enableVote();
 
@@ -401,7 +401,37 @@ class CommitteeManager
     public function disableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
     {
         if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
+            if ($membership->getCommitteeCandidacy()) {
+                throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $committee->getName);
+            }
             $membership->disableVote();
+
+            $this->getManager()->flush();
+        }
+
+        return $membership;
+    }
+
+    public function candidateInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    {
+        $membership = $this->getCommitteeMembership($adherent, $committee);
+
+        if ($membership && $membership->isVotingCommittee()) {
+            $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $membership);
+            $membership->setCommitteeCandidacy($candidacy);
+
+            $this->getManager()->flush();
+        }
+
+        return $membership;
+    }
+
+    public function removeCandidacy(Adherent $adherent, Committee $committee)
+    {
+        $membership = $this->getCommitteeMembership($adherent, $committee);
+
+        if ($membership && $membership->getCommitteeCandidacy()) {
+            $membership->removeCandidacy();
 
             $this->getManager()->flush();
         }

@@ -72,6 +72,18 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
+    public static function createRunningCommitteeCandidacyException(
+        UuidInterface $membershipUuid,
+        string $committeeName,
+        \Exception $previous = null
+    ) {
+        return new self(
+            $membershipUuid,
+            sprintf('You cannont enable voting in committee membership "%s", there already is a running committee candidacy in committee "%s".', $membershipUuid, $committeeName),
+            $previous
+        );
+    }
+
     public function getMembershipUuid(): UuidInterface
     {
         return $this->membershipUuid;
