@@ -307,19 +307,19 @@
                 {{ form_widget(form.label, {attr: {placeholder: 'Libellé'}}) }}
             </div>
         </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium">
+        <div class="l__col l__col--grow-1 b__nudge--left-medium" style="width:200px">
             <div class="form__row">
                 {{ form_widget(form.nuance, {attr: {placeholder: 'Nuance'}}) }}
             </div>
         </div>
         <div class="l__col l__col--grow-1 b__nudge--left-medium">
             <div class="form__row">
-                {{ form_widget(form.adherentCount, {attr: {placeholder: 'Nombre d\'adhérents'}}) }}
+                {{ form_widget(form.adherentCount, {attr: {placeholder: 'Adhérents LaREM sur la liste'}}) }}
             </div>
         </div>
         <div class="l__col l__col--grow-1 b__nudge--left-medium">
             <div class="form__row">
-                {{ form_widget(form.eligibleCount, {attr: {placeholder: 'Nombre d\'adhérents en position éligible'}}) }}
+                {{ form_widget(form.eligibleCount, {attr: {placeholder: 'dont positions éligibles'}}) }}
             </div>
         </div>
         <div class="l__col l__col--top b__nudge--left-medium">
@@ -329,5 +329,28 @@
                 </a>
             </div>
         </div>
+    </div>
+{% endblock %}
+
+{% block _city_vote_result_lists_entry_widget %}
+    <div class="l__row">
+        <div class="l__col l__col--half">
+            <div class="form__row">
+                {{ form_row(form.label, {attr: {class: 'form--full'}}) }}
+            </div>
+        </div>
+        <div class="l__col l__col--half b__nudge--left-medium">
+            <div class="form__row vote-result-percent-list-field">
+                {{ form_row(form.votes, {attr: {class: 'form--full'}}) }}
+            </div>
+        </div>
+
+        {% if not form.vars.disabled %}
+            <div class="em-form__action-container">
+                <a href="#" class="em-form__action b__nudge--top-10 em-form__action--remove collection-remove">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

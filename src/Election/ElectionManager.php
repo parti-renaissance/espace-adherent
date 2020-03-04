@@ -2,9 +2,12 @@
 
 namespace AppBundle\Election;
 
+use AppBundle\Entity\City;
+use AppBundle\Entity\CityVoteResult;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\VotePlace;
 use AppBundle\Entity\VoteResult;
+use AppBundle\Repository\CityVoteResultRepository;
 use AppBundle\Repository\Election\VoteResultListCollectionRepository;
 use AppBundle\Repository\ElectionRepository;
 use AppBundle\Repository\VoteResultRepository;
@@ -16,16 +19,19 @@ class ElectionManager
     private $electionRepository;
     private $voteResultRepository;
     private $listCollectionRepository;
+    private $cityVoteResultRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ElectionRepository $electionRepository,
         VoteResultRepository $voteResultRepository,
+        CityVoteResultRepository $cityVoteResultRepository,
         VoteResultListCollectionRepository $listCollectionRepository
     ) {
         $this->entityManager = $entityManager;
         $this->electionRepository = $electionRepository;
         $this->voteResultRepository = $voteResultRepository;
+        $this->cityVoteResultRepository = $cityVoteResultRepository;
         $this->listCollectionRepository = $listCollectionRepository;
     }
 
@@ -71,5 +77,14 @@ class ElectionManager
         }
 
         return $voteResult;
+    }
+
+    public function getCityVoteResultForCurrentElectionRound(City $city): ?CityVoteResult
+    {
+        if (!$round = $this->getClosestElectionRound()) {
+            return null;
+        }
+
+        return $this->cityVoteResultRepository->findOneForCity($city, $round) ?? new CityVoteResult($city, $round);
     }
 }

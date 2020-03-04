@@ -46,12 +46,16 @@ class VoteResultsExporter
                     ];
 
                     $listIndex = 1;
-                    foreach ($voteResult->getLists() as $list) {
-                        $listPercentage = round(($list['votes'] / $voteResult->getVoters()) * 100, 2);
+                    foreach ($voteResult->getListTotalResults() as $result) {
+                        $list = $result->getList();
+                        $listPercentage = round(($result->getTotal() / $voteResult->getVoters()) * 100, 2);
 
-                        $fields["Liste $listIndex"] = $list['label'];
-                        $fields["Votes liste $listIndex"] = $list['votes'];
+                        $fields["Liste $listIndex"] = $list->getLabel();
+                        $fields["Votes liste $listIndex"] = $result->getTotal();
                         $fields["% liste $listIndex"] = $listPercentage.' %';
+                        $fields["Nuance liste $listIndex"] = $list->getNuance();
+                        $fields["Adhérents LaREM sur la liste $listIndex"] = $list->getAdherentCount();
+                        $fields["Adhérents éligible la liste $listIndex"] = $list->getEligibleCount();
 
                         ++$listIndex;
                     }

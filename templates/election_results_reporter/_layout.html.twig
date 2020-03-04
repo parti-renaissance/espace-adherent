@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block page_title 'Mon espace Rapporteur résultats' %}
+
+{% block banner '' %}
+
+{% block content %}
+    <main>
+        <section class="manager-space b__nudge--bottom-huge">
+            <header class="manager-header">
+                <div class="l__wrapper">
+                    <div class="first-section">
+                        <p class="report">🐛 Bug ? Nouveau besoin ?
+                            <a href="mailto:cellule.technique.municipales&#64;en-marche.fr" class="text--blue--dark link--no-decor">Écrivez-nous !</a>
+                        </p>
+                    </div>
+                    <div class="second-section">
+                        <h1 class="page-title text--large b__nudge--bottom">
+                            {{ block('page_title') }}
+                        </h1>
+                    </div>
+                    <nav class="manager-header__menu">
+                        <ul>
+                            <li class="{{ is_active_route(app.request, ['app_election_results_reporter_space_cities_list', 'app_city_vote_results_edit']) ? 'active' }}">
+                                <a href="{{ path('app_election_results_reporter_space_cities_list') }}">Communes</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="l__wrapper text--body">
+                <main>
+                    <section class="b__nudge--bottom-huge">
+                        {% block space_wrapper %}{% endblock %}
+                    </section>
+                </main>
+            </div>
+        </section>
+    </main>
+{% endblock %}
