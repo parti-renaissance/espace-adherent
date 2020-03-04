@@ -1,0 +1,88 @@
+{% extends 'election_results_reporter/_layout.html.twig' %}
+
+{% block space_wrapper %}
+    <div class="manager__filters">
+        <div class="manager__filters__form">
+            {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
+            <div class="manager__filters__row">
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            {{ form_row(form.name, {label: 'Nom de ville', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manager__filters__section">
+                    <div class="manager__filters__group">
+                        <div class="filter__row">
+                            {{ form_row(form.inseeCode, {label: 'Code INSEE / Département', label_attr: {class: 'filter__label'}, attr: {class: 'filter__field', placeholder: 'Saisissez un code INSEE'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="manager__filters__actions b__nudge--top">
+                <button type="submit" class="btn btn--black b__nudge--bottom-medium">Filtrer</button>
+                <a href="{{ path('app_election_results_reporter_space_cities_list') }}" class="btn btn--no-border b__nudge--bottom-medium btn-filter--reset">Réinitialiser le filtre</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <table class="datagrid__table-manager">
+        <thead>
+        <tr>
+            <td class="space--0-15">Ville</td>
+            <td>Insee code</td>
+            <td>Département</td>
+            <td>Action</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for city in cities %}
+                <tr>
+                    <td>
+                        <strong>{{ city.name }}</strong><br/>
+                        <span class="text--small">
+                            {{ city.postalCodes|join('/') }}
+                        </span>
+                    </td>
+                    <td>
+                        {{ city.inseeCode }}
+                    </td>
+                    <td>
+                        <strong>{{ city.inseeCode|slice(0, 2) }}</strong>
+                    </td>
+                    <td>
+                        {% set items = [{
+                            href: path('app_city_vote_results_edit', {id: city.id}),
+                            label: 'Voir les résultats',
+                            linkAttr: {
+                                class: 'row-action',
+                            }
+                        }] %}
+
+                        {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                        Aucun résultat
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include 'components/_modern_pagination.html.twig' with {
+        current_page: cities.currentPage,
+        total_pages: cities.lastPage,
+    } %}
+{% endblock %}
