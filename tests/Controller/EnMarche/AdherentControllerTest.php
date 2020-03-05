@@ -9,6 +9,7 @@ use AppBundle\DataFixtures\ORM\LoadIdeaThreadData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CitizenProject;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeElection;
 use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
 use AppBundle\Entity\IdeasWorkshop\Idea;
 use AppBundle\Entity\IdeasWorkshop\Thread;
@@ -958,6 +959,7 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertInstanceOf(Committee::class, $committee = $this->committeeRepository->findMostRecentCommittee());
         $this->assertSame('Lyon est En Marche !', $committee->getName());
+        $this->assertInstanceOf(CommitteeElection::class, $committee->getCommitteeElection());
         $this->assertTrue($committee->isWaitingForApproval());
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(CommitteeCreationConfirmationMessage::class, $emaiLAddress));
 
