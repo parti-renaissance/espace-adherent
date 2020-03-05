@@ -46,7 +46,6 @@
                                         data-slug="{{ membership.committee.slug }}"
                                         data-csrf-token="{{ csrf_token('committee.vote') }}">
                                         <span class="btn-loader"></span>
-                                    <!-- <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" /> -->
                                 </button>
                                 <span class="em-switch__label">Vous votez dans ce comité</span>
                             </div>
@@ -59,7 +58,6 @@
                                             id="committee-toggle-vote-{{ loop.index0 }}"
                                             data-slug="{{ membership.committee.slug }}">
                                             <span class="btn-loader"></span>
-                                        <!-- <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" /> -->
                                     </button>
                                     <span class="em-switch__label">Voter dans ce comité</span>
                                 </div>
@@ -73,7 +71,6 @@
                                             data-slug="{{ membership.committee.slug }}"
                                             data-csrf-token="{{ csrf_token('committee.vote') }}">
                                             <span class="btn-loader"></span>
-                                        <!-- <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" /> -->
                                     </button>
                                     <span class="em-switch__label">Voter dans ce comité</span>
                                 </div>
@@ -98,7 +95,7 @@
                 <div class="text--bold text--default-large">Changement du comité de vote</div>
                 <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
                     Vous êtes sur le point de changer votre comité de vote. Vous ne pourrez plus voter dans le comité {{ votingCommitteeName }},
-                    est vous sûr de vouloir changer votre comité de vote ?
+                    êtes-vous sûr de vouloir changer votre comité de vote ?
                 </p>
 
                 <div class="btn btn--ghosting--blue toggleModal b__nudge--right-nano">
