@@ -1,0 +1,26 @@
+.adherent__activity {
+    position: relative;
+    margin-bottom: 24px;
+    background-color: $gray--lighter;
+
+    &.committee {
+
+    }
+
+    .committee {
+        &__details {
+
+        }
+
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            .right {
+                max-width: 260px;
+                text-align: right;
+            }
+        }
+    }
+}

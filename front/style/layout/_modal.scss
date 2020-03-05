@@ -27,12 +27,12 @@
         width: 100%;
         max-width: 700px;
         margin: 5vh auto;
-        padding: 50px 30px;
+        padding: 30px;
         position: relative;
         border-radius: 3px;
 
         @media (min-width: $mobile) {
-            padding: 50px 50px 70px 50px;
+            padding: 50px;
             margin: 15vh auto;
         }
 

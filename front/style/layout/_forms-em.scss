@@ -525,3 +525,65 @@
 ul.em-form__autocomplete.ui-autocomplete {
     @include em-form-autocomplete;
 }
+
+// Switcher
+.em-switch {
+    &__wrapper {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0;
+    }
+
+    &__toggle {
+        position: relative;
+        display: inline-block;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 44px;
+        height: 22px;
+        line-height: 20px;
+        padding: 0;
+        vertical-align: middle;
+        border-radius: 20px 20px;
+        border: none;
+        outline: 0;
+        background-color: $gray--light;
+        cursor: pointer;
+        -webkit-transition: all .3s cubic-bezier(.35,0,.25,1);
+        -o-transition: all .3s cubic-bezier(.35,0,.25,1);
+        transition: all .3s cubic-bezier(.35,0,.25,1);
+
+        &:after {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 2px;
+            top: 2px;
+            border-radius: 50% 50%;
+            background-color: #a3a8ae;
+            content: " ";
+            cursor: pointer;
+            -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+        }
+
+        &.checked {
+            background-color: $blue--dark;
+
+            &:after {
+                background-color: #fff;
+                right: 2px;
+                left: auto;
+            }
+        }
+    }
+
+    &__label {
+        color: $dark;
+        cursor: pointer;
+        font-family: $font-roboto;
+        font-size: 16px;
+        margin-left: 15px;
+        line-height: 30px;
+    }
+}

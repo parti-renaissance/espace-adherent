@@ -74,7 +74,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Projet citoyen Paris-18', trim($titles->eq(4)->text()));
         $this->assertSame('Réunion de réflexion parisienne annulé', trim($titles->last()->text()));
 
-        $crawler = $this->client->click($crawler->selectLink('Événements passés')->link());
+        $crawler = $this->client->click($crawler->selectLink('Passés')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

@@ -3,7 +3,20 @@
 {% block page_title 'Mes activités' %}
 
 {% block tab %}
-        <div class="l__wrapper">
+        <div class="l__wrapper--narrow b__nudge--bottom-huge">
+            <div class="actions text--center b__nudge--bottom">
+                <a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}"
+                   class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'upcoming' ? 'text--bold' }}"
+                   rel="noopener noreferrer">
+                    À venir
+                </a>
+                <a href="{{ path('app_adherent_events', {type: 'past'}) }}"
+                   class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'past' ? 'text--bold' }}"
+                   rel="noopener noreferrer">
+                    Passés
+                </a>
+            </div>
+
             {% if registrations|length == 0 %}
                 <div class="text--center b__nudge--bottom-60">
                     Vous n'êtes inscrit(e) à aucun événement pour le moment.<br />
