@@ -84,4 +84,18 @@ class CommitteeRuntime
 
         return '';
     }
+
+    public function isVotingCommittee(Adherent $adherent, Committee $committee): bool
+    {
+        $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
+
+        return $membership && $membership->isVotingCommittee();
+    }
+
+    public function isCandidate(Adherent $adherent, Committee $committee): bool
+    {
+        $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
+
+        return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy();
+    }
 }
