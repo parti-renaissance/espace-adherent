@@ -168,6 +168,13 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     private $mailchimpId;
 
     /**
+     * @var CommitteeElection|null
+     *
+     * @ORM\OneToOne(targetEntity="CommitteeElection", mappedBy="committee")
+     */
+    private $committeeElection;
+
+    /**
      * A cached list of the hosts (for admin).
      */
     public $hosts = [];
@@ -247,6 +254,16 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     public function setPhotoUploaded(bool $photoUploaded): void
     {
         $this->photoUploaded = $photoUploaded;
+    }
+
+    public function getCommitteeElection(): ?CommitteeElection
+    {
+        return $this->committeeElection;
+    }
+
+    public function setCommitteeElection(CommitteeElection $committeeElection): void
+    {
+        $this->committeeElection = $committeeElection;
     }
 
     public static function createSimple(
