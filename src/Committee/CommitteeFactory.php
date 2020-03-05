@@ -4,6 +4,7 @@ namespace AppBundle\Committee;
 
 use AppBundle\Address\PostAddressFactory;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeElection;
 use AppBundle\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -58,6 +59,8 @@ class CommitteeFactory
 
         $this->referentTagManager->assignReferentLocalTags($committee);
 
+        $this->createElection($committee);
+
         return $committee;
     }
 
@@ -82,6 +85,8 @@ class CommitteeFactory
             $committee->setTwitterNickname($command->twitterNickname);
         }
 
+        $this->createElection($committee);
+
         return $committee;
     }
 
@@ -101,5 +106,10 @@ class CommitteeFactory
         $phone->setNationalNumber($number);
 
         return $phone;
+    }
+
+    private function createElection(Committee $committee): void
+    {
+        $committee->setCommitteeElection(new CommitteeElection($committee));
     }
 }
