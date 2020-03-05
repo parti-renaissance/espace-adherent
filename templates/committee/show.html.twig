@@ -204,7 +204,7 @@
             </div>
         </section>
     {% else %}
-        {% if committee.committeeElection and is_voting_committee(app.user, committee) %}
+        {% if has_role_adherent and committee.committeeElection and is_voting_committee(app.user, committee) %}
         <section class="election-box">
             <div>
                 <h2>Candidater pour participer au Conseil Territorial</h2>
