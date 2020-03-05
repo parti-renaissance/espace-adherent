@@ -9,8 +9,8 @@
 
             <nav class="manager-header__menu b__nudge--top-large inline-block">
                 <ul class="search__toggle">
-                    <li {% if is_active_route(app.request, 'app_adherent_committees') %}class="active"{% endif %}><a href="{{ path('app_adherent_committees') }}">Mes comités</a></li>
-                    <li> {% if is_active_route(app.request, 'app_adherent_events') %}class="active"{% endif %}<a href="{{ path('app_adherent_events') }}">Mes événement</a></li>
+                    <li class="{% if is_active_route(app.request, 'app_adherent_committees') %}active{% endif %}"><a href="{{ path('app_adherent_committees') }}">Mes comités</a></li>
+                    <li class="{% if is_active_route(app.request, 'app_adherent_events') %}active{% endif %}"><a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}">Mes événement</a></li>
                 </ul>
             </nav>
         </header>
