@@ -4,7 +4,7 @@
 
 {% block tab %}
         <div class="l__wrapper--narrow b__nudge--bottom-huge">
-            <div class="actions text--center b__nudge--bottom">
+            <div class="actions text--center b__nudge--bottom-larger">
                 <a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}"
                    class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'upcoming' ? 'text--bold' }}"
                    rel="noopener noreferrer">
@@ -19,8 +19,8 @@
 
             {% if registrations|length == 0 %}
                 <div class="text--center b__nudge--bottom-60">
-                    Vous n'êtes inscrit(e) à aucun événement pour le moment.<br />
-                    <a href="{{ path('app_search_events') }}">Découvrez les événements proches de chez vous !</a>
+                    <p class="text--body b__nudge--bottom-large">Vous n'êtes inscrit(e) à aucun événement pour le moment.</p>
+                    <a href="{{ path('app_search_events') }}" class="btn btn--blue">Participer à un événement</a>
                 </div>
             {% else %}
                 <div class="search__results">

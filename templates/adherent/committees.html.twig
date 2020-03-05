@@ -25,15 +25,6 @@
                            class="btn btn--blue b__nudge--right-small" target="_blank" rel="noopener noreferrer">
                             Voir
                         </a>
-                        <button role="button"
-                                class="btn btn--ghosting--blue committee-action-button"
-                                id="committee-toggle-membership-{{ loop.index0 }}"
-                                data-action="quitter"
-                                data-slug="{{ membership.committee.slug }}"
-                                data-csrf-token="{{ csrf_token('committee.unfollow') }}">
-                            <img src="{{ asset('images/loader-sm.gif') }}" class="btn-loader visually-hidden" />
-                            Quitter ce comité
-                        </button>
                     </div>
                     <div class="right">
                         {% if membership.isVotingCommittee %}
@@ -82,8 +73,8 @@
             </div>
         {% else %}
             <div class="text--center b__nudge--bottom-60">
-                Vous n'êtes inscrit(e) dans aucun comité pour le moment.<br />
-                <a href="{{ path('app_search_committees') }}">Découvrez les comités proches de chez vous !</a>
+                <p class="text--body b__nudge--bottom-large">Vous n'êtes inscrit(e) dans aucun comité pour le moment.</p>
+                <a href="{{ path('app_search_committees') }}" class="btn btn--blue">Rejoindre un comité</a>
             </div>
         {% endfor %}
     </div>

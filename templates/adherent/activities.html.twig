@@ -4,13 +4,13 @@
 
 {% block content %}
     <main class="search">
-        <header class="l__wrapper--medium space--60-0 text--center">
+        <header class="l__wrapper--medium text--center b__nudge--top-60 b__nudge--bottom-larger">
             <h1 class="text--large search-title">{{ block('page_title') }}</h1>
 
             <nav class="manager-header__menu b__nudge--top-large inline-block">
                 <ul class="search__toggle">
                     <li class="{% if is_active_route(app.request, 'app_adherent_committees') %}active{% endif %}"><a href="{{ path('app_adherent_committees') }}">Mes comités</a></li>
-                    <li class="{% if is_active_route(app.request, 'app_adherent_events') %}active{% endif %}"><a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}">Mes événement</a></li>
+                    <li class="{% if is_active_route(app.request, 'app_adherent_events') %}active{% endif %}"><a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}">Mes événements</a></li>
                 </ul>
             </nav>
         </header>
