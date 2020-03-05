@@ -20,7 +20,7 @@ class CommitteeElection
      * @var Committee
      *
      * @ORM\OneToOne(targetEntity="Committee", inversedBy="committeeElection")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $committee;
 
