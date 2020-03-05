@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field_value %}
+    {% if object.isAdherent and object.adherent and object.adherent.emailAddress %}
+        {{ object.adherent.emailAddress }}
+    {% endif %}
+{% endblock %}

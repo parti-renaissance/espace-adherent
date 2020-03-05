@@ -2,7 +2,6 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Form\DataTransformer\EmailToAdherentTransformer;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,19 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
 {
-    private $emailToAdherentTransformer;
-
-    public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        EmailToAdherentTransformer $emailToAdherentTransformer
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->emailToAdherentTransformer = $emailToAdherentTransformer;
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
