@@ -79,7 +79,7 @@ class CommitteeMembershipException extends \RuntimeException
     ) {
         return new self(
             $membershipUuid,
-            sprintf('You cannont enable voting in committee membership "%s", there already is a running committee candidacy in committee "%s".', $membershipUuid, $committeeName),
+            sprintf('Cannot disable voting in committee "%s", a running candidacy exists for this membership.', $membershipUuid, $committeeName),
             $previous
         );
     }

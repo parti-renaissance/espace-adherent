@@ -3,7 +3,8 @@
 {% block page_title 'Mes activités' %}
 
 {% block tab %}
-{% set votingCommitteeName = '' %}
+{% set votingCommitteeName = get_voting_committee_name(committeeMemberships) %}
+{% set candidacyCommitteeName = get_candidacy_committee_name(committeeMemberships) %}
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
         {% for membership in committeeMemberships %}
             <div class="committee-committee adherent__activity comittee space--30">
@@ -28,7 +29,6 @@
                     </div>
                     <div class="right">
                         {% if membership.isVotingCommittee %}
-                        {% set votingCommitteeName = membership.committee.name %}
                             <div class="em-switch__wrapper">
                                 <button role="button"
                                         class="committee-action-button em-switch__toggle checked"
@@ -40,6 +40,10 @@
                                 </button>
                                 <span class="em-switch__label">Vous votez dans ce comité</span>
                             </div>
+                            {% if candidacyCommitteeName is not empty %}
+                            <div class="break"></div>
+                            <div class="success-label">Vous êtes candidat dans ce comité.</div>
+                            {% endif %}
 
                         {% else %}
                             {% if votingCommitteeName is not empty %}
@@ -47,11 +51,18 @@
                                     <button role="button"
                                             class="committee-toggle-button em-switch__toggle"
                                             id="committee-toggle-vote-{{ loop.index0 }}"
+                                            {% if candidacyCommitteeName is not empty %}
+                                            disabled=true
+                                            {% endif %}
                                             data-slug="{{ membership.committee.slug }}">
                                             <span class="btn-loader"></span>
                                     </button>
                                     <span class="em-switch__label">Voter dans ce comité</span>
                                 </div>
+                                {% if candidacyCommitteeName is not empty %}
+                                <div class="break"></div>
+                                <div class="error-label">Vous devez retirer votre candidature pour pouvoir changer de comité de vote.</div>
+                                {% endif %}
 
                             {% else %}
                                 <div class="em-switch__wrapper">
@@ -117,7 +128,9 @@
 
             findAll(document, '.committee-toggle-button').forEach(function (button) {
                 on(button, 'click', function () {
-                    dom('.em-modal button').setAttribute('data-slug', button.getAttribute('data-slug'));
+                    let modalButton = dom('.em-modal button')
+                    modalButton.setAttribute('data-slug', button.getAttribute('data-slug'));
+                    modalButton.setAttribute('data-loop', button.getAttribute('data-loop'));
                     toggleModal();
                 });
             });
@@ -137,9 +150,9 @@
                         button.getAttribute('data-csrf-token'),
                         function (response) {
                             if (response === null) {
-                                button.parentNode.querySelector('.error-label').innerText = 'Vous ne pouvez pas voter dans ce comité';
                                 addClass(find(button, '.btn-loader'), 'visually-hidden');
                                 button.disabled = false;
+                                toggleModal();
                             } else {
                                 window.location.reload();
                             }

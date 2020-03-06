@@ -192,7 +192,7 @@ class CommitteeController extends Controller
         try {
             $membership = $manager->enableVoteInCommittee($this->getUser(), $committee);
         } catch (CommitteeMembershipException $e) {
-            throw new BadRequestHttpException($e->getMessage());
+            return JsonResponse::create($e->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
         }
 
         if (!$membership) {
