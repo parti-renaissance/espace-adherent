@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche\Election\VoteResults;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Election\ElectionManager;
 use AppBundle\Entity\City;
 use AppBundle\Form\CityVoteResultType;
@@ -20,8 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CityVoteResultController extends Controller
 {
-    use CanaryControllerTrait;
-
     private $electionManager;
     private $entityManager;
 
@@ -33,8 +30,6 @@ class CityVoteResultController extends Controller
 
     public function __invoke(City $city, Request $request): Response
     {
-        $this->disableInProduction();
-
         $cityVoteResult = $this->electionManager->getCityVoteResultForCurrentElectionRound($city);
 
         $form = $this

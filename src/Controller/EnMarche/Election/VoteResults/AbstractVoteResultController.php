@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche\Election\VoteResults;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Election\ElectionManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\VotePlace;
@@ -14,8 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractVoteResultController extends Controller
 {
-    use CanaryControllerTrait;
-
     private $electionManager;
     private $entityManager;
 
@@ -27,8 +24,6 @@ abstract class AbstractVoteResultController extends Controller
 
     protected function submitVoteResultsAction(VotePlace $votePlace, Request $request): Response
     {
-        $this->disableInProduction();
-
         /** @var Adherent $adherent */
         $voteResult = $this->electionManager->getVoteResultForCurrentElectionRound($votePlace);
 

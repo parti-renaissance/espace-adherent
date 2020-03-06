@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -191,7 +192,7 @@ class CommitteeController extends Controller
         try {
             $membership = $manager->enableVoteInCommittee($this->getUser(), $committee);
         } catch (CommitteeMembershipException $e) {
-            throw new \BadRequestException($e->getMessage());
+            throw new BadRequestHttpException($e->getMessage());
         }
 
         if (!$membership) {
@@ -215,7 +216,7 @@ class CommitteeController extends Controller
         try {
             $membership = $manager->disableVoteInCommittee($this->getUser(), $committee);
         } catch (CommitteeMembershipException $e) {
-            throw new \BadRequestException($e->getMessage());
+            throw new BadRequestHttpException($e->getMessage());
         }
 
         if (!$membership) {
