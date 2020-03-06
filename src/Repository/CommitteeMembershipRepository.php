@@ -116,6 +116,19 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function findCandidateMemberships(Committee $committee): ?CommitteeMembershipCollection
+    {
+        $qb = $this->createQueryBuilder('cm');
+
+        $query = $qb->where('cm.committee = :committee')
+            ->andWhere($qb->expr()->isNotNull('cm.committeeCandidacy'))
+            ->setParameter('committee', $committee)
+            ->getQuery()
+        ;
+
+        return new CommitteeMembershipCollection($query->getResult());
+    }
+
     public function findVotingMembership(Adherent $adherent): ?CommitteeMembership
     {
         $qb = $this->createQueryBuilder('cm');

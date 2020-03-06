@@ -23,6 +23,7 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -437,6 +438,31 @@ class CommitteeManager
         }
 
         return $membership;
+    }
+
+    public function getCandidateListAndStats(Committee $committee): array
+    {
+        $list = $this->getMembershipRepository()->findCandidateMemberships($committee);
+
+        return [
+            'list' => $list,
+            'total' => \count($list),
+            'male' => $this->getCandidateCountByGender($list, Genders::MALE),
+            'female' => $this->getCandidateCountByGender($list, Genders::FEMALE)
+        ];
+    }
+
+    private function getCandidateCountByGender(CommitteeMembershipCollection $list, string $gender)
+    {
+        $count = 0;
+
+        foreach ($list as $membership) {
+            if ($membership->getAdherent()->getGender() === $gender) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void

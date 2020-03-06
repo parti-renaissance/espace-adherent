@@ -245,6 +245,22 @@ class CommitteeController extends Controller
     }
 
     /**
+     * @Route("/liste-candidats", name="app_committee_candidates_list", methods={"GET"})
+     */
+    public function candidatesListAction(Committee $committee, CommitteeManager $manager): Response
+    {
+        $this->disableInProduction();
+
+        if (!$committee->getCommitteeElection()) {
+            $this->createNotFoundException("Pas d'élection en cours dans ce comité.");
+        }
+
+        $listAndStats = $manager->getCandidateListAndStats($committee);
+
+        return JsonResponse::create($listAndStats);
+    }
+
+    /**
      * @Route("/retirer-sa-candidature", name="app_committee_remove_candidacy", condition="request.request.has('token')", methods={"POST"})
      */
     public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
