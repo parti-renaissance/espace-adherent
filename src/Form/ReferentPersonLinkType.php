@@ -49,6 +49,9 @@ class ReferentPersonLinkType extends AbstractType
             ->add('isJecouteManager', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('isMunicipalManagerSupervisor', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
 
         $builder->addModelTransformer(new CallbackTransformer(

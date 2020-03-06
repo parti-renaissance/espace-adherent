@@ -259,6 +259,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $municipalManagerRole;
 
     /**
+     * @var MunicipalManagerSupervisorRole|null
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\MunicipalManagerSupervisorRole", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $municipalManagerSupervisorRole;
+
+    /**
      * @var BoardMember|null
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
@@ -657,6 +665,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_MUNICIPAL_MANAGER';
         }
 
+        if ($this->isMunicipalManagerSupervisor()) {
+            $roles[] = 'ROLE_MUNICIPAL_MANAGER_SUPERVISOR';
+        }
+
         if ($this->isJecouteManager()) {
             $roles[] = 'ROLE_JECOUTE_MANAGER';
         }
@@ -728,6 +740,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isMunicipalChief()
             || $this->isMunicipalManager()
             || $this->isElectionResultsReporter()
+            || $this->isMunicipalManagerSupervisor()
         ;
     }
 
@@ -1176,6 +1189,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setMunicipalManagerRole(?MunicipalManagerRoleAssociation $municipalManagerRole): void
     {
         $this->municipalManagerRole = $municipalManagerRole;
+    }
+
+    public function getMunicipalManagerSupervisorRole(): ?MunicipalManagerSupervisorRole
+    {
+        return $this->municipalManagerSupervisorRole;
+    }
+
+    public function setMunicipalManagerSupervisorRole(
+        ?MunicipalManagerSupervisorRole $municipalManagerSupervisorRole
+    ): void {
+        $this->municipalManagerSupervisorRole = $municipalManagerSupervisorRole;
+    }
+
+    public function revokeMunicipalManagerSupervisorRole(): void
+    {
+        $this->municipalManagerSupervisorRole = null;
+    }
+
+    public function isMunicipalManagerSupervisor(): bool
+    {
+        return $this->municipalManagerSupervisorRole instanceof MunicipalManagerSupervisorRole;
     }
 
     public function getBoardMember(): ?BoardMember

@@ -98,6 +98,13 @@
                             <a href="{{ path('app_municipal_chief_home') }}">Espace Municipales 2020 🇫🇷</a>
                         </li>
                     {% endif %}
+                    {% if is_canary_enabled() and app.user.isMunicipalManagerSupervisor %}
+                        <li>
+                            <a href="{{ path('app_municipal_manager_municipal_manager_supervisor_attribution_form') }}">
+                                Espace Responsable attribution
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
                 <ul>
                     <li>

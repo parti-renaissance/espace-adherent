@@ -15,6 +15,7 @@ use AppBundle\Entity\BoardMember\BoardMember;
 use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Entity\MunicipalManagerRoleAssociation;
+use AppBundle\Entity\MunicipalManagerSupervisorRole;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\ReferentTeamMember;
 use AppBundle\Entity\SenatorArea;
@@ -923,8 +924,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($assessor);
         $manager->persist($municipalManager);
 
-        // For Organizational chart: adherent which is co-referent in the referent@en-marche-dev.fr team
+        // For Organizational chart: adherent which is co-referent and municipal manager supervisor in the referent@en-marche-dev.fr team
         $adherent6->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-8')));
+        $adherent6->setMunicipalManagerSupervisorRole(new MunicipalManagerSupervisorRole($this->getReference('adherent-8')));
         // For Organizational chart: adherent which is co-referent in another referent team
         $adherent4->setReferentTeamMember(new ReferentTeamMember($this->getReference('adherent-19')));
 

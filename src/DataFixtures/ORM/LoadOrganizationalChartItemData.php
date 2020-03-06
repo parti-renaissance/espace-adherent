@@ -55,6 +55,7 @@ class LoadOrganizationalChartItemData extends Fixture
                                                         'postalAddress' => '39 rue de Crimée, Marseille',
                                                         'referent' => 'referent3',
                                                         'isCoReferent' => true,
+                                                        'isMunicipalManagerSupervisor' => true,
                                                         'adherent' => 'adherent-6',
                                                     ],
                                                 ],

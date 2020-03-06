@@ -3,6 +3,7 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\MunicipalManagerSupervisorRole;
 use AppBundle\Entity\Referent;
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use AppBundle\Entity\ReferentTeamMember;
@@ -40,8 +41,14 @@ class ManageReferentTeamMembersListener implements EventSubscriber
 
         foreach ($uow->getScheduledEntityInsertions() as $personLink) {
             if (($personLink instanceof ReferentPersonLink) && $adherent = $personLink->getAdherent()) {
-                if ($adherent->isCoReferent() || $adherent->isJecouteManager() || $personLink->isCoReferent() ||
-                    $personLink->isJecouteManager()) {
+                if (
+                    $adherent->isCoReferent()
+                    || $adherent->isJecouteManager()
+                    || $adherent->isMunicipalManagerSupervisor()
+                    || $personLink->isCoReferent()
+                    || $personLink->isJecouteManager()
+                    || $personLink->isMunicipalManagerSupervisor()
+                ) {
                     if ($adherent->isCoReferent()) {
                         if (!$personLink->isCoReferent()) {
                             $personLink->setIsCoReferent(true);
@@ -61,6 +68,16 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                         $this->initializeJecouteManagerNewRole($personLink, $currentReferent, $adherent);
                         $uow->computeChangeSets();
                     }
+
+                    if ($adherent->isMunicipalManagerSupervisor()) {
+                        if (!$personLink->isMunicipalManagerSupervisor()) {
+                            $personLink->setIsMunicipalManagerSupervisor(true);
+                            $uow->recomputeSingleEntityChangeSet($this->manager->getClassMetadata(ReferentPersonLink::class), $personLink);
+                        }
+                    } elseif ($personLink->isMunicipalManagerSupervisor()) {
+                        $this->initializeMunicipalManagerSupervisorNewRole($personLink, $currentReferent, $adherent);
+                        $uow->computeChangeSets();
+                    }
                 } else {
                     $personLink->detachAdherent();
                 }
@@ -71,7 +88,11 @@ class ManageReferentTeamMembersListener implements EventSubscriber
             if (
                 $personLink instanceof ReferentPersonLink
                 && ($adherent = $personLink->getAdherent())
-                && ($adherent->isCoReferent() || $adherent->isJecouteManager())
+                && (
+                    $adherent->isCoReferent()
+                    || $adherent->isJecouteManager()
+                    || $adherent->isMunicipalManagerSupervisor()
+                )
             ) {
                 $this->removeRoles($adherent, $personLink);
                 $uow->computeChangeSets();
@@ -128,6 +149,25 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                     }
                 }
 
+                // Municipal Manager Supervisor
+                if ($personLink->isMunicipalManagerSupervisor()) {
+                    if ($adherent && !$adherent->isMunicipalManagerSupervisor()) {
+                        $this->initializeMunicipalManagerSupervisorNewRole($personLink, $currentReferent, $adherent);
+                    }
+                } else {
+                    if ($adherent && $adherent->isMunicipalManagerSupervisor()) {
+                        array_map(static function (ReferentPersonLink $otherPersonLink) use ($personLink) {
+                            if ($personLink === $otherPersonLink) {
+                                return;
+                            }
+                            $otherPersonLink->setIsMunicipalManagerSupervisor(false);
+                        }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
+
+                        $this->manager->remove($adherent->getMunicipalManagerSupervisorRole());
+                        $adherent->revokeMunicipalManagerSupervisorRole();
+                    }
+                }
+
                 $uow->computeChangeSets();
             }
         }
@@ -152,6 +192,14 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         if (1 === $this->repository->count(['adherent' => $adherent, 'referent' => $referent])) {
             $this->manager->remove($adherent->getJecouteManagedArea());
             $adherent->revokeJecouteManager();
+        }
+    }
+
+    private function removeMunicipalManagerSupervisorRoleIfNotUsed(Adherent $adherent, Referent $referent): void
+    {
+        if (1 === $this->repository->count(['adherent' => $adherent, 'referent' => $referent])) {
+            $this->manager->remove($adherent->getMunicipalManagerSupervisorRole());
+            $adherent->revokeMunicipalManagerSupervisorRole();
         }
     }
 
@@ -184,6 +232,19 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
     }
 
+    private function initializeMunicipalManagerSupervisorNewRole(
+        ReferentPersonLink $personLink,
+        Adherent $currentReferent,
+        Adherent $adherent
+    ): void {
+        $adherent->setMunicipalManagerSupervisorRole($role = new MunicipalManagerSupervisorRole($currentReferent));
+
+        array_map(static function (ReferentPersonLink $personLink) use ($adherent) {
+            $personLink->setAdherent($adherent);
+            $personLink->setIsMunicipalManagerSupervisor(true);
+        }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
+    }
+
     private function removeRoles(Adherent $adherent, ReferentPersonLink $personLink): void
     {
         if ($adherent->isCoReferent()) {
@@ -192,6 +253,10 @@ class ManageReferentTeamMembersListener implements EventSubscriber
 
         if ($adherent->isJecouteManager()) {
             $this->removeJecouteManagerRoleIfNotUsed($adherent, $personLink->getReferent());
+        }
+
+        if ($adherent->isMunicipalManagerSupervisor()) {
+            $this->removeMunicipalManagerSupervisorRoleIfNotUsed($adherent, $personLink->getReferent());
         }
     }
 }

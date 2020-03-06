@@ -4,7 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\MunicipalManager\Filter\AssociationCityFilter;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +23,6 @@ class ReferentCityFilterType extends AbstractType
                 'required' => false,
             ])
             ->add('inseeCode', TextType::class, [
-                'required' => false,
-            ])
-            ->add('country', CountryType::class, [
                 'required' => false,
             ])
             ->add('municipalManagerFirstName', TextType::class, [
