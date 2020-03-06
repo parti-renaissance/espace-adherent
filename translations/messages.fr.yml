@@ -648,3 +648,11 @@ retirement_simulator.profession.security_force: membre des forces de l'ordre
 retirement_simulator.profession.private_sector: salarié du privé
 retirement_simulator.profession.independant: indépendant
 retirement_simulator.profession.other: autre
+
+#
+# ElectedRepresentative
+#
+elected_representative.mandate.larem_support.invested: Investi
+elected_representative.mandate.larem_support.official: Soutien officiel
+elected_representative.mandate.larem_support.informal: Soutien informel
+elected_representative.mandate.larem_support.not_supported: Pas soutenu
