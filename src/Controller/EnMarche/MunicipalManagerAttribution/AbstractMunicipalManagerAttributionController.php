@@ -57,7 +57,7 @@ abstract class AbstractMunicipalManagerAttributionController extends Controller
             $this->addFlash('info', 'Les modifications ont bien été sauvegardées');
 
             return $this->redirectToRoute(
-                'app_assessors_referent_municipal_manager_attribution_form',
+                sprintf('app_municipal_manager_%s_attribution_form', static::getSpaceType()),
                 $this->getRouteParams($request)
             );
         }
