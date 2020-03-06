@@ -18,9 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @UniqueEntity(
- *     fields={"type", "elected_representative"},
+ *     fields={"type", "electedRepresentative"},
  *     errorPath="type",
- *     message="admin.social_networks.unique"
+ *     message="Il existe déjà un lien vers ce réseau social pour cet(te) élu(e)"
  * )
  *
  * @Algolia\Index(autoIndex=false)
