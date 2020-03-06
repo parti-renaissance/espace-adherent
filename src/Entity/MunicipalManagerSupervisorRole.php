@@ -6,7 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="municipal_manager_supervisor_role")
+ * @ORM\Table
  * @ORM\Entity
  *
  * @Algolia\Index(autoIndex=false)
