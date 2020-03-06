@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche\MunicipalManagerAttribution;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Form\MunicipalManagerCityListType;
 use AppBundle\Form\ReferentCityFilterType;
 use AppBundle\MunicipalManager\Filter\AssociationCityFilter;
@@ -15,8 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractMunicipalManagerAttributionController extends Controller
 {
-    use CanaryControllerTrait;
-
     protected const PAGE_LIMIT = 10;
 
     /**
@@ -27,8 +24,6 @@ abstract class AbstractMunicipalManagerAttributionController extends Controller
         CityRepository $cityRepository,
         MunicipalManagerAssociationManager $manager
     ): Response {
-        $this->disableInProduction();
-
         $filterForm = $this
             ->createForm(ReferentCityFilterType::class, $filter = $this->createCityFilter())
             ->handleRequest($request)
