@@ -3,17 +3,17 @@
 namespace AppBundle\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\BadMandateTypeException;
+use AppBundle\Exception\BadPoliticalFunctionNameException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="elected_representative_mandate")
+ * @ORM\Table(name="elected_representative_political_function")
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Mandate
+class PoliticalFunction
 {
     /**
      * @ORM\Id
@@ -23,24 +23,26 @@ class Mandate
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
+     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
      */
-    private $type;
+    private $name;
 
     /**
-     * @var bool
+     * @var string|null
      *
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(length=255, nullable=true)
+     *
+     * @Assert\Length(max="255")
      */
-    private $isElected;
+    private $clarification;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(length=255)
      *
@@ -57,7 +59,7 @@ class Mandate
     private $onGoing = true;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
      * @ORM\Column(type="date")
      *
@@ -74,38 +76,19 @@ class Mandate
      * @Assert\DateTime
      * @Assert\Expression(
      *     "value == null or value > this.getBeginAt()",
-     *     message="La date de fin du mandat doit être postérieure à la date de début."
+     *     message="La date de fin doit être postérieure à la date de début."
      * )
      * @Assert\Expression(
-     *     "(value == null and (!this.isElected() or this.isOnGoing())) or (value != null and this.isElected() and !this.isOnGoing())",
-     *     message="La date de fin peut être saisie que dans le cas où le mandat n'est pas en cours et est élu."
+     *     "(value == null and this.isOnGoing()) or (value != null and !this.isOnGoing())",
+     *     message="La date de fin peut être saisie que dans le cas où la fonction n'est pas en cours."
      * )
      */
     private $finishAt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(length=10)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="10")
-     */
-    private $politicalAffiliation;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
-     */
-    private $laREMSupport;
-
-    /**
      * @var ElectedRepresentative
      *
-     * @ORM\ManyToOne(targetEntity="ElectedRepresentative", inversedBy="mandates")
+     * @ORM\ManyToOne(targetEntity="ElectedRepresentative", inversedBy="politicalFunctions")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
@@ -113,22 +96,18 @@ class Mandate
     private $electedRepresentative;
 
     public function __construct(
-        string $type = null,
-        bool $isElected = false,
+        string $name = null,
+        string $clarification = null,
         string $geographicalArea = null,
-        string $politicalAffiliation = null,
-        string $laREMSupport = null,
         ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
         \DateTime $beginAt = null,
         \DateTime $finishAt = null
     ) {
-        $this->type = $type;
-        $this->isElected = $isElected;
+        $this->name = $name;
+        $this->clarification = $clarification;
         $this->geographicalArea = $geographicalArea;
         $this->electedRepresentative = $electedRepresentative;
-        $this->laREMSupport = $laREMSupport;
-        $this->politicalAffiliation = $politicalAffiliation;
         $this->onGoing = $onGoing;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
@@ -139,28 +118,28 @@ class Mandate
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getName(): ?string
     {
-        return $this->type;
+        return $this->name;
     }
 
-    public function setType(string $type): void
+    public function setName(string $name): void
     {
-        if (!MandateTypeEnum::isValid($type)) {
-            throw new BadMandateTypeException(sprintf('The mandate type "%s" is invalid', $type));
+        if (!PoliticalFunctionNameEnum::isValid($name)) {
+            throw new BadPoliticalFunctionNameException(sprintf('The political function name "%s" is invalid', $name));
         }
 
-        $this->type = $type;
+        $this->name = $name;
     }
 
-    public function isElected(): bool
+    public function getClarification(): ?string
     {
-        return $this->isElected;
+        return $this->clarification;
     }
 
-    public function setIsElected(bool $isElected): void
+    public function setClarification(?string $clarification = null): void
     {
-        $this->isElected = $isElected;
+        $this->clarification = $clarification;
     }
 
     public function getGeographicalArea(): ?string
@@ -203,31 +182,6 @@ class Mandate
         $this->finishAt = $finishAt;
     }
 
-    public function getPoliticalAffiliation(): ?string
-    {
-        return $this->politicalAffiliation;
-    }
-
-    public function setPoliticalAffiliation(string $politicalAffiliation): void
-    {
-        $this->politicalAffiliation = $politicalAffiliation;
-    }
-
-    public function getLaREMSupport(): ?string
-    {
-        return $this->laREMSupport;
-    }
-
-    public function setLaREMSupport(?string $laREMSupport = null): void
-    {
-        $this->laREMSupport = $laREMSupport;
-    }
-
-    public function getElectedRepresentative(): ?ElectedRepresentative
-    {
-        return $this->electedRepresentative;
-    }
-
     public function setElectedRepresentative(ElectedRepresentative $electedRepresentative): void
     {
         $this->electedRepresentative = $electedRepresentative;
@@ -235,6 +189,6 @@ class Mandate
 
     public function __toString(): string
     {
-        return sprintf('%s (%s)', array_search($this->type, MandateTypeEnum::CHOICES), $this->politicalAffiliation);
+        return (string) array_search($this->name, PoliticalFunctionNameEnum::CHOICES);
     }
 }

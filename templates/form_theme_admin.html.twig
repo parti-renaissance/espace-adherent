@@ -93,34 +93,14 @@
 {% endblock %}
 
 {% block app_admin_elected_representative_mandates_sonata_type_native_collection_mandates_widget -%}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("div.mandates-collection").on('ifToggled', "input[id$='_isElected']", function() {
-                var isElectedId = $(this).attr('id');
-                var id = isElectedId.substr(0, isElectedId.indexOf('_isElected'));
-                id = id.substr(id.length - 1);
-
-                if ($(this).is(':checked')) {
-                    $("div.date input[id$='" + id + "_finishAt']").prop('disabled', false);
-                } else {
-                    $("div.date input[id$='" + id + "_finishAt']").prop('disabled', true);
-                }
-            });
-
-            $("div.icheckbox_square-blue input[id$='_isElected']").trigger('ifToggled');
-            $('div.mandates-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
-                $("div.icheckbox_square-blue input[id$='_isElected']").trigger('ifToggled');
-            });
-        });
-    </script>
-    ​
     <div class="row">
         <div class="col-xs-11 col-xs-offset-1">
             <div class="row bg-primary">
                 <div class="col-md-2">Type</div>
                 <div class="col-md-1">Nuance politique</div>
-                <div class="col-md-1">Élu(e)</div>
+                <div class="col-width4">Élu(e)</div>
                 <div class="col-md-2">Soutien LaREM</div>
+                <div class="col-width4">En cours</div>
                 <div class="col-md-2">Date de début de mandat</div>
                 <div class="col-md-2">Date de fin de mandat</div>
                 <div class="col-md-2">Périmètre géographique</div>
@@ -131,37 +111,139 @@
     <div class="mandates-collection">
         {{ form_widget(form) }}
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("div.mandates-collection").on('ifToggled', "input[id$='_isElected'], input[id$='_onGoing']", function() {
+                var elementId = $(this).attr('id');
+                if (elementId.includes('_isElected')) {
+                    var id = elementId.substr(0, elementId.indexOf('_isElected'));
+                    var isElected = $(this);
+                    var onGoing = $('#'+elementId.replace('isElected', 'onGoing'));
+                } else {
+                    var id = elementId.substr(0, elementId.indexOf('_onGoing'));
+                    var isElected = $('#'+elementId.replace('onGoing', 'isElected'));
+                    var onGoing = $(this);
+                }
+                id = id.substr(id.length - 1);
+
+                if (isElected.is(':checked') && !onGoing.is(':checked')) {
+                    $(this).parents('.row.mandate').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', false);
+                } else {
+                    $(this).parents('.row.mandate').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', true);
+                }
+            });
+
+            $("div.icheckbox_square-blue input[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            $('div.mandates-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
+                $("div.icheckbox_square-blue input[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block app_admin_elected_representative_mandate_mandates_mandates_entry_widget -%}
-    <div class="row" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-2">
+    <div class="row mandate" style="margin-top: 10px; margin-left: -30px;">
+        <div class="col-md-2{{ not form.type.vars.valid ? ' error' }}">
             {{ form_widget(form.type) }}
             {{ form_errors(form.type) }}
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1{{ not form.politicalAffiliation.vars.valid ? ' error' }}">
             {{ form_widget(form.politicalAffiliation) }}
             {{ form_errors(form.politicalAffiliation) }}
         </div>
-        <div class="col-md-1">
+        <div class="col-width4{{ not form.isElected.vars.valid ? ' error' }}">
             {{ form_widget(form.isElected) }}
             {{ form_errors(form.isElected) }}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2{{ not form.laREMSupport.vars.valid ? ' error' }}">
             {{ form_widget(form.laREMSupport) }}
             {{ form_errors(form.laREMSupport) }}
         </div>
-        <div class="col-md-2">
+        <div class="col-width4{{ not form.onGoing.vars.valid ? ' error' }}">
+            {{ form_widget(form.onGoing) }}
+            {{ form_errors(form.onGoing) }}
+        </div>
+        <div class="col-md-2{{ not form.beginAt.vars.valid ? ' error' }}">
             {{ form_widget(form.beginAt) }}
             {{ form_errors(form.beginAt) }}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2{{ not form.finishAt.vars.valid ? ' error' }}">
             {{ form_widget(form.finishAt) }}
             {{ form_errors(form.finishAt) }}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2{{ not form.geographicalArea.vars.valid ? ' error' }}">
             {{ form_widget(form.geographicalArea) }}
             {{ form_errors(form.geographicalArea) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block app_admin_elected_representative_politicalFunctions_sonata_type_native_collection_politicalFunctions_widget -%}
+    <div class="row">
+        <div class="col-xs-11 col-xs-offset-1">
+            <div class="row bg-primary">
+                <div class="col-md-2">Nom</div>
+                <div class="col-md-3">Précision</div>
+                <div class="col-md-2">Périmètre géographique</div>
+                <div class="col-md-1">En cours</div>
+                <div class="col-md-2">Date de début de mandat</div>
+                <div class="col-md-2">Date de fin de mandat</div>
+            </div>
+        </div>
+    </div>
+    ​
+    <div class="political-functions-collection">
+        {{ form_widget(form) }}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("div.political-functions-collection").on('ifToggled', "input[id$='_onGoing']", function() {
+                var onGoingId = $(this).attr('id');
+                var id = onGoingId.substr(0, onGoingId.indexOf('_onGoing'));
+                id = id.substr(id.length - 1);
+
+                if ($(this).is(':checked')) {
+                    $(this).parents('.row.political-function').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', true);
+                } else {
+                    $(this).parents('.row.political-function').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', false);
+                }
+            });
+
+            $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            $('div.political-functions-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
+                $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block app_admin_elected_representative_political_function_politicalFunctions_politicalFunctions_entry_widget -%}
+    <div class="row political-function" style="margin-top: 10px; margin-left: -30px;">
+        <div class="col-md-2{{ not form.name.vars.valid ? ' error' }}">
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="col-md-3{{ not form.clarification.vars.valid ? ' error' }}">
+            {{ form_widget(form.clarification) }}
+            {{ form_errors(form.clarification) }}
+        </div>
+        <div class="col-md-2{{ not form.geographicalArea.vars.valid ? ' error' }}">
+            {{ form_widget(form.geographicalArea) }}
+            {{ form_errors(form.geographicalArea) }}
+        </div>
+        <div class="col-md-1{{ not form.onGoing.vars.valid ? ' error' }}">
+            {{ form_widget(form.onGoing) }}
+            {{ form_errors(form.onGoing) }}
+        </div>
+        <div class="col-md-2{{ not form.beginAt.vars.valid ? ' error' }}">
+            {{ form_widget(form.beginAt) }}
+            {{ form_errors(form.beginAt) }}
+        </div>
+        <div class="col-md-2{{ not form.finishAt.vars.valid ? ' error' }}">
+            {{ form_widget(form.finishAt) }}
+            {{ form_errors(form.finishAt) }}
         </div>
     </div>
 {% endblock %}

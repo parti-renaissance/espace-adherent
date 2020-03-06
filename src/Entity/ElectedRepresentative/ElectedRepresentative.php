@@ -133,6 +133,10 @@ class ElectedRepresentative
      * @var bool|null
      *
      * @ORM\Column(type="boolean", nullable=true)
+     * @Assert\Expression(
+     *     "not (this.getAdherent() == null and value == true) or value == false or value == null",
+     *     message="elected_representative.is_adherent.no_adherent_email"
+     * )
      */
     private $isAdherent;
 
@@ -174,6 +178,21 @@ class ElectedRepresentative
      */
     private $mandates;
 
+    /**
+     * PoliticalFunction[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\ElectedRepresentative\PoliticalFunction",
+     *     mappedBy="electedRepresentative",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EAGER"
+     * )
+     *
+     * @Assert\Valid
+     */
+    private $politicalFunctions;
+
     public function __construct(
         string $firstName,
         string $lastName,
@@ -188,6 +207,7 @@ class ElectedRepresentative
         $this->officialId = $officialId;
         $this->socialNetworkLinks = new ArrayCollection();
         $this->mandates = new ArrayCollection();
+        $this->politicalFunctions = new ArrayCollection();
     }
 
     public function getId(): int
@@ -364,6 +384,24 @@ class ElectedRepresentative
     public function removeMandate(Mandate $mandate): void
     {
         $this->mandates->removeElement($mandate);
+    }
+
+    public function getPoliticalFunctions(): Collection
+    {
+        return $this->politicalFunctions;
+    }
+
+    public function addPoliticalFunction(PoliticalFunction $politicalFunction): void
+    {
+        if (!$this->politicalFunctions->contains($politicalFunction)) {
+            $politicalFunction->setElectedRepresentative($this);
+            $this->politicalFunctions->add($politicalFunction);
+        }
+    }
+
+    public function removePoliticalFunction(PoliticalFunction $politicalFunction): void
+    {
+        $this->politicalFunctions->removeElement($politicalFunction);
     }
 
     public function __toString(): string
