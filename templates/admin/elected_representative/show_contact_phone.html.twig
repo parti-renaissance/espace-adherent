@@ -1,5 +1,5 @@
 {% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
 
 {% block field_value %}
-    {{ object.contactPhone|phone_number_format }}
+    {{ object.contactPhone ? object.contactPhone|phone_number_format }}
 {% endblock %}

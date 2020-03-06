@@ -28,7 +28,7 @@ class ReferentVoteResultListController extends AbstractVoteResultListController
 
     protected function getSuccessRedirectionResponse(): RedirectResponse
     {
-        return $this->redirectToRoute('app_assessors_referent_municipal_manager_attribution_form');
+        return $this->redirectToRoute('app_municipal_manager_referent_attribution_form');
     }
 
     protected function getSpaceType(): string

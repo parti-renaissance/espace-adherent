@@ -196,12 +196,11 @@ class VotePlace
 
     public function getLabel(): string
     {
-        return sprintf(
-            '%s, %s, %s',
+        return implode(', ', array_filter([
             $this->alias ?? $this->name,
             $this->address,
-            $this->getLocalCode()
-        );
+            $this->getLocalCode(),
+        ]));
     }
 
     public function getAddress(): ?string

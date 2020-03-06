@@ -6,7 +6,6 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Assessor\AssessorRole\AssessorAssociationManager;
 use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
 use AppBundle\Assessor\Filter\AssociationVotePlaceFilter;
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Election\ElectionManager;
 use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\Election;
@@ -29,8 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractAssessorSpaceController extends Controller
 {
-    use CanaryControllerTrait;
-
     protected const PAGE_LIMIT = 10;
 
     protected $votePlaceRepository;
@@ -152,8 +149,6 @@ abstract class AbstractAssessorSpaceController extends Controller
         VoteResultsExporter $exporter,
         ElectionRepository $electionRepository
     ): Response {
-        $this->disableInProduction();
-
         $election = $electionRepository->findComingNextElection();
 
         return $exporter->getResponse($_format, $this->getVoteResultsExportQuery($election));
