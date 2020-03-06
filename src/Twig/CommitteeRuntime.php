@@ -2,6 +2,7 @@
 
 namespace AppBundle\Twig;
 
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
@@ -85,11 +86,15 @@ class CommitteeRuntime
         return '';
     }
 
-    public function isVotingCommittee(Adherent $adherent, Committee $committee): bool
+    public function getVotingCommitteeName(CommitteeMembershipCollection $memberships): ?string
     {
-        $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
+        foreach ($memberships as $membership) {
+            if ($membership->isVotingCommittee()) {
+                return $membership->getCommittee()->getName();
+            }
+        }
 
-        return $membership && $membership->isVotingCommittee();
+        return null;
     }
 
     public function isCandidate(Adherent $adherent, Committee $committee): bool
@@ -97,5 +102,16 @@ class CommitteeRuntime
         $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
 
         return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy();
+    }
+
+    public function getCandidacyCommitteeName(CommitteeMembershipCollection $memberships): ?string
+    {
+        foreach ($memberships as $membership) {
+            if ($membership->getCommitteeCandidacy()) {
+                return $membership->getCommittee()->getName();
+            }
+        }
+
+        return null;
     }
 }
