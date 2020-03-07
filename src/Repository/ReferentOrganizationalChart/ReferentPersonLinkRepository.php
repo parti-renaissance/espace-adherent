@@ -48,6 +48,20 @@ class ReferentPersonLinkRepository extends ServiceEntityRepository
     /**
      * @return ReferentPersonLink[]
      */
+    public function findByReferentEmail(string $email): array
+    {
+        return $this->createQueryOrdered()
+            ->innerJoin('referent_person_link.referent', 'r')
+            ->where('r.emailAddress = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return ReferentPersonLink[]
+     */
     public function findTeamsOrdered(array $referents): array
     {
         $qb = $this->createQueryOrdered();
