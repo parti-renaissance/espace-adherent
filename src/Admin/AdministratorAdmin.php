@@ -118,6 +118,8 @@ class AdministratorAdmin extends AbstractAdmin
                     'ROLE_ADMIN_ELECTED_REPRESENTATIVES_REGISTER',
                     'ROLE_ADMIN_FINANCE',
                     'ROLE_ADMIN_PROGRAMMATIC_FOUNDATION',
+                    'ROLE_ADMIN_ELECTION_CITY_CARD',
+                    'ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS',
                 ],
             ])
             ->add(

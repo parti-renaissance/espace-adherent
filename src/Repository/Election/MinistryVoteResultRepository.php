@@ -17,9 +17,10 @@ class MinistryVoteResultRepository extends ServiceEntityRepository
 
     public function findOneForCity(City $city, ElectionRound $round): ?MinistryVoteResult
     {
-        return $this->createQueryBuilder('cvr')
-            ->where('cvr.city = :city')
-            ->andWhere('cvr.electionRound = :round')
+        return $this->createQueryBuilder('mvr')
+            ->where('mvr.city = :city')
+            ->andWhere('mvr.electionRound = :round')
+            ->andWhere('mvr.updatedBy IS NOT NULL')
             ->setParameters([
                 'city' => $city,
                 'round' => $round,

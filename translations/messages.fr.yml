@@ -659,3 +659,11 @@ elected_representative.mandate.larem_support.invested: Investi
 elected_representative.mandate.larem_support.official: Soutien officiel
 elected_representative.mandate.larem_support.informal: Soutien informel
 elected_representative.mandate.larem_support.not_supported: Pas soutenu
+
+#
+# Election
+#
+election.city_prevision.fusion: Fusion
+election.city_prevision.retention: Maintien
+election.city_partner.consensus: Consensus
+election.city_partner.dissensus: Dissensus

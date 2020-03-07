@@ -172,7 +172,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
         $qb = $this->createQueryBuilder(self::ALIAS);
 
         if ($tags = $filter->getTags()) {
-            $this->applyGeoFilter($qb, $tags, self::ALIAS, 'country', 'postalCode');
+            $this->applyGeoFilter($qb, $tags, self::ALIAS, self::ALIAS.'.country', self::ALIAS.'.postalCode');
         }
 
         if ($inseeCodes = $filter->getInseeCodes()) {

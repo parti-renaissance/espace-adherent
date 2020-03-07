@@ -1,0 +1,287 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% import _self as macros %}
+
+{% block sonata_tab_content %}
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.city }}
+                                    </td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.city.inseeCode }}
+                                    </td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.city.department }}
+                                    </td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.city.department.region }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Candidat / Chef de file</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                {{ form_row(form.firstCandidate) }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Résultats</h4>
+                    </div>
+                    <div class="box-body">
+                                {% set results = get_aggregated_city_results(object.city) %}
+
+                                <ul class="nav nav-tabs" id="results-tabs" role="tablist">
+                                    <li role="presentation"{% if results.isMinistryResult %} class="active"{% endif %}>
+                                        <a href="#ministry-results" id="ministry-results-tab" role="tab" data-toggle="tab" aria-controls="ministry-results" aria-expanded="{{ results.isMinistryResult ? 'true' : 'false' }}">
+                                            Ministère
+                                        </a>
+                                    </li>
+                                    <li role="presentation"{% if results.isCityResult %} class="active"{% endif %}>
+                                        <a href="#city-results" role="tab" id="city-results-tab" data-toggle="tab" aria-controls="city-results" aria-expanded="{{ results.isCityResult ? 'true' : 'false' }}">
+                                            Ville
+                                        </a>
+                                    </li>
+                                    <li role="presentation"{% if results.isVotePlacesResults %} class="active"{% endif %}>
+                                        <a href="#vote-places-results" role="tab" id="vote-places-results-tab" data-toggle="tab" aria-controls="vote-places-results" aria-expanded="{{ results.isVotePlacesResults ? 'true' : 'false' }}">
+                                            Bureaux
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="results-tabs-content">
+                                    <div class="tab-pane fade {% if results.isMinistryResult %}active {% endif %}in table-responsive" role="tabpanel" id="ministry-results" aria-labelledby="ministry-results-tab">
+                                        {% if results.ministryVoteResult %}
+                                            <table class="table table-bordered table-striped sonata-ba-list">
+                                                <thead>
+                                                    <tr class="sonata-ba-list-field-header">
+                                                        <th class="sonata-ba-list-field-header-text">Liste</th>
+                                                        <th class="sonata-ba-list-field-header-text">Nuance</th>
+                                                        <th class="sonata-ba-list-field-header-text">Résultat</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for listResult in results.ministryVoteResult.listTotalResults %}
+                                                        <tr>
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {{ listResult.label }}
+                                                            </td>
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {{ listResult.nuance }}
+                                                            </td>
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {{ listResult.total }}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            Aucun résultat remonté par le Ministère.
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade {% if results.isCityResult %}active {% endif %}in table-responsive" role="tabpanel" id="city-results" aria-labelledby="city-results-tab">
+                                        {% if results.cityVoteResult %}
+                                            <table class="table table-bordered table-striped sonata-ba-list">
+                                                <thead>
+                                                <tr class="sonata-ba-list-field-header">
+                                                    <th class="sonata-ba-list-field-header-text">Liste</th>
+                                                    <th class="sonata-ba-list-field-header-text">Nuance</th>
+                                                    <th class="sonata-ba-list-field-header-text">Résultat</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for listResult in results.cityVoteResult.listTotalResults %}
+                                                    <tr>
+                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                            {{ listResult.label }}
+                                                        </td>
+                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                            {{ listResult.nuance }}
+                                                        </td>
+                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                            {{ listResult.total }}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            Aucun résultat remonté au niveau communal.
+                                        {% endif %}
+                                    </div>
+                                    <div class="tab-pane fade {% if results.isVotePlacesResults %}active {% endif %}in table-responsive" role="tabpanel" id="vote-places-results" aria-labelledby="vote-places-results-tab">
+                                        {% if results.votePlacesResults|length > 0 %}
+                                            <table class="table table-bordered table-striped sonata-ba-list">
+                                                <thead>
+                                                    <tr class="sonata-ba-list-field-header">
+                                                        <th class="sonata-ba-list-field-header-text">Liste</th>
+                                                        <th class="sonata-ba-list-field-header-text">Nuance</th>
+                                                        <th class="sonata-ba-list-field-header-text">Résultat</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for listResult in results.getAggregatedVotePlacesResult.aggregatedListTotalResults %}
+                                                        <tr>
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {{ listResult.list.label }}
+                                                            </td>
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {{ listResult.list.nuance }}
+                                                            </td>
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {{ listResult.total }}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% else %}
+                                            Aucun résultat remonté pour les bureaux de vote.
+                                        {% endif %}
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Suivi / Pilotage</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">Siège</td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ macros.display_manager(object.headquartersManager) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">Politique</td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ macros.display_manager(object.politicManager) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">Task force</td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ macros.display_manager(object.taskForceManager) }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Deuxième tour</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <thead>
+                                <tr class="sonata-ba-list-field-header">
+                                    <th class="sonata-ba-list-field-header-text"></th>
+                                    <th class="sonata-ba-list-field-header-text">Stratégie</th>
+                                    <th class="sonata-ba-list-field-header-text">Prénom</th>
+                                    <th class="sonata-ba-list-field-header-text">Nom</th>
+                                    <th class="sonata-ba-list-field-header-text">Alliances</th>
+                                    <th class="sonata-ba-list-field-header-text">Alliés</th>
+                                    <th class="sonata-ba-list-field-header-text">Validé par</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ form_row(form.preparationPrevision) }}
+                                {{ form_row(form.candidatePrevision) }}
+                                {{ form_row(form.nationalPrevision) }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Partenaires</h4>
+                    </div>
+                    <div class="box-body no-padding">
+                        {{ form_row(form.partners, { label: false }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Personnes à contacter</h4>
+                    </div>
+                    <div class="box-body no-padding">
+                        {{ form_row(form.contacts, { label: false }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        .sonata-collection-row-without-label .field-container span:nth-child(2) .sonata-ba-action {
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('#results-tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+{% endblock %}
+
+{% macro display_manager(manager) %}
+    {% if manager %}
+        {{ manager.fullName }}
+        {% if manager.phone %}
+            <br>
+            <a href="tel:{{ manager.phone|phone_number_format }}">
+                {{ manager.phone|phone_number_format }}
+            </a>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

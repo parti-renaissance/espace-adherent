@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if value %}
+        {{ value.firstName }} {{ value.lastName }}
+        {% if value.phone %}
+            <br>
+            {% set phone = value.phone|phone_number_format %}
+            <a href="tel:{{ phone }}">{{ phone }}</a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -160,7 +160,7 @@ class AssessorRequestRepository extends AbstractAssessorRepository
         $qb = $this->createQueryBuilder(self::ALIAS);
 
         if ($tags = $filter->getTags()) {
-            $this->applyGeoFilter($qb, $tags, self::ALIAS, 'assessorCountry', 'assessorPostalCode');
+            $this->applyGeoFilter($qb, $tags, self::ALIAS, self::ALIAS.'.assessorCountry', self::ALIAS.'.assessorPostalCode');
         }
 
         if ($postalCodes = $filter->getPostalCodes()) {

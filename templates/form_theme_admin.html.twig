@@ -351,3 +351,106 @@
         </div>
     {% endif %}
 {% endblock %}
+
+{% block city_manager_row %}
+    <tr>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_label(form) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_widget(form.phone.country) }}
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    {{ form_widget(form.phone.number) }}
+                </div>
+                {{ form_errors(form.phone) }}
+            </div>
+        </td>
+    </tr>
+{% endblock %}
+
+{% block city_prevision_row %}
+    <tr>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_label(form) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.strategy) }}
+            {{ form_errors(form.strategy) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.alliances) }}
+            {{ form_errors(form.alliances) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.allies) }}
+            {{ form_errors(form.allies) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.validatedBy) }}
+            {{ form_errors(form.validatedBy) }}
+        </td>
+    </tr>
+{% endblock %}
+
+{% block city_candidate_row %}
+    <tr>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.gender) }}
+            {{ form_errors(form.gender) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.politicalScheme) }}
+            {{ form_errors(form.politicalScheme) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_row(form.agreement) }}
+        </td>
+    </tr>
+    <tr>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.phone) }}
+            {{ form_errors(form.phone) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.alliances) }}
+            {{ form_errors(form.alliances) }}
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+            {{ form_widget(form.eligibleAdvisersCount) }}
+            {{ form_errors(form.eligibleAdvisersCount) }}
+        </td>
+    </tr>
+{% endblock %}
