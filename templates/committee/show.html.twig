@@ -222,7 +222,7 @@
                 <p class="error-label"></p>
             {% else %}
             {% set candidacy = get_candidacy_committee_name(app.user.memberships) %}
-                <!-- <button role="button"
+                <button role="button"
                         class="btn btn--blue btn--no-wrap committee-action-button"
                         id="committee-toggle-candidacy"
                         {% if candidacy is not empty %}
@@ -232,7 +232,7 @@
                         data-csrf-token="{{ csrf_token('committee.candidate') }}">
                     <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
                     Je candidate
-                </button> -->
+                </button>
                 {% if candidacy is not empty %}
                 <div class="error-label text--body alert alert--tips text--left">
                     Vous pouvez candidater dans le comité où vous avez choisi de voter.
