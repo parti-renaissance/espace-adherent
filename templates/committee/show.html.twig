@@ -205,14 +205,14 @@
         </section>
     {% else %}
         {% if has_role_adherent and committee.committeeElection and app.user.getMembershipFor(committee) %}
-        <section class="election-box">
-            <div>
-                <h2>Candidater pour participer au Conseil Territorial</h2>
+        <section class="committee__elections-box">
+            <div class="left">
+                <h2 class="text--medium-large">Candidater pour participer au Conseil Territorial</h2>
             </div>
-            <div>
+            <div class="right">
             {% if is_candidate(app.user, committee) %}
                 <button role="button"
-                        class="btn btn--blue btn--no-wrap committee-action-button"
+                        class="btn btn--ghosting--blue btn--no-wrap committee-action-button"
                         id="committee-toggle-candidacy"
                         data-action="retirer-sa-candidature"
                         data-csrf-token="{{ csrf_token('committee.uncandidate') }}">
@@ -222,7 +222,7 @@
                 <p class="error-label"></p>
             {% else %}
             {% set candidacy = get_candidacy_committee_name(app.user.memberships) %}
-                <button role="button"
+                <!-- <button role="button"
                         class="btn btn--blue btn--no-wrap committee-action-button"
                         id="committee-toggle-candidacy"
                         {% if candidacy is not empty %}
@@ -232,9 +232,12 @@
                         data-csrf-token="{{ csrf_token('committee.candidate') }}">
                     <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
                     Je candidate
-                </button>
+                </button> -->
                 {% if candidacy is not empty %}
-                <div class="error-label">Vous devez retirer votre candidature pour pouvoir changer de comité de vote.</div>
+                <div class="error-label text--body alert alert--tips text--left">
+                    Vous pouvez candidater dans le comité où vous avez choisi de voter.
+                    Rendez-vous sur <a href="{{ path('app_adherent_committees') }}">cette page</a> pour choisir ou modifier votre comité.
+                </div>
                 {% endif %}
             {% endif %}
             </div>

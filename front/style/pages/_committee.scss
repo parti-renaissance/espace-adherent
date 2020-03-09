@@ -403,6 +403,28 @@
             margin-bottom: 20px;
         }
     }
+
+    &__elections-box {
+        border: 1px solid $lines-grey;
+        padding: 40px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .left {
+            h2 {
+                font-weight: normal;
+                max-width: 310px;
+            }
+        }
+
+        .right {
+            flex-basis: 50%;
+            text-align: center;
+        }
+    }
 }
 
 .committee__event {
