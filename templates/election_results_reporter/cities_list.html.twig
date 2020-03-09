@@ -1,6 +1,8 @@
 {% extends 'election_results_reporter/_layout.html.twig' %}
 
-{% block space_wrapper %}
+{% import 'helper/vote_result_macro.html.twig' as _helper %}
+
+{% block election_results_reporter_content %}
     <div class="manager__filters">
         <div class="manager__filters__form">
             {{ form_start(form) }}
@@ -40,6 +42,7 @@
             <td class="space--0-15">Ville</td>
             <td>Insee code</td>
             <td>Département</td>
+            <td class="text--center">Dernière<br/>modification</td>
             <td>Action</td>
         </tr>
         </thead>
@@ -58,9 +61,10 @@
                     <td>
                         <strong>{{ city.inseeCode|slice(0, 2) }}</strong>
                     </td>
+                    <td class="text--center">{{ _helper.render_ministry_vote_result_update_details(city) }}</td>
                     <td>
                         {% set items = [{
-                            href: path('app_city_vote_results_edit', {id: city.id}),
+                            href: path('app_ministry_vote_results_edit', {id: city.id}),
                             label: 'Voir les résultats',
                             linkAttr: {
                                 class: 'row-action',

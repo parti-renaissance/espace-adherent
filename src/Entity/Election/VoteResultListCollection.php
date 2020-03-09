@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Election;
 
+use AppBundle\Entity\City;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,11 +23,11 @@ class VoteResultListCollection
     private $id;
 
     /**
-     * @var VoteResultListCollectionCityProxy[]|Collection
+     * @var City
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\VoteResultListCollectionCityProxy", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\City")
      */
-    private $cityProxies;
+    private $city;
 
     /**
      * @var VoteResultList[]|Collection
@@ -39,7 +40,6 @@ class VoteResultListCollection
 
     public function __construct()
     {
-        $this->cityProxies = new ArrayCollection();
         $this->lists = new ArrayCollection();
     }
 
@@ -48,9 +48,14 @@ class VoteResultListCollection
         return $this->id;
     }
 
-    public function getCityProxies(): array
+    public function getCity(): City
     {
-        return $this->cityProxies->toArray();
+        return $this->city;
+    }
+
+    public function setCity(City $city): void
+    {
+        $this->city = $city;
     }
 
     /**
@@ -72,23 +77,5 @@ class VoteResultListCollection
     public function removeList(VoteResultList $list): void
     {
         $this->lists->removeElement($list);
-    }
-
-    public function mergeCities(array $cities): void
-    {
-        foreach ($cities as $city) {
-            $found = false;
-
-            foreach ($this->cityProxies as $proxy) {
-                if ($proxy->getCity()->equals($city)) {
-                    $found = true;
-                    break;
-                }
-            }
-
-            if (!$found) {
-                $this->cityProxies->add(new VoteResultListCollectionCityProxy($this, $city));
-            }
-        }
     }
 }

@@ -1,5 +1,7 @@
 {% extends 'municipal_manager_attribution/_layout.html.twig' %}
 
+{% import 'helper/vote_result_macro.html.twig' as _helper %}
+
 {% block municipal_manager_attribution_main_block %}
     <section>
         <div class="manager__filters">
@@ -87,8 +89,8 @@
                     <tr>
                         <td class="space--0-15">Ville</td>
                         <td>Adhérent - Responsable communal</td>
-                        <td>Téléphone</td>
-                        <td></td>
+                        <td class="text--center">Dernière<br/>modification</td>
+                        <td>Action</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,32 +110,25 @@
                                     {{ form_row(form[index].city) }}
                                 {% endif %}
                             </td>
-                            <td>
+                            <td class="text--center">
                                 {% if form[index] is defined %}
                                     {{ form_row(form[index].adherent) }}
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if form[index] is defined %}
+
                                     {% set adherent = form[index].vars.data.adherent %}
 
                                     {% if adherent and adherent.phone %}
-                                        {{ adherent.phone|phone_number_format }}
+                                        {% set phone_number = adherent.phone|phone_number_format %}
+                                        <div class="b__nudge--top-10">
+                                            <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+                                        </div>
                                     {% endif %}
                                 {% endif %}
                             </td>
+                            <td class="text--center">
+                                {{ _helper.render_city_vote_result_update_details(city) }}
+                            </td>
                             <td>
-                                {% if space_type == 'referent' %}
-                                    {% set items = [{
-                                        href: path('app_vote_result_list_referent_edit', {id: city.id}),
-                                        label: 'Éditer les listes',
-                                        linkAttr: {
-                                            class: 'row-action',
-                                        }
-                                    }] %}
-
-                                    {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
-                                {% endif %}
+                                {% block city_actions %}{{ parent() }}{% endblock %}
                             </td>
                         </tr>
                     {% else %}

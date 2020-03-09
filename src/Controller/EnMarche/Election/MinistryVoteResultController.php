@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VoteResults;
+namespace AppBundle\Controller\EnMarche\Election;
 
 use AppBundle\Election\ElectionManager;
 use AppBundle\Entity\City;
-use AppBundle\Form\CityVoteResultType;
+use AppBundle\Form\Election\MinistryVoteResultType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,11 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-rapporteur-resultats/communes/{id}/resultats", name="app_city_vote_results_edit", methods={"GET", "POST"})
- *
  * @Security("is_granted('ROLE_ELECTION_RESULTS_REPORTER')")
  */
-class CityVoteResultController extends Controller
+class MinistryVoteResultController extends Controller
 {
     private $electionManager;
     private $entityManager;
@@ -28,30 +26,33 @@ class CityVoteResultController extends Controller
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @Route("/espace-rapporteur-resultats/communes/{id}/resultats", name="app_ministry_vote_results_edit", methods={"GET", "POST"})
+     */
     public function __invoke(City $city, Request $request): Response
     {
-        $cityVoteResult = $this->electionManager->getCityVoteResultForCurrentElectionRound($city);
+        $ministryVoteResult = $this->electionManager->getMinistryVoteResultForCurrentElectionRound($city);
 
         $form = $this
-            ->createForm(CityVoteResultType::class, $cityVoteResult)
+            ->createForm(MinistryVoteResultType::class, $ministryVoteResult)
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$cityVoteResult->getId()) {
-                $this->entityManager->persist($cityVoteResult);
+            if (!$ministryVoteResult->getId()) {
+                $this->entityManager->persist($ministryVoteResult);
             }
 
             $this->entityManager->flush();
 
             $this->addFlash('info', 'Les résultats ont bien été sauvegardés');
 
-            return $this->redirectToRoute('app_city_vote_results_edit', ['id' => $city->getId()]);
+            return $this->redirectToRoute('app_ministry_vote_results_edit', ['id' => $city->getId()]);
         }
 
         return $this->render('election_results_reporter/form.html.twig', [
             'form' => $form->createView(),
-            'vote_result' => $cityVoteResult,
+            'vote_result' => $ministryVoteResult,
         ]);
     }
 }

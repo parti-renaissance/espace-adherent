@@ -1,0 +1,23 @@
+{% macro render_list_vote_result_update_details(vote_result) %}
+    {% if vote_result is instanceof('AppBundle\\Entity\\Election\\BaseVoteResult') and vote_result.updatedBy is not empty %}
+        <strong>{{ app.user == vote_result.updatedBy ? 'Vous' : vote_result.updatedBy.fullName }}</strong>
+        {% if vote_result.updatedAt is not empty %}
+            <br/>
+            <span class="text--small">
+                {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy HH:mm") }}
+            </span>
+        {% endif %}
+    {% else %}
+        ~
+    {% endif %}
+{% endmacro %}
+
+{% macro render_city_vote_result_update_details(city) %}
+    {% import _self as _helper %}
+    {{ _helper.render_list_vote_result_update_details(get_city_vote_result(city)) }}
+{% endmacro %}
+
+{% macro render_ministry_vote_result_update_details(city) %}
+    {% import _self as _helper %}
+    {{ _helper.render_list_vote_result_update_details(get_ministry_vote_result(city)) }}
+{% endmacro %}

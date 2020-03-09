@@ -14,9 +14,9 @@ use AppBundle\Exporter\AssessorsExporter;
 use AppBundle\Exporter\VoteResultsExporter;
 use AppBundle\Form\AssessorVotePlaceListType;
 use AppBundle\Form\CreateVotePlaceType;
+use AppBundle\Repository\Election\VotePlaceResultRepository;
 use AppBundle\Repository\ElectionRepository;
 use AppBundle\Repository\VotePlaceRepository;
-use AppBundle\Repository\VoteResultRepository;
 use AppBundle\Security\Voter\ManageVotePlaceVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
@@ -33,8 +33,10 @@ abstract class AbstractAssessorSpaceController extends Controller
     protected $votePlaceRepository;
     protected $voteResultRepository;
 
-    public function __construct(VotePlaceRepository $votePlaceRepository, VoteResultRepository $voteResultRepository)
-    {
+    public function __construct(
+        VotePlaceRepository $votePlaceRepository,
+        VotePlaceResultRepository $voteResultRepository
+    ) {
         $this->votePlaceRepository = $votePlaceRepository;
         $this->voteResultRepository = $voteResultRepository;
     }

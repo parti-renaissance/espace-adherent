@@ -36,6 +36,11 @@
             <tag name="twig.runtime" />
         </service>
 
+        <service id="AppBundle\Twig\ElectionVoteResultRuntime">
+            <argument type="service" id="AppBundle\Election\ElectionManager"/>
+            <tag name="twig.runtime" />
+        </service>
+
         <service id="AppBundle\Twig\CitizenProjectRuntime">
             <tag name="twig.runtime"/>
         </service>

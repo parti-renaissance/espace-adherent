@@ -1,0 +1,64 @@
+{% extends 'municipal_manager/_layout.html.twig' %}
+
+{% import 'helper/vote_result_macro.html.twig' as _helper %}
+
+{% block municipal_manager_content %}
+    <section>
+        <table class="datagrid__table-manager">
+            <thead>
+            <tr>
+                <td class="space--0-15">Ville</td>
+                <td class="text--center">Dernière<br/>modification</td>
+                <td>Action</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for city in app.user.municipalManagerRole.cities %}
+                <tr>
+                    <td>
+                        <div class="l__row l__row--h-start">
+                            <div class="l__col">
+                                <strong>{{ city.name }} ({{ city.inseeCode }})</strong>
+                                <br />
+                                <span class="text--small">
+                                    {{ city.postalCodes|join('/') }}, {{ city.country|countryName }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text--center">
+                        {{ _helper.render_city_vote_result_update_details(city) }}
+                    </td>
+                    <td>
+                        {% set items = [
+                            {
+                                href: path('app_municipal_manager_city_vote_results_edit', {id: city.id}),
+                                label: 'Voir les résultats',
+                                linkAttr: {
+                                    class: 'row-action',
+                                }
+                            },
+                            {
+                                href: path('app_municipal_manager_vote_result_list_edit', {id: city.id}),
+                                label: 'Éditer les listes',
+                                linkAttr: {
+                                    class: 'row-action',
+                                }
+                            }
+                        ] %}
+
+                        {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                        Aucun résultat
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

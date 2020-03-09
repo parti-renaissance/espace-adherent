@@ -1,0 +1,9 @@
+{% extends 'election_vote_results/_form_layout.html.twig' %}
+
+{% block vote_results_content %}
+    <p>Résultats pour la ville: <strong>{{ vote_result.city }}</strong></p>
+
+    <p class="alert alert--tips">{{ vote_result.electionRound.label }}</p>
+
+    {{ parent() }}
+{% endblock %}

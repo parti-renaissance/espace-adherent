@@ -1,22 +1,17 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Election;
 
-use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Election\ListTotalResult;
-use AppBundle\Entity\Election\VoteResultListCollection;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ElectionRound;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VoteResultRepository")
- *
- * @Algolia\Index(autoIndex=false)
+ * @ORM\MappedSuperclass
  */
-class VoteResult
+abstract class BaseVoteResult
 {
     use TimestampableEntity;
 
@@ -28,14 +23,6 @@ class VoteResult
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * @var VotePlace
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="voteResults")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $votePlace;
 
     /**
      * @var ElectionRound
@@ -74,13 +61,6 @@ class VoteResult
     private $expressed = 0;
 
     /**
-     * @var ListTotalResult[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\ListTotalResult", mappedBy="voteResult", cascade={"all"})
-     */
-    private $listTotalResults;
-
-    /**
      * @var Adherent|null
      *
      * @Gedmo\Blameable(on="create")
@@ -98,27 +78,14 @@ class VoteResult
      */
     protected $updatedBy;
 
-    public function __construct(VotePlace $votePlace, ElectionRound $electionRound)
+    public function __construct(ElectionRound $electionRound)
     {
-        $this->votePlace = $votePlace;
         $this->electionRound = $electionRound;
-
-        $this->listTotalResults = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getVotePlace(): ?VotePlace
-    {
-        return $this->votePlace;
-    }
-
-    public function setVotePlace(VotePlace $votePlace): void
-    {
-        $this->votePlace = $votePlace;
     }
 
     public function getElectionRound(): ?ElectionRound
@@ -200,41 +167,12 @@ class VoteResult
 
     public function isComplete(): bool
     {
-        return $this->registered && $this->abstentions && $this->expressed && $this->voters && !empty($this->lists);
+        return $this->registered && $this->abstentions && $this->expressed && $this->voters;
     }
 
     public function isPartial(): bool
     {
-        return $this->registered || $this->abstentions || $this->expressed || $this->voters || !empty($this->lists);
-    }
-
-    /**
-     * @return ListTotalResult[]
-     */
-    public function getListTotalResults(): array
-    {
-        return $this->listTotalResults->toArray();
-    }
-
-    public function updateLists(VoteResultListCollection $listCollection): void
-    {
-        $currentLists = $this->listTotalResults->map(static function (ListTotalResult $totalResult) {
-            return $totalResult->getList();
-        });
-
-        foreach ($listCollection->getLists() as $newListToAdd) {
-            if (!$currentLists->contains($newListToAdd)) {
-                $listTotalResult = new ListTotalResult($newListToAdd);
-                $listTotalResult->setVoteResult($this);
-
-                $this->listTotalResults->add($listTotalResult);
-            }
-        }
-    }
-
-    public function setListTotalResults(array $listTotalResults): void
-    {
-        $this->listTotalResults = new ArrayCollection($listTotalResults);
+        return $this->registered || $this->abstentions || $this->expressed || $this->voters;
     }
 
     public function getCreatedBy(): ?Adherent

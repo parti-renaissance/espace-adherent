@@ -2,7 +2,7 @@
 
 namespace AppBundle\Exporter;
 
-use AppBundle\Entity\VoteResult;
+use AppBundle\Entity\Election\VotePlaceResult;
 use Doctrine\ORM\Query;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -25,7 +25,7 @@ class VoteResultsExporter
             new IteratorCallbackSourceIterator(
                 $query->iterate(),
                 function (array $data) {
-                    /** @var VoteResult $voteResult */
+                    /** @var VotePlaceResult $voteResult */
                     $voteResult = $data[0];
 
                     $abstentionsPercentage = $voteResult->getAbstentionsPercentage();

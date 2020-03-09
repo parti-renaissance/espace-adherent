@@ -26,7 +26,7 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, ['app_assessors_municipal_manager_*', 'app_vote_result_list_municipal_manager_edit']) ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, ['app_assessors_municipal_manager_*', 'app_municipal_manager_vote_result_list_edit', 'app_vote_results_municipal_manager_index', 'app_municipal_manager_cities_list', 'app_municipal_manager_city_vote_results_edit']) ? 'active' }}">
                                 <a href="{{ path('app_assessors_municipal_manager_attribution_form') }}">Assesseurs</a>
                             </li>
                         </ul>
@@ -35,6 +35,20 @@
             </header>
 
             <div class="l__wrapper text--body">
+                <div class="datagrid__table__tabs">
+                    <div class="datagrid__table__tabs__items">
+                        <h3>
+                            <a href="{{ path('app_assessors_municipal_manager_attribution_form') }}">Bureaux de votes</a>
+                        </h3>
+
+                        <span class="separator"></span>
+
+                        <h3>
+                            <a href="{{ path('app_municipal_manager_cities_list') }}">Communes</a>
+                        </h3>
+                    </div>
+                </div>
+
                 {% block municipal_manager_content %}{% endblock %}
             </div>
         </section>

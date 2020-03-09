@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository\Election;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\Election\VoteResultListCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -13,12 +14,12 @@ class VoteResultListCollectionRepository extends ServiceEntityRepository
         parent::__construct($registry, VoteResultListCollection::class);
     }
 
-    public function findOneByCities(array $cities): ?VoteResultListCollection
+    public function findOneByCity(City $city): ?VoteResultListCollection
     {
         return $this->createQueryBuilder('lc')
-            ->innerJoin('lc.cityProxies', 'cityProxy')
-            ->where('cityProxy.city IN (:cities)')
-            ->setParameter('cities', $cities)
+            ->innerJoin('lc.city', 'city')
+            ->where('city = :city')
+            ->setParameter('city', $city)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
@@ -28,8 +29,7 @@ class VoteResultListCollectionRepository extends ServiceEntityRepository
     public function findOneByCityInseeCode(string $inseeCode): ?VoteResultListCollection
     {
         return $this->createQueryBuilder('lc')
-            ->innerJoin('lc.cityProxies', 'cityProxy')
-            ->innerJoin('cityProxy.city', 'city')
+            ->innerJoin('lc.city', 'city')
             ->where('city.inseeCode = :insee_code')
             ->setParameter('insee_code', $inseeCode)
             ->setMaxResults(1)

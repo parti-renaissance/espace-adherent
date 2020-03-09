@@ -3,7 +3,7 @@
 namespace AppBundle\Election\Listener;
 
 use AppBundle\Entity\Election\ListTotalResult;
-use AppBundle\Entity\VoteResult;
+use AppBundle\Entity\Election\VotePlaceResult;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
@@ -43,7 +43,7 @@ class VoteResultBlameableListener implements EventSubscriber
                 $voteResult->setUpdatedAt(new \DateTime());
 
                 $uow->recomputeSingleEntityChangeSet(
-                    $args->getEntityManager()->getClassMetadata(VoteResult::class),
+                    $args->getEntityManager()->getClassMetadata(VotePlaceResult::class),
                     $voteResult
                 );
 

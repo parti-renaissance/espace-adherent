@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\Election\VotePlaceResult;
 use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -132,9 +133,9 @@ class VotePlace
     private $enabled = true;
 
     /**
-     * @var VoteResult[]|Collection
+     * @var VotePlaceResult[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VoteResult", mappedBy="votePlace", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\VotePlaceResult", mappedBy="votePlace", fetch="EXTRA_LAZY")
      */
     private $voteResults;
 
@@ -333,7 +334,7 @@ class VotePlace
         $this->enabled = $enabled;
     }
 
-    public function getResultForElectionRound(ElectionRound $electionRound): ?VoteResult
+    public function getResultForElectionRound(ElectionRound $electionRound): ?VotePlaceResult
     {
         foreach ($this->voteResults as $voteResult) {
             if ($voteResult->getElectionRound() === $electionRound) {
@@ -346,7 +347,7 @@ class VotePlace
 
     public function getResultStatus(ElectionRound $electionRound): string
     {
-        $voteResults = $this->voteResults->filter(function (VoteResult $voteResult) use ($electionRound) {
+        $voteResults = $this->voteResults->filter(function (VotePlaceResult $voteResult) use ($electionRound) {
             return $electionRound === $voteResult->getElectionRound();
         });
 
@@ -354,7 +355,7 @@ class VotePlace
             return self::RESULTS_EMPTY;
         }
 
-        /** @var VoteResult $voteResult */
+        /** @var VotePlaceResult $voteResult */
         $voteResult = $voteResults->first();
 
         if ($voteResult->isComplete()) {

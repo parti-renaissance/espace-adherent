@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Election;
 
 use AppBundle\Entity\Election\ListTotalResult;
 use Doctrine\ORM\EntityManagerInterface;

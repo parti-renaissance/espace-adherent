@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\Election\VoteResultList;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\Election\VoteResultListCollection;
 use AppBundle\Form\VoteResultListCollectionType;
 use AppBundle\Repository\Election\VoteResultListCollectionRepository;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractVoteResultListController extends Controller
 {
@@ -18,11 +20,21 @@ abstract class AbstractVoteResultListController extends Controller
     /** @var VoteResultListCollectionRepository */
     private $voteResultListCollectionRepository;
 
-    protected function submitListFormAction(
-        Request $request,
-        array $cities,
-        ?VoteResultListCollection $listCollection
-    ): Response {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        VoteResultListCollectionRepository $voteResultListCollectionRepository
+    ) {
+        $this->entityManager = $entityManager;
+        $this->voteResultListCollectionRepository = $voteResultListCollectionRepository;
+    }
+
+    /**
+     * @Route("/{id}/listes", name="_vote_result_list_edit", methods={"GET", "POST"})
+     */
+    public function __invoke(City $city, Request $request): Response
+    {
+        $listCollection = $this->voteResultListCollectionRepository->findOneByCity($city);
+
         $form = $this
             ->createForm(VoteResultListCollectionType::class, $listCollection)
             ->handleRequest($request)
@@ -31,7 +43,7 @@ abstract class AbstractVoteResultListController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var VoteResultListCollection $listCollection */
             $listCollection = $form->getData();
-            $listCollection->mergeCities($cities);
+            $listCollection->setCity($city);
 
             if (!$listCollection->getId()) {
                 $this->entityManager->persist($listCollection);
@@ -46,32 +58,6 @@ abstract class AbstractVoteResultListController extends Controller
         return $this->renderTemplate('election_result_list/edit.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @required
-     */
-    public function setEntityManager(EntityManagerInterface $entityManager): void
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @required
-     */
-    public function setVoteResultListCollectionRepository(
-        VoteResultListCollectionRepository $voteResultListCollectionRepository
-    ): void {
-        $this->voteResultListCollectionRepository = $voteResultListCollectionRepository;
-    }
-
-    protected function findListCollection(array $cities): ?VoteResultListCollection
-    {
-        if (!$cities) {
-            throw new \InvalidArgumentException('City array can not be empty');
-        }
-
-        return $this->voteResultListCollectionRepository->findOneByCities($cities);
     }
 
     protected function getSuccessRedirectionResponse(): RedirectResponse

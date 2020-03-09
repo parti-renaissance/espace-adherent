@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity\Election;
 
-use AppBundle\Entity\VoteResult;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,9 +34,10 @@ class ListTotalResult
     private $total = 0;
 
     /**
-     * @var VoteResult|null
+     * @var BaseWithListCollectionResult|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VoteResult", inversedBy="listTotalResults")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election\BaseWithListCollectionResult", inversedBy="listTotalResults")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $voteResult;
 
@@ -71,12 +71,12 @@ class ListTotalResult
         $this->total = $total;
     }
 
-    public function getVoteResult(): ?VoteResult
+    public function getVoteResult(): ?BaseWithListCollectionResult
     {
         return $this->voteResult;
     }
 
-    public function setVoteResult(VoteResult $voteResult): void
+    public function setVoteResult(BaseWithListCollectionResult $voteResult): void
     {
         $this->voteResult = $voteResult;
     }
