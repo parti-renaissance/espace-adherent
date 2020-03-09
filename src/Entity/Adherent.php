@@ -65,7 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     @ORM\UniqueConstraint(name="adherents_email_address_unique", columns="email_address")
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\RevokeCoReferentRoleListener"})
+ * @ORM\EntityListeners({"AppBundle\EntityListener\RevokeReferentTeamMemberRolesListener"})
  *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  *
