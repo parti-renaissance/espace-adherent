@@ -15,6 +15,7 @@ use AppBundle\Form\GenderType;
 use AppBundle\Form\MandateType;
 use AppBundle\Form\PoliticalFunctionType;
 use AppBundle\Form\SocialNetworkLinkType;
+use AppBundle\Form\SponsorshipType;
 use AppBundle\Repository\PoliticalLabelRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -224,6 +225,18 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+            ->end()
+            ->with(
+                'Parrainages',
+                [
+                    'class' => 'col-md-6',
+                ]
+            )
+                ->add('sponsorships', CollectionType::class, [
+                    'entry_type' => SponsorshipType::class,
+                    'label' => false,
                     'by_reference' => false,
                 ])
             ->end()

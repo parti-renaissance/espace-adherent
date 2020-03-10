@@ -331,6 +331,32 @@
     </div>
 {% endblock %}
 
+{% block app_admin_elected_representative_sponsorships_sonata_type_native_collection_sponsorships_widget -%}
+    <div class="row">
+        <div class="col-xs-11" style="margin-left: 15px;">
+            <div class="row bg-primary">
+                <div class="col-md-2">Élection présidentielle</div>
+                <div class="col-md-10">Candidat</div>
+            </div>
+        </div>
+    </div>
+    ​
+    <div>
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block app_admin_elected_representative_sponsorship_sponsorships_sponsorships_entry_widget -%}
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-md-2{{ not form.presidentialElectionYear.vars.valid ? ' error' }}">
+            {{ form_row(form.presidentialElectionYear) }}
+        </div>
+        <div class="col-md-10{{ not form.candidate.vars.valid ? ' error' }}">
+            {{ form_row(form.candidate) }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block app_admin_mooc_mooc_image_row -%}
     {{ block('admin_image_with_url_row') }}
 {% endblock %}

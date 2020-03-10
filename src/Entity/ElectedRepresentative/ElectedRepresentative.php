@@ -208,6 +208,21 @@ class ElectedRepresentative
      */
     private $labels;
 
+    /**
+     * Sponsorship[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\ElectedRepresentative\Sponsorship",
+     *     mappedBy="electedRepresentative",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EAGER"
+     * )
+     *
+     * @Assert\Valid
+     */
+    private $sponsorships;
+
     public function __construct(
         string $firstName,
         string $lastName,
@@ -224,6 +239,9 @@ class ElectedRepresentative
         $this->mandates = new ArrayCollection();
         $this->politicalFunctions = new ArrayCollection();
         $this->labels = new ArrayCollection();
+        $this->sponsorships = new ArrayCollection();
+
+        $this->initializeSponsorships();
     }
 
     public function getId(): int
@@ -476,6 +494,36 @@ class ElectedRepresentative
     public function removeLabel(ElectedRepresentativeLabel $label): void
     {
         $this->labels->removeElement($label);
+    }
+
+    public function getSponsorships(): Collection
+    {
+        if (0 === $this->sponsorships->count()) {
+            $this->initializeSponsorships();
+        }
+
+        return $this->sponsorships;
+    }
+
+    public function addSponsorship(Sponsorship $sponsorship): void
+    {
+        if (!$this->sponsorship->contains($sponsorship)) {
+            $sponsorship->setElectedRepresentative($this);
+            $this->sponsorship->add($sponsorship);
+        }
+    }
+
+    public function removeSponsorship(Sponsorship $sponsorship): void
+    {
+        $this->sponsorship->removeElement($sponsorship);
+    }
+
+    private function initializeSponsorships(): void
+    {
+        foreach (Sponsorship::getYears() as $year) {
+            $sponsorship = new Sponsorship($year, null, $this);
+            $this->sponsorships->add($sponsorship);
+        }
     }
 
     public function __toString(): string
