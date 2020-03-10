@@ -51,7 +51,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            margin: 25px 0 40px;
+            margin: 25px 0 0;
         }
 
         &__menu {
@@ -412,6 +412,7 @@
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
+        margin-top: 40px;
 
         .left {
             h2 {
