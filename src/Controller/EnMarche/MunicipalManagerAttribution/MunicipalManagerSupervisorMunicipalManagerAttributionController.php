@@ -31,10 +31,10 @@ class MunicipalManagerSupervisorMunicipalManagerAttributionController extends Ab
 
     private function getReferentTags(): array
     {
-        /** @var Adherent $referent */
-        $referent = $this->getUser();
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
-        return $referent
+        return $adherent
             ->getMunicipalManagerSupervisorRole()
             ->getReferent()
             ->getManagedArea()
