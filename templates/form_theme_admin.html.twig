@@ -92,6 +92,34 @@
     {% endif %}
 {% endblock %}
 
+{% block label_row %}
+    {{ block('form_row') }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var input = $('#{{ form.name.vars.id }}');
+
+            // Add label name autocomplete
+            input.autocomplete({
+                source: function(request, response) {
+                    var term = request.term.trim();
+                    if (term.length > 0) {
+                        $.get("{{ path('app_elected_representative_labels_autocomplete')|raw }}?term=" + term, function(data) { response(data); });
+                    } else {
+                        response([]);
+                    }
+                },
+                minLength: 1,
+                messages: {
+                    noResults: '',
+                    results: function () {
+                    },
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block app_admin_elected_representative_mandates_sonata_type_native_collection_mandates_widget -%}
     <div class="row">
         <div class="col-xs-11 col-xs-offset-1">
@@ -244,6 +272,62 @@
         <div class="col-md-2{{ not form.finishAt.vars.valid ? ' error' }}">
             {{ form_widget(form.finishAt) }}
             {{ form_errors(form.finishAt) }}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block app_admin_elected_representative_labels_sonata_type_native_collection_labels_widget -%}
+    <div class="row">
+        <div class="col-xs-11 col-xs-offset-1">
+            <div class="row bg-primary">
+                <div class="col-md-7">Nom</div>
+                <div class="col-md-1">En cours</div>
+                <div class="col-md-2">Date de début</div>
+                <div class="col-md-2">Date de fin</div>
+            </div>
+        </div>
+    </div>
+    ​
+    <div class="political-labels-collection">
+        {{ form_widget(form) }}
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("div.political-labels-collection").on('ifToggled', "input[id$='_onGoing']", function() {
+                var onGoingId = $(this).attr('id');
+                var id = onGoingId.substr(0, onGoingId.indexOf('_onGoing'));
+                id = id.substr(id.length - 1);
+
+                if ($(this).is(':checked')) {
+                    $(this).parents('.row.political-label').find("div[id$='" + id + "_finishYear']").addClass('select2-container-disabled');
+                } else {
+                    $(this).parents('.row.political-label').find("div[id$='" + id + "_finishYear']").removeClass('select2-container-disabled');
+                }
+            });
+
+            $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            $('div.political-labels-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
+                $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block app_admin_elected_representative_label_labels_labels_entry_widget -%}
+    <div class="row political-label{{ form.onGoing.vars.checked ? ' text--bold' : '' }}" style="margin-top: 10px; margin-left: -30px;">
+        <div class="col-md-7{{ form.name.vars.valid ? '' : ' error' }}">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-1{{ form.onGoing.vars.valid ? '' : ' error' }}">
+            {{ form_row(form.onGoing) }}
+        </div>
+        <div class="col-md-2{{ form.beginYear.vars.valid ? '' : ' error' }}">
+            {{ form_row(form.beginYear) }}
+        </div>
+        <div class="col-md-2{{ form.finishYear.vars.valid ? '' : ' error' }}">
+            {{ form_row(form.finishYear) }}
         </div>
     </div>
 {% endblock %}

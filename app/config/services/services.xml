@@ -227,6 +227,7 @@
         </service>
         <service id="AppBundle\Form\CommitteeAroundAdherentType"/>
         <service id="AppBundle\Form\Jecoute\SurveyQuestionFormType"/>
+        <service id="AppBundle\Form\ElectedRepresentative\LabelType"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">

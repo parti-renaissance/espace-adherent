@@ -149,7 +149,7 @@ class ElectedRepresentative
     private $adherent;
 
     /**
-     * SocialNetworkLink[]|Collection
+     * @var SocialNetworkLink[]|Collection
      *
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\ElectedRepresentative\SocialNetworkLink",
@@ -164,7 +164,7 @@ class ElectedRepresentative
     private $socialNetworkLinks;
 
     /**
-     * Mandate[]|Collection
+     * @var Mandate[]|Collection
      *
      * @ORM\OneToMany(
      *     targetEntity="AppBundle\Entity\ElectedRepresentative\Mandate",
@@ -193,6 +193,21 @@ class ElectedRepresentative
      */
     private $politicalFunctions;
 
+    /**
+     * @var Label[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\ElectedRepresentative\Label",
+     *     mappedBy="electedRepresentative",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     fetch="EAGER"
+     * )
+     *
+     * @Assert\Valid
+     */
+    private $labels;
+
     public function __construct(
         string $firstName,
         string $lastName,
@@ -208,6 +223,7 @@ class ElectedRepresentative
         $this->socialNetworkLinks = new ArrayCollection();
         $this->mandates = new ArrayCollection();
         $this->politicalFunctions = new ArrayCollection();
+        $this->labels = new ArrayCollection();
     }
 
     public function getId(): int
@@ -431,6 +447,35 @@ class ElectedRepresentative
     public function exportPoliticalFunctions(): string
     {
         return implode(', ', $this->getCurrentPoliticalFunctions()->toArray());
+    }
+
+    public function getLabels(): Collection
+    {
+        return $this->labels;
+    }
+
+    public function getLabel(string $name): ?Label
+    {
+        foreach ($this->labels as $label) {
+            if ($name === $label->getName()->getName()) {
+                return $label;
+            }
+        }
+
+        return null;
+    }
+
+    public function addLabel(Label $label): void
+    {
+        if (!$this->labels->contains($label)) {
+            $label->setElectedRepresentative($this);
+            $this->labels->add($label);
+        }
+    }
+
+    public function removeLabel(Label $label): void
+    {
+        $this->labels->removeElement($label);
     }
 
     public function __toString(): string

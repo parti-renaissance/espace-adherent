@@ -3,13 +3,19 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Address\Address;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\ElectedRepresentative\ElectedRepresentative;
+use AppBundle\Entity\ElectedRepresentative\Label;
+use AppBundle\Entity\ElectedRepresentative\LabelName;
 use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
 use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use AppBundle\Form\AdherentEmailType;
+use AppBundle\Form\ElectedRepresentative\LabelType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MandateType;
 use AppBundle\Form\PoliticalFunctionType;
 use AppBundle\Form\SocialNetworkLinkType;
+use AppBundle\Repository\ElectedRepresentative\LabelNameRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -36,6 +42,16 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'id',
     ];
+
+    /** @var LabelNameRepository */
+    private $labelNameRepository;
+
+    public function __construct($code, $class, $baseControllerName, LabelNameRepository $labelNameRepository)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->labelNameRepository = $labelNameRepository;
+    }
 
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -229,9 +245,19 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'by_reference' => false,
                 ])
             ->end()
+            ->with('Étiquettes')
+                ->add('labels', CollectionType::class, [
+                    'entry_type' => LabelType::class,
+                    'label' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+            ->end()
         ;
 
         $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'preSubmit']);
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::SUBMIT, [$this, 'submit']);
     }
 
     public function preSubmit(FormEvent $event): void
@@ -239,6 +265,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $form = $event->getForm();
         $data = $event->getData();
 
+        /** @var Adherent $adherent */
         $adherent = $form->getData()->getAdherent();
         $adherentEmail = $adherent ? $adherent->getEmailAddress() : null;
         $formAdherentEmail = $data['adherent'] ?: null;
@@ -247,6 +274,34 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         if ($adherentEmail !== $formAdherentEmail) {
             $data['isAdherent'] = null;
             $event->setData($data);
+        }
+    }
+
+    public function submit(FormEvent $event): void
+    {
+        /** @var ElectedRepresentative $electedRepresentative */
+        $electedRepresentative = $event->getData();
+        $laREM = $this->labelNameRepository->findOneByName(LabelName::LABEL_LAREM);
+
+        // if adherent, we should add the LaREM label, if it does not exist
+        $label = $electedRepresentative->getLabel(LabelName::LABEL_LAREM);
+        if ($electedRepresentative->isAdherent()
+            && $electedRepresentative->getAdherent()
+            && !$label) {
+            $labelLaREM = new Label(
+                $laREM,
+                $electedRepresentative,
+                true,
+                $electedRepresentative->getAdherent()->getRegisteredAt()->format('Y')
+            );
+            $electedRepresentative->addLabel($labelLaREM);
+
+            return;
+        }
+
+        // and if not adherent, we should remove the LaREM label
+        if (true !== $electedRepresentative->isAdherent() && $label) {
+            $electedRepresentative->removeLabel($label);
         }
     }
 
