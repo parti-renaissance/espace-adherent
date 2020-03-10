@@ -13,13 +13,13 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(path="/espace-referent/assesseurs", name="app_assessors_referent")
+ * @Route(path="/espace-responsable-attribution/assesseurs", name="app_assessors_municipal_manager_supervisor")
  *
- * @Security("is_granted('ROLE_REFERENT')")
+ * @Security("is_granted('ROLE_MUNICIPAL_MANAGER_SUPERVISOR')")
  */
-class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
+class MunicipalManagerSupervisorAssessorSpaceController extends AbstractAssessorSpaceController
 {
-    private const SPACE_NAME = 'referent';
+    private const SPACE_NAME = 'municipal_manager_supervisor';
 
     protected function getSpaceType(): string
     {
@@ -52,9 +52,15 @@ class ReferentAssessorSpaceController extends AbstractAssessorSpaceController
 
     private function getReferentTags(): array
     {
-        /** @var Adherent $referent */
-        $referent = $this->getUser();
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
-        return $referent->getManagedArea()->getTags()->toArray();
+        return $adherent
+            ->getMunicipalManagerSupervisorRole()
+            ->getReferent()
+            ->getManagedArea()
+            ->getTags()
+            ->toArray()
+        ;
     }
 }
