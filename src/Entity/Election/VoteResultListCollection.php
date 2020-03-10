@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Election;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\City;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Election\VoteResultListCollectionRepository")
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class VoteResultListCollection
 {
@@ -33,6 +36,7 @@ class VoteResultListCollection
      * @var VoteResultList[]|Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\VoteResultList", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\Count(min=1)
      */

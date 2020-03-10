@@ -4,7 +4,7 @@
         {% if vote_result.updatedAt is not empty %}
             <br/>
             <span class="text--small">
-                {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy HH:mm") }}
+                {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}
             </span>
         {% endif %}
     {% else %}

@@ -18,7 +18,7 @@ class MinistryVoteResultType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lists', CollectionType::class, [
+            ->add('listTotalResults', CollectionType::class, [
                 'entry_type' => BasicVoteListResultType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,

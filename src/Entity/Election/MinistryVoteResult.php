@@ -5,6 +5,8 @@ namespace AppBundle\Entity\Election;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\City;
 use AppBundle\Entity\ElectionRound;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,30 +24,39 @@ class MinistryVoteResult extends BaseVoteResult
     private $city;
 
     /**
-     * @var array
+     * @var MinistryListTotalResult[]|Collection
      *
-     * @ORM\Column(type="json")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\MinistryListTotalResult", mappedBy="ministryVoteResult", cascade={"all"}, orphanRemoval=true)
      */
-    private $lists = [];
+    private $listTotalResults;
 
     public function __construct(City $city, ElectionRound $electionRound)
     {
-        $this->city = $city;
-
         parent::__construct($electionRound);
+
+        $this->city = $city;
+        $this->listTotalResults = new ArrayCollection();
     }
 
     public function isComplete(): bool
     {
-        return parent::isComplete() && !empty($this->lists);
+        return parent::isComplete()
+            && !$this->listTotalResults
+                ->filter(static function (MinistryListTotalResult $total) { return $total->getTotal() > 0; })
+                ->isEmpty()
+        ;
     }
 
     public function isPartial(): bool
     {
-        return parent::isPartial() || !empty($this->lists);
+        return parent::isPartial()
+            || !$this->listTotalResults
+                ->filter(static function (MinistryListTotalResult $total) { return $total->getTotal() > 0; })
+                ->isEmpty()
+        ;
     }
 
-    public function getCity(): ?City
+    public function getCity(): City
     {
         return $this->city;
     }
@@ -55,18 +66,24 @@ class MinistryVoteResult extends BaseVoteResult
         $this->city = $city;
     }
 
-    public function getLists(): array
+    /**
+     * @return MinistryListTotalResult[]
+     */
+    public function getListTotalResults(): array
     {
-        return $this->lists;
+        return $this->listTotalResults->toArray();
     }
 
-    public function setLists(array $lists): void
+    public function addListTotalResult(MinistryListTotalResult $result): void
     {
-        $this->lists = $lists;
+        if (!$this->listTotalResults->contains($result)) {
+            $result->setMinistryVoteResult($this);
+            $this->listTotalResults->add($result);
+        }
     }
 
-    public function addList(string $label, int $votes): void
+    public function removeListTotalResult(MinistryListTotalResult $result): void
     {
-        $this->lists[] = ['label' => $label, 'votes' => $votes];
+        $this->listTotalResults->removeElement($result);
     }
 }

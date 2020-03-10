@@ -12,7 +12,7 @@
             dernière modification effectuée par <strong>{{ app.user == vote_result.updatedBy ? 'vous' : vote_result.updatedBy.fullName }}</strong>
 
             {% if vote_result.updatedAt is not empty %}
-                , le {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy HH:mm") }}
+                , le {{ vote_result.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}
             {% endif %}
         </p>
     {% endif %}

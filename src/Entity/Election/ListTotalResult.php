@@ -2,10 +2,13 @@
 
 namespace AppBundle\Entity\Election;
 
+use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ *
+ * @Algolia\Index(autoIndex=false)
  */
 class ListTotalResult
 {
@@ -37,7 +40,7 @@ class ListTotalResult
      * @var BaseWithListCollectionResult|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election\BaseWithListCollectionResult", inversedBy="listTotalResults")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $voteResult;
 

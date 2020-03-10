@@ -28,7 +28,7 @@ class VotePlaceResult extends BaseWithListCollectionResult
         $this->votePlace = $votePlace;
     }
 
-    public function getVotePlace(): ?VotePlace
+    public function getVotePlace(): VotePlace
     {
         return $this->votePlace;
     }

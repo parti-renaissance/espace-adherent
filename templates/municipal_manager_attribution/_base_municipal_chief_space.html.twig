@@ -9,18 +9,18 @@
 {% block city_actions %}
     {% set items = [
         {
-            href: path("app_#{space_type}_city_vote_results_edit", {id: city.id}),
+            href: path('app_municipal_chief_city_vote_results_edit', {id: city.id}),
             label: 'Voir les résultats',
             linkAttr: {
-            class: 'row-action',
-        }
+                class: 'row-action',
+            }
         },
         {
-            href: path("app_#{space_type}_vote_result_list_edit", {id: city.id}),
+            href: path('app_municipal_chief_vote_result_list_edit', {id: city.id}),
             label: 'Éditer les listes',
             linkAttr: {
-            class: 'row-action',
-        }
+                class: 'row-action',
+            }
         }
     ] %}
 
