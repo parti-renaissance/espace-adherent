@@ -5,3 +5,24 @@
 
     {% block municipal_manager_attribution_main_block %}{% endblock %}
 {% endblock %}
+
+{% block city_actions %}
+    {% set items = [
+        {
+            href: path('app_referent_city_vote_results_edit', {id: city.id}),
+            label: 'Voir les résultats',
+            linkAttr: {
+                class: 'row-action',
+            }
+        },
+        {
+            href: path('app_referent_vote_result_list_edit', {id: city.id}),
+            label: 'Éditer les listes',
+            linkAttr: {
+                class: 'row-action',
+            }
+        }
+    ] %}
+
+    {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+{% endblock %}

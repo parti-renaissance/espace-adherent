@@ -57,7 +57,7 @@ abstract class AbstractMunicipalManagerAttributionController extends Controller
             );
         }
 
-        return $this->renderTemplate(sprintf('municipal_manager_attribution/index.html.twig', static::getSpaceType()), [
+        return $this->renderTemplate('municipal_manager_attribution/index.html.twig', [
             'cities' => $paginator,
             'form' => $form->createView(),
             'filter_form' => $filterForm->createView(),

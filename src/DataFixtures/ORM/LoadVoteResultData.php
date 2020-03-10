@@ -2,9 +2,9 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\Election\VotePlaceResult;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\VotePlace;
-use AppBundle\Entity\VoteResult;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -56,8 +56,8 @@ class LoadVoteResultData extends Fixture
         int $abstentions,
         int $voters,
         int $expressed
-    ): VoteResult {
-        $voteResult = new VoteResult($votePlace, $electionRound);
+    ): VotePlaceResult {
+        $voteResult = new VotePlaceResult($votePlace, $electionRound);
         $voteResult->setRegistered($registered);
         $voteResult->setAbstentions($abstentions);
         $voteResult->setVoters($voters);

@@ -1,23 +1,24 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace AppBundle\Repository\Election;
 
 use AppBundle\Entity\Election;
+use AppBundle\Entity\Election\VotePlaceResult;
 use AppBundle\Entity\ElectionRound;
 use AppBundle\Entity\VotePlace;
-use AppBundle\Entity\VoteResult;
+use AppBundle\Repository\GeoFilterTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
-class VoteResultRepository extends ServiceEntityRepository
+class VotePlaceResultRepository extends ServiceEntityRepository
 {
     use GeoFilterTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, VoteResult::class);
+        parent::__construct($registry, VotePlaceResult::class);
     }
 
     public function getReferentExportQuery(Election $election, array $referentTags): Query
@@ -51,7 +52,7 @@ class VoteResultRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOneForVotePlace(VotePlace $votePlace, ElectionRound $round): ?VoteResult
+    public function findOneForVotePlace(VotePlace $votePlace, ElectionRound $round): ?VotePlaceResult
     {
         return $this->createQueryBuilder('vr')
             ->where('vr.votePlace = :vote_place')

@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VoteResultList;
+namespace AppBundle\Controller\EnMarche\Election\CityVoteResults;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/espace-municipales-2020/assesseurs/communes", name="app_municipal_chief")
+ * @Route("/espace-municipales-2020", name="app_municipal_chief")
  *
  * @Security("is_granted('ROLE_MUNICIPAL_CHIEF')")
  */
-class MunicipalChiefVoteResultListController extends AbstractVoteResultListController
+class MunicipalChiefCityVoteResultController extends AbstractCityVoteResultController
 {
     protected function getSpaceType(): string
     {

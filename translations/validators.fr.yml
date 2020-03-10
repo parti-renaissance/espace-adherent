@@ -433,7 +433,7 @@ city.postal_code.not_blank: Veuillez spécifier un code postal.
 city.postal_code.max_length: Le code postal ne doit pas faire plus de {{ limit }} caractères.
 city.country.not_blank: Veuillez spécifier un pays.
 city.country.invalid: Veuillez spécifier un code pays valide.
-city.municipal_manager.already_assigned: Cet adhérent est déjà responsable communale d'une autre commune.
+city.municipal_manager.already_assigned: Cet adhérent est déjà responsable communal d'une autre commune.
 city.municipal_manager_association.adherent_not_found: Aucun adhérent trouvé avec cet email.
 
 #

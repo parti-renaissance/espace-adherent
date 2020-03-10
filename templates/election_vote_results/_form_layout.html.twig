@@ -1,12 +1,6 @@
-{% extends 'election_results_reporter/_layout.html.twig' %}
+{% extends 'election_vote_results/_layout.html.twig' %}
 
-{% block election_results_reporter_content %}
-    {% form_theme form with ['jquery.collection.html.twig'] %}
-
-    <p>Résultats pour la ville: <strong>{{ vote_result.city }}</strong></p>
-
-    <p class="alert alert--tips">{{ vote_result.electionRound.label }}</p>
-
+{% block vote_results_content %}
     {{ form_start(form, { attr: { class: 'em-form' } }) }}
 
     <div class="text--right b__nudge--bottom-small">
@@ -47,9 +41,11 @@
 
     <hr/>
 
-    <div>
-        {{ form_row(form.listTotalResults, {label: 'Résultats:', attr: {class: 'vote-result-list-collection'}}) }}
-    </div>
+    {% if form.listTotalResults|length %}
+        <div>
+            {{ form_row(form.listTotalResults, {label: 'Résultats:'}) }}
+        </div>
+    {% endif %}
 
     <div class="text--right">
         <button class="btn btn--blue--soft" type="submit">Sauvegarder</button>
@@ -60,19 +56,9 @@
 
 {% block final_javascripts %}
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.collection.js') }}"></script>
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
-            $('.vote-result-list-collection').collection({
-                allow_up: false,
-                allow_down: false,
-                add_at_the_end: true,
-                add: '<div class="b__nudge--top-40"><a href="#" class="btn btn-info">+</a></div>',
-                remove: false,
-                init_with_n_elements: 1,
-            });
-
             var percentUpdateHandle = function (percentElement, value, total) {
                 percentElement.setAttribute('data-percent', (total == 0 ? 0 : (value * 100 / total)).toFixed(2) + ' %');
             };

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VoteResults;
+namespace AppBundle\Controller\EnMarche\Election\VotePlaceResults;
 
 use AppBundle\Entity\VotePlace;
 use AppBundle\Security\Voter\ManageVotePlaceVoter;

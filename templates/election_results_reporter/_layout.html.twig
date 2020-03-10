@@ -21,7 +21,7 @@
                     </div>
                     <nav class="manager-header__menu">
                         <ul>
-                            <li class="{{ is_active_route(app.request, ['app_election_results_reporter_space_cities_list', 'app_city_vote_results_edit']) ? 'active' }}">
+                            <li class="{{ is_active_route(app.request, ['app_election_results_reporter_space_cities_list', 'app_ministry_vote_results_edit']) ? 'active' }}">
                                 <a href="{{ path('app_election_results_reporter_space_cities_list') }}">Communes</a>
                             </li>
                         </ul>
@@ -32,7 +32,7 @@
             <div class="l__wrapper text--body">
                 <main>
                     <section class="b__nudge--bottom-huge">
-                        {% block space_wrapper %}{% endblock %}
+                        {% block election_results_reporter_content %}{% endblock %}
                     </section>
                 </main>
             </div>

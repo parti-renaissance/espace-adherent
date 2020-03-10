@@ -12,7 +12,7 @@ class LoadVoteResultListCollectionData extends Fixture
     public function load(ObjectManager $manager)
     {
         $listCollection = new VoteResultListCollection();
-        $listCollection->mergeCities([$this->getReference('city-lille')]);
+        $listCollection->setCity($this->getReference('city-lille'));
 
         $listCollection->addList(new VoteResultList('Liste 1'));
         $listCollection->addList(new VoteResultList('Liste 2'));

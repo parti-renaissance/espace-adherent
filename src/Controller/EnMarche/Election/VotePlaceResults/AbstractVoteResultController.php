@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VoteResults;
+namespace AppBundle\Controller\EnMarche\Election\VotePlaceResults;
 
 use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Election\VotePlaceResult;
 use AppBundle\Entity\VotePlace;
-use AppBundle\Form\VoteResultType;
+use AppBundle\Form\Election\VoteResultWithListsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +24,10 @@ abstract class AbstractVoteResultController extends Controller
 
     protected function submitVoteResultsAction(VotePlace $votePlace, Request $request): Response
     {
-        /** @var Adherent $adherent */
-        $voteResult = $this->electionManager->getVoteResultForCurrentElectionRound($votePlace);
+        $voteResult = $this->electionManager->getVotePlaceResultForCurrentElectionRound($votePlace, true);
 
         $form = $this
-            ->createForm(VoteResultType::class, $voteResult)
+            ->createForm(VoteResultWithListsType::class, $voteResult, ['data_class' => VotePlaceResult::class])
             ->handleRequest($request)
         ;
 
@@ -44,7 +43,7 @@ abstract class AbstractVoteResultController extends Controller
             return $this->getSuccessRedirectionResponse($request);
         }
 
-        return $this->renderTemplate('election_vote_results/index.html.twig', [
+        return $this->renderTemplate('election_vote_results/vote_place_result_form.html.twig', [
             'form' => $form->createView(),
             'vote_result' => $voteResult,
         ]);

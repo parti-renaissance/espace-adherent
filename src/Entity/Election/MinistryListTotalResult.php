@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class VoteResultList
+class MinistryListTotalResult
 {
     /**
      * @var int|null
@@ -21,13 +21,6 @@ class VoteResultList
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * @var VoteResultListCollection
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election\VoteResultListCollection", inversedBy="lists")
-     */
-    private $listCollection;
 
     /**
      * @var string|null
@@ -59,21 +52,44 @@ class VoteResultList
      */
     private $eligibleCount;
 
-    public function __construct(
-        string $label = null,
-        string $nuance = null,
-        int $adherentCount = null,
-        int $eligibleCount = null
-    ) {
-        $this->label = $label;
-        $this->nuance = $nuance;
-        $this->adherentCount = $adherentCount;
-        $this->eligibleCount = $eligibleCount;
-    }
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $total = 0;
+
+    /**
+     * @var BaseWithListCollectionResult|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election\MinistryVoteResult", inversedBy="listTotalResults")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $ministryVoteResult;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(?int $total): void
+    {
+        $this->total = $total;
+    }
+
+    public function getMinistryVoteResult(): ?BaseWithListCollectionResult
+    {
+        return $this->ministryVoteResult;
+    }
+
+    public function setMinistryVoteResult(MinistryVoteResult $ministryVoteResult): void
+    {
+        $this->ministryVoteResult = $ministryVoteResult;
     }
 
     public function getLabel(): ?string
@@ -114,15 +130,5 @@ class VoteResultList
     public function setEligibleCount(?int $eligibleCount): void
     {
         $this->eligibleCount = $eligibleCount;
-    }
-
-    public function getListCollection(): ?VoteResultListCollection
-    {
-        return $this->listCollection;
-    }
-
-    public function setListCollection(?VoteResultListCollection $listCollection): void
-    {
-        $this->listCollection = $listCollection;
     }
 }

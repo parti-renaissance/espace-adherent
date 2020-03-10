@@ -673,10 +673,10 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $municipalManager = $adherentFactory->createFromArray([
             'uuid' => self::MUNICIPAL_MANAGER_UUID,
             'password' => self::DEFAULT_PASSWORD,
-            'email' => 'responsable-communale@en-marche-dev.fr',
+            'email' => 'responsable-communal@en-marche-dev.fr',
             'gender' => 'male',
             'first_name' => 'Bob',
-            'last_name' => 'Responsable Communale',
+            'last_name' => 'Responsable Communal',
             'address' => PostAddress::createFrenchAddress('12 Avenue du Peuple Belge', '59000-59350', null, 50.6420374, 3.0630445),
             'birthdate' => '1983-08-27',
             'position' => 'employed',

@@ -1,32 +1,24 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\Election;
 
-use AppBundle\Entity\CityVoteResult;
+use AppBundle\Entity\Election\MinistryVoteResult;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CityVoteResultType extends AbstractType
+class MinistryVoteResultType extends AbstractType
 {
+    public function getParent()
+    {
+        return BaseVoteResultType::class;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('registered', IntegerType::class, [
-                'attr' => ['min' => 0],
-            ])
-            ->add('abstentions', IntegerType::class, [
-                'attr' => ['min' => 0],
-            ])
-            ->add('voters', IntegerType::class, [
-                'attr' => ['min' => 0],
-            ])
-            ->add('expressed', IntegerType::class, [
-                'attr' => ['min' => 0],
-            ])
-            ->add('lists', CollectionType::class, [
+            ->add('listTotalResults', CollectionType::class, [
                 'entry_type' => BasicVoteListResultType::class,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
@@ -39,7 +31,7 @@ class CityVoteResultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CityVoteResult::class,
+            'data_class' => MinistryVoteResult::class,
         ]);
     }
 }
