@@ -219,7 +219,6 @@
                     <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
                     Je retire ma candidature
                 </button>
-                <p class="error-label"></p>
             {% else %}
             {% set candidacy = get_candidacy_committee_name(app.user.memberships) %}
                 <button role="button"

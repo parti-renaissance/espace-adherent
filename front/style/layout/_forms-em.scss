@@ -562,7 +562,6 @@ ul.em-form__autocomplete.ui-autocomplete {
             border-radius: 50% 50%;
             background-color: #a3a8ae;
             content: " ";
-            cursor: pointer;
             -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
         }
@@ -580,10 +579,20 @@ ul.em-form__autocomplete.ui-autocomplete {
 
     &__label {
         color: $dark;
-        cursor: pointer;
         font-family: $font-roboto;
         font-size: 16px;
         margin-left: 15px;
         line-height: 30px;
+    }
+
+    &__wrapper.disabled {
+
+        .em-switch__toggle {
+            cursor: not-allowed;
+        }
+
+        .em-switch__label {
+            color: $neutral-grey;
+        }
     }
 }
