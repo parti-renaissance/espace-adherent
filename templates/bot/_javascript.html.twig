@@ -5,3 +5,32 @@
        useDefaultLauncher: true
    });
 </script>
+<script>
+
+    var botmindWidget;
+
+    function initBotmindChat() {
+        botmindWidget.init({
+            token: '0f805b22-3f7f-42f3-945e-c2904c8b1c9e',
+            host: 'https://api.widget.botmind.io',
+            language: 'fr',
+        })
+    }
+
+    function initialize(i,t) {
+        var n;
+        i.getElementById(t)?initBotmindChat():(
+            (n=i.createElement("script")).id=t,
+            n.async=!0,n.src="https://api.widget.botmind.io"+"/public/widget.js",
+            n.onload=initBotmindChat,
+            i.head.appendChild(n)
+        )
+    }
+
+    function initiateCall(){
+        initialize(document,"botmind-webchat-js")
+    }
+
+    window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
+
+</script>
