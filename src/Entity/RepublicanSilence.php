@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,6 +28,8 @@ class RepublicanSilence implements \Serializable
      * @ORM\ManyToMany(targetEntity="ReferentTag")
      *
      * @Assert\Count(min=1)
+     *
+     * @Groups({"read_api"})
      */
     private $referentTags;
 
@@ -37,6 +40,8 @@ class RepublicanSilence implements \Serializable
      *
      * @Assert\NotBlank
      * @Assert\DateTime
+     *
+     * @Groups({"read_api"})
      */
     private $beginAt;
 
@@ -48,6 +53,8 @@ class RepublicanSilence implements \Serializable
      * @Assert\NotBlank
      * @Assert\DateTime
      * @Assert\Expression("value > this.getBeginAt()", message="committee.event.invalid_date_range")
+     *
+     * @Groups({"read_api"})
      */
     private $finishAt;
 

@@ -4,8 +4,9 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as JMSSerializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -44,7 +45,7 @@ class ReferentTag
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      *
-     * @Serializer\Groups("public")
+     * @JMSSerializer\Groups("public")
      */
     private $name;
 
@@ -57,7 +58,8 @@ class ReferentTag
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      *
-     * @Serializer\Groups({"adherent_change_diff", "public"})
+     * @JMSSerializer\Groups({"adherent_change_diff", "public"})
+     * @SymfonySerializer\Groups({"read_api"})
      */
     private $code;
 
@@ -74,6 +76,8 @@ class ReferentTag
      * @var string
      *
      * @ORM\Column(nullable=true)
+     *
+     * @SymfonySerializer\Groups({"read_api"})
      */
     private $type;
 

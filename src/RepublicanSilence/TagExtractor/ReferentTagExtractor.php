@@ -2,6 +2,7 @@
 
 namespace AppBundle\RepublicanSilence\TagExtractor;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 
 class ReferentTagExtractor implements ReferentTagExtractorInterface
@@ -10,6 +11,14 @@ class ReferentTagExtractor implements ReferentTagExtractorInterface
     {
         $area = $adherent->getManagedArea();
 
-        return $area ? $area->getReferentTagCodes() : [];
+        if ($area) {
+            $codes = $area->getReferentTagCodes();
+
+            if ($area->hasFranceTag()) {
+                $codes[] = Address::FRANCE;
+            }
+        }
+
+        return $codes ?? [];
     }
 }

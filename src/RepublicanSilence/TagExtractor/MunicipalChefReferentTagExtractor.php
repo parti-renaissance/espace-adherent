@@ -2,6 +2,7 @@
 
 namespace AppBundle\RepublicanSilence\TagExtractor;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 
 class MunicipalChefReferentTagExtractor implements ReferentTagExtractorInterface
@@ -10,6 +11,6 @@ class MunicipalChefReferentTagExtractor implements ReferentTagExtractorInterface
     {
         $area = $adherent->getMunicipalChiefManagedArea();
 
-        return $area ? (array) $area->getDepartmentalCode() : [];
+        return $area ? [$area->getDepartmentalCode(), Address::FRANCE] : [];
     }
 }

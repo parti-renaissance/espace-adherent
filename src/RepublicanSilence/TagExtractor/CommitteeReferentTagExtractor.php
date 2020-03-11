@@ -2,6 +2,7 @@
 
 namespace AppBundle\RepublicanSilence\TagExtractor;
 
+use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\CommitteeMembership;
 
@@ -17,7 +18,12 @@ class CommitteeReferentTagExtractor implements ReferentTagExtractorInterface
         foreach ($adherent->getMemberships()->getCommitteeHostMemberships() as $membership) {
             $committee = $membership->getCommittee();
             if ($committee->getSlug() === $slug) {
-                return $committee->getReferentTagsCodes();
+                $codes = $committee->getReferentTagsCodes();
+                if (Address::FRANCE === $committee->getCountry()) {
+                    $codes[] = Address::FRANCE;
+                }
+
+                return $codes;
             }
         }
 
