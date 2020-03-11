@@ -146,24 +146,7 @@
                                 </span>
                             </td>
                             <td>
-                                {% set items = [
-                                    {
-                                        href: path("app_vote_results_#{space_type}_index", {id: place.id}|merge(route_params)),
-                                        label: 'Voir les résultats',
-                                        linkAttr: {
-                                            class: 'row-action',
-                                        }
-                                    },
-                                    {
-                                        href: path("app_assessors_#{space_type}_" ~ (place.enabled ? 'disable' : 'enable') ~ "_vote_place", {id: place.id}|merge(route_params)),
-                                        label: place.enabled ? 'Désactiver' : 'Activer',
-                                        linkAttr: {
-                                            class: 'row-action text--' ~ (place.enabled ? 'pink' : 'blue') ~ ' link--no-decor',
-                                        }
-                                    }
-                                ] %}
-
-                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                {% block city_actions parent() %}
                             </td>
                         </tr>
                     {% else %}
