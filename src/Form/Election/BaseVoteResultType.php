@@ -17,7 +17,7 @@ class BaseVoteResultType extends AbstractType
             ->add('abstentions', IntegerType::class, [
                 'attr' => ['min' => 0],
             ])
-            ->add('voters', IntegerType::class, [
+            ->add('participated', IntegerType::class, [
                 'attr' => ['min' => 0],
             ])
             ->add('expressed', IntegerType::class, [

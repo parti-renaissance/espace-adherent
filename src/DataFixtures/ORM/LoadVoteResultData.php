@@ -54,13 +54,13 @@ class LoadVoteResultData extends Fixture
         ElectionRound $electionRound,
         int $registered,
         int $abstentions,
-        int $voters,
+        int $participated,
         int $expressed
     ): VotePlaceResult {
         $voteResult = new VotePlaceResult($votePlace, $electionRound);
         $voteResult->setRegistered($registered);
         $voteResult->setAbstentions($abstentions);
-        $voteResult->setVoters($voters);
+        $voteResult->setParticipated($participated);
         $voteResult->setExpressed($expressed);
 
         return $voteResult;

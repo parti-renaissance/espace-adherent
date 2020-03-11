@@ -24,9 +24,13 @@ abstract class AbstractMunicipalManagerAttributionController extends Controller
         CityRepository $cityRepository,
         MunicipalManagerAssociationManager $manager
     ): Response {
+        // Transforms actual request (`POST`, ...) in `GET` request for passing it to $filterForm::handleRequest method
+        $filterRequest = $request->duplicate(null, []);
+        $filterRequest->setMethod(Request::METHOD_GET);
+
         $filterForm = $this
             ->createForm(ReferentCityFilterType::class, $filter = $this->createCityFilter())
-            ->handleRequest($request)
+            ->handleRequest($filterRequest)
         ;
 
         if ($filterForm->isSubmitted() && !$filterForm->isValid()) {

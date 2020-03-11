@@ -51,7 +51,7 @@ abstract class BaseVoteResult
      *
      * @ORM\Column(type="integer")
      */
-    private $voters = 0;
+    private $participated = 0;
 
     /**
      * @var int
@@ -118,14 +118,14 @@ abstract class BaseVoteResult
         $this->abstentions = $abstentions;
     }
 
-    public function getVoters(): ?int
+    public function getParticipated(): ?int
     {
-        return $this->voters;
+        return $this->participated;
     }
 
-    public function setVoters(int $voters): void
+    public function setParticipated(int $participated): void
     {
-        $this->voters = $voters;
+        $this->participated = $participated;
     }
 
     public function getExpressed(): ?int
@@ -156,23 +156,23 @@ abstract class BaseVoteResult
         return ($this->expressed / $this->registered) * 100;
     }
 
-    public function getVotersPercentage(): ?float
+    public function getParticipatedPercentage(): ?float
     {
         if (0 === $this->registered) {
             return null;
         }
 
-        return ($this->voters / $this->registered) * 100;
+        return ($this->participated / $this->registered) * 100;
     }
 
     public function isComplete(): bool
     {
-        return $this->registered && $this->abstentions && $this->expressed && $this->voters;
+        return $this->registered && $this->abstentions && $this->expressed && $this->participated;
     }
 
     public function isPartial(): bool
     {
-        return $this->registered || $this->abstentions || $this->expressed || $this->voters;
+        return $this->registered || $this->abstentions || $this->expressed || $this->participated;
     }
 
     public function getCreatedBy(): ?Adherent
