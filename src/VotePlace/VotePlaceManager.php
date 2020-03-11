@@ -15,7 +15,7 @@ class VotePlaceManager
         $this->repository = $repository;
     }
 
-    public function getVotePlaceWishesByCountryOrPostalCode(
+    public function getVotePlaceWishesByCountryOrInseeCode(
         ?string $assessorCountry,
         ?string $assessorPostalCode
     ): array {
@@ -24,15 +24,15 @@ class VotePlaceManager
         }
 
         if (!empty($assessorPostalCode)) {
-            return $this->getVotePlaceWishesByPostalCode($assessorPostalCode);
+            return $this->getVotePlaceWishesByInseeCode($assessorPostalCode);
         }
 
         return [];
     }
 
-    public function getVotePlaceWishesByPostalCode(string $postalCode): array
+    public function getVotePlaceWishesByInseeCode(string $inseeCode): array
     {
-        return $this->formatVotePlaceWishes($this->repository->findByPostalCode($postalCode));
+        return $this->formatVotePlaceWishes($this->repository->findByInseeCode($inseeCode));
     }
 
     public function getVotePlaceWishesByCountry(string $country): array

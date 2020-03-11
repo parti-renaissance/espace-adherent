@@ -139,17 +139,19 @@ class AssessorRequestType extends AbstractType
         if ($command instanceof AssessorRequestCommand) {
             $assessorCountry = $command->getAssessorCountry();
             $assessorPostalCode = $command->getAssessorPostalCode();
+            $assessorInseeCode = $command->getAssessorInseeCode();
         } else {
             $assessorCountry = $command['assessorCountry'];
             $assessorPostalCode = $command['assessorPostalCode'];
+            $assessorInseeCode = $command['assessorInseeCode'];
         }
 
         if ((!empty($assessorPostalCode) && 'FR' === $assessorCountry) || 'FR' !== $assessorCountry) {
             $formEvent->getForm()
                 ->add('votePlaceWishes', ChoiceType::class, [
-                    'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorPostalCode) {
-                        return array_flip($this->votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
-                            $assessorCountry, $assessorPostalCode
+                    'choice_loader' => new CallbackChoiceLoader(function () use ($assessorCountry, $assessorInseeCode) {
+                        return array_flip($this->votePlaceManager->getVotePlaceWishesByCountryOrInseeCode(
+                            $assessorCountry, $assessorInseeCode
                         ));
                     }),
                     'multiple' => true,
@@ -173,8 +175,8 @@ class AssessorRequestType extends AbstractType
         $data = FranceCitiesBundle::$cities[$postalCode];
 
         $cities = [];
-        foreach ($data as $city) {
-            $cities[$city] = $city;
+        foreach ($data as $inseeCode => $cityName) {
+            $cities[$inseeCode] = $cityName;
         }
 
         return $cities;

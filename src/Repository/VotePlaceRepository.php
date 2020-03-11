@@ -140,7 +140,7 @@ class VotePlaceRepository extends AbstractAssessorRepository
 
     public function findByPostalCode(string $postalCode): array
     {
-        return  $this
+        return $this
             ->createQueryBuilder('votePlace')
             ->andWhere('FIND_IN_SET(:postalCode, votePlace.postalCode) > 0')
             ->andWhere('votePlace.enabled = :true')
@@ -148,6 +148,17 @@ class VotePlaceRepository extends AbstractAssessorRepository
                 'postalCode' => $postalCode,
                 'true' => true,
             ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByInseeCode(string $inseeCode): array
+    {
+        return $this
+            ->createQueryBuilder('votePlace')
+            ->andWhere('SUBSTRING_INDEX(votePlace.code, \'_\', 1) = insee_code')
+            ->setParameter('insee_code', $inseeCode)
             ->getQuery()
             ->getResult()
         ;

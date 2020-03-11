@@ -75,8 +75,8 @@ class AssessorController extends Controller
      */
     public function assessorRequestFindVotePlaces(Request $request, VotePlaceManager $votePlaceManager): JsonResponse
     {
-        return new JsonResponse($votePlaceManager->getVotePlaceWishesByCountryOrPostalCode(
-            $request->query->get('country'), $request->query->get('postalCode'))
+        return new JsonResponse($votePlaceManager->getVotePlaceWishesByCountryOrInseeCode(
+            $request->query->get('country'), $request->query->get('inseeCode'))
         );
     }
 }

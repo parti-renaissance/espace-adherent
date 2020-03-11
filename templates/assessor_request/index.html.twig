@@ -43,7 +43,7 @@
                     assessorCitySelect.empty();
 
                     $.each(data, function (key, value) {
-                        assessorCitySelect.append($('<option></option>').attr('value', value).text(value));
+                        assessorCitySelect.append($('<option></option>').attr('value', key).text(value));
                     });
                 });
             };

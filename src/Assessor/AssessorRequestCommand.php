@@ -138,6 +138,8 @@ class AssessorRequestCommand
      */
     private $assessorPostalCode;
 
+    private $assessorInseeCode;
+
     /**
      * @Assert\NotBlank(groups={"fill_assessor_info"})
      * @AssertUnitedNationsCountry(message="common.country.invalid", groups={"fill_assessor_info"})
@@ -328,6 +330,16 @@ class AssessorRequestCommand
     public function setAssessorPostalCode(?string $assessorPostalCode): void
     {
         $this->assessorPostalCode = $assessorPostalCode;
+    }
+
+    public function getAssessorInseeCode(): ?string
+    {
+        return $this->assessorInseeCode;
+    }
+
+    public function setAssessorInseeCode(?string $assessorInseeCode): void
+    {
+        $this->assessorInseeCode = $assessorInseeCode;
     }
 
     public function getAssessorCountry(): ?string
