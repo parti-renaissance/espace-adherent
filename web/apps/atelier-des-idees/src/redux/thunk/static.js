@@ -32,6 +32,16 @@ export function fetchNeeds() {
             .then(data => dispatch(updateStatic({ needs: data })));
 }
 
+export function fetchRepublicanSilence() {
+    return (dispatch, getState, axios) =>
+        axios
+            .get('/api/republican-silence/current')
+            .then(res => res.data)
+            .then(data => {
+                return dispatch(updateStatic({ republicanSilences: data }))
+            });
+}
+
 export function fetchFlagReasons() {
     return (dispatch, getState, axios) =>
         axios
@@ -48,5 +58,6 @@ export function fetchStaticData() {
             dispatch(fetchNeeds()),
             dispatch(fetchCommittees()),
             dispatch(fetchFlagReasons()),
+            dispatch(fetchRepublicanSilence()),
         ]);
 }

@@ -8,7 +8,7 @@ use AppBundle\Entity\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadVoteResultData extends Fixture
+class LoadVotePlaceResultData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

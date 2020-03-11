@@ -14,7 +14,7 @@ class LoadVoteResultListCollectionData extends Fixture
         $listCollection = new VoteResultListCollection();
         $listCollection->setCity($this->getReference('city-lille'));
 
-        $listCollection->addList(new VoteResultList('Liste 1'));
+        $listCollection->addList(new VoteResultList('Liste 1', 'REM'));
         $listCollection->addList(new VoteResultList('Liste 2'));
         $listCollection->addList(new VoteResultList('Liste 3'));
 

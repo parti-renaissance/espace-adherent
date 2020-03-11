@@ -15,6 +15,8 @@ import {
 import { selectAuthUser } from '../../redux/selectors/auth';
 import { selectGuidelines, selectCurrentIdea } from '../../redux/selectors/currentIdea';
 import { selectLoadingState } from '../../redux/selectors/loading';
+import { selectRepublicanSilences } from '../../redux/selectors/republicanSilence';
+import RepublicanSilence from '../../components/RepublicanSilence';
 
 class CreateIdeaPage extends React.Component {
     componentDidMount(e) {
@@ -23,6 +25,10 @@ class CreateIdeaPage extends React.Component {
     }
 
     render() {
+        if (this.props.isRepublicanSilenceStarted) {
+            return <RepublicanSilence />;
+        }
+
         return (
             <IdeaPageBase
                 {...this.props}
@@ -42,6 +48,9 @@ function mapStateToProps(state) {
     const currentIdea = selectCurrentIdea(state);
     const saveState = selectLoadingState(state, 'SAVE_CURRENT_IDEA', currentIdea.uuid);
     const guidelines = selectGuidelines(state);
+    const silences = selectRepublicanSilences(state);
+    const isRepublicanSilenceStarted = Array.isArray(silences) && silences.length > 0;
+
     const idea = {
         ...currentIdea,
         authorName: `${currentUser.firstName} ${currentUser.lastName}`,
@@ -57,6 +66,7 @@ function mapStateToProps(state) {
         isSaveSuccess: saveState.isSuccess,
         isSaving: saveState.isFetching,
         autoComplete: state.currentIdea.idea.autoComplete,
+        isRepublicanSilenceStarted: isRepublicanSilenceStarted,
     };
 }
 

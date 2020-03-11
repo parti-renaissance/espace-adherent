@@ -127,4 +127,15 @@ class ReferentManagedArea
     {
         return !empty($this->getTags()) ? implode(', ', $this->getReferentTagCodes()) : '';
     }
+
+    public function hasFranceTag(): bool
+    {
+        foreach ($this->tags as $tag) {
+            if (preg_match('/^\d{2}|2[A|B]|CIRCO_\d/', $tag->getCode())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -44,6 +44,10 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         // Senator Space
         'app_message_senator_*' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
         'app_senator_event_manager_events_create' => ReferentTagExtractorInterface::ADHERENT_TYPE_SENATOR,
+
+        // IdeaWorkshop
+        'api_ideas_post_collection' => ReferentTagExtractorInterface::NONE, // creation action
+        'api_ideas_publish_item' => ReferentTagExtractorInterface::NONE, // publish action
     ];
 
     private $tokenStorage;
@@ -84,6 +88,14 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
+        if (ReferentTagExtractorInterface::NONE === $type) {
+            if ($this->republicanSilenceManager->hasStartedSilence()) {
+                $this->setResponse($event);
+            }
+
+            return;
+        }
+
         $tagExtractor = ReferentTagExtractorFactory::create($type);
 
         if (!$tags = $tagExtractor->extractTags($user, $this->getSlug($event->getRequest(), $type))) {
@@ -91,7 +103,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         }
 
         if ($this->republicanSilenceManager->hasStartedSilence($tags)) {
-            $event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
+            $this->setResponse($event);
         }
     }
 
@@ -140,5 +152,10 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         }
 
         return null;
+    }
+
+    private function setResponse(GetResponseEvent $event): void
+    {
+        $event->setResponse($this->templateEngine->renderResponse('republican_silence/landing.html.twig'));
     }
 }

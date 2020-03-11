@@ -11,6 +11,8 @@ class IdeaPublishControllerTest extends WebTestCase
 
     public function testPublishDraftIdeaGeneratesBadResponse(): void
     {
+        $this->disableRepublicanSilence();
+
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
 
         $this->client->request('PUT', '/api/ideas-workshop/ideas/c14937d6-fd42-465c-8419-ced37f3e6194/publish');

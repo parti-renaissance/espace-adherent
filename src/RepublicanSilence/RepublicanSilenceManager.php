@@ -48,9 +48,13 @@ class RepublicanSilenceManager
         return $this->repository->findFromDate($date);
     }
 
-    public function hasStartedSilence(array $referentTagCodes): bool
+    public function hasStartedSilence(array $referentTagCodes = null): bool
     {
         $silences = $this->getRepublicanSilencesForDate(new \DateTime());
+
+        if (null === $referentTagCodes) {
+            return !empty($silences);
+        }
 
         foreach ($silences as $silence) {
             if ($this->matchSilence($silence, $referentTagCodes)) {
