@@ -49,7 +49,14 @@ abstract class AbstractAssessorSpaceController extends Controller
         AssessorAssociationManager $manager,
         ElectionManager $electionManager
     ): Response {
-        $filterForm = $this->createVotePlaceListFilterForm($filter = $this->createVotePlaceListFilter())->handleRequest($request);
+        // Transforms actual request (`POST`, ...) in `GET` request for passing it to $filterForm::handleRequest method
+        $filterRequest = $request->duplicate(null, []);
+        $filterRequest->setMethod(Request::METHOD_GET);
+
+        $filterForm = $this
+            ->createVotePlaceListFilterForm($filter = $this->createVotePlaceListFilter())
+            ->handleRequest($filterRequest)
+        ;
 
         if ($filterForm->isSubmitted() && !$filterForm->isValid()) {
             $filter = $this->createVotePlaceListFilter();

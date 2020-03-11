@@ -24,7 +24,7 @@
             </div>
 
             <div class="form__row vote-result-percent-field">
-                {{ form_row(form.expressed, {label: 'Exprimés'}) }}
+                {{ form_row(form.participated, {label: 'Participation'}) }}
             </div>
         </div>
 
@@ -34,7 +34,7 @@
             </div>
 
             <div class="form__row vote-result-percent-field">
-                {{ form_row(form.voters, {label: 'Votants', attr: {class: 'vote_result_voters'}}) }}
+                {{ form_row(form.expressed, {label: 'Suffrages exprimés', attr: {class: 'vote_result_voters'}}) }}
             </div>
         </div>
     </div>
