@@ -1,5 +1,7 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% block page_title app.user.isCoReferent ? 'Mon espace référent partagé' : 'Mon espace référent' %}
+
 {% block referent_content %}
     {% block managed_users_main_block %}{% endblock %}
 {% endblock %}
