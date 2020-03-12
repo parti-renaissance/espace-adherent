@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\MyEuropeInvitation;
 use AppBundle\Form\MyEuropeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,6 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class InteractiveController extends Controller
 {
+    use CanaryControllerTrait;
+
     public const MESSAGE_SUBJECT = 'Pour une Renaissance européenne';
 
     /**
@@ -18,6 +21,8 @@ class InteractiveController extends Controller
      */
     public function myEuropeAction(Request $request): Response
     {
+        $this->disableInProduction();
+
         $session = $request->getSession();
         $handler = $this->get('app.interactive.my_europe_processor_handler');
         $myEurope = $handler->start($session, (string) $request->request->get('g-recaptcha-response'));
@@ -51,6 +56,8 @@ class InteractiveController extends Controller
      */
     public function restartMyEuropeAction(Request $request): Response
     {
+        $this->disableInProduction();
+
         $this->get('app.interactive.my_europe_processor_handler')->terminate($request->getSession());
 
         return $this->redirectToRoute('app_my_europe');
@@ -61,6 +68,8 @@ class InteractiveController extends Controller
      */
     public function mailSentAction(MyEuropeInvitation $myEurope): Response
     {
+        $this->disableInProduction();
+
         return $this->render('interactive/mail_sent.html.twig', [
             'interactive' => $myEurope,
         ]);
