@@ -386,6 +386,13 @@ class ElectedRepresentative
         $this->mandates->removeElement($mandate);
     }
 
+    public function getCurrentMandates(): Collection
+    {
+        return $this->mandates->filter(function (Mandate $mandate) {
+            return $mandate->isOnGoing();
+        });
+    }
+
     public function getPoliticalFunctions(): Collection
     {
         return $this->politicalFunctions;
@@ -402,6 +409,28 @@ class ElectedRepresentative
     public function removePoliticalFunction(PoliticalFunction $politicalFunction): void
     {
         $this->politicalFunctions->removeElement($politicalFunction);
+    }
+
+    public function getCurrentPoliticalFunctions(): Collection
+    {
+        return $this->politicalFunctions->filter(function (PoliticalFunction $politicalFunction) {
+            return $politicalFunction->isOnGoing();
+        });
+    }
+
+    public function exportIsAdherent(): string
+    {
+        return null === $this->isAdherent ? 'peut-être' : ($this->isAdherent ? 'oui' : 'non');
+    }
+
+    public function exportMandates(): string
+    {
+        return implode(', ', $this->getCurrentMandates()->toArray());
+    }
+
+    public function exportPoliticalFunctions(): string
+    {
+        return implode(', ', $this->getCurrentPoliticalFunctions()->toArray());
     }
 
     public function __toString(): string

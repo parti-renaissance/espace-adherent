@@ -3,11 +3,14 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Address\Address;
+use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
+use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use AppBundle\Form\AdherentEmailType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MandateType;
 use AppBundle\Form\PoliticalFunctionType;
 use AppBundle\Form\SocialNetworkLinkType;
+use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -21,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -49,6 +53,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
+            ])
+            ->add('currentMandates', null, [
+                'label' => 'Mandats actuels (nuance politique)',
+                'template' => 'admin/elected_representative/list_mandates.html.twig',
+            ])
+            ->add('currentPoliticalFunctions', null, [
+                'label' => 'Fonctions actuelles',
+                'template' => 'admin/elected_representative/list_political_functions.html.twig',
             ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',
@@ -249,6 +261,74 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Prénom',
                 'show_filter' => true,
             ])
+            ->add('mandates.type', CallbackFilter::class, [
+                'label' => 'Mandats actuels',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => MandateTypeEnum::CHOICES,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $where = new Expr\Orx();
+
+                    foreach ($value['value'] as $mandate) {
+                        $where->add("$alias.type = :mandate_".$mandate);
+                        $qb->setParameter('mandate_'.$mandate, $mandate);
+                    }
+
+                    $qb->andWhere($where);
+                    $qb->andWhere("$alias.onGoing = 1");
+
+                    return true;
+                },
+            ])
+            ->add('politicalFunctions.name', CallbackFilter::class, [
+                'label' => 'Fonctions actuelles',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => PoliticalFunctionNameEnum::CHOICES,
+                    'multiple' => true,
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $where = new Expr\Orx();
+
+                    foreach ($value['value'] as $politicalFunctions) {
+                        $where->add("$alias.name = :function_".$politicalFunctions);
+                        $qb->setParameter('function_'.$politicalFunctions, $politicalFunctions);
+                    }
+
+                    $qb->andWhere($where);
+                    $qb->andWhere("$alias.onGoing = 1");
+
+                    return true;
+                },
+            ])
+            ->add('mandates.politicalAffiliation', CallbackFilter::class, [
+                'label' => 'Nuance politique',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb->andWhere("$alias.politicalAffiliation LIKE :pa");
+                    $qb->setParameter('pa', '%'.$value['value'].'%');
+                    $qb->andWhere("$alias.onGoing = 1");
+
+                    return true;
+                },
+            ])
             ->add('isAdherent', CallbackFilter::class, [
                 'label' => 'Est adhérent ?',
                 'show_filter' => true,
@@ -283,5 +363,21 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 },
             ])
         ;
+    }
+
+    public function getExportFields()
+    {
+        return [
+            'Nom' => 'lastName',
+            'Prénom' => 'firstName',
+            'Mandats actuels (nuance politique)' => 'exportMandates',
+            'Fonctions actuelles' => 'exportPoliticalFunctions',
+            'Adhérent' => 'exportIsAdherent',
+        ];
+    }
+
+    public function getExportFormats()
+    {
+        return ['csv', 'xls'];
     }
 }
