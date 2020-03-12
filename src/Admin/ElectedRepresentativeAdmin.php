@@ -6,6 +6,7 @@ use AppBundle\Address\Address;
 use AppBundle\Form\AdherentEmailType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MandateType;
+use AppBundle\Form\PoliticalFunctionType;
 use AppBundle\Form\SocialNetworkLinkType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -201,6 +202,15 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->with('Mandats')
                 ->add('mandates', CollectionType::class, [
                     'entry_type' => MandateType::class,
+                    'label' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+            ->end()
+            ->with('Fonctions')
+                ->add('politicalFunctions', CollectionType::class, [
+                    'entry_type' => PoliticalFunctionType::class,
                     'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
