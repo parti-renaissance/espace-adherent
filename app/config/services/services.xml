@@ -153,7 +153,6 @@
         <service id="AppBundle\Form\AssessorRequestType" />
         <service id="AppBundle\Form\AssociationVotePlaceType" />
         <service id="AppBundle\Form\DataTransformer\EmailToAdherentTransformer" />
-        <service id="AppBundle\Validator\ValidAdherentForVotePlaceValidator" />
         <service id="AppBundle\Form\MunicipalManagerCityAssociationType" />
         <service id="AppBundle\Form\Election\ListTotalResultType" />
 
