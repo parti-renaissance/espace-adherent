@@ -4,11 +4,7 @@ namespace AppBundle\Assessor;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\VotePlace;
-use AppBundle\Validator\ValidAdherentForVotePlace;
 
-/**
- * @ValidAdherentForVotePlace
- */
 class AssessorRoleAssociationValueObject
 {
     /**
