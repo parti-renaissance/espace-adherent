@@ -44,6 +44,11 @@ class AdminExportCityCardController extends Controller
                     'Commune' => $city->getName(),
                     'Département' => $city->getDepartment()->getName(),
                     'Région' => $city->getDepartment()->getRegion()->getName(),
+                    'Nb listes élu T1' => '',
+                    'Nb listes T2' => '',
+                    'Nb listes inf 10%' => '',
+                    'Nb listes inf 5%' => '',
+                    'Position LaREM' => '',
                 ];
             })
         );
