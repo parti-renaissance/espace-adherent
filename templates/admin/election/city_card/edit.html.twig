@@ -115,12 +115,13 @@
                                                 </thead>
                                                 <tbody>
                                                 {% for listResult in results.cityVoteResult.listTotalResults %}
+                                                    {% set list = listResult.list %}
                                                     <tr>
                                                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                            {{ listResult.label }}
+                                                            {{ list.label }}
                                                         </td>
                                                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                            {{ listResult.nuance }}
+                                                            {{ list.nuance }}
                                                         </td>
                                                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                                             {{ listResult.total }}
@@ -145,12 +146,13 @@
                                                 </thead>
                                                 <tbody>
                                                     {% for listResult in results.getAggregatedVotePlacesResult.aggregatedListTotalResults %}
+                                                        {% set list = listResult.list %}
                                                         <tr>
                                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ listResult.list.label }}
+                                                                {{ list.label }}
                                                             </td>
                                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ listResult.list.nuance }}
+                                                                {{ list.nuance }}
                                                             </td>
                                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                                                 {{ listResult.total }}
