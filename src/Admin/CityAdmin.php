@@ -6,9 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CityAdmin extends AbstractAdmin
@@ -30,8 +28,8 @@ class CityAdmin extends AbstractAdmin
                     'allow_delete' => true,
                     'by_reference' => false,
                 ])
-                ->add('country', CountryType::class, [
-                    'label' => 'Pays',
+                ->add('department', null, [
+                    'label' => 'Département',
                 ])
             ->end()
         ;
@@ -52,12 +50,8 @@ class CityAdmin extends AbstractAdmin
                 'label' => 'Code postal',
                 'show_filter' => true,
             ])
-            ->add('country', ChoiceFilter::class, [
-                'label' => 'Pays',
-                'field_type' => CountryType::class,
-                'field_options' => [
-                    'multiple' => true,
-                ],
+            ->add('department', null, [
+                'label' => 'Département',
                 'show_filter' => true,
             ])
         ;
@@ -75,8 +69,11 @@ class CityAdmin extends AbstractAdmin
             ->add('postalCodes', 'array', [
                 'label' => 'Codes postaux',
             ])
-            ->add('country', null, [
-                'label' => 'Pays',
+            ->add('department', null, [
+                'label' => 'Départment',
+            ])
+            ->add('department.region', null, [
+                'label' => 'Région',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
@@ -95,7 +92,8 @@ class CityAdmin extends AbstractAdmin
             'Nom' => 'name',
             'Code INSEE' => 'inseeCode',
             'Code postal' => 'postalCodes',
-            'Pays' => 'country',
+            'Départment' => 'department',
+            'Région' => 'department.region',
         ];
     }
 }
