@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Repository\ElectedRepresentative;
+namespace AppBundle\Repository;
 
-use AppBundle\Entity\ElectedRepresentative\LabelName;
+use AppBundle\Entity\PoliticalLabel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class LabelNameRepository extends ServiceEntityRepository
+class PoliticalLabelRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, LabelName::class);
+        parent::__construct($registry, PoliticalLabel::class);
     }
 
     /**
@@ -18,9 +18,9 @@ class LabelNameRepository extends ServiceEntityRepository
      */
     public function findForAutocomplete(string $term): array
     {
-        $qb = $this->createQueryBuilder('label_name');
+        $qb = $this->createQueryBuilder('political_label');
         $qb
-            ->where('label_name.name LIKE :name')
+            ->where('political_label.name LIKE :name')
             ->setParameters([
                 'name' => $term.'%',
             ])

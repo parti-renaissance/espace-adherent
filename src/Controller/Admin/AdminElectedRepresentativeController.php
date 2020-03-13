@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Repository\ElectedRepresentative\LabelNameRepository;
+use AppBundle\Repository\PoliticalLabelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,14 +12,16 @@ class AdminElectedRepresentativeController extends Controller
 {
     /**
      * @Route("/elected-representative/labels/autocompletion",
-     *     name="app_elected_representative_labels_autocomplete",
+     *     name="app_political_labels_autocomplete",
      *     condition="request.isXmlHttpRequest()",
      *     methods={"GET"}
      * )
      */
-    public function labelsAutocompleteAction(Request $request, LabelNameRepository $labelNameRepository): JsonResponse
-    {
-        $labels = $labelNameRepository->findForAutocomplete(
+    public function politicalLabelsAutocompleteAction(
+        Request $request,
+        PoliticalLabelRepository $politicalLabelRepository
+    ): JsonResponse {
+        $labels = $politicalLabelRepository->findForAutocomplete(
             $request->query->get('term')
         );
 

@@ -194,10 +194,10 @@ class ElectedRepresentative
     private $politicalFunctions;
 
     /**
-     * @var Label[]|Collection
+     * @var ElectedRepresentativeLabel[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ElectedRepresentative\Label",
+     *     targetEntity="AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
      *     orphanRemoval=true,
@@ -454,10 +454,10 @@ class ElectedRepresentative
         return $this->labels;
     }
 
-    public function getLabel(string $name): ?Label
+    public function getLabel(string $name): ?ElectedRepresentativeLabel
     {
         foreach ($this->labels as $label) {
-            if ($name === $label->getName()->getName()) {
+            if ($name === $label->getPoliticalLabel()->getName()) {
                 return $label;
             }
         }
@@ -465,7 +465,7 @@ class ElectedRepresentative
         return null;
     }
 
-    public function addLabel(Label $label): void
+    public function addLabel(ElectedRepresentativeLabel $label): void
     {
         if (!$this->labels->contains($label)) {
             $label->setElectedRepresentative($this);
@@ -473,7 +473,7 @@ class ElectedRepresentative
         }
     }
 
-    public function removeLabel(Label $label): void
+    public function removeLabel(ElectedRepresentativeLabel $label): void
     {
         $this->labels->removeElement($label);
     }

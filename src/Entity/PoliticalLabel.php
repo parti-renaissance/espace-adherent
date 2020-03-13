@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,11 +8,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectedRepresentative\LabelNameRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PoliticalLabelRepository")
  * @ORM\Table(
- *     name="elected_representative_label_name",
+ *     name="political_label",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="elected_representative_label_name_name_unique", columns="name"),
+ *         @ORM\UniqueConstraint(name="political_label_name_unique", columns="name"),
  *     }
  * )
  *
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class LabelName
+class PoliticalLabel
 {
     public const LABEL_LAREM = 'LaREM';
 

@@ -92,19 +92,19 @@
     {% endif %}
 {% endblock %}
 
-{% block label_row %}
+{% block elected_representative_label_row %}
     {{ block('form_row') }}
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var input = $('#{{ form.name.vars.id }}');
+            var input = $('#{{ form.politicalLabel.vars.id }}');
 
             // Add label name autocomplete
             input.autocomplete({
                 source: function(request, response) {
                     var term = request.term.trim();
                     if (term.length > 0) {
-                        $.get("{{ path('app_elected_representative_labels_autocomplete')|raw }}?term=" + term, function(data) { response(data); });
+                        $.get("{{ path('app_political_labels_autocomplete')|raw }}?term=" + term, function(data) { response(data); });
                     } else {
                         response([]);
                     }
@@ -276,7 +276,6 @@
     </div>
 {% endblock %}
 
-
 {% block app_admin_elected_representative_labels_sonata_type_native_collection_labels_widget -%}
     <div class="row">
         <div class="col-xs-11 col-xs-offset-1">
@@ -289,13 +288,13 @@
         </div>
     </div>
     ​
-    <div class="political-labels-collection">
+    <div class="elected-representative-labels-collection">
         {{ form_widget(form) }}
     </div>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $("div.political-labels-collection").on('ifToggled', "input[id$='_onGoing']", function() {
+            $("div.elected-representative-labels-collection").on('ifToggled', "input[id$='_onGoing']", function() {
                 var onGoingId = $(this).attr('id');
                 var id = onGoingId.substr(0, onGoingId.indexOf('_onGoing'));
                 id = id.substr(id.length - 1);
@@ -308,17 +307,17 @@
             });
 
             $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
-            $('div.political-labels-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
+            $('div.elected-representative-labels-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
                 $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
             });
         });
     </script>
 {% endblock %}
 
-{% block app_admin_elected_representative_label_labels_labels_entry_widget -%}
+{% block app_admin_elected_representative_elected_representative_label_labels_labels_entry_widget -%}
     <div class="row political-label{{ form.onGoing.vars.checked ? ' text--bold' : '' }}" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-7{{ form.name.vars.valid ? '' : ' error' }}">
-            {{ form_row(form.name) }}
+        <div class="col-md-7{{ form.politicalLabel.vars.valid ? '' : ' error' }}">
+            {{ form_row(form.politicalLabel) }}
         </div>
         <div class="col-md-1{{ form.onGoing.vars.valid ? '' : ' error' }}">
             {{ form_row(form.onGoing) }}

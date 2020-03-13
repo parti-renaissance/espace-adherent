@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Entity\PoliticalLabel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Label
+class ElectedRepresentativeLabel
 {
     /**
      * @var int|null
@@ -24,14 +25,14 @@ class Label
     private $id;
 
     /**
-     * @var LabelName|null
+     * @var PoliticalLabel|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\LabelName", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PoliticalLabel", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
      */
-    private $name;
+    private $politicalLabel;
 
     /**
      * @var bool
@@ -63,7 +64,7 @@ class Label
     /**
      * @var ElectedRepresentative
      *
-     * @ORM\ManyToOne(targetEntity="ElectedRepresentative", inversedBy="labels")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="labels")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
@@ -71,13 +72,13 @@ class Label
     private $electedRepresentative;
 
     public function __construct(
-        LabelName $name = null,
+        PoliticalLabel $politicalLabel = null,
         ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
         int $beginYear = null,
         int $finishYear = null
     ) {
-        $this->name = $name;
+        $this->politicalLabel = $politicalLabel;
         $this->onGoing = $onGoing;
         $this->beginYear = $beginYear;
         $this->finishYear = $finishYear;
@@ -94,14 +95,14 @@ class Label
         return $this->id;
     }
 
-    public function getName(): ?LabelName
+    public function getPoliticalLabel(): ?PoliticalLabel
     {
-        return $this->name;
+        return $this->politicalLabel;
     }
 
-    public function setName(LabelName $name): void
+    public function setPoliticalLabel(PoliticalLabel $politicalLabel): void
     {
-        $this->name = $name;
+        $this->politicalLabel = $politicalLabel;
     }
 
     public function isOnGoing(): bool
@@ -146,6 +147,6 @@ class Label
 
     public function __toString(): string
     {
-        return $this->getName()->getName();
+        return $this->getPoliticalLabel()->getName();
     }
 }

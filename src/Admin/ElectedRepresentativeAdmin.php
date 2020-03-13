@@ -5,17 +5,17 @@ namespace AppBundle\Admin;
 use AppBundle\Address\Address;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ElectedRepresentative\ElectedRepresentative;
-use AppBundle\Entity\ElectedRepresentative\Label;
-use AppBundle\Entity\ElectedRepresentative\LabelName;
+use AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
 use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
 use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
+use AppBundle\Entity\PoliticalLabel;
 use AppBundle\Form\AdherentEmailType;
-use AppBundle\Form\ElectedRepresentative\LabelType;
+use AppBundle\Form\ElectedRepresentative\ElectedRepresentativeLabelType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MandateType;
 use AppBundle\Form\PoliticalFunctionType;
 use AppBundle\Form\SocialNetworkLinkType;
-use AppBundle\Repository\ElectedRepresentative\LabelNameRepository;
+use AppBundle\Repository\PoliticalLabelRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -43,14 +43,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         '_sort_by' => 'id',
     ];
 
-    /** @var LabelNameRepository */
-    private $labelNameRepository;
+    /** @var PoliticalLabelRepository */
+    private $politicalLabelRepository;
 
-    public function __construct($code, $class, $baseControllerName, LabelNameRepository $labelNameRepository)
+    public function __construct($code, $class, $baseControllerName, PoliticalLabelRepository $politicalLabelRepository)
     {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->labelNameRepository = $labelNameRepository;
+        $this->politicalLabelRepository = $politicalLabelRepository;
     }
 
     protected function configureRoutes(RouteCollection $collection)
@@ -247,7 +247,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->end()
             ->with('Étiquettes')
                 ->add('labels', CollectionType::class, [
-                    'entry_type' => LabelType::class,
+                    'entry_type' => ElectedRepresentativeLabelType::class,
                     'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
@@ -281,14 +281,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         /** @var ElectedRepresentative $electedRepresentative */
         $electedRepresentative = $event->getData();
-        $laREM = $this->labelNameRepository->findOneByName(LabelName::LABEL_LAREM);
+        $laREM = $this->politicalLabelRepository->findOneByName(PoliticalLabel::LABEL_LAREM);
 
         // if adherent, we should add the LaREM label, if it does not exist
-        $label = $electedRepresentative->getLabel(LabelName::LABEL_LAREM);
+        $label = $electedRepresentative->getLabel(PoliticalLabel::LABEL_LAREM);
         if ($electedRepresentative->isAdherent()
             && $electedRepresentative->getAdherent()
             && !$label) {
-            $labelLaREM = new Label(
+            $labelLaREM = new ElectedRepresentativeLabel(
                 $laREM,
                 $electedRepresentative,
                 true,

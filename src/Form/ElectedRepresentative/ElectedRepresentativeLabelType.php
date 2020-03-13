@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\Label;
-use AppBundle\Entity\ElectedRepresentative\LabelName;
-use AppBundle\Repository\ElectedRepresentative\LabelNameRepository;
+use AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
+use AppBundle\Entity\PoliticalLabel;
+use AppBundle\Repository\PoliticalLabelRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,20 +15,20 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LabelType extends AbstractType
+class ElectedRepresentativeLabelType extends AbstractType
 {
-    /** @var LabelNameRepository */
-    private $labelNameRepository;
+    /** @var PoliticalLabelRepository */
+    private $politicalLabelRepository;
 
-    public function __construct(LabelNameRepository $labelNameRepository)
+    public function __construct(PoliticalLabelRepository $politicalLabelRepository)
     {
-        $this->labelNameRepository = $labelNameRepository;
+        $this->politicalLabelRepository = $politicalLabelRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add('politicalLabel', TextType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Saisissez le nom d\'une étiquette',
@@ -41,7 +41,7 @@ class LabelType extends AbstractType
             ->add('beginYear', ChoiceType::class, [
                 'label' => false,
                 'placeholder' => '--',
-                'choices' => Label::getYears(),
+                'choices' => ElectedRepresentativeLabel::getYears(),
                 'choice_label' => function ($choice) {
                     return $choice;
                 },
@@ -50,28 +50,28 @@ class LabelType extends AbstractType
                 'required' => false,
                 'label' => false,
                 'placeholder' => '--',
-                'choices' => Label::getYears(),
+                'choices' => ElectedRepresentativeLabel::getYears(),
                 'choice_label' => function ($choice) {
                     return $choice;
                 },
             ])
         ;
 
-        $builder->get('name')
+        $builder->get('politicalLabel')
             ->addModelTransformer(new CallbackTransformer(
-                function ($nameLabel) {
-                    return $nameLabel instanceof LabelName ? $nameLabel->getName() : null;
+                function ($politicalLabel) {
+                    return $politicalLabel instanceof PoliticalLabel ? $politicalLabel->getName() : null;
                 },
-                function ($name) {
-                    if ($name) {
-                        if (!$labelName = $this->labelNameRepository->findOneByName($name)) {
-                            return new LabelName($name);
+                function ($labelName) {
+                    if ($labelName) {
+                        if (!$politicalLabel = $this->politicalLabelRepository->findOneByName($labelName)) {
+                            return new PoliticalLabel($labelName);
                         }
 
-                        return $labelName;
+                        return $politicalLabel;
                     }
 
-                    return $name;
+                    return $labelName;
                 }
             ))
         ;
@@ -89,7 +89,7 @@ class LabelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Label::class,
+            'data_class' => ElectedRepresentativeLabel::class,
         ]);
     }
 }
