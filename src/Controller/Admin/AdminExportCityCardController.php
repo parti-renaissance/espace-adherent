@@ -27,11 +27,11 @@ class AdminExportCityCardController extends Controller
     }
 
     /**
-     * @Route("/app/election-citycard/export-all", name="admin_city_card_export_all", methods={"GET"})
+     * @Route("/app/election-citycard/export-all.{_format}", name="admin_city_card_export_all", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
      *
      * @Security("is_granted('ROLE_ADMIN_ELECTION_CITY_CARD')")
      */
-    public function exportCityCardsAction(string $_format = 'csv'): Response
+    public function exportCityCardsAction(string $_format): Response
     {
         return $this->exporter->getResponse(
             $_format,
@@ -57,11 +57,11 @@ class AdminExportCityCardController extends Controller
     }
 
     /**
-     * @Route("/app/election-citycard/export-lists", name="admin_city_card_export_lists", methods={"GET"})
+     * @Route("/app/election-citycard/export-lists.{_format}", name="admin_city_card_export_lists", methods={"GET"}, defaults={"_format": "xls"}, requirements={"_format": "csv|xls"})
      *
      * @Security("is_granted('ROLE_ADMIN_ELECTION_CITY_CARD')")
      */
-    public function exportVoteResultListsAction(string $_format = 'csv'): Response
+    public function exportVoteResultListsAction(string $_format): Response
     {
         $rows = [];
 
