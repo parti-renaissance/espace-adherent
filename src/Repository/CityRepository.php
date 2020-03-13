@@ -28,10 +28,14 @@ class CityRepository extends ServiceEntityRepository
      */
     public function findAllForFilter(AssociationCityFilter $filter, int $page, int $limit = 30): PaginatorInterface
     {
-        $qb = $this->createQueryBuilder(self::ALIAS);
+        $qb = $this
+            ->createQueryBuilder(self::ALIAS)
+            ->innerJoin(self::ALIAS.'.department', 'department')
+            ->innerJoin('department.region', 'region')
+        ;
 
         if ($managedTags = $filter->getManagedTags()) {
-            $this->applyGeoFilter($qb, $managedTags, self::ALIAS, 'country', 'inseeCode');
+            $this->applyGeoFilter($qb, $managedTags, self::ALIAS, 'region.country', self::ALIAS.'.inseeCode');
         }
 
         if ($managedInseeCode = $filter->getManagedInseeCode()) {

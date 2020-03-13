@@ -900,6 +900,48 @@
             <argument />
         </service>
 
+        <service id="app.admin.election_city_card" class="AppBundle\Admin\Election\CityCardAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Elections » Villes" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\Election\CityCard</argument>
+            <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/election/city_card/edit.html.twig</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.election_city_card_managers" class="AppBundle\Admin\Election\CityCardManagersAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Elections » Suivi / Pilotage" group="Politique" />
+
+            <argument />
+            <argument>AppBundle\Entity\Election\CityCard</argument>
+            <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/election/city_card/edit_managers.html.twig</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.election_city_card_partner" class="AppBundle\Admin\Election\CityCardPartnerAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>AppBundle\Entity\Election\CityPartner</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.election_city_card_contact" class="AppBundle\Admin\Election\CityCardContactAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>AppBundle\Entity\Election\CityContact</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Archives

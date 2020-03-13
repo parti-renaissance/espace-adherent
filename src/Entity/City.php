@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Utils\AreaUtils;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -58,25 +57,23 @@ class City
     private $postalCodes;
 
     /**
-     * @var string
+     * @var Department|null
      *
-     * @ORM\Column(length=2)
-     *
-     * @Assert\NotBlank(message="city.country.not_blank")
-     * @Assert\Country(message="city.country.invalid")
+     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="cities", fetch="EAGER")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $country;
+    private $department;
 
     public function __construct(
+        Department $department = null,
         string $name = null,
         string $inseeCode = null,
-        array $postalCodes = null,
-        string $country = AreaUtils::CODE_FRANCE
+        array $postalCodes = null
     ) {
+        $this->department = $department;
         $this->name = $name;
         $this->inseeCode = $inseeCode ? self::normalizeCode($inseeCode) : null;
         $this->postalCodes = $postalCodes;
-        $this->country = $country;
     }
 
     public function __toString()
@@ -119,14 +116,14 @@ class City
         $this->postalCodes = $postalCodes;
     }
 
-    public function getCountry(): string
+    public function getDepartment(): ?Department
     {
-        return $this->country;
+        return $this->department;
     }
 
-    public function setCountry(string $country): void
+    public function setDepartment(?Department $department): void
     {
-        $this->country = $country;
+        $this->department = $department;
     }
 
     public static function normalizeCode(string $inseeCode): string
@@ -137,5 +134,14 @@ class City
     public function equals(self $city): bool
     {
         return $this->id === $city->getId();
+    }
+
+    public function exportPostalCodes(): ?string
+    {
+        if (empty($this->postalCodes)) {
+            return null;
+        }
+
+        return implode(', ', $this->postalCodes);
     }
 }

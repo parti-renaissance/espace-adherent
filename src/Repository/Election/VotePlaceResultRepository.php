@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository\Election;
 
+use AppBundle\Entity\City;
 use AppBundle\Entity\Election;
 use AppBundle\Entity\Election\VotePlaceResult;
 use AppBundle\Entity\ElectionRound;
@@ -25,7 +26,9 @@ class VotePlaceResultRepository extends ServiceEntityRepository
     {
         $qb = $this->createElectionQueryBuilder($election, 'vote_result');
 
-        $this->applyGeoFilter($qb, $referentTags, 'vote_place', 'country', 'postalCode');
+        $alias = 'vote_place';
+
+        $this->applyGeoFilter($qb, $referentTags, $alias, "$alias.country", "$alias.postalCode");
 
         return $qb->getQuery();
     }
@@ -64,6 +67,23 @@ class VotePlaceResultRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
+        ;
+    }
+
+    public function findAllForCity(City $city, ElectionRound $round): array
+    {
+        return $this
+            ->createQueryBuilder('vote_place_result')
+            ->innerJoin('vote_place_result.votePlace', 'vote_place')
+            ->addSelect('vote_place')
+            ->andWhere('SUBSTRING(vote_place.code, 1, 5) = :insee_code')
+            ->andWhere('vote_place_result.electionRound = :election_round')
+            ->setParameters([
+                'insee_code' => $city->getInseeCode(),
+                'election_round' => $round,
+            ])
+            ->getQuery()
+            ->getResult()
         ;
     }
 }

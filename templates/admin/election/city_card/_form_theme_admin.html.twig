@@ -1,0 +1,40 @@
+{% extends 'form_theme_admin.html.twig' %}
+
+{% block app_admin_election_city_card_partners_sonata_type_native_collection_partners_widget -%}
+    <table class="table table-bordered table-striped sonata-ba-list">
+        <thead>
+            <tr class="sonata-ba-list-field-header">
+                <th class="sonata-ba-list-field-header-text"></th>
+                <th class="sonata-ba-list-field-header-text">Label</th>
+                <th class="sonata-ba-list-field-header-text">Consensus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ form_row(form, {label: false}) }}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sonata_type_native_collection_widget_row %}
+    {% spaceless %}
+        <tr>
+            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                <a href="#" class="btn btn-link sonata-collection-delete">
+                    <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                </a>
+            </td>
+            {{ form_row(child, { label: false }) }}
+        </tr>
+    {% endspaceless %}
+{% endblock sonata_type_native_collection_widget_row %}
+
+{% block app_admin_election_city_card_city_partner_partners_partners_entry_row %}
+    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+        {{ form_widget(form.label) }}
+        {{ form_errors(form.label) }}
+    </td>
+    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+        {{ form_widget(form.consensus) }}
+        {{ form_errors(form.consensus) }}
+    </td>
+{% endblock %}
