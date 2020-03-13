@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\ElectedRepresentative;
 
 use AppBundle\Entity\ElectedRepresentative\PoliticalFunction;
 use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
@@ -17,21 +17,29 @@ class PoliticalFunctionType extends AbstractType
     {
         $builder
             ->add('name', ChoiceType::class, [
+                'label' => false,
                 'placeholder' => '--',
                 'choices' => PoliticalFunctionNameEnum::CHOICES,
             ])
             ->add('clarification', TextType::class, [
                 'required' => false,
+                'label' => false,
             ])
             ->add('onGoing', CheckboxType::class, [
                 'label' => false,
                 'required' => false,
             ])
-            ->add('beginAt', 'sonata_type_date_picker')
-            ->add('finishAt', 'sonata_type_date_picker', [
-                'required' => false,
+            ->add('beginAt', 'sonata_type_date_picker', [
+                'label' => false,
             ])
-            ->add('geographicalArea', TextType::class)
+            ->add('finishAt', 'sonata_type_date_picker', [
+                'label' => false,
+                'required' => false,
+                'error_bubbling' => false,
+            ])
+            ->add('geographicalArea', TextType::class, [
+                'label' => false,
+            ])
         ;
     }
 

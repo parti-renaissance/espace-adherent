@@ -132,13 +132,13 @@ class ElectedRepresentative
     /**
      * @var bool|null
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true, options={"default": false})
      * @Assert\Expression(
      *     "not (this.getAdherent() == null and value == true) or value == false or value == null",
      *     message="elected_representative.is_adherent.no_adherent_email"
      * )
      */
-    private $isAdherent;
+    private $isAdherent = false;
 
     /**
      * @var Adherent|null

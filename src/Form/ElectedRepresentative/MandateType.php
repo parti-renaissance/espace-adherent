@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form;
+namespace AppBundle\Form\ElectedRepresentative;
 
 use AppBundle\Entity\ElectedRepresentative\LaREMSupportEnum;
 use AppBundle\Entity\ElectedRepresentative\Mandate;
@@ -20,15 +20,18 @@ class MandateType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'placeholder' => '--',
                 'choices' => MandateTypeEnum::CHOICES,
+                'label' => false,
             ])
-            ->add('politicalAffiliation', TextType::class)
+            ->add('politicalAffiliation', TextType::class, [
+                'label' => false,
+            ])
             ->add('isElected', CheckboxType::class, [
                 'required' => false,
                 'label' => false,
             ])
             ->add('laREMSupport', ChoiceType::class, [
                 'required' => false,
-                'label' => 'Soutien LaREM',
+                'label' => false,
                 'placeholder' => '--',
                 'choices' => LaREMSupportEnum::toArray(),
                 'choice_label' => function ($choice, $key) {
@@ -39,11 +42,17 @@ class MandateType extends AbstractType
                 'label' => false,
                 'required' => false,
             ])
-            ->add('beginAt', 'sonata_type_date_picker')
-            ->add('finishAt', 'sonata_type_date_picker', [
-                'required' => false,
+            ->add('beginAt', 'sonata_type_date_picker', [
+                'label' => false,
             ])
-            ->add('geographicalArea', TextType::class)
+            ->add('finishAt', 'sonata_type_date_picker', [
+                'label' => false,
+                'required' => false,
+                'error_bubbling' => true,
+            ])
+            ->add('geographicalArea', TextType::class, [
+                'label' => false,
+            ])
         ;
     }
 
