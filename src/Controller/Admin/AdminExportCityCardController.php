@@ -3,10 +3,11 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Election\CityResultAggregator;
+use AppBundle\Entity\Election\CityCard;
 use AppBundle\Repository\Election\CityCardRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\Exporter\Exporter;
-use Sonata\Exporter\Source\ChainSourceIterator;
+use Sonata\Exporter\Source\ArraySourceIterator;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,33 +63,34 @@ class AdminExportCityCardController extends Controller
      */
     public function exportVoteResultListsAction(string $_format = 'csv'): Response
     {
+        $rows = [];
+
+        foreach ($this->cityCardRepository->getIterator() as $cityCard) {
+            /** @var CityCard $cityCard */
+            $cityCard = $cityCard[0];
+            $city = $cityCard->getCity();
+            $results = $this->aggregator->getResults($cityCard->getCity());
+
+            $communColumns = [
+                'INSEE' => $city->getInseeCode(),
+                'Commune' => $city->getName(),
+                'Catégorie taille' => '~',
+                'Département' => $city->getDepartment()->getName(),
+                'Région' => $city->getDepartment()->getRegion()->getName(),
+            ];
+
+            foreach ($results->getLists() as $list) {
+                $rows[] = array_merge($communColumns, [
+                    'Liste' => $list['name'],
+                    'Etiquette' => $list['nuance'],
+                ]);
+            }
+        }
+
         return $this->exporter->getResponse(
             $_format,
             'export-listes--'.date('d-m-Y--H-i').'.'.$_format,
-            new IteratorCallbackSourceIterator($this->cityCardRepository->getIterator(), function (array $cityCard) {
-                $cityCard = $cityCard[0];
-                $city = $cityCard->getCity();
-
-                $results = $this->aggregator->getResults($cityCard->getCity());
-
-                $rows = [];
-                $communColumns = [
-                    'INSEE' => $city->getInseeCode(),
-                    'Commune' => $city->getName(),
-                    'Catégorie taille' => '~',
-                    'Département' => $city->getDepartment()->getName(),
-                    'Région' => $city->getDepartment()->getRegion()->getName(),
-                ];
-
-                foreach ($results->getLists() as $list) {
-                    $rows[] = array_merge($communColumns, [
-                        'Liste' => $list['name'],
-                        'Etiquette' => $list['nuance'],
-                    ]);
-                }
-dump($rows);
-                return $rows;
-            })
+            new ArraySourceIterator($rows)
         );
     }
 }
