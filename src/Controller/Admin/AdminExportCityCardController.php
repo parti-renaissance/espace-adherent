@@ -101,6 +101,11 @@ class AdminExportCityCardController extends Controller
         $datagrid = $this->admin->getDatagrid();
         $datagrid->buildPager();
 
-        return $datagrid->getQuery()->getQuery()->iterate();
+        $query = $datagrid->getQuery();
+        $query->select('DISTINCT '.current($query->getRootAliases()));
+        $query->setFirstResult(0);
+        $query->setMaxResults(null);
+
+        return $query->getQuery()->iterate();
     }
 }
