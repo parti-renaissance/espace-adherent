@@ -30,6 +30,9 @@ final class VoteListNuanceEnum extends Enum
     private const DLF = 'DLF';
     private const RN = 'RN';
     private const EXD = 'EXD';
+    private const UG = 'UG';
+    private const UC = 'UC';
+    private const UD = 'UD';
 
     public static function getChoices(): array
     {
@@ -58,6 +61,9 @@ final class VoteListNuanceEnum extends Enum
             'Debout la France' => self::DLF,
             'Rassemblement National' => self::RN,
             'Extrême droite' => self::EXD,
+            'Union de la gauche' => self::UG,
+            'Union du centre' => self::UC,
+            'Union de la droite' => self::UD,
         ];
     }
 }
