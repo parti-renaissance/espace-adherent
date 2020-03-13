@@ -3,6 +3,7 @@
 namespace AppBundle\Election;
 
 use AppBundle\Entity\Election\CityVoteResult;
+use AppBundle\Entity\Election\MinistryListTotalResult;
 use AppBundle\Entity\Election\MinistryVoteResult;
 use AppBundle\Entity\Election\VotePlaceResult;
 
@@ -71,5 +72,45 @@ class CityResults
     public function getAggregatedVotePlacesResult(): VotePlacesResult
     {
         return new VotePlacesResult($this->votePlacesResults);
+    }
+
+    public function getLists(): array
+    {
+        if ($this->isMinistryResult()) {
+            return array_map(
+                static function (MinistryListTotalResult $list) {
+                    return [
+                        'name' => $list->getLabel(),
+                        'nuance' => $list->getNuance(),
+                        'total' => $list->getTotal(),
+                    ];
+                },
+                $this->ministryVoteResult->getListTotalResults()
+            );
+        }
+
+        if ($this->isCityResult()) {
+            return array_map(
+                static function (\AppBundle\Entity\Election\ListTotalResult $list) {
+                    return [
+                        'name' => $list->getList()->getLabel(),
+                        'nuance' => $list->getList()->getNuance(),
+                        'total' => $list->getTotal(),
+                    ];
+                },
+                $this->cityVoteResult->getListTotalResults()
+            );
+        }
+
+        return array_map(
+            static function (ListTotalResult $list) {
+                return [
+                    'name' => $list->getList()->getLabel(),
+                    'nuance' => $list->getList()->getNuance(),
+                    'total' => $list->getTotal(),
+                ];
+            },
+            $this->getAggregatedVotePlacesResult()->getAggregatedListTotalResults()
+        );
     }
 }
