@@ -60,7 +60,6 @@ class City
      * @var Department|null
      *
      * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="cities", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $department;
 

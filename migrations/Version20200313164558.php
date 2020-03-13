@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20200313133408 extends AbstractMigration
+final class Version20200313164558 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -143,11 +143,11 @@ final class Version20200313133408 extends AbstractMigration
           department 
         ADD 
           CONSTRAINT FK_CD1DE18A98260155 FOREIGN KEY (region_id) REFERENCES region (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE cities ADD department_id INT UNSIGNED NOT NULL, DROP country');
+        $this->addSql('ALTER TABLE cities ADD department_id INT UNSIGNED DEFAULT NULL, DROP country');
         $this->addSql('ALTER TABLE 
           cities 
         ADD 
-          CONSTRAINT FK_D95DB16BAE80F5DF FOREIGN KEY (department_id) REFERENCES department (id) ON DELETE CASCADE');
+          CONSTRAINT FK_D95DB16BAE80F5DF FOREIGN KEY (department_id) REFERENCES department (id)');
         $this->addSql('CREATE INDEX IDX_D95DB16BAE80F5DF ON cities (department_id)');
     }
 
