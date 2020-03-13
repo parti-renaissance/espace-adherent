@@ -15,16 +15,22 @@ class MinistryVoteResultRepository extends ServiceEntityRepository
         parent::__construct($registry, MinistryVoteResult::class);
     }
 
-    public function findOneForCity(City $city, ElectionRound $round): ?MinistryVoteResult
+    public function findOneForCity(City $city, ElectionRound $round, bool $onlyUpdated = false): ?MinistryVoteResult
     {
-        return $this->createQueryBuilder('mvr')
+        $qb = $this->createQueryBuilder('mvr')
             ->where('mvr.city = :city')
             ->andWhere('mvr.electionRound = :round')
-            ->andWhere('mvr.updatedBy IS NOT NULL')
             ->setParameters([
                 'city' => $city,
                 'round' => $round,
             ])
+        ;
+
+        if ($onlyUpdated) {
+            $qb->andWhere('mvr.updatedBy IS NOT NULL');
+        }
+
+        return $qb
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()

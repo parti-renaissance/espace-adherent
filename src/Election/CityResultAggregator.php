@@ -30,7 +30,7 @@ class CityResultAggregator
     {
         $round = $this->electionManager->getClosestElectionRound();
 
-        $ministryVoteResult = $this->ministryVoteResultRepository->findOneForCity($city, $round);
+        $ministryVoteResult = $this->ministryVoteResultRepository->findOneForCity($city, $round, true);
         $cityVoteResult = $this->cityVoteResultRepository->findOneForCity($city, $round);
         $votePlacesResults = $this->votePlaceResultRepository->findAllForCity($city, $round);
 
