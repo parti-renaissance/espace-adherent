@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:list.html.twig' %}
+
+{% block list_footer %}
+    <div class="container-fluid" style="padding: 10px 0">
+        <div class="row">
+            <div class="col-md-1 col-md-offset-10">
+                <a href="{{ path('admin_city_card_export_all') }}" class="btn btn-success">Exporter</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
