@@ -4,6 +4,8 @@
 <div class="box-footer">
     <div class="form-inline clearfix">
         <div class="pull-right">
+            {% set route_params = admin.modelmanager.paginationparameters(admin.datagrid, 0) %}
+
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-share-square-o" aria-hidden="true"></i>
@@ -11,8 +13,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ path('admin_city_card_export_all', {'_format': 'csv'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>CSV</a><li>
-                    <li><a href="{{ path('admin_city_card_export_all', {'_format': 'xls'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>XLS</a><li>
+                    <li><a href="{{ path('admin_city_card_export_all', route_params + {'_format': 'csv'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>CSV</a><li>
+                    <li><a href="{{ path('admin_city_card_export_all', route_params + {'_format': 'xls'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>XLS</a><li>
                 </ul>
             </div>
 
@@ -23,8 +25,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ path('admin_city_card_export_lists', {'_format': 'csv'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>CSV</a><li>
-                    <li><a href="{{ path('admin_city_card_export_lists', {'_format': 'xls'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>XLS</a><li>
+                    <li><a href="{{ path('admin_city_card_export_lists', route_params + {'_format': 'csv'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>CSV</a><li>
+                    <li><a href="{{ path('admin_city_card_export_lists', route_params + {'_format': 'xls'}) }}"><i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>XLS</a><li>
                 </ul>
             </div>
         </div>
