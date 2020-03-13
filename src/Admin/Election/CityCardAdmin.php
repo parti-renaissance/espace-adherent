@@ -44,4 +44,13 @@ class CityCardAdmin extends AbstractCityCardAdmin
             ])
         ;
     }
+
+    public function getTemplate($name)
+    {
+        if ('list' === $name) {
+            return 'admin/city_card/list.html.twig';
+        }
+
+        return parent::getTemplate($name);
+    }
 }
