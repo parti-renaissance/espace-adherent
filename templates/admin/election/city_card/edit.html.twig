@@ -221,14 +221,18 @@
     <table class="table table-bordered table-striped sonata-ba-list">
         <thead>
         <tr class="sonata-ba-list-field-header">
+            <th class="sonata-ba-list-field-header-text">#</th>
             <th class="sonata-ba-list-field-header-text">Liste</th>
             <th class="sonata-ba-list-field-header-text">Nuance</th>
             <th class="sonata-ba-list-field-header-text">Résultat</th>
         </tr>
         </thead>
         <tbody>
-        {% for list in lists %}
+        {% for index,list in lists %}
             <tr>
+                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                    {{ index + 1 }}
+                </td>
                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
                     {{ list.name }}
                 </td>

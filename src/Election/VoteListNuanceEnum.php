@@ -6,6 +6,7 @@ use MyCLabs\Enum\Enum;
 
 final class VoteListNuanceEnum extends Enum
 {
+    public const REM = 'REM';
     private const EXG = 'EXG';
     private const COM = 'COM';
     private const FI = 'FI';
@@ -19,7 +20,6 @@ final class VoteListNuanceEnum extends Enum
     private const ANM = 'ANM';
     private const REG = 'REG';
     private const GJ = 'GJ';
-    private const REM = 'REM';
     private const MDM = 'MDM';
     private const UDI = 'UDI';
     private const AGR = 'AGR';

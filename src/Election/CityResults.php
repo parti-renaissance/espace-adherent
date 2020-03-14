@@ -148,6 +148,10 @@ class CityResults
             $lists[$index]['percent'] = $total > 0 ? round(($list['total'] / $total) * 100, 2) : 0;
         }
 
+        usort($lists, function (array $list1, array $list2) {
+            return strcmp($list2['total'], $list1['total']);
+        });
+
         return $lists;
     }
 }

@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Admin\Election\CityCardAdmin;
 use AppBundle\Election\CityResultAggregator;
+use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\Election\CityCard;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\Exporter\Exporter;
@@ -46,9 +47,9 @@ class AdminExportCityCardController extends Controller
                 $moreThan10Percent = 0;
                 $lessThan10Percent = 0;
                 $lessThan5Percent = 0;
-                $laremPosition = 0;
+                $laremPositions = [];
 
-                foreach ($results->getLists() as $list) {
+                foreach ($results->getLists() as $position => $list) {
                     if (10 <= $list['percent']) {
                         ++$moreThan10Percent;
                     } else {
@@ -57,6 +58,10 @@ class AdminExportCityCardController extends Controller
 
                     if (5 > $list['percent']) {
                         ++$lessThan5Percent;
+                    }
+
+                    if (VoteListNuanceEnum::REM === $list['nuance']) {
+                        $laremPositions[] = $position + 1;
                     }
                 }
 
@@ -68,7 +73,7 @@ class AdminExportCityCardController extends Controller
                     'Nb listes élu T1' => $moreThan10Percent,
                     'Nb listes inf 10%' => $lessThan10Percent,
                     'Nb listes inf 5%' => $lessThan5Percent,
-                    'Position LaREM' => $laremPosition,
+                    'Position LaREM' => implode($laremPositions, ', '),
                 ];
             })
         );
