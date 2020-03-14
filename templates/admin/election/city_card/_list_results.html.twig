@@ -1,0 +1,24 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% set results = get_aggregated_city_results(object.city) %}
+
+    {% if results.hasResults %}
+        {% if results.ministryVoteResult %}
+            <span class="label label-success" style="padding: 2px;">Ministère</span>
+            <br>
+        {% endif %}
+
+        {% if results.cityVoteResult %}
+            <span class="label label-primary" style="padding: 2px;">Ville</span>
+            <br>
+        {% endif %}
+
+        {% if results.votePlacesResults %}
+            <span class="label label-default" style="padding: 2px;">Bureaux</span>
+            <br>
+        {% endif %}
+    {% else %}
+        <span class="label label-danger" style="padding: 2px;">Aucun</span>
+    {% endif %}
+{% endblock %}

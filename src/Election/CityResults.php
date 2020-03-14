@@ -49,6 +49,14 @@ class CityResults
         return $this->votePlacesResults;
     }
 
+    public function hasResults(): bool
+    {
+        return $this->ministryVoteResult instanceof MinistryVoteResult
+            || $this->cityVoteResult instanceof CityVoteResult
+            || !empty($this->votePlacesResults)
+        ;
+    }
+
     public function isMinistryResult(): bool
     {
         return $this->ministryVoteResult instanceof MinistryVoteResult;
@@ -77,32 +85,47 @@ class CityResults
     public function getLists(): array
     {
         if ($this->isMinistryResult()) {
-            return array_map(
-                static function (MinistryListTotalResult $list) {
-                    return [
-                        'name' => $list->getLabel(),
-                        'nuance' => $list->getNuance(),
-                        'total' => $list->getTotal(),
-                    ];
-                },
-                $this->ministryVoteResult->getListTotalResults()
-            );
+            return $this->getMinistryLists();
         }
 
         if ($this->isCityResult()) {
-            return array_map(
-                static function (\AppBundle\Entity\Election\ListTotalResult $list) {
-                    return [
-                        'name' => $list->getList()->getLabel(),
-                        'nuance' => $list->getList()->getNuance(),
-                        'total' => $list->getTotal(),
-                    ];
-                },
-                $this->cityVoteResult->getListTotalResults()
-            );
+            return $this->getCityLists();
         }
 
-        return array_map(
+        return $this->getVotePlacesLists();
+    }
+
+    public function getMinistryLists(): array
+    {
+        return $this->getListsStats(array_map(
+            static function (MinistryListTotalResult $list) {
+                return [
+                    'name' => $list->getLabel(),
+                    'nuance' => $list->getNuance(),
+                    'total' => $list->getTotal(),
+                ];
+            },
+            $this->ministryVoteResult->getListTotalResults()
+        ));
+    }
+
+    public function getCityLists(): array
+    {
+        return $this->getListsStats(array_map(
+            static function (\AppBundle\Entity\Election\ListTotalResult $list) {
+                return [
+                    'name' => $list->getList()->getLabel(),
+                    'nuance' => $list->getList()->getNuance(),
+                    'total' => $list->getTotal(),
+                ];
+            },
+            $this->cityVoteResult->getListTotalResults()
+        ));
+    }
+
+    public function getVotePlacesLists(): array
+    {
+        return $this->getListsStats(array_map(
             static function (ListTotalResult $list) {
                 return [
                     'name' => $list->getList()->getLabel(),
@@ -111,6 +134,24 @@ class CityResults
                 ];
             },
             $this->getAggregatedVotePlacesResult()->getAggregatedListTotalResults()
-        );
+        ));
+    }
+
+    private function getListsStats(array $lists): array
+    {
+        $total = 0;
+        foreach ($lists as $list) {
+            $total += $list['total'];
+        }
+
+        foreach ($lists as $index => $list) {
+            $lists[$index]['percent'] = $total > 0 ? round(($list['total'] / $total) * 100, 2) : 0;
+        }
+
+        usort($lists, function (array $list1, array $list2) {
+            return strcmp($list2['total'], $list1['total']);
+        });
+
+        return $lists;
     }
 }

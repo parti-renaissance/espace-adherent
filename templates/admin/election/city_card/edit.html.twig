@@ -75,92 +75,21 @@
                                 <div class="tab-content" id="results-tabs-content">
                                     <div class="tab-pane fade {% if results.isMinistryResult %}active {% endif %}in table-responsive" role="tabpanel" id="ministry-results" aria-labelledby="ministry-results-tab">
                                         {% if results.ministryVoteResult %}
-                                            <table class="table table-bordered table-striped sonata-ba-list">
-                                                <thead>
-                                                    <tr class="sonata-ba-list-field-header">
-                                                        <th class="sonata-ba-list-field-header-text">Liste</th>
-                                                        <th class="sonata-ba-list-field-header-text">Nuance</th>
-                                                        <th class="sonata-ba-list-field-header-text">Résultat</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for listResult in results.ministryVoteResult.listTotalResults %}
-                                                        <tr>
-                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ listResult.label }}
-                                                            </td>
-                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ listResult.nuance }}
-                                                            </td>
-                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ listResult.total }}
-                                                            </td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                            {{ macros.display_results_table(results.ministryLists) }}
                                         {% else %}
                                             Aucun résultat remonté par le Ministère.
                                         {% endif %}
                                     </div>
                                     <div class="tab-pane fade {% if results.isCityResult %}active {% endif %}in table-responsive" role="tabpanel" id="city-results" aria-labelledby="city-results-tab">
                                         {% if results.cityVoteResult %}
-                                            <table class="table table-bordered table-striped sonata-ba-list">
-                                                <thead>
-                                                <tr class="sonata-ba-list-field-header">
-                                                    <th class="sonata-ba-list-field-header-text">Liste</th>
-                                                    <th class="sonata-ba-list-field-header-text">Nuance</th>
-                                                    <th class="sonata-ba-list-field-header-text">Résultat</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for listResult in results.cityVoteResult.listTotalResults %}
-                                                    {% set list = listResult.list %}
-                                                    <tr>
-                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                            {{ list.label }}
-                                                        </td>
-                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                            {{ list.nuance }}
-                                                        </td>
-                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                            {{ listResult.total }}
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
+                                            {{ macros.display_results_table(results.cityLists) }}
                                         {% else %}
                                             Aucun résultat remonté au niveau communal.
                                         {% endif %}
                                     </div>
                                     <div class="tab-pane fade {% if results.isVotePlacesResults %}active {% endif %}in table-responsive" role="tabpanel" id="vote-places-results" aria-labelledby="vote-places-results-tab">
                                         {% if results.votePlacesResults|length > 0 %}
-                                            <table class="table table-bordered table-striped sonata-ba-list">
-                                                <thead>
-                                                    <tr class="sonata-ba-list-field-header">
-                                                        <th class="sonata-ba-list-field-header-text">Liste</th>
-                                                        <th class="sonata-ba-list-field-header-text">Nuance</th>
-                                                        <th class="sonata-ba-list-field-header-text">Résultat</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for listResult in results.getAggregatedVotePlacesResult.aggregatedListTotalResults %}
-                                                        {% set list = listResult.list %}
-                                                        <tr>
-                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ list.label }}
-                                                            </td>
-                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ list.nuance }}
-                                                            </td>
-                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                                {{ listResult.total }}
-                                                            </td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                            {{ macros.display_results_table(results.votePlacesLists) }}
                                         {% else %}
                                             Aucun résultat remonté pour les bureaux de vote.
                                         {% endif %}
@@ -286,4 +215,35 @@
             </a>
         {% endif %}
     {% endif %}
+{% endmacro %}
+
+{% macro display_results_table(lists) %}
+    <table class="table table-bordered table-striped sonata-ba-list">
+        <thead>
+        <tr class="sonata-ba-list-field-header">
+            <th class="sonata-ba-list-field-header-text">#</th>
+            <th class="sonata-ba-list-field-header-text">Liste</th>
+            <th class="sonata-ba-list-field-header-text">Nuance</th>
+            <th class="sonata-ba-list-field-header-text">Résultat</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for index,list in lists %}
+            <tr>
+                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                    {{ index + 1 }}
+                </td>
+                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                    {{ list.name }}
+                </td>
+                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                    {{ list.nuance }}
+                </td>
+                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                    <b>{{ list.percent }}%</b> ({{ list.total }})
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endmacro %}
