@@ -22,6 +22,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class CityCard
 {
+    public const PRIORITY_HIGH = 'high';
+    public const PRIORITY_MEDIUM = 'medium';
+
+    public const PRIORITY_CHOICES = [
+        self::PRIORITY_HIGH,
+        self::PRIORITY_MEDIUM,
+    ];
+
     /**
      * @var int|null
      *
@@ -37,6 +45,15 @@ class CityCard
      * @ORM\Column(type="integer", nullable=true)
      */
     private $population;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Choice(choices=CityCard::PRIORITY_CHOICES)
+     */
+    private $priority;
 
     /**
      * @var City
@@ -134,10 +151,11 @@ class CityCard
      */
     private $contacts;
 
-    public function __construct(City $city = null, ?int $population = null)
+    public function __construct(City $city = null, ?int $population = null, ?string $priority = null)
     {
         $this->city = $city;
         $this->population = $population;
+        $this->priority = $priority;
         $this->partners = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
@@ -164,6 +182,16 @@ class CityCard
     public function setPopulation(?int $population): void
     {
         $this->population = $population;
+    }
+
+    public function getPriority(): ?string
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?string $priority): void
+    {
+        $this->priority = $priority;
     }
 
     public function getCity(): City

@@ -2,10 +2,13 @@
 
 namespace AppBundle\Admin\Election;
 
+use AppBundle\Entity\Election\CityCard;
 use AppBundle\Form\Admin\Election\CityCandidateType;
 use AppBundle\Form\Admin\Election\CityPrevisionType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class CityCardAdmin extends AbstractCityCardAdmin
 {
@@ -14,6 +17,21 @@ class CityCardAdmin extends AbstractCityCardAdmin
         parent::configureFormFields($form);
 
         $form
+            ->add('population', IntegerType::class, [
+                'label' => 'Population',
+                'scale' => 0,
+                'attr' => [
+                    'min' => 0,
+                ],
+            ])
+            ->add('priority', ChoiceType::class, [
+                'label' => 'Priorité',
+                'required' => false,
+                'choices' => CityCard::PRIORITY_CHOICES,
+                'choice_label' => function (string $choice) {
+                    return "election.city_card.priority.$choice";
+                },
+            ])
             ->add('firstCandidate', CityCandidateType::class, [
                 'required' => false,
             ])
@@ -73,6 +91,7 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'city.inseeCode',
                 'city.department',
                 'city.department.region',
+                'priority',
                 'preparationPrevision',
                 'candidatePrevision',
                 'nationalPrevision',

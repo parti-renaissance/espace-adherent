@@ -667,3 +667,5 @@ election.city_prevision.fusion: Fusion
 election.city_prevision.retention: Maintien
 election.city_partner.consensus: Consensus
 election.city_partner.dissensus: Dissensus
+election.city_card.priority.high: P1
+election.city_card.priority.medium: P2
