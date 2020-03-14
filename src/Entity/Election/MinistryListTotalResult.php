@@ -60,7 +60,7 @@ class MinistryListTotalResult
     private $total = 0;
 
     /**
-     * @var BaseWithListCollectionResult|null
+     * @var MinistryVoteResult|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election\MinistryVoteResult", inversedBy="listTotalResults")
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -82,7 +82,7 @@ class MinistryListTotalResult
         $this->total = $total;
     }
 
-    public function getMinistryVoteResult(): ?BaseWithListCollectionResult
+    public function getMinistryVoteResult(): ?MinistryVoteResult
     {
         return $this->ministryVoteResult;
     }
