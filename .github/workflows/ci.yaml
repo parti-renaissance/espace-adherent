@@ -1,0 +1,46 @@
+name: EnMarche CI
+on: push
+
+jobs:
+    lint:
+        runs-on: ubuntu-16.04
+        container: php:7.3-cli
+        steps:
+            -   name: "🚀 - checkout"
+                uses: actions/checkout@v2
+
+            -   name: "🗃 - restore PHP packages"
+                uses: actions/cache@v1
+                env:
+                    cache-name: vendor
+                with:
+                    path: ./vendor
+                    key: ${{ env.cache-name }}-${{ github.ref }}-${{ hashFiles('composer.lock') }}
+                    restore-keys: |
+                        ${{ env.cache-name }}-${{ github.ref }}-
+                        ${{ env.cache-name }}-master-
+                        ${{ env.cache-name }}-
+
+            -   name: "Versions"
+                run: |
+                    set -x
+                    php -v
+
+            -   name: "Install composer"
+                run: |
+                    set -x
+                    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+            -   name: "Install PHP Dependencies"
+                run: composer install --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --ignore-platform-reqs
+
+            -   name: "Prepare parameters"
+                run: cp app/config/parameters.yml.dist app/config/parameters.yml
+
+            -   name: "🔬 - lint & security check"
+                env:
+                    EXEC: php
+                run: |
+                    set -x
+                    ls -la
+                    make lint security-check
