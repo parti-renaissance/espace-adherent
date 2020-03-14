@@ -38,20 +38,37 @@ class AdminExportCityCardController extends Controller
             $_format,
             'export-villes--'.date('d-m-Y--H-i').'.'.$_format,
             new IteratorCallbackSourceIterator($this->getCityCardIterator($request), function (array $cityCard) {
+                /** @var CityCard $cityCard */
                 $cityCard = $cityCard[0];
                 $city = $cityCard->getCity();
                 $results = $this->aggregator->getResults($cityCard->getCity());
+
+                $moreThan10Percent = 0;
+                $lessThan10Percent = 0;
+                $lessThan5Percent = 0;
+                $laremPosition = 0;
+
+                foreach ($results->getLists() as $list) {
+                    if (10 <= $list['percent']) {
+                        ++$moreThan10Percent;
+                    } else {
+                        ++$lessThan10Percent;
+                    }
+
+                    if (5 > $list['percent']) {
+                        ++$lessThan5Percent;
+                    }
+                }
 
                 return [
                     'INSEE' => $city->getInseeCode(),
                     'Commune' => $city->getName(),
                     'Département' => $city->getDepartment()->getName(),
                     'Région' => $city->getDepartment()->getRegion()->getName(),
-                    'Nb listes élu T1' => '',
-                    'Nb listes T2' => '',
-                    'Nb listes inf 10%' => '',
-                    'Nb listes inf 5%' => '',
-                    'Position LaREM' => '',
+                    'Nb listes élu T1' => $moreThan10Percent,
+                    'Nb listes inf 10%' => $lessThan10Percent,
+                    'Nb listes inf 5%' => $lessThan5Percent,
+                    'Position LaREM' => $laremPosition,
                 ];
             })
         );
@@ -84,6 +101,7 @@ class AdminExportCityCardController extends Controller
                 $rows[] = array_merge($communColumns, [
                     'Liste' => $list['name'],
                     'Etiquette' => $list['nuance'],
+                    'Résultat' => $list['percent'].'%',
                 ]);
             }
         }
