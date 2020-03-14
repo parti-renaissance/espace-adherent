@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if value %}
+        {{ ('election.city_card.priority.' ~ value)|trans }}
+    {% endif %}
+{% endblock %}

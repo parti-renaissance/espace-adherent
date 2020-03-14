@@ -18,7 +18,8 @@ class LoadElectionCityCardData extends Fixture
     {
         $cityCard1 = $this->createCityCard(
             $this->getReference('city-lille'),
-            200000
+            200000,
+            CityCard::PRIORITY_HIGH
         );
         $cityCard1->setHeadquartersManager(new CityManager('John', 'Doe'));
         $cityCard1->setPoliticManager(new CityManager(
@@ -61,7 +62,8 @@ class LoadElectionCityCardData extends Fixture
 
         $cityCard2 = $this->createCityCard(
             $this->getReference('city-roubaix'),
-            50000
+            50000,
+            CityCard::PRIORITY_MEDIUM
         );
 
         $manager->persist($cityCard2);
@@ -69,9 +71,9 @@ class LoadElectionCityCardData extends Fixture
         $manager->flush();
     }
 
-    private function createCityCard(City $city, ?int $population = null): CityCard
+    private function createCityCard(City $city, ?int $population = null, ?string $priority = null): CityCard
     {
-        return new CityCard($city, $population);
+        return new CityCard($city, $population, $priority);
     }
 
     private function createPhoneNumber(string $number): PhoneNumber

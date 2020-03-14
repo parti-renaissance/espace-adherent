@@ -53,6 +53,7 @@ class CityCardManagersAdmin extends AbstractCityCardAdmin
                 'city.inseeCode',
                 'city.department',
                 'city.department.region',
+                'priority',
                 'headquartersManager',
                 'politicManager',
                 'taskForceManager',

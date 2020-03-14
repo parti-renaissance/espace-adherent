@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin\Election;
 
+use AppBundle\Entity\Election\CityCard;
 use AppBundle\Form\EventListener\CityCardListener;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -9,6 +10,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AbstractCityCardAdmin extends AbstractAdmin
 {
@@ -69,6 +72,17 @@ class AbstractCityCardAdmin extends AbstractAdmin
                 'multiple' => true,
                 'show_filter' => true,
             ])
+            ->add('priority', ChoiceFilter::class, [
+                'label' => 'Priorité',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => CityCard::PRIORITY_CHOICES,
+                    'choice_label' => function (string $choice) {
+                        return "election.city_card.priority.$choice";
+                    },
+                ],
+            ])
         ;
     }
 
@@ -86,6 +100,10 @@ class AbstractCityCardAdmin extends AbstractAdmin
             ])
             ->add('city.department.region', null, [
                 'label' => 'Région',
+            ])
+            ->add('priority', null, [
+                'label' => 'Priorité',
+                'template' => 'admin/election/city_card/_list_priority.html.twig',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
