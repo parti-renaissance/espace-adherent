@@ -17,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminExportCityCardController extends Controller
 {
+    private const NUANCES_TO_EXPORT = [
+        VoteListNuanceEnum::REM,
+        VoteListNuanceEnum::MDM,
+        VoteListNuanceEnum::RN,
+        VoteListNuanceEnum::SOC,
+        VoteListNuanceEnum::LR,
+        VoteListNuanceEnum::VEC,
+    ];
+
     private $aggregator;
     private $exporter;
     private $admin;
@@ -49,7 +58,7 @@ class AdminExportCityCardController extends Controller
                 $lessThan5Percent = 0;
                 $laremPositions = [];
 
-                foreach ($results->getLists() as $position => $list) {
+                foreach ($results->getLists() as $list) {
                     if (10 <= $list['percent']) {
                         ++$moreThan10Percent;
                     } else {
@@ -61,20 +70,42 @@ class AdminExportCityCardController extends Controller
                     }
 
                     if (VoteListNuanceEnum::REM === $list['nuance']) {
-                        $laremPositions[] = $position + 1;
+                        $laremPositions[] = $list['place'];
                     }
                 }
 
-                return [
+                $row = [
                     'INSEE' => $city->getInseeCode(),
                     'Commune' => $city->getName(),
                     'Département' => $city->getDepartment()->getName(),
                     'Région' => $city->getDepartment()->getRegion()->getName(),
+                    'Population' => $cityCard->getPopulation(),
                     'Nb listes élu T1' => $moreThan10Percent,
                     'Nb listes inf 10%' => $lessThan10Percent,
                     'Nb listes inf 5%' => $lessThan5Percent,
                     'Position LaREM' => implode($laremPositions, ', '),
                 ];
+
+                foreach (self::NUANCES_TO_EXPORT as $nuance) {
+                    $list = $results->getList($nuance);
+
+                    if (!$list) {
+                        continue;
+                    }
+
+                    $lessThan5Percent = (5 > $list['percent']);
+                    $between5and10Percent = (5 <= $list['percent'] && 10 > $list['percent']);
+                    $moreThan10Percent = (10 <= $list['percent']);
+
+                    $row = array_merge($row, [
+                        "$nuance <5%" => $lessThan5Percent ? 'Oui' : 'Non',
+                        "$nuance entre 5% (inclus) et 10% (exclus)" => $between5and10Percent ? 'Oui' : 'Non',
+                        "$nuance >= 10%" => $moreThan10Percent ? 'Oui' : 'Non',
+                        "Classement $nuance au T1" => $list['place'],
+                    ]);
+                }
+
+                return $row;
             })
         );
     }
@@ -97,9 +128,9 @@ class AdminExportCityCardController extends Controller
             $communColumns = [
                 'INSEE' => $city->getInseeCode(),
                 'Commune' => $city->getName(),
-                'Catégorie taille' => '~',
                 'Département' => $city->getDepartment()->getName(),
                 'Région' => $city->getDepartment()->getRegion()->getName(),
+                'Population' => $cityCard->getPopulation(),
             ];
 
             foreach ($results->getLists() as $list) {
