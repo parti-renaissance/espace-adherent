@@ -33,17 +33,7 @@ class CityManager
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $firstName;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
-    private $lastName;
+    private $name;
 
     /**
      * @var PhoneNumber|null
@@ -54,16 +44,15 @@ class CityManager
      */
     private $phone;
 
-    public function __construct(string $firstName = null, string $lastName = null, ?PhoneNumber $phone = null)
+    public function __construct(string $name = null, ?PhoneNumber $phone = null)
     {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->name = $name;
         $this->phone = $phone;
     }
 
     public function __toString()
     {
-        return $this->firstName.' '.$this->lastName;
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -71,29 +60,14 @@ class CityManager
         return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getName(): ?string
     {
-        return $this->firstName;
+        return $this->name;
     }
 
-    public function setFirstName(?string $firstName): void
+    public function setName(?string $name): void
     {
-        $this->firstName = $firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->firstName.' '.$this->lastName;
+        $this->name = $name;
     }
 
     public function getPhone(): ?PhoneNumber
@@ -108,6 +82,6 @@ class CityManager
 
     public function isEmpty(): bool
     {
-        return !$this->firstName && !$this->lastName;
+        return !$this->name;
     }
 }

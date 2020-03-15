@@ -33,17 +33,7 @@ class CityContact
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $firstName;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
-    private $lastName;
+    private $name;
 
     /**
      * @var string|null
@@ -96,8 +86,7 @@ class CityContact
 
     public function __construct(
         CityCard $city = null,
-        string $firstName = null,
-        string $lastName = null,
+        string $name = null,
         ?string $function = null,
         ?PhoneNumber $phone = null,
         ?string $caller = null,
@@ -105,8 +94,7 @@ class CityContact
         ?string $comment = null
     ) {
         $this->city = $city;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->name = $name;
         $this->function = $function;
         $this->phone = $phone;
         $this->caller = $caller;
@@ -124,24 +112,14 @@ class CityContact
         return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getName(): ?string
     {
-        return $this->firstName;
+        return $this->name;
     }
 
-    public function setFirstName(?string $firstName): void
+    public function setName(?string $name): void
     {
-        $this->firstName = $firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
+        $this->name = $name;
     }
 
     public function getFunction(): ?string

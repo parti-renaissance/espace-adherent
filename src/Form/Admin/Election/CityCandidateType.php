@@ -20,13 +20,7 @@ class CityCandidateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, [
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Prénom',
-                ],
-            ])
-            ->add('lastName', TextType::class, [
+            ->add('name', TextType::class, [
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Nom',

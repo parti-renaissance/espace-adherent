@@ -137,7 +137,6 @@
                                 <tr class="sonata-ba-list-field-header">
                                     <th class="sonata-ba-list-field-header-text"></th>
                                     <th class="sonata-ba-list-field-header-text">Stratégie</th>
-                                    <th class="sonata-ba-list-field-header-text">Prénom</th>
                                     <th class="sonata-ba-list-field-header-text">Nom</th>
                                     <th class="sonata-ba-list-field-header-text">Alliances</th>
                                     <th class="sonata-ba-list-field-header-text">Alliés</th>
@@ -249,7 +248,7 @@
 
 {% macro display_manager(manager) %}
     {% if manager %}
-        {{ manager.fullName }}
+        {{ manager.name }}
         {% if manager.phone %}
             <br>
             <a href="tel:{{ manager.phone|phone_number_format }}">

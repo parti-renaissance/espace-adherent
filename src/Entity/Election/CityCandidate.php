@@ -33,17 +33,7 @@ class CityCandidate
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    private $firstName;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
-    private $lastName;
+    private $name;
 
     /**
      * @var string|null
@@ -108,8 +98,7 @@ class CityCandidate
     private $eligibleAdvisersCount;
 
     public function __construct(
-        string $firstName = null,
-        string $lastName = null,
+        string $name = null,
         ?string $gender = null,
         ?string $email = null,
         ?PhoneNumber $phone = null,
@@ -118,8 +107,7 @@ class CityCandidate
         ?bool $agreement = false,
         ?int $eligibleAdvisersCount = null
     ) {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->name = $name;
         $this->gender = $gender;
         $this->email = $email;
         $this->phone = $phone;
@@ -131,7 +119,7 @@ class CityCandidate
 
     public function __toString()
     {
-        return $this->getFullName();
+        return $this->name;
     }
 
     public function getId(): ?int
@@ -139,29 +127,14 @@ class CityCandidate
         return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getName(): ?string
     {
-        return $this->firstName;
+        return $this->name;
     }
 
-    public function setFirstName(?string $firstName): void
+    public function setName(?string $name): void
     {
-        $this->firstName = $firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->firstName.' '.$this->lastName;
+        $this->name = $name;
     }
 
     public function getGender(): ?string
@@ -236,6 +209,6 @@ class CityCandidate
 
     public function isEmpty(): bool
     {
-        return !$this->firstName && !$this->lastName;
+        return !$this->name && !$this->email;
     }
 }
