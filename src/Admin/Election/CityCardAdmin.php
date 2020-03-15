@@ -7,6 +7,7 @@ use AppBundle\Form\Admin\Election\CityCandidateType;
 use AppBundle\Form\Admin\Election\CityPrevisionType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CityCardAdmin extends AbstractCityCardAdmin
@@ -23,6 +24,10 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'choice_label' => function (string $choice) {
                     return "election.city_card.priority.$choice";
                 },
+            ])
+            ->add('risk', CheckboxType::class, [
+                'label' => 'Risque',
+                'required' => false,
             ])
             ->add('firstCandidate', CityCandidateType::class, [
                 'required' => false,

@@ -704,6 +704,7 @@
 
         <!-- Command -->
         <service id="AppBundle\Command\ImportAssessorsCommand" />
+        <service id="AppBundle\Command\ImportElectionCityCardsCommand" />
         <service id="AppBundle\Command\ImportVotePlacesCommand" />
 
         <!-- ChezVous -->
