@@ -118,7 +118,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         )
                     ;
 
-                    if (in_array($value['value'], ['Ville', 'Bureaux'])) {
+                    if (\in_array($value['value'], ['Ville', 'Bureaux'])) {
                         $qb->leftJoin(
                             CityVoteResult::class,
                             'city_vote_result',
@@ -126,7 +126,6 @@ class AbstractCityCardAdmin extends AbstractAdmin
                             "city_vote_result.city = $alias.city"
                         );
                     }
-
 
                     if ('Bureaux' === $value['value']) {
                         $qb
