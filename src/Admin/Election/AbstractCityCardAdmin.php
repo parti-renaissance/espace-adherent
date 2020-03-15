@@ -3,6 +3,7 @@
 namespace AppBundle\Admin\Election;
 
 use AppBundle\Entity\Election\CityCard;
+use AppBundle\Entity\Election\CityContact;
 use AppBundle\Entity\Election\CityVoteResult;
 use AppBundle\Entity\Election\MinistryVoteResult;
 use AppBundle\Entity\VotePlace;
@@ -17,7 +18,6 @@ use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AbstractCityCardAdmin extends AbstractAdmin
@@ -107,7 +107,7 @@ class AbstractCityCardAdmin extends AbstractAdmin
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
                     $qb
@@ -170,17 +170,53 @@ class AbstractCityCardAdmin extends AbstractAdmin
             ->add('allContactsDone', CallbackFilter::class, [
                 'label' => 'Personnes contactées',
                 'show_filter' => true,
-                'field_type' => CheckboxType::class,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Oui',
+                        'Non',
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return $choice;
+                    },
+                ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
-                        return;
+                        return false;
                     }
 
-                    $qb
-                        ->leftJoin("$alias.contacts", 'contact')
-                        ->andWhere('contact.done != :contact_done')
-                        ->setParameter('contact_done', false)
-                    ;
+                    switch ($value['value']) {
+                        case 'Oui':
+                            $qb
+                                ->innerJoin("$alias.contacts", 'contact')
+                                ->leftJoin(
+                                    CityContact::class,
+                                    'contact_not_done',
+                                    Expr\Join::WITH,
+                                    "contact_not_done.city = $alias AND contact_not_done.done = :contact_not_done"
+                                )
+                                ->setParameter('contact_not_done', false)
+                                ->andWhere('contact_not_done IS NULL')
+                            ;
+
+                            break;
+                        case 'Non':
+                            $qb
+                                ->innerJoin("$alias.contacts", 'contact')
+                                ->leftJoin(
+                                    CityContact::class,
+                                    'contact_not_done',
+                                    Expr\Join::WITH,
+                                    "contact_not_done.city = $alias AND contact_not_done.done = :contact_not_done"
+                                )
+                                ->setParameter('contact_not_done', false)
+                                ->andWhere('contact_not_done IS NOT NULL')
+                            ;
+
+                            break;
+                        default:
+                            return false;
+                    }
 
                     return true;
                 },
