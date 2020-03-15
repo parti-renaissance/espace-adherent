@@ -57,6 +57,7 @@ class AdminExportCityCardController extends Controller
                 $lessThan10Percent = 0;
                 $lessThan5Percent = 0;
                 $laremPositions = [];
+                $hasWinningList = false;
 
                 foreach ($results->getLists() as $list) {
                     if (10 <= $list['percent']) {
@@ -67,6 +68,10 @@ class AdminExportCityCardController extends Controller
 
                     if (5 > $list['percent']) {
                         ++$lessThan5Percent;
+                    }
+
+                    if (50 <= $list['percent']) {
+                        $hasWinningList = true;
                     }
 
                     if (VoteListNuanceEnum::REM === $list['nuance']) {
@@ -84,24 +89,27 @@ class AdminExportCityCardController extends Controller
                     'Nb listes inf 10%' => $lessThan10Percent,
                     'Nb listes inf 5%' => $lessThan5Percent,
                     'Position LaREM' => implode($laremPositions, ', '),
+                    'Liste >50%' => $hasWinningList ? 'Oui' : 'Non',
                 ];
 
                 foreach (self::NUANCES_TO_EXPORT as $nuance) {
-                    $list = $results->getList($nuance);
+                    $lessThan5Percent = null;
+                    $between5and10Percent = null;
+                    $moreThan10Percent = null;
+                    $place = null;
 
-                    if (!$list) {
-                        continue;
+                    if ($list = $results->getList($nuance)) {
+                        $lessThan5Percent = (5 > $list['percent']) ? 'Oui' : 'Non';
+                        $between5and10Percent = (5 <= $list['percent'] && 10 > $list['percent']) ? 'Oui' : 'Non';
+                        $moreThan10Percent = (10 <= $list['percent']) ? 'Oui' : 'Non';
+                        $place = $list['place'];
                     }
 
-                    $lessThan5Percent = (5 > $list['percent']);
-                    $between5and10Percent = (5 <= $list['percent'] && 10 > $list['percent']);
-                    $moreThan10Percent = (10 <= $list['percent']);
-
                     $row = array_merge($row, [
-                        "$nuance <5%" => $lessThan5Percent ? 'Oui' : 'Non',
-                        "$nuance entre 5% (inclus) et 10% (exclus)" => $between5and10Percent ? 'Oui' : 'Non',
-                        "$nuance >= 10%" => $moreThan10Percent ? 'Oui' : 'Non',
-                        "Classement $nuance au T1" => $list['place'],
+                        "$nuance <5%" => $lessThan5Percent,
+                        "$nuance entre 5% (inclus) et 10% (exclus)" => $between5and10Percent,
+                        "$nuance >= 10%" => $moreThan10Percent,
+                        "Classement $nuance au T1" => $place,
                     ]);
                 }
 
