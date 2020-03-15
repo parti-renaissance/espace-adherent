@@ -15,10 +15,7 @@ class CityCardContactAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form
-            ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
-            ])
-            ->add('lastName', TextType::class, [
+            ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
             ->add('phone', PhoneNumberType::class, [

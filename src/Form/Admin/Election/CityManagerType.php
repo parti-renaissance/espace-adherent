@@ -15,11 +15,7 @@ class CityManagerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
-                'required' => false,
-            ])
-            ->add('lastName', TextType::class, [
+            ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'required' => false,
             ])

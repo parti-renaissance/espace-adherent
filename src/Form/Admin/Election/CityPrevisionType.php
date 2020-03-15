@@ -23,11 +23,7 @@ class CityPrevisionType extends AbstractType
                 'placeholder' => 'Sélectionnez',
                 'required' => false,
             ])
-            ->add('firstName', TextType::class, [
-                'label' => 'Prénom',
-                'required' => false,
-            ])
-            ->add('lastName', TextType::class, [
+            ->add('name', TextType::class, [
                 'label' => 'Nom',
                 'required' => false,
             ])

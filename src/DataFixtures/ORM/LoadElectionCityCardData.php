@@ -21,16 +21,14 @@ class LoadElectionCityCardData extends Fixture
             200000,
             CityCard::PRIORITY_HIGH
         );
-        $cityCard1->setHeadquartersManager(new CityManager('John', 'Doe'));
+        $cityCard1->setHeadquartersManager(new CityManager('John Doe'));
         $cityCard1->setPoliticManager(new CityManager(
-            'Jane',
-            'Doe',
+            'Jane Doe',
             $this->createPhoneNumber('0612345678')
         ));
         $cityCard1->setPreparationPrevision(new CityPrevision(
             CityPrevision::STRATEGY_FUSION,
-            'Marcel',
-            'Doe',
+            'Marcel Doe',
             'Centre droit',
             'LaREM + Modem + LR',
             'Christian Doe'
@@ -40,8 +38,7 @@ class LoadElectionCityCardData extends Fixture
         $cityCard1->addPartner(new CityPartner($cityCard1, 'AGIR', CityPartner::DISSENSUS));
         $cityCard1->addContact(new CityContact(
             $cityCard1,
-            'Michel',
-            'Doe',
+            'Michel Doe',
             'Manager',
             $this->createPhoneNumber('0698765432'),
             'Didier Doe',
@@ -50,8 +47,7 @@ class LoadElectionCityCardData extends Fixture
         ));
         $cityCard1->addContact(new CityContact(
             $cityCard1,
-            'Jacques',
-            'Doe',
+            'Jacques Doe',
             'Chef',
             $this->createPhoneNumber('0687654878'),
             'Didier Doe',

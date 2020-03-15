@@ -47,16 +47,7 @@ class CityPrevision
      *
      * @Assert\Length(max=255)
      */
-    private $firstName;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     *
-     * @Assert\Length(max=255)
-     */
-    private $lastName;
+    private $name;
 
     /**
      * @var string|null
@@ -87,15 +78,13 @@ class CityPrevision
 
     public function __construct(
         ?string $strategy = null,
-        ?string $firstName = null,
-        ?string $lastName = null,
+        ?string $name = null,
         ?string $alliances = null,
         ?string $allies = null,
         ?string $validatedBy = null
     ) {
         $this->strategy = $strategy;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->name = $name;
         $this->alliances = $alliances;
         $this->allies = $allies;
         $this->validatedBy = $validatedBy;
@@ -116,24 +105,14 @@ class CityPrevision
         $this->strategy = $strategy;
     }
 
-    public function getFirstName(): ?string
+    public function getName(): ?string
     {
-        return $this->firstName;
+        return $this->name;
     }
 
-    public function setFirstName(?string $firstName): void
+    public function setName(?string $name): void
     {
-        $this->firstName = $firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
+        $this->name = $name;
     }
 
     public function getAlliances(): ?string
@@ -169,8 +148,7 @@ class CityPrevision
     public function isEmpty(): bool
     {
         return !$this->strategy
-            && !$this->firstName
-            && !$this->lastName
+            && !$this->name
             && !$this->alliances
             && !$this->allies
         ;

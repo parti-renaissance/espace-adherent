@@ -2,7 +2,7 @@
 
 {% block field %}
     {% if value %}
-        {{ value.firstName }} {{ value.lastName }}
+        {{ value.name }}
         {% if value.phone %}
             <br>
             {% set phone = value.phone|phone_number_format %}

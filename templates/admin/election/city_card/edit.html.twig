@@ -16,6 +16,7 @@
                                     <th class="sonata-ba-list-field-header-text">Département</th>
                                     <th class="sonata-ba-list-field-header-text">Région</th>
                                     <th class="sonata-ba-list-field-header-text" width="200px">Population</th>
+                                    <th class="sonata-ba-list-field-header-text" width="200px">Risque</th>
                                     <th class="sonata-ba-list-field-header-text" width="200px">Priorité</th>
                                 </tr>
                             </thead>
@@ -35,6 +36,10 @@
                                     </td>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {{ object.population|number_format(0, ',', ' ') }}
+                                    </td>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ form_widget(form.risk, { label: false })}}
+                                        {{ form_errors(form.risk)}}
                                     </td>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {{ form_widget(form.priority)}}
@@ -137,7 +142,6 @@
                                 <tr class="sonata-ba-list-field-header">
                                     <th class="sonata-ba-list-field-header-text"></th>
                                     <th class="sonata-ba-list-field-header-text">Stratégie</th>
-                                    <th class="sonata-ba-list-field-header-text">Prénom</th>
                                     <th class="sonata-ba-list-field-header-text">Nom</th>
                                     <th class="sonata-ba-list-field-header-text">Alliances</th>
                                     <th class="sonata-ba-list-field-header-text">Alliés</th>
@@ -249,7 +253,7 @@
 
 {% macro display_manager(manager) %}
     {% if manager %}
-        {{ manager.fullName }}
+        {{ manager.name }}
         {% if manager.phone %}
             <br>
             <a href="tel:{{ manager.phone|phone_number_format }}">
