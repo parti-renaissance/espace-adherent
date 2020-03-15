@@ -107,6 +107,8 @@ class AdminExportCityCardController extends Controller
                     'Liste' => $list['name'],
                     'Etiquette' => $list['nuance'],
                     'Résultat' => $list['percent'].'%',
+                    'Panneau list' => $list['position'],
+                    'Candidat' => $list['candidate'],
                 ]);
             }
         }
