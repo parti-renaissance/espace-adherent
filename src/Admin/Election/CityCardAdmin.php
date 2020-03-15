@@ -77,12 +77,12 @@ class CityCardAdmin extends AbstractCityCardAdmin
         parent::configureListFields($list);
 
         $list
-            ->add('preparationPrevision', null, [
-                'label' => 'Cohérence territoriale',
+            ->add('candidateOptionPrevision', null, [
+                'label' => 'Option candidat',
                 'template' => 'admin/election/city_card/_list_prevision.html.twig',
             ])
-            ->add('candidatePrevision', null, [
-                'label' => 'Schéma candidat',
+            ->add('preparationPrevision', null, [
+                'label' => 'Cohérence territoriale',
                 'template' => 'admin/election/city_card/_list_prevision.html.twig',
             ])
             ->add('nationalPrevision', null, [
@@ -105,8 +105,8 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'city.department',
                 'city.department.region',
                 'priority',
+                'candidateOptionPrevision',
                 'preparationPrevision',
-                'candidatePrevision',
                 'nationalPrevision',
                 'results',
                 'allContactsDone',

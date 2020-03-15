@@ -159,6 +159,8 @@ class CityResults
                 return [
                     'name' => $list->getLabel(),
                     'nuance' => $list->getNuance(),
+                    'position' => $list->getPosition(),
+                    'candidate' => $list->getCandidateFirstName().' '.$list->getCandidateLastName(),
                     'total' => $list->getTotal(),
                 ];
             },
@@ -173,6 +175,8 @@ class CityResults
                 return [
                     'name' => $list->getList()->getLabel(),
                     'nuance' => $list->getList()->getNuance(),
+                    'position' => $list->getList()->getPosition(),
+                    'candidate' => $list->getList()->getCandidateFirstName().' '.$list->getList()->getCandidateLastName(),
                     'total' => $list->getTotal(),
                 ];
             },
@@ -187,6 +191,8 @@ class CityResults
                 return [
                     'name' => $list->getList()->getLabel(),
                     'nuance' => $list->getList()->getNuance(),
+                    'position' => $list->getList()->getPosition(),
+                    'candidate' => $list->getList()->getCandidateFirstName().' '.$list->getList()->getCandidateLastName(),
                     'total' => $list->getTotal(),
                 ];
             },
