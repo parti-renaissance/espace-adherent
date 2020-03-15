@@ -14,9 +14,9 @@ class LoadVoteResultListCollectionData extends Fixture
         $listCollection = new VoteResultListCollection();
         $listCollection->setCity($this->getReference('city-lille'));
 
-        $listCollection->addList(new VoteResultList('Liste 1', 'REM'));
-        $listCollection->addList(new VoteResultList('Liste 2'));
-        $listCollection->addList(new VoteResultList('Liste 3'));
+        $listCollection->addList($this->createList('Liste 1', 'REM', 1));
+        $listCollection->addList($this->createList('Liste 2', '', 2));
+        $listCollection->addList($this->createList('Liste 3', '', 3));
 
         $manager->persist($listCollection);
 
@@ -28,5 +28,16 @@ class LoadVoteResultListCollectionData extends Fixture
         return [
             LoadCityData::class,
         ];
+    }
+
+    private function createList(string $label, string $nuance, int $position): VoteResultList
+    {
+        $list = new VoteResultList();
+
+        $list->setLabel($label);
+        $list->setNuance($nuance);
+        $list->setPosition($position);
+
+        return $list;
     }
 }
