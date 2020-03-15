@@ -206,7 +206,7 @@ class CityResults
         }
 
         usort($lists, function (array $list1, array $list2) {
-            return strcmp($list2['total'], $list1['total']);
+            return (int) $list2['total'] - (int) $list1['total'];
         });
 
         return $lists;

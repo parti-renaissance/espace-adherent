@@ -27,9 +27,20 @@ class CityCardAdmin extends AbstractCityCardAdmin
             ->add('firstCandidate', CityCandidateType::class, [
                 'required' => false,
             ])
-            ->add('preparationPrevision', CityPrevisionType::class, [
-                'label' => 'Préparation',
+            ->add('candidateOptionPrevision', CityPrevisionType::class, [
+                'label' => 'Option candidat',
                 'required' => false,
+                'disabled' => true,
+            ])
+            ->add('preparationPrevision', CityPrevisionType::class, [
+                'label' => 'Cohérence territoriale',
+                'required' => false,
+                'disabled' => true,
+            ])
+            ->add('thirdOptionPrevision', CityPrevisionType::class, [
+                'label' => 'Troisième option',
+                'required' => false,
+                'disabled' => true,
             ])
             ->add('candidatePrevision', CityPrevisionType::class, [
                 'label' => 'Position candidat',
@@ -62,7 +73,7 @@ class CityCardAdmin extends AbstractCityCardAdmin
 
         $list
             ->add('preparationPrevision', null, [
-                'label' => 'Schéma prévu',
+                'label' => 'Cohérence territoriale',
                 'template' => 'admin/election/city_card/_list_prevision.html.twig',
             ])
             ->add('candidatePrevision', null, [

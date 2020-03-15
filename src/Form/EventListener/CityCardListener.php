@@ -37,9 +37,19 @@ class CityCardListener implements EventSubscriberInterface
 
     public function cleanEmptyPrevisions(CityCard $cityCard): void
     {
+        $candidateOptionPrevision = $cityCard->getCandidateOptionPrevision();
+        if ($candidateOptionPrevision && $candidateOptionPrevision->isEmpty()) {
+            $cityCard->removeCandidateOptionPrevision();
+        }
+
         $preparationPrevision = $cityCard->getPreparationPrevision();
         if ($preparationPrevision && $preparationPrevision->isEmpty()) {
             $cityCard->removePreparationPrevision();
+        }
+
+        $thirdOptionPrevision = $cityCard->getThirdOptionPrevision();
+        if ($thirdOptionPrevision && $thirdOptionPrevision->isEmpty()) {
+            $cityCard->removeThirdOptionPrevision();
         }
 
         $candidatePrevision = $cityCard->getCandidatePrevision();
