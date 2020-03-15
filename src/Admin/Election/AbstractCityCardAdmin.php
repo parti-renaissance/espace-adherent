@@ -99,7 +99,6 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         'Ministère',
                         'Ville',
                         'Bureaux',
-                        'Aucun',
                     ],
                     'choice_label' => function (string $choice) {
                         return $choice;
@@ -117,20 +116,29 @@ class AbstractCityCardAdmin extends AbstractAdmin
                             Expr\Join::WITH,
                             "ministry_vote_result.city = $alias.city AND ministry_vote_result.updatedBy IS NOT NULL"
                         )
-                        ->leftJoin(
+                    ;
+
+                    if (in_array($value['value'], ['Ville', 'Bureaux'])) {
+                        $qb->leftJoin(
                             CityVoteResult::class,
                             'city_vote_result',
                             Expr\Join::WITH,
                             "city_vote_result.city = $alias.city"
-                        )
-                        ->leftJoin(
-                            VotePlace::class,
-                            'vote_place',
-                            Expr\Join::WITH,
-                            'SUBSTRING(vote_place.code, 1, 5) = city.inseeCode'
-                        )
-                        ->leftJoin('vote_place.voteResults', 'vote_place_result')
-                    ;
+                        );
+                    }
+
+
+                    if ('Bureaux' === $value['value']) {
+                        $qb
+                            ->leftJoin(
+                                VotePlace::class,
+                                'vote_place',
+                                Expr\Join::WITH,
+                                'SUBSTRING(vote_place.code, 1, 5) = city.inseeCode'
+                            )
+                            ->leftJoin('vote_place.voteResults', 'vote_place_result')
+                        ;
+                    }
 
                     switch ($value['value']) {
                         case 'Ministère':
@@ -147,14 +155,6 @@ class AbstractCityCardAdmin extends AbstractAdmin
                         case 'Bureaux':
                             $qb
                                 ->andWhere('vote_place_result IS NOT NULL')
-                                ->andWhere('city_vote_result IS NULL')
-                                ->andWhere('ministry_vote_result IS NULL')
-                            ;
-
-                            break;
-                        case 'Aucun':
-                            $qb
-                                ->andWhere('vote_place_result IS NULL')
                                 ->andWhere('city_vote_result IS NULL')
                                 ->andWhere('ministry_vote_result IS NULL')
                             ;
