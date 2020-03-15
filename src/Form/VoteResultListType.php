@@ -40,6 +40,21 @@ class VoteResultListType extends AbstractType
                     'min' => 0,
                 ],
             ])
+            ->add('position', IntegerType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'min' => 0,
+                ],
+            ])
+            ->add('candidateFirstName', TextType::class, [
+                'label' => false,
+                'required' => false,
+            ])
+            ->add('candidateLastName', TextType::class, [
+                'label' => false,
+                'required' => false,
+            ])
         ;
     }
 

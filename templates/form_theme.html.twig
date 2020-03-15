@@ -301,69 +301,109 @@
 {% endblock %}
 
 {% block _vote_result_list_collection_lists_entry_row %}
-    <div class="l__row l__row--center">
-        <div class="l__col l__col--grow-1">
-            <div class="form__row">
-                {{ form_widget(form.label, {attr: {placeholder: 'Libellé'}}) }}
+    <div class="b__nudge--top-10 b__nudge--bottom-large" style="border-bottom: 1px solid black">
+        <div class="l__row l__row--center">
+            <div class="l__col l__col--grow-1">
+                <div class="form__row">
+                    {{ form_widget(form.label, {attr: {placeholder: 'Libellé'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium" style="width:300px">
+                <div class="form__row">
+                    {{ form_widget(form.nuance, {attr: {placeholder: 'Nuance'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_widget(form.adherentCount, {attr: {placeholder: 'Adhérents LaREM sur la liste'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_widget(form.eligibleCount, {attr: {placeholder: 'dont positions éligibles'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--top b__nudge--left-medium">
+                <div class="em-form__action-container">
+                    <a href="#" class="em-form__action b__nudge--bottom em-form__action--remove collection-remove">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium" style="width:200px">
-            <div class="form__row">
-                {{ form_widget(form.nuance, {attr: {placeholder: 'Nuance'}}) }}
+
+        <div class="l__row l__row--center" style="padding-right:80px">
+            <div class="l__col l__col--grow-1">
+                <div class="form__row">
+                    {{ form_widget(form.position, {attr: {placeholder: 'N° panneau'}}) }}
+                </div>
             </div>
-        </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium">
-            <div class="form__row">
-                {{ form_widget(form.adherentCount, {attr: {placeholder: 'Adhérents LaREM sur la liste'}}) }}
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_widget(form.candidateFirstName, {attr: {placeholder: 'Prénom du candidat'}}) }}
+                </div>
             </div>
-        </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium">
-            <div class="form__row">
-                {{ form_widget(form.eligibleCount, {attr: {placeholder: 'dont positions éligibles'}}) }}
-            </div>
-        </div>
-        <div class="l__col l__col--top b__nudge--left-medium">
-            <div class="em-form__action-container">
-                <a href="#" class="em-form__action b__nudge--bottom em-form__action--remove collection-remove">
-                    <i class="fa fa-trash"></i>
-                </a>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_widget(form.candidateLastName, {attr: {placeholder: 'Nom du candidat'}}) }}
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block _ministry_vote_result_listTotalResults_entry_widget %}
-    <div class="l__row l__row--center">
-        <div class="l__col l__col--grow-1">
-            <div class="form__row">
-                {{ form_row(form.label, {attr: {placeholder: 'Libellé'}}) }}
+    <div class="b__nudge--top-10 b__nudge--bottom-large" style="border-bottom: 1px solid black">
+        <div class="l__row l__row--center">
+            <div class="l__col l__col--grow-1">
+                <div class="form__row">
+                    {{ form_row(form.label, {attr: {placeholder: 'Libellé'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row vote-result-percent-list-field">
+                    {{ form_row(form.total, {attr: {placeholder: 'Suffrages exprimés'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium" style="width:300px">
+                <div class="form__row">
+                    {{ form_row(form.nuance, {attr: {placeholder: 'Nuance'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_row(form.adherentCount, {attr: {placeholder: 'Adhérents LaREM sur la liste'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_row(form.eligibleCount, {attr: {placeholder: 'dont positions éligibles'}}) }}
+                </div>
+            </div>
+            <div class="l__col l__col--top b__nudge--left-medium">
+                <div class="em-form__action-container">
+                    <a href="#" class="em-form__action b__nudge--bottom em-form__action--remove collection-remove">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium">
-            <div class="form__row vote-result-percent-list-field">
-                {{ form_row(form.total, {attr: {placeholder: 'Suffrages exprimés'}}) }}
+
+        <div class="l__row l__row--center" style="padding-right:80px">
+            <div class="l__col l__col--grow-1">
+                <div class="form__row">
+                    {{ form_row(form.position, {attr: {placeholder: 'N° panneau'}}) }}
+                </div>
             </div>
-        </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium" style="width:150px">
-            <div class="form__row">
-                {{ form_row(form.nuance, {attr: {placeholder: 'Nuance'}}) }}
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_row(form.candidateFirstName, {attr: {placeholder: 'Prénom du candidat'}}) }}
+                </div>
             </div>
-        </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium">
-            <div class="form__row">
-                {{ form_row(form.adherentCount, {attr: {placeholder: 'Adhérents LaREM sur la liste'}}) }}
-            </div>
-        </div>
-        <div class="l__col l__col--grow-1 b__nudge--left-medium">
-            <div class="form__row">
-                {{ form_row(form.eligibleCount, {attr: {placeholder: 'dont positions éligibles'}}) }}
-            </div>
-        </div>
-        <div class="l__col l__col--top b__nudge--left-medium">
-            <div class="em-form__action-container">
-                <a href="#" class="em-form__action b__nudge--bottom em-form__action--remove collection-remove">
-                    <i class="fa fa-trash"></i>
-                </a>
+            <div class="l__col l__col--grow-1 b__nudge--left-medium">
+                <div class="form__row">
+                    {{ form_row(form.candidateLastName, {attr: {placeholder: 'Nom du candidat'}}) }}
+                </div>
             </div>
         </div>
     </div>

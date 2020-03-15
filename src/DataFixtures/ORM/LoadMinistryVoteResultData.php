@@ -23,6 +23,9 @@ class LoadMinistryVoteResultData extends Fixture
         $list->setLabel('Liste 1');
         $list->setNuance('REM');
         $list->setTotal(5);
+        $list->setPosition(1);
+        $list->setCandidateFirstName('Michel');
+        $list->setCandidateLastName('Dupont');
 
         $result->addListTotalResult($list);
 
