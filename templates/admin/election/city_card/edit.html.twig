@@ -272,6 +272,8 @@
                         <th class="sonata-ba-list-field-header-text">#</th>
                         <th class="sonata-ba-list-field-header-text">Liste</th>
                         <th class="sonata-ba-list-field-header-text">Nuance</th>
+                        <th class="sonata-ba-list-field-header-text">Panneau liste</th>
+                        <th class="sonata-ba-list-field-header-text">Premier candidat</th>
                         <th class="sonata-ba-list-field-header-text">Résultat</th>
                     </tr>
                 </thead>
@@ -279,7 +281,7 @@
                     {% for index,list in lists %}
                         <tr class="{{ 10 <= list.percent ? 'success' : 5 < list.percent ? 'warning' : 'danger' }}">
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                {{ index + 1 }}
+                                {{ list.place }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                 {{ list.name }}
@@ -288,12 +290,18 @@
                                 {{ list.nuance }}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {{ list.position }}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {{ list.candidate }}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                 <b>{{ list.percent }}%</b> ({{ list.total }})
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="4" class="sonata-ba-list-field sonata-ba-list-field-text text-center">
+                            <td colspan="6" class="sonata-ba-list-field sonata-ba-list-field-text text-center">
                                 <b>Aucun résultat de liste remonté</b>
                             </td>
                         </tr>
