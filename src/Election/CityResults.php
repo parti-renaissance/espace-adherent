@@ -152,6 +152,17 @@ class CityResults
         return $this->lists;
     }
 
+    public function getList(string $nuance): ?array
+    {
+        foreach ($this->getLists() as $list) {
+            if ($nuance === $list['nuance']) {
+                return $list;
+            }
+        }
+
+        return null;
+    }
+
     public function getMinistryLists(): array
     {
         return $this->getListsStats(array_map(
@@ -214,6 +225,10 @@ class CityResults
         usort($lists, function (array $list1, array $list2) {
             return (int) $list2['total'] - (int) $list1['total'];
         });
+
+        foreach ($lists as $place => $list) {
+            $lists[$place]['place'] = $place + 1;
+        }
 
         return $lists;
     }

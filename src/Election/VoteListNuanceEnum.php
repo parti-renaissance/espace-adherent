@@ -7,32 +7,32 @@ use MyCLabs\Enum\Enum;
 final class VoteListNuanceEnum extends Enum
 {
     public const REM = 'REM';
-    private const EXG = 'EXG';
-    private const COM = 'COM';
-    private const FI = 'FI';
-    private const SOC = 'SOC';
-    private const GEN = 'GEN';
-    private const RDG = 'RDG';
-    private const DVG = 'DVG';
-    private const VEC = 'VEC';
-    private const ECO = 'ECO';
-    private const DIV = 'DIV';
-    private const ANM = 'ANM';
-    private const REG = 'REG';
-    private const GJ = 'GJ';
-    private const MDM = 'MDM';
-    private const UDI = 'UDI';
-    private const AGR = 'AGR';
-    private const MR = 'MR';
-    private const DVC = 'DVC';
-    private const LR = 'LR';
-    private const DVD = 'DVD';
-    private const DLF = 'DLF';
-    private const RN = 'RN';
-    private const EXD = 'EXD';
-    private const UG = 'UG';
-    private const UC = 'UC';
-    private const UD = 'UD';
+    public const EXG = 'EXG';
+    public const COM = 'COM';
+    public const FI = 'FI';
+    public const SOC = 'SOC';
+    public const GEN = 'GEN';
+    public const RDG = 'RDG';
+    public const DVG = 'DVG';
+    public const VEC = 'VEC';
+    public const ECO = 'ECO';
+    public const DIV = 'DIV';
+    public const ANM = 'ANM';
+    public const REG = 'REG';
+    public const GJ = 'GJ';
+    public const MDM = 'MDM';
+    public const UDI = 'UDI';
+    public const AGR = 'AGR';
+    public const MR = 'MR';
+    public const DVC = 'DVC';
+    public const LR = 'LR';
+    public const DVD = 'DVD';
+    public const DLF = 'DLF';
+    public const RN = 'RN';
+    public const EXD = 'EXD';
+    public const UG = 'UG';
+    public const UC = 'UC';
+    public const UD = 'UD';
 
     public static function getChoices(): array
     {
