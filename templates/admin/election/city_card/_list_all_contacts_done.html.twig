@@ -1,0 +1,9 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.hasAllContactsDone is same as(true) %}
+        <span class="label label-success">Oui</span>
+    {% elseif object.hasAllContactsDone is same as(false) %}
+        <span class="label label-danger">Non</span>
+    {% endif %}
+{% endblock %}

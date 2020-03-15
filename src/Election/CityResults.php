@@ -24,6 +24,8 @@ class CityResults
      */
     private $votePlacesResults;
 
+    private $lists;
+
     public function __construct(
         ?MinistryVoteResult $ministryVoteResult,
         ?CityVoteResult $cityVoteResult,
@@ -82,17 +84,72 @@ class CityResults
         return new VotePlacesResult($this->votePlacesResults);
     }
 
-    public function getLists(): array
+    public function getTotals(): array
     {
         if ($this->isMinistryResult()) {
-            return $this->getMinistryLists();
+            return [
+                'registered' => $this->ministryVoteResult->getRegistered(),
+                'abstentions' => $this->ministryVoteResult->getAbstentions(),
+                'participated' => $this->ministryVoteResult->getParticipated(),
+                'expressed' => $this->ministryVoteResult->getExpressed(),
+                'updatedAt' => $this->ministryVoteResult->getUpdatedAt(),
+                'updatedBy' => $this->ministryVoteResult->getUpdatedBy(),
+            ];
         }
 
         if ($this->isCityResult()) {
-            return $this->getCityLists();
+            return [
+                'registered' => $this->cityVoteResult->getRegistered(),
+                'abstentions' => $this->cityVoteResult->getAbstentions(),
+                'participated' => $this->cityVoteResult->getParticipated(),
+                'expressed' => $this->cityVoteResult->getExpressed(),
+                'updatedAt' => $this->cityVoteResult->getUpdatedAt(),
+                'updatedBy' => $this->cityVoteResult->getUpdatedBy(),
+            ];
         }
 
-        return $this->getVotePlacesLists();
+        $registered = 0;
+        $abstentions = 0;
+        $participated = 0;
+        $expressed = 0;
+        $updatedAt = null;
+        $updatedBy = null;
+
+        foreach ($this->votePlacesResults as $votePlaceResult) {
+            $registered += $votePlaceResult->getRegistered();
+            $abstentions += $votePlaceResult->getAbstentions();
+            $participated += $votePlaceResult->getParticipated();
+            $expressed += $votePlaceResult->getExpressed();
+
+            if ($updatedAt <= $votePlaceResult->getUpdatedAt()) {
+                $updatedAt = $votePlaceResult->getUpdatedAt();
+                $updatedBy = $votePlaceResult->getUpdatedBy();
+            }
+        }
+
+        return [
+            'registered' => $registered,
+            'abstentions' => $abstentions,
+            'participated' => $participated,
+            'expressed' => $expressed,
+            'updatedAt' => $updatedAt,
+            'updatedBy' => $updatedBy,
+        ];
+    }
+
+    public function getLists(): array
+    {
+        if (null === $this->lists) {
+            if ($this->isMinistryResult()) {
+                $this->lists = $this->getMinistryLists();
+            } elseif ($this->isCityResult()) {
+                $this->lists = $this->getCityLists();
+            } else {
+                $this->lists = $this->getVotePlacesLists();
+            }
+        }
+
+        return $this->lists;
     }
 
     public function getMinistryLists(): array

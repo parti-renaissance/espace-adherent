@@ -339,4 +339,19 @@ class CityCard
     {
         $this->contacts->removeElement($contact);
     }
+
+    public function hasAllContactsDone(): ?bool
+    {
+        if ($this->contacts->isEmpty()) {
+            return null;
+        }
+
+        foreach ($this->contacts as $contact) {
+            if (!$contact->isDone()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
