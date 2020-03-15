@@ -70,6 +70,24 @@ class CityCandidate
      *
      * @Assert\Length(max=255)
      */
+    private $profile;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
+    private $investitureType;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(max=255)
+     */
     private $politicalScheme;
 
     /**
@@ -102,6 +120,8 @@ class CityCandidate
         ?string $gender = null,
         ?string $email = null,
         ?PhoneNumber $phone = null,
+        ?string $profile = null,
+        ?string $investitureType = null,
         ?string $politicalScheme = null,
         ?string $alliances = null,
         ?bool $agreement = false,
@@ -111,6 +131,8 @@ class CityCandidate
         $this->gender = $gender;
         $this->email = $email;
         $this->phone = $phone;
+        $this->profile = $profile;
+        $this->investitureType = $investitureType;
         $this->politicalScheme = $politicalScheme;
         $this->alliances = $alliances;
         $this->agreement = $agreement;
@@ -165,6 +187,26 @@ class CityCandidate
     public function setPhone(?PhoneNumber $phone): void
     {
         $this->phone = $phone;
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): void
+    {
+        $this->profile = $profile;
+    }
+
+    public function getInvestitureType(): ?string
+    {
+        return $this->investitureType;
+    }
+
+    public function setInvestitureType(?string $investitureType): void
+    {
+        $this->investitureType = $investitureType;
     }
 
     public function getPoliticalScheme(): ?string

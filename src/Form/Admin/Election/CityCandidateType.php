@@ -20,6 +20,12 @@ class CityCandidateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('investitureType', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Type investiture',
+                ],
+            ])
             ->add('name', TextType::class, [
                 'required' => false,
                 'attr' => [
@@ -46,6 +52,12 @@ class CityCandidateType extends AbstractType
                 'preferred_country_choices' => [Address::FRANCE],
                 'attr' => [
                     'placeholder' => 'Téléphone',
+                ],
+            ])
+            ->add('profile', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Profil',
                 ],
             ])
             ->add('politicalScheme', TextType::class, [

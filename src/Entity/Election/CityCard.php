@@ -56,6 +56,13 @@ class CityCard
     private $priority;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $risk;
+
+    /**
      * @var City
      *
      * @ORM\OneToOne(targetEntity=City::class)
@@ -171,11 +178,16 @@ class CityCard
      */
     private $contacts;
 
-    public function __construct(City $city = null, ?int $population = null, ?string $priority = null)
-    {
+    public function __construct(
+        City $city = null,
+        ?int $population = null,
+        ?string $priority = null,
+        ?bool $risk = false
+    ) {
         $this->city = $city;
         $this->population = $population;
         $this->priority = $priority;
+        $this->risk = $risk;
         $this->partners = new ArrayCollection();
         $this->contacts = new ArrayCollection();
     }
@@ -212,6 +224,16 @@ class CityCard
     public function setPriority(?string $priority): void
     {
         $this->priority = $priority;
+    }
+
+    public function hasRisk(): bool
+    {
+        return $this->risk;
+    }
+
+    public function setRisk(bool $risk): void
+    {
+        $this->risk = $risk;
     }
 
     public function getCity(): City
