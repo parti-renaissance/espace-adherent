@@ -8,7 +8,6 @@ use AppBundle\Form\Admin\Election\CityPrevisionType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class CityCardAdmin extends AbstractCityCardAdmin
 {
@@ -17,13 +16,6 @@ class CityCardAdmin extends AbstractCityCardAdmin
         parent::configureFormFields($form);
 
         $form
-            ->add('population', IntegerType::class, [
-                'label' => 'Population',
-                'scale' => 0,
-                'attr' => [
-                    'min' => 0,
-                ],
-            ])
             ->add('priority', ChoiceType::class, [
                 'label' => 'Priorité',
                 'required' => false,
@@ -35,9 +27,20 @@ class CityCardAdmin extends AbstractCityCardAdmin
             ->add('firstCandidate', CityCandidateType::class, [
                 'required' => false,
             ])
-            ->add('preparationPrevision', CityPrevisionType::class, [
-                'label' => 'Préparation',
+            ->add('candidateOptionPrevision', CityPrevisionType::class, [
+                'label' => 'Option candidat',
                 'required' => false,
+                'disabled' => true,
+            ])
+            ->add('preparationPrevision', CityPrevisionType::class, [
+                'label' => 'Cohérence territoriale',
+                'required' => false,
+                'disabled' => true,
+            ])
+            ->add('thirdOptionPrevision', CityPrevisionType::class, [
+                'label' => 'Troisième option',
+                'required' => false,
+                'disabled' => true,
             ])
             ->add('candidatePrevision', CityPrevisionType::class, [
                 'label' => 'Position candidat',
@@ -70,7 +73,7 @@ class CityCardAdmin extends AbstractCityCardAdmin
 
         $list
             ->add('preparationPrevision', null, [
-                'label' => 'Schéma prévu',
+                'label' => 'Cohérence territoriale',
                 'template' => 'admin/election/city_card/_list_prevision.html.twig',
             ])
             ->add('candidatePrevision', null, [
@@ -86,6 +89,11 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'virtual_field' => true,
                 'template' => 'admin/election/city_card/_list_results.html.twig',
             ])
+            ->add('allContactsDone', null, [
+                'label' => 'Personnes contactées',
+                'virtual_field' => true,
+                'template' => 'admin/election/city_card/_list_all_contacts_done.html.twig',
+            ])
             ->reorder([
                 'city.name',
                 'city.inseeCode',
@@ -96,6 +104,7 @@ class CityCardAdmin extends AbstractCityCardAdmin
                 'candidatePrevision',
                 'nationalPrevision',
                 'results',
+                'allContactsDone',
                 '_action',
             ])
         ;
@@ -108,5 +117,22 @@ class CityCardAdmin extends AbstractCityCardAdmin
         }
 
         return parent::getTemplate($name);
+    }
+
+    public function getFilterParameters()
+    {
+        if ($this->hasRequest()) {
+            if ('reset' !== $this->request->query->get('filters')) {
+                $this->datagridValues = array_merge([
+                        'priority' => [
+                            'value' => CityCard::PRIORITY_HIGH,
+                        ],
+                    ],
+                    $this->datagridValues
+                );
+            }
+        }
+
+        return parent::getFilterParameters();
     }
 }

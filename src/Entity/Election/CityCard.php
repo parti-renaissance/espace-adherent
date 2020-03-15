@@ -111,7 +111,27 @@ class CityCard
      *
      * @Assert\Valid
      */
+    private $candidateOptionPrevision;
+
+    /**
+     * @var CityPrevision|null
+     *
+     * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     *
+     * @Assert\Valid
+     */
     private $preparationPrevision;
+
+    /**
+     * @var CityPrevision|null
+     *
+     * @ORM\OneToOne(targetEntity=CityPrevision::class, cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     *
+     * @Assert\Valid
+     */
+    private $thirdOptionPrevision;
 
     /**
      * @var CityPrevision|null
@@ -259,6 +279,21 @@ class CityCard
         $this->taskForceManager = null;
     }
 
+    public function getCandidateOptionPrevision(): ?CityPrevision
+    {
+        return $this->candidateOptionPrevision;
+    }
+
+    public function setCandidateOptionPrevision(?CityPrevision $candidateOptionPrevision): void
+    {
+        $this->candidateOptionPrevision = $candidateOptionPrevision;
+    }
+
+    public function removeCandidateOptionPrevision(): void
+    {
+        $this->candidateOptionPrevision = null;
+    }
+
     public function getPreparationPrevision(): ?CityPrevision
     {
         return $this->preparationPrevision;
@@ -272,6 +307,21 @@ class CityCard
     public function removePreparationPrevision(): void
     {
         $this->preparationPrevision = null;
+    }
+
+    public function getThirdOptionPrevision(): ?CityPrevision
+    {
+        return $this->thirdOptionPrevision;
+    }
+
+    public function setThirdOptionPrevision(?CityPrevision $thirdOptionPrevision): void
+    {
+        $this->thirdOptionPrevision = $thirdOptionPrevision;
+    }
+
+    public function removeThirdOptionPrevision(): void
+    {
+        $this->thirdOptionPrevision = null;
     }
 
     public function getCandidatePrevision(): ?CityPrevision
@@ -338,5 +388,20 @@ class CityCard
     public function removeContact(CityContact $contact): void
     {
         $this->contacts->removeElement($contact);
+    }
+
+    public function hasAllContactsDone(): ?bool
+    {
+        if ($this->contacts->isEmpty()) {
+            return null;
+        }
+
+        foreach ($this->contacts as $contact) {
+            if (!$contact->isDone()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

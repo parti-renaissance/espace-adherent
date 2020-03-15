@@ -15,8 +15,8 @@
                                     <th class="sonata-ba-list-field-header-text">INSEE</th>
                                     <th class="sonata-ba-list-field-header-text">Département</th>
                                     <th class="sonata-ba-list-field-header-text">Région</th>
-                                    <th class="sonata-ba-list-field-header-text">Priorité</th>
                                     <th class="sonata-ba-list-field-header-text" width="200px">Population</th>
+                                    <th class="sonata-ba-list-field-header-text" width="200px">Priorité</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,12 +34,11 @@
                                         {{ object.city.department.region }}
                                     </td>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ form_widget(form.priority)}}
-                                        {{ form_errors(form.priority)}}
+                                        {{ object.population|number_format(0, ',', ' ') }}
                                     </td>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ form_widget(form.population)}}
-                                        {{ form_errors(form.population)}}
+                                        {{ form_widget(form.priority)}}
+                                        {{ form_errors(form.priority)}}
                                     </td>
                                 </tr>
                             </tbody>
@@ -65,85 +64,63 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4 class="box-title">Résultats</h4>
                     </div>
                     <div class="box-body">
-                                {% set results = get_aggregated_city_results(object.city) %}
+                        {% set results = get_aggregated_city_results(object.city) %}
 
-                                <ul class="nav nav-tabs" id="results-tabs" role="tablist">
-                                    <li role="presentation"{% if results.isMinistryResult %} class="active"{% endif %}>
-                                        <a href="#ministry-results" id="ministry-results-tab" role="tab" data-toggle="tab" aria-controls="ministry-results" aria-expanded="{{ results.isMinistryResult ? 'true' : 'false' }}">
-                                            Ministère
-                                        </a>
-                                    </li>
-                                    <li role="presentation"{% if results.isCityResult %} class="active"{% endif %}>
-                                        <a href="#city-results" role="tab" id="city-results-tab" data-toggle="tab" aria-controls="city-results" aria-expanded="{{ results.isCityResult ? 'true' : 'false' }}">
-                                            Ville
-                                        </a>
-                                    </li>
-                                    <li role="presentation"{% if results.isVotePlacesResults %} class="active"{% endif %}>
-                                        <a href="#vote-places-results" role="tab" id="vote-places-results-tab" data-toggle="tab" aria-controls="vote-places-results" aria-expanded="{{ results.isVotePlacesResults ? 'true' : 'false' }}">
-                                            Bureaux
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="results-tabs-content">
-                                    <div class="tab-pane fade {% if results.isMinistryResult %}active {% endif %}in table-responsive" role="tabpanel" id="ministry-results" aria-labelledby="ministry-results-tab">
-                                        {% if results.ministryVoteResult %}
-                                            {{ macros.display_results_table(results.ministryLists) }}
-                                        {% else %}
-                                            Aucun résultat remonté par le Ministère.
-                                        {% endif %}
-                                    </div>
-                                    <div class="tab-pane fade {% if results.isCityResult %}active {% endif %}in table-responsive" role="tabpanel" id="city-results" aria-labelledby="city-results-tab">
-                                        {% if results.cityVoteResult %}
-                                            {{ macros.display_results_table(results.cityLists) }}
-                                        {% else %}
-                                            Aucun résultat remonté au niveau communal.
-                                        {% endif %}
-                                    </div>
-                                    <div class="tab-pane fade {% if results.isVotePlacesResults %}active {% endif %}in table-responsive" role="tabpanel" id="vote-places-results" aria-labelledby="vote-places-results-tab">
-                                        {% if results.votePlacesResults|length > 0 %}
-                                            {{ macros.display_results_table(results.votePlacesLists) }}
-                                        {% else %}
-                                            Aucun résultat remonté pour les bureaux de vote.
-                                        {% endif %}
-                                    </div>
-                                </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h4 class="box-title">Suivi / Pilotage</h4>
-                    </div>
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-bordered table-striped sonata-ba-list">
-                            <tbody>
-                                <tr>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">Siège</td>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ macros.display_manager(object.headquartersManager) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">Politique</td>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ macros.display_manager(object.politicManager) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">Task force</td>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ macros.display_manager(object.taskForceManager) }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <ul class="nav nav-tabs" id="results-tabs" role="tablist">
+                            <li role="presentation"{% if results.isMinistryResult %} class="active"{% endif %}>
+                                <a href="#ministry-results" id="ministry-results-tab" role="tab" data-toggle="tab" aria-controls="ministry-results" aria-expanded="{{ results.isMinistryResult ? 'true' : 'false' }}">
+                                    Ministère
+                                </a>
+                            </li>
+                            <li role="presentation"{% if results.isCityResult %} class="active"{% endif %}>
+                                <a href="#city-results" role="tab" id="city-results-tab" data-toggle="tab" aria-controls="city-results" aria-expanded="{{ results.isCityResult ? 'true' : 'false' }}">
+                                    Ville
+                                </a>
+                            </li>
+                            <li role="presentation"{% if results.isVotePlacesResults %} class="active"{% endif %}>
+                                <a href="#vote-places-results" role="tab" id="vote-places-results-tab" data-toggle="tab" aria-controls="vote-places-results" aria-expanded="{{ results.isVotePlacesResults ? 'true' : 'false' }}">
+                                    Bureaux
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="results-tabs-content">
+                            <div class="tab-pane fade {% if results.isMinistryResult %}active {% endif %}in table-responsive" role="tabpanel" id="ministry-results" aria-labelledby="ministry-results-tab">
+                                {% if results.ministryVoteResult %}
+                                    {{ macros.display_results_lists(results.ministryLists) }}
+                                    {{ macros.display_results_totals(results.totals) }}
+                                {% else %}
+                                    <p class="text-center">
+                                        <b>Aucun résultat remonté par le Ministère</b>
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade {% if results.isCityResult %}active {% endif %}in table-responsive" role="tabpanel" id="city-results" aria-labelledby="city-results-tab">
+                                {% if results.cityVoteResult %}
+                                    {{ macros.display_results_lists(results.cityLists) }}
+                                    {{ macros.display_results_totals(results.totals) }}
+                                {% else %}
+                                    <p class="text-center">
+                                        <b>Aucun résultat remonté au niveau communal</b>
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade {% if results.isVotePlacesResults %}active {% endif %}in table-responsive" role="tabpanel" id="vote-places-results" aria-labelledby="vote-places-results-tab">
+                                {% if results.votePlacesResults|length > 0 %}
+                                    {{ macros.display_results_lists(results.votePlacesLists) }}
+                                    {{ macros.display_results_totals(results.totals) }}
+                                {% else %}
+                                    <p class="text-center">
+                                        <b>Aucun résultat remonté pour les bureaux de vote</b>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,7 +145,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{ form_row(form.candidateOptionPrevision) }}
                                 {{ form_row(form.preparationPrevision) }}
+                                {{ form_row(form.thirdOptionPrevision) }}
                                 {{ form_row(form.candidatePrevision) }}
                                 {{ form_row(form.nationalPrevision) }}
                             </tbody>
@@ -178,7 +157,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4 class="box-title">Partenaires</h4>
@@ -188,7 +167,48 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">
+                            Suivi / Pilotage
+                        </h4>
+
+                        {% if is_granted('ROLE_ADMIN_ELECTION_CITY_CARD_MANAGERS') %}
+                            <a href="{{ path('admin_app_election_citycard_managers_edit', { id: object.id }) }}" target="_blank">
+                                <span class="fa fa-external-link"></span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">Siège</td>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ macros.display_manager(object.headquartersManager) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">Politique</td>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ macros.display_manager(object.politicManager) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">Task force</td>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ macros.display_manager(object.taskForceManager) }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4 class="box-title">Personnes à contacter</h4>
@@ -208,6 +228,10 @@
     <style type="text/css">
         .sonata-collection-row-without-label .field-container span:nth-child(2) .sonata-ba-action {
             margin-left: 10px;
+        }
+
+        #results-tabs-content {
+            padding-top: 20px;
         }
     </style>
 {% endblock %}
@@ -235,33 +259,97 @@
     {% endif %}
 {% endmacro %}
 
-{% macro display_results_table(lists) %}
-    <table class="table table-bordered table-striped sonata-ba-list">
-        <thead>
-        <tr class="sonata-ba-list-field-header">
-            <th class="sonata-ba-list-field-header-text">#</th>
-            <th class="sonata-ba-list-field-header-text">Liste</th>
-            <th class="sonata-ba-list-field-header-text">Nuance</th>
-            <th class="sonata-ba-list-field-header-text">Résultat</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for index,list in lists %}
-            <tr>
-                <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                    {{ index + 1 }}
-                </td>
-                <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                    {{ list.name }}
-                </td>
-                <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                    {{ list.nuance }}
-                </td>
-                <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                    <b>{{ list.percent }}%</b> ({{ list.total }})
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% macro display_results_lists(lists) %}
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped sonata-ba-list">
+                <thead>
+                    <tr class="sonata-ba-list-field-header">
+                        <th class="sonata-ba-list-field-header-text">#</th>
+                        <th class="sonata-ba-list-field-header-text">Liste</th>
+                        <th class="sonata-ba-list-field-header-text">Nuance</th>
+                        <th class="sonata-ba-list-field-header-text">Résultat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index,list in lists %}
+                        <tr class="{{ 10 <= list.percent ? 'success' : 5 < list.percent ? 'warning' : 'danger' }}">
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {{ index + 1 }}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {{ list.name }}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {{ list.nuance }}
+                            </td>
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                <b>{{ list.percent }}%</b> ({{ list.total }})
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="sonata-ba-list-field sonata-ba-list-field-text text-center">
+                                <b>Aucun résultat de liste remonté</b>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro display_results_totals(totals) %}
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-bordered table-striped sonata-ba-list">
+                <tbody>
+                    <tr>
+                        <th class="sonata-ba-list-field-header-text">Inscrits</th>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ totals.registered }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="sonata-ba-list-field-header-text">Abstentions</th>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ totals.abstentions }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="sonata-ba-list-field-header-text">Participations</th>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ totals.participated }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="sonata-ba-list-field-header-text">Exprimés</th>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ totals.expressed }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-bordered table-striped sonata-ba-list">
+                <tbody>
+                    <tr>
+                        <th class="sonata-ba-list-field-header-text">Dernière remontée</th>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            le {{ totals.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}
+                            {% if totals.updatedBy is instanceof('AppBundle\\Entity\\Adherent') %}
+                                <br/>par
+                                <a href="{{ path('admin_app_adherent_edit', { id: totals.updatedBy.id }) }}" target="_blank">
+                                    {{ totals.updatedBy.fullName }}
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endmacro %}
