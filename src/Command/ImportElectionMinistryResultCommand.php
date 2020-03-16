@@ -36,7 +36,6 @@ class ImportElectionMinistryResultCommand extends Command
     private $entityManager;
 
     private $errors = [];
-    /** @var Adherent */
     private $author;
 
     /** @required */
@@ -65,33 +64,40 @@ class ImportElectionMinistryResultCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->httpClient = HttpClient::create();
+        $this->httpClient = HttpClient::create(['timeout' => 3600]);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->author = $this->entityManager->getPartialReference(Adherent::class, $input->getArgument('author-id'));
-
+        $this->author = (int) $input->getArgument('author-id');
         $response = $this->httpClient->request('GET', self::INDEX_URL);
 
         $service = new Service();
         $dpts = $service->parse($response->getContent());
 
-        $responses = [];
-
         $this->io->progressStart(\count($dpts[1]['value']));
 
         foreach ($dpts[1]['value'] as $dpt) {
-            $code = $this->getDptCode($dpt['value']);
-            $responses[] = $this->httpClient->request('GET', sprintf(self::CITY_INDEX_URL, $code, $code));
-        }
+            $code = $this->getValueData('CodDpt3Car', $dpt['value'])['value'];
 
-        foreach ($responses as $response) {
+            $isSuccess = false;
+            while (false === $isSuccess) {
+                try {
+                    $response = $this->httpClient->request('GET', sprintf(self::CITY_INDEX_URL, $code, $code));
+                    $response->getContent();
+                    $isSuccess = true;
+                } catch (\Exception $e) {
+                    $this->io->warning($e->getMessage());
+                }
+            }
+
             $cities = $service->parse($response->getContent());
 
             foreach ($cities[1]['value'][4]['value'] as $cityAttr) {
                 $this->updateResult($cities[1]['value'][0]['value'], $cityAttr);
             }
+            $this->entityManager->flush();
+            $this->entityManager->clear();
 
             $this->io->progressAdvance();
         }
@@ -102,22 +108,21 @@ class ImportElectionMinistryResultCommand extends Command
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
     }
 
-    private function getDptCode(array $dptAttr): string
-    {
-        foreach ($dptAttr as $attr) {
-            if ('{}CodDpt3Car' === $attr['name']) {
-                return $attr['value'];
-            }
-        }
-
-        throw new \RuntimeException('Dpt code not found');
-    }
-
     private function updateResult(string $dptCode, array $cityAttr): void
     {
         $cityCode = $cityAttr['value'][0]['value'];
         $cityName = $cityAttr['value'][1]['value'];
         $inseeCode = $dptCode.$cityCode;
+
+        if (false !== strpos($inseeCode, 'SR')) {
+            if (false !== strpos($inseeCode, '69123SR')) {
+                $inseeCode = 69380 + substr($inseeCode, -2);
+            } elseif (false !== strpos($inseeCode, '75056SR')) {
+                $inseeCode = 75100 + substr($inseeCode, -2);
+            } elseif (false !== strpos($inseeCode, '13055SR')) {
+                $inseeCode = 13200 + substr($inseeCode, -2);
+            }
+        }
 
         $city = $this->cityRepository->findByInseeCode($inseeCode);
 
@@ -194,9 +199,7 @@ class ImportElectionMinistryResultCommand extends Command
         }
 
         $voteResult->setUpdatedAt(new \DateTime());
-        $voteResult->setUpdatedBy($this->author);
-
-        $this->entityManager->flush();
+        $voteResult->setUpdatedBy($this->entityManager->getReference(Adherent::class, $this->author));
     }
 
     private function getValueData(string $key, $rows): ?array
