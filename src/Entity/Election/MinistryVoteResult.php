@@ -86,4 +86,15 @@ class MinistryVoteResult extends BaseVoteResult
     {
         $this->listTotalResults->removeElement($result);
     }
+
+    public function findListWithLabel(string $label): ?MinistryListTotalResult
+    {
+        foreach ($this->listTotalResults as $list) {
+            if ($list->getLabel() === $label) {
+                return $list;
+            }
+        }
+
+        return null;
+    }
 }
