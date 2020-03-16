@@ -348,6 +348,7 @@
         <service id="AppBundle\Command\InitializeEmailSubscriptionHistoryCommand"/>
         <service id="AppBundle\Command\ImportDistrictsCommand"/>
         <service id="AppBundle\Command\ImportElectedRepresentativesRegisterCommand"/>
+        <service id="AppBundle\Command\RestructureElectedRepresentativesRegisterCommand"/>
         <service id="AppBundle\Command\UnregisterAdherentsCommand"/>
         <service id="AppBundle\Command\UpdateDistrictGeoPolygonCommand"/>
         <service id="AppBundle\Command\ImportConsularDistrictCommand"/>
