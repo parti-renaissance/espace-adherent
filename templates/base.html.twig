@@ -187,6 +187,8 @@
 
         {% block final_javascripts '' %}
 
-        {% block chatbot_javascripts include('bot/_javascript.html.twig') %}
+        {% if not app.debug %}
+            {% block chatbot_javascripts include('bot/_javascript.html.twig') %}
+        {% endif %}
     </body>
 </html>
