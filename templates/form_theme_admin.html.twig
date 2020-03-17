@@ -124,14 +124,15 @@
     <div class="row">
         <div class="col-xs-11 col-xs-offset-1">
             <div class="row bg-primary">
-                <div class="col-md-2">Type</div>
+                <div class="col-width4">#</div>
+                <div class="col-width15">Type</div>
                 <div class="col-md-1">Nuance politique</div>
-                <div class="col-width4">Élu(e)</div>
+                <div class="col-md-1">Élu(e)</div>
                 <div class="col-md-2">Soutien LaREM</div>
                 <div class="col-width4">En cours</div>
-                <div class="col-md-2">Date de début de mandat</div>
-                <div class="col-md-2">Date de fin de mandat</div>
-                <div class="col-md-2">Périmètre géographique</div>
+                <div class="col-width15">Date de début de mandat</div>
+                <div class="col-width15">Date de fin de mandat</div>
+                <div class="col-width12">Périmètre géographique</div>
             </div>
         </div>
     </div>
@@ -142,7 +143,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $("div.mandates-collection").on('ifToggled', "input[id$='_isElected'], input[id$='_onGoing']", function() {
+            $("div.mandates-collection").on('ifToggled change', "select[id$='_isElected'], input[id$='_onGoing']", function() {
                 var elementId = $(this).attr('id');
                 if (elementId.includes('_isElected')) {
                     var id = elementId.substr(0, elementId.indexOf('_isElected'));
@@ -155,16 +156,16 @@
                 }
                 id = id.substr(id.length - 1);
 
-                if (isElected.is(':checked') && !onGoing.is(':checked')) {
+                if ('1' === isElected.val() && !onGoing.is(':checked')) {
                     $(this).parents('.row.mandate').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', false);
                 } else {
                     $(this).parents('.row.mandate').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', true);
                 }
             });
 
-            $("div.icheckbox_square-blue input[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+            $("select[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled change');
             $('div.mandates-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
-                $("div.icheckbox_square-blue input[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
+                $("select[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled change');
             });
         });
     </script>
@@ -172,13 +173,16 @@
 
 {% block app_admin_elected_representative_mandate_mandates_mandates_entry_widget -%}
     <div class="row mandate" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-2{{ not form.type.vars.valid ? ' error' }}">
+        <div class="col-width4 text--bold" style="margin-right: -15px; margin-left: 15px;">
+            {{ form.number.vars.value }}
+        </div>
+        <div class="col-width15{{ not form.type.vars.valid ? ' error' }}">
             {{ form_row(form.type) }}
         </div>
         <div class="col-md-1{{ not form.politicalAffiliation.vars.valid ? ' error' }}">
             {{ form_row(form.politicalAffiliation) }}
         </div>
-        <div class="col-width4{{ not form.isElected.vars.valid ? ' error' }}">
+        <div class="col-md-1{{ not form.isElected.vars.valid ? ' error' }}">
             {{ form_row(form.isElected) }}
         </div>
         <div class="col-md-2{{ not form.laREMSupport.vars.valid ? ' error' }}">
@@ -187,13 +191,13 @@
         <div class="col-width4{{ not form.onGoing.vars.valid ? ' error' }}">
             {{ form_row(form.onGoing) }}
         </div>
-        <div class="col-md-2{{ not form.beginAt.vars.valid ? ' error' }}">
+        <div class="col-width15{{ not form.beginAt.vars.valid ? ' error' }}">
             {{ form_row(form.beginAt) }}
         </div>
-        <div class="col-md-2{{ not form.finishAt.vars.valid ? ' error' }}">
+        <div class="col-width15{{ not form.finishAt.vars.valid ? ' error' }}">
             {{ form_row(form.finishAt) }}
         </div>
-        <div class="col-md-2{{ not form.geographicalArea.vars.valid ? ' error' }}">
+        <div class="col-width12{{ not form.geographicalArea.vars.valid ? ' error' }}">
             {{ form_row(form.geographicalArea) }}
         </div>
     </div>
@@ -203,8 +207,9 @@
     <div class="row">
         <div class="col-xs-11 col-xs-offset-1">
             <div class="row bg-primary">
+                <div class="col-md-1">Mandat</div>
                 <div class="col-md-2">Nom</div>
-                <div class="col-md-3">Précision</div>
+                <div class="col-md-2">Précision</div>
                 <div class="col-md-2">Périmètre géographique</div>
                 <div class="col-md-1">En cours</div>
                 <div class="col-md-2">Date de début de mandat</div>
@@ -241,14 +246,17 @@
 
 {% block app_admin_elected_representative_political_function_politicalFunctions_politicalFunctions_entry_widget -%}
     <div class="row political-function" style="margin-top: 10px; margin-left: -30px;">
+        <div class="col-md-1{{ not form.mandate.vars.valid ? ' error' }}">
+            {{ form_row(form.mandate) }}
+        </div>
         <div class="col-md-2{{ not form.name.vars.valid ? ' error' }}">
             {{ form_row(form.name) }}
         </div>
-        <div class="col-md-3{{ not form.clarification.vars.valid ? ' error' }}">
+        <div class="col-md-2{{ not form.clarification.vars.valid ? ' error' }}">
             {{ form_row(form.clarification) }}
         </div>
-        <div class="col-md-2{{ not form.geographicalArea.vars.valid ? ' error' }}">
-            {{ form_row(form.geographicalArea) }}
+        <div class="col-md-2{{ not form.mandateGeographicalArea.vars.valid ? ' error' }}">
+            {{ form_row(form.mandateGeographicalArea) }}
         </div>
         <div class="col-md-1{{ not form.onGoing.vars.valid ? ' error' }}">
             {{ form_row(form.onGoing) }}

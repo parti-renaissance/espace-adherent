@@ -170,9 +170,9 @@ class ElectedRepresentative
      *     targetEntity="AppBundle\Entity\ElectedRepresentative\Mandate",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EAGER"
+     *     orphanRemoval=true
      * )
+     * @ORM\OrderBy({"number": "ASC"})
      *
      * @Assert\Valid
      */
