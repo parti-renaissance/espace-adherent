@@ -11,9 +11,10 @@ use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use AppBundle\Entity\PoliticalLabel;
 use AppBundle\Form\AdherentEmailType;
 use AppBundle\Form\ElectedRepresentative\ElectedRepresentativeLabelType;
+use AppBundle\Form\ElectedRepresentative\MandateType;
+use AppBundle\Form\ElectedRepresentative\PoliticalFunctionType;
+use AppBundle\Form\ElectedRepresentative\SponsorshipType;
 use AppBundle\Form\GenderType;
-use AppBundle\Form\MandateType;
-use AppBundle\Form\PoliticalFunctionType;
 use AppBundle\Form\SocialNetworkLinkType;
 use AppBundle\Repository\PoliticalLabelRepository;
 use Doctrine\ORM\Query\Expr;
@@ -225,6 +226,19 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'error_bubbling' => false,
+                ])
+            ->end()
+            ->with(
+                'Parrainages',
+                [
+                    'class' => 'col-md-6',
+                ]
+            )
+                ->add('sponsorships', CollectionType::class, [
+                    'entry_type' => SponsorshipType::class,
+                    'label' => false,
+                    'by_reference' => false,
                 ])
             ->end()
             ->with('Mandats')
@@ -234,6 +248,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'error_bubbling' => false,
                 ])
             ->end()
             ->with('Fonctions')
@@ -243,6 +258,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'error_bubbling' => false,
                 ])
             ->end()
             ->with('Étiquettes')
@@ -252,6 +268,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'error_bubbling' => false,
                 ])
             ->end()
         ;
