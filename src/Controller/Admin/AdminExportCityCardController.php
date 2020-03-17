@@ -26,6 +26,14 @@ class AdminExportCityCardController extends Controller
         VoteListNuanceEnum::VEC,
     ];
 
+    private const NUANCES_CENTER = [
+        VoteListNuanceEnum::REM,
+        VoteListNuanceEnum::MDM,
+        VoteListNuanceEnum::UDI,
+        VoteListNuanceEnum::UC,
+        VoteListNuanceEnum::DVC,
+    ];
+
     private $aggregator;
     private $exporter;
     private $admin;
@@ -58,6 +66,9 @@ class AdminExportCityCardController extends Controller
                 $lessThan5Percent = 0;
                 $laremPositions = [];
                 $hasWinningList = false;
+                $centerLessThan5Percent = null;
+                $centerBetween5and10Percent = null;
+                $centerMoreThan10Percent = null;
 
                 foreach ($results->getLists() as $list) {
                     if (10 <= $list['percent']) {
@@ -77,6 +88,19 @@ class AdminExportCityCardController extends Controller
                     if (VoteListNuanceEnum::REM === $list['nuance']) {
                         $laremPositions[] = $list['place'];
                     }
+
+                    if (\in_array($list['nuance'], self::NUANCES_CENTER, true)) {
+                        if (10 <= $list['percent']) {
+                            $centerMoreThan10Percent = true;
+                            $centerBetween5and10Percent = false;
+                            $centerLessThan5Percent = false;
+                        } elseif (!$centerMoreThan10Percent && 5 <= $list['percent'] && 10 > $list['percent']) {
+                            $centerBetween5and10Percent = true;
+                            $centerLessThan5Percent = false;
+                        } elseif (!$centerMoreThan10Percent && !$centerBetween5and10Percent) {
+                            $centerLessThan5Percent = true;
+                        }
+                    }
                 }
 
                 $row = [
@@ -90,6 +114,9 @@ class AdminExportCityCardController extends Controller
                     'Nb listes inf 5%' => $lessThan5Percent,
                     'Position LaREM' => implode($laremPositions, ', '),
                     'Liste >50%' => $hasWinningList ? 'Oui' : 'Non',
+                    'Centre <5%' => $centerLessThan5Percent ? 'Oui' : 'Non',
+                    'Centre entre 5% (inclus) et 10% (exclus)' => $centerBetween5and10Percent ? 'Oui' : 'Non',
+                    'Centre >= 10%' => $centerMoreThan10Percent ? 'Oui' : 'Non',
                 ];
 
                 foreach (self::NUANCES_TO_EXPORT as $nuance) {
