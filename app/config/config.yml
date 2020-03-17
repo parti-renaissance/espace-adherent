@@ -35,10 +35,10 @@ parameters:
     image_max_length:                     450px
     webhook.email_subscriptions_secret:   "%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%"
     sonata.exporter.writer.csv.with_bom:  true
-    adherent_message_referent_limit: 10
-    adherent_message_committee_limit: 10
-    adherent_message_deputy_limit: 5
-    adherent_message_senator_limit: 5
+    adherent_message_referent_limit: 1000
+    adherent_message_committee_limit: 1000
+    adherent_message_deputy_limit: 1000
+    adherent_message_senator_limit: 1000
 
 framework:
     translator:      { fallbacks: ["%locale%"], paths: ["%kernel.project_dir%/translations"] }
