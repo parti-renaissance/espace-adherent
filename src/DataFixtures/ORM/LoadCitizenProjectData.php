@@ -7,12 +7,11 @@ use AppBundle\DataFixtures\AutoIncrementResetter;
 use AppBundle\Entity\NullablePostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadCitizenProjectData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadCitizenProjectData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     public const CITIZEN_PROJECT_1_UUID = 'aa364092-3999-4102-930c-f711ef971195';
     public const CITIZEN_PROJECT_2_UUID = '552934ed-2ac6-4a3a-a490-ddc8bf959444';

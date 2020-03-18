@@ -2,11 +2,11 @@
 
 namespace AppBundle\Twig;
 
-use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeRuntime
@@ -86,15 +86,9 @@ class CommitteeRuntime
         return '';
     }
 
-    public function getVotingCommitteeName(CommitteeMembershipCollection $memberships): ?string
+    public function getCommitteeCandidacyMembership(Adherent $adherent): ?CommitteeMembership
     {
-        foreach ($memberships as $membership) {
-            if ($membership->isVotingCommittee()) {
-                return $membership->getCommittee()->getName();
-            }
-        }
-
-        return null;
+        return $adherent->getMemberships()->getCommitteeCandidacyMembership();
     }
 
     public function isCandidate(Adherent $adherent, Committee $committee): bool
@@ -102,16 +96,5 @@ class CommitteeRuntime
         $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
 
         return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy();
-    }
-
-    public function getCandidacyCommitteeName(CommitteeMembershipCollection $memberships): ?string
-    {
-        foreach ($memberships as $membership) {
-            if ($membership->getCommitteeCandidacy()) {
-                return $membership->getCommittee()->getName();
-            }
-        }
-
-        return null;
     }
 }

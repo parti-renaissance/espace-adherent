@@ -4,10 +4,9 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ApplicationRequest\ApplicationRequestTag;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadApplicationRequestTagData extends AbstractFixture implements FixtureInterface
+class LoadApplicationRequestTagData extends AbstractFixture
 {
     private const TAGS = ['Tag 1', 'Tag 2', 'Tag 3', 'Tag 4'];
 

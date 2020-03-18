@@ -204,15 +204,18 @@ class CommitteeManager
         return $this->getMembershipRepository()->findMembership($adherent, $committee);
     }
 
-    public function getCommitteeMembershipsForAdherent(Adherent $adherent): ?CommitteeMembershipCollection
+    /**
+     * @return CommitteeMembership[]
+     */
+    public function getCommitteeMembershipsForAdherent(Adherent $adherent): array
     {
         // Optimization to prevent a SQL query if the current adherent already
         // has a loaded list of related committee memberships entities.
         if ($adherent->hasLoadedMemberships()) {
-            return $adherent->getMemberships();
+            return $adherent->getMemberships()->getMembershipsForApprovedCommittees();
         }
 
-        return $this->getMembershipRepository()->findMemberships($adherent);
+        return $this->getMembershipRepository()->findMemberships($adherent)->getMembershipsForApprovedCommittees();
     }
 
     /**
@@ -381,38 +384,30 @@ class CommitteeManager
     /**
      * Makes an adherent vote in one committee.
      */
-    public function enableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    public function enableVoteInMembership(CommitteeMembership $membership, Adherent $adherent): void
     {
-        if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
-            if ($existingMembership = $this->getMembershipRepository()->findVotingMembership($adherent)) {
-                $this->disableVoteInCommittee($adherent, $existingMembership->getCommittee());
-            }
-            $membership->enableVote();
-
-            $this->getManager()->flush();
+        if ($existingVotingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
+            $this->disableVoteInMembership($existingVotingMembership);
         }
 
-        return $membership;
+        $membership->enableVote();
+        $this->getManager()->flush();
     }
 
     /**
      * Makes an adherent cease voting in one committee.
      */
-    public function disableVoteInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    public function disableVoteInMembership(CommitteeMembership $membership): void
     {
-        if ($membership = $this->getCommitteeMembership($adherent, $committee)) {
-            if ($membership->getCommitteeCandidacy()) {
-                throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $committee->getName);
-            }
-            $membership->disableVote();
-
-            $this->getManager()->flush();
+        if ($membership->getCommitteeCandidacy()) {
+            throw CommitteeMembershipException::createRunningCommitteeCandidacyException($membership->getUuid(), $committee->getName);
         }
 
-        return $membership;
+        $membership->disableVote();
+        $this->getManager()->flush();
     }
 
-    public function candidateInCommittee(Adherent $adherent, Committee $committee): ?CommitteeMembership
+    public function candidateInCommittee(Adherent $adherent, Committee $committee): void
     {
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
@@ -422,11 +417,9 @@ class CommitteeManager
 
             $this->getManager()->flush();
         }
-
-        return $membership;
     }
 
-    public function removeCandidacy(Adherent $adherent, Committee $committee)
+    public function removeCandidacy(Adherent $adherent, Committee $committee): void
     {
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
@@ -435,8 +428,6 @@ class CommitteeManager
 
             $this->getManager()->flush();
         }
-
-        return $membership;
     }
 
     private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void

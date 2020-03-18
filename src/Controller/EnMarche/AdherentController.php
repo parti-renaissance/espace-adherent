@@ -212,7 +212,7 @@ class AdherentController extends Controller
     {
         $this->disableInProduction();
 
-        return $this->render('adherent/committees.html.twig', [
+        return $this->render('adherent/my_activity_committees.html.twig', [
             'committeeMemberships' => $manager->getCommitteeMembershipsForAdherent($adherent),
         ]);
     }
@@ -230,7 +230,7 @@ class AdherentController extends Controller
             throw new BadRequestHttpException('Invalid request parameters.', $e);
         }
 
-        return $this->render('adherent/events.html.twig', [
+        return $this->render('adherent/my_activity_events.html.twig', [
             'registrations' => $registration,
         ]);
     }

@@ -104,4 +104,26 @@ class CommitteeMembershipCollection extends ArrayCollection
             }
         }
     }
+
+    public function getVotingCommitteeMembership(): ?CommitteeMembership
+    {
+        foreach ($this as $membership) {
+            if ($membership->isVotingCommittee()) {
+                return $membership;
+            }
+        }
+
+        return null;
+    }
+
+    public function getCommitteeCandidacyMembership(): ?CommitteeMembership
+    {
+        foreach ($this as $membership) {
+            if ($membership->getCommitteeCandidacy()) {
+                return $membership;
+            }
+        }
+
+        return null;
+    }
 }

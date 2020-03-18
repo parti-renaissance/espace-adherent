@@ -8,7 +8,6 @@ use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Exception\CommitteeMembershipException;
 use AppBundle\Form\CommitteeFeedItemMessageType;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -17,8 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/comites/{slug}")
@@ -179,55 +178,51 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/voter", name="app_committee_vote", condition="request.request.has('token')", methods={"POST"})
+     * @Route("/voter", defaults={"enable": true}, name="app_committee_vote", condition="request.isXmlHttpRequest()", methods={"POST"})
+     * @Route("/ne-plus-voter", defaults={"enable": false}, name="app_committee_unvote", condition="request.isXmlHttpRequest()", methods={"POST"})
+     *
+     * @Security("is_granted('VOTE_COMMITTEE', committee)")
+     *
+     * @param Adherent $adherent
      */
-    public function voteAction(Request $request, Committee $committee, CommitteeManager $manager): Response
-    {
+    public function toggleCommitteeVoteAction(
+        bool $enable,
+        UserInterface $adherent,
+        Request $request,
+        Committee $committee,
+        CommitteeManager $manager
+    ): Response {
         $this->disableInProduction();
 
         if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to vote committee.');
+            return $this->json([
+                'status' => 'NOK',
+                'error' => 'Requête invalide',
+            ], Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-            $membership = $manager->enableVoteInCommittee($this->getUser(), $committee);
-        } catch (CommitteeMembershipException $e) {
-            return JsonResponse::create($e->getMessage(), JsonResponse::HTTP_BAD_REQUEST);
+        if ($adherent->getMemberships()->getCommitteeCandidacyMembership()) {
+            return $this->json([
+                'status' => 'NOK',
+                'error' => 'Vous devez retirer votre candidature pour pouvoir changer de comité de vote.',
+            ], Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$membership) {
-            throw $this->createNotFoundException("Vous n'êtes pas membre de ce comité.");
+        $membership = $adherent->getMembershipFor($committee);
+
+        if ($enable) {
+            $manager->enableVoteInMembership($membership, $adherent);
+        } else {
+            $manager->disableVoteInMembership($membership);
         }
 
-        return new JsonResponse('OK', 200);
-    }
-
-    /**
-     * @Route("/ne-plus-voter", name="app_committee_unvote", condition="request.request.has('token')", methods={"POST"})
-     */
-    public function unvoteAction(Request $request, Committee $committee, CommitteeManager $manager): Response
-    {
-        $this->disableInProduction();
-
-        if (!$this->isCsrfTokenValid('committee.vote', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to vote committee.');
-        }
-
-        try {
-            $membership = $manager->disableVoteInCommittee($this->getUser(), $committee);
-        } catch (CommitteeMembershipException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if (!$membership) {
-            throw $this->createNotFoundException("Vous n'êtes pas membre de ce comité.");
-        }
-
-        return new JsonResponse('OK', 200);
+        return $this->json(['status' => 'OK'], Response::HTTP_OK);
     }
 
     /**
      * @Route("/candidater", name="app_committee_candidate", condition="request.request.has('token')", methods={"POST"})
+     *
+     * @Security("is_granted('VOTE_COMMITTEE', committee)")
      */
     public function candidateAction(Request $request, Committee $committee, CommitteeManager $manager): Response
     {
@@ -237,31 +232,29 @@ class CommitteeController extends Controller
             throw $this->createAccessDeniedException('Invalid CSRF protection token to candidate in committee.');
         }
 
-        $membership = $manager->candidateInCommittee($this->getUser(), $committee);
-        if (!$membership) {
-            throw $this->createNotFoundException('Vous ne votez pas dans ce comité.');
-        }
+        $manager->candidateInCommittee($this->getUser(), $committee);
 
         return new JsonResponse('OK', 200);
     }
 
     /**
-     * @Route("/retirer-sa-candidature", name="app_committee_remove_candidacy", condition="request.request.has('token')", methods={"POST"})
+     * @Route("/retirer-sa-candidature", name="app_committee_remove_candidacy", methods={"GET"})
+     *
+     * @Security("is_granted('VOTE_COMMITTEE', committee)")
      */
     public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
     {
         $this->disableInProduction();
 
-        if (!$this->isCsrfTokenValid('committee.uncandidate', $request->request->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to candidate in committee.');
+        $manager->removeCandidacy($this->getUser(), $committee);
+
+        $this->addFlash('info', 'Votre candidature a bien été supprimée');
+
+        if ($request->query->has('back')) {
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
 
-        $membership = $manager->removeCandidacy($this->getUser(), $committee);
-        if (!$membership) {
-            throw $this->createNotFoundException('Vous ne votez pas dans ce comité.');
-        }
-
-        return new JsonResponse('OK', 200);
+        return $this->redirectToRoute('app_adherent_committees');
     }
 
     /**

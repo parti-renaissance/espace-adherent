@@ -531,48 +531,62 @@ ul.em-form__autocomplete.ui-autocomplete {
     &__wrapper {
         display: inline-flex;
         align-items: center;
-        font-size: 0;
-    }
 
-    &__toggle {
-        position: relative;
-        display: inline-block;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 44px;
-        height: 22px;
-        line-height: 20px;
-        padding: 0;
-        vertical-align: middle;
-        border-radius: 20px 20px;
-        border: none;
-        outline: 0;
-        background-color: $gray--light;
-        cursor: pointer;
-        -webkit-transition: all .3s cubic-bezier(.35,0,.25,1);
-        -o-transition: all .3s cubic-bezier(.35,0,.25,1);
-        transition: all .3s cubic-bezier(.35,0,.25,1);
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
 
-        &:after {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            left: 2px;
-            top: 2px;
-            border-radius: 50% 50%;
-            background-color: #a3a8ae;
-            content: " ";
-            -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-        }
+            & input {
+                opacity: 0;
+                width: 0;
+                height: 0;
 
-        &.checked {
-            background-color: $blue--dark;
+                &:checked + .slider {
+                    background-color: $blue--dark;
 
-            &:after {
-                background-color: #fff;
-                right: 2px;
-                left: auto;
+                    &:before {
+                        -webkit-transform: translateX(22px);
+                        -ms-transform: translateX(22px);
+                        transform: translateX(22px);
+                        background-color: #fff;
+                    }
+                }
+
+                &:disabled + .slider {
+                    cursor: not-allowed;
+                }
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: $gray--light;
+                -webkit-transition: all .4s cubic-bezier(.35,0,.25,1);
+                -o-transition: all .4s cubic-bezier(.35,0,.25,1);
+                transition: all .4s cubic-bezier(.35,0,.25,1);
+                border-radius: 34px;
+
+                &:before {
+                    border-radius: 50%;
+                    position: absolute;
+                    content: "";
+                    height: 18px;
+                    width: 18px;
+                    left: 2px;
+                    bottom: 2px;
+                    background-color: #a3a8ae;
+                    -webkit-transition: all .4s cubic-bezier(.35,0,.25,1);
+                    -o-transition: all .4s cubic-bezier(.35,0,.25,1);
+                    transition: all .4s cubic-bezier(.35,0,.25,1);
+                    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+                }
             }
         }
     }
@@ -583,16 +597,5 @@ ul.em-form__autocomplete.ui-autocomplete {
         font-size: 16px;
         margin-left: 15px;
         line-height: 30px;
-    }
-
-    &__wrapper.disabled {
-
-        .em-switch__toggle {
-            cursor: not-allowed;
-        }
-
-        .em-switch__label {
-            color: $neutral-grey;
-        }
     }
 }
