@@ -23,102 +23,104 @@
 
     <div class="datagrid">
         <div class="b__nudge--bottom-larger">
-            <table class="datagrid__table-manager">
-                <thead>
-                    <tr>
-                        {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
+            <div class="datagrid__table-container">
+                <table class="datagrid__table-manager">
+                    <thead>
+                        <tr>
+                            {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
 
-                        <th style="width: 100px;">
-                            <a
-                                href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
-                                class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
-                            >
-                                Identité
-                            </a>
-                        </th>
-                        <th style="width: 100px;">Rôle</th>
-                        <th style="width: 100px;">Téléphone</th>
-                        <th style="width: 100px;">SMS/MMS</th>
-                        <th style="width: 100px;">Commune</th>
-                        <th style="width: 100px;">Comité</th>
-                        <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
-                            <a
-                                href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'createdAt', order: order})}) }}"
-                                class="sort-link sort-link--order-{{ filter.sort == 'createdAt' ? filter.order : 'a' }}"
-                            >
-                                Adhésion le
-                            </a>
-                        </th>
-                        <th style="width: 100px;">{{ 'common.adherent.status_email'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for user in users %}
-                    <tr class="referent__item referent__item--{{ user.styleType }}">
-                        <td class="adherent-identity">
-                            <div class="adherent-name">
-                                {{ user.lastName }} {{ user.firstName }}
-                            </div>
-                            <div class="adherent-caracs">
-                                {% if user.gender %}
-                                {% if 'male' == user.gender %}
-                                    {{ 'common.gender.man'|trans }}
-                                {% else %}
-                                    {{ 'common.gender.woman'|trans }}
-                                {% endif %}
-                            {% else %}
-                                ~
-                                {% endif %},
-                                {{ user.age ? user.age ~ ' ans' : '~'}}
-                            </div>
-                        </td>
-                        <td>
-                            {{ user.getUserRoleLabels('<br />')|raw }}
-                        </td>
-                        <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
-                        <td>
-                            {% set hasSmsSubscriptionType = user.hasSmsSubscriptionType %}
-                            <span class="status status__{{ hasSmsSubscriptionType ? '1' : '2' }}">
-                                {{ (hasSmsSubscriptionType ? 'global.yes' : 'global.no')|trans }}
-                            </span>
-                        </td>
-                        <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
-                        <td>
-                            {% set committees_count = user.committees|length %}
-
-                            {% if committees_count > 0 and user.adherentUuid %}
-                                {{ committees_count }} •
+                            <th style="width: 100px;">
                                 <a
-                                        href="javascript:void(0);"
-                                        class="referent-user__committees-modal--trigger"
-                                        data-uuid="{{ user.adherentUuid }}"
-                                        data-adherent-name="{{ user.fullName }}"
-                                >Voir</a>
-                            {% else %}
-                                Aucun
-                            {% endif %}
-                        </td>
-                        <td class="datagrid__table__col--hide-mobile">
-                            {{ user.createdAt|date('d/m/Y H:i') }}
-                        </td>
-                        <td>
-                            {% set is_email_subscribed = filter.subscriptionType and filter.subscriptionType in user.subscriptionTypes %}
+                                    href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                                    class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
+                                >
+                                    Identité
+                                </a>
+                            </th>
+                            <th style="width: 100px;">Rôle</th>
+                            <th style="width: 100px;">Téléphone</th>
+                            <th style="width: 100px;">SMS/MMS</th>
+                            <th style="width: 100px;">Commune</th>
+                            <th style="width: 100px;">Comité</th>
+                            <th style="width: 150px;" class="datagrid__table__col--hide-mobile">
+                                <a
+                                    href="{{ path("app_#{space_name}_managed_users_list", {f: filter.toArray()|merge({sort: 'createdAt', order: order})}) }}"
+                                    class="sort-link sort-link--order-{{ filter.sort == 'createdAt' ? filter.order : 'a' }}"
+                                >
+                                    Adhésion le
+                                </a>
+                            </th>
+                            <th style="width: 100px;">{{ 'common.adherent.status_email'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr class="referent__item referent__item--{{ user.styleType }}">
+                            <td class="adherent-identity">
+                                <div class="adherent-name">
+                                    {{ user.lastName }} {{ user.firstName }}
+                                </div>
+                                <div class="adherent-caracs">
+                                    {% if user.gender %}
+                                    {% if 'male' == user.gender %}
+                                        {{ 'common.gender.man'|trans }}
+                                    {% else %}
+                                        {{ 'common.gender.woman'|trans }}
+                                    {% endif %}
+                                {% else %}
+                                    ~
+                                    {% endif %},
+                                    {{ user.age ? user.age ~ ' ans' : '~'}}
+                                </div>
+                            </td>
+                            <td>
+                                {{ user.getUserRoleLabels('<br />')|raw }}
+                            </td>
+                            <td>{{ user.phone ? user.phone|phone_number_format : 'Non renseigné' }}</td>
+                            <td>
+                                {% set hasSmsSubscriptionType = user.hasSmsSubscriptionType %}
+                                <span class="status status__{{ hasSmsSubscriptionType ? '1' : '2' }}">
+                                    {{ (hasSmsSubscriptionType ? 'global.yes' : 'global.no')|trans }}
+                                </span>
+                            </td>
+                            <td>{{ user.city }} <br/> {{ user.postalCode }}, {{ user.country }}</td>
+                            <td>
+                                {% set committees_count = user.committees|length %}
 
-                            <span class="status status__{{ is_email_subscribed ? '1' : '2' }}">
-                                {{ (is_email_subscribed ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
-                            </span>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="8" class="text--center">
-                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
-                            Aucun résultat
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                                {% if committees_count > 0 and user.adherentUuid %}
+                                    {{ committees_count }} •
+                                    <a
+                                            href="javascript:void(0);"
+                                            class="referent-user__committees-modal--trigger"
+                                            data-uuid="{{ user.adherentUuid }}"
+                                            data-adherent-name="{{ user.fullName }}"
+                                    >Voir</a>
+                                {% else %}
+                                    Aucun
+                                {% endif %}
+                            </td>
+                            <td class="datagrid__table__col--hide-mobile">
+                                {{ user.createdAt|date('d/m/Y H:i') }}
+                            </td>
+                            <td>
+                                {% set is_email_subscribed = filter.subscriptionType and filter.subscriptionType in user.subscriptionTypes %}
+
+                                <span class="status status__{{ is_email_subscribed ? '1' : '2' }}">
+                                    {{ (is_email_subscribed ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text--center">
+                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                Aucun résultat
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         {% if users.count %}

@@ -35,55 +35,56 @@
             {{ form_end(form) }}
         </div>
     </div>
+    <div class="datagrid__table-container">
+        <table class="datagrid__table-manager">
+            <thead>
+            <tr>
+                <td class="space--0-15">Ville</td>
+                <td>Insee code</td>
+                <td>Département</td>
+                <td class="text--center">Dernière<br/>modification</td>
+                <td>Action</td>
+            </tr>
+            </thead>
+            <tbody>
+                {% for city in cities %}
+                    <tr>
+                        <td>
+                            <strong>{{ city.name }}</strong><br/>
+                            <span class="text--small">
+                                {{ city.postalCodes|join('/') }}
+                            </span>
+                        </td>
+                        <td>
+                            {{ city.inseeCode }}
+                        </td>
+                        <td>
+                            <strong>{{ city.inseeCode|slice(0, 2) }}</strong>
+                        </td>
+                        <td class="text--center">{{ _helper.render_ministry_vote_result_update_details(city) }}</td>
+                        <td>
+                            {% set items = [{
+                                href: path('app_ministry_vote_results_edit', {id: city.id}),
+                                label: 'Voir les résultats',
+                                linkAttr: {
+                                    class: 'row-action',
+                                }
+                            }] %}
 
-    <table class="datagrid__table-manager">
-        <thead>
-        <tr>
-            <td class="space--0-15">Ville</td>
-            <td>Insee code</td>
-            <td>Département</td>
-            <td class="text--center">Dernière<br/>modification</td>
-            <td>Action</td>
-        </tr>
-        </thead>
-        <tbody>
-            {% for city in cities %}
-                <tr>
-                    <td>
-                        <strong>{{ city.name }}</strong><br/>
-                        <span class="text--small">
-                            {{ city.postalCodes|join('/') }}
-                        </span>
-                    </td>
-                    <td>
-                        {{ city.inseeCode }}
-                    </td>
-                    <td>
-                        <strong>{{ city.inseeCode|slice(0, 2) }}</strong>
-                    </td>
-                    <td class="text--center">{{ _helper.render_ministry_vote_result_update_details(city) }}</td>
-                    <td>
-                        {% set items = [{
-                            href: path('app_ministry_vote_results_edit', {id: city.id}),
-                            label: 'Voir les résultats',
-                            linkAttr: {
-                                class: 'row-action',
-                            }
-                        }] %}
-
-                        {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4" class="text--center">
-                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
-                        Aucun résultat
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                            {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                            Aucun résultat
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% include 'components/_modern_pagination.html.twig' with {
         current_page: cities.currentPage,
