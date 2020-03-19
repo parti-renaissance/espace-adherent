@@ -46,7 +46,7 @@ class PoliticalFunctionType extends AbstractType
                 'required' => false,
                 'error_bubbling' => false,
             ])
-            ->add('mandateGeographicalArea', TextType::class, [
+            ->add('mandateZoneName', TextType::class, [
                 'label' => false,
                 'disabled' => true,
             ])

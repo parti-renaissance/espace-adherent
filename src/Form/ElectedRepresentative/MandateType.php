@@ -61,8 +61,9 @@ class MandateType extends AbstractType
                 'required' => false,
                 'error_bubbling' => true,
             ])
-            ->add('geographicalArea', TextType::class, [
+            ->add('zone', ZoneType::class, [
                 'label' => false,
+                'required' => false,
             ])
         ;
     }

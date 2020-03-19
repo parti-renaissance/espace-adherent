@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\MandateRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectedRepresentative\MandateRepository")
  * @ORM\Table(name="elected_representative_mandate")
  *
  * @Algolia\Index(autoIndex=false)
@@ -40,14 +40,17 @@ class Mandate
     private $isElected;
 
     /**
-     * @var string
+     * @var Zone|null
      *
-     * @ORM\Column(length=255)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
+     * @ORM\JoinColumn
      *
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
+     * @Assert\Expression(
+     *     "value !== null or (value == null and this.getType() === constant('AppBundle\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
+     *     message="Le périmètre géographique est obligatoire."
+     * )
      */
-    private $geographicalArea;
+    private $zone;
 
     /**
      * @var bool
@@ -73,11 +76,11 @@ class Mandate
      *
      * @Assert\DateTime
      * @Assert\Expression(
-     *     "value == null or value > this.getBeginAt()",
+     *     "value === null or value > this.getBeginAt()",
      *     message="La date de fin du mandat doit être postérieure à la date de début."
      * )
      * @Assert\Expression(
-     *     "(value == null and (!this.isElected() or this.isOnGoing())) or (value != null and this.isElected() and !this.isOnGoing())",
+     *     "(value === null and (!this.isElected() or this.isOnGoing())) or (value !== null and this.isElected() and !this.isOnGoing())",
      *     message="La date de fin peut être saisie que dans le cas où le mandat n'est pas en cours et est élu."
      * )
      */
@@ -122,9 +125,9 @@ class Mandate
     public function __construct(
         string $type = null,
         bool $isElected = false,
-        string $geographicalArea = null,
         string $politicalAffiliation = null,
         string $laREMSupport = null,
+        Zone $zone = null,
         ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
         \DateTime $beginAt = null,
@@ -132,7 +135,7 @@ class Mandate
     ) {
         $this->type = $type;
         $this->isElected = $isElected;
-        $this->geographicalArea = $geographicalArea;
+        $this->zone = $zone;
         $this->electedRepresentative = $electedRepresentative;
         $this->laREMSupport = $laREMSupport;
         $this->politicalAffiliation = $politicalAffiliation;
@@ -170,14 +173,14 @@ class Mandate
         $this->isElected = $isElected;
     }
 
-    public function getGeographicalArea(): ?string
+    public function getZone(): ?Zone
     {
-        return $this->geographicalArea;
+        return $this->zone;
     }
 
-    public function setGeographicalArea(string $geographicalArea): void
+    public function setZone(Zone $zone): void
     {
-        $this->geographicalArea = $geographicalArea;
+        $this->zone = $zone;
     }
 
     public function isOnGoing(): bool

@@ -142,7 +142,46 @@
             $("select[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled change');
             $('div.mandates-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
                 $("select[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled change');
+                addAutocomplete();
             });
+
+            var addAutocomplete = function () {
+                $("input[id$='_zone_autocomplete']").each(function (i, el) {
+                    el = $(el);
+                    el.autocomplete({
+                        source: function(request, response) {
+                            var elementId = el.attr('id');
+                            var id = elementId.substr(0, elementId.indexOf('_zone_autocomplete'));
+                            var type = el.parents('.row.mandate').find("select[id$='" + id + "_type']").val();
+                            var term = request.term.trim();
+
+                            if (term.length > 0) {
+                                $.get("{{ path('app_elected_representative_zone')|raw }}?zone=" + term + "&type=" + type, function(data) {
+                                    response($.map(data, function(m) {
+                                        return {
+                                            label: m.name,
+                                            value: m.id
+                                        };
+                                    }));
+                                });
+                            } else {
+                                response([]);
+                            }
+                        },
+                        select: function( event, ui ) {
+                            var elementId = el.attr('id');
+                            var id = elementId.substr(0, elementId.indexOf('_zone'));
+                            var zoneIdField = el.parents('.row.mandate').find("input[id$='" + id + "_zone']");
+                            $(el).val(ui.item.label);
+                            $(zoneIdField).val(ui.item.value);
+
+                            return false;
+                        },
+                    });
+                });
+            };
+
+            addAutocomplete();
         });
     </script>
 {% endblock %}
@@ -173,8 +212,13 @@
         <div class="col-width15{{ not form.finishAt.vars.valid ? ' error' }}">
             {{ form_row(form.finishAt) }}
         </div>
-        <div class="col-width12{{ not form.geographicalArea.vars.valid ? ' error' }}">
-            {{ form_row(form.geographicalArea) }}
+        <div class="col-width12{{ not form.zone.vars.valid ? ' error' }}">
+            <div class="form-group">
+                <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                    <input type="text" value="{{ form.zone.vars.zone_label }}" id="{{ form.zone.vars.id }}_autocomplete" class="form-control"/>
+                </div>
+            </div>
+            {{ form_row(form.zone) }}
         </div>
     </div>
 {% endblock %}
@@ -231,8 +275,8 @@
         <div class="col-md-2{{ not form.clarification.vars.valid ? ' error' }}">
             {{ form_row(form.clarification) }}
         </div>
-        <div class="col-md-2{{ not form.mandateGeographicalArea.vars.valid ? ' error' }}">
-            {{ form_row(form.mandateGeographicalArea) }}
+        <div class="col-md-2{{ not form.mandateZoneName.vars.valid ? ' error' }}">
+            {{ form_row(form.mandateZoneName) }}
         </div>
         <div class="col-md-1{{ not form.onGoing.vars.valid ? ' error' }}">
             {{ form_row(form.onGoing) }}
