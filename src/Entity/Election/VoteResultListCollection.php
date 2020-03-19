@@ -36,7 +36,6 @@ class VoteResultListCollection
      * @var VoteResultList[]|Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\VoteResultList", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\Count(min=1)
      */
