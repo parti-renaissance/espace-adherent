@@ -27,6 +27,7 @@ class VoteResultList
      * @var VoteResultListCollection
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election\VoteResultListCollection", inversedBy="lists")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $listCollection;
 

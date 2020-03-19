@@ -18,6 +18,7 @@ class CityVoteResult extends BaseWithListCollectionResult
      * @var City
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\City")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $city;
 

@@ -18,6 +18,7 @@ class VotePlaceResult extends BaseWithListCollectionResult
      * @var VotePlace
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotePlace", inversedBy="voteResults")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $votePlace;
 
