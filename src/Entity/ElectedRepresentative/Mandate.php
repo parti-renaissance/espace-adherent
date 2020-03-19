@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\MandateRepository")
  * @ORM\Table(name="elected_representative_mandate")
  *
  * @Algolia\Index(autoIndex=false)
@@ -89,7 +89,7 @@ class Mandate
      * @ORM\Column(length=10)
      *
      * @Assert\NotBlank
-     * @Assert\Length(max="10")
+     * @Assert\Choice(callback={"AppBundle\Election\VoteListNuanceEnum", "toArray"})
      */
     private $politicalAffiliation;
 
@@ -111,6 +111,13 @@ class Mandate
      * @Assert\NotBlank
      */
     private $electedRepresentative;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="smallint", options={"default": 1})
+     */
+    private $number = 1;
 
     public function __construct(
         string $type = null,
@@ -231,6 +238,16 @@ class Mandate
     public function setElectedRepresentative(ElectedRepresentative $electedRepresentative): void
     {
         $this->electedRepresentative = $electedRepresentative;
+    }
+
+    public function getNumber(): int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): void
+    {
+        $this->number = $number;
     }
 
     public function __toString(): string

@@ -42,16 +42,6 @@ class PoliticalFunction
     private $clarification;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=255)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
-     */
-    private $geographicalArea;
-
-    /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
@@ -86,28 +76,38 @@ class PoliticalFunction
     private $finishAt;
 
     /**
-     * @var ElectedRepresentative
+     * @var ElectedRepresentative|null
      *
-     * @ORM\ManyToOne(targetEntity="ElectedRepresentative", inversedBy="politicalFunctions")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="politicalFunctions")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
      */
     private $electedRepresentative;
 
+    /**
+     * @var Mandate|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\Mandate")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank
+     */
+    private $mandate;
+
     public function __construct(
         string $name = null,
         string $clarification = null,
-        string $geographicalArea = null,
         ElectedRepresentative $electedRepresentative = null,
+        Mandate $mandate = null,
         bool $onGoing = true,
         \DateTime $beginAt = null,
         \DateTime $finishAt = null
     ) {
         $this->name = $name;
         $this->clarification = $clarification;
-        $this->geographicalArea = $geographicalArea;
         $this->electedRepresentative = $electedRepresentative;
+        $this->mandate = $mandate;
         $this->onGoing = $onGoing;
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
@@ -142,16 +142,6 @@ class PoliticalFunction
         $this->clarification = $clarification;
     }
 
-    public function getGeographicalArea(): ?string
-    {
-        return $this->geographicalArea;
-    }
-
-    public function setGeographicalArea(string $geographicalArea): void
-    {
-        $this->geographicalArea = $geographicalArea;
-    }
-
     public function isOnGoing(): bool
     {
         return $this->onGoing;
@@ -182,9 +172,29 @@ class PoliticalFunction
         $this->finishAt = $finishAt;
     }
 
+    public function getElectedRepresentative(): ?ElectedRepresentative
+    {
+        return $this->electedRepresentative;
+    }
+
     public function setElectedRepresentative(ElectedRepresentative $electedRepresentative): void
     {
         $this->electedRepresentative = $electedRepresentative;
+    }
+
+    public function getMandate(): ?Mandate
+    {
+        return $this->mandate;
+    }
+
+    public function setMandate(Mandate $mandate): void
+    {
+        $this->mandate = $mandate;
+    }
+
+    public function getMandateGeographicalArea(): string
+    {
+        return $this->mandate ? $this->mandate->getGeographicalArea() : '';
     }
 
     public function __toString(): string

@@ -3,6 +3,8 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Address\Address;
+use AppBundle\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
+use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ElectedRepresentative\ElectedRepresentative;
 use AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
@@ -16,6 +18,7 @@ use AppBundle\Form\ElectedRepresentative\PoliticalFunctionType;
 use AppBundle\Form\ElectedRepresentative\SponsorshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\SocialNetworkLinkType;
+use AppBundle\Repository\ElectedRepresentative\MandateRepository;
 use AppBundle\Repository\PoliticalLabelRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -31,7 +34,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -47,11 +49,20 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     /** @var PoliticalLabelRepository */
     private $politicalLabelRepository;
 
-    public function __construct($code, $class, $baseControllerName, PoliticalLabelRepository $politicalLabelRepository)
-    {
+    /** @var MandateRepository */
+    private $mandateRepository;
+
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        PoliticalLabelRepository $politicalLabelRepository,
+        MandateRepository $mandateRepository
+    ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->politicalLabelRepository = $politicalLabelRepository;
+        $this->mandateRepository = $mandateRepository;
     }
 
     protected function configureRoutes(RouteCollection $collection)
@@ -151,6 +162,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $mandates = [];
+        $electedRepresentative = $this->getSubject();
+        if ($electedRepresentative instanceof ElectedRepresentative) {
+            $mandates = $this->mandateRepository->getMandatesForPoliticalFunction($electedRepresentative);
+        }
+
         $formMapper
             ->with('Identité', ['class' => 'col-md-6'])
                 ->add('officialId', null, [
@@ -254,6 +271,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->with('Fonctions')
                 ->add('politicalFunctions', CollectionType::class, [
                     'entry_type' => PoliticalFunctionType::class,
+                    'entry_options' => [
+                        'mandates' => $mandates,
+                    ],
                     'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
@@ -298,6 +318,12 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
     {
         /** @var ElectedRepresentative $electedRepresentative */
         $electedRepresentative = $event->getData();
+
+        // change mandates order
+        if (!$electedRepresentative->getMandates()->isEmpty()) {
+            ElectedRepresentativeMandatesOrderer::updateOrder($electedRepresentative->getMandates());
+        }
+
         $laREM = $this->politicalLabelRepository->findOneByName(PoliticalLabel::LABEL_LAREM);
 
         // if adherent, we should add the LaREM label, if it does not exist
@@ -388,14 +414,24 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ->add('mandates.politicalAffiliation', CallbackFilter::class, [
                 'label' => 'Nuance politique',
                 'show_filter' => true,
-                'field_type' => TextType::class,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => VoteListNuanceEnum::toArray(),
+                    'multiple' => true,
+                ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (!$value['value']) {
                         return false;
                     }
 
-                    $qb->andWhere("$alias.politicalAffiliation LIKE :pa");
-                    $qb->setParameter('pa', '%'.$value['value'].'%');
+                    $where = new Expr\Orx();
+
+                    foreach ($value['value'] as $politicalAffiliation) {
+                        $where->add("$alias.politicalAffiliation = :pa_".$politicalAffiliation);
+                        $qb->setParameter('pa_'.$politicalAffiliation, $politicalAffiliation);
+                    }
+
+                    $qb->andWhere($where);
                     $qb->andWhere("$alias.onGoing = 1");
 
                     return true;

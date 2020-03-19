@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\ElectedRepresentative;
 
+use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\ElectedRepresentative\LaREMSupportEnum;
 use AppBundle\Entity\ElectedRepresentative\Mandate;
 use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
@@ -22,12 +23,22 @@ class MandateType extends AbstractType
                 'choices' => MandateTypeEnum::CHOICES,
                 'label' => false,
             ])
-            ->add('politicalAffiliation', TextType::class, [
+            ->add('number', TextType::class, [
+                'disabled' => true,
                 'label' => false,
             ])
-            ->add('isElected', CheckboxType::class, [
-                'required' => false,
+            ->add('politicalAffiliation', ChoiceType::class, [
+                'choices' => VoteListNuanceEnum::toArray(),
                 'label' => false,
+                'required' => true,
+            ])
+            ->add('isElected', ChoiceType::class, [
+                'required' => true,
+                'label' => false,
+                'choices' => [
+                    'global.yes' => true,
+                    'global.no' => false,
+                ],
             ])
             ->add('laREMSupport', ChoiceType::class, [
                 'required' => false,
