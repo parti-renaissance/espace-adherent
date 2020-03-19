@@ -41,115 +41,116 @@
             </form>
         </div>
     </div>
-
-    <table class="datagrid__table-manager">
-        <thead>
-            <tr>
-                <th width="75">Statut</th>
-                <th width="100">Label</th>
-                <th width="200">Objet</th>
-                <th width="100">Date de création</th>
-                <th width="50">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for message in messages %}
+    <div class="datagrid__table-container">
+        <table class="datagrid__table-manager">
+            <thead>
                 <tr>
-                    <td>
-                        <span class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
-                            {{ message.status|trans }}
-                        </span>
-                    </td>
-                    <td width="100">{{ message.label }}</td>
-                    <td>{{ message.subject }}</td>
-                    <td>
-                        {% if message.isSent %}
-                            {{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") : '~' }}
-                        {% else %}
-                            {{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") }}
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% set message_route_params = route_params|default({})|merge({uuid: message.uuid}) %}
-                        {% set items = [] %}
-
-                        {% if not message.isSent %}
-                            {% set items = [{
-                                href: path("app_message_#{message_type}_update", message_route_params),
-                                label: 'Modifier',
-                                linkAttr: {
-                                    class: 'row-action text--blue--dark link--no-decor',
-                                }
-                            }] %}
-                        {% endif %}
-
-                        {% if message.isSent %}
-                            {% set items = items|merge([{
-                                href: 'javascript:void(0);',
-                                label: 'Statistiques',
-                                linkAttr: {
-                                    class: 'row-action text--blue--dark link--no-decor adherent-message-statistics-button',
-                                    'data-uuid': message.uuid,
-                                    'data-subject': message.subject
-                                }
-                            }]) %}
-                        {% else %}
-                            {% set items = items|merge([{
-                                href: path("app_message_#{message_type}_filter", message_route_params|merge({l: true})),
-                                label: 'Filtrer',
-                                linkAttr: {
-                                    class: 'row-action text--blue--dark link--no-decor',
-                                }
-                            }]) %}
-                        {% endif %}
-
-                        {% if message.isSynchronized %}
-                            {% set items = items|merge([
-                                {
-                                    href: path("app_message_#{message_type}_preview", message_route_params),
-                                    label: 'Visualiser',
-                                    linkAttr: {
-                                        class: 'row-action text--blue--dark link--no-decor',
-                                    }
-                                },
-                                {
-                                    href: path("app_message_common_preview-on-mailchimp", message_route_params),
-                                    label: 'Obtenir le lien du message',
-                                    linkAttr: {
-                                        class: 'row-action text--blue--dark link--no-decor',
-                                        target: '_blank'
-                                    }
-                                }
-                            ]) %}
-                        {% else %}
-                            {% set items = items|merge([{
-                                href: 'javascript:void(0);',
-                                label: 'Visualiser<br/><span class="text--smallest">(en cours de préparation ...)</span>',
-                                linkAttr: {
-                                    class: 'row-action btn--disabled',
-                                }
-                            }]) %}
-                        {% endif %}
-
-                        {% set items = items|merge([{
-                            href: path("app_message_#{message_type}_delete", message_route_params),
-                            label: 'Supprimer',
-                            linkAttr: {
-                                class: 'row-action text--dark link--no-decor',
-                            }
-                        }]) %}
-
-                        {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
-                    </td>
+                    <th width="75">Statut</th>
+                    <th width="100">Label</th>
+                    <th width="200">Objet</th>
+                    <th width="100">Date de création</th>
+                    <th width="50">Action</th>
                 </tr>
-            {% else %}
-                <tr><td colspan="6" class="text--center">
-                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
-                    Vous n'avez aucun message
-                </td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td>
+                            <span class="{{ message.status == constant('AppBundle\\AdherentMessage\\AdherentMessageStatusEnum::DRAFT') ? 'status status__2' : 'status status__1' }}">
+                                {{ message.status|trans }}
+                            </span>
+                        </td>
+                        <td width="100">{{ message.label }}</td>
+                        <td>{{ message.subject }}</td>
+                        <td>
+                            {% if message.isSent %}
+                                {{ message.sentAt ? message.sentAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") : '~' }}
+                            {% else %}
+                                {{ message.createdAt|localizeddate('none', 'none', 'fr_FR', null, "d MMMM yyyy à HH:mm") }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% set message_route_params = route_params|default({})|merge({uuid: message.uuid}) %}
+                            {% set items = [] %}
+
+                            {% if not message.isSent %}
+                                {% set items = [{
+                                    href: path("app_message_#{message_type}_update", message_route_params),
+                                    label: 'Modifier',
+                                    linkAttr: {
+                                        class: 'row-action text--blue--dark link--no-decor',
+                                    }
+                                }] %}
+                            {% endif %}
+
+                            {% if message.isSent %}
+                                {% set items = items|merge([{
+                                    href: 'javascript:void(0);',
+                                    label: 'Statistiques',
+                                    linkAttr: {
+                                        class: 'row-action text--blue--dark link--no-decor adherent-message-statistics-button',
+                                        'data-uuid': message.uuid,
+                                        'data-subject': message.subject
+                                    }
+                                }]) %}
+                            {% else %}
+                                {% set items = items|merge([{
+                                    href: path("app_message_#{message_type}_filter", message_route_params|merge({l: true})),
+                                    label: 'Filtrer',
+                                    linkAttr: {
+                                        class: 'row-action text--blue--dark link--no-decor',
+                                    }
+                                }]) %}
+                            {% endif %}
+
+                            {% if message.isSynchronized %}
+                                {% set items = items|merge([
+                                    {
+                                        href: path("app_message_#{message_type}_preview", message_route_params),
+                                        label: 'Visualiser',
+                                        linkAttr: {
+                                            class: 'row-action text--blue--dark link--no-decor',
+                                        }
+                                    },
+                                    {
+                                        href: path("app_message_common_preview-on-mailchimp", message_route_params),
+                                        label: 'Obtenir le lien du message',
+                                        linkAttr: {
+                                            class: 'row-action text--blue--dark link--no-decor',
+                                            target: '_blank'
+                                        }
+                                    }
+                                ]) %}
+                            {% else %}
+                                {% set items = items|merge([{
+                                    href: 'javascript:void(0);',
+                                    label: 'Visualiser<br/><span class="text--smallest">(en cours de préparation ...)</span>',
+                                    linkAttr: {
+                                        class: 'row-action btn--disabled',
+                                    }
+                                }]) %}
+                            {% endif %}
+
+                            {% set items = items|merge([{
+                                href: path("app_message_#{message_type}_delete", message_route_params),
+                                label: 'Supprimer',
+                                linkAttr: {
+                                    class: 'row-action text--dark link--no-decor',
+                                }
+                            }]) %}
+
+                            {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                        Vous n'avez aucun message
+                    </td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% if messages.count %}
         {% include 'components/_modern_pagination.html.twig' with {

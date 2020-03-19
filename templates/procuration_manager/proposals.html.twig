@@ -35,22 +35,24 @@
     {% endif %}
 
     {% if proxies|length %}
-        <table class="datagrid__table-manager">
-            <thead>
-            <tr>
-                <th class="datagrid__table__col--hide-mobile" style="width: 70px;">Numéro</th>
-                <th class="datagrid__table__col--left">Coordonnées du mandataire</th>
-                <th class="datagrid__table__col--left">Disponibilités restantes</th>
-                <th class="datagrid__table__col--hide-mobile">Date de la proposition</th>
-                <th class="datagrid__table__col--hide-mobile" style="width: 170px;">Procurations disponibles</th>
-                <th>Statut</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="proposals-list">
-                {{ include('procuration_manager/_proposals_list.html.twig') }}
-            </tbody>
-        </table>
+        <div class="datagrid__table-container">
+            <table class="datagrid__table-manager">
+                <thead>
+                <tr>
+                    <th class="datagrid__table__col--hide-mobile" style="width: 70px;">Numéro</th>
+                    <th class="datagrid__table__col--left">Coordonnées du mandataire</th>
+                    <th class="datagrid__table__col--left">Disponibilités restantes</th>
+                    <th class="datagrid__table__col--hide-mobile">Date de la proposition</th>
+                    <th class="datagrid__table__col--hide-mobile" style="width: 170px;">Procurations disponibles</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="proposals-list">
+                    {{ include('procuration_manager/_proposals_list.html.twig') }}
+                </tbody>
+            </table>
+        </div>
 
         {% if total_count > filters.limit %}
             <div class="text--center space--30">

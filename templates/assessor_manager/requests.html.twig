@@ -44,23 +44,25 @@
     {% endif %}
 
     {% if requests|length %}
-        <table class="datagrid__table-manager managed__list__table">
-            <thead>
-            <tr>
-                <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>
-                <th class="datagrid__table__col--left">Coordonnées de l'assesseur</th>
-                <th>Bureau(x) de vote souhaité</th>
-                <th>Poste souhaité</th>
-                <th>Statut de la demande</th>
-                <th>Bureau de vote</th>
-                <th class="datagrid__table__col--hide-mobile">Date de la demande</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="requests-list">
-                {{ include('assessor_manager/_requests_list.html.twig') }}
-            </tbody>
-        </table>
+        <div class="datagrid__table-container">
+            <table class="datagrid__table-manager managed__list__table">
+                <thead>
+                <tr>
+                    <th class="datagrid__table__col--hide-mobile" style="width: 100px;">Numéro</th>
+                    <th class="datagrid__table__col--left">Coordonnées de l'assesseur</th>
+                    <th>Bureau(x) de vote souhaité</th>
+                    <th>Poste souhaité</th>
+                    <th>Statut de la demande</th>
+                    <th>Bureau de vote</th>
+                    <th class="datagrid__table__col--hide-mobile">Date de la demande</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="requests-list">
+                    {{ include('assessor_manager/_requests_list.html.twig') }}
+                </tbody>
+            </table>
+        </div>
         {% if total_count > filters.limit %}
             <div class="text--center space--30">
                 <button class="btn" id="btn-more">Afficher plus</button>

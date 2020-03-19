@@ -78,87 +78,88 @@
             {% if not form.vars.valid %}
                 <p class="text--error text--center">Le formulaire n'est pas valide</p>
             {% endif %}
-
-            <table class="datagrid__table-manager">
-                <thead>
-                    <tr>
-                        <td class="space--0-15">Bureau de vote</td>
-                        <td>Bureau de vote - Alias</td>
-                        <td>Adhérent - Assesseur</td>
-                        <td class="text--center">Dernière<br/>modification</td>
-                        <td>État</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for index, place in vote_places %}
+            <div class="datagrid__table-container">
+                <table class="datagrid__table-manager">
+                    <thead>
                         <tr>
-                            <td>
-                                <div class="l__row l__row--h-start">
-                                    <div class="l__col">
-                                        <span class="cursor--pointer status {{ place.enabled ? 'status__1' : 'status__2' }}" title="{{ place.enabled ? 'Activé' : 'Désactivé' }}"></span>
-                                    </div>
-
-                                    <div class="l__col">
-                                        <strong>{{ place.name }}</strong> ({{ place.code|split('_', 2)|last }})<br/>
-                                        <span class="text--small">
-                                            {{ place.address }}<br/>
-                                            {{ place.city }}, {{ place.country|countryName }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                {% if form[index] is defined %}
-                                    {{ form_row(form[index].votePlace) }}
-                                {% endif %}
-                            </td>
-                            <td class="text--center">
-                                {% if form[index] is defined %}
-                                    {{ form_row(form[index].adherent) }}
-
-                                    {% set adherent = form[index].vars.data.adherent %}
-
-                                    {% if adherent and adherent.phone %}
-                                        {% set phone_number = adherent.phone|phone_number_format %}
-                                        <div class="b__nudge--top-10">
-                                            <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+                            <th>Bureau de vote</th>
+                            <th>Bureau de vote - Alias</th>
+                            <th>Adhérent - Assesseur</th>
+                            <th>Dernière<br/>modification</th>
+                            <th>État</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for index, place in vote_places %}
+                            <tr>
+                                <td>
+                                    <div class="l__row l__row--h-start">
+                                        <div class="l__col">
+                                            <span class="cursor--pointer status {{ place.enabled ? 'status__1' : 'status__2' }}" title="{{ place.enabled ? 'Activé' : 'Désactivé' }}"></span>
                                         </div>
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                            <td class="text--center">
-                                {{ _helper.render_list_vote_result_update_details(place.getResultForElectionRound(current_election_round)) }}
-                            </td>
-                            <td class="status__1">
-                                {% set results_status = place.getResultStatus(current_election_round) %}
 
-                                <span class="cursor--pointer status
-                                    {% if results_status is constant('RESULTS_COMPLETED', place) %}
-                                        status__1
-                                    {% elseif results_status is constant('RESULTS_PARTIAL', place) %}
-                                        status__4
-                                    {% else %}
-                                        status__3
+                                        <div class="l__col">
+                                            <strong>{{ place.name }}</strong> ({{ place.code|split('_', 2)|last }})<br/>
+                                            <span class="text--small">
+                                                {{ place.address }}<br/>
+                                                {{ place.city }}, {{ place.country|countryName }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if form[index] is defined %}
+                                        {{ form_row(form[index].votePlace) }}
                                     {% endif %}
-                                    " title="{{ ('vote_place.results.' ~ results_status)|trans }}">
-                                    {{ ('vote_place.results.' ~ results_status)|trans }}
-                                </span>
-                            </td>
-                            <td>
-                                {% block city_actions parent() %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="6" class="text--center">
-                                <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
-                                Aucun résultat
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                </td>
+                                <td class="text--center">
+                                    {% if form[index] is defined %}
+                                        {{ form_row(form[index].adherent) }}
+
+                                        {% set adherent = form[index].vars.data.adherent %}
+
+                                        {% if adherent and adherent.phone %}
+                                            {% set phone_number = adherent.phone|phone_number_format %}
+                                            <div class="b__nudge--top-10">
+                                                <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td class="text--center">
+                                    {{ _helper.render_list_vote_result_update_details(place.getResultForElectionRound(current_election_round)) }}
+                                </td>
+                                <td class="status__1">
+                                    {% set results_status = place.getResultStatus(current_election_round) %}
+
+                                    <span class="cursor--pointer status
+                                        {% if results_status is constant('RESULTS_COMPLETED', place) %}
+                                            status__1
+                                        {% elseif results_status is constant('RESULTS_PARTIAL', place) %}
+                                            status__4
+                                        {% else %}
+                                            status__3
+                                        {% endif %}
+                                        " title="{{ ('vote_place.results.' ~ results_status)|trans }}">
+                                        {{ ('vote_place.results.' ~ results_status)|trans }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% block city_actions parent() %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text--center">
+                                    <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                    Aucun résultat
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <div class="text--right b__nudge--top-15">
                 <button type="submit" class="btn btn--blue--soft">Sauvegarder les choix</button>

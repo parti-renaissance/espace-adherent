@@ -151,9 +151,10 @@
     }
 }
 
-.datagrid__table-manager-ctn {
+.datagrid__table-container {
     width: 100%;
     overflow-x: auto;
+    padding-bottom: 70px;
 }
 
 .datagrid__action {
@@ -169,7 +170,7 @@
 
 .datagrid__table-manager {
     width: 100%;
-    min-width: 700px;
+    min-width: 850px;
     text-align: left;
     font-family: $font-roboto;
     color: $dark;
