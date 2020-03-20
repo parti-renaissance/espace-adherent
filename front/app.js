@@ -276,6 +276,12 @@ class App {
             module.default(switchSelector, this.get('api'));
         });
     }
+
+    runCandidacyModal(triggerSelector, committeeUuid) {
+        System.import('pages/committee_candidacies').catch((error) => { throw error; }).then((module) => {
+            module.default(triggerSelector, this.get('api'), committeeUuid);
+        });
+    }
 }
 
 window.App = new App();

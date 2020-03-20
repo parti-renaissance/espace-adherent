@@ -273,4 +273,11 @@ export default class ReqwestApiClient {
             data: {token: token},
         }).then(callback).fail(response => callback(JSON.parse(response.responseText)));
     }
+
+    getCommitteeCandidacies(uuid, callback) {
+        this._createRequest(callback, {
+            url: `/api/committees/${uuid}/candidacies`,
+            type: 'json',
+        });
+    }
 }

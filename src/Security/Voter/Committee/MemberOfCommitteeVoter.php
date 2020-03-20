@@ -6,9 +6,9 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Security\Voter\AbstractAdherentVoter;
 
-class VoteCommitteeVoter extends AbstractAdherentVoter
+class MemberOfCommitteeVoter extends AbstractAdherentVoter
 {
-    private const PERMISSION = 'VOTE_COMMITTEE';
+    private const PERMISSION = 'MEMBER_OF_COMMITTEE';
 
     protected function supports($attribute, $subject)
     {

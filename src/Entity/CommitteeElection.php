@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CommitteeElectionRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeElectionRepository")
  */
 class CommitteeElection
 {
