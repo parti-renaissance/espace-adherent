@@ -7,12 +7,11 @@ use AppBundle\Entity\District;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadDistrictData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadDistrictData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 

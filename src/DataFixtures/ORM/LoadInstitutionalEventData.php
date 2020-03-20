@@ -7,12 +7,11 @@ use AppBundle\Event\EventFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadInstitutionalEventData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadInstitutionalEventData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     const INSTITUTIONAL_EVENT_1_UUID = '3f46976e-e76a-476e-86d7-575c6d3bc15e';
 

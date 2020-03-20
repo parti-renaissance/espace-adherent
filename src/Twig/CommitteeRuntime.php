@@ -6,6 +6,7 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeRuntime
@@ -85,11 +86,9 @@ class CommitteeRuntime
         return '';
     }
 
-    public function isVotingCommittee(Adherent $adherent, Committee $committee): bool
+    public function getCommitteeCandidacyMembership(Adherent $adherent): ?CommitteeMembership
     {
-        $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
-
-        return $membership && $membership->isVotingCommittee();
+        return $adherent->getMemberships()->getCommitteeCandidacyMembership();
     }
 
     public function isCandidate(Adherent $adherent, Committee $committee): bool

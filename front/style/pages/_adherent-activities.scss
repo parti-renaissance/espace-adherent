@@ -1,25 +1,55 @@
 .adherent__activity {
     position: relative;
+    box-sizing: border-box;
     margin-bottom: 24px;
     background-color: $gray--lighter;
-
-    &.committee {
-
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .committee {
         &__details {
-
+            margin-bottom: 20px;
         }
 
         &__actions {
             display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: flex-start;
+
+            @media (min-width: $mobile) {
+                flex-direction: row;
+                align-items: flex-end;
+            }
 
             .right {
                 max-width: 260px;
-                text-align: right;
+                margin-top: 20px;
+                text-align: left;
+
+                @media (min-width: $mobile) {
+                    text-align: right;
+                }
+            }
+
+            .break {
+                flex-basis: 100%;
+                height: 0;
+            }
+
+            .legend {
+                font-size: 14px;
+                font-family: $font-roboto;
+                color: $neutral-grey;
+                margin: 10px 0 0 0;
+                line-height: normal;
+
+                &.active {
+                    color: $green--ocean;
+                    font-weight: bold;
+                }
             }
         }
     }

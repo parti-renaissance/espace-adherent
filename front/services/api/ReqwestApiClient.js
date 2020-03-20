@@ -264,4 +264,13 @@ export default class ReqwestApiClient {
             type: 'json',
         });
     }
+
+    toggleCommitteeVoteStatus(slug, token, enabled, callback) {
+        this._reqwest({
+            method: 'post',
+            type: 'json',
+            url: `/comites/${slug}/${ enabled ? '' : 'ne-plus-' }voter`,
+            data: {token: token},
+        }).then(callback).fail(response => callback(JSON.parse(response.responseText)));
+    }
 }

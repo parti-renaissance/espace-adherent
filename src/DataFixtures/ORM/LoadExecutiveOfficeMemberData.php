@@ -4,10 +4,9 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Biography\ExecutiveOfficeMember;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadExecutiveOfficeMemberData extends AbstractFixture implements FixtureInterface
+class LoadExecutiveOfficeMemberData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {

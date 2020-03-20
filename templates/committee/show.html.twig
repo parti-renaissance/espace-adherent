@@ -204,35 +204,50 @@
             </div>
         </section>
     {% else %}
-        {% if has_role_adherent and committee.committeeElection and is_voting_committee(app.user, committee) %}
-        <section class="election-box">
-            <div>
-                <h2>Candidater pour participer au Conseil Territorial</h2>
-            </div>
-            <div>
-            {% if is_candidate(app.user, committee) %}
-                <button role="button"
-                        class="btn btn--blue committee-follow btn--no-wrap committee-action-button"
-                        id="committee-toggle-candidacy"
-                        data-action="retirer-sa-candidature"
-                        data-csrf-token="{{ csrf_token('committee.uncandidate') }}">
-                    <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
-                    Je retire ma candidature
-                </button>
-                <p class="error-label"></p>
-            {% else %}
-                <button role="button"
-                        class="btn btn--blue committee-follow btn--no-wrap committee-action-button"
-                        id="committee-toggle-candidacy"
-                        data-action="candidater"
-                        data-csrf-token="{{ csrf_token('committee.candidate') }}">
-                    <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
-                    Je candidate
-                </button>
-                <p class="error-label"></p>
+        {% if has_role_adherent and committee.committeeElection %}
+            {% set membership = app.user.getMembershipFor(committee) %}
+
+            {% if membership %}
+                {% set candidacy_committee_membership = get_committee_candidacy_membership(app.user) %}
+
+                <section class="committee__elections-box">
+                    <div class="left">
+                        <h2 class="text--medium-large">Candidater pour participer au Conseil Territorial</h2>
+                    </div>
+                    <div class="right">
+                        {% if candidacy_committee_membership is not null %}
+                            {% if candidacy_committee_membership == membership %}
+                                <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}" class="btn btn--ghosting--blue btn--no-wrap">
+                                    Je retire ma candidature
+                                </a>
+                            {% else %}
+                                <div class="error-label text--body alert alert--tips-blue text--left">
+                                    Vous pouvez candidater dans le comité où vous avez choisi de voter.
+                                    Rendez-vous sur <strong><a href="{{ path('app_adherent_committees') }}">cette page</a></strong>
+                                    pour choisir ou modifier votre comité.
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            {% if membership.isVotingCommittee %}
+                                <button role="button"
+                                        class="btn btn--blue btn--no-wrap committee-action-button"
+                                        id="committee-toggle-candidacy"
+                                        data-action="candidater"
+                                        data-csrf-token="{{ csrf_token('committee.candidate') }}">
+                                    <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                                    Je candidate
+                                </button>
+                            {% else %}
+                                <div class="error-label text--body alert alert--tips-blue text--left">
+                                    Vous pouvez candidater dans le comité où vous avez choisi de voter.
+                                    Rendez-vous sur <strong><a href="{{ path('app_adherent_committees') }}">cette page</a></strong>
+                                    pour choisir ou modifier votre comité.
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </section>
             {% endif %}
-            </div>
-        </section>
         {% endif %}
         <section class="committee__timeline" id="committee-timeline">
             <h2 class=" space--20-0 b__nudge--top-40">

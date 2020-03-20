@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import Loader from './Loader';
 
 export default class Modal extends React.Component {
     constructor(props) {
@@ -10,7 +9,6 @@ export default class Modal extends React.Component {
         }
 
         this.closeCallback = props.closeCallback;
-
         this.contentCallback = props.contentCallback;
 
         this.state = {
@@ -18,7 +16,7 @@ export default class Modal extends React.Component {
             content: props.content,
         };
 
-        this._hideModal = this._hideModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
         this.handleContentLoaded = this.handleContentLoaded.bind(this);
         this.renderContent = this.renderContent.bind(this);
     }
@@ -33,19 +31,17 @@ export default class Modal extends React.Component {
     render() {
         return (
             <div className="em-modal" style={{ display: this.state.display ? 'block' : 'none' }}>
-                <div className="modal-background" onClick={this._hideModal}></div>
+                <div className="modal-background" onClick={this.hideModal}></div>
                 <div className="modal-content">
-                    <span className="close" onClick={this._hideModal}/>
+                    <span className="close" onClick={this.hideModal}/>
                     {this.renderContent()}
                 </div>
             </div>
         );
     }
 
-    _hideModal() {
-        this.setState({
-            display: false,
-        });
+    hideModal() {
+        this.setState({ display: false });
 
         if (this.closeCallback) {
             this.closeCallback();

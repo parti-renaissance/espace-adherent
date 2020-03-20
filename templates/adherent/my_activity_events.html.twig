@@ -1,29 +1,27 @@
-{% extends 'adherent/activities.html.twig' %}
-
-{% block page_title 'Mes activités' %}
+{% extends 'adherent/my_activity_layout.html.twig' %}
 
 {% block tab %}
-        <div class="l__wrapper--narrow b__nudge--bottom-huge">
-            <div class="actions text--center b__nudge--bottom-larger">
-                <a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}"
-                   class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'upcoming' ? 'text--bold' }}"
-                   rel="noopener noreferrer">
-                    À venir
-                </a>
-                <a href="{{ path('app_adherent_events', {type: 'past'}) }}"
-                   class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'past' ? 'text--bold' }}"
-                   rel="noopener noreferrer">
-                    Passés
-                </a>
-            </div>
+    <div class="l__wrapper--narrow b__nudge--bottom-huge">
+        <div class="actions text--center b__nudge--bottom-larger">
+            <a href="{{ path('app_adherent_events', {type: 'upcoming'}) }}"
+               class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'upcoming' ? 'text--bold' }}"
+               rel="noopener noreferrer">
+                À venir
+            </a>
+            <a href="{{ path('app_adherent_events', {type: 'past'}) }}"
+               class="text--body link--no--decor space--0-15 {{ app.request.query.get('type') == 'past' ? 'text--bold' }}"
+               rel="noopener noreferrer">
+                Passés
+            </a>
+        </div>
 
-            {% if registrations|length == 0 %}
-                <div class="text--center b__nudge--bottom-60">
-                    <p class="text--body b__nudge--bottom-large">Vous n'êtes inscrit(e) à aucun événement pour le moment.</p>
-                    <a href="{{ path('app_search_events') }}" class="btn btn--blue">Participer à un événement</a>
-                </div>
-            {% else %}
-                <div class="search__results">
+        {% if registrations|length == 0 %}
+            <div class="text--center b__nudge--bottom-60">
+                <p class="text--body b__nudge--bottom-large">Vous n'êtes inscrit(e) à aucun événement pour le moment.</p>
+                <a href="{{ path('app_search_events') }}" class="btn btn--blue">Participer à un événement</a>
+            </div>
+        {% else %}
+            <div class="search__results">
                 {% for registration in registrations %}
                     {% set event = registration.event %}
 
@@ -101,6 +99,6 @@
                     </div>
                 {% endfor %}
             </div>
-            {% endif %}
-        </div>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -12,6 +12,7 @@ use AppBundle\Entity\AdherentCharter\ReferentCharter;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\CommitteeCandidacy;
 use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Entity\MunicipalManagerRoleAssociation;
@@ -975,7 +976,6 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($committee11);
 
         // Make adherents join committees
-        $manager->persist($adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
         $manager->persist($adherent7->superviseCommittee($committee3, '2017-01-26 16:08:24'));
         $manager->persist($adherent7->superviseCommittee($committee4));
         $manager->persist($adherent7->superviseCommittee($committee5));
@@ -984,24 +984,28 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent5->hostCommittee($committee1));
         $manager->persist($adherent6->followCommittee($committee2));
         $manager->persist($adherent4->followCommittee($committee2));
-        $manager->persist($adherent3->followCommittee($committee4));
-        $manager->persist($adherent3->followCommittee($committee5));
-        $manager->persist($adherent9->superviseCommittee($committee6));
-        $manager->persist($adherent3->followCommittee($committee6));
-        $manager->persist($adherent10->superviseCommittee($committee7));
-        $manager->persist($adherent3->followCommittee($committee7));
+        $manager->persist($adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
         $manager->persist($adherent3->hostCommittee($committee3));
+        $manager->persist($voteCommitteeMembership = $adherent3->followCommittee($committee4));
+        $manager->persist($adherent3->followCommittee($committee5));
+        $manager->persist($adherent3->followCommittee($committee6));
+        $manager->persist($adherent3->followCommittee($committee7));
+        $manager->persist($adherent3->followCommittee($committee8));
+        $manager->persist($adherent3->followCommittee($committee9));
+        $manager->persist($adherent9->superviseCommittee($committee6));
+        $manager->persist($adherent10->superviseCommittee($committee7));
         $manager->persist($adherent9->followCommittee($committee5));
         $manager->persist($adherent11->superviseCommittee($committee8));
-        $manager->persist($adherent3->followCommittee($committee8));
         $manager->persist($adherent12->superviseCommittee($committee9));
-        $manager->persist($adherent3->followCommittee($committee9));
         $manager->persist($adherent11->followCommittee($committee9));
         $manager->persist($referent->superviseCommittee($committee10));
         $manager->persist($adherent13->followCommittee($committee10));
         $manager->persist($adherent14->followCommittee($committee10));
         $manager->persist($adherent13->followCommittee($committee11));
         $manager->persist($adherent14->followCommittee($committee11));
+
+        $voteCommitteeMembership->enableVote();
+        $voteCommitteeMembership->setCommitteeCandidacy(new CommitteeCandidacy($committee4->getCommitteeElection()));
 
         $manager->flush();
     }

@@ -5,10 +5,9 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\AdherentTag;
 use AppBundle\Entity\AdherentTagEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadAdherentTagData extends AbstractFixture implements FixtureInterface
+class LoadAdherentTagData extends AbstractFixture
 {
     public const ADHERENT_TAG = [
         'AT001' => AdherentTagEnum::ELECTED,

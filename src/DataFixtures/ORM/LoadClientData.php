@@ -6,12 +6,11 @@ use AppBundle\Entity\OAuth\Client;
 use AppBundle\OAuth\Model\GrantTypeEnum;
 use AppBundle\OAuth\Model\Scope;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadClientData extends AbstractFixture implements FixtureInterface
+class LoadClientData extends AbstractFixture
 {
     use ContainerAwareTrait;
 

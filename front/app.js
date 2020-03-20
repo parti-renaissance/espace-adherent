@@ -270,6 +270,12 @@ class App {
             module.default(committeeModalButtonClass, this.get('api'));
         });
     }
+
+    runMyActivityCommitteeList(switchSelector) {
+        System.import('pages/my_activity_committees').catch((error) => { throw error; }).then((module) => {
+            module.default(switchSelector, this.get('api'));
+        });
+    }
 }
 
 window.App = new App();

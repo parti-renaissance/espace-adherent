@@ -521,6 +521,11 @@
         color: $inf-modl--text-yellow;
     }
 
+    &--tips-blue {
+        background-color: $inf-modl--bkg-blue;
+        color: $inf-modl--text-blue;
+    }
+
     &--error {
         background-color: $inf-modl--bkg-red-lighter;
         color: $error;

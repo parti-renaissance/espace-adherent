@@ -4,10 +4,9 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\OrderSection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadOrderSectionData extends AbstractFixture implements FixtureInterface
+class LoadOrderSectionData extends AbstractFixture
 {
     const ORDER_SECTION = [
         'OS001' => 'Articles',

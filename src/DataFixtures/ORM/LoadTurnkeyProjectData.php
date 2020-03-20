@@ -6,12 +6,11 @@ use AppBundle\Entity\TurnkeyProject;
 use AppBundle\Entity\TurnkeyProjectFile;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadTurnkeyProjectData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, DependentFixtureInterface
+class LoadTurnkeyProjectData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     use ContainerAwareTrait;
 

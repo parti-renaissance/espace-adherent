@@ -10,7 +10,7 @@ class CommitteeElectionExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('is_voting_committee', [CommitteeRuntime::class, 'isVotingCommittee']),
+            new TwigFunction('get_committee_candidacy_membership', [CommitteeRuntime::class, 'getCommitteeCandidacyMembership']),
             new TwigFunction('is_candidate', [CommitteeRuntime::class, 'isCandidate']),
         ];
     }

@@ -1,0 +1,81 @@
+{% extends 'adherent/my_activity_layout.html.twig' %}
+
+{% set committee_candidacy_membership = get_committee_candidacy_membership(app.user) %}
+
+{% block tab %}
+    <div class="l__wrapper--narrow b__nudge--bottom-huge">
+        {% for membership in committeeMemberships %}
+            <div class="adherent__activity adherent__activity--committee space--30">
+                <div class="committee__details">
+                    <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
+                        <a class="link--no-decor"
+                           href="{{ path("app_committee_show", { slug: membership.committee.slug }) }}">
+                            {{ membership.committee.name }}
+                        </a>
+                    </h2>
+                    <div class="font-roboto">
+                        <span class="text--bold b__nudge--right-small">{{ membership.committee.getCityName }}</span>
+                        <span>{{ 'committee.members_count'|transchoice(membership.committee.membersCount) }}</span>
+                    </div>
+                </div>
+                <div class="committee__actions">
+                    <div class="left">
+                        <a href="{{ path("app_committee_show", { slug: membership.committee.slug }) }}"
+                           class="btn btn--blue b__nudge--right-small" target="_blank" rel="noopener noreferrer">
+                            Voir
+                        </a>
+
+                        {% if committee_candidacy_membership == membership %}
+                            <a href="{{ path("app_committee_remove_candidacy", { slug: committee_candidacy_membership.committee.slug }) }}"
+                               class="btn btn--red b__nudge--right-small">
+                                Retirer la candidature
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="right">
+                        <div class="em-switch__wrapper">
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    class="vote-switcher"
+                                    data-committee-title="{{ membership.committee.name }}"
+                                    data-committee-slug="{{ membership.committee.slug }}"
+                                    data-token="{{ csrf_token('committee.vote') }}"
+                                    {{ committee_candidacy_membership is not null ? 'disabled="disabled"' }}
+                                    {{ membership.isVotingCommittee ? 'checked="checked"' }}
+                                >
+                                <span class="slider"></span>
+                            </label>
+                            <span class="em-switch__label">Voter dans ce comité</span>
+                        </div>
+
+                        {% if committee_candidacy_membership is not null %}
+                            {% if membership == committee_candidacy_membership %}
+                                <div class="legend active">Vous êtes candidat dans ce comité.</div>
+                            {% else %}
+                                <div class="legend">Vous devez retirer votre candidature pour pouvoir changer de comité de vote.</div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text--center b__nudge--bottom-60">
+                <p class="text--body b__nudge--bottom-large">Vous n'êtes inscrit(e) dans aucun comité pour le moment.</p>
+                <a href="{{ path('app_search_committees') }}" class="btn btn--blue">Rejoindre un comité</a>
+            </div>
+        {% endfor %}
+
+        <div id="modal-wrapper"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {% if committee_candidacy_membership is null %}
+        <script type="text/javascript">
+            Kernel.onLoad(function() {
+                App.runMyActivityCommitteeList('.vote-switcher');
+            });
+        </script>
+    {% endif %}
+{% endblock %}
