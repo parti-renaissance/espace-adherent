@@ -181,7 +181,7 @@ class CommitteeController extends Controller
      * @Route("/voter", defaults={"enable": true}, name="app_committee_vote", condition="request.isXmlHttpRequest()", methods={"POST"})
      * @Route("/ne-plus-voter", defaults={"enable": false}, name="app_committee_unvote", condition="request.isXmlHttpRequest()", methods={"POST"})
      *
-     * @Security("is_granted('VOTE_COMMITTEE', committee)")
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
      *
      * @param Adherent $adherent
      */
@@ -222,7 +222,7 @@ class CommitteeController extends Controller
     /**
      * @Route("/candidater", name="app_committee_candidate", condition="request.request.has('token')", methods={"POST"})
      *
-     * @Security("is_granted('VOTE_COMMITTEE', committee)")
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
      */
     public function candidateAction(Request $request, Committee $committee, CommitteeManager $manager): Response
     {
@@ -240,7 +240,7 @@ class CommitteeController extends Controller
     /**
      * @Route("/retirer-sa-candidature", name="app_committee_remove_candidacy", methods={"GET"})
      *
-     * @Security("is_granted('VOTE_COMMITTEE', committee)")
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
      */
     public function removeCandidacy(Request $request, Committee $committee, CommitteeManager $manager): Response
     {

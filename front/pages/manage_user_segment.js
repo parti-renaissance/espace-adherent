@@ -7,7 +7,7 @@ export default (segmentType, wrapperSelector, checkboxSelector, api, countMember
         <UserSegmentManager
             segmentType={segmentType}
             checkboxSelector={checkboxSelector}
-            mainCheckbox={find(document, '#members-check-all')}
+            mainCheckbox={dom('#members-check-all')}
             api={api}
             countMembers={countMembers}
         />,

@@ -4,10 +4,6 @@ export default class Modal extends React.Component {
     constructor(props) {
         super(props);
 
-        if (!props.content && !props.contentCallback) {
-            throw new Error('You should provide the modal content or callback');
-        }
-
         this.closeCallback = props.closeCallback;
         this.contentCallback = props.contentCallback;
 
@@ -17,15 +13,7 @@ export default class Modal extends React.Component {
         };
 
         this.hideModal = this.hideModal.bind(this);
-        this.handleContentLoaded = this.handleContentLoaded.bind(this);
         this.renderContent = this.renderContent.bind(this);
-    }
-
-    handleContentLoaded(content) {
-        this.setState({
-            content,
-            contentLoaded: true,
-        });
     }
 
     render() {

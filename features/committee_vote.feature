@@ -36,3 +36,14 @@ Feature:
 
     When I am on "/comites/en-marche-paris-8"
     Then I should see "JE CANDIDATE"
+
+  @javascript
+  Scenario: As member of the committee, I can see its candidacies modal
+    Given I am logged as "jacques.picard@en-marche.fr"
+    When I am on "/comites/antenne-en-marche-de-fontainebleau"
+    Then I should see "JE RETIRE MA CANDIDATURE"
+    And I should see "Voir la liste des candidats"
+
+    When I click the "candidacies-list-modal--trigger" element
+    Then I wait 3 second until I see "Liste des candidat(e)s :"
+    And I should see "Jacques Picard"

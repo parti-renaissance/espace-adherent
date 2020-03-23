@@ -10,6 +10,7 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
+use AppBundle\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -79,6 +80,42 @@ class CommitteesController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/committees/{uuid}/candidacies", name="app_api_committee_candidacies_get", methods={"GET"})
+     *
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     */
+    public function getCommitteeCandidaciesAction(
+        Committee $committee,
+        CommitteeMembershipRepository $repository
+    ): Response {
+        $memberships = $repository->getCandidacyMemberships($committee);
+
+        return $this->json([
+            'metadata' => [
+                'total' => \count($memberships),
+                'males' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
+                    return Genders::MALE === $membership->getAdherent()->getGender();
+                })),
+                'females' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
+                    return Genders::FEMALE === $membership->getAdherent()->getGender();
+                })),
+            ],
+            'candidacies' => array_map(static function (CommitteeMembership $membership) {
+                return [
+                    'first_name' => $membership->getAdherent()->getFirstName(),
+                    'last_name' => $membership->getAdherent()->getLastName(),
+                    'created_at' => $membership->getCommitteeCandidacy()->getCreatedAt(),
+                ];
+            }, $memberships),
+        ]);
+    }
+
+    /**
+     * ApiPlatform action
+     *
+     * @see Committee
+     */
     public function myCommitteesAction(
         CommitteeMembershipRepository $committeeMembershipRepository,
         UserInterface $user

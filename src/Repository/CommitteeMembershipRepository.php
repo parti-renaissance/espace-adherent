@@ -563,4 +563,17 @@ SQL
     {
         return 0 !== $this->count(['adherent' => $adherent, 'committee' => $committee]);
     }
+
+    public function getCandidacyMemberships(Committee $committee): array
+    {
+        return $this->createQueryBuilder('m')
+            ->addSelect('a')
+            ->innerJoin('m.committeeCandidacy', 'c')
+            ->innerJoin('m.adherent', 'a')
+            ->where('m.committee = :committee')
+            ->setParameter('committee', $committee)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

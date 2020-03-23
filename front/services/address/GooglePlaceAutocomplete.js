@@ -65,7 +65,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
                         return;
                     }
 
-                    const container = find(document, '.pac-container');
+                    const container = dom('.pac-container');
 
                     if (null === container || false === container.hasChildNodes()) {
                         clearInterval(intervalId);

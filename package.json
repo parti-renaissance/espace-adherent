@@ -44,6 +44,7 @@
     "mini-css-extract-plugin": "^0.6.0",
     "mocha": "7.1.1",
     "mocha-webpack": "^0.7.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "npm-run-all": "^3.1.2",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
