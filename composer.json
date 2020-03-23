@@ -22,7 +22,11 @@
     "require": {
         "php": ">=7.3",
         "ext-amqp": "*",
+        "ext-apcu": "*",
+        "ext-ctype": "*",
+        "ext-intl": "*",
         "ext-json": "*",
+        "ext-mbstring": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
         "ext-zip": "*",
@@ -169,6 +173,16 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
+    },
+    "replace": {
+        "symfony/polyfill-apcu": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-mbstring": "*",
+        "symfony/polyfill-intl-icu": "*",
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*"
     },
     "conflict": {
         "symfony/symfony": "*"
