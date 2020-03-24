@@ -475,7 +475,7 @@ class ElectedRepresentative
     public function getLabel(string $name): ?ElectedRepresentativeLabel
     {
         foreach ($this->labels as $label) {
-            if ($name === $label->getPoliticalLabel()->getName()) {
+            if ($name === $label->getName()) {
                 return $label;
             }
         }

@@ -3,7 +3,6 @@
 namespace AppBundle\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\PoliticalLabel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,14 +24,14 @@ class ElectedRepresentativeLabel
     private $id;
 
     /**
-     * @var PoliticalLabel|null
+     * @var string|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PoliticalLabel", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank
+     * @Assert\Length(max=50)
      */
-    private $politicalLabel;
+    private $name;
 
     /**
      * @var bool
@@ -72,13 +71,13 @@ class ElectedRepresentativeLabel
     private $electedRepresentative;
 
     public function __construct(
-        PoliticalLabel $politicalLabel = null,
+        string $name = null,
         ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
         int $beginYear = null,
         int $finishYear = null
     ) {
-        $this->politicalLabel = $politicalLabel;
+        $this->name = $name;
         $this->onGoing = $onGoing;
         $this->beginYear = $beginYear;
         $this->finishYear = $finishYear;
@@ -95,14 +94,14 @@ class ElectedRepresentativeLabel
         return $this->id;
     }
 
-    public function getPoliticalLabel(): ?PoliticalLabel
+    public function getName(): ?string
     {
-        return $this->politicalLabel;
+        return $this->name;
     }
 
-    public function setPoliticalLabel(PoliticalLabel $politicalLabel): void
+    public function setName(string $name): void
     {
-        $this->politicalLabel = $politicalLabel;
+        $this->name = $name;
     }
 
     public function isOnGoing(): bool
@@ -147,6 +146,6 @@ class ElectedRepresentativeLabel
 
     public function __toString(): string
     {
-        return $this->getPoliticalLabel()->getName();
+        return $this->getname();
     }
 }

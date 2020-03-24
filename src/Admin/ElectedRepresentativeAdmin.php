@@ -8,9 +8,9 @@ use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\ElectedRepresentative\ElectedRepresentative;
 use AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
+use AppBundle\Entity\ElectedRepresentative\LabelNameEnum;
 use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
 use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use AppBundle\Entity\PoliticalLabel;
 use AppBundle\Form\AdherentEmailType;
 use AppBundle\Form\ElectedRepresentative\ElectedRepresentativeLabelType;
 use AppBundle\Form\ElectedRepresentative\MandateType;
@@ -19,7 +19,6 @@ use AppBundle\Form\ElectedRepresentative\SponsorshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\SocialNetworkLinkType;
 use AppBundle\Repository\ElectedRepresentative\MandateRepository;
-use AppBundle\Repository\PoliticalLabelRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -46,22 +45,13 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         '_sort_by' => 'id',
     ];
 
-    /** @var PoliticalLabelRepository */
-    private $politicalLabelRepository;
-
     /** @var MandateRepository */
     private $mandateRepository;
 
-    public function __construct(
-        $code,
-        $class,
-        $baseControllerName,
-        PoliticalLabelRepository $politicalLabelRepository,
-        MandateRepository $mandateRepository
-    ) {
+    public function __construct($code, $class, $baseControllerName, MandateRepository $mandateRepository)
+    {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->politicalLabelRepository = $politicalLabelRepository;
         $this->mandateRepository = $mandateRepository;
     }
 
@@ -324,15 +314,13 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             ElectedRepresentativeMandatesOrderer::updateOrder($electedRepresentative->getMandates());
         }
 
-        $laREM = $this->politicalLabelRepository->findOneByName(PoliticalLabel::LABEL_LAREM);
-
         // if adherent, we should add the LaREM label, if it does not exist
-        $label = $electedRepresentative->getLabel(PoliticalLabel::LABEL_LAREM);
+        $label = $electedRepresentative->getLabel(LabelNameEnum::LAREM);
         if ($electedRepresentative->isAdherent()
             && $electedRepresentative->getAdherent()
             && !$label) {
             $labelLaREM = new ElectedRepresentativeLabel(
-                $laREM,
+                LabelNameEnum::LAREM,
                 $electedRepresentative,
                 true,
                 $electedRepresentative->getAdherent()->getRegisteredAt()->format('Y')

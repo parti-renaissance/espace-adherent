@@ -94,30 +94,6 @@
 
 {% block elected_representative_label_row %}
     {{ block('form_row') }}
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var input = $('#{{ form.politicalLabel.vars.id }}');
-
-            // Add label name autocomplete
-            input.autocomplete({
-                source: function(request, response) {
-                    var term = request.term.trim();
-                    if (term.length > 0) {
-                        $.get("{{ path('app_political_labels_autocomplete')|raw }}?term=" + term, function(data) { response(data); });
-                    } else {
-                        response([]);
-                    }
-                },
-                minLength: 1,
-                messages: {
-                    noResults: '',
-                    results: function () {
-                    },
-                }
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block app_admin_elected_representative_mandates_sonata_type_native_collection_mandates_widget -%}
@@ -310,8 +286,15 @@
 
 {% block app_admin_elected_representative_elected_representative_label_labels_labels_entry_widget -%}
     <div class="row political-label{{ form.onGoing.vars.checked ? ' text--bold' : '' }}" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-7{{ form.politicalLabel.vars.valid ? '' : ' error' }}">
-            {{ form_row(form.politicalLabel) }}
+        <div class="col-md-7{{ form.name.vars.valid ? '' : ' error' }}">
+            {% set shouldSetOther = form.name.vars.value is not empty and form.name.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+            <select id="{{ form.name.vars.id }}-label-names" class="filter__field form form__field">
+                <option value="" {{ form.name.vars.value is not empty ? 'selected="selected"' }}></option>
+                {% for key, label in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+                    <option value="{{ label }}" {{ form.name.vars.value == label or (shouldSetOther and label == constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            {{ form_row(form.name, { attr: { style: "margin-top: 15px;" } }) }}
         </div>
         <div class="col-md-1{{ form.onGoing.vars.valid ? '' : ' error' }}">
             {{ form_row(form.onGoing) }}
@@ -323,6 +306,32 @@
             {{ form_row(form.finishYear) }}
         </div>
     </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var other = '{{ constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER') }}';
+        var labelNamesSelect = $('#{{ form.name.vars.id }}-label-names');
+        {% if form.name.vars.value is not empty and form.name.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+            $(labelNamesSelect).val(other);
+        {% endif %}
+
+        var toggleLabel = function() {
+            var selectedValue = $(labelNamesSelect).val();
+            if (selectedValue === other) {
+                $('#{{ form.name.vars.id }}').show();
+            } else {
+                $('#{{ form.name.vars.id }}').hide();
+                $('#{{ form.name.vars.id }}').val(selectedValue);
+            }
+        };
+
+        labelNamesSelect.change(function() {
+            toggleLabel();
+        });
+
+        toggleLabel();
+    });
+</script>
 {% endblock %}
 
 {% block app_admin_elected_representative_sponsorships_sonata_type_native_collection_sponsorships_widget -%}

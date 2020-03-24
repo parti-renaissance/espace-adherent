@@ -889,7 +889,6 @@
             <argument />
             <argument>AppBundle\Entity\ElectedRepresentative\ElectedRepresentative</argument>
             <argument />
-            <argument type="service" id="AppBundle\Repository\PoliticalLabelRepository"/>
         </service>
 
         <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
