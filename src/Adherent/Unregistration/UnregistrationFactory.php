@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace AppBundle\Adherent\Unregistration;
 
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Unregistration;
 
 class UnregistrationFactory
 {
-    public function createFromUnregistrationCommandAndAdherent(
+    public static function createFromUnregistrationCommandAndAdherent(
         UnregistrationCommand $command,
         Adherent $adherent
     ): Unregistration {
-        $unregistration = new Unregistration(
+        return new Unregistration(
             $adherent->getUuid(),
             $command->getReasons(),
             $command->getComment(),
@@ -21,7 +21,5 @@ class UnregistrationFactory
             $adherent->getReferentTags()->toArray(),
             $command->getExcludedBy()
         );
-
-        return $unregistration;
     }
 }

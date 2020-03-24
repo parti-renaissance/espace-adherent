@@ -320,18 +320,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function unfollowCommitteesOnUnregistration(Adherent $adherent): void
-    {
-        $this->createQueryBuilder('c')
-            ->update()
-            ->set('c.membersCount', 'c.membersCount - 1')
-            ->where('c.uuid IN (:uuids)')
-            ->setParameter('uuids', $adherent->getMemberships()->getCommitteeUuids())
-            ->getQuery()
-            ->execute()
-        ;
-    }
-
     public function paginateAllApprovedCommittees(
         int $offset = 0,
         int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS

@@ -27,9 +27,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EventRepository extends ServiceEntityRepository
 {
-    const TYPE_PAST = 'past';
-    const TYPE_UPCOMING = 'upcoming';
-    const TYPE_ALL = 'all';
+    public const TYPE_PAST = 'past';
+    public const TYPE_UPCOMING = 'upcoming';
+    public const TYPE_ALL = 'all';
 
     use GeoFilterTrait;
     use NearbyTrait;

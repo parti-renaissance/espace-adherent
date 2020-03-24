@@ -2,7 +2,6 @@
 
 namespace Tests\AppBundle\Security\Voter;
 
-use AppBundle\Membership\MembershipPermissions;
 use AppBundle\Security\Voter\AbstractAdherentVoter;
 use AppBundle\Security\Voter\MembershipVoter;
 
@@ -15,7 +14,7 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
 
     public function provideAnonymousCases(): iterable
     {
-        yield [false, true, MembershipPermissions::UNREGISTER];
+        yield [false, true, MembershipVoter::PERMISSION_UNREGISTER];
     }
 
     /**
@@ -37,7 +36,7 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
             ;
         }
 
-        $this->assertGrantedForAdherent($granted, true, $adherent, MembershipPermissions::UNREGISTER);
+        $this->assertGrantedForAdherent($granted, true, $adherent, MembershipVoter::PERMISSION_UNREGISTER);
     }
 
     public function provideBasicAdherentCases(): iterable
@@ -63,7 +62,7 @@ class MembershipVoterTest extends AbstractAdherentVoterTest
             ->willReturn($granted)
         ;
 
-        $this->assertGrantedForUser($granted, true, $adherent, MembershipPermissions::UNREGISTER);
+        $this->assertGrantedForUser($granted, true, $adherent, MembershipVoter::PERMISSION_UNREGISTER);
     }
 
     public function provideUserCases(): iterable

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Adherent\Unregistration\UnregistrationCommand;
 use AppBundle\AdherentCharter\AdherentCharterFactory;
 use AppBundle\AdherentCharter\AdherentCharterTypeEnum;
 use AppBundle\Entity\Adherent;
@@ -16,7 +17,6 @@ use AppBundle\Mailchimp\SignUp\SignUpHandler;
 use AppBundle\Membership\AdherentChangeEmailHandler;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Membership\MembershipRequestHandler;
-use AppBundle\Membership\UnregistrationCommand;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\DonationRepository;
