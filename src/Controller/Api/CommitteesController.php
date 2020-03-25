@@ -103,6 +103,7 @@ class CommitteesController extends Controller
             ],
             'candidacies' => array_map(static function (CommitteeMembership $membership) {
                 return [
+                    'gender' => $membership->getAdherent()->getGender(),
                     'first_name' => $membership->getAdherent()->getFirstName(),
                     'last_name' => $membership->getAdherent()->getLastName(),
                     'created_at' => $membership->getCommitteeCandidacy()->getCreatedAt(),
