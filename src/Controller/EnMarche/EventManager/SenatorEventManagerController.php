@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche\EventManager;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Event\EventManagerSpaceEnum;
 use AppBundle\Repository\EventRepository;
@@ -16,8 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SenatorEventManagerController extends AbstractEventManagerController
 {
-    use CanaryControllerTrait;
-
     private $repository;
 
     public function __construct(EventRepository $repository)
@@ -40,10 +37,5 @@ class SenatorEventManagerController extends AbstractEventManagerController
         }
 
         return $this->repository->findEventsByOrganizer($senator);
-    }
-
-    protected function checkAccess(): void
-    {
-        $this->disableInProduction();
     }
 }

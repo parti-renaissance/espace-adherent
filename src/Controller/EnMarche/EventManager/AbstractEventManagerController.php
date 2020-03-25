@@ -38,8 +38,6 @@ abstract class AbstractEventManagerController extends Controller
      */
     public function eventsAction(string $type): Response
     {
-        $this->checkAccess();
-
         return $this->renderTemplate('event_manager/events_list.html.twig', [
             'events' => $this->getEvents($type),
         ]);
@@ -55,8 +53,6 @@ abstract class AbstractEventManagerController extends Controller
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
         UserInterface $user
     ): Response {
-        $this->checkAccess();
-
         /** @var Adherent $user */
         $command = new EventCommand($user);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
@@ -105,9 +101,5 @@ abstract class AbstractEventManagerController extends Controller
     protected function getEventClassName(): string
     {
         return Event::class;
-    }
-
-    protected function checkAccess(): void
-    {
     }
 }
