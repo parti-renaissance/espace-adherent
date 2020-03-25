@@ -59,8 +59,6 @@ class DeputyController extends Controller
         CommitteeRepository $committeeRepository,
         ManagedCommitteesExporter $committeesExporter
     ): Response {
-        $this->disableInProduction();
-
         return $this->render('deputy/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson(
                 $committeeRepository->findAllInDistrict($this->getUser()->getManagedDistrict())
