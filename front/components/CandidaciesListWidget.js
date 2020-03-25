@@ -51,7 +51,9 @@ export default class CandidaciesListWidget extends Modal {
             const template = <div key={index} className={'text--dark b__nudge--bottom-medium'}>
                 <span>{candidacy.first_name} {candidacy.last_name}</span><br/>
                 <span className={'text--small'}>
-                    Déclaré candidat le {moment(candidacy.created_at).format('DD/MM/YYYY')}
+                    Déclaré{'female' === candidacy.gender ? 'e ' : ' '}
+                    candidat{'female' === candidacy.gender ? 'e ' : ' '}
+                    le {moment(candidacy.created_at).format('DD/MM/YYYY')}
                 </span>
             </div>;
 

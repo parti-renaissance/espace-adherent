@@ -67,6 +67,8 @@ export default class VoteCommitteeWidget extends React.Component {
                         display: false,
                         triggerApiCall: false,
                     });
+                } else {
+                    location.reload();
                 }
             }
         );
