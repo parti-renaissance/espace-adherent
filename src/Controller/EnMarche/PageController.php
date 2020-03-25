@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\FacebookVideo;
 use AppBundle\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -11,13 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Each time you add or update a custom url with an harcorded slug in the controller code, you must update the
+ * Each time you add or update a custom url with an hardcoded slug in the controller code, you must update the
  * AppBundle\Entity\Page::URLS constant and reindex algolia's page index.
  */
 class PageController extends Controller
 {
-    use CanaryControllerTrait;
-
     /**
      * @Route("/formation", name="page_campus", methods={"GET"})
      */

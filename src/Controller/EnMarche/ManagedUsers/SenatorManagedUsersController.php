@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche\ManagedUsers;
 
-use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\ManagedUsers\ManagedUsersFilterType;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
@@ -19,8 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SenatorManagedUsersController extends AbstractManagedUsersController
 {
-    use CanaryControllerTrait;
-
     private const SPACE_NAME = 'senator';
 
     protected function getSpaceType(): string
@@ -39,8 +36,6 @@ class SenatorManagedUsersController extends AbstractManagedUsersController
 
     protected function createFilterModel(): ManagedUsersFilter
     {
-        $this->disableInProduction();
-
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
