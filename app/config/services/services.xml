@@ -17,7 +17,6 @@
 
         <!-- Adherents -->
         <service id="AppBundle\Membership\AdherentManager" />
-        <service id="AppBundle\Membership\AdherentRegistry" public="true" />
 
         <!-- Algolia -->
         <service id="AppBundle\Algolia\AlgoliaIndexedEntityManager" />
@@ -536,6 +535,7 @@
         <service id="AppBundle\Adherent\Handler\UpdateReferentTagOnDistrictCommandHandler">
             <tag name="messenger.message_handler" />
         </service>
+        <service id="AppBundle\Adherent\UnregistrationHandler" />
 
         <!-- Storage -->
         <service id="AppBundle\Storage\ImageStorage" />

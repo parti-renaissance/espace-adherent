@@ -74,6 +74,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, \Serializable, EntityMediaInterface, EquatableInterface
 {
     public const ENABLED = 'ENABLED';
+    public const TO_DELETE = 'TO_DELETE';
     public const DISABLED = 'DISABLED';
 
     use EntityCrudTrait;
@@ -1435,6 +1436,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return null;
     }
 
+    /**
+     * @return CitizenProjectMembership[]|CitizenProjectMembershipCollection
+     */
     public function getCitizenProjectMemberships($withoutRefused = false): CitizenProjectMembershipCollection
     {
         if (!$this->citizenProjectMemberships instanceof CitizenProjectMembershipCollection) {
@@ -1912,5 +1916,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setElectionResultsReporter(bool $electionResultsReporter): void
     {
         $this->electionResultsReporter = $electionResultsReporter;
+    }
+
+    public function markAsToDelete(): void
+    {
+        $this->status = self::TO_DELETE;
+    }
+
+    public function isToDelete(): bool
+    {
+        return self::TO_DELETE === $this->status;
     }
 }

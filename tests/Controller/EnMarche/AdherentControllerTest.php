@@ -2,6 +2,8 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
+use AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadIdeaData;
 use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
@@ -28,6 +30,7 @@ use AppBundle\Repository\UnregistrationRepository;
 use AppBundle\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -1082,7 +1085,6 @@ class AdherentControllerTest extends WebTestCase
     public function testAdherentTerminatesMembership(
         string $userEmail,
         string $uuid,
-        int $nbComments,
         string $committee,
         int $nbFollowers
     ): void {
@@ -1139,6 +1141,10 @@ class AdherentControllerTest extends WebTestCase
 
         $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
 
+        $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class)(
+            new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
+        );
+
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
         --$nbFollowers;
 
@@ -1182,8 +1188,8 @@ class AdherentControllerTest extends WebTestCase
     public function provideAdherentCredentials(): array
     {
         return [
-            'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 2, 'en-marche-suisse', 3],
-            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 1, 'en-marche-paris-8', 4],
+            'adherent 1' => ['michel.vasseur@example.ch', LoadAdherentData::ADHERENT_13_UUID, 'en-marche-suisse', 3],
+            'adherent 2' => ['luciole1989@spambox.fr', LoadAdherentData::ADHERENT_4_UUID, 'en-marche-paris-8', 4],
         ];
     }
 

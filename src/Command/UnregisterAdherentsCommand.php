@@ -2,9 +2,8 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Adherent\UnregistrationHandler;
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Unregistration;
-use AppBundle\Membership\AdherentRegistry;
 use AppBundle\Membership\UserEvent;
 use AppBundle\Membership\UserEvents;
 use AppBundle\Repository\AdherentRepository;
@@ -33,11 +32,6 @@ class UnregisterAdherentsCommand extends Command
      */
     private $adherentRepository;
 
-    /**
-     * @var AdherentRegistry
-     */
-    private $adherentRegistry;
-
     private $notFoundEmails = [];
 
     private $hosts = [];
@@ -48,15 +42,17 @@ class UnregisterAdherentsCommand extends Command
 
     private $dispatcher;
 
+    private $handler;
+
     public function __construct(
         FilesystemInterface $storage,
         EntityManagerInterface $em,
-        AdherentRegistry $adherentRegistry,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        UnregistrationHandler $handler
     ) {
         $this->storage = $storage;
         $this->em = $em;
-        $this->adherentRegistry = $adherentRegistry;
+        $this->handler = $handler;
         $this->dispatcher = $eventDispatcher;
 
         parent::__construct();
@@ -146,7 +142,7 @@ class UnregisterAdherentsCommand extends Command
                     continue;
                 }
 
-                $this->adherentRegistry->unregister($adherent, Unregistration::createFromAdherent($adherent));
+                $this->handler->handle($adherent);
 
                 $this->dispatcher->dispatch(UserEvents::USER_DELETED, new UserEvent($adherent));
             } catch (\Exception $ex) {

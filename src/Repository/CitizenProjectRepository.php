@@ -227,16 +227,4 @@ class CitizenProjectRepository extends AbstractGroupRepository
             ->getResult()
         ;
     }
-
-    public function unfollowCitizenProjectsOnUnregistration(Adherent $adherent): void
-    {
-        $this->createQueryBuilder('p')
-             ->update()
-             ->set('p.membersCount', 'p.membersCount - 1')
-             ->where('p.uuid IN (:uuids)')
-             ->setParameter('uuids', $adherent->getCitizenProjectMemberships()->getCitizenProjectUuids())
-             ->getQuery()
-             ->execute()
-        ;
-    }
 }

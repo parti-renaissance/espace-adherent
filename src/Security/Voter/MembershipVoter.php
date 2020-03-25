@@ -3,13 +3,14 @@
 namespace AppBundle\Security\Voter;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Membership\MembershipPermissions;
 
 class MembershipVoter extends AbstractAdherentVoter
 {
+    public const PERMISSION_UNREGISTER = 'UNREGISTER';
+
     protected function supports($attribute, $subject)
     {
-        return MembershipPermissions::UNREGISTER === $attribute && null === $subject;
+        return self::PERMISSION_UNREGISTER === $attribute && null === $subject;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool

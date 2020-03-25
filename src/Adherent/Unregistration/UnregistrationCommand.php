@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace AppBundle\Adherent\Unregistration;
 
 use AppBundle\Entity\Administrator;
 use Symfony\Component\Validator\Constraints as Assert;

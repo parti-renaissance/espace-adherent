@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    _instanceof:
+        AppBundle\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
+            tags: ['app.adherent.unregistration.handler']
+
+    AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
+        arguments:
+            $handlers: !tagged 'app.adherent.unregistration.handler'
+        tags: ['messenger.message_handler']
+
+    AppBundle\Adherent\Unregistration\Handlers\:
+        resource: ../../../src/Adherent/Unregistration/Handlers/

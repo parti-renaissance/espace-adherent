@@ -3,6 +3,8 @@
 namespace AppBundle\Membership;
 
 use AppBundle\Address\PostAddressFactory;
+use AppBundle\Adherent\Unregistration\UnregistrationCommand;
+use AppBundle\Adherent\UnregistrationHandler;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\AdherentActivationToken;
 use AppBundle\History\EmailSubscriptionHistoryHandler;
@@ -25,10 +27,10 @@ class MembershipRequestHandler
     private $callbackManager;
     private $mailer;
     private $manager;
-    private $adherentRegistry;
     private $referentTagManager;
     private $membershipRegistrationProcess;
     private $emailSubscriptionHistoryHandler;
+    private $unregistrationHandler;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -37,10 +39,10 @@ class MembershipRequestHandler
         CallbackManager $callbackManager,
         MailerService $mailer,
         ObjectManager $manager,
-        AdherentRegistry $adherentRegistry,
         ReferentTagManager $referentTagManager,
         MembershipRegistrationProcess $membershipRegistrationProcess,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
+        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
+        UnregistrationHandler $unregistrationHandler
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -48,10 +50,10 @@ class MembershipRequestHandler
         $this->callbackManager = $callbackManager;
         $this->mailer = $mailer;
         $this->manager = $manager;
-        $this->adherentRegistry = $adherentRegistry;
         $this->referentTagManager = $referentTagManager;
         $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
+        $this->unregistrationHandler = $unregistrationHandler;
     }
 
     public function registerAsUser(MembershipRequest $membershipRequest): Adherent
@@ -183,10 +185,7 @@ class MembershipRequestHandler
 
     public function terminateMembership(UnregistrationCommand $command, Adherent $adherent, bool $sendMail = true): void
     {
-        $unregistrationFactory = new UnregistrationFactory();
-        $unregistration = $unregistrationFactory->createFromUnregistrationCommandAndAdherent($command, $adherent);
-
-        $this->adherentRegistry->unregister($adherent, $unregistration);
+        $this->unregistrationHandler->handle($adherent, $command);
 
         if ($sendMail) {
             $message = AdherentTerminateMembershipMessage::createFromAdherent($adherent);

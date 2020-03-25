@@ -32,8 +32,13 @@ services:
     AppBundle\Messenger\MessageRecorder\MessageRecorderInterface:
         alias: AppBundle\Messenger\MessageRecorder\MessageRecorder
 
+    test.AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
+        alias: AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
+        public: true
+
 parameters:
     env(DATABASE_NAME): "enmarche_test"
+    env(RABBITMQ_DSN): 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%2f?lazy=0&connection_timeout=10&read_write_timeout=200&heartbeat=100'
     env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'
     env(GMAPS_API_KEY):
     app_host: "test.%env(APP_HOST)%"
