@@ -39,6 +39,10 @@
                             <li class="{{ is_active_route(app.request, ['app_deputy_managed_users_list', 'app_deputy_adherent_invitation']) ? 'active' }}">
                                 <a href="{{ path('app_deputy_managed_users_list') }}">Adhérents</a>
                             </li>
+
+                            <li class="{{ is_active_route(app.request, 'app_deputy_committees') ? 'active' }}">
+                                <a href="{{ path('app_deputy_committees') }}">Comités</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
