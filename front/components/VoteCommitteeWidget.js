@@ -92,7 +92,7 @@ export default class VoteCommitteeWidget extends React.Component {
                     Vous êtes sur le point de changer votre comité de vote.
                     Vous ne pourrez plus voter dans le comité <strong>{oldSwitcherData.committeeTitle}</strong>,
                     êtes-vous sûr de vouloir maintenant voter dans le comité
-                    <strong>{this.props.switcher.dataset.committeeTitle}</strong> ?
+                    <strong> {this.props.switcher.dataset.committeeTitle}</strong> ?
                 </p>
 
                 <div>

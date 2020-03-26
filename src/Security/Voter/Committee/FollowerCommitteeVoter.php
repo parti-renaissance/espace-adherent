@@ -44,6 +44,10 @@ class FollowerCommitteeVoter extends AbstractAdherentVoter
             return false;
         }
 
+        if ($membership->getCommitteeCandidacy() && $membership->getCommitteeCandidacy()->getCommitteeElection()->getCommittee()->equals($committee)) {
+            return false;
+        }
+
         // Any basic follower of a committee can unfollow the committee at any point in time.
         // A host can only if another host is registered for that committee.
         return $membership->isFollower() || 1 < $this->repository->countHostMembers($committee);
