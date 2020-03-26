@@ -192,9 +192,9 @@ class PoliticalFunction
         $this->mandate = $mandate;
     }
 
-    public function getMandateGeographicalArea(): string
+    public function getMandateZoneName(): string
     {
-        return $this->mandate ? $this->mandate->getGeographicalArea() : '';
+        return $this->mandate && $this->mandate->getZone() ? $this->mandate->getZone()->getName() : '';
     }
 
     public function __toString(): string
