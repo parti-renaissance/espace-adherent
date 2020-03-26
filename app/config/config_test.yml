@@ -28,10 +28,6 @@ services:
     Tests\AppBundle\Test\Payment\PayboxProvider:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'
-
-    AppBundle\Messenger\MessageRecorder\MessageRecorderInterface:
-        alias: AppBundle\Messenger\MessageRecorder\MessageRecorder
-
     test.AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
         alias: AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
         public: true
@@ -52,25 +48,6 @@ parameters:
         mouvement: Je ne me reconnais plus dans les actions du mouvement En Marche !
         comite: Je suis en désaccord avec l’activité de mon comité local
         autre: Autre
-
-    messenger.middleware:
-        - { id: AppBundle\Messenger\RecorderMiddleware }
-        - { id: send_message }
-        - { id: handle_message }
-
-framework:
-    test: ~
-    session:
-        storage_id: session.storage.mock_file
-        name: 'en_marche_session_%kernel.environment%'
-    profiler:
-        collect: false
-    cache:
-        app: cache.adapter.null
-
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
 
 security:
     encoders:

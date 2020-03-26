@@ -29,7 +29,7 @@ default:
     extensions:
         Behat\Symfony2Extension:
             kernel:
-                class: AppKernel
+                class: AppBundle\Kernel
                 env: test
         Behat\MinkExtension:
             base_url: "http://test.enmarche.code"
