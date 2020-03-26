@@ -986,7 +986,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent4->followCommittee($committee2));
         $manager->persist($adherent3->superviseCommittee($committee1, '2017-01-12 13:25:54'));
         $manager->persist($adherent3->hostCommittee($committee3));
-        $manager->persist($voteCommitteeMembership = $adherent3->followCommittee($committee4));
+        $manager->persist($adherent3->followCommittee($committee4));
         $manager->persist($adherent3->followCommittee($committee5));
         $manager->persist($adherent3->followCommittee($committee6));
         $manager->persist($adherent3->followCommittee($committee7));
@@ -1003,9 +1003,13 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent14->followCommittee($committee10));
         $manager->persist($adherent13->followCommittee($committee11));
         $manager->persist($adherent14->followCommittee($committee11));
+        $manager->persist($assessor->followCommittee($committee5));
+        $manager->persist($voteCommitteeMembership = $assessor->followCommittee($committee6));
+        $manager->persist($assessor->followCommittee($committee7));
+        $manager->persist($assessor->followCommittee($committee8));
 
         $voteCommitteeMembership->enableVote();
-        $voteCommitteeMembership->setCommitteeCandidacy(new CommitteeCandidacy($committee4->getCommitteeElection()));
+        $voteCommitteeMembership->setCommitteeCandidacy(new CommitteeCandidacy($committee6->getCommitteeElection()));
 
         $manager->flush();
     }

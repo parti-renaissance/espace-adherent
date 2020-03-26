@@ -51,9 +51,9 @@ class CommitteesControllerTest extends WebTestCase
 
     public function testGetCommitteeCandidaciesReturnGoodJson(): void
     {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
+        $this->authenticateAsAdherent($this->client, 'assesseur@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadAdherentData::COMMITTEE_4_UUID));
+        $this->client->request(Request::METHOD_GET, sprintf('/api/committees/%s/candidacies', LoadAdherentData::COMMITTEE_6_UUID));
         $this->isSuccessful($response = $this->client->getResponse());
 
         $data = \json_decode($response->getContent(), true);
@@ -71,8 +71,9 @@ class CommitteesControllerTest extends WebTestCase
         self::assertCount(1, $data['candidacies']);
 
         self::assertArraySubset([[
-            'first_name' => 'Jacques',
-            'last_name' => 'Picard',
+            'gender' => 'male',
+            'first_name' => 'Bob',
+            'last_name' => 'Assesseur',
         ]], $data['candidacies']);
     }
 

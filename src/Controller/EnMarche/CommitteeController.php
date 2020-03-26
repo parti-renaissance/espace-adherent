@@ -222,7 +222,7 @@ class CommitteeController extends Controller
     /**
      * @Route("/candidater", name="app_committee_candidate", condition="request.request.has('token')", methods={"POST"})
      *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee) and is_granted('ABLE_TO_CANDIDATE')")
      */
     public function candidateAction(Request $request, Committee $committee, CommitteeManager $manager): Response
     {

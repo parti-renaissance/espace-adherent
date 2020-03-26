@@ -40,8 +40,8 @@ Feature:
       "committees":4,
       "members": {
         "female":1,
-        "male":5,
-        "total":6
+        "male":6,
+        "total":7
       },
       "supervisors": {
         "female":1,
