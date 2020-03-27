@@ -1,6 +1,7 @@
 {% extends 'adherent/my_activity_layout.html.twig' %}
 
 {% set committee_candidacy_membership = get_committee_candidacy_membership(app.user) %}
+{% set is_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
 
 {% block tab %}
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
@@ -43,7 +44,7 @@
                                     data-committee-title="{{ membership.committee.name }}"
                                     data-committee-slug="{{ membership.committee.slug }}"
                                     data-token="{{ csrf_token('committee.vote') }}"
-                                    {{ committee_candidacy_membership is not null ? 'disabled="disabled"' }}
+                                    {{ not is_able_to_change_vote ? 'disabled="disabled"' }}
                                     {{ membership.isVotingCommittee ? 'checked="checked"' }}
                                 >
                                 <span class="slider"></span>
@@ -73,7 +74,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    {% if committee_candidacy_membership is null %}
+    {% if is_able_to_change_vote %}
         <script type="text/javascript">
             Kernel.onLoad(function() {
                 App.runMyActivityCommitteeList('.vote-switcher');
