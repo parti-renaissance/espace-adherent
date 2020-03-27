@@ -181,7 +181,7 @@ class CommitteeController extends Controller
      * @Route("/voter", defaults={"enable": true}, name="app_committee_vote", condition="request.isXmlHttpRequest()", methods={"POST"})
      * @Route("/ne-plus-voter", defaults={"enable": false}, name="app_committee_unvote", condition="request.isXmlHttpRequest()", methods={"POST"})
      *
-     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     * @Security("is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE', committee)")
      *
      * @param Adherent $adherent
      */
