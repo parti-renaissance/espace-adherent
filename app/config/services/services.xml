@@ -340,7 +340,7 @@
         <service id="AppBundle\Timeline\TimelineFactory" />
         <service id="AppBundle\Timeline\TimelineImageFactory" public="true">
             <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
-            <argument key="$webDirectory">%kernel.project_dir%/../web</argument>
+            <argument key="$webDirectory">%kernel.project_dir%/web</argument>
         </service>
 
         <!-- Command -->
