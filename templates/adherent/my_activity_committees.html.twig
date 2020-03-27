@@ -27,7 +27,9 @@
 
                         {% if committee_candidacy_membership == membership %}
                             <a href="{{ path("app_committee_remove_candidacy", { slug: committee_candidacy_membership.committee.slug }) }}"
-                               class="btn btn--red b__nudge--right-small">
+                               class="btn btn--red b__nudge--right-small em-confirm--trigger"
+                               data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+                            >
                                 Retirer la candidature
                             </a>
                         {% endif %}
