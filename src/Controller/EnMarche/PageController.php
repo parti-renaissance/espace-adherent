@@ -24,7 +24,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("/formation/dificultes-internet", name="page_campus_internet", methods={"GET"})
+     * @Route("/formation/difficultes-internet", name="page_campus_internet", methods={"GET"})
      */
     public function campusInternetAction()
     {
