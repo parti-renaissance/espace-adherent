@@ -40,8 +40,7 @@ class CommitteeCommandTest extends TestCase
 
         $committeeCommand = CommitteeCommand::createFromCommittee($committee);
 
-        $this->assertInstanceOf(CommitteeCommand::class, $committeeCommand);
-        $this->assertSame($uuid, $committeeCommand->getCommitteeUuid());
+        $this->assertSame($uuid, $committeeCommand->getCommittee()->getUuid());
         $this->assertSame($committee, $committeeCommand->getCommittee());
         $this->assertSame($name, $committeeCommand->name);
         $this->assertSame($description, $committeeCommand->description);

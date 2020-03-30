@@ -116,17 +116,19 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findVotingMembership(Adherent $adherent): ?CommitteeMembership
+    public function findVotingMemberships(Committee $committee): array
     {
-        $qb = $this->createQueryBuilder('cm');
-
-        $query = $qb->where('cm.adherent = :adherent')
-            ->andWhere($qb->expr()->eq('cm.enableVote', true))
-            ->setParameter('adherent', $adherent)
+        return $this
+            ->createQueryBuilder('cm')
+            ->where('cm.committee = :committee')
+            ->andWhere('cm.enableVote = :true')
+            ->setParameters([
+                'committee' => $committee,
+                'true' => true,
+            ])
             ->getQuery()
+            ->getResult()
         ;
-
-        return $query->getOneOrNullResult();
     }
 
     /**
@@ -574,6 +576,24 @@ SQL
             ->setParameter('committee', $committee)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function enableVoteStatusForAdherents(Committee $committee, array $adherents): void
+    {
+        $this->createQueryBuilder('cm')
+            ->update()
+            ->set('cm.enableVote', ':true')
+            ->Where('cm IN (:memberships)')
+            ->setParameters([
+                'memberships' => $this->findBy([
+                    'adherent' => $adherents,
+                    'committee' => $committee,
+                ]),
+                'true' => true,
+            ])
+            ->getQuery()
+            ->execute()
         ;
     }
 }

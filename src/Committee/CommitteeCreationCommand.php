@@ -48,7 +48,7 @@ class CommitteeCreationCommand extends CommitteeCommand
         return $this->adherent;
     }
 
-    public function setCommittee(Committee $committee)
+    public function setCommittee(Committee $committee): void
     {
         $this->committee = $committee;
     }

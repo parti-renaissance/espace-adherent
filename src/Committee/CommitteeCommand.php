@@ -7,7 +7,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Validator\UniqueCommittee as AssertUniqueCommittee;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,7 +74,7 @@ class CommitteeCommand
 
     public static function createFromCommittee(Committee $committee): self
     {
-        $dto = new self(Address::createFromAddress($committee->getPostAddress()), $committee);
+        $dto = new self(Address::createFromAddress($committee->getPostAddress()));
         $dto->name = $committee->getName();
         $dto->description = $committee->getDescription();
         $dto->phone = $committee->getPhone();
@@ -106,17 +105,7 @@ class CommitteeCommand
         return $this->committee;
     }
 
-    public function getCommitteeUuid(): UuidInterface
-    {
-        return $this->committee->getUuid();
-    }
-
-    public function getCommitteeSlug(): string
-    {
-        return $this->committee->getSlug();
-    }
-
-    public function setAddress(Address $address)
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
     }

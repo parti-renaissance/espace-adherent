@@ -569,6 +569,17 @@ class CommitteeManager
             if ($this->getMembershipRepository()->superviseCommittee($adherent)) {
                 throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForNotApprovedCommitteeException($membership->getUuid(), $committee->getName());
             }
+
+            if ($adherent->getMemberships()->getCommitteeCandidacyMembership()) {
+                throw CommitteeMembershipException::createNotPromotableSupervisorPrivilegeForCandidateMember($membership->getUuid());
+            }
+
+            if ($votingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
+                $votingMembership->disableVote();
+                $this->getManager()->flush();
+            }
+
+            $membership->enableVote();
         }
 
         $membership->setPrivilege($privilege);
