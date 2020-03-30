@@ -154,8 +154,29 @@ class AdherentTest extends TestCase
         $this->assertFalse($adherent->isBasicAdherent());
     }
 
-    private function createAdherent($email = 'john.smith@example.org'): Adherent
+    /**
+     * @dataProvider provideInitials
+     */
+    public function testInitials($firstName, $lastName, $initials): void
     {
+        $adherent = $this->createAdherent('john.smith@example.org', $firstName, $lastName);
+
+        $this->assertSame($initials, $adherent->getInitials());
+    }
+
+    public function provideInitials(): iterable
+    {
+        yield ['John', 'Smith', 'JS'];
+        yield ['Jean-Pierre', 'Vandamme', 'JV'];
+        yield ['Charles', 'Du Jardin', 'CD'];
+        yield ['Jack', 'L\'éventreur', 'JL'];
+    }
+
+    private function createAdherent(
+        $email = 'john.smith@example.org',
+        $firstName = 'John',
+        $lastName = 'Smith'
+    ): Adherent {
         $phone = new PhoneNumber();
         $phone->setCountryCode('FR');
         $phone->setNationalNumber('0140998211');
@@ -165,8 +186,8 @@ class AdherentTest extends TestCase
             $email,
             'super-password',
             'male',
-            'John',
-            'Smith',
+            $firstName,
+            $lastName,
             new \DateTime('1990-12-12'),
             ActivityPositions::STUDENT,
             PostAddress::createFrenchAddress('92 bld du Général Leclerc', '92110-92024'),
