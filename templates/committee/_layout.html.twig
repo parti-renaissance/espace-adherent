@@ -15,18 +15,30 @@
         </div>
 
         <header class="background--blue space--60-0">
+            <div class="l__wrapper pst--relative">
+                <div class="committee__header__more">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="6" viewBox="0 0 24 6">
+                      <path fill="#FFF" d="M20,18 C21.4727593,18 22.6666667,19.1939073 22.6666667,20.6666667 C22.6666667,22.139426 21.4727593,23.3333333 20,23.3333333 C18.5272407,23.3333333 17.3333333,22.139426 17.3333333,20.6666667 C17.3333333,19.1939073 18.5272407,18 20,18 Z M29.3333333,18 C30.8060927,18 32,19.1939073 32,20.6666667 C32,22.139426 30.8060927,23.3333333 29.3333333,23.3333333 C27.860574,23.3333333 26.6666667,22.139426 26.6666667,20.6666667 C26.6666667,19.1939073 27.860574,18 29.3333333,18 Z M10.6666667,18 C12.139426,18 13.3333333,19.1939073 13.3333333,20.6666667 C13.3333333,22.139426 12.139426,23.3333333 10.6666667,23.3333333 C9.19390733,23.3333333 8,22.139426 8,20.6666667 C8,19.1939073 9.19390733,18 10.6666667,18 Z" transform="translate(-8 -18)"/>
+                    </svg>
+                </div>
+            </div>
             <div class="l__wrapper l__row l__row--h-stretch l__mobile--col">
                 <div class="text--white committee__header__titles">
-                    <div class="text--uppercase text--small b__nudge--bottom-tiny">
+                    <div class="text--uppercase text--small b__nudge--bottom">
                         Comité local {% if is_host %}n°{{ committee.id }}{% endif %}
                     </div>
                     <div class="committee__name">
-                        {{ include('components/location-pin.html.twig') }}
-                        <h1 id="committee-name" class="text--large b__nudge--left-small">{{ committee.name }}</h1>
+                        <h1 id="committee-name" class="text--large">{{ committee.name }}</h1>
                     </div>
+                    <ul class="committee__infos">
+                        <li><a href="https://www.google.com/maps/search/{{ committee.postalCode }}+{{ committee.cityName }}+{{ committee.countryName }}" target="_blank" class="link--blue--dark link--no-decor">{{ committee.cityName }}</a>
+                        {% if committee.postalCode %}({{ committee.postalCode }}){% endif %}</li>
+                        <li>{{ 'committee.members_count'|transchoice(committee.membersCount) }}</li>
+                        <li>Partagez</li>
+                    </ul>
                 </div>
 
-                <div class="l__col">
+                <div class="committee__header__actions">
                     {% block committee_lcol %}{% endblock %}
                 </div>
             </div>

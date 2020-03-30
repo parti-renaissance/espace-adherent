@@ -4,13 +4,14 @@
 }
 
 .committee-follow--anonymous {
-    text-align: center;
-    @media (min-width: $mobile) {
-        text-align: right;
-    }
+    // text-align: center;
+    // @media (min-width: $mobile) {
+    //     text-align: right;
+    // }
 
     &__link {
-        padding-top: 3px;
+        font-size: 14px;
+        font-family: $font-roboto;
     }
 }
 
@@ -31,17 +32,73 @@
     }
 
     &__name {
-        display: flex;
-        max-width: 600px;
-        @include breakword;
+        // display: flex;
+        // @include breakword;
     }
 
-    &__header__titles {
-        margin-right: 25px;
-        padding-bottom: 15px;
+    &__infos {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-family: $font-roboto;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 25px;
 
-        @media (max-width: $mobile) {
-            margin: 0;
+        @media (min-width: $mobile) {
+            flex-direction: row;
+            font-size: 16px;
+            justify-content: flex-start;
+        }
+
+        li {
+            margin: 0 0 5px 0;
+
+            @media (min-width: $mobile) {
+                margin: 0 30px 10px 0;
+                font-size: 18px;
+            }
+
+            a {
+                color: $white;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__header {
+
+        &__titles {
+            margin-bottom: 20px;
+            text-align: center;
+
+            @media (min-width: $mobile) {
+                margin-right: 25px;
+                text-align: left;
+            }
+        }
+
+        &__actions {
+            display: flex;
+            width: 285px;
+            justify-content: center;
+
+            @media (min-width: $mobile) {
+                justify-content: flex-start;
+            }
+        }
+
+        &__more {
+            position: absolute;
+            right: 0;
+            top: -30px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
         }
     }
 
@@ -248,7 +305,15 @@
         }
     }
 
+    &__main {
+        margin-top: 70px;
+        margin-right: 5%;
+    }
+
     &__aside {
+        margin-top: 70px;
+        min-width: 285px;
+
         img {
             max-width: 100%;
         }
@@ -285,19 +350,14 @@
     }
 
     &__card {
-        margin: 20px 0;
+        margin-bottom: 50px;
 
         h5 {
-            border-top: 1px solid $gray--light;
-            padding: 15px 0 10px 0;
-            margin: 0;
-            @include text--small;
-            @include text--uppercase;
-            font-weight: normal;
-
-            svg {
-                width: 18px;
-            }
+            margin: 0 0 20px 0;
+            font-weight: bold;
+            font-size: 16px;
+            color: $black;
+            font-family: $font-roboto
         }
 
         .committee-host {
@@ -412,7 +472,6 @@
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
-        margin-top: 40px;
 
         .left {
             h2 {
@@ -439,7 +498,7 @@
         padding: 30px;
 
         &__titles {
-            margin-right: 25px;
+            padding-right: 50px;
         }
 
         &__cta {
