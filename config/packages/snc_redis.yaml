@@ -1,0 +1,8 @@
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: "redis://%env(REDIS_HOST)%"
+    session:
+        client: default

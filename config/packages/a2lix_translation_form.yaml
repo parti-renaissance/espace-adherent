@@ -1,0 +1,4 @@
+a2lix_translation_form:
+    locales: "%locales%"
+    required_locales: ["%locale%"]
+    templating: "admin/form_translations.html.twig"

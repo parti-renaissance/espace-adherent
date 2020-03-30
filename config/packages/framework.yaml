@@ -1,0 +1,25 @@
+framework:
+    secret:          "%env(SECRET)%"
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    trusted_hosts:   ~
+    session:
+        name:        enmarche
+        handler_id:  snc_redis.session.handler
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+    cache:
+        app: cache.adapter.doctrine
+        default_doctrine_provider: cache.redis_doctrine_provider
+        pools:
+            app.cache.redirection:
+                adapter: cache.adapter.doctrine
+            app.cache.republican_silence: ~
+            app.cache.municipal_site: ~

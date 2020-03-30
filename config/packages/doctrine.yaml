@@ -1,0 +1,67 @@
+doctrine:
+    dbal:
+        driver:           pdo_mysql
+        charset:          UTF8
+        host:             "%env(DATABASE_HOST)%"
+        port:             "%env(DATABASE_PORT)%"
+        dbname:           "%env(DATABASE_NAME)%"
+        user:             "%env(DATABASE_USER)%"
+        password:         "%env(DATABASE_PASSWORD)%"
+        unix_socket:      "%env(DATABASE_SOCKET)%"
+        server_version:   5.7
+        options:
+            1002: "SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
+        schema_filter: '#^(?!ideas_workshop_idea_notification_dates)#'
+        types:
+            uuid:           Ramsey\Uuid\Doctrine\UuidType
+            phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
+            geo_point:      AppBundle\Doctrine\DBAL\Types\GeoPointType
+            geometry:       CrEOF\Spatial\DBAL\Types\GeometryType
+            polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+            multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: false
+        mappings:
+            AppBundle:
+                mapping: true
+                type: annotation
+                dir: 'Entity'
+                alias: 'AppBundle'
+                prefix: 'AppBundle\Entity'
+                is_bundle: true
+
+        filters:
+            softdeleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+            oneLocale:
+                class: A2lix\I18nDoctrineBundle\Doctrine\ORM\Filter\OneLocaleFilter
+                enabled: true
+            enabled:
+                class:   AppBundle\Doctrine\Filter\EnabledFilter
+                enabled: true
+
+        dql:
+            datetime_functions:
+                year_month: DoctrineExtensions\Query\Mysql\YearMonth
+                timestampdiff: DoctrineExtensions\Query\Mysql\TimestampDiff
+            numeric_functions:
+                acos: DoctrineExtensions\Query\Mysql\Acos
+                cos: DoctrineExtensions\Query\Mysql\Cos
+                radians: DoctrineExtensions\Query\Mysql\Radians
+                sin: DoctrineExtensions\Query\Mysql\Sin
+                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\GeomFromText
+                st_within: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STWithin
+                point: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point
+            string_functions:
+                json_contains: AppBundle\Query\Mysql\JsonContains
+                find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
+                json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
+                substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
+                group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
+                replace: DoctrineExtensions\Query\Mysql\Replace
+
+        hydrators:
+            EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator

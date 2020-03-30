@@ -1,0 +1,20 @@
+api_platform:
+    name_converter: serializer.name_converter.camel_case_to_snake_case
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
+    enable_docs: true
+    enable_swagger_ui: true
+    enable_entrypoint: false
+    allow_plain_identifiers: true
+    formats:
+        json:
+            mime_types: ['application/json']
+    error_formats:
+        jsonproblem:
+            mime_types: ['application/problem+json']
+    collection:
+        pagination:
+            items_per_page: 10
+            maximum_items_per_page: 30
+            client_items_per_page: true
+            items_per_page_parameter_name: page_size

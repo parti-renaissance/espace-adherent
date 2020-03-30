@@ -1,0 +1,6 @@
+parameters:
+    doctrine.orm.entity_manager.class: steevanb\DoctrineStats\Doctrine\ORM\EntityManager
+
+doctrine:
+    dbal:
+        profiling_collect_backtrace: true

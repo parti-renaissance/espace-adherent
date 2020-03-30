@@ -1,5 +1,5 @@
 /app/config/parameters.yml
-/app/config/assets_version.yml
+/config/packages/assets_version.yaml
 /app/data/images/
 /app/data/files/
 /app/data/chez-vous/

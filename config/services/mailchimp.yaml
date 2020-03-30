@@ -17,13 +17,13 @@ services:
             tags: ['messenger.message_handler']
 
     AppBundle\Mailchimp\Webhook\Handler\:
-        resource: ../../../src/Mailchimp/Webhook/Handler/
+        resource: ../../src/Mailchimp/Webhook/Handler/
 
     AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\:
-        resource: ../../../src/Mailchimp/Campaign/SegmentConditionBuilder/
+        resource: ../../src/Mailchimp/Campaign/SegmentConditionBuilder/
 
     AppBundle\AdherentMessage\MailchimpCampaign\:
-        resource: ../../../src/AdherentMessage/MailchimpCampaign/
+        resource: ../../src/AdherentMessage/MailchimpCampaign/
 
     AppBundle\Mailchimp\Webhook\WebhookHandler:
         arguments: [!tagged 'app.mailchimp.webhook_handler']
@@ -38,7 +38,7 @@ services:
     AppBundle\AdherentMessage\StatisticsAggregator: ~
 
     AppBundle\Mailchimp\Synchronisation\Handler\:
-        resource: ../../../src/Mailchimp/Synchronisation/Handler/
+        resource: ../../src/Mailchimp/Synchronisation/Handler/
 
     AppBundle\Mailchimp\Synchronisation\Handler\AdherentChangeCommandHandler:
         tags:
@@ -47,10 +47,10 @@ services:
             - ['setLogger', ['@logger']]
 
     AppBundle\AdherentMessage\Handler\:
-        resource: ../../../src/AdherentMessage/Handler/
+        resource: ../../src/AdherentMessage/Handler/
 
     AppBundle\Newsletter\Handler\:
-        resource: ../../../src/Newsletter/Handler/
+        resource: ../../src/Newsletter/Handler/
 
     AppBundle\Mailchimp\SignUp\SignUpHandler:
         arguments:

@@ -1,0 +1,4 @@
+algolia:
+    application_id:    "%env(ALGOLIA_APP_ID)%"
+    api_key:           "%env(ALGOLIA_BACK_API_KEY)%"
+    index_name_prefix: "%env(ALGOLIA_INDEX_PREFIX)%"
