@@ -1,22 +1,21 @@
 <aside class="committee__aside l__wrapper--aside">
 
-    <div class="committee__card b__nudge--top-40">
+    <!-- <div class="committee__card b__nudge--top-40">
         {% if is_granted('REPORT') %}
             <a href="{{ report_path(committee, app.request.pathInfo) }}" class="text--body link--newblue">Signaler ce comité</a>
         {% endif %}
-    </div>
+    </div> -->
 
-    <div class="committee__card b__nudge--top-large text--medium-small text--uppercase icon--with-text">
+    <!-- <div class="committee__card b__nudge--top-large text--medium-small text--uppercase icon--with-text">
         {{ include('components/participants.html.twig') }}
         <span class="committee-members">{{ 'committee.members_count'|transchoice(committee.membersCount) }}</span>
-    </div>
+    </div> -->
     <div class="committee__card">
         <h5>À propos</h5>
         <div class="text--body" id="committee-description">{{ committee.description }}</div>
     </div>
     <div class="committee__card">
         <h5 class="icon--with-text">
-            {{ include('components/admin.html.twig') }}
             Administration
         </h5>
         {% if not has_role_user %}
@@ -26,7 +25,7 @@
             {% for host in committee_hosts %}
                 <li class="committee-host text--body text--bold">
                     <div>
-                        {{ has_role_adherent ? host.fullName : host.partialName }}
+                        {{ has_role_adherent ? host.fullName : host.partialName }}<br />
                         <span class="text--normal text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
                     </div>
                     {% if is_host and app.user.equals(host) %}
@@ -41,7 +40,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="committee__card">
+    <!-- <div class="committee__card">
         <h5 class="icon--with-text svg--black">
             {{ include('components/location-pin.html.twig') }}
             Localisation
@@ -50,7 +49,7 @@
         <div class="text--body">
             <a href="https://www.google.com/maps/search/{{ committee.postalCode }}+{{ committee.cityName }}+{{ committee.countryName }}" target="_blank" class="link--blue--dark link--no-decor">{{ committee.cityName }}</a>
             {% if committee.postalCode %}({{ committee.postalCode }}){% endif %}
-    </div>
+    </div> -->
 
     {% if committee.socialNetworksLinks|length > 0 %}
     <div class="committee__card">

@@ -46,25 +46,22 @@
         {% if not has_role_user %}
             <div class="committee-follow--anonymous">
                 <button role="button"
-                        class="btn btn--no-border btn--text-blue committee-follow--disabled btn--no-wrap"
-                        style="max-width: 175px;"
+                        class="btn btn--no-border committee-follow--disabled btn--no-wrap"
                         disabled="disabled">
                     Suivre ce comité
                 </button>
 
                 <div class="committee-follow--anonymous__link text--white b__nudge--top-10">
-                    <a href="{{ login_path_for_anonymous_follower() }}" id="committee-login-link" class="link--white">Connectez-vous</a>
+                    <a href="{{ login_path_for_anonymous_follower() }}" id="committee-login-link" class="link--white text--bold">Connectez-vous</a>
                     ou
-                    <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white">
-                        adhérez
-                    </a>
-                    pour suivre ce comité
+                    <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white text--bold">adhérez</a>
+                    <br />pour suivre ce comité
                 </div>
             </div>
         {% elseif not has_role_adherent %}
             <div class="committee-follow--anonymous">
                 <button role="button"
-                        class="btn btn--no-border btn--text-blue committee-follow--disabled btn--no-wrap"
+                        class="btn btn--no-border committee-follow--disabled btn--no-wrap"
                         style="max-width: 175px;"
                         disabled="disabled">
                     Suivre ce comité
@@ -77,7 +74,7 @@
             </div>
         {% elseif can_follow(committee) %}
             <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-follow btn--no-wrap committee-action-button"
+                    class="btn btn--no-border committee-follow btn--no-wrap committee-action-button"
                     id="committee-toggle-membership"
                     data-action="rejoindre"
                     data-csrf-token="{{ csrf_token('committee.follow') }}">
@@ -86,7 +83,7 @@
             </button>
         {% elseif can_unfollow(committee) %}
             <button role="button"
-                    class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap committee-action-button"
+                    class="btn btn--no-border committee-unfollow btn--no-wrap committee-action-button"
                     id="committee-toggle-membership"
                     data-action="quitter"
                     data-csrf-token="{{ csrf_token('committee.unfollow') }}">
@@ -95,15 +92,16 @@
             </button>
         {% elseif is_host %}
             <div class="committee-follow--anonymous">
-                <button role="button"
-                        class="btn btn--no-border btn--text-blue committee-unfollow btn--no-wrap"
+                <!-- <button role="button"
+                        class="btn btn--no-border committee-unfollow btn--no-wrap"
                         id="committee-toggle-membership"
                         disabled="disabled">
                     Quitter ce comité
                 </button>
                 <div class="committee-follow--anonymous__link text--white b__nudge--top-10">
                     En tant qu'animateur, vous ne pouvez pas cesser de suivre votre comité.
-                </div>
+                </div> -->
+                {{ include('committee/_host_header.html.twig') }}
             </div>
         {% elseif is_candidate(app.user, committee) %}
             <div class="committee-follow--anonymous">
@@ -116,7 +114,7 @@
             </div>
         {% endif %}
 
-        <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
+        <!-- <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
             <li class="head">Partagez</li>
             <li role="button" aria-label="Partagez sur Facebook"
                 onclick="App.share('facebook', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
@@ -130,14 +128,14 @@
                 onclick="App.share('email', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
                 <i class="fa fa-envelope-o"></i>
             </li>
-        </ul>
+        </ul> -->
     {% endif %}
 {% endblock %}
 
 {% block committee_content %}
     <nav>
         {% if is_host %}
-            {{ include('committee/_host_header.html.twig') }}
+
         {% endif %}
     </nav>
 
@@ -155,9 +153,12 @@
         {% if is_canary_enabled() and has_role_adherent and committee.committeeElection and membership %}
             {% set candidacy_committee_membership = app.user.memberships.committeeCandidacyMembership %}
 
-            <section class="committee__elections-box">
+            <section class="committee__elections-box b__nudge--bottom-larger">
                 <div class="left">
                     <h2 class="text--medium-large">Candidater pour participer au Conseil Territorial</h2>
+                    <div class="text--small b__nudge--top-15">
+                        <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor">Voir la liste des candidats</a>
+                    </div>
                 </div>
                 <div class="right">
                     {% if is_granted('ABLE_TO_CANDIDATE') %}
@@ -201,21 +202,16 @@
                                 car vous êtes référent
                             {% elseif app.user.supervisor %}
                                 car vous êtes Animateur Local
-                            {% endif %}
+                              {% endif %}
                         </div>
                     {% endif %}
                 </div>
-
-                <div class="text--small b__nudge--top-15">
-                    <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor">Voir la liste des candidats</a>
-                </div>
-
                 {% set count_male_candidates = count_committee_candidates(committee, true) %}
                 {% set count_female_candidates = count_committee_candidates(committee, false) %}
 
                 {% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
                     <div class="l__col--grow-1 b__nudge--top-40 text--pink">
-                        ⚠ {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
+                        {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
                     </div>
                 {% endif %}
             </section>
@@ -224,7 +220,7 @@
         {% endif %}
 
         <section class="committee__timeline" id="committee-timeline">
-            <h2 class=" space--20-0 b__nudge--top-40">
+            <h2 class="b__nudge--bottom">
                 Messages des animateurs
             </h2>
 

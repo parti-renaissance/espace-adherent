@@ -1,4 +1,4 @@
-<div id="committee-host-nav" class="committee__host__nav">
+<!-- <div id="committee-host-nav" class="committee__host__nav">
     <ul class="list__links list__links--default list__links--row list__links--row-left">
         <li>
             <a href="{{ path('app_committee_manager_edit', {'slug': committee.slug}) }}" class="link--newblue text--body">
@@ -7,3 +7,7 @@
         </li>
     </ul>
 </div>
+ -->
+<a id="committee-host-nav" href="{{ path('app_committee_manager_edit', {'slug': committee.slug}) }}" class="btn btn--no-border committee-unfollow btn--no-wrap">
+    Gérer le comité
+</a>
