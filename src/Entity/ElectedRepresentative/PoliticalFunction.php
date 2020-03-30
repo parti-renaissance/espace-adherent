@@ -157,7 +157,7 @@ class PoliticalFunction
         return $this->beginAt;
     }
 
-    public function setBeginAt(\DateTime $beginAt): void
+    public function setBeginAt(?\DateTime $beginAt): void
     {
         $this->beginAt = $beginAt;
     }
