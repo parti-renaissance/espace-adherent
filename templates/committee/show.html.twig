@@ -153,7 +153,7 @@
         </section>
     {% else %}
         {% if is_canary_enabled() and has_role_adherent and committee.committeeElection and membership %}
-            {% set candidacy_committee_membership = get_committee_candidacy_membership(app.user) %}
+            {% set candidacy_committee_membership = app.user.memberships.committeeCandidacyMembership %}
 
             <section class="committee__elections-box">
                 <div class="left">
@@ -209,6 +209,15 @@
                 <div class="text--small b__nudge--top-15">
                     <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor">Voir la liste des candidats</a>
                 </div>
+
+                {% set count_male_candidates = count_committee_candidates(committee, true) %}
+                {% set count_female_candidates = count_committee_candidates(committee, false) %}
+
+                {% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
+                    <div class="l__col--grow-1 b__nudge--top-40 text--pink">
+                        ⚠ {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
+                    </div>
+                {% endif %}
             </section>
 
             <div id="modal-wrapper"></div>

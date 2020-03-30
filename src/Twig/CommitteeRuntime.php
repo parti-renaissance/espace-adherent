@@ -7,6 +7,8 @@ use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
+use AppBundle\Repository\CommitteeMembershipRepository;
+use AppBundle\ValueObject\Genders;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeRuntime
@@ -15,13 +17,16 @@ class CommitteeRuntime
     private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';
 
     private $authorizationChecker;
+    private $committeeMembershipRepository;
     private $committeeManager;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
+        CommitteeMembershipRepository $committeeMembershipRepository,
         CommitteeManager $committeeManager = null
     ) {
         $this->authorizationChecker = $authorizationChecker;
+        $this->committeeMembershipRepository = $committeeMembershipRepository;
         $this->committeeManager = $committeeManager;
     }
 
@@ -86,15 +91,23 @@ class CommitteeRuntime
         return '';
     }
 
-    public function getCommitteeCandidacyMembership(Adherent $adherent): ?CommitteeMembership
-    {
-        return $adherent->getMemberships()->getCommitteeCandidacyMembership();
-    }
-
     public function isCandidate(Adherent $adherent, Committee $committee): bool
     {
         $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
 
         return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy();
+    }
+
+    public function countCommitteeCandidates(Committee $committee, bool $countMaleOnly = null): int
+    {
+        $memberships = $this->committeeMembershipRepository->getCandidacyMemberships($committee);
+
+        if (null === $countMaleOnly) {
+            return \count($memberships);
+        }
+
+        return \count(array_filter($memberships, static function (CommitteeMembership $membership) use ($countMaleOnly) {
+            return ($countMaleOnly ? Genders::MALE : Genders::FEMALE) === $membership->getAdherent()->getGender();
+        }));
     }
 }

@@ -1,6 +1,6 @@
 {% extends 'adherent/my_activity_layout.html.twig' %}
 
-{% set committee_candidacy_membership = get_committee_candidacy_membership(app.user) %}
+{% set committee_candidacy_membership = app.user.memberships.committeeCandidacyMembership %}
 {% set is_able_to_change_vote = is_granted('ABLE_TO_CHANGE_COMMITTEE_VOTE') %}
 
 {% block tab %}
