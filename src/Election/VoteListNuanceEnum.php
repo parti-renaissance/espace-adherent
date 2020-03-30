@@ -12,7 +12,6 @@ final class VoteListNuanceEnum extends Enum
     public const FI = 'FI';
     public const SOC = 'SOC';
     public const GEN = 'GEN';
-    public const RDG = 'RDG';
     public const DVG = 'DVG';
     public const VEC = 'VEC';
     public const ECO = 'ECO';
@@ -33,6 +32,20 @@ final class VoteListNuanceEnum extends Enum
     public const UG = 'UG';
     public const UC = 'UC';
     public const UD = 'UD';
+    public const NC = 'NC';
+    public const UMP = 'UMP';
+    public const FN = 'FN';
+    public const PG = 'PG';
+    public const UDF = 'UDF';
+    public const PRG = 'PRG';
+    public const ALLI = 'ALLI';
+    public const LO = 'LO';
+    public const CPNT = 'CPNT';
+    public const FG = 'FG';
+    public const LCR = 'LCR';
+    public const PRV = 'PRV';
+    public const MDC = 'MDC';
+    public const MNR = 'MNR';
 
     public static function getChoices(): array
     {
@@ -42,7 +55,7 @@ final class VoteListNuanceEnum extends Enum
             'La France insoumise' => self::FI,
             'Parti socialiste' => self::SOC,
             'Génération.s' => self::GEN,
-            'Parti radical de gauche' => self::RDG,
+            'Parti radical de gauche' => self::PRG,
             'Divers gauche ' => self::DVG,
             'Europe Ecologie-Les Verts' => self::VEC,
             'Ecologiste' => self::ECO,
@@ -64,6 +77,19 @@ final class VoteListNuanceEnum extends Enum
             'Union de la gauche' => self::UG,
             'Union du centre' => self::UC,
             'Union de la droite' => self::UD,
+            'Nouveau Centre' => self::NC,
+            'Union pour un Mouvement populaire' => self::UMP,
+            'Front national' => self::FN,
+            'Parti de gauche' => self::PG,
+            'Union pour la démocratie française' => self::UDF,
+            'Alliance centriste' => self::ALLI,
+            'Lutte ouvrière' => self::LO,
+            'Chasse, pêche, nature et traditions' => self::CPNT,
+            'Front de gauche' => self::FG,
+            'Ligue communiste révolutionnaire' => self::LCR,
+            'Parti radical valoisien' => self::PRV,
+            'Mouvement des citoyens' => self::MDC,
+            'Mouvement national républicain' => self::MNR,
         ];
     }
 }
