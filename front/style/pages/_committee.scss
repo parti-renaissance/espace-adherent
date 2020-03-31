@@ -4,10 +4,6 @@
 }
 
 .committee-follow--anonymous {
-    // text-align: center;
-    // @media (min-width: $mobile) {
-    //     text-align: right;
-    // }
 
     &__link {
         font-size: 14px;
@@ -31,33 +27,36 @@
         line-height: 20px;
     }
 
-    &__name {
-        // display: flex;
-        // @include breakword;
-    }
-
     &__infos {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
         font-family: $font-roboto;
         font-size: 16px;
         font-weight: bold;
-        margin-top: 25px;
+        margin-top: 20px;
 
-        @media (min-width: $mobile) {
+        @media (min-width: $tablet) {
             flex-direction: row;
+            align-items: flex-start;
             font-size: 16px;
             justify-content: flex-start;
         }
 
         li {
-            margin: 0 0 5px 0;
+            margin: 5px 0 5px 0;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
 
-            @media (min-width: $mobile) {
-                margin: 0 30px 10px 0;
-                font-size: 18px;
+            svg {
+                margin-right: 10px;
+            }
+
+            @media (min-width: $tablet) {
+                margin: 5px 30px 5px 0;
             }
 
             a {
@@ -67,38 +66,96 @@
         }
     }
 
+    &__socials {
+        display: flex;
+        flex-direction: row;
+
+        li {
+            margin: 0 0 0 20px;
+            cursor: pointer;
+        }
+    }
+
     &__header {
 
+        &__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            @media (min-width: $tablet) {
+                flex-direction: row;
+            }
+        }
+
         &__titles {
-            margin-bottom: 20px;
+            margin: 0 0 20px 0;
             text-align: center;
 
-            @media (min-width: $mobile) {
-                margin-right: 25px;
+            @media (min-width: $tablet) {
+                margin: 0 5% 0 0;
                 text-align: left;
             }
         }
 
         &__actions {
             display: flex;
-            width: 285px;
+            min-width: 285px;
             justify-content: center;
 
-            @media (min-width: $mobile) {
+            @media (min-width: $tablet) {
                 justify-content: flex-start;
+            }
+
+            // disabled btn style for committees
+            .btn:disabled, .btn:disabled:hover {
+                border: none;
+                color: $black;
+                opacity: 0.5;
             }
         }
 
-        &__more {
+        &__plus {
             position: absolute;
             right: 0;
             top: -30px;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+
+            &--button {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                background-color: transparent;
+                border: none;
+                padding: 0;
+            }
+
+            &--dropdown {
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding-top: 30px;
+                z-index: 5;
+                display: none;
+
+                .dropdown-content {
+                    background-color: #fff;
+                    box-shadow: 0 2px 4px 0 rgba(99,98,150,.25);
+                    border-radius: 3px;
+                    min-width: 200px;
+                    padding: 5px 0;
+
+                    a {
+                        display: block;
+                        padding: 6px 15px;
+                        background-color: #fff;
+                        border: none;
+                    }
+                }
+            }
         }
     }
 
@@ -306,8 +363,12 @@
     }
 
     &__main {
-        margin-top: 70px;
-        margin-right: 5%;
+        width: 100%;
+        margin: 20px 0 0;
+
+        @media (min-width: $tablet) {
+            margin: 70px 5% 0 0
+        }
     }
 
     &__aside {
@@ -325,12 +386,10 @@
             box-sizing: border-box;
             margin-top: 40px;
             margin-bottom: 20px;
-        }
-    }
 
-    &__hosts {
-        li {
-            padding: 10px 0 0;
+            .avatar-initials {
+                background-color: $white;
+            }
         }
     }
 
@@ -338,19 +397,32 @@
         &__item {
             padding: 30px 0;
             border-bottom: 1px solid $gray--light;
-        }
 
-        li > a {
-            font-weight: 100;
+            @media (min-width: $tablet) {
+                padding: 30px 0 30px 68px;
+            }
 
-            &:hover {
-                padding-bottom: 2px;
+            &--head {
+                position: relative;
+
+                div {
+                    position: relative;
+
+                    @media (min-width: $tablet) {
+                        position: absolute;
+                        left: -68px;
+                    }
+                }
             }
         }
     }
 
     &__card {
         margin-bottom: 50px;
+
+        &:last-child {
+            margin: 0;
+        }
 
         h5 {
             margin: 0 0 20px 0;
@@ -362,11 +434,9 @@
 
         .committee-host {
             display: flex;
-            justify-content: space-between;
         }
 
         @media (max-width: $tablet) {
-            h5,
             img {
                 display: none;
             }
@@ -390,10 +460,10 @@
         // An event within the timeline
         background: $gray--lighter;
         height: 200px;
-        max-width: 750px;
         margin: 0 auto;
         display: flex;
         margin-top: 20px;
+        margin-bottom: 10px;
 
         &-map {
             width: 200px;
@@ -465,25 +535,34 @@
     }
 
     &__elections-box {
-        border: 1px solid $lines-grey;
-        padding: 40px;
+        box-sizing: border-box;
+        border: 1px solid $pink;
+        background-color: $pink--extra-light;
+        border-radius: 3px;
+        padding: 35px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
+        text-align: center;
 
-        .left {
-            h2 {
-                font-weight: normal;
-                max-width: 310px;
-            }
+        .alert {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 15px;
+            margin-top: 20px;
         }
 
-        .right {
-            flex-basis: 50%;
-            text-align: center;
+        .alert:nth-child(1) {
+            margin-top: 30px;
         }
+
+        // h2 {
+        //     font-weight: normal;
+        //     max-width: 310px;
+        // }
+
     }
 }
 
@@ -496,10 +575,6 @@
         align-items: center;
         justify-content: space-between;
         padding: 30px;
-
-        &__titles {
-            padding-right: 50px;
-        }
 
         &__cta {
             min-width: 200px;
@@ -671,17 +746,8 @@
         display: flex;
         justify-content: space-between;
 
-        span {
-            font-weight: 100;
-        }
-
         ul {
             display: flex;
-
-            li button {
-                font-family: $font-gillsans;
-                font-weight: 100;
-            }
         }
     }
 }

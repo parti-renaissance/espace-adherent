@@ -1,0 +1,24 @@
+.avatar-initials {
+    font-family: $font-gillsans;
+    font-weight: bold;
+    font-style: italic;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar {
+    // size
+    &--small {
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+    }
+
+    // style
+    &--style-01 {
+        background-color: $gray--lighter;
+        color: $blue;
+    }
+}

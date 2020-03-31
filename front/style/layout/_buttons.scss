@@ -259,6 +259,17 @@
     }
 }
 
+@mixin btn--ghosting--pink {
+    color: $pink;
+    background: transparent;
+    border-color: $pink;
+
+    &:hover {
+        background-color: $pink-hover;
+        border-color: $pink-hover;
+    }
+}
+
 @mixin btn--blue--adi {
     color: white !important;
     background: $blue--adi;
@@ -437,6 +448,10 @@ button.btn {
 
     &--ghosting--blue {
         @include btn--ghosting--blue;
+    }
+
+    &--ghosting--pink {
+        @include btn--ghosting--pink;
     }
 
     &--blue--adi {
