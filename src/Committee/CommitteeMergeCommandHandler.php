@@ -87,6 +87,18 @@ class CommitteeMergeCommandHandler
 
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
+
+        $votingMembership = $this->committeeMembershipRepository->findVotingMemberships($sourceCommittee);
+        $adherents = array_map(static function (CommitteeMembership $membership) {
+            $membership->removeCandidacy();
+            $membership->disableVote();
+
+            return $membership->getAdherent();
+        }, $votingMembership);
+
+        $this->em->flush();
+
+        $this->committeeMembershipRepository->enableVoteStatusForAdherents($destinationCommittee, $adherents);
     }
 
     private function dispatchCommitteeUpdate(Committee $committee): void

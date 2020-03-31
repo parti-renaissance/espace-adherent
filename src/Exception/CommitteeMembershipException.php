@@ -72,6 +72,18 @@ class CommitteeMembershipException extends \RuntimeException
         );
     }
 
+    public static function createNotPromotableSupervisorPrivilegeForCandidateMember(UuidInterface $membershipUuid): self
+    {
+        return new self(
+            $membershipUuid,
+            sprintf(
+                'Committee membership "%s" cannot be promoted to the supervisor privilege. 
+                The member already has a candidacy in another committee',
+                $membershipUuid
+            ),
+        );
+    }
+
     public static function createRunningCommitteeCandidacyException(
         UuidInterface $membershipUuid,
         string $committeeName,
