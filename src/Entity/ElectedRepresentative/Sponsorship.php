@@ -77,7 +77,7 @@ class Sponsorship
         return $this->candidate;
     }
 
-    public function setCandidate(string $candidate): void
+    public function setCandidate(?string $candidate = null): void
     {
         $this->candidate = $candidate;
     }

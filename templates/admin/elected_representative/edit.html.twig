@@ -1,0 +1,119 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block sonata_tab_content %}
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Identité
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    <div class="inline-block">
+                        <div class="left row col-md-5">
+                            {{ form_row(form.officialId) }}
+                        </div>
+                        <div class="rigth row col-md-7">
+                            {{ form_row(form.gender) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.lastName) }}
+                    {{ form_row(form.firstName) }}
+                    {{ form_row(form.adherent) }}
+                    {{ form_row(form.contactEmail) }}
+                    {{ form_row(form.isAdherent) }}
+                    {{ form_row(form.adherentPhone) }}
+                    {{ form_row(form.contactPhone) }}
+                    <div class="inline-block">
+                        <div class="left row col-md-5">
+                            {{ form_row(form.birthDate) }}
+                        </div>
+                        <div class="rigth row col-md-7">
+                            {{ form_row (form.birthPlace) }}
+                        </div>
+                    </div>
+                    <div class="inline-block">
+                        <div class="left row col-md-5">
+                            {{ form_row(form.isSupportingLaREM) }}
+                        </div>
+                        <div class="rigth row col-md-7">
+                            {{ form_row(form.hasFollowedTraining) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.comment) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Réseaux sociaux
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.socialNetworkLinks) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Étiquettes
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.labels) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Parrainages
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.sponsorships) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Mandats
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.mandates) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">
+                    Fonctions
+                </h4>
+            </div>
+            <div class="box-body">
+                <div class="sonata-ba-collapsed-fields">
+                    {{ form_row(form.politicalFunctions) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

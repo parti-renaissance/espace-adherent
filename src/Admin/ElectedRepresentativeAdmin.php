@@ -17,7 +17,6 @@ use AppBundle\Form\ElectedRepresentative\MandateType;
 use AppBundle\Form\ElectedRepresentative\PoliticalFunctionType;
 use AppBundle\Form\ElectedRepresentative\SponsorshipType;
 use AppBundle\Form\GenderType;
-use AppBundle\Form\SocialNetworkLinkType;
 use AppBundle\Repository\ElectedRepresentative\MandateRepository;
 use Doctrine\ORM\Query\Expr;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -164,14 +163,14 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'ID élu officiel',
                     'disabled' => true,
                 ])
+                ->add('gender', GenderType::class, [
+                    'label' => 'Genre',
+                ])
                 ->add('lastName', null, [
                     'label' => 'Nom',
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',
-                ])
-                ->add('gender', GenderType::class, [
-                    'label' => 'Genre',
                 ])
                 ->add('adherent', AdherentEmailType::class, [
                     'required' => false,
@@ -202,6 +201,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                     'default_region' => Address::FRANCE,
                     'preferred_country_choices' => [Address::FRANCE],
+                    'attr' => ['class' => 'phone'],
                 ])
                 ->add('birthDate', 'sonata_type_date_picker', [
                     'label' => 'Date de naissance',
@@ -227,8 +227,23 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'class' => 'col-md-6',
                 ]
             )
-                ->add('socialNetworkLinks', CollectionType::class, [
-                    'entry_type' => SocialNetworkLinkType::class,
+                ->add('socialNetworkLinks', 'sonata_type_collection', [
+                    'by_reference' => false,
+                    'label' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'admin_code' => 'app.admin.social_network_link',
+                ])
+            ->end()
+            ->with(
+                'Étiquettes',
+                [
+                    'class' => 'col-md-6',
+                ]
+            )
+                ->add('labels', CollectionType::class, [
+                    'entry_type' => ElectedRepresentativeLabelType::class,
                     'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
@@ -264,16 +279,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'entry_options' => [
                         'mandates' => $mandates,
                     ],
-                    'label' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'error_bubbling' => false,
-                ])
-            ->end()
-            ->with('Étiquettes')
-                ->add('labels', CollectionType::class, [
-                    'entry_type' => ElectedRepresentativeLabelType::class,
                     'label' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
