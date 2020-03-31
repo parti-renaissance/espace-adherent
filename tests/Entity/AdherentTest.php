@@ -157,7 +157,7 @@ class AdherentTest extends TestCase
     /**
      * @dataProvider provideInitials
      */
-    public function testInitials($firstName, $lastName, $initials): void
+    public function testInitials(string $firstName, string $lastName, string $initials): void
     {
         $adherent = $this->createAdherent('john.smith@example.org', $firstName, $lastName);
 
