@@ -56,10 +56,33 @@ trait EntityPersonNameTrait
     /**
      * @SymfonySerializer\Groups({"export"})
      */
-    public function getLastNameInitial(): string
+    public function getLastNameInitial(bool $padWithDot = true): string
     {
-        $normalized = preg_replace('/[^a-z]+/', '', strtolower($this->lastName));
+        $normalized = self::normalize($this->lastName);
 
-        return strtoupper($normalized[0]).'.';
+        $initial = strtoupper($normalized[0]);
+
+        if ($padWithDot) {
+            $initial .= '.';
+        }
+
+        return $initial;
+    }
+
+    public function getFirstNameInitial(): string
+    {
+        $normalized = self::normalize($this->firstName);
+
+        return strtoupper($normalized[0]);
+    }
+
+    public function getInitials(): string
+    {
+        return $this->getFirstNameInitial().$this->getLastNameInitial(false);
+    }
+
+    private static function normalize(string $name): string
+    {
+        return preg_replace('/[^a-z]+/', '', strtolower($name));
     }
 }
