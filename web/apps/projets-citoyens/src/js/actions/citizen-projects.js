@@ -20,6 +20,9 @@ const API_OPTIONS = {
 };
 
 const DEFAULT_FILTER = {
+    order: {
+        approvedAt: 'desc'
+    },
     status: 'APPROVED',
     page: 1,
     page_size: 6,
@@ -29,7 +32,13 @@ function filterProjects(options = DEFAULT_FILTER, action) {
     let query = { ...DEFAULT_FILTER, ...options };
     query = Object.keys(query)
         .filter(key => query[key])
-        .map(key => `${key}=${query[key]}`)
+        .map(key => {
+            if (typeof query[key] === 'object') {
+                return Object.entries(query[key]).map(([subKey, value]) => `${key}[${subKey}]=${value}`).join('&');
+            }
+
+            return `${key}=${query[key]}`;
+        })
         .join('&');
 
     const path = `?${query}`;
