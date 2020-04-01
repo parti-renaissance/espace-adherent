@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,49 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ReferentUserFilter extends AbstractUserFilter
 {
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $includeAdherentsNoCommittee = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $includeAdherentsInCommittee = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $includeCommitteeSupervisors = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $includeCommitteeHosts = true;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $includeCitizenProjectHosts = true;
-
-    /**
-     * @var ReferentTag[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
-     *
-     * @Assert\NotNull
-     */
-    private $referentTags;
+    use BasicUserFiltersTrait;
 
     /**
      * @var bool
@@ -73,11 +30,13 @@ class ReferentUserFilter extends AbstractUserFilter
     private $contactOnlyRunningMates = false;
 
     /**
-     * @var Committee
+     * @var ReferentTag[]|Collection
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     *
+     * @Assert\NotNull
      */
-    private $committee;
+    private $referentTags;
 
     public function __construct(array $referentTags)
     {
@@ -86,56 +45,6 @@ class ReferentUserFilter extends AbstractUserFilter
         foreach ($referentTags as $tag) {
             $this->addReferentTag($tag);
         }
-    }
-
-    public function includeAdherentsNoCommittee(): bool
-    {
-        return $this->includeAdherentsNoCommittee;
-    }
-
-    public function setIncludeAdherentsNoCommittee(bool $value): void
-    {
-        $this->includeAdherentsNoCommittee = $value;
-    }
-
-    public function includeAdherentsInCommittee(): bool
-    {
-        return $this->includeAdherentsInCommittee;
-    }
-
-    public function setIncludeAdherentsInCommittee(bool $value): void
-    {
-        $this->includeAdherentsInCommittee = $value;
-    }
-
-    public function includeCommitteeSupervisors(): bool
-    {
-        return $this->includeCommitteeSupervisors;
-    }
-
-    public function setIncludeCommitteeSupervisors(bool $value): void
-    {
-        $this->includeCommitteeSupervisors = $value;
-    }
-
-    public function includeCommitteeHosts(): bool
-    {
-        return $this->includeCommitteeHosts;
-    }
-
-    public function setIncludeCommitteeHosts(bool $value): void
-    {
-        $this->includeCommitteeHosts = $value;
-    }
-
-    public function includeCitizenProjectHosts(): bool
-    {
-        return $this->includeCitizenProjectHosts;
-    }
-
-    public function setIncludeCitizenProjectHosts(bool $value): void
-    {
-        $this->includeCitizenProjectHosts = $value;
     }
 
     /**
@@ -176,15 +85,5 @@ class ReferentUserFilter extends AbstractUserFilter
     public function setContactOnlyRunningMates(bool $contactOnlyRunningMates): void
     {
         $this->contactOnlyRunningMates = $contactOnlyRunningMates;
-    }
-
-    public function getCommittee(): ?Committee
-    {
-        return $this->committee;
-    }
-
-    public function setCommittee(Committee $committee): void
-    {
-        $this->committee = $committee;
     }
 }

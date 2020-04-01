@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 
@@ -15,9 +16,9 @@ class AdherentZoneConditionBuilder extends AbstractStaticSegmentConditionBuilder
     }
 
     /**
-     * @var AdherentZoneFilter
+     * @param AdherentZoneFilter $filter
      */
-    protected function getSegmentId(AdherentMessageFilterInterface $filter): int
+    protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int
     {
         if (!$tag = $filter->getReferentTag()) {
             throw new InvalidFilterException($filter->getMessage(), '[AdherentMessage] Referent tag should not be empty');

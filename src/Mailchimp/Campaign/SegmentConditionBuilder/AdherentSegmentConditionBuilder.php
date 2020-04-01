@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AdherentMessage\Filter\AdherentSegmentAwareFilterInterface;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Entity\AdherentSegment;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
@@ -15,7 +16,10 @@ class AdherentSegmentConditionBuilder extends AbstractStaticSegmentConditionBuil
         return $filter instanceof AdherentSegmentAwareFilterInterface && $filter->getAdherentSegment();
     }
 
-    protected function getSegmentId(AdherentMessageFilterInterface $filter): int
+    /**
+     * @param AdherentSegmentAwareFilterInterface $filter
+     */
+    protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int
     {
         /** @var AdherentSegment $segment */
         if (!$segment = $filter->getAdherentSegment()) {

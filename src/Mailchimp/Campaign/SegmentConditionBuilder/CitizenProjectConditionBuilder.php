@@ -4,6 +4,7 @@ namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
+use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
 use AppBundle\Mailchimp\Exception\InvalidFilterException;
 use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
 
@@ -15,9 +16,9 @@ class CitizenProjectConditionBuilder extends AbstractStaticSegmentConditionBuild
     }
 
     /**
-     * @var CitizenProjectFilter
+     * @param CitizenProjectFilter $filter
      */
-    protected function getSegmentId(AdherentMessageFilterInterface $filter): int
+    protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int
     {
         if (!$citizenProject = $filter->getCitizenProject()) {
             throw new InvalidFilterException($filter->getMessage(), '[AdherentMessage] Citizen project should not be empty');

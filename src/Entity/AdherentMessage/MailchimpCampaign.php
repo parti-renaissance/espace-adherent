@@ -62,7 +62,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     private $message;
 
     /**
-     * @var string|null
+     * @var int|null
      *
      * @ORM\Column(nullable=true)
      */
@@ -136,12 +136,12 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
         return $this->message;
     }
 
-    public function getStaticSegmentId(): ?string
+    public function getStaticSegmentId(): ?int
     {
         return $this->staticSegmentId;
     }
 
-    public function setStaticSegmentId(?string $staticSegmentId): void
+    public function setStaticSegmentId(?int $staticSegmentId): void
     {
         $this->staticSegmentId = $staticSegmentId;
     }

@@ -5,6 +5,7 @@ namespace AppBundle\AdherentMessage\Filter;
 use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
 use AppBundle\Entity\Adherent;
 use AppBundle\Exception\InvalidAdherentMessageType;
+use AppBundle\Form\AdherentMessage\AdherentZoneFilterType;
 use AppBundle\Form\AdherentMessage\CommitteeFilterType;
 use AppBundle\Form\AdherentMessage\MunicipalChiefFilterType;
 use AppBundle\Form\AdherentMessage\ReferentFilterType;
@@ -33,8 +34,19 @@ class FilterFormFactory
                             $managedArea,
                             function ($code) { return 0 === strpos($code, '75'); }
                         ),
+                        'referent_tags' => $adherent->getManagedArea()->getTags()->toArray(),
                     ]
                 );
+
+            case AdherentMessageTypeEnum::DEPUTY:
+                return $this->formFactory->create(AdherentZoneFilterType::class, $data, [
+                    'referent_tags' => [$adherent->getManagedDistrict()->getReferentTag()],
+                ]);
+
+            case AdherentMessageTypeEnum::SENATOR:
+                return $this->formFactory->create(AdherentZoneFilterType::class, $data, [
+                    'referent_tags' => [$adherent->getSenatorArea()->getDepartmentTag()],
+                ]);
 
             case AdherentMessageTypeEnum::MUNICIPAL_CHIEF:
                 return $this->formFactory->create(MunicipalChiefFilterType::class, $data);

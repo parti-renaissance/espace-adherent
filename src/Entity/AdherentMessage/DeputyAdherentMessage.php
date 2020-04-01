@@ -14,9 +14,4 @@ class DeputyAdherentMessage extends AbstractAdherentMessage
     {
         return AdherentMessageTypeEnum::DEPUTY;
     }
-
-    public function hasReadOnlyFilter(): bool
-    {
-        return true;
-    }
 }

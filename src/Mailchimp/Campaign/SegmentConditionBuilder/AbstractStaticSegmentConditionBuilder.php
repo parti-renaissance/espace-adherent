@@ -9,8 +9,8 @@ abstract class AbstractStaticSegmentConditionBuilder extends AbstractConditionBu
 {
     public function build(MailchimpCampaign $campaign): array
     {
-        return [$this->buildStaticSegmentCondition($this->getSegmentId($campaign->getMessage()->getFilter()))];
+        return [$this->buildStaticSegmentCondition($this->getSegmentId($campaign->getMessage()->getFilter(), $campaign))];
     }
 
-    abstract protected function getSegmentId(AdherentMessageFilterInterface $filter): int;
+    abstract protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int;
 }
