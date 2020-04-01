@@ -14,9 +14,4 @@ class SenatorAdherentMessage extends AbstractAdherentMessage
     {
         return AdherentMessageTypeEnum::SENATOR;
     }
-
-    public function hasReadOnlyFilter(): bool
-    {
-        return true;
-    }
 }

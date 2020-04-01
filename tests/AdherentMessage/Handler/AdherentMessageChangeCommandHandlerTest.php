@@ -4,6 +4,7 @@ namespace Tests\AppBundle\AdherentMessage\Handler;
 
 use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
 use AppBundle\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
+use AppBundle\AdherentMessage\MailchimpCampaign\Handler\AdherentZoneMailchimpCampaignHandler;
 use AppBundle\AdherentMessage\MailchimpCampaign\Handler\MunicipalChiefMailchimpCampaignHandler;
 use AppBundle\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use AppBundle\Entity\Adherent;
@@ -36,12 +37,18 @@ use AppBundle\Mailchimp\Campaign\ContentSection\SenatorMessageSectionBuilder;
 use AppBundle\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use AppBundle\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\CitizenProjectConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ContactCityConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToAdherentConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToCandidateConditionBuilder;
+use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\MunicipalChiefToNewsletterConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToAdherentConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToCandidateConditionBuilder;
 use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
@@ -168,16 +175,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'value' => [1],
                                 ],
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [2, 3, 4, 5, 6],
-                                ],
-                                [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
                                     'value' => 123,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3, 4, 5, 6],
                                 ],
                             ],
                         ],
@@ -216,16 +223,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'value' => [1],
                                 ],
                                 [
-                                    'condition_type' => 'Interests',
-                                    'op' => 'interestcontains',
-                                    'field' => 'interests-A',
-                                    'value' => [2, 3, 4, 5, 6],
-                                ],
-                                [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
                                     'value' => 456,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3, 4, 5, 6],
                                 ],
                             ],
                         ],
@@ -260,6 +267,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')));
         $tag->setExternalId(123);
 
+        (new AdherentZoneMailchimpCampaignHandler())->handle($message);
+
         $this->clientMock
             ->expects($this->exactly(2))
             ->method('request')
@@ -270,7 +279,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '2',
                         'template_id' => 2,
                         'subject_line' => '[Député] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'title' => 'Full Name - '.date('d/m/Y').' - code1',
                         'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -283,13 +292,19 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontainsall',
                                     'field' => 'interests-C',
-                                    'value' => [],
+                                    'value' => [7],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
                                     'value' => 123,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3, 4, 5, 6],
                                 ],
                             ],
                         ],
@@ -321,6 +336,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
         $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')));
         $tag->setExternalId(123);
 
+        (new AdherentZoneMailchimpCampaignHandler())->handle($message);
+
         $this->clientMock
             ->expects($this->exactly(2))
             ->method('request')
@@ -331,7 +348,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'folder_id' => '6',
                         'template_id' => 6,
                         'subject_line' => '[Sénateur] Subject',
-                        'title' => 'Full Name - '.date('d/m/Y'),
+                        'title' => 'Full Name - '.date('d/m/Y').' - code1',
                         'reply_to' => 'ne-pas-repondre@en-marche.fr',
                         'from_name' => 'Full Name | La République En Marche !',
                     ],
@@ -344,13 +361,19 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontainsall',
                                     'field' => 'interests-C',
-                                    'value' => [],
+                                    'value' => [8],
                                 ],
                                 [
                                     'condition_type' => 'StaticSegment',
                                     'op' => 'static_is',
                                     'field' => 'static_segment',
                                     'value' => 123,
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3, 4, 5, 6],
                                 ],
                             ],
                         ],
@@ -856,6 +879,8 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                         'COMMITTEE_HOST' => 4,
                         'COMMITTEE_FOLLOWER' => 5,
                         'COMMITTEE_NO_FOLLOWER' => 6,
+                        'deputy_email' => 7,
+                        'senator_email' => 8,
                     ],
                     'A',
                     'B',
@@ -876,10 +901,16 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                     new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
                     new MunicipalChiefToAdherentConditionBuilder($this->mailchimpMapping),
                     new MunicipalChiefToCandidateConditionBuilder($this->mailchimpMapping),
+                    new MunicipalChiefToNewsletterConditionBuilder($this->mailchimpMapping),
                     new AdherentZoneConditionBuilder($this->mailchimpMapping),
                     new CommitteeConditionBuilder($this->mailchimpMapping),
                     new CitizenProjectConditionBuilder($this->mailchimpMapping),
                     new ContactNameConditionBuilder(),
+                    new AdherentInterestConditionBuilder($this->mailchimpMapping),
+                    new AdherentRegistrationDateConditionBuilder(),
+                    new AdherentSegmentConditionBuilder($this->mailchimpMapping),
+                    new ContactAgeConditionBuilder(),
+                    new ContactCityConditionBuilder(),
                 ])
             ),
             CampaignContentRequestBuilder::class => new CampaignContentRequestBuilder(

@@ -3,6 +3,7 @@
 namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
 use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
@@ -12,10 +13,10 @@ class ContactCityConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(AdherentMessageFilterInterface $filter): bool
     {
-        return \in_array(\get_class($filter), [
-            ReferentUserFilter::class,
-            CommitteeFilter::class,
-        ], true);
+        return $filter instanceof AdherentZoneFilter
+            || $filter instanceof ReferentUserFilter
+            || $filter instanceof CommitteeFilter
+        ;
     }
 
     public function build(MailchimpCampaign $campaign): array

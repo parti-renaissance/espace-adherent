@@ -9,8 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  */
-class AdherentZoneFilter extends AbstractAdherentMessageFilter
+class AdherentZoneFilter extends AbstractUserFilter
 {
+    use BasicUserFiltersTrait;
+
     /**
      * @var ReferentTag
      *

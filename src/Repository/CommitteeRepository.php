@@ -179,6 +179,21 @@ class CommitteeRepository extends ServiceEntityRepository
         return new CommitteeCollection($qb->getQuery()->getResult());
     }
 
+    public function getQueryBuilderForTags(array $referentTags): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.status = :status')
+            ->setParameter('status', Committee::APPROVED)
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC')
+        ;
+
+        $this->applyGeoFilter($qb, $referentTags, 'c');
+
+        return $qb;
+    }
+
     public function findManagedBy(Adherent $referent): array
     {
         if (!$referent->isReferent()) {
