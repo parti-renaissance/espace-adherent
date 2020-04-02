@@ -1114,7 +1114,7 @@ class AdherentControllerTest extends WebTestCase
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
-        $this->assertSame("$nbFollowers adhérents", $crawler->filter('.committee-members')->text());
+        $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
         $reasons = Unregistration::REASONS_LIST_ADHERENT;
@@ -1148,7 +1148,7 @@ class AdherentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', 'en-marche-suisse'));
         --$nbFollowers;
 
-        $this->assertSame("$nbFollowers adhérents", $crawler->filter('.committee-members')->text());
+        $this->assertContains("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         /** @var Adherent $adherent */
         $adherent = $this->getAdherentRepository()->findOneByEmail($userEmail);

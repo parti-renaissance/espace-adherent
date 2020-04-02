@@ -61,7 +61,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -131,7 +131,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -213,7 +213,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
 
         $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -341,7 +341,7 @@ class CommitteeManagerControllerTest extends WebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('+ Créer un événement')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -511,7 +511,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, $username);
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
@@ -535,7 +535,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
         $this->assertSame(2, $crawler->filter('.promote-host-link')->count());
@@ -554,7 +554,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
         $this->assertSame(0, $crawler->filter('.promote-host-link')->count());
@@ -566,7 +566,7 @@ class CommitteeManagerControllerTest extends WebTestCase
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $crawler = $this->client->click($crawler->selectLink('Gérer le comité →')->link());
+        $crawler = $this->client->click($crawler->selectLink('Gérer le comité')->link());
         $this->client->click($crawler->selectLink('Adhérents')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
