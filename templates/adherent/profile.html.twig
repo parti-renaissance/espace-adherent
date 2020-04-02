@@ -8,13 +8,19 @@
     <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/select2.min.js') }}></script>
     <script type="text/javascript" src={{ asset('select2/fr.js') }}></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places"></script>
+
     {% import 'javascript.js.twig' as js %}
+
+    {% if google_maps_api_key %}
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
+    {% endif %}
+
     {% include 'membership/_mandates_script.html.twig' %}
     {% include 'membership/_profile_script.html.twig' %}
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
+            App.runProfileUpdatePage();
             {{ js.address(form.address, { cityAutocomplete: true }) }}
             $('.multi_mandate').select2({placeholder: '{{ 'adherent.form.mandate.placeholder'|trans }}'});
             {{ js.toggleMandatesSelect('#'~form.elected.vars.id, '#'~form.mandates.vars.id) }}
@@ -35,14 +41,16 @@
     {{ form_start(form) }}
         {{ form_errors(form) }}
 
-        <div class="l__row l__row--h-stretch b__nudge--bottom-tiny form__radio-button">
-            {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
-            {{ form_errors(form.gender) }}
-        </div>
-        <div class="l__col l__col--top register__form--mid visually-hidden">
-            {{ form_label(form.customGender, 'Personnalisez votre genre', { label_attr: {'class': 'text--gray'} }) }}
-            {{ form_widget(form.customGender, { attr: { placeholder: 'Personnaliser mon genre' } }) }}
-            {{ form_errors(form.customGender) }}
+        <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
+            <div class="register__form--third">
+                {{ form_widget(form.gender, { attr: { class: 'register__form__gender' } }) }}
+                {{ form_errors(form.gender) }}
+            </div>
+
+            <div class="register__form--mid">
+                {{ form_widget(form.customGender, { attr: { placeholder: 'Personnaliser mon genre' } }) }}
+                {{ form_errors(form.customGender) }}
+            </div>
         </div>
 
         <div class="l__row l__row--top l__row--h-stretch l__mobile--col">
@@ -56,7 +64,16 @@
             </div>
         </div>
 
-        <div id="membership-address">
+        <p class="b__nudge--bottom-tiny text--bold">Adresse</p>
+
+        <div class="form__row">
+            <div class="address-autocomplete"></div>
+            <p class="text--smallest text--muted text--left visually-hidden" id="address-autocomplete-help-message">
+                Nous n'avons pas reconnu votre adresse, veuillez cliquer <a href="#">ici</a> pour pouvoir la renseigner librement.
+            </p>
+        </div>
+
+        <div class="address-block" id="membership-address">
             {{ form_errors(form.address) }}
             {{ form_errors(form.address.cityName) }}
             <div class="l__row l__row--h-stretch register__form--full">
