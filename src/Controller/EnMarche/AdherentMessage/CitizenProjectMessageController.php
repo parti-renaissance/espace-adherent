@@ -250,7 +250,7 @@ class CitizenProjectMessageController extends Controller
             $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
         }
 
-        return $this->redirectToRoute('app_message_citizen_project_preview', [
+        return $this->redirectToRoute('app_message_citizen_project_filter', [
             'citizen_project_slug' => $citizenProject->getSlug(),
             'uuid' => $message->getUuid()->toString(),
         ]);
