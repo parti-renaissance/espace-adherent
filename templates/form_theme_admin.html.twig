@@ -294,10 +294,10 @@
     <div class="row">
         <div class="col-xs-11 col-xs-offset-1">
             <div class="row bg-primary">
-                <div class="col-md-7">Nom</div>
+                <div class="col-md-5">Nom</div>
                 <div class="col-md-1">En cours</div>
-                <div class="col-md-2">Date de début</div>
-                <div class="col-md-2">Date de fin</div>
+                <div class="col-md-3">Date de début</div>
+                <div class="col-md-3">Date de fin</div>
             </div>
         </div>
     </div>
@@ -330,7 +330,7 @@
 
 {% block app_admin_elected_representative_elected_representative_label_labels_labels_entry_widget -%}
     <div class="row political-label{{ form.onGoing.vars.checked ? ' text--bold' : '' }}" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-7{{ form.name.vars.valid ? '' : ' error' }}">
+        <div class="col-md-5{{ form.name.vars.valid ? '' : ' error' }}">
             {% set shouldSetOther = form.name.vars.value is not empty and form.name.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
             <select id="{{ form.name.vars.id }}-label-names" class="filter__field form form__field">
                 <option value="" {{ form.name.vars.value is not empty ? 'selected="selected"' }}></option>
@@ -343,10 +343,10 @@
         <div class="col-md-1{{ form.onGoing.vars.valid ? '' : ' error' }}">
             {{ form_row(form.onGoing) }}
         </div>
-        <div class="col-md-2{{ form.beginYear.vars.valid ? '' : ' error' }}">
+        <div class="col-md-3{{ form.beginYear.vars.valid ? '' : ' error' }}">
             {{ form_row(form.beginYear) }}
         </div>
-        <div class="col-md-2{{ form.finishYear.vars.valid ? '' : ' error' }}">
+        <div class="col-md-3{{ form.finishYear.vars.valid ? '' : ' error' }}">
             {{ form_row(form.finishYear) }}
         </div>
     </div>
@@ -379,26 +379,25 @@
 {% endblock %}
 
 {% block app_admin_elected_representative_sponsorships_sonata_type_native_collection_sponsorships_widget -%}
-    <div class="row">
-        <div class="col-xs-11" style="margin-left: 15px;">
-            <div class="row bg-primary">
-                <div class="col-md-2">Élection présidentielle</div>
-                <div class="col-md-10">Candidat</div>
-            </div>
-        </div>
-    </div>
-    ​
-    <div>
-        {{ form_widget(form) }}
-    </div>
+    <table class="table table-bordered table-striped sonata-ba-list">
+        <thead>
+        <tr class="sonata-ba-list-field-header">
+            <th class="sonata-ba-list-field-header-text col-md-3">Élection présidentielle</th>
+            <th class="sonata-ba-list-field-header-text">Candidat</th>
+        </tr>
+        </thead>
+        <tbody>
+            {{ form_widget(form) }}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block app_admin_elected_representative_sponsorship_sponsorships_sponsorships_entry_widget -%}
-    <div class="row" style="margin-top: 10px;">
-        <div class="col-md-2{{ not form.presidentialElectionYear.vars.valid ? ' error' }}">
+    <tr>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text col-md-3">
             {{ form_row(form.presidentialElectionYear) }}
-        </div>
-        <div class="col-md-10{{ not form.candidate.vars.valid ? ' error' }}">
+        </td>
+        <td class="sonata-ba-list-field sonata-ba-list-field-text">
             {% set years = constant('AppBundle\\Entity\\ElectedRepresentative\\CandidateNameEnum::ALL') %}
             {% set candidates = years[form.presidentialElectionYear.vars.value] %}
             {% set shouldSetOther = form.candidate.vars.value is not empty and form.candidate.vars.value not in candidates %}
@@ -413,11 +412,10 @@
                     </optgroup>
                 {% endfor %}
 
-
             </select>
             {{ form_row(form.candidate, { attr: { style: "margin-top: 15px;" } }) }}
-        </div>
-    </div>
+        </td>
+    </tr>
 
     <script type="text/javascript">
         $(document).ready(function() {

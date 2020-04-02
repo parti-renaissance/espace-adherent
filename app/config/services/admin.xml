@@ -889,6 +889,19 @@
             <argument />
             <argument>AppBundle\Entity\ElectedRepresentative\ElectedRepresentative</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/elected_representative/edit.html.twig</argument>
+            </call>
+        </service>
+
+        <service id="app.admin.social_network_link" class="AppBundle\Admin\ElectedRepresentative\SocialNetworkLinkAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentative\SocialNetworkLink</argument>
+            <argument />
         </service>
 
         <service id="app.admin.election" class="AppBundle\Admin\ElectionAdmin">
