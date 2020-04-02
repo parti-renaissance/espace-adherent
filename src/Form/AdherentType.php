@@ -33,6 +33,7 @@ class AdherentType extends AbstractType
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
+                'preferred_choices' => [Address::FRANCE],
             ])
             ->add('emailAddress', EmailType::class)
             ->add('position', ActivityPositionType::class, [

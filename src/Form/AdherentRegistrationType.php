@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Address\Address;
 use AppBundle\DataTransformer\ValueToDuplicatesTransformer;
 use AppBundle\Membership\MembershipRequest;
 use AppBundle\Validator\Repeated;
@@ -45,6 +46,7 @@ class AdherentRegistrationType extends AbstractType
             ])
             ->add('nationality', CountryType::class, [
                 'placeholder' => 'Nationalité',
+                'preferred_choices' => [Address::FRANCE],
             ])
         ;
 
