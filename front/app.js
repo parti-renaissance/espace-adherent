@@ -284,6 +284,12 @@ class App {
             module.default(triggerSelector, this.get('api'), committeeUuid);
         });
     }
+
+    runProfileUpdatePage() {
+        System.import('pages/profile_update').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
 }
 
 window.App = new App();

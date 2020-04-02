@@ -2,17 +2,19 @@ import EventEmitter from 'events';
 import GooglePlaceAutocomplete from './GooglePlaceAutocomplete';
 
 export default class AutocompletedAddressForm extends EventEmitter {
-    constructor(autocompleteWrapper, addressBlock, addressObject, helpMessageBlock = null) {
+    constructor(autocompleteWrapper, addressBlock, addressObject, helpMessageBlock = null, showWhenFilled = false) {
         super();
+
         this._autocompleteWrapper = autocompleteWrapper;
         this._addressBlock = addressBlock;
         this._helpMessageBlock = helpMessageBlock;
         this._address = addressObject;
+        this._showWhenFilled = showWhenFilled;
     }
 
     buildWidget() {
         // Show the autocomplete when the address fields are not filled
-        if (!this._address.isFilled()) {
+        if (this._showWhenFilled === true || !this._address.isFilled()) {
             // Stop if google class is undefined
             if ('undefined' === typeof google) {
                 return;
@@ -22,12 +24,17 @@ export default class AutocompletedAddressForm extends EventEmitter {
 
             autocomplete.build();
 
-            this.hideAddress();
+            if (this._showWhenFilled === false) {
+                this.hideAddress();
+            }
+
             show(this._autocompleteWrapper);
 
             autocomplete.once('changed', () => {
-                this.showAddress();
-                hide(this._autocompleteWrapper);
+                if (this._showWhenFilled === false) {
+                    this.showAddress();
+                    hide(this._autocompleteWrapper);
+                }
 
                 if (this._helpMessageBlock) {
                     hide(this._helpMessageBlock);
