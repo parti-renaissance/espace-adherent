@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace AppBundle\Admin\ElectedRepresentative;
 
 use AppBundle\Address\Address;
 use AppBundle\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
@@ -12,9 +12,6 @@ use AppBundle\Entity\ElectedRepresentative\LabelNameEnum;
 use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
 use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use AppBundle\Form\AdherentEmailType;
-use AppBundle\Form\ElectedRepresentative\ElectedRepresentativeLabelType;
-use AppBundle\Form\ElectedRepresentative\MandateType;
-use AppBundle\Form\ElectedRepresentative\PoliticalFunctionType;
 use AppBundle\Form\ElectedRepresentative\SponsorshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Repository\ElectedRepresentative\MandateRepository;
@@ -151,12 +148,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $mandates = [];
-        $electedRepresentative = $this->getSubject();
-        if ($electedRepresentative instanceof ElectedRepresentative) {
-            $mandates = $this->mandateRepository->getMandatesForPoliticalFunction($electedRepresentative);
-        }
-
         $formMapper
             ->with('Identité', ['class' => 'col-md-6'])
                 ->add('officialId', null, [
@@ -248,7 +239,16 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
-                    'error_bubbling' => false,
+                ])
+            ->end()
+            ->with('Étiquettes', ['class' => 'col-md-6'])
+                ->add('labels', 'sonata_type_collection', [
+                    'by_reference' => false,
+                    'label' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'admin_code' => 'app.admin.elected_representative_label',
                 ])
             ->end()
             ->with(
@@ -264,26 +264,23 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Mandats')
-                ->add('mandates', CollectionType::class, [
-                    'entry_type' => MandateType::class,
-                    'label' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
+                ->add('mandates', 'sonata_type_collection', [
                     'by_reference' => false,
-                    'error_bubbling' => false,
+                    'label' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'admin_code' => 'app.admin.elected_representative_mandate',
                 ])
             ->end()
             ->with('Fonctions')
-                ->add('politicalFunctions', CollectionType::class, [
-                    'entry_type' => PoliticalFunctionType::class,
-                    'entry_options' => [
-                        'mandates' => $mandates,
-                    ],
-                    'label' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
+                ->add('politicalFunctions', 'sonata_type_collection', [
                     'by_reference' => false,
-                    'error_bubbling' => false,
+                    'label' => false,
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                    'admin_code' => 'app.admin.elected_representative_political_function',
                 ])
             ->end()
         ;

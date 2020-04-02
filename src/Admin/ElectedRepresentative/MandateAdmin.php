@@ -1,40 +1,45 @@
 <?php
 
-namespace AppBundle\Form\ElectedRepresentative;
+namespace AppBundle\Admin\ElectedRepresentative;
 
 use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\ElectedRepresentative\LaREMSupportEnum;
-use AppBundle\Entity\ElectedRepresentative\Mandate;
 use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
-use Symfony\Component\Form\AbstractType;
+use AppBundle\Form\ElectedRepresentative\ZoneType;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MandateType extends AbstractType
+class MandateAdmin extends AbstractAdmin
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected function configureRoutes(RouteCollection $collection)
     {
-        $builder
+        $collection->clearExcept(['create', 'edit', 'delete']);
+    }
+
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('number', TextType::class, [
+                'disabled' => true,
+                'label' => '#',
+            ])
             ->add('type', ChoiceType::class, [
                 'placeholder' => '--',
                 'choices' => MandateTypeEnum::CHOICES,
-                'label' => false,
-            ])
-            ->add('number', TextType::class, [
-                'disabled' => true,
-                'label' => false,
+                'label' => 'Type',
             ])
             ->add('politicalAffiliation', ChoiceType::class, [
                 'choices' => VoteListNuanceEnum::toArray(),
-                'label' => false,
+                'label' => 'Nuance politique',
                 'required' => true,
             ])
             ->add('isElected', ChoiceType::class, [
                 'required' => true,
-                'label' => false,
+                'label' => 'Élu(e)',
                 'choices' => [
                     'global.yes' => true,
                     'global.no' => false,
@@ -42,7 +47,7 @@ class MandateType extends AbstractType
             ])
             ->add('laREMSupport', ChoiceType::class, [
                 'required' => false,
-                'label' => false,
+                'label' => 'Soutien LaREM',
                 'placeholder' => '--',
                 'choices' => LaREMSupportEnum::toArray(),
                 'choice_label' => function ($choice, $key) {
@@ -50,28 +55,21 @@ class MandateType extends AbstractType
                 },
             ])
             ->add('onGoing', CheckboxType::class, [
-                'label' => false,
+                'label' => 'En cours',
                 'required' => false,
             ])
             ->add('beginAt', 'sonata_type_date_picker', [
-                'label' => false,
+                'label' => 'Date de début de mandat',
             ])
             ->add('finishAt', 'sonata_type_date_picker', [
-                'label' => false,
+                'label' => 'Date de fin de mandat',
                 'required' => false,
                 'error_bubbling' => true,
             ])
             ->add('zone', ZoneType::class, [
-                'label' => false,
+                'label' => 'Périmètre géographique',
                 'required' => false,
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Mandate::class,
-        ]);
     }
 }

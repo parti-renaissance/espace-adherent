@@ -92,29 +92,20 @@
     {% endif %}
 {% endblock %}
 
-{% block elected_representative_label_row %}
-    {{ block('form_row') }}
-{% endblock %}
-
-{% block app_admin_elected_representative_mandates_sonata_type_native_collection_mandates_widget -%}
+{% block app_admin_elected_representative_mandate_zone_zone_widget %}
     <div class="row">
-        <div class="col-xs-11 col-xs-offset-1">
-            <div class="row bg-primary">
-                <div class="col-width4">#</div>
-                <div class="col-width15">Type</div>
-                <div class="col-md-1">Nuance politique</div>
-                <div class="col-md-1">Élu(e)</div>
-                <div class="col-md-2">Soutien LaREM</div>
-                <div class="col-width4">En cours</div>
-                <div class="col-width15">Date de début de mandat</div>
-                <div class="col-width15">Date de fin de mandat</div>
-                <div class="col-width12">Périmètre géographique</div>
+        <div class="form-group">
+            <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                <input type="text" value="{{ form.vars.zone_label }}" id="{{ form.vars.id }}_autocomplete" class="form-control"/>
             </div>
         </div>
+        {{ form_row(form) }}
     </div>
-    ​
+{% endblock %}
+
+{% block app_admin_elected_representative_mandates_sonata_type_collection_mandates_row -%}
     <div class="mandates-collection">
-        {{ form_widget(form) }}
+        {{ block('form_row') }}
     </div>
 
     <script type="text/javascript">
@@ -122,26 +113,25 @@
             $("div.mandates-collection").on('ifToggled change', "select[id$='_isElected'], input[id$='_onGoing']", function() {
                 var elementId = $(this).attr('id');
                 if (elementId.includes('_isElected')) {
-                    var id = elementId.substr(0, elementId.indexOf('_isElected'));
                     var isElected = $(this);
                     var onGoing = $('#'+elementId.replace('isElected', 'onGoing'));
+                    var finishAt = $('#'+elementId.replace('isElected', 'finishAt'));
                 } else {
-                    var id = elementId.substr(0, elementId.indexOf('_onGoing'));
                     var isElected = $('#'+elementId.replace('onGoing', 'isElected'));
                     var onGoing = $(this);
+                    var finishAt = $('#'+elementId.replace('onGoing', 'finishAt'));
                 }
-                id = id.substr(id.length - 1);
-
-                if ('1' === isElected.val() && !onGoing.is(':checked')) {
-                    $(this).parents('.row.mandate').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', false);
-                } else {
-                    $(this).parents('.row.mandate').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', true);
-                }
+                finishAt.prop('disabled', ('1' !== isElected.val() || onGoing.is(':checked')));
             });
 
-            $("select[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled change');
-            $('div.mandates-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
-                $("select[id$='_isElected'], div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled change');
+            $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('change');
+            $("select[id$='_isElected']").trigger('ifToggled');
+
+            $('div.mandates-collection').on('sonata.add_element', function () {
+
+                $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('change');
+                $("select[id$='_isElected']").trigger('ifToggled');
+
                 addAutocomplete();
             });
 
@@ -152,7 +142,7 @@
                         source: function(request, response) {
                             var elementId = el.attr('id');
                             var id = elementId.substr(0, elementId.indexOf('_zone_autocomplete'));
-                            var type = el.parents('.row.mandate').find("select[id$='" + id + "_type']").val();
+                            var type = el.parents('.row').find("select[id$='" + id + "_type']").val();
                             var term = request.term.trim();
 
                             if (term.length > 0) {
@@ -171,7 +161,7 @@
                         select: function( event, ui ) {
                             var elementId = el.attr('id');
                             var id = elementId.substr(0, elementId.indexOf('_zone'));
-                            var zoneIdField = el.parents('.row.mandate').find("input[id$='" + id + "_zone']");
+                            var zoneIdField = el.parents('.row').find("input[id$='" + id + "_zone']");
                             $(el).val(ui.item.label);
                             $(zoneIdField).val(ui.item.value);
 
@@ -186,124 +176,69 @@
     </script>
 {% endblock %}
 
-{% block app_admin_elected_representative_mandate_mandates_mandates_entry_widget -%}
-    <div class="row mandate" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-width4 text--bold" style="margin-right: -15px; margin-left: 15px;">
-            {{ form.number.vars.value }}
-        </div>
-        <div class="col-width15{{ not form.type.vars.valid ? ' error' }}">
-            {{ form_row(form.type) }}
-        </div>
-        <div class="col-md-1{{ not form.politicalAffiliation.vars.valid ? ' error' }}">
-            {{ form_row(form.politicalAffiliation) }}
-        </div>
-        <div class="col-md-1{{ not form.isElected.vars.valid ? ' error' }}">
-            {{ form_row(form.isElected) }}
-        </div>
-        <div class="col-md-2{{ not form.laREMSupport.vars.valid ? ' error' }}">
-            {{ form_row(form.laREMSupport) }}
-        </div>
-        <div class="col-width4{{ not form.onGoing.vars.valid ? ' error' }}">
-            {{ form_row(form.onGoing) }}
-        </div>
-        <div class="col-width15{{ not form.beginAt.vars.valid ? ' error' }}">
-            {{ form_row(form.beginAt) }}
-        </div>
-        <div class="col-width15{{ not form.finishAt.vars.valid ? ' error' }}">
-            {{ form_row(form.finishAt) }}
-        </div>
-        <div class="col-width12{{ not form.zone.vars.valid ? ' error' }}">
-            <div class="form-group">
-                <div class="sonata-ba-field sonata-ba-field-standard-natural">
-                    <input type="text" value="{{ form.zone.vars.zone_label }}" id="{{ form.zone.vars.id }}_autocomplete" class="form-control"/>
-                </div>
-            </div>
-            {{ form_row(form.zone) }}
-        </div>
-    </div>
-{% endblock %}
-
-{% block app_admin_elected_representative_politicalFunctions_sonata_type_native_collection_politicalFunctions_widget -%}
-    <div class="row">
-        <div class="col-xs-11 col-xs-offset-1">
-            <div class="row bg-primary">
-                <div class="col-md-1">Mandat</div>
-                <div class="col-md-2">Nom</div>
-                <div class="col-md-2">Précision</div>
-                <div class="col-md-2">Périmètre géographique</div>
-                <div class="col-md-1">En cours</div>
-                <div class="col-md-2">Date de début de mandat</div>
-                <div class="col-md-2">Date de fin de mandat</div>
-            </div>
-        </div>
-    </div>
-    ​
+{% block app_admin_elected_representative_politicalFunctions_sonata_type_collection_politicalFunctions_row -%}
     <div class="political-functions-collection">
-        {{ form_widget(form) }}
+        {{ block('form_row') }}
     </div>
 
     <script type="text/javascript">
         $(document).ready(function() {
             $("div.political-functions-collection").on('ifToggled', "input[id$='_onGoing']", function() {
                 var onGoingId = $(this).attr('id');
-                var id = onGoingId.substr(0, onGoingId.indexOf('_onGoing'));
-                id = id.substr(id.length - 1);
-
-                if ($(this).is(':checked')) {
-                    $(this).parents('.row.political-function').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', true);
-                } else {
-                    $(this).parents('.row.political-function').find("div.date input[id$='" + id + "_finishAt']").prop('disabled', false);
-                }
+                $('#'+onGoingId.replace('onGoing', 'finishAt')).prop('disabled', $(this).is(':checked'));
             });
 
             $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
-            $('div.political-functions-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
+            $('div.political-functions-collection').on('sonata.add_element', function () {
                 $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
             });
         });
     </script>
 {% endblock %}
 
-{% block app_admin_elected_representative_political_function_politicalFunctions_politicalFunctions_entry_widget -%}
-    <div class="row political-function" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-1{{ not form.mandate.vars.valid ? ' error' }}">
-            {{ form_row(form.mandate) }}
-        </div>
-        <div class="col-md-2{{ not form.name.vars.valid ? ' error' }}">
-            {{ form_row(form.name) }}
-        </div>
-        <div class="col-md-2{{ not form.clarification.vars.valid ? ' error' }}">
-            {{ form_row(form.clarification) }}
-        </div>
-        <div class="col-md-2{{ not form.mandateZoneName.vars.valid ? ' error' }}">
-            {{ form_row(form.mandateZoneName) }}
-        </div>
-        <div class="col-md-1{{ not form.onGoing.vars.valid ? ' error' }}">
-            {{ form_row(form.onGoing) }}
-        </div>
-        <div class="col-md-2{{ not form.beginAt.vars.valid ? ' error' }}">
-            {{ form_row(form.beginAt) }}
-        </div>
-        <div class="col-md-2{{ not form.finishAt.vars.valid ? ' error' }}">
-            {{ form_row(form.finishAt) }}
-        </div>
-    </div>
+{% block app_admin_elected_representative_label_name_text_widget -%}
+    {% set shouldSetOther = form.vars.value is not empty and form.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+    <select id="{{ form.vars.id }}-label-names" class="filter__field form form__field">
+        <option value="" {{ form.vars.value is not empty ? 'selected="selected"' }}></option>
+        {% for key, label in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+            <option value="{{ label }}" {{ form.vars.value == label or (shouldSetOther and label == constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    {{ form_widget(form, { attr: { style: "margin-top: 15px;" } }) }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var other = '{{ constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER') }}';
+            var labelNamesSelect = $('#{{ form.vars.id }}-label-names');
+            {% if form.vars.value is not empty and form.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
+            $(labelNamesSelect).val(other);
+            {% endif %}
+
+            var toggleLabel = function(setEmpty = false) {
+                var selectedValue = $(labelNamesSelect).val();
+                if (selectedValue === other) {
+                    if (setEmpty) {
+                        $('#{{ form.vars.id }}').val('');
+                    }
+                    $('#{{ form.vars.id }}').show();
+                } else {
+                    $('#{{ form.vars.id }}').hide();
+                    $('#{{ form.vars.id }}').val(selectedValue);
+                }
+            };
+
+            labelNamesSelect.change(function() {
+                toggleLabel(true);
+            });
+
+            toggleLabel();
+        });
+    </script>
 {% endblock %}
 
-{% block app_admin_elected_representative_labels_sonata_type_native_collection_labels_widget -%}
-    <div class="row">
-        <div class="col-xs-11 col-xs-offset-1">
-            <div class="row bg-primary">
-                <div class="col-md-5">Nom</div>
-                <div class="col-md-1">En cours</div>
-                <div class="col-md-3">Date de début</div>
-                <div class="col-md-3">Date de fin</div>
-            </div>
-        </div>
-    </div>
-    ​
+{% block app_admin_elected_representative_labels_sonata_type_collection_labels_row -%}
     <div class="elected-representative-labels-collection">
-        {{ form_widget(form) }}
+        {{ block('form_row') }}
     </div>
 
     <script type="text/javascript">
@@ -314,68 +249,18 @@
                 id = id.substr(id.length - 1);
 
                 if ($(this).is(':checked')) {
-                    $(this).parents('.row.political-label').find("div[id$='" + id + "_finishYear']").addClass('select2-container-disabled');
+                    $(this).parents('.row').find("div[id$='" + id + "_finishYear']").addClass('select2-container-disabled');
                 } else {
-                    $(this).parents('.row.political-label').find("div[id$='" + id + "_finishYear']").removeClass('select2-container-disabled');
+                    $(this).parents('.row').find("div[id$='" + id + "_finishYear']").removeClass('select2-container-disabled');
                 }
             });
 
             $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
-            $('div.elected-representative-labels-collection .sonata-collection-add').on('sonata-collection-item-added', function () {
+            $('div.elected-representative-labels-collection').on('sonata.add_element', function () {
                 $("div.icheckbox_square-blue input[id$='_onGoing']").trigger('ifToggled');
             });
         });
     </script>
-{% endblock %}
-
-{% block app_admin_elected_representative_elected_representative_label_labels_labels_entry_widget -%}
-    <div class="row political-label{{ form.onGoing.vars.checked ? ' text--bold' : '' }}" style="margin-top: 10px; margin-left: -30px;">
-        <div class="col-md-5{{ form.name.vars.valid ? '' : ' error' }}">
-            {% set shouldSetOther = form.name.vars.value is not empty and form.name.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
-            <select id="{{ form.name.vars.id }}-label-names" class="filter__field form form__field">
-                <option value="" {{ form.name.vars.value is not empty ? 'selected="selected"' }}></option>
-                {% for key, label in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
-                    <option value="{{ label }}" {{ form.name.vars.value == label or (shouldSetOther and label == constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
-                {% endfor %}
-            </select>
-            {{ form_row(form.name, { attr: { style: "margin-top: 15px;" } }) }}
-        </div>
-        <div class="col-md-1{{ form.onGoing.vars.valid ? '' : ' error' }}">
-            {{ form_row(form.onGoing) }}
-        </div>
-        <div class="col-md-3{{ form.beginYear.vars.valid ? '' : ' error' }}">
-            {{ form_row(form.beginYear) }}
-        </div>
-        <div class="col-md-3{{ form.finishYear.vars.valid ? '' : ' error' }}">
-            {{ form_row(form.finishYear) }}
-        </div>
-    </div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        var other = '{{ constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER') }}';
-        var labelNamesSelect = $('#{{ form.name.vars.id }}-label-names');
-        {% if form.name.vars.value is not empty and form.name.vars.value not in constant('AppBundle\\Entity\\ElectedRepresentative\\LabelNameEnum::ALL') %}
-            $(labelNamesSelect).val(other);
-        {% endif %}
-
-        var toggleLabel = function() {
-            var selectedValue = $(labelNamesSelect).val();
-            if (selectedValue === other) {
-                $('#{{ form.name.vars.id }}').show();
-            } else {
-                $('#{{ form.name.vars.id }}').hide();
-                $('#{{ form.name.vars.id }}').val(selectedValue);
-            }
-        };
-
-        labelNamesSelect.change(function() {
-            toggleLabel();
-        });
-
-        toggleLabel();
-    });
-</script>
 {% endblock %}
 
 {% block app_admin_elected_representative_sponsorships_sonata_type_native_collection_sponsorships_widget -%}
@@ -429,11 +314,11 @@
 
             var toggleLabel = function(setEmpty = false) {
                 var selectedValue = candidateNamesSelect.val();
-                if (selectedValue == other) {
-                    $('#{{ form.candidate.vars.id }}').show();
+                if (selectedValue === other) {
                     if (setEmpty) {
                         $('#{{ form.candidate.vars.id }}').val('');
                     }
+                    $('#{{ form.candidate.vars.id }}').show();
                 } else {
                     $('#{{ form.candidate.vars.id }}').hide();
                     $('#{{ form.candidate.vars.id }}').val(selectedValue);

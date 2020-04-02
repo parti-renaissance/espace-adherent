@@ -883,7 +883,7 @@
             </call>
         </service>
 
-        <service id="app.admin.elected.representative" class="AppBundle\Admin\ElectedRepresentativeAdmin">
+        <service id="app.admin.elected.representative" class="AppBundle\Admin\ElectedRepresentative\ElectedRepresentativeAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Politique" />
 
             <argument />
@@ -901,6 +901,30 @@
 
             <argument />
             <argument>AppBundle\Entity\ElectedRepresentative\SocialNetworkLink</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.elected_representative_label" class="AppBundle\Admin\ElectedRepresentative\ElectedRepresentativeLabelAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.elected_representative_mandate" class="AppBundle\Admin\ElectedRepresentative\MandateAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentative\Mandate</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.elected_representative_political_function" class="AppBundle\Admin\ElectedRepresentative\PoliticalFunctionAdmin">
+            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
+
+            <argument />
+            <argument>AppBundle\Entity\ElectedRepresentative\PoliticalFunction</argument>
             <argument />
         </service>
 
