@@ -300,7 +300,7 @@ class CommitteeMessageController extends Controller
             $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
         }
 
-        return $this->redirectToRoute('app_message_committee_preview', [
+        return $this->redirectToRoute('app_message_committee_filter', [
             'committee_slug' => $committee->getSlug(),
             'uuid' => $message->getUuid()->toString(),
         ]);

@@ -179,7 +179,7 @@ abstract class AbstractMessageController extends Controller
 
         // Reset Filter object
         if ($request->query->has('reset') && $message->getFilter()) {
-            $manager->updateFilter($message, null);
+            $manager->updateFilter($message, FilterFactory::create($adherent, $message->getType()));
 
             return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
         }
@@ -256,7 +256,7 @@ abstract class AbstractMessageController extends Controller
             $this->addFlash('info', 'adherent_message.test_campaign_sent_failure');
         }
 
-        return $this->redirectToMessageRoute('preview', ['uuid' => $message->getUuid()->toString()]);
+        return $this->redirectToMessageRoute('filter', ['uuid' => $message->getUuid()->toString()]);
     }
 
     abstract protected function getMessageType(): string;
