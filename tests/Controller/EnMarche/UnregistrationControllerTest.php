@@ -22,6 +22,7 @@ class UnregistrationControllerTest extends WebTestCase
     {
         $countForbidden = 0;
 
+        /** @var RemoveAdherentAndRelatedDataCommandHandler $handler */
         $handler = $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class);
 
         foreach ($this->getAdherentRepository()->findAll() as $adherent) {
@@ -64,7 +65,7 @@ class UnregistrationControllerTest extends WebTestCase
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
         }
 
-        self::assertSame(13, $countForbidden);
+        self::assertSame(14, $countForbidden);
     }
 
     protected function setUp()
