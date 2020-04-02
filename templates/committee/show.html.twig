@@ -90,19 +90,6 @@
                 <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
                 Quitter ce comité
             </button>
-        {% elseif is_host %}
-            <div class="committee-follow--anonymous">
-                <!-- <button role="button"
-                        class="btn btn--no-border committee-unfollow btn--no-wrap"
-                        id="committee-toggle-membership"
-                        disabled="disabled">
-                    Quitter ce comité
-                </button>
-                <div class="committee-follow--anonymous__link text--white b__nudge--top-10">
-                    En tant qu'animateur, vous ne pouvez pas cesser de suivre votre comité.
-                </div> -->
-                {{ include('committee/_host_header.html.twig') }}
-            </div>
         {% elseif is_candidate(app.user, committee) %}
             <div class="committee-follow--anonymous">
                 <button role="button" class="btn btn--no-border btn--text-blue btn--no-wrap" disabled="disabled">
@@ -111,6 +98,12 @@
                 <div class="committee-follow--anonymous__link text--white b__nudge--top-10">
                     Vous êtes candidat dans ce comité
                 </div>
+            </div>
+        {% endif %}
+
+        {% if is_host %}
+            <div class="committee-follow--anonymous">
+                {{ include('committee/_host_header.html.twig') }}
             </div>
         {% endif %}
     {% endif %}
