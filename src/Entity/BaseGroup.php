@@ -41,6 +41,9 @@ abstract class BaseGroup implements GeoPointInterface, CoordinatorAreaInterface,
      * The timestamp when an administrator approved this group.
      *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @JMS\Groups({"citizen_project_read"})
+     * @JMS\SerializedName("approvedAt")
      */
     protected $approvedAt;
 
