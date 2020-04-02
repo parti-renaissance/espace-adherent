@@ -206,8 +206,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->seeMessageForContactHosts($crawler);
         $this->assertSeeHosts($crawler, [
-            ['Francis B.', 'animateur'],
-            ['Jacques P.', 'co-animateur'],
+            ['FB', 'Francis B.', 'animateur'],
+            ['JP', 'Jacques P.', 'co-animateur'],
         ], false);
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
@@ -285,8 +285,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSeeHosts($crawler, [
-            ['Jacques Picard', 'animateur'],
-            ['Gisele Berthoux', 'co-animateur'],
+            ['JP', 'Jacques Picard', 'animateur'],
+            ['GB', 'Gisele Berthoux', 'co-animateur'],
         ]);
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
@@ -453,7 +453,10 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
     {
-        return $membersCount.' adhérent'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee__card .committee-members')->text();
+        return false !== strpos(
+            $crawler->filter('.committee__infos')->text(),
+            $membersCount.' adhérent'.($membersCount > 1 ? 's' : '')
+        );
     }
 
     private function seeHosts(Crawler $crawler, int $hostsCount): bool
@@ -467,8 +470,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $contact = $isConnected ? '\s+(Contacter)' : '';
 
         foreach ($hosts as $position => $host) {
-            list($name, $role) = $host;
-            $this->assertRegExp('/^'.preg_quote($name).'\s+'.$role.$contact.'?$/', trim($nodes->eq($position)->text()));
+            list($initials, $name, $role) = $host;
+            $this->assertRegExp(
+                '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.$contact.'?$/',
+                trim($nodes->eq($position)->text())
+            );
         }
     }
 
