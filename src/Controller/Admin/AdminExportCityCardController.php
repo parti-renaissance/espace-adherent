@@ -6,6 +6,7 @@ use AppBundle\Admin\Election\CityCardAdmin;
 use AppBundle\Election\CityResultAggregator;
 use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\Election\CityCard;
+use AppBundle\Utils\PhpConfigurator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\ArraySourceIterator;
@@ -52,6 +53,8 @@ class AdminExportCityCardController extends Controller
      */
     public function exportCityCardsAction(Request $request, string $_format): Response
     {
+        PhpConfigurator::disableMemoryLimit();
+
         return $this->exporter->getResponse(
             $_format,
             'export-villes--'.date('d-m-Y--H-i').'.'.$_format,
@@ -152,6 +155,8 @@ class AdminExportCityCardController extends Controller
      */
     public function exportVoteResultListsAction(Request $request, string $_format): Response
     {
+        PhpConfigurator::disableMemoryLimit();
+
         $rows = [];
 
         foreach ($this->getCityCardIterator($request) as $cityCard) {
