@@ -123,21 +123,4 @@ class CityCardAdmin extends AbstractCityCardAdmin
 
         return parent::getTemplate($name);
     }
-
-    public function getFilterParameters()
-    {
-        if ($this->hasRequest()) {
-            if ('reset' !== $this->request->query->get('filters')) {
-                $this->datagridValues = array_merge([
-                        'priority' => [
-                            'value' => CityCard::PRIORITY_HIGH,
-                        ],
-                    ],
-                    $this->datagridValues
-                );
-            }
-        }
-
-        return parent::getFilterParameters();
-    }
 }
