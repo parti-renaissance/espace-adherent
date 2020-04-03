@@ -108,6 +108,10 @@
         {{ block('form_row') }}
     </div>
 
+    <div class="help-inline">
+        Pour supprimer des mandats, vous devez supprimer aussi les fonctions associées à ces mandats.
+    </div>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $("div.mandates-collection").on('ifToggled change', "select[id$='_isElected'], input[id$='_onGoing']", function() {
