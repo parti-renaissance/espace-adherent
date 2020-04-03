@@ -1470,7 +1470,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isBasicAdherent(): bool
     {
-        return $this->isAdherent() && !$this->isHost() && !$this->isReferent() && !$this->isBoardMember() && !$this->isDeputy();
+        return $this->isAdherent()
+            && !$this->isHost()
+            && !$this->isReferent()
+            && !$this->isBoardMember()
+            && !$this->isDeputy()
+            && !$this->isSenator()
+        ;
     }
 
     public function isHost(): bool
