@@ -8,6 +8,7 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
         this._inputClassNames = inputClassNames;
         this._placeChanged = false;
         this._previousInputValue = null;
+        this._interval = null;
 
         this.resetState();
     }
@@ -41,11 +42,12 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
          */
         const step = 500; // 0.5 s
         let countOfCheck = 1;
-        let intervalId;
 
         on(this._input, 'keypress', () => {
-            if (!intervalId) {
-                intervalId = setInterval(() => {
+            if (null === this._interval) {
+                this._placeChanged = false;
+
+                this._interval = setInterval(() => {
                     if (this._previousInputValue !== this._input.value) {
                         this._previousInputValue = this._input.value;
                         countOfCheck = 1;
@@ -61,14 +63,16 @@ export default class GooglePlaceAutocomplete extends EventEmitter {
                      * then we stop the current check
                      */
                     if (this._placeChanged) {
-                        clearInterval(intervalId);
+                        clearInterval(this._interval);
+                        this._interval = null;
                         return;
                     }
 
                     const container = dom('.pac-container');
 
                     if (null === container || false === container.hasChildNodes()) {
-                        clearInterval(intervalId);
+                        clearInterval(this._interval);
+                        this._interval = null;
                         this.emit('no_result');
                     } else {
                         countOfCheck = 1;

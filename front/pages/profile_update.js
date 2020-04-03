@@ -2,15 +2,20 @@ import AutocompletedAddressForm from '../services/address/AutocompletedAddressFo
 import AddressObject from '../services/address/AddressObject';
 
 export default () => {
+    const autocompleteWrapper = dom('.address-autocomplete');
+
     const countryField = dom('#adherent_address_country');
     const postalCodeField = dom('#adherent_address_postalCode');
     const cityNameField = dom('#adherent_address_cityName');
+    const addressField = dom('#adherent_address_address');
+
+    hide(addressField.parentNode);
 
     const autocompleteWidget = new AutocompletedAddressForm(
-        dom('.address-autocomplete'),
+        autocompleteWrapper,
         dom('.address-block'),
         new AddressObject(
-            dom('#adherent_address_address'),
+            addressField,
             postalCodeField,
             cityNameField,
             null,
@@ -20,7 +25,7 @@ export default () => {
         true
     );
 
-    autocompleteWidget.once('changed', () => {
+    autocompleteWidget.on('changed', () => {
         countryField.dispatchEvent(new CustomEvent('change', {
             target: countryField,
             detail: {
@@ -31,4 +36,16 @@ export default () => {
     });
 
     autocompleteWidget.buildWidget();
+
+    const autocompleteInput = find(autocompleteWrapper, 'input.form');
+
+    if (autocompleteInput) {
+        autocompleteInput.value = addressField.value;
+    }
+
+    autocompleteWidget.once('no_result', () => {
+        hide(autocompleteWrapper);
+        addressField.value = autocompleteInput.value;
+        show(addressField.parentNode);
+    });
 };

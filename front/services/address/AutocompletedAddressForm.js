@@ -30,7 +30,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
 
             show(this._autocompleteWrapper);
 
-            autocomplete.once('changed', () => {
+            autocomplete.on('changed', () => {
                 if (this._showWhenFilled === false) {
                     this.showAddress();
                     hide(this._autocompleteWrapper);
@@ -52,7 +52,7 @@ export default class AutocompletedAddressForm extends EventEmitter {
     }
 
     addHelpMessage(autocomplete) {
-        autocomplete.once('no_result', () => show(this._helpMessageBlock));
+        autocomplete.on('no_result', () => show(this._helpMessageBlock));
 
         const removeAutocompleteLink = this._helpMessageBlock.getElementsByTagName('a')[0];
 
@@ -62,6 +62,8 @@ export default class AutocompletedAddressForm extends EventEmitter {
             hide(this._helpMessageBlock);
 
             autocomplete.placeChangeHandle();
+
+            this.emit('no_result');
         });
     }
 
