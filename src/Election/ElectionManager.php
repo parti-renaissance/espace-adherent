@@ -116,6 +116,11 @@ class ElectionManager
         return $this->ministryVoteResultRepository->findOneForCity($city, $round) ?? new MinistryVoteResult($city, $round);
     }
 
+    public function getListCollectionForVotePlace(VotePlace $vote): ?VoteResultListCollection
+    {
+        return $this->listCollectionRepository->findOneByCityInseeCode($vote->getInseeCode());
+    }
+
     private function updateListCollection(
         BaseVoteResult $voteResult,
         ?VoteResultListCollection $listsCollection
