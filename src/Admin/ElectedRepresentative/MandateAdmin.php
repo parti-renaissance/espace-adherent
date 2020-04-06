@@ -26,11 +26,13 @@ class MandateAdmin extends AbstractAdmin
             ->add('number', TextType::class, [
                 'disabled' => true,
                 'label' => '#',
+                'attr' => ['class' => 'width-50'],
             ])
             ->add('type', ChoiceType::class, [
                 'placeholder' => '--',
                 'choices' => MandateTypeEnum::CHOICES,
                 'label' => 'Type',
+                'attr' => ['class' => 'width-125'],
             ])
             ->add('politicalAffiliation', ChoiceType::class, [
                 'choices' => VoteListNuanceEnum::toArray(),
@@ -53,6 +55,7 @@ class MandateAdmin extends AbstractAdmin
                 'choice_label' => function ($choice, $key) {
                     return 'elected_representative.mandate.larem_support.'.\mb_strtolower($key);
                 },
+                'attr' => ['class' => 'width-135'],
             ])
             ->add('onGoing', CheckboxType::class, [
                 'label' => 'En cours',
@@ -60,11 +63,13 @@ class MandateAdmin extends AbstractAdmin
             ])
             ->add('beginAt', 'sonata_type_date_picker', [
                 'label' => 'Date de début de mandat',
+                'attr' => ['class' => 'width-140'],
             ])
             ->add('finishAt', 'sonata_type_date_picker', [
                 'label' => 'Date de fin de mandat',
                 'required' => false,
                 'error_bubbling' => true,
+                'attr' => ['class' => 'width-140'],
             ])
             ->add('zone', ZoneType::class, [
                 'label' => 'Périmètre géographique',
