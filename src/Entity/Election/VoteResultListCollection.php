@@ -81,4 +81,15 @@ class VoteResultListCollection
     {
         $this->lists->removeElement($list);
     }
+
+    public function containsList(string $listLabel): bool
+    {
+        foreach ($this->lists as $list) {
+            if (0 === strcasecmp($list->getLabel(), $listLabel)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
