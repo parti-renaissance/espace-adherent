@@ -9,6 +9,8 @@ use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\Transaction;
+use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -22,6 +24,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -108,6 +111,9 @@ class DonationAdmin extends AbstractAdmin
                 ->add('code', null, [
                     'label' => 'Code don',
                 ])
+                ->add('nationality', UnitedNationsCountryType::class, [
+                    'label' => 'Nationalité',
+                ])
                 ->add('donatedAt', null, [
                     'label' => 'Date du don',
                     'disabled' => $donation->isCB(),
@@ -173,7 +179,6 @@ class DonationAdmin extends AbstractAdmin
                     'label' => 'Commentaire',
                 ])
             ->end()
-
         ;
     }
 
@@ -357,32 +362,55 @@ class DonationAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    public function getDataSourceIterator()
     {
-        return [
-            'ID' => 'id',
-            'Montant' => 'amountInEuros',
-            'Code don' => 'code',
-            'Date' => 'getCreatedAtAsString',
-            'Type' => 'type',
-            'Don récurrent' => 'hasSubscription',
-            'Status' => 'status',
-            'Nationalité' => 'nationality',
-            'Adresse' => 'postAddress.address',
-            'CP' => 'postAddress.postalCode',
-            'Ville' => 'postAddress.cityName',
-            'Pays' => 'postAddress.country',
-            'Numéro donateur' => 'donator.identifier',
-            'Nom' => 'donator.lastName',
-            'Prénom' => 'donator.firstName',
-            'Civilité' => 'donator.gender',
-            'Adresse e-mail' => 'donator.emailAddress',
-            'Ville du donateur' => 'donator.city',
-            'Pays du donateur' => 'donator.country',
-            'Adresse de référence' => 'donator.getReferenceAddress',
-            'Tags du donateur' => 'donator.getTagsAsString',
-            'Transactions' => 'getSubscriptionTransactionsAsString',
-        ];
+        PhpConfigurator::disableMemoryLimit();
+
+        return new IteratorCallbackSourceIterator($this->getDonationIterator(), function (array $donation) {
+            /** @var Donation $donation */
+            $donation = $donation[0];
+            $donator = $donation->getDonator();
+
+            return [
+                'id' => $donation->getId(),
+                'Montant' => $donation->getAmountInEuros(),
+                'Code don' => $donation->getCode(),
+                'Date' => $donation->getCreatedAt()->format('Y/m/d H:i:s'),
+                'Type' => $donation->getType(),
+                'Don récurrent' => $donation->hasSubscription(),
+                'Status' => $donation->getStatus(),
+                'Nationalité' => $donation->getNationality(),
+                'Addresse' => $donation->getAddress(),
+                'Code postal' => $donation->getPostalCode(),
+                'Ville' => $donation->getCityName(),
+                'Pays' => $donation->getCountry(),
+                'Numéro donateur' => $donator->getIdentifier(),
+                'Nom' => $donator->getLastName(),
+                'Prénom' => $donator->getFirstName(),
+                'Civilité' => $donator->getGender(),
+                'Adresse e-mail' => $donator->getEmailAddress(),
+                'Ville du donateur' => $donator->getCity(),
+                'Pays du donateur' => $donator->getCountry(),
+                'Adresse de référence' => $donator->getReferenceAddress(),
+                'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
+                'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
+            ];
+        });
+    }
+
+    private function getDonationIterator(): \Iterator
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $query = $datagrid->getQuery();
+        $query
+            ->select('DISTINCT '.current($query->getRootAliases()))
+        ;
+        $query->setFirstResult(0);
+        $query->setMaxResults(null);
+
+        return $query->getQuery()->iterate();
     }
 
     /**
