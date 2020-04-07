@@ -7,12 +7,12 @@ Le sous-titre de l'article sera interpreté en tant que `h2`.
 Donc les titres à l'interieur de l'article devront utiliser le markup de `h3` ou `h4`.
 
 ```
-### Ceci est un titre à l'interieur d'un article
+### Ceci est un titre à l'intérieur d'un article
 ```
 
 ## Images
 
-Par default, l'image principale de l'article s'afichera en full width. Si votre image n'est pas
+Par default, l'image principale de l'article s'affichera en full width. Si votre image n'est pas
 d'assez bonne qualité ou sa largeur < 1200px, ajoutez la dans le contenu de l'article, et utilisez les displays suivants:   
 
 Image centrée (sa largeur est < 725px):
@@ -22,9 +22,16 @@ Image centrée (sa largeur est < 725px):
 </figure>
 ```
 
-Image aussi large que le reste de l'article (sa largeur doit être > 725px):
+Image aussi large que le corps de l'article (sa largeur doit être > 725px):
 ```
 <figure class="large">
+    <img src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
+</figure>
+```
+
+Image moins large que le corps de l'article (sa largeur est de minimum 500px):
+```
+<figure class="small">
     <img src="http://i.f1g.fr/media/figaro/1280x580_crop/2016/04/08/XVMe0a5d610-fd5d-11e5-bf72-58d0fa6caeec.jpg">
 </figure>
 ```
@@ -138,7 +145,7 @@ Permet une indentation d'un paragraphe avec la même profondeur que les listes c
 
 ## Les appels à action
 
-NB : ils ne sont pas disponibles sur les sites départementaux. 
+NB : ils ne sont pas disponibles sur les sites départementaux.
 
 La version défault:
 
