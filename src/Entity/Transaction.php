@@ -119,7 +119,13 @@ class Transaction
 
     public function __toString()
     {
-        return '['.$this->getPayboxResultLabel().'] '.$this->payboxDateTime->format('Y/m/d H:i:s');
+        $str = '['.$this->getPayboxResultLabel().']';
+
+        if ($this->payboxDateTime) {
+            $str .= ' '.$this->payboxDateTime->format('Y/m/d H:i:s');
+        }
+
+        return $str;
     }
 
     public function getId(): ?int
@@ -134,7 +140,7 @@ class Transaction
 
     public function getPayboxResultLabel(): ?string
     {
-        return self::PAYBOX_RESULT_LABELS[$this->payboxResultCode] ?? null;
+        return self::PAYBOX_RESULT_LABELS[$this->payboxResultCode] ?? $this->payboxResultCode;
     }
 
     public function getPayboxAuthorizationCode(): ?string
