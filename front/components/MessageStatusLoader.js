@@ -70,6 +70,7 @@ export default class MessageStatusLoader extends React.Component {
                        className={`btn btn--large-and-full b__nudge--top${
                         this.props.sendLocked ? ' btn--disabled' : ' btn--blue'}`}>Envoyer
                     </a>
+                    {this.renderActionButtons()}
                 </p>
             </div>;
         }
@@ -81,6 +82,7 @@ export default class MessageStatusLoader extends React.Component {
                     <a href="./filtrer" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top">
                         RECHARGER
                     </a>
+                    {this.renderActionButtons()}
                 </p>
                 : ''
             }
@@ -106,6 +108,22 @@ export default class MessageStatusLoader extends React.Component {
             <div>
                 {!this.state.synchronized ? <Loader title="Chargement de vos contacts" /> : this.renderActionBlock()}
             </div>
+        );
+    }
+
+    renderActionButtons() {
+        return (
+            <span>
+                <a
+                    href="./visualiser?f"
+                    className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15"
+                >
+                    Prévisualiser avant envoi
+                </a>
+                <a href="./tester" className="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">
+                    M'envoyer un message test
+                </a>
+            </span>
         );
     }
 }
