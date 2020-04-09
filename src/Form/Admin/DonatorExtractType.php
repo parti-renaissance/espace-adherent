@@ -3,8 +3,8 @@
 namespace AppBundle\Form\Admin;
 
 use AppBundle\Donation\DonatorExtractCommand;
+use AppBundle\Form\DataTransformer\StringToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,14 +31,7 @@ class DonatorExtractType extends AbstractType
 
         $builder
             ->get('emails')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($data) {
-                    return implode("\n", array_map('trim', $data));
-                },
-                function ($value) {
-                    return array_filter(array_map('trim', explode("\n", $value)));
-                }
-            ))
+            ->addModelTransformer(new StringToArrayTransformer(\PHP_EOL))
         ;
     }
 
