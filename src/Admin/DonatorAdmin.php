@@ -485,7 +485,7 @@ class DonatorAdmin extends AbstractAdmin
 
         $query
             ->select("DISTINCT $alias")
-            ->innerJoin("$alias.adherent", 'adherent')
+            ->leftJoin("$alias.adherent", 'adherent')
             ->addSelect('adherent')
         ;
         $query->setFirstResult(0);
