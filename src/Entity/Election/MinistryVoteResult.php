@@ -19,7 +19,7 @@ class MinistryVoteResult extends BaseVoteResult
     /**
      * @var City
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\City")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City")
      */
     private $city;
 
