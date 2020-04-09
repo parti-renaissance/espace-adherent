@@ -27,7 +27,9 @@ class ElectionRoundType extends AbstractType
             ->add('description', TextType::class, [
                 'filter_emojis' => true,
             ])
-            ->add('date', DateType::class)
+            ->add('date', DateType::class, [
+                'years' => range((int) date('Y') - 10, (int) date('Y') + 10),
+            ])
         ;
     }
 }
