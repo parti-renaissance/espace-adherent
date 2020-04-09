@@ -392,6 +392,19 @@ class Donator
         return null;
     }
 
+    public function getReferenceNationality(): ?string
+    {
+        if ($donation = $this->referenceDonation) {
+            return $donation->getNationality();
+        }
+
+        if ($donation = $this->lastSuccessfulDonation) {
+            return $donation->getNationality();
+        }
+
+        return null;
+    }
+
     public function getKinships(): ?Collection
     {
         return $this->kinships;

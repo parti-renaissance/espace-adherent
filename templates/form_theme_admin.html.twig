@@ -21,64 +21,88 @@
     </span>
 {% endblock %}
 
-{% block app_admin_donator_radio_referenceDonation_referenceDonation_entry_widget %}
+{% block app_admin_donator_referenceDonation_entity_widget %}
     {% import 'admin/donation/_macros.html.twig' as macros %}
 
-    {% set currentReferenceDonation = form.parent.parent.vars.value.referenceDonation %}
+    {% set currentReferenceDonation = form.parent.vars.value.referenceDonation %}
     {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
+    <table class="table table-bordered table-striped sonata-ba-list">
+        <thead>
+            <tr class="sonata-ba-list-field-header">
+                <th class="sonata-ba-list-field-header-text">Don de<br>référence</th>
+                <th class="sonata-ba-list-field-header-text">Montant</th>
+                <th class="sonata-ba-list-field-header-text">Type</th>
+                <th class="sonata-ba-list-field-header-text">Date</th>
+                <th class="sonata-ba-list-field-header-text">Status</th>
+                <th class="sonata-ba-list-field-header-text">Transactions</th>
+                <th class="sonata-ba-list-field-header-text">Détails</th>
+                <th class="sonata-ba-list-field-header-text" width="200px">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for choice in form.children %}
+                <tr>
+                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                       id="{{ choice.vars.id }}"
+                                       name="{{ choice.vars.full_name }}"
+                                       value="{{ choice.vars.value }}"
+                                        {% if currentValue == choice.vars.value %} checked {% endif %}
+                                />
+                            </label>
+                        </div>
+                    </td>
+                    {% if choice.vars.value %}
+                        {% set donation = form.vars.choices[choice.vars.value].data %}
 
-    <div class="radio">
-        <label>
-            <input type="radio"
-                   id="{{ form.vars.id }}"
-                   name="{{ form.vars.full_name }}"
-                   value="{{ form.vars.value }}"
-                   {% if currentValue == form.vars.value %} checked {% endif %}
-            />
-        </label>
-        <span class="control-label__text">
-            {% if form.vars.value %}
-                {% set donation = form.parent.vars.choices[form.vars.value].data %}
 
-                <strong>
-                    Don {% if donation.hasSubscription %}récurrent {% endif %}de
-                    {{ donation.amountInEuros|localizedcurrency('EUR') }}
-                    le {{ donation.donatedAt|localizeddate }}
-                </strong>
-
-                <a href="{{ path('admin_app_donation_edit', { id: form.vars.value }) }}" target="_blank">
-                    Voir le détail
-                </a>
-
-                <ul>
-                    <li>
-                        Type: {{ macros.get_donation_type_badge(donation.type) }}
-                    </li>
-                    <li>
-                        Statut: {{ macros.get_donation_status_badge(donation.status) }}
-                    </li>
-                    {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') and donation.hasSubscription and not donation.transactions.isEmpty %}
-                        <li>
-                            Transactions:
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ donation.amountInEuros|localizedcurrency('EUR') }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ macros.get_donation_type_badge(donation.type) }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ donation.donatedAt|localizeddate }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {{ macros.get_donation_status_badge(donation.status) }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {% if donation.type is constant('AppBundle\\Entity\\Donation::TYPE_CB') and not donation.transactions.isEmpty %}
+                                <ol>
+                                    {% for transaction in donation.transactions %}
+                                        <li>
+                                            <span class="badge {% if transaction.isSuccessful %}bg-green{% else %}bg-red{% endif %}">
+                                                {{ ('transaction.result_code.' ~ transaction.payboxResultCode)|trans }}
+                                            </span>
+                                            le {{ transaction.payboxDateTime|localizeddate }}
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            {% endif %}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            Adresse: {{ donation.getInlineFormattedAddress }}
                             <br>
-                            <ul>
-                                {% for transaction in donation.transactions %}
-                                    <li>
-                                        <span class="badge {% if transaction.isSuccessful %}bg-green{% else %}bg-red{% endif %}">
-                                            {{ ('transaction.result_code.' ~ transaction.payboxResultCode)|trans }}
-                                        </span>
-                                        le {{ transaction.payboxDateTime|localizeddate }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                            Nationalité: {{ donation.nationality }}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            <a href="{{ path('admin_app_donation_edit', { id: choice.vars.value }) }}" target="_blank">
+                                Voir le détail
+                            </a>
+                        </td>
+                    {% else %}
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text" colspan="7">
+                            {{ choice.vars.label }}
+                        </td>
                     {% endif %}
-                </ul>
-            {% else %}
-                {{ form.vars.label }}
-            {% endif %}
-        </span>
-    </div>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block app_admin_donation_file_row -%}
