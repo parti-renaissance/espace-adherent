@@ -453,8 +453,14 @@ class DonationAdmin extends AbstractAdmin
         $datagrid->buildPager();
 
         $query = $datagrid->getQuery();
+        $alias = current($query->getRootAliases());
+
         $query
-            ->select('DISTINCT '.current($query->getRootAliases()))
+            ->select("DISTINCT $alias")
+            ->innerJoin("$alias.donator", 'donator')
+            ->addSelect('donator')
+            ->leftJoin('donator.adherent', 'adherent')
+            ->addSelect('adherent')
         ;
         $query->setFirstResult(0);
         $query->setMaxResults(null);

@@ -29,6 +29,7 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DonatorAdmin extends AbstractAdmin
 {
@@ -180,6 +181,28 @@ class DonatorAdmin extends AbstractAdmin
                 'field_options' => [
                     'multiple' => true,
                 ],
+            ])
+            ->add('postalCode', CallbackFilter::class, [
+                'label' => 'Code postal (préfixe)',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+
+                    $postalCodeExpression = $qb->expr()->orX();
+                    foreach (array_filter($value) as $key => $code) {
+                        $postalCodeExpression->add(sprintf('donations.postAddress.postalCode LIKE :postalCode_%s', $key));
+                        $qb->setParameter('postalCode_'.$key, $code.'%');
+                    }
+
+                    $qb->andWhere($postalCodeExpression);
+
+                    return true;
+                },
             ])
             ->add('isAdherent', CallbackFilter::class, [
                 'label' => 'Est adhérent ?',
@@ -458,8 +481,12 @@ class DonatorAdmin extends AbstractAdmin
         $datagrid->buildPager();
 
         $query = $datagrid->getQuery();
+        $alias = current($query->getRootAliases());
+
         $query
-            ->select('DISTINCT '.current($query->getRootAliases()))
+            ->select("DISTINCT $alias")
+            ->leftJoin("$alias.adherent", 'adherent')
+            ->addSelect('adherent')
         ;
         $query->setFirstResult(0);
         $query->setMaxResults(null);
