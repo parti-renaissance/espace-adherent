@@ -738,11 +738,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('adherent.emailAddress = :emailAddress')
             ->andWhere('adherent.firstName = :firstName')
             ->andWhere('adherent.lastName = :lastName')
-            ->andWhere('adherent.status = :status')
             ->setParameter('emailAddress', $emailAddress)
             ->setParameter('firstName', $firstName)
             ->setParameter('lastName', $lastName)
-            ->setParameter('status', Adherent::ENABLED)
             ->getQuery()
             ->getOneOrNullResult()
         ;
