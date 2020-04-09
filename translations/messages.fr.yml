@@ -669,3 +669,8 @@ election.city_partner.consensus: Consensus
 election.city_partner.dissensus: Dissensus
 election.city_card.priority.high: P1
 election.city_card.priority.medium: P2
+
+donator.extract.field.firstName: Prénom
+donator.extract.field.lastName: Nom
+donator.extract.field.phone: Téléphone
+donator.extract.field.registeredAt: Date d'adhésion

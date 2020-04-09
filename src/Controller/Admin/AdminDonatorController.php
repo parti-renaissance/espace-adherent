@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Donation\DonatorExtractCommand;
+use AppBundle\Donation\DonatorExtractCommandHandler;
 use AppBundle\Donation\DonatorMergeCommand;
 use AppBundle\Donation\DonatorMergeCommandHandler;
+use AppBundle\Form\Admin\DonatorExtractType;
 use AppBundle\Form\Admin\DonatorMergeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,7 +24,7 @@ class AdminDonatorController extends Controller
     /**
      * @Route("/merge", name="app_admin_donator_merge", methods={"GET", "POST"})
      */
-    public function mergeAction(Request $request): Response
+    public function mergeAction(Request $request, DonatorMergeCommandHandler $donatorMergeCommandHandler): Response
     {
         $donatorMergeCommand = new DonatorMergeCommand();
 
@@ -31,10 +34,8 @@ class AdminDonatorController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $donatorMergeHandler = $this->get(DonatorMergeCommandHandler::class);
-
             if ($form->get('confirm')->isClicked()) {
-                $donatorMergeHandler->handle($donatorMergeCommand);
+                $donatorMergeCommandHandler->handle($donatorMergeCommand);
 
                 $this->addFlash('success', 'Fusion effectuée avec succès!');
 
@@ -49,6 +50,29 @@ class AdminDonatorController extends Controller
         }
 
         return $this->render('admin/donator/merge/request.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/extract", name="app_admin_donator_extract", methods={"GET", "POST"})
+     */
+    public function extractAction(
+        Request $request,
+        DonatorExtractCommandHandler $donatorExtractCommandHandler
+    ): Response {
+        $donatorExtractCommand = new DonatorExtractCommand();
+
+        $form = $this
+            ->createForm(DonatorExtractType::class, $donatorExtractCommand)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $donatorExtractCommandHandler->createResponse($donatorExtractCommand);
+        }
+
+        return $this->render('admin/donator/extract/request.html.twig', [
             'form' => $form->createView(),
         ]);
     }

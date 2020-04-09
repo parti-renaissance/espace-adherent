@@ -1,0 +1,57 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Extraction de données
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {% block notice %}
+        {{ parent() }}
+    {% endblock %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">Extraction de données</h4>
+                </div>
+                <div class="box-body">
+                    {{ form_errors(form) }}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.emails, { label: 'Emails' }) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.fields, { label: 'Données à extraire' }) }}
+                        </div>
+                    </div>
+
+                    <div class="sonata-ba-collapsed-fields">
+                        <div>
+                            <button type="submit" class="btn btn-success">Extraire</button>
+                            <a href="{{ path('admin_app_donator_list') }}" class="btn btn-danger">
+                                Retour à la liste des donateurs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
