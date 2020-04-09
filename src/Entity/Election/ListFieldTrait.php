@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Election;
 
+use AppBundle\Election\VoteListNuanceEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -76,6 +77,15 @@ trait ListFieldTrait
     public function setNuance(?string $nuance): void
     {
         $this->nuance = $nuance;
+    }
+
+    public function updateNuance(string $nuance): void
+    {
+        if (\in_array($nuance, VoteListNuanceEnum::getChoices(), true)) {
+            $this->nuance = $nuance;
+        } elseif (\in_array($tmp = ltrim($nuance, 'L'), VoteListNuanceEnum::getChoices(), true)) {
+            $this->nuance = $tmp;
+        }
     }
 
     public function getAdherentCount(): ?int

@@ -11,8 +11,10 @@ class LoadVoteResultListCollectionData extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $listCollection = new VoteResultListCollection();
-        $listCollection->setCity($this->getReference('city-lille'));
+        $listCollection = new VoteResultListCollection(
+            $this->getReference('city-lille'),
+            $this->getReference('round-1-municipal')
+        );
 
         $listCollection->addList($this->createList('Liste 1', 'REM', 1));
         $listCollection->addList($this->createList('Liste 2', '', 2));
@@ -27,6 +29,7 @@ class LoadVoteResultListCollectionData extends Fixture
     {
         return [
             LoadCityData::class,
+            LoadElectionData::class,
         ];
     }
 

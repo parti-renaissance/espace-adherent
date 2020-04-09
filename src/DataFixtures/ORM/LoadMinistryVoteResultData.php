@@ -11,7 +11,10 @@ class LoadMinistryVoteResultData extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $result = new MinistryVoteResult($this->getReference('city-lille'), $this->getReference('round-1-legislatives'));
+        $result = new MinistryVoteResult(
+            $this->getReference('city-lille'),
+            $this->getReference('round-1-municipal')
+        );
         $result->setRegistered(1000);
         $result->setParticipated(666);
         $result->setExpressed(660);

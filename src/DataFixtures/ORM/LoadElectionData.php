@@ -127,14 +127,46 @@ REQUESTCONTENT
             'round-2-legislatives',
         );
 
+        $nextTime = new \DateTime('-2 days');
+        $municipalElections = $this->createElection(
+            'Élections municipales',
+            <<<INTRODUCTION
+<h1>Chaque vote compte.</h1>
+
+<h2>Les élections municipales.</h2>
+INTRODUCTION,
+            <<<PROPOSALCONTENT
+<p><strong>Je souhaite être mandataire.</strong></p>
+PROPOSALCONTENT,
+            <<<REQUESTCONTENT
+<p><strong>Je souhaite être mandant.</strong></p>
+REQUESTCONTENT
+        );
+        $this->createRound(
+            $municipalElections,
+            'Premier tour des élections municipales',
+            'Le premier tour',
+            $nextTime->format('d-m-Y'),
+            'round-1-municipal'
+        );
+        $this->createRound(
+            $municipalElections,
+            'Second tour des élections municipales',
+            'Le second tour',
+            $nextTime->modify('+1 week')->format('d-m-Y'),
+            'round-2-municipal'
+        );
+
         $manager->persist($presidentialElections);
         $manager->persist($legislativeElections);
         $manager->persist($partialLegislativeElections);
+        $manager->persist($municipalElections);
         $manager->flush();
 
         $this->setReference('elections-presidential', $presidentialElections);
         $this->setReference('elections-legislative', $legislativeElections);
         $this->setReference('elections-partial-legislative', $partialLegislativeElections);
+        $this->setReference('elections-municipal', $municipalElections);
     }
 
     private function createElection(
