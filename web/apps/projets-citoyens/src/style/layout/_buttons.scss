@@ -122,6 +122,18 @@
     }
 }
 
+@mixin btn--red {
+    background: $red--spike;
+    border-color: $red--spike;
+    color: $white;
+
+    &:hover {
+        color: white;
+        background: #DA2323;
+        border-color: #DA2323;
+    }
+}
+
 @mixin btn--dark {
     color: white;
     background: $dark;
@@ -325,6 +337,10 @@ button.btn {
 
     &--pink {
         @include btn--pink;
+    }
+
+    &--red {
+        @include btn--red;
     }
 
     &--muted {
