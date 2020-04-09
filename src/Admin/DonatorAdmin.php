@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Donation\DonatorManager;
 use AppBundle\Donation\PayboxPaymentSubscription;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
 use AppBundle\Entity\DonatorTag;
@@ -12,6 +13,7 @@ use AppBundle\Form\Admin\DonatorKinshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -22,6 +24,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -112,9 +115,9 @@ class DonatorAdmin extends AbstractAdmin
 
         if (!$this->isCurrentRoute('create')) {
             $form
-                ->with('Dons', ['class' => 'col-md-6'])
+                ->with('Dons', ['class' => 'col-md-12'])
                     ->add('referenceDonation', null, [
-                        'label' => 'Sélectionnez le don de référence',
+                        'label' => false,
                         'expanded' => true,
                         'placeholder' => 'Dernier don en date',
                         'query_builder' => function (DonationRepository $repository) {
@@ -159,8 +162,16 @@ class DonatorAdmin extends AbstractAdmin
                 'label' => 'Adresse e-mail',
                 'show_filter' => true,
             ])
-            ->add('country', ChoiceFilter::class, [
+            ->add('donations.nationality', ChoiceFilter::class, [
                 'label' => 'Nationalité',
+                'show_filter' => true,
+                'field_type' => CountryType::class,
+                'field_options' => [
+                    'multiple' => true,
+                ],
+            ])
+            ->add('country', ChoiceFilter::class, [
+                'label' => 'Pays de résidence',
                 'show_filter' => true,
                 'field_type' => CountryType::class,
                 'field_options' => [
@@ -406,21 +417,51 @@ class DonatorAdmin extends AbstractAdmin
         ;
     }
 
-    public function getExportFields()
+    public function getDataSourceIterator()
     {
-        return [
-            'ID' => 'id',
-            'Numéro donateur' => 'identifier',
-            'Nom' => 'lastName',
-            'Prénom' => 'firstName',
-            'Civilité' => 'gender',
-            'Adresse e-mail' => 'emailAddress',
-            'Ville' => 'city',
-            'Pays' => 'country',
-            'Commentaire' => 'comment',
-            'Adresse de référence' => 'getReferenceAddress',
-            'Tags' => 'getTagsAsString',
-        ];
+        PhpConfigurator::disableMemoryLimit();
+
+        return new IteratorCallbackSourceIterator($this->getDonatorIterator(), function (array $donator) {
+            /** @var Donator $donator */
+            $donator = $donator[0];
+            $adherent = $donator->getAdherent();
+
+            $phone = ($adherent instanceof Adherent && $adherent->getPhone())
+                ? $adherent->getPhone()->getNationalNumber()
+                : null
+            ;
+
+            return [
+                'id' => $donator->getId(),
+                'Numéro donateur' => $donator->getIdentifier(),
+                'Nom' => $donator->getLastName(),
+                'Prénom' => $donator->getFirstName(),
+                'Civilité' => $donator->getGender(),
+                'Adresse e-mail' => $donator->getEmailAddress(),
+                'Ville du donateur' => $donator->getCity(),
+                'Pays du donateur' => $donator->getCountry(),
+                'Adresse de référence' => $donator->getReferenceAddress(),
+                'Nationalité de référence' => $donator->getReferenceNationality(),
+                'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
+                'Adhérent' => $adherent instanceof Adherent,
+                'Téléphone adhérent' => $phone,
+            ];
+        });
+    }
+
+    private function getDonatorIterator(): \Iterator
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $query = $datagrid->getQuery();
+        $query
+            ->select('DISTINCT '.current($query->getRootAliases()))
+        ;
+        $query->setFirstResult(0);
+        $query->setMaxResults(null);
+
+        return $query->getQuery()->iterate();
     }
 
     /**

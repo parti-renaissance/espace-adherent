@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use AppBundle\Donation\DonationEvents;
 use AppBundle\Donation\DonationWasCreatedEvent;
 use AppBundle\Donation\DonationWasUpdatedEvent;
+use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\DonationTag;
 use AppBundle\Entity\PostAddress;
@@ -32,6 +33,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType as FormNumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DonationAdmin extends AbstractAdmin
@@ -235,6 +237,7 @@ class DonationAdmin extends AbstractAdmin
             ])
             ->add('date', CallbackFilter::class, [
                 'label' => 'Date de don',
+                'show_filter' => true,
                 'field_type' => DateRangePickerType::class,
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
                     if (empty($dates = $value['value'])) {
@@ -322,6 +325,44 @@ class DonationAdmin extends AbstractAdmin
                 ],
                 'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
+            ->add('nationality', ChoiceFilter::class, [
+                'label' => 'Nationalité',
+                'show_filter' => true,
+                'field_type' => CountryType::class,
+                'field_options' => [
+                    'multiple' => true,
+                ],
+            ])
+            ->add('postAddress.country', ChoiceFilter::class, [
+                'label' => 'Pays de résidence',
+                'show_filter' => true,
+                'field_type' => CountryType::class,
+                'field_options' => [
+                    'multiple' => true,
+                ],
+            ])
+            ->add('postalCode', CallbackFilter::class, [
+                'label' => 'Code postal (préfixe)',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+
+                    $postalCodeExpression = $qb->expr()->orX();
+                    foreach (array_filter($value) as $key => $code) {
+                        $postalCodeExpression->add(sprintf('%s.postAddress.postalCode LIKE :postalCode_%s', $alias, $key));
+                        $qb->setParameter('postalCode_'.$key, $code.'%');
+                    }
+
+                    $qb->andWhere($postalCodeExpression);
+
+                    return true;
+                },
+            ])
         ;
     }
 
@@ -370,6 +411,12 @@ class DonationAdmin extends AbstractAdmin
             /** @var Donation $donation */
             $donation = $donation[0];
             $donator = $donation->getDonator();
+            $adherent = $donator->getAdherent();
+
+            $phone = ($adherent instanceof Adherent && $adherent->getPhone())
+                ? $adherent->getPhone()->getNationalNumber()
+                : null
+            ;
 
             return [
                 'id' => $donation->getId(),
@@ -394,6 +441,8 @@ class DonationAdmin extends AbstractAdmin
                 'Adresse de référence' => $donator->getReferenceAddress(),
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
+                'Adhérent' => $adherent instanceof Adherent,
+                'Téléphone adhérent' => $phone,
             ];
         });
     }
