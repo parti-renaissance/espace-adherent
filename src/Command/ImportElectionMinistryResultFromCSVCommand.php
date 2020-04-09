@@ -3,13 +3,11 @@
 namespace AppBundle\Command;
 
 use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\Election\VotePlaceResult;
-use AppBundle\Entity\Election\VoteResultList;
-use AppBundle\Entity\Election\VoteResultListCollection;
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\VotePlace;
+use AppBundle\Entity\City;
+use AppBundle\Entity\Election\MinistryListTotalResult;
+use AppBundle\Entity\Election\MinistryVoteResult;
 use AppBundle\Repository\CityRepository;
-use AppBundle\Repository\VotePlaceRepository;
+use AppBundle\Repository\Election\MinistryVoteResultRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
@@ -19,22 +17,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ImportElectionVotePlaceResultsCommand extends Command
+class ImportElectionMinistryResultFromCSVCommand extends Command
 {
-    protected static $defaultName = 'app:election:import-vote-place-results';
+    protected static $defaultName = 'app:election:import-ministry-results-from-csv';
 
     /** @var FilesystemInterface */
     private $storage;
     /** @var ElectionManager */
     private $electionManager;
-    /** @var VotePlaceRepository */
-    private $votePlaceRepository;
     /** @var CityRepository */
     private $cityRepository;
     /** @var ObjectManager */
     private $entityManager;
+    /** @var MinistryVoteResultRepository */
+    private $ministryVoteResultRepository;
     /** @var SymfonyStyle */
     private $io;
+
     private $errors = [];
 
     protected function configure()
@@ -61,29 +60,27 @@ class ImportElectionVotePlaceResultsCommand extends Command
         $csv = Reader::createFromStream($this->storage->readStream($input->getArgument('file')));
         $csv->setDelimiter(';');
 
-        $votePlaceDataLabels = [
+        $cityDataLabels = [
+            'date_export',
             'dtp_code',
+            'type_scrutin',
             'dtp_label',
             'city_code',
             'city_label',
-            'vote_place_code',
             'Inscrits',
             'Abstentions',
             '% Abs/Ins',
             'Votants',
             '% Vot/Ins',
-            'Blancs',
+            'Blancs & Nuls',
             '% Blancs/Ins',
             '% Blancs/Vot',
-            'Nuls',
-            '% Nuls/Ins',
-            '% Nuls/Vot',
             'Exprimés',
             '% Exp/Ins',
             '% Exp/Vot',
         ];
 
-        $votePlaceDataColumnNumber = \count($votePlaceDataLabels);
+        $cityDataColumnNumber = \count($cityDataLabels);
 
         $this->io->progressStart(\count($csv) - 1);
 
@@ -92,45 +89,57 @@ class ImportElectionVotePlaceResultsCommand extends Command
                 continue;
             }
 
-            $votePlaceData = array_combine($votePlaceDataLabels, \array_slice($row, 0, $votePlaceDataColumnNumber));
+            $cityData = array_combine($cityDataLabels, \array_slice($row, 0, $cityDataColumnNumber));
 
-            $votePlaceCode = implode('_', [
-                str_pad($votePlaceData['dtp_code'], 2, '0', \STR_PAD_LEFT).str_pad($votePlaceData['city_code'], 3, '0', \STR_PAD_LEFT),
-                str_pad($votePlaceData['vote_place_code'], 4, '0', \STR_PAD_LEFT),
-            ]);
+            $inseeCode = str_pad($cityData['dtp_code'], 2, '0', \STR_PAD_LEFT)
+                .str_pad($cityData['city_code'], 3, '0', \STR_PAD_LEFT);
 
-            $votePlace = $this->votePlaceRepository->findOneBy(['code' => $votePlaceCode]);
+            $city = $this->cityRepository->findByInseeCode($inseeCode);
 
-            if (!$votePlace instanceof VotePlace) {
-                $this->errors[] = 'VP not found: '.$votePlaceCode;
+            if (!$city instanceof City) {
+                $this->io->warning('City not found: '.$inseeCode.' '.$cityData['city_label']);
+                $this->errors[] = 'City not found: '.$inseeCode;
                 continue;
             }
 
-            $lists = $this->extractLists($row, $votePlaceDataColumnNumber);
+            $lists = $this->extractLists($row, $cityDataColumnNumber);
 
-            $this->updateVoteListCollection($electionRound, $votePlace, $lists);
-
-            $voteResult = $this->getVoteResult($votePlace);
-
-            $voteResult->setExpressed($votePlaceData['Exprimés']);
-            $voteResult->setAbstentions($votePlaceData['Abstentions']);
-            $voteResult->setRegistered($votePlaceData['Inscrits']);
-            $voteResult->setParticipated($votePlaceData['Votants']);
-
-            foreach ($lists as $listData) {
-                foreach ($voteResult->getListTotalResults() as $list) {
-                    if (0 === strcasecmp($list->getList()->getLabel(), $listData['list_label'])) {
-                        $list->setTotal((int) $listData['voix']);
-                        continue;
-                    }
-                }
+            if (!$voteResult = $this->ministryVoteResultRepository->findOneForCity($city, $electionRound)) {
+                $voteResult = new MinistryVoteResult($city, $electionRound);
             }
 
-            $this->entityManager->flush();
-            $this->entityManager->clear();
+            $voteResult->setExpressed((int) $cityData['Exprimés']);
+            $voteResult->setAbstentions((int) $cityData['Abstentions']);
+            $voteResult->setRegistered((int) $cityData['Inscrits']);
+            $voteResult->setParticipated((int) $cityData['Votants']);
+
+            foreach ($lists as $listData) {
+                if (!$listToUpdate = $voteResult->findListWithLabel($listData['list_label'])) {
+                    $listToUpdate = new MinistryListTotalResult();
+                    $listToUpdate->updateNuance($listData['nuance']);
+                    $listToUpdate->setLabel($listData['list_label']);
+                    $voteResult->addListTotalResult($listToUpdate);
+                }
+
+                $listToUpdate->setTotal((int) $listData['voix']);
+            }
+
+            if (!$voteResult->getId()) {
+                $this->entityManager->persist($voteResult);
+            }
+
+            if (0 === $index % 500) {
+                $this->entityManager->flush();
+
+                $this->entityManager->clear(MinistryVoteResult::class);
+                $this->entityManager->clear(MinistryListTotalResult::class);
+                $this->entityManager->clear(City::class);
+            }
 
             $this->io->progressAdvance();
         }
+
+        $this->entityManager->flush();
 
         $this->io->progressFinish();
 
@@ -138,20 +147,17 @@ class ImportElectionVotePlaceResultsCommand extends Command
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
     }
 
-    private function getVoteResult(VotePlace $votePlace): VotePlaceResult
-    {
-        return $this->electionManager->getVotePlaceResultForCurrentElectionRound($votePlace, true);
-    }
-
     private function extractLists(array $row, int $initialOffset): array
     {
         $listDataLabels = [
-            'nb_pan',
             'nuance',
             'sexe',
             'nom',
             'prenom',
             'liste',
+            'Sièges / Elu',
+            'Sièges Secteur',
+            'Sièges CC',
             'voix',
             '% Voix/Ins',
             '% Voix/Exp',
@@ -165,7 +171,7 @@ class ImportElectionVotePlaceResultsCommand extends Command
             $listData = array_combine($listDataLabels, $listData);
             $offset += $listDataColumnNumber;
 
-            if (empty($listData['nb_pan'])) {
+            if (empty($listData['voix'])) {
                 continue;
             }
 
@@ -181,40 +187,6 @@ class ImportElectionVotePlaceResultsCommand extends Command
         return $lists;
     }
 
-    private function updateVoteListCollection(ElectionRound $electionRound, VotePlace $votePlace, array $lists): void
-    {
-        $listCollection = $this->electionManager->getListCollectionForVotePlace($electionRound, $votePlace);
-
-        if (!$listCollection) {
-            $city = $this->cityRepository->findByInseeCode($votePlace->getInseeCode());
-
-            if (!$city) {
-                return;
-            }
-
-            $listCollection = new VoteResultListCollection($city, $electionRound);
-
-            $this->entityManager->persist($listCollection);
-        }
-
-        foreach ($lists as $newList) {
-            if (!$listCollection->containsList($newList['list_label'])) {
-                $list = new VoteResultList();
-                $list->setLabel($newList['list_label']);
-
-                if ($newList['nuance']) {
-                    $list->setNuance($newList['nuance']);
-                }
-
-                $list->setPosition($newList['nb_pan']);
-
-                $listCollection->addList($list);
-            }
-        }
-
-        $this->entityManager->flush();
-    }
-
     /** @required */
     public function setStorage(FilesystemInterface $storage): void
     {
@@ -228,12 +200,6 @@ class ImportElectionVotePlaceResultsCommand extends Command
     }
 
     /** @required */
-    public function setVotePlaceRepository(VotePlaceRepository $votePlaceRepository): void
-    {
-        $this->votePlaceRepository = $votePlaceRepository;
-    }
-
-    /** @required */
     public function setCityRepository(CityRepository $cityRepository): void
     {
         $this->cityRepository = $cityRepository;
@@ -243,5 +209,11 @@ class ImportElectionVotePlaceResultsCommand extends Command
     public function setEntityManager(ObjectManager $entityManager): void
     {
         $this->entityManager = $entityManager;
+    }
+
+    /** @required */
+    public function setMinistryVoteResultRepository(MinistryVoteResultRepository $ministryVoteResultRepository): void
+    {
+        $this->ministryVoteResultRepository = $ministryVoteResultRepository;
     }
 }

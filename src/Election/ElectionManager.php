@@ -85,7 +85,7 @@ class ElectionManager
 
         return $this->updateListCollection(
             $voteResult,
-            $this->listCollectionRepository->findOneByCityInseeCode($votePlace->getInseeCode())
+            $this->listCollectionRepository->findOneByCityInseeCode($votePlace->getInseeCode(), $round)
         );
     }
 
@@ -103,7 +103,7 @@ class ElectionManager
 
         return $this->updateListCollection(
             $voteResult,
-            $this->listCollectionRepository->findOneByCity($city)
+            $this->listCollectionRepository->findOneByCity($city, $round)
         );
     }
 
@@ -116,9 +116,11 @@ class ElectionManager
         return $this->ministryVoteResultRepository->findOneForCity($city, $round) ?? new MinistryVoteResult($city, $round);
     }
 
-    public function getListCollectionForVotePlace(VotePlace $vote): ?VoteResultListCollection
-    {
-        return $this->listCollectionRepository->findOneByCityInseeCode($vote->getInseeCode());
+    public function getListCollectionForVotePlace(
+        ElectionRound $electionRound,
+        VotePlace $vote
+    ): ?VoteResultListCollection {
+        return $this->listCollectionRepository->findOneByCityInseeCode($vote->getInseeCode(), $electionRound);
     }
 
     private function updateListCollection(
@@ -136,5 +138,20 @@ class ElectionManager
         }
 
         return $voteResult;
+    }
+
+    public function findElectionRound(int $id): ?ElectionRound
+    {
+        if (!$election = $this->electionRepository->findElectionOfRound($id)) {
+            return null;
+        }
+
+        foreach ($election->getRounds() as $round) {
+            if ($round->getId() === $id) {
+                return $round;
+            }
+        }
+
+        return null;
     }
 }

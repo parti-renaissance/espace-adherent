@@ -15,14 +15,14 @@ class LoadVotePlaceResultData extends Fixture
         /** @var VotePlace $assessor1VotePlace */
         $assessor1VotePlace = $this->getReference('vote-place-lille-wazemmes');
 
-        /** @var ElectionRound $round1Legislatives */
-        $round1Legislatives = $this->getReference('round-1-legislatives');
-        /** @var ElectionRound $round2Legislatives */
-        $round2Legislatives = $this->getReference('round-2-legislatives');
+        /** @var ElectionRound $round1 */
+        $round1 = $this->getReference('round-1-municipal');
+        /** @var ElectionRound $round2 */
+        $round2 = $this->getReference('round-2-municipal');
 
         $manager->persist($this->createVoteResult(
             $assessor1VotePlace,
-            $round1Legislatives,
+            $round1,
             1000,
             300,
             500,
@@ -31,7 +31,7 @@ class LoadVotePlaceResultData extends Fixture
 
         $manager->persist($this->createVoteResult(
             $assessor1VotePlace,
-            $round2Legislatives,
+            $round2,
             1000,
             200,
             600,
@@ -58,6 +58,7 @@ class LoadVotePlaceResultData extends Fixture
         int $expressed
     ): VotePlaceResult {
         $voteResult = new VotePlaceResult($votePlace, $electionRound);
+
         $voteResult->setRegistered($registered);
         $voteResult->setAbstentions($abstentions);
         $voteResult->setParticipated($participated);

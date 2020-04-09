@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\City;
+use AppBundle\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,7 +29,7 @@ class VoteResultListCollection
     /**
      * @var City
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\City")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City")
      */
     private $city;
 
@@ -41,8 +42,18 @@ class VoteResultListCollection
      */
     private $lists;
 
-    public function __construct()
+    /**
+     * @var ElectionRound
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectionRound")
+     */
+    private $electionRound;
+
+    public function __construct(City $city, ElectionRound $electionRound)
     {
+        $this->city = $city;
+        $this->electionRound = $electionRound;
+
         $this->lists = new ArrayCollection();
     }
 
@@ -91,5 +102,15 @@ class VoteResultListCollection
         }
 
         return false;
+    }
+
+    public function getElectionRound(): ElectionRound
+    {
+        return $this->electionRound;
+    }
+
+    public function setElectionRound(ElectionRound $electionRound): void
+    {
+        $this->electionRound = $electionRound;
     }
 }

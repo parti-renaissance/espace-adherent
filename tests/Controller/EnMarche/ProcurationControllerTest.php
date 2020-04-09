@@ -96,7 +96,7 @@ class ProcurationControllerTest extends WebTestCase
             trim($crawler->filter('.procuration__content h2')->text())
         );
 
-        $this->assertCount(1, $crawler->filter('#election_context_elections > div.form__checkbox > input[type="checkbox"]'));
+        $this->assertCount(2, $crawler->filter('#election_context_elections > div.form__checkbox > input[type="checkbox"]'));
         $this->assertSame(
             'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise',
             $crawler->filter('#election_context_elections label')->text()
@@ -139,7 +139,7 @@ class ProcurationControllerTest extends WebTestCase
             'Portez la voix d\'un citoyen de votre ville',
             trim($crawler->filter('.procuration__content h2')->text())
         );
-        $this->assertCount(1, $crawler->filter('#election_context_elections input[type="checkbox"]'));
+        $this->assertCount(2, $crawler->filter('#election_context_elections input[type="checkbox"]'));
         $this->assertSame(
             'Élection législative partielle pour la 1ère circonscription du Val-d\'Oise',
             $crawler->filter('#election_context_elections label')->text()

@@ -17,12 +17,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class ImportElectionMinistryResultCommand extends Command
+class ImportElectionMinistryResultFromXMLCommand extends Command
 {
     private const INDEX_URL = 'https://elections.interieur.gouv.fr/telechargements/MUNICIPALES2020/resultatsT1/index.xml';
     private const CITY_INDEX_URL = 'https://elections.interieur.gouv.fr/telechargements/MUNICIPALES2020/resultatsT1/%s/%s000.xml';
 
-    protected static $defaultName = 'app:election:import-ministry-results';
+    protected static $defaultName = 'app:election:import-ministry-results-from-xml';
 
     /** @var HttpClientInterface */
     private $httpClient;

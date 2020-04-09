@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\EnMarche\Election\VoteResultList;
 
+use AppBundle\Election\ElectionManager;
 use AppBundle\Entity\City;
 use AppBundle\Entity\Election\VoteResultListCollection;
 use AppBundle\Form\VoteResultListCollectionType;
@@ -19,13 +20,17 @@ abstract class AbstractVoteResultListController extends Controller
     private $entityManager;
     /** @var VoteResultListCollectionRepository */
     private $voteResultListCollectionRepository;
+    /** @var ElectionManager */
+    private $electionManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        VoteResultListCollectionRepository $voteResultListCollectionRepository
+        VoteResultListCollectionRepository $voteResultListCollectionRepository,
+        ElectionManager $electionManager
     ) {
         $this->entityManager = $entityManager;
         $this->voteResultListCollectionRepository = $voteResultListCollectionRepository;
+        $this->electionManager = $electionManager;
     }
 
     /**
@@ -33,7 +38,11 @@ abstract class AbstractVoteResultListController extends Controller
      */
     public function __invoke(City $city, Request $request): Response
     {
-        $listCollection = $this->voteResultListCollectionRepository->findOneByCity($city);
+        $electionRound = $this->electionManager->getClosestElectionRound();
+
+        if (!$listCollection = $this->voteResultListCollectionRepository->findOneByCity($city, $electionRound)) {
+            $listCollection = new VoteResultListCollection($city, $electionRound);
+        }
 
         $form = $this
             ->createForm(VoteResultListCollectionType::class, $listCollection)
@@ -42,9 +51,6 @@ abstract class AbstractVoteResultListController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var VoteResultListCollection $listCollection */
-            $listCollection = $form->getData();
-            $listCollection->setCity($city);
-
             if (!$listCollection->getId()) {
                 $this->entityManager->persist($listCollection);
             }

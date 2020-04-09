@@ -47,4 +47,15 @@ class ElectionRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findElectionOfRound(int $id): ?Election
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin('e.rounds', 'r')
+            ->where('r.id = :round_id')
+            ->setParameter('round_id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
