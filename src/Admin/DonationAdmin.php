@@ -11,6 +11,7 @@ use AppBundle\Entity\DonationTag;
 use AppBundle\Entity\PostAddress;
 use AppBundle\Entity\Transaction;
 use AppBundle\Form\UnitedNationsCountryType;
+use AppBundle\Utils\PhoneNumberFormatter;
 use AppBundle\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
@@ -59,6 +60,17 @@ class DonationAdmin extends AbstractAdmin
 
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
+    }
+
+    public function configureActionButtons($action, $object = null)
+    {
+        $actions = parent::configureActionButtons($action, $object);
+
+        if (\in_array($action, ['edit'], true)) {
+            $actions['refund'] = ['template' => 'admin/donation/action_button_refund.html.twig'];
+        }
+
+        return $actions;
     }
 
     /**
@@ -413,10 +425,7 @@ class DonationAdmin extends AbstractAdmin
             $donator = $donation->getDonator();
             $adherent = $donator->getAdherent();
 
-            $phone = ($adherent instanceof Adherent && $adherent->getPhone())
-                ? $adherent->getPhone()->getNationalNumber()
-                : null
-            ;
+            $phone = $adherent instanceof Adherent ? PhoneNumberFormatter::format($adherent->getPhone()) : null;
 
             return [
                 'id' => $donation->getId(),

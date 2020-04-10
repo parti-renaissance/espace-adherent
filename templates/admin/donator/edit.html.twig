@@ -1,0 +1,33 @@
+{% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
+
+{% block sonata_tab_content %}
+    {{ parent() }}
+
+    {% if object.isAdherent %}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Informations adhérent</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Téléphone</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.adherent.phone|phone_number_format }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Date de naissance</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.adherent.birthDate|localizeddate('medium', 'none') }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Donation;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,5 +31,17 @@ class AdminDonationController extends Controller
         return new Response($storage->read($filePath), Response::HTTP_OK, [
             'Content-Type' => $storage->getMimetype($filePath),
         ]);
+    }
+
+    /**
+     * @Route("/refund/{id}", name="app_admin_donation_refund", methods="GET")
+     */
+    public function refundAction(Donation $donation, EntityManagerInterface $em): Response
+    {
+        $donation->markAsRefunded();
+
+        $em->flush();
+
+        return $this->redirectToRoute('admin_app_donation_edit', ['id' => $donation->getId()]);
     }
 }

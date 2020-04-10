@@ -380,6 +380,11 @@
             <argument />
             <argument>AppBundle\Entity\Donator</argument>
             <argument />
+
+            <call method="setTemplate">
+                <argument>edit</argument>
+                <argument>admin/donator/edit.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.donator_tag" class="AppBundle\Admin\DonatorTagAdmin">
