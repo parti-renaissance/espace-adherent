@@ -59,6 +59,13 @@ trait ListFieldTrait
      */
     private $candidateLastName;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $outgoingMayor = false;
+
     public function getLabel(): ?string
     {
         return $this->label;
@@ -136,5 +143,15 @@ trait ListFieldTrait
     public function setCandidateLastName(?string $candidateLastName): void
     {
         $this->candidateLastName = $candidateLastName;
+    }
+
+    public function isOutgoingMayor(): bool
+    {
+        return $this->outgoingMayor;
+    }
+
+    public function setOutgoingMayor(bool $outgoingMayor): void
+    {
+        $this->outgoingMayor = $outgoingMayor;
     }
 }
