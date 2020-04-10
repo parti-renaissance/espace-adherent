@@ -64,6 +64,13 @@ class DonatorExtractCommandHandler
                             ;
 
                             break;
+                        case DonatorExtractCommand::FIELD_BIRTH_DATE:
+                            $row[$this->translateField($field)] = $adherent->getBirthdate()
+                                ? $adherent->getBirthdate()->format('d/m/Y H:i:s')
+                                : null
+                            ;
+
+                            break;
                         case DonatorExtractCommand::FIELD_NATIONALITY:
                             $row[$this->translateField($field)] = $adherent->getNationality();
 
@@ -73,7 +80,10 @@ class DonatorExtractCommandHandler
 
                             break;
                         case DonatorExtractCommand::FIELD_REGISTERED_AT:
-                            $row[$this->translateField($field)] = $adherent->getRegisteredAt()->format('Y/m/d H:i:s');
+                            $row[$this->translateField($field)] = $adherent->getRegisteredAt()
+                                ? $adherent->getRegisteredAt()->format('d/m/Y H:i:s')
+                                : null
+                            ;
 
                             break;
                         case DonatorExtractCommand::FIELD_COUNTRY:

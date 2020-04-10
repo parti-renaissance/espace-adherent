@@ -102,6 +102,8 @@ class Donator
     private $comment;
 
     /**
+     * @var Donation[]|Collection
+     *
      * @ORM\OneToMany(targetEntity="Donation", mappedBy="donator", cascade={"all"})
      * @ORM\OrderBy({"createdAt": "DESC"})
      */
@@ -422,5 +424,47 @@ class Donator
     public function removeKinship(DonatorKinship $kinship): void
     {
         $this->kinships->removeElement($kinship);
+    }
+
+    public function countSuccessfullDonations(): int
+    {
+        $count = 0;
+
+        foreach ($this->donations as $donation) {
+            if ($donation->isCB()) {
+                foreach ($donation->getTransactions() as $transaction) {
+                    if ($transaction->isSuccessful()) {
+                        ++$count;
+                    }
+                }
+            } else {
+                if ($donation->isFinished()) {
+                    ++$count;
+                }
+            }
+        }
+
+        return $count;
+    }
+
+    public function getTotalDonated(): int
+    {
+        $total = 0;
+
+        foreach ($this->donations as $donation) {
+            if ($donation->isCB()) {
+                foreach ($donation->getTransactions() as $transaction) {
+                    if ($transaction->isSuccessful()) {
+                        $total += $donation->getAmountInEuros();
+                    }
+                }
+            } else {
+                if ($donation->isFinished()) {
+                    $total += $donation->getAmountInEuros();
+                }
+            }
+        }
+
+        return $total;
     }
 }

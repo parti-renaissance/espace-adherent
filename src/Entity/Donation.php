@@ -585,4 +585,9 @@ class Donation implements GeoPointInterface
 
         return implode(', ', $this->transactions->toArray());
     }
+
+    public function markAsRefunded(): void
+    {
+        $this->status = self::STATUS_REFUNDED;
+    }
 }

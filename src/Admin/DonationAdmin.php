@@ -62,6 +62,17 @@ class DonationAdmin extends AbstractAdmin
         $this->dispatcher = $dispatcher;
     }
 
+    public function configureActionButtons($action, $object = null)
+    {
+        $actions = parent::configureActionButtons($action, $object);
+
+        if (\in_array($action, ['edit'], true)) {
+            $actions['refund'] = ['template' => 'admin/donation/action_button_refund.html.twig'];
+        }
+
+        return $actions;
+    }
+
     /**
      * @param Donation|null $object
      */

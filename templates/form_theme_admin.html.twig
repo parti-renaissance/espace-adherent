@@ -14,7 +14,8 @@
 {% block app_admin_donator_referenceDonation_entity_widget %}
     {% import 'admin/donation/_macros.html.twig' as macros %}
 
-    {% set currentReferenceDonation = form.parent.vars.value.referenceDonation %}
+    {% set donator = form.parent.vars.value %}
+    {% set currentReferenceDonation = donator.referenceDonation %}
     {% set currentValue = currentReferenceDonation ? currentReferenceDonation.id : null %}
     <table class="table table-bordered table-striped sonata-ba-list">
         <thead>
@@ -91,6 +92,12 @@
                     {% endif %}
                 </tr>
             {% endfor %}
+            <tr>
+                <th class="sonata-ba-list-field-header-text">Montant total donné</th>
+                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                    {{ donator.getTotalDonated|localizedcurrency('EUR') }}
+                </td>
+            </tr>
         </tbody>
     </table>
 {% endblock %}
