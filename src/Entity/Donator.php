@@ -431,7 +431,7 @@ class Donator
         $count = 0;
 
         foreach ($this->donations as $donation) {
-            if ($donation->isCB()) {
+            if ($donation->isCB() && ($donation->isFinished() || $donation->isSubscriptionInProgress())) {
                 foreach ($donation->getTransactions() as $transaction) {
                     if ($transaction->isSuccessful()) {
                         ++$count;
@@ -452,7 +452,7 @@ class Donator
         $total = 0;
 
         foreach ($this->donations as $donation) {
-            if ($donation->isCB()) {
+            if ($donation->isCB() && ($donation->isFinished() || $donation->isSubscriptionInProgress())) {
                 foreach ($donation->getTransactions() as $transaction) {
                     if ($transaction->isSuccessful()) {
                         $total += $donation->getAmountInEuros();
