@@ -93,6 +93,11 @@
                                     Bureaux
                                 </a>
                             </li>
+                            <li role="presentation">
+                                <a href="#vote-results-history" role="tab" id="vote-results-history-tab" data-toggle="tab" aria-controls="vote-results-history" aria-expanded="false">
+                                    Historique
+                                </a>
+                            </li>
                         </ul>
                         <div class="tab-content" id="results-tabs-content">
                             <div class="tab-pane fade {% if results.isMinistryResult %}active {% endif %}in table-responsive" role="tabpanel" id="ministry-results" aria-labelledby="ministry-results-tab">
@@ -122,6 +127,52 @@
                                 {% else %}
                                     <p class="text-center">
                                         <b>Aucun résultat remonté pour les bureaux de vote</b>
+                                    </p>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade in table-responsive" role="tabpanel" id="vote-results-history" aria-labelledby="vote-results-history-tab">
+                                {% if results.ministryVoteResult %}
+                                    {% set history_data = get_ministry_results_history(results.getMinistryVoteResult()) %}
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered table-striped sonata-ba-list">
+                                                <thead>
+                                                    <tr class="sonata-ba-list-field-header">
+                                                        <th class="sonata-ba-list-field-header-text">Nuance</th>
+                                                        {% for year in history_data.years %}
+                                                            <th class="sonata-ba-list-field-header-text">{{ year }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for index, nuance in history_data.nuances %}
+                                                    <tr>
+                                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">{{ nuance }}</td>
+                                                        {% for year in history_data.years %}
+                                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                                {% if history_data.rows[year] is defined and history_data.rows[year][nuance] is defined %}
+                                                                    {{ history_data.rows[year][nuance] }}
+                                                                {% else %}
+                                                                    ~
+                                                                {% endif %}
+                                                            </td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% else %}
+                                                    <tr>
+                                                        <td colspan="6" class="sonata-ba-list-field sonata-ba-list-field-text text-center">
+                                                            <b>Aucun résultat de liste remonté</b>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <p class="text-center">
+                                        <b>Aucun résultat remonté par le Ministère</b>
                                     </p>
                                 {% endif %}
                             </div>

@@ -58,4 +58,16 @@ class ElectionRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function getMunicipalElection2014(): ?Election
+    {
+        return $this->createQueryBuilder('e')
+            ->addSelect('r')
+            ->leftJoin('e.rounds', 'r')
+            ->where("year_month(r.date) = '201403'")
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult()
+        ;
+    }
 }

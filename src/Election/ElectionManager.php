@@ -154,4 +154,16 @@ class ElectionManager
 
         return null;
     }
+
+    /**
+     * @return MinistryVoteResult[]
+     */
+    public function getMunicipalMinistryResultsHistory(City $city): array
+    {
+        if (!$election = $this->electionRepository->getMunicipalElection2014()) {
+            return [];
+        }
+
+        return $this->ministryVoteResultRepository->findAllForCity($city, $election->getRounds()->toArray());
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\Election\MinistryListTotalResult;
 use AppBundle\Entity\Election\MinistryVoteResult;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -26,11 +27,55 @@ class LoadMinistryVoteResultData extends Fixture
         $list->setAdherentCount(10);
         $list->setEligibleCount(7);
         $list->setLabel('Liste 1');
-        $list->setNuance('REM');
+        $list->setNuance(VoteListNuanceEnum::REM);
         $list->setTotal(5);
         $list->setPosition(1);
         $list->setCandidateFirstName('Michel');
         $list->setCandidateLastName('Dupont');
+        $list->setOutgoingMayor(true);
+
+        $result->addListTotalResult($list);
+
+        $list = new MinistryListTotalResult();
+        $list->setLabel('Liste 2');
+        $list->setNuance(VoteListNuanceEnum::ECO);
+        $list->setTotal(5);
+        $list->setPosition(2);
+        $list->setCandidateFirstName('Jean-Bernard');
+        $list->setCandidateLastName('Devops');
+
+        $result->addListTotalResult($list);
+
+        $manager->persist($result);
+
+        $result = new MinistryVoteResult(
+            $this->getReference('city-lille'),
+            $this->getReference('round-1-municipal-2014')
+        );
+        $result->setUpdatedBy($this->getReference('adherent-8'));
+        $result->setUpdatedAt(new \DateTime());
+        $result->setRegistered(900);
+        $result->setParticipated(566);
+        $result->setExpressed(560);
+        $result->setAbstentions(40);
+
+        $list = new MinistryListTotalResult();
+        $list->setAdherentCount(5);
+        $list->setEligibleCount(4);
+        $list->setLabel('Liste 1');
+        $list->setNuance(VoteListNuanceEnum::REM);
+        $list->setTotal(5);
+        $list->setPosition(1);
+        $list->setCandidateFirstName('Rémi');
+        $list->setCandidateLastName('Gautier');
+
+        $result->addListTotalResult($list);
+
+        $list = new MinistryListTotalResult();
+        $list->setLabel('Liste 2');
+        $list->setNuance(VoteListNuanceEnum::UC);
+        $list->setTotal(10);
+        $list->setPosition(2);
 
         $result->addListTotalResult($list);
 

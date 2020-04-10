@@ -37,4 +37,21 @@ class MinistryVoteResultRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findAllForCity(City $city, array $electionRounds = []): array
+    {
+        $query = $this->createQueryBuilder('r')
+            ->where('r.city = :city')
+            ->setParameter('city', $city)
+        ;
+
+        if ($electionRounds) {
+            $query
+                ->andWhere('r.electionRound IN (:rounds)')
+                ->setParameter('rounds', $electionRounds)
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

@@ -64,7 +64,7 @@ class Election
     /**
      * @var ElectionRound[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Count(min=1, minMessage="election.rounds.min_count")
      */

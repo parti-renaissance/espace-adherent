@@ -48,7 +48,7 @@ class ElectionRound
     /**
      * @var Election|null
      *
-     * @ORM\ManyToOne(targetEntity="Election", inversedBy="rounds")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election", inversedBy="rounds")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotNull

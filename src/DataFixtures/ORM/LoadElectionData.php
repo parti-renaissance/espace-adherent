@@ -11,6 +11,35 @@ class LoadElectionData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {
+        $municipalElections2014 = $this->createElection(
+            'Élections municipales 2014',
+            <<<INTRODUCTION
+<h1>Chaque vote compte.</h1>
+
+<h2>Les élections municipales.</h2>
+INTRODUCTION,
+            <<<PROPOSALCONTENT
+<p><strong>Je souhaite être mandataire.</strong></p>
+PROPOSALCONTENT,
+            <<<REQUESTCONTENT
+<p><strong>Je souhaite être mandant.</strong></p>
+REQUESTCONTENT
+        );
+        $this->createRound(
+            $municipalElections2014,
+            'Premier tour des élections municipales',
+            'Le premier tour',
+            '23-03-2014',
+            'round-1-municipal-2014'
+        );
+        $this->createRound(
+            $municipalElections2014,
+            'Second tour des élections municipales',
+            'Le second tour',
+            '30-03-2014',
+            'round-2-municipal-2014'
+        );
+
         $presidentialElections = $this->createElection(
             'Élections Présidentielles 2017',
             <<<INTRODUCTION
@@ -160,6 +189,7 @@ REQUESTCONTENT
         $manager->persist($presidentialElections);
         $manager->persist($legislativeElections);
         $manager->persist($partialLegislativeElections);
+        $manager->persist($municipalElections2014);
         $manager->persist($municipalElections);
         $manager->flush();
 
@@ -167,6 +197,7 @@ REQUESTCONTENT
         $this->setReference('elections-legislative', $legislativeElections);
         $this->setReference('elections-partial-legislative', $partialLegislativeElections);
         $this->setReference('elections-municipal', $municipalElections);
+        $this->setReference('elections-municipal-2014', $municipalElections2014);
     }
 
     private function createElection(
