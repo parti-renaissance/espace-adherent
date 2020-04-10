@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Election\MinistryVoteResultRepository")
  *
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="ministry_vote_result_city_round_unique", columns={"city_id", "election_round_id"}),
+ * })
+ *
  * @Algolia\Index(autoIndex=false)
  */
 class MinistryVoteResult extends BaseVoteResult

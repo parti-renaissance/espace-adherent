@@ -10,7 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table("vote_result")
+ *
+ * @ORM\Table(
+ *     name="vote_result",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="city_vote_result_city_round_unique", columns={"city_id", "election_round_id"}),
+ *         @ORM\UniqueConstraint(name="vote_place_result_city_round_unique", columns={"vote_place_id", "election_round_id"}),
+ *     }
+ * )
+ *
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({

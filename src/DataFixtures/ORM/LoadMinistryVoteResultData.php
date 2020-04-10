@@ -15,6 +15,8 @@ class LoadMinistryVoteResultData extends Fixture
             $this->getReference('city-lille'),
             $this->getReference('round-1-municipal')
         );
+        $result->setUpdatedBy($this->getReference('adherent-8'));
+        $result->setUpdatedAt(new \DateTime());
         $result->setRegistered(1000);
         $result->setParticipated(666);
         $result->setExpressed(660);
@@ -42,6 +44,7 @@ class LoadMinistryVoteResultData extends Fixture
         return [
             LoadElectionData::class,
             LoadCityData::class,
+            LoadAdherentData::class,
         ];
     }
 }

@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AbstractCityCardAdmin extends AbstractAdmin
@@ -37,10 +36,10 @@ class AbstractCityCardAdmin extends AbstractAdmin
         $proxyQuery = parent::createQuery($context);
 
         $proxyQuery
-            ->innerJoin('o.city', 'city')
+            ->innerJoin(current($proxyQuery->getRootAliases()).'.city', 'city')
             ->innerJoin('city.department', 'department')
             ->innerJoin('department.region', 'region')
-            ->addSelect('city, department, region')
+            ->addSelect('city', 'department', 'region')
         ;
 
         return $proxyQuery;
@@ -79,16 +78,32 @@ class AbstractCityCardAdmin extends AbstractAdmin
                 'multiple' => true,
                 'show_filter' => true,
             ])
-            ->add('priority', ChoiceFilter::class, [
+            ->add('priority', CallbackFilter::class, [
                 'label' => 'Priorité',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => CityCard::PRIORITY_CHOICES,
+                    'choices' => array_merge(CityCard::PRIORITY_CHOICES, ['without']),
                     'choice_label' => function (string $choice) {
                         return "election.city_card.priority.$choice";
                     },
                 ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+
+                    if ('without' === $value['value']) {
+                        $qb->andWhere($alias.'.priority IS NULL');
+                    } else {
+                        $qb
+                            ->andWhere($alias.'.priority = :priority')
+                            ->setParameter('priority', $value['value'])
+                        ;
+                    }
+
+                    return true;
+                },
             ])
             ->add('resultsType', CallbackFilter::class, [
                 'label' => 'Niveau de remontée',

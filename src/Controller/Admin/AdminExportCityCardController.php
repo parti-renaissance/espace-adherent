@@ -7,7 +7,9 @@ use AppBundle\Election\CityResultAggregator;
 use AppBundle\Election\VoteListNuanceEnum;
 use AppBundle\Entity\Election\CityCard;
 use AppBundle\Utils\PhpConfigurator;
+use Doctrine\ORM\QueryBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Source\ArraySourceIterator;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -115,7 +117,7 @@ class AdminExportCityCardController extends Controller
                     'Nb listes élu T1' => $moreThan10Percent,
                     'Nb listes inf 10%' => $lessThan10Percent,
                     'Nb listes inf 5%' => $lessThan5Percent,
-                    'Position LaREM' => implode($laremPositions, ', '),
+                    'Position LaREM' => implode(', ', $laremPositions),
                     'Liste >50%' => $hasWinningList ? 'Oui' : 'Non',
                     'Centre <5%' => $centerLessThan5Percent ? 'Oui' : 'Non',
                     'Centre entre 5% (inclus) et 10% (exclus)' => $centerBetween5and10Percent ? 'Oui' : 'Non',
@@ -165,7 +167,7 @@ class AdminExportCityCardController extends Controller
             $city = $cityCard->getCity();
             $results = $this->aggregator->getResults($cityCard->getCity());
 
-            $communColumns = [
+            $commonColumns = [
                 'INSEE' => $city->getInseeCode(),
                 'Commune' => $city->getName(),
                 'Département' => $city->getDepartment()->getName(),
@@ -174,13 +176,13 @@ class AdminExportCityCardController extends Controller
             ];
 
             foreach ($results->getLists() as $list) {
-                $rows[] = array_merge($communColumns, [
+                $rows[] = $commonColumns + [
                     'Liste' => $list['name'],
                     'Etiquette' => $list['nuance'],
                     'Résultat' => $list['percent'].'%',
                     'Panneau list' => $list['position'],
                     'Candidat' => $list['candidate'],
-                ]);
+                ];
             }
         }
 
@@ -197,11 +199,16 @@ class AdminExportCityCardController extends Controller
         $datagrid = $this->admin->getDatagrid();
         $datagrid->buildPager();
 
+        /** @var QueryBuilder|ProxyQueryInterface $query */
         $query = $datagrid->getQuery();
-        $query->select('DISTINCT '.current($query->getRootAliases()));
-        $query->setFirstResult(0);
-        $query->setMaxResults(null);
 
-        return $query->getQuery()->iterate();
+        return $query
+            ->select('DISTINCT '.$alias = current($query->getRootAliases()))
+            ->addSelect('city', 'department', 'region')
+            ->setFirstResult(null)
+            ->setMaxResults(null)
+            ->getQuery()
+            ->iterate()
+        ;
     }
 }

@@ -74,8 +74,10 @@ class VotePlaceResultRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('vote_place_result')
+            ->addSelect('vote_place', 'total', 'list')
             ->innerJoin('vote_place_result.votePlace', 'vote_place')
-            ->addSelect('vote_place')
+            ->leftJoin('vote_place_result.listTotalResults', 'total')
+            ->leftJoin('total.list', 'list')
             ->andWhere('SUBSTRING(vote_place.code, 1, 5) = :insee_code')
             ->andWhere('vote_place_result.electionRound = :election_round')
             ->setParameters([

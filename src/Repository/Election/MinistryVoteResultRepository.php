@@ -18,6 +18,8 @@ class MinistryVoteResultRepository extends ServiceEntityRepository
     public function findOneForCity(City $city, ElectionRound $round, bool $onlyUpdated = false): ?MinistryVoteResult
     {
         $qb = $this->createQueryBuilder('mvr')
+            ->addSelect('list')
+            ->leftJoin('mvr.listTotalResults', 'list')
             ->where('mvr.city = :city')
             ->andWhere('mvr.electionRound = :round')
             ->setParameters([
@@ -31,7 +33,6 @@ class MinistryVoteResultRepository extends ServiceEntityRepository
         }
 
         return $qb
-            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
