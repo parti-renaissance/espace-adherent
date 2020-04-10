@@ -3,6 +3,7 @@
 namespace AppBundle\Election;
 
 use AppBundle\Entity\Election\CityVoteResult;
+use AppBundle\Entity\Election\ListTotalResult as ListTotalResultEntity;
 use AppBundle\Entity\Election\MinistryListTotalResult;
 use AppBundle\Entity\Election\MinistryVoteResult;
 use AppBundle\Entity\Election\VotePlaceResult;
@@ -172,6 +173,7 @@ class CityResults
                     'nuance' => $list->getNuance(),
                     'position' => $list->getPosition(),
                     'candidate' => $list->getCandidateFirstName().' '.$list->getCandidateLastName(),
+                    'outgoing_mayor' => $list->isOutgoingMayor(),
                     'total' => $list->getTotal(),
                 ];
             },
@@ -182,12 +184,13 @@ class CityResults
     public function getCityLists(): array
     {
         return $this->getListsStats(array_map(
-            static function (\AppBundle\Entity\Election\ListTotalResult $list) {
+            static function (ListTotalResultEntity $list) {
                 return [
                     'name' => $list->getList()->getLabel(),
                     'nuance' => $list->getList()->getNuance(),
                     'position' => $list->getList()->getPosition(),
                     'candidate' => $list->getList()->getCandidateFirstName().' '.$list->getList()->getCandidateLastName(),
+                    'outgoing_mayor' => $list->getList()->isOutgoingMayor(),
                     'total' => $list->getTotal(),
                 ];
             },
@@ -204,6 +207,7 @@ class CityResults
                     'nuance' => $list->getList()->getNuance(),
                     'position' => $list->getList()->getPosition(),
                     'candidate' => $list->getList()->getCandidateFirstName().' '.$list->getList()->getCandidateLastName(),
+                    'outgoing_mayor' => $list->getList()->isOutgoingMayor(),
                     'total' => $list->getTotal(),
                 ];
             },

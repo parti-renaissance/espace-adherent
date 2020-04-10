@@ -294,6 +294,9 @@
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                 {{ list.candidate }}
+                                {% if list.outgoing_mayor %}
+                                    <span class="badge badge-info">Maire 2014</span>
+                                {% endif %}
                             </td>
                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                 <b>{{ list.percent }}%</b> ({{ list.total }})
