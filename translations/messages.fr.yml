@@ -669,6 +669,7 @@ election.city_partner.consensus: Consensus
 election.city_partner.dissensus: Dissensus
 election.city_card.priority.high: P1
 election.city_card.priority.medium: P2
+election.city_card.priority.without: sans priorité
 
 donator.extract.field.firstName: Prénom
 donator.extract.field.lastName: Nom

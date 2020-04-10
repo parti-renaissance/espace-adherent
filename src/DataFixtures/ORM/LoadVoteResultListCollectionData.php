@@ -20,6 +20,8 @@ class LoadVoteResultListCollectionData extends Fixture
         $listCollection->addList($this->createList('Liste 2', '', 2));
         $listCollection->addList($this->createList('Liste 3', '', 3));
 
+        $this->setReference('vote-result-list-collection-lille', $listCollection);
+
         $manager->persist($listCollection);
 
         $manager->flush();

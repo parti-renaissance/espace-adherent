@@ -20,6 +20,9 @@ class CityCardAdmin extends AbstractCityCardAdmin
             ->add('priority', ChoiceType::class, [
                 'label' => 'Priorité',
                 'required' => false,
+                'attr' => [
+                    'placeholder' => 'election.city_card.priority.without',
+                ],
                 'choices' => CityCard::PRIORITY_CHOICES,
                 'choice_label' => function (string $choice) {
                     return "election.city_card.priority.$choice";

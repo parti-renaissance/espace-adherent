@@ -6,7 +6,6 @@ use AppBundle\Csv\CsvResponseFactory;
 use AppBundle\Repository\AdherentRepository;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
-use libphonenumber\PhoneNumberUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,8 +43,7 @@ class CrmParisController extends Controller
      */
     public function adherentsAction(
         AdherentRepository $adherentRepository,
-        CsvResponseFactory $csvResponseFactory,
-        PhoneNumberUtil $phoneNumberUtil
+        CsvResponseFactory $csvResponseFactory
     ): Response {
         set_time_limit(0);
 

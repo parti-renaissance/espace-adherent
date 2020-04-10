@@ -46,6 +46,7 @@ class LoadVotePlaceResultData extends Fixture
         return [
             LoadElectionData::class,
             LoadVotePlaceData::class,
+            LoadVoteResultListCollectionData::class,
         ];
     }
 
@@ -58,6 +59,8 @@ class LoadVotePlaceResultData extends Fixture
         int $expressed
     ): VotePlaceResult {
         $voteResult = new VotePlaceResult($votePlace, $electionRound);
+
+        $voteResult->updateLists($this->getReference('vote-result-list-collection-lille'));
 
         $voteResult->setRegistered($registered);
         $voteResult->setAbstentions($abstentions);

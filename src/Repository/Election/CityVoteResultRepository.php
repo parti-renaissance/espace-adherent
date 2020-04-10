@@ -18,13 +18,15 @@ class CityVoteResultRepository extends ServiceEntityRepository
     public function findOneForCity(City $city, ElectionRound $round): ?CityVoteResult
     {
         return $this->createQueryBuilder('cvr')
+            ->addSelect('total', 'list')
+            ->leftJoin('cvr.listTotalResults', 'total')
+            ->leftJoin('total.list', 'list')
             ->where('cvr.city = :city')
             ->andWhere('cvr.electionRound = :round')
             ->setParameters([
                 'city' => $city,
                 'round' => $round,
             ])
-            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
