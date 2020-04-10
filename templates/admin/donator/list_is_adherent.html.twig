@@ -5,6 +5,12 @@
         <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}">
             {{ object.adherent }}
         </a>
+        {% if object.adherent.phone %}
+            <br>
+            <a href="tel:{{ object.adherent.phone|phone_number_format }}">
+                {{ object.adherent.phone|phone_number_format }}
+            </a>
+        {% endif %}
     {% else %}
         <span class="label label-danger">Non</span>
     {% endif %}

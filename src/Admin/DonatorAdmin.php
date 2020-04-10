@@ -13,6 +13,7 @@ use AppBundle\Form\Admin\DonatorKinshipType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\UnitedNationsCountryType;
 use AppBundle\Repository\DonationRepository;
+use AppBundle\Utils\PhoneNumberFormatter;
 use AppBundle\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -452,10 +453,7 @@ class DonatorAdmin extends AbstractAdmin
             $donator = $donator[0];
             $adherent = $donator->getAdherent();
 
-            $phone = ($adherent instanceof Adherent && $adherent->getPhone())
-                ? $adherent->getPhone()->getNationalNumber()
-                : null
-            ;
+            $phone = $adherent instanceof Adherent ? PhoneNumberFormatter::format($adherent->getPhone()) : null;
 
             return [
                 'id' => $donator->getId(),

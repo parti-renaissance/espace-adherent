@@ -11,16 +11,6 @@
     </div>
 {% endblock %}
 
-{% block app_admin_donator_referenceDonation_entity_referenceDonation_row %}
-    {{ block('form_row') }}
-
-    {% set donator = form.parent.vars.value %}
-
-    <span class="help-block sonata-ba-field-help">
-        Adresse courante: {{ donator.referenceAddress }}
-    </span>
-{% endblock %}
-
 {% block app_admin_donator_referenceDonation_entity_widget %}
     {% import 'admin/donation/_macros.html.twig' as macros %}
 

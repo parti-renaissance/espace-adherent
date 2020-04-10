@@ -17,6 +17,9 @@ class DonatorExtractType extends AbstractType
         $builder
             ->add('emails', TextareaType::class, [
                 'required' => true,
+                'attr' => [
+                    'rows' => 10,
+                ],
             ])
             ->add('fields', ChoiceType::class, [
                 'choices' => DonatorExtractCommand::FIELD_CHOICES,

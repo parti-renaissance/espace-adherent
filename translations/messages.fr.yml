@@ -672,5 +672,10 @@ election.city_card.priority.medium: P2
 
 donator.extract.field.firstName: Prénom
 donator.extract.field.lastName: Nom
+donator.extract.field.gender: Sexe
+donator.extract.field.nationality: Nationalité
 donator.extract.field.phone: Téléphone
 donator.extract.field.registeredAt: Date d'adhésion
+donator.extract.field.country: Pays de résidence
+donator.extract.field.postalCode: Code postal
+donator.extract.field.address: Adresse postale
