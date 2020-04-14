@@ -56,6 +56,7 @@ class ElectionManager
 
         $now = new \DateTime();
 
+        /** @var ElectionRound $selectedRound */
         $selectedRound = $election->getRounds()->current();
         $days = $selectedRound->getDate()->diff($now)->days;
 
@@ -77,16 +78,7 @@ class ElectionManager
             return null;
         }
 
-        $voteResult = $this->voteResultRepository->findOneForVotePlace($votePlace, $round) ?? new VotePlaceResult($votePlace, $round);
-
-        if (false === $updateLists) {
-            return $voteResult;
-        }
-
-        return $this->updateListCollection(
-            $voteResult,
-            $this->listCollectionRepository->findOneByCityInseeCode($votePlace->getInseeCode(), $round)
-        );
+        return $this->getVotePlaceResult($round, $votePlace, $updateLists);
     }
 
     public function getCityVoteResultForCurrentElectionRound(City $city, bool $updateLists = false): ?CityVoteResult
@@ -165,5 +157,23 @@ class ElectionManager
         }
 
         return $this->ministryVoteResultRepository->findAllForCity($city, $election->getRounds()->toArray());
+    }
+
+    public function getVotePlaceResult(
+        ElectionRound $electionRound,
+        VotePlace $votePlace,
+        bool $updateLists = false
+    ): VotePlaceResult {
+        $voteResult = $this->voteResultRepository->findOneForVotePlace($votePlace, $electionRound) ??
+            new VotePlaceResult($votePlace, $electionRound);
+
+        if (false === $updateLists) {
+            return $voteResult;
+        }
+
+        return $this->updateListCollection(
+            $voteResult,
+            $this->listCollectionRepository->findOneByCityInseeCode($votePlace->getInseeCode(), $electionRound)
+        );
     }
 }

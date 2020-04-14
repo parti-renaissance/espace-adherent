@@ -66,7 +66,6 @@ class ElectionRepository extends ServiceEntityRepository
             ->leftJoin('e.rounds', 'r')
             ->where("year_month(r.date) = '201403'")
             ->getQuery()
-            ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
     }
