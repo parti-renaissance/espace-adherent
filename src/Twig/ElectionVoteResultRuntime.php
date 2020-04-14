@@ -48,7 +48,7 @@ class ElectionVoteResultRuntime implements RuntimeExtensionInterface
         $rows = [];
 
         foreach ($results as $result) {
-            $rows[$result->getElectionRound()->getDate()->format('Y')] = array_merge(...array_map(
+            $rows[$result->getElectionRound()->getDate()->format('d/m/Y')] = array_merge(...array_map(
                 static function (MinistryListTotalResult $list) {
                     return [$list->getNuance() => $list->getTotal()];
                 }, $result->getListTotalResults()
@@ -57,7 +57,7 @@ class ElectionVoteResultRuntime implements RuntimeExtensionInterface
 
         return [
             'years' => array_keys($rows),
-            'nuances' => array_keys(array_merge(...$rows)),
+            'nuances' => array_keys(array_merge(...array_values($rows))),
             'rows' => $rows,
         ];
     }

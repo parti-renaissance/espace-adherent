@@ -11,6 +11,7 @@ use AppBundle\Entity\VotePlace;
 use AppBundle\Repository\CityRepository;
 use AppBundle\Repository\VotePlaceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +32,7 @@ class ImportElectionVotePlaceResultsCommand extends Command
     private $votePlaceRepository;
     /** @var CityRepository */
     private $cityRepository;
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     private $entityManager;
     /** @var SymfonyStyle */
     private $io;
@@ -52,7 +53,7 @@ class ImportElectionVotePlaceResultsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $electionRound = $this->electionManager->findElectionRound($input->getArgument('election-round-id'));
+        $electionRound = $this->electionManager->findElectionRound($roundId = $input->getArgument('election-round-id'));
 
         if (!$electionRound) {
             throw new \InvalidArgumentException('Election round not found');
@@ -108,9 +109,13 @@ class ImportElectionVotePlaceResultsCommand extends Command
 
             $lists = $this->extractLists($row, $votePlaceDataColumnNumber);
 
-            $this->updateVoteListCollection($electionRound, $votePlace, $lists);
+            $this->updateVoteListCollection(
+                $electionRound = $this->entityManager->getPartialReference(ElectionRound::class, $roundId),
+                $votePlace,
+                $lists
+            );
 
-            $voteResult = $this->getVoteResult($votePlace);
+            $voteResult = $this->getVoteResult($electionRound, $votePlace);
 
             $voteResult->setExpressed($votePlaceData['Exprimés']);
             $voteResult->setAbstentions($votePlaceData['Abstentions']);
@@ -126,6 +131,10 @@ class ImportElectionVotePlaceResultsCommand extends Command
                 }
             }
 
+            if (!$voteResult->getId()) {
+                $this->entityManager->persist($voteResult);
+            }
+
             $this->entityManager->flush();
             $this->entityManager->clear();
 
@@ -138,9 +147,9 @@ class ImportElectionVotePlaceResultsCommand extends Command
         $this->io->table(['Errors'], array_map(function (string $error) { return [$error]; }, $this->errors));
     }
 
-    private function getVoteResult(VotePlace $votePlace): VotePlaceResult
+    private function getVoteResult(ElectionRound $electionRound, VotePlace $votePlace): VotePlaceResult
     {
-        return $this->electionManager->getVotePlaceResultForCurrentElectionRound($votePlace, true);
+        return $this->electionManager->getVotePlaceResult($electionRound, $votePlace, true);
     }
 
     private function extractLists(array $row, int $initialOffset): array
