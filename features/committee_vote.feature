@@ -9,6 +9,7 @@ Feature:
   Scenario: I can show a list of followed committees, then I can remove my candidacy and change the vote committee
     Given I am logged as "assesseur@en-marche-dev.fr"
     And I am on "/espace-adherent/mes-comites"
+    And I press "OK"
     Then I should see 4 ".adherent__activity--committee" elements
     And I should see "RETIRER LA CANDIDATURE" 1 times
 
