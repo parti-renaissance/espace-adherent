@@ -38,10 +38,6 @@
                                 {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
                                 {{ form_errors(form.city) }}
                             </div>
-
-                            <div class="filter__row">
-                                {{ form_row(form.votersOnly, {label: 'Votant dans ce comité'}) }}
-                            </div>
                         </div>
                     </div>
 
@@ -134,14 +130,81 @@
                             class="sort-link sort-link--order-{{ filter.sort == 'joinedAt' ? (filter.order == 'DESC' ? 'd' : 'a') : 'a' }}"
                         >A rejoint le comité le</a>
                     </th>
-                    <th width="150px">Votant dans le comité</th>
+
+                    {% if is_canary_enabled() %}
+                        <th width="150px">Votant dans le comité</th>
+                    {% endif %}
+
                     {% if is_supervisor %}
                         <th style="min-width: 150px;">Actions</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
-                {{ include('committee_manager/_member_rows.html.twig') }}
+                {% for membership in members %}
+                    {% set member = membership.adherent %}
+                    {% set is_promotable_host = membership.promotableHost %}
+                    {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
+
+                    <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
+                        <td class="member-name">{{ member.firstName|default('~')|capitalize }} {{ member.lastNameInitial|default('~') }}</td>
+                        <td class="member-age">{{ member.age|default('~') }}</td>
+                        <td class="member-postal-code">{{ member.postalCode|default('~') }}</td>
+                        <td class="member-city-name">{{ member.cityName|default('~') }}</td>
+                        <td>
+                            <span class="status status__{{ member.hasSubscribedLocalHostEmails ? '1' : '2' }}">
+                                {{ (member.hasSubscribedLocalHostEmails ? 'common.adherent.subscribed' : 'common.adherent.unsubscribed')|trans }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if not is_promotable_host %}
+                                {% if member.female %}
+                                    {{ is_demotable_host ? 'Co-animatrice' : 'Animatrice' }}
+                                {% else %}
+                                    {{ is_demotable_host ? 'Co-animateur' : 'Animateur' }}
+                                {% endif %}
+                            {% else %}
+                                Membre
+                            {% endif %}
+                        </td>
+
+                        <td>{{ member.registeredAt|date('d/m/Y') }}</td>
+                        <td class="member-subscription-date">{{ membership.subscriptionDate|date('d/m/Y') }}</td>
+
+                        {% if is_canary_enabled() %}
+                            <td>
+                                <span class="status status__{{ membership.isVotingCommittee() ? '1' : '2' }}">
+                                    {{ not membership.isVotingCommittee() ? 'non-' }}votant
+                                </span>
+                            </td>
+                        {% endif %}
+
+                        {% if is_supervisor %}
+                            <td>
+                                {% if is_promotable_host %}
+                                    <a href="{{ path('app_committee_promote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                                       title="Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}"
+                                       class="promote-host-link text--blue--dark link--no-decor">
+                                        Définir {{ member.female ? 'co-animatrice' : 'co-animateur' }}
+                                    </a>
+                                {% elseif is_demotable_host %}
+                                    <a href="{{ path('app_committee_demote_host', {'slug': committee.slug, 'member_uuid': member.uuid}) }}"
+                                       title="Définir membre"
+                                       class="demote-host-link text--blue--dark link--no-decor">
+                                        Définir membre
+                                    </a>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="{{ is_supervisor ? 10 : 9 }}" class="text--center">
+                            <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                            La liste est vide
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
 
