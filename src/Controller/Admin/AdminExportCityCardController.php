@@ -64,7 +64,7 @@ class AdminExportCityCardController extends Controller
                 /** @var CityCard $cityCard */
                 $cityCard = $cityCard[0];
                 $city = $cityCard->getCity();
-                $results = $this->aggregator->getResults($cityCard->getCity());
+                $results = $this->aggregator->getResults($cityCard->getCity(), true);
 
                 $moreThan10Percent = 0;
                 $lessThan10Percent = 0;
@@ -165,7 +165,7 @@ class AdminExportCityCardController extends Controller
             /** @var CityCard $cityCard */
             $cityCard = $cityCard[0];
             $city = $cityCard->getCity();
-            $results = $this->aggregator->getResults($cityCard->getCity());
+            $results = $this->aggregator->getResults($cityCard->getCity(), true);
 
             $commonColumns = [
                 'INSEE' => $city->getInseeCode(),
