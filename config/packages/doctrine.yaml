@@ -62,6 +62,7 @@ doctrine:
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
                 group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
                 replace: DoctrineExtensions\Query\Mysql\Replace
+                if: DoctrineExtensions\Query\Mysql\IfElse
 
         hydrators:
             EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator

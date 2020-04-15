@@ -11,6 +11,7 @@ use AppBundle\Entity\District;
 use AppBundle\Entity\Event;
 use AppBundle\Geocoder\Coordinates;
 use AppBundle\Search\SearchParametersFilter;
+use AppBundle\ValueObject\Genders;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -192,6 +193,32 @@ class CommitteeRepository extends ServiceEntityRepository
         $this->applyGeoFilter($qb, $referentTags, 'c');
 
         return $qb;
+    }
+
+    public function findReferentCommittees(Adherent $referent): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c AS committee')
+            ->addSelect('SUM(IF(cm.enableVote = :true, 1, 0)) AS total_voters')
+            ->addSelect('SUM(IF(cm.committeeCandidacy IS NOT NULL AND adherent.gender = :male, 1, 0)) AS total_candidacy_male')
+            ->addSelect('SUM(IF(cm.committeeCandidacy IS NOT NULL AND adherent.gender = :female, 1, 0)) AS total_candidacy_female')
+            ->where('c.status = :status')
+            ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = c')
+            ->leftJoin('cm.adherent', 'adherent')
+            ->setParameters([
+                'status' => Committee::APPROVED,
+                'male' => Genders::MALE,
+                'female' => Genders::FEMALE,
+                'true' => true,
+            ])
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('c.createdAt', 'DESC')
+            ->groupBy('c')
+        ;
+
+        $this->applyReferentGeoFilter($qb, $referent, 'c');
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findManagedBy(Adherent $referent): array
