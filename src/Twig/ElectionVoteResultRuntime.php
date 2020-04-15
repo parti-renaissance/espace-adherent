@@ -34,7 +34,7 @@ class ElectionVoteResultRuntime implements RuntimeExtensionInterface
 
     public function getAggregatedCityResults(City $city): CityResults
     {
-        return $this->cityResultsAggregator->getResults($city);
+        return $this->cityResultsAggregator->getResults($city, false);
     }
 
     public function getMinistryResultsHistory(MinistryVoteResult $lastResult): array

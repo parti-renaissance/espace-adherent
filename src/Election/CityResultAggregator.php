@@ -26,12 +26,22 @@ class CityResultAggregator
         $this->votePlaceResultRepository = $votePlaceResultRepository;
     }
 
-    public function getResults(City $city): CityResults
+    public function getResults(City $city, bool $firstAvailableOnly = true): CityResults
     {
         $round = $this->electionManager->getClosestElectionRound();
 
         $ministryVoteResult = $this->ministryVoteResultRepository->findOneForCity($city, $round, true);
+
+        if ($firstAvailableOnly && $ministryVoteResult) {
+            return new CityResults($ministryVoteResult, null, []);
+        }
+
         $cityVoteResult = $this->cityVoteResultRepository->findOneForCity($city, $round);
+
+        if ($firstAvailableOnly && $cityVoteResult) {
+            return new CityResults($ministryVoteResult, $cityVoteResult, []);
+        }
+
         $votePlacesResults = $this->votePlaceResultRepository->findAllForCity($city, $round);
 
         return new CityResults($ministryVoteResult, $cityVoteResult, $votePlacesResults);
