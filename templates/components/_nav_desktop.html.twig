@@ -40,11 +40,24 @@
         <li>
             <a href="{{ path('articles_list', { category: 'tout' }) }}">Actualités</a>
         </li>
-        <li>
-            <a href="{{ path('app_static_page', { slug: 'municipales' }) }}"><strong>Municipales 2020</strong></a>
-        </li>
         <div class="l__row">
             <div class="nav-dropdown nav-dropdown__mrg--0">
+                <p>
+                    Élections
+                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
+                </p>
+                <ul class="nav-dropdown__item">
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'municipales' }) }}">Municipales 2020</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_static_page', { slug: 'consulaires2020' }) }}">Consulaires 2020</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="l__row">
+            <div class="nav-dropdown">
                 <p>
                     S'engager
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
@@ -76,30 +89,10 @@
                     </li>
                 </ul>
             </div>
-            <div class="nav-dropdown">
-                <p>
-                    International
-                    <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
-                </p>
-                <ul class="nav-dropdown__item">
-                    <li>
-                        <a href="{{ path('app_static_page', { slug: 'consulaires2020' }) }}">
-                            Élections consulaires
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_static_page', { slug: 'consulaires2020-cic' }) }}">
-                            Commission d'investiture consulaire
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('app_static_page', { slug: 'consulaires2020-candidats' }) }}">
-                            Nos candidat(e)s
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
+        <li>
+            <a href="{{ path('app_static_page', { slug: 'nos-idees' }) }}">Nos idées</a>
+        </li>
         <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %} class="b__nudge--left-medium">
             <a class="je-cherche" href="javascript:void(0)">
                 {{ include('components/search.html.twig') }}
