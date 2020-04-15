@@ -26,7 +26,7 @@ class CommitteeMemberFilterType extends AbstractType
             ->add('registeredUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('joinedSince', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
             ->add('joinedUntil', DateType::class, ['required' => false, 'widget' => 'single_text', 'html5' => true])
-            ->add('votersOnly', CheckboxType::class, ['required' => false])
+            //->add('votersOnly', CheckboxType::class, ['required' => false])
             ->add('sort', HiddenType::class, ['required' => false])
             ->add('order', HiddenType::class, ['required' => false])
             ->add('subscribed', ChoiceType::class, ['required' => false, 'placeholder' => 'common.all', 'choices' => [
