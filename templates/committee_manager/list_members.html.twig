@@ -38,6 +38,10 @@
                                 {{ form_widget(form.city, {attr: {class: 'filter__field', placeholder: 'Exemple : 59300, Valenciennes, Tourcoing'}}) }}
                                 {{ form_errors(form.city) }}
                             </div>
+
+                            <div class="filter__row">
+                                {{ form_row(form.votersOnly, {label: 'Votant dans ce comité'}) }}
+                            </div>
                         </div>
                     </div>
 
@@ -118,19 +122,19 @@
         <table class="datagrid__table-manager" cellpadding="10">
             <thead>
                 <tr>
-                    <th width="150px">Prénom</th>
-                    <th width="150px">Nom</th>
+                    <th width="200px">Prénom nom</th>
                     <th width="50px">Âge</th>
-                    <th width="75px">CP</th>
+                    <th width="50px">CP</th>
                     <th width="150px">Ville</th>
-                    <th width="150px">Statut</th>
-                    <th width="100px">Rôle</th>
+                    <th width="100px">Statut</th>
+                    <th width="80px">Rôle</th>
                     <th width="100px">Adhérent depuis le</th>
-                    <th width="120px">
+                    <th width="100px">
                         <a href="{{ path('app_committee_manager_list_members', {filter: filter.toArray|merge({sort: 'joinedAt', order: order})}|merge({slug: committee.slug})) }}"
                             class="sort-link sort-link--order-{{ filter.sort == 'joinedAt' ? (filter.order == 'DESC' ? 'd' : 'a') : 'a' }}"
                         >A rejoint le comité le</a>
                     </th>
+                    <th width="150px">Votant dans le comité</th>
                     {% if is_supervisor %}
                         <th style="min-width: 150px;">Actions</th>
                     {% endif %}

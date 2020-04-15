@@ -52,6 +52,11 @@ class ListFilterObject
     private $joinedUntil;
 
     /**
+     * @var bool|null
+     */
+    private $votersOnly;
+
+    /**
      * @var string|null
      *
      * @Assert\Choice(callback="getSortableFields")
@@ -188,6 +193,16 @@ class ListFilterObject
     public function setSubscribed(?bool $subscribed): void
     {
         $this->subscribed = $subscribed;
+    }
+
+    public function getVotersOnly(): ?bool
+    {
+        return $this->votersOnly;
+    }
+
+    public function setVotersOnly(?bool $votersOnly): void
+    {
+        $this->votersOnly = $votersOnly;
     }
 
     public static function getSortableFields(): array
