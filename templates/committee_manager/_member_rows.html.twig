@@ -5,8 +5,7 @@
         {% set is_demotable_host = is_promotable_host ? false : membership.demotableHost %}
 
         <tr{{ not is_promotable_host ? ' class="host-member"' : '' }}>
-            <td class="member-first-name">{{ member.firstName|default('~')|capitalize }}</td>
-            <td class="member-last-name">{{ member.lastNameInitial|default('~') }}</td>
+            <td class="member-name">{{ member.firstName|default('~')|capitalize }} {{ member.lastNameInitial|default('~') }}</td>
             <td class="member-age">{{ member.age|default('~') }}</td>
             <td class="member-postal-code">{{ member.postalCode|default('~') }}</td>
             <td class="member-city-name">{{ member.cityName|default('~') }}</td>
@@ -29,7 +28,11 @@
 
             <td>{{ member.registeredAt|date('d/m/Y') }}</td>
             <td class="member-subscription-date">{{ membership.subscriptionDate|date('d/m/Y') }}</td>
-
+            <td>
+                <span class="status status__{{ membership.isVotingCommittee() ? '1' : '2' }}">
+                    {{ not membership.isVotingCommittee() ? 'non-' }}votant
+                </span>
+            </td>
             {% if is_supervisor %}
                 <td>
                     {% if is_promotable_host %}

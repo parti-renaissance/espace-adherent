@@ -515,11 +515,10 @@ class CommitteeManagerControllerTest extends WebTestCase
         $crawler = $this->client->click($crawler->selectLink('Adhérents')->link());
 
         $this->assertTrue($this->seeMembersList($crawler, 5));
-        $this->assertSame('Jacques', $crawler->filter('.member-first-name')->eq(0)->text());
-        $this->assertSame('P.', $crawler->filter('.member-last-name')->eq(0)->text());
-        $this->assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
-        $this->assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
-        $this->assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
+        self::assertSame('Jacques P.', $crawler->filter('.member-name')->eq(0)->text());
+        self::assertSame('75008', $crawler->filter('.member-postal-code')->eq(0)->text());
+        self::assertSame('Paris 8e', $crawler->filter('.member-city-name')->eq(0)->text());
+        self::assertSame('12/01/2017', $crawler->filter('.member-subscription-date')->eq(0)->text());
     }
 
     public function provideHostCredentials()

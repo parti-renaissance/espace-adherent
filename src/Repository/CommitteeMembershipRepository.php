@@ -434,6 +434,13 @@ SQL
                 ;
             }
 
+            if ($filter->getVotersOnly()) {
+                $qb
+                    ->andWhere('cm.enableVote = :enable_vote')
+                    ->setParameter('enable_vote', true)
+                ;
+            }
+
             if ($filter->getSort()) {
                 $qb->orderBy('cm.'.$filter->getSort(), $filter->getOrder() ?? 'ASC');
             }
