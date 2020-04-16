@@ -422,6 +422,7 @@ security:
         - { path: '^/parametres', roles: [ROLE_USER] }
         - { path: '^/espace-adherent/creer-mon-projet-citoyen$', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
+        - { path: '^/informations/*', roles: [ROLE_ADHERENT] }
         - { path: '^/espace-coordinateur', roles: [ROLE_COORDINATOR] }
         - { path: '^/admin/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: '^/admin/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
