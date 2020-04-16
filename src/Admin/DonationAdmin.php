@@ -423,6 +423,7 @@ class DonationAdmin extends AbstractAdmin
             /** @var Donation $donation */
             $donation = $donation[0];
             $donator = $donation->getDonator();
+            $referenceDonation = $donator->getReferenceDonation();
             $adherent = $donator->getAdherent();
 
             $phone = $adherent instanceof Adherent ? PhoneNumberFormatter::format($adherent->getPhone()) : null;
@@ -447,7 +448,10 @@ class DonationAdmin extends AbstractAdmin
                 'Adresse e-mail' => $donator->getEmailAddress(),
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
-                'Adresse de référence' => $donator->getReferenceAddress(),
+                'Adresse de référence' => $referenceDonation ? $referenceDonation->getAddress() : null,
+                'Code postal de référence' => $referenceDonation ? $referenceDonation->getPostalCode() : null,
+                'Ville de référence' => $referenceDonation ? $referenceDonation->getCityName() : null,
+                'Pays de référence' => $referenceDonation ? $referenceDonation->getCountry() : null,
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Transactions' => $donation->hasSubscription() ? implode(', ', $donation->getTransactions()->toArray()) : null,
                 'Adhérent' => $adherent instanceof Adherent,
