@@ -1,0 +1,46 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <div class="datagrid__table-container">
+        <table class="datagrid__table-manager">
+            <thead>
+                <tr>
+                    <th width="250">Nom</th>
+                    {% if is_canary_enabled() %}
+                        <th width="20">Candidates</th>
+                        <th width="20">Candidats</th>
+                        <th width="20">Votants</th>
+                    {% endif %}
+                    <th width="100">Code postal</th>
+                    <th width="20">Membre</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for committee_row in committees %}
+                {% set committee = committee_row.committee %}
+                <tr>
+                    <td>
+                        <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" target="_blank" rel="noopener noreferrer">
+                            {{ committee.name }}
+                        </a>
+                    </td>
+                    {% if is_canary_enabled() %}
+                        <td>{{ committee_row.total_candidacy_female }}</td>
+                        <td>{{ committee_row.total_candidacy_male }}</td>
+                        <td>{{ committee_row.total_voters }}</td>
+                    {% endif %}
+                    <td>{{ committee.postalCode }}</td>
+                    <td>{{ committee.membersCount }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text--center">
+                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                        Aucun élément
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

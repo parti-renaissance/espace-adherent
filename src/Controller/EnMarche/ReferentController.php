@@ -10,7 +10,6 @@ use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
 use AppBundle\Referent\ManagedCitizenProjectsExporter;
-use AppBundle\Referent\ManagedCommitteesExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\OrganizationalChartManager;
 use AppBundle\Repository\CitizenProjectRepository;
@@ -24,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * All the route names should start with 'app_referent_', if not you should modify AppBundle\EventListener\RecordReferentLastVisitListener.
@@ -146,13 +146,10 @@ class ReferentController extends Controller
      *
      * @Security("is_granted('ROLE_REFERENT')")
      */
-    public function committeesAction(
-        CommitteeRepository $committeeRepository,
-        ManagedCommitteesExporter $committeesExporter
-    ): Response {
-        return $this->render('referent/base_group_list.html.twig', [
-            'title' => 'Comités',
-            'managedGroupsJson' => $committeesExporter->exportAsJson($committeeRepository->findManagedBy($this->getUser())),
+    public function committeesAction(UserInterface $referent, CommitteeRepository $committeeRepository): Response
+    {
+        return $this->render('referent/committees_list.html.twig', [
+            'committees' => $committeeRepository->findReferentCommittees($referent),
         ]);
     }
 
