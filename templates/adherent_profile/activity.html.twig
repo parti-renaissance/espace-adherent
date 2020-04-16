@@ -1,0 +1,25 @@
+{% extends 'adherent_profile/_layout.html.twig' %}
+
+{% block page_title 'Activités' %}
+
+{% block adherent_profile_content %}
+    <section class="adherent-profile__section b__nudge--bottom-50" id="committees">
+        {% include('adherent_profile/activity/_committees.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="events">
+        {% include('adherent_profile/activity/_events.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="citizen-projects">
+        {% include('adherent_profile/activity/_citizen_projects.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="adi">
+        {% include('adherent_profile/activity/_adi.html.twig') %}
+    </section>
+
+    <section class="adherent-profile__section b__nudge--bottom-50" id="donations">
+        {% include('adherent_profile/activity/_donations.html.twig') %}
+    </section>
+{% endblock %}

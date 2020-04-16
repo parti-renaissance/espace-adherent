@@ -1,36 +1,30 @@
-{% extends 'base.html.twig' %}
+{% extends 'adherent_profile/_layout.html.twig' %}
 
 {% block page_title 'Documents' %}
 {% block canonical_url url('app_documents_index') %}
 
-{% block content %}
-    <main>
-        <section class="l__wrapper--slim documents">
-            <header>
-                <h1 class="text--center text--large">
-                    Documents
-                </h1>
-            </header>
+{% block adherent_profile_content %}
+    <section class="adherent-profile__section">
+        <h1 class="text--medium-large">Documents</h1>
 
-            <div class="documents__category">
-                <a href="{{ path('app_documents_index') }}" class="back-to-list icon--with-text">
-                    {{ include('components/caret--left.html.twig') }}
-                    Retour à la racine</a>
-            </div>
+        <div class="documents__category">
+            <a href="{{ path('app_documents_index') }}" class="back-to-list icon--with-text">
+                {{ include('components/caret--left.html.twig') }}
+                Retour à la racine</a>
+        </div>
 
-            <div class="documents__category">
-                {% if type == 'adherents' %}
-                    <h2>Documents adhérents</h2>
-                {% elseif type == 'animateurs' %}
-                    <h2>Documents animateurs</h2>
-                {% elseif type == 'animateurs-etrangers' %}
-                    <h2>Documents animateurs à l'étranger</h2>
-                {% elseif type == 'referents' %}
-                    <h2>Documents référents</h2>
-                {% endif %}
+        <div class="documents__category">
+            {% if type == 'adherents' %}
+                <h2 class="section-subtitle">Adhérents</h2>
+            {% elseif type == 'animateurs' %}
+                <h2 class="section-subtitle">Animateurs</h2>
+            {% elseif type == 'animateurs-etrangers' %}
+                <h2 class="section-subtitle">Animateurs à l'étranger</h2>
+            {% elseif type == 'referents' %}
+                <h2 class="section-subtitle">Référents</h2>
+            {% endif %}
 
-                {{ include('documents/tree.html.twig', { treeType: type, documents: documents }) }}
-            </div>
-        </section>
-    </main>
+            {{ include('documents/tree.html.twig', { treeType: type, documents: documents }) }}
+        </div>
+    </section>
 {% endblock %}

@@ -85,6 +85,14 @@ adherent.nickname.invalid_syntax: La syntaxe est incorrecte, le pseudo ne peut c
 adherent.nickname.invalid_extended_syntax: La syntaxe est incorrecte, le pseudo ne peut contenir que des chiffres, lettres (contenant des accents aussi), et les caractères _, -, ! et .
 
 #
+# Adherent profile
+#
+adherent_profile.facebook_page_url.invalid: Cette URL ne semble pas être une URL Facebook valide.
+adherent_profile.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
+adherent_profile.linkedin_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
+adherent_profile.telegram_page_url.invalid: Cette URL ne semble pas être une URL Telegram valide.
+
+#
 # Committee
 #
 committee.merge.same_committees: Veuillez spécifier des comités différents.
@@ -266,6 +274,7 @@ legislative_district_zone.area_type.invalid: Le type de circonscription choisi e
 legislative_candidate.slug.invalid: L'identifiant d'URL ne peut contenir que des lettres minuscules, des chiffres et des tirets.
 legislative_candidate.facebook_page_url.invalid: Cette URL ne semble pas être une URL Facebook valide.
 legislative_candidate.twitter_page_url.invalid: Cette URL ne semble pas être une URL Twitter valide.
+legislative_candidate.linkedin_page_url.invalid: Cette URL ne semble pas être une URL LinkedIn valide.
 legislative_candidate.district_number.invalid: Le numéro de circonscription doit être un nombre entier positif.
 legislative_candidate.latitude.invalid: Cette valeur n'est pas une latitude valide.
 legislative_candidate.longitude.invalid: Cette valeur n'est pas une longitude valide.

@@ -1,0 +1,123 @@
+{% set isEventsSection = type in ['upcoming_events', 'past_events'] %}
+
+<h1 class="text--medium-large">Mes événements</h1>
+<nav class="tabs-nav b__nudge--bottom-larger">
+    <ul>
+        <li{% if type is null or (isEventsSection and type =='upcoming_events') %} class="active"{% endif %}><a href="#" class="tabs-nav__item js--tabs" data-target="#upcoming-events">À venir</a></li>
+        <li{% if type =='past_events' %} class="active"{% endif %}><a href="#" class="tabs-nav__item js--tabs" data-target="#past-events">Passés</a></li>
+    </ul>
+</nav>
+
+<div id="upcoming-events" class="js--tabs-content{{ type is not null and isEventsSection and type != 'upcoming_events' ? ' visually-hidden' }}">
+    <div class="l__col">
+        {% if upcoming_events.totalItems < 1 %}
+            <div class="space--40-0 text--center">
+                <p class="font-roboto text--default-large text--bold b__nudge--bottom">Participez à un événement proche de chez vous</p>
+                <a class="btn btn--blue" href="{{ path('app_search_events') }}">Participer à un événement</a>
+            </div>
+        {% else %}
+            {% for registration in upcoming_events %}
+                {% set event = registration.event %}
+                <article class="activity-card b__nudge--bottom">
+                    <div class="activity-card__type activity-card__type--event">Événement</div>
+                    <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- event.name -}}</h2>
+                    {% if event.type and event.isCitizenAction %}
+                        {% if event.organizer %}
+                            <div class="text--body text--gray b__nudge--bottom-small">Organisé par l'adhérent <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                        {% else %}
+                            <div class="text--body text--gray b__nudge--bottom-small">Organisé par un ancien adhérent à <span class="text--black">{{ event.cityName }}</span></div>
+                        {% endif %}
+                    {% elseif event.committee %}
+                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par le comité <span class="text--black">{{ event.committee.name }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                    {% elseif event.organizer %}
+                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                    {% endif %}
+                    <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                        <div class="l__row b__nudge--bottom-small">
+                            <img src="{{ asset('/images/icons/activity/date.svg') }}" alt="Ville" class="b__nudge--right-nano">
+                            <span>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "E d MMM") }} {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'H'mm") }} </span>
+                        </div>
+                        <div class="l__row b__nudge--bottom-small">
+                            <span class="b__nudge--none">&nbsp;- {{ event.categoryName }}</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+                        <div class="l__row">
+                            <a href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}"
+                               class="btn btn--blue">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+
+            {% if upcoming_events.lastPage > 1 %}
+                {% include 'adherent_profile/activity/_pagination.html.twig' with {
+                    current_page: upcoming_events.currentPage,
+                    total_pages: upcoming_events.lastPage,
+                    pagination_type: 'upcoming_events',
+                    section: 'events'
+                } %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<div id="past-events" class="js--tabs-content{{ type != 'past_events' ? ' visually-hidden' }}">
+    <div class="l__col">
+        {% if past_events.totalItems < 1 %}
+            <div class="space--40-0 text--center">
+                <p class="font-roboto text--default-large text--bold b__nudge--bottom">Participez à un événement proche de chez vous</p>
+                <a class="btn btn--blue" href="{{ path('app_search_events') }}">Participer à un événement</a>
+            </div>
+        {% else %}
+            {% for registration in past_events %}
+                {% set event = registration.event %}
+                <article class="activity-card b__nudge--bottom">
+                    <div class="activity-card__type activity-card__type--event">Événement</div>
+                    <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- event.name -}}</h2>
+                    {% if event.type and event.isCitizenAction %}
+                        {% if event.organizer %}
+                            <div class="text--body text--gray b__nudge--bottom-small">Organisé par l'adhérent <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                        {% else %}
+                            <div class="text--body text--gray b__nudge--bottom-small">Organisé par un ancien adhérent à <span class="text--black">{{ event.cityName }}</span></div>
+                        {% endif %}
+                    {% elseif event.committee %}
+                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par le comité <span class="text--black">{{ event.committee.name }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                    {% elseif event.organizer %}
+                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                    {% endif %}
+                    <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                        <div class="l__row b__nudge--bottom-small">
+                            <img src="{{ asset('/images/icons/activity/date.svg') }}" alt="Ville" class="b__nudge--right-nano">
+                            <span>{{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "E d MMM") }} {{ event.beginAt|localizeddate('none', 'none', 'fr_FR', null, "HH'H'mm") }} </span>
+                        </div>
+                        <div class="l__row b__nudge--bottom-small">
+                            <span class="b__nudge--none">&nbsp;- {{ event.categoryName }}</span>
+                        </div>
+                    </div>
+
+                    <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+                        <div class="l__row">
+                            <a href="{{ path("app_#{event.type}_show", { slug: event.slug }) }}"
+                               class="btn btn--blue">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+
+            {% if past_events.lastPage > 1 %}
+                {% include 'adherent_profile/activity/_pagination.html.twig' with {
+                    current_page: past_events.currentPage,
+                    total_pages: past_events.lastPage,
+                    pagination_type: 'past_events',
+                    section: 'events'
+                } %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

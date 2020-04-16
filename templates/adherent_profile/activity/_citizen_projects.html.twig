@@ -1,0 +1,95 @@
+{% set isCitizenProjectSection = type in ['citizen_projects_created', 'citizen_projects_joined'] %}
+
+<h1 class="text--medium-large">Mes projets citoyens</h1>
+<nav class="tabs-nav b__nudge--bottom-larger">
+    <ul>
+        <li{% if type is null or type == 'citizen_projects_created' or not isCitizenProjectSection %} class="active"{% endif %}><a href="#" class="tabs-nav__item js--tabs" data-target="#created-citizen-projects">Mes project(s) créé(s)</a></li>
+        <li{% if type == 'citizen_projects_joined' %} class="active"{% endif %}><a href="#" class="tabs-nav__item js--tabs" data-target="#joined-citizen-projects">Mes projet(s) rejoint(s)</a></li>
+    </ul>
+</nav>
+
+<div id="created-citizen-projects" class="js--tabs-content{{ type is not null and isCitizenProjectSection and type != 'citizen_projects_created' ? ' visually-hidden' }}">
+    <div class="l__col">
+        {% if citizen_projects_created.totalItems < 1 %}
+            <div class="space--40-0 text--center">
+                <p class="font-roboto text--default-large text--bold b__nudge--bottom">Rejoignez un projet citoyen proche de chez vous</p>
+                <a class="btn btn--blue" href="{{ path('app_search_citizen_projects') }}">Rejoindre un projet citoyen</a>
+            </div>
+        {% else %}
+            {% for membership in citizen_projects_created %}
+                {% set citizen_project = membership.citizenProject %}
+                {% set citizen_project_path = citizen_project.isApproved ? 'app_citizen_project_show' : 'app_citizen_project_manager_edit' %}
+
+                <article class="activity-card b__nudge--bottom">
+                    <div class="activity-card__type activity-card__type--citizen">Projet citoyen</div>
+                    <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- citizen_project.nameWithDistrict -}}</h2>
+                    <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                        Par&nbsp;<span class="text--black">{{ app.user }}</span>{% if citizen_project.cityName %}&nbsp;à&nbsp;<span class="text--black">{{ citizen_project.cityName }}</span>{% endif %}
+                    </div>
+
+                    <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+                        <div class="l__row">
+                            <a href="{{ path(citizen_project_path, {slug: citizen_project.slug}) }}"
+                               class="btn btn--blue"
+                               title="{{ citizen_project.nameWithDistrict }}">
+                                En savoir plus
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+
+            {% if citizen_projects_created.lastPage > 1 %}
+                {% include 'adherent_profile/activity/_pagination.html.twig' with {
+                    current_page: citizen_projects_created.currentPage,
+                    total_pages: citizen_projects_created.lastPage,
+                    pagination_type: 'citizen_projects_created',
+                    section: 'citizen-projects'
+                } %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<div id="joined-citizen-projects" class="js--tabs-content{{ type != 'citizen_projects_joined' ? ' visually-hidden' }}">
+    <div class="l__col">
+        {% if citizen_projects_joined.totalItems < 1 %}
+            <div class="space--40-0 text--center">
+                <p class="font-roboto text--default-large text--bold b__nudge--bottom">Rejoignez un projet citoyen proche de chez vous</p>
+                <a class="btn btn--blue" href="{{ path('app_search_citizen_projects') }}">Rejoindre un projet citoyen</a>
+            </div>
+        {% else %}
+            {% for membership in citizen_projects_joined %}
+                {% set citizen_project = membership.citizenProject %}
+                {% set citizen_project_path = citizen_project.isApproved ? 'app_citizen_project_show' : 'app_citizen_project_manager_edit' %}
+
+                <article class="activity-card b__nudge--bottom">
+                    <div class="activity-card__type activity-card__type--citizen">Projet citoyen</div>
+                    <h2 class="activity-card__title font-roboto text--medium b__nudge--bottom-small text--breakword text--bold">{{- citizen_project.nameWithDistrict -}}</h2>
+                    <div class="l__row font-roboto text--gray b__nudge--bottom-small">
+                        Par&nbsp;<span class="text--black">{{ app.user }}</span>{% if citizen_project.cityName %}&nbsp;à&nbsp;<span class="text--black">{{ citizen_project.cityName }}</span>{% endif %}
+                    </div>
+
+                    <div class="activity-card__footer l__row l__row--h-stretch l__row--bottom l__row--wrap b__nudge--top">
+                        <div class="l__row">
+                            <a href="{{ path(citizen_project_path, {slug: citizen_project.slug}) }}"
+                               class="btn btn--blue"
+                               title="{{ citizen_project.nameWithDistrict }}">
+                                En savoir plus
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+
+            {% if citizen_projects_joined.lastPage > 1 %}
+                {% include 'adherent_profile/activity/_pagination.html.twig' with {
+                    current_page: citizen_projects_joined.currentPage,
+                    total_pages: citizen_projects_joined.lastPage,
+                    pagination_type: 'citizen_projects_joined',
+                    section: 'citizen-projects'
+                } %}
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Collection\AdherentCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
+use App\Entity\BaseGroup;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
@@ -76,6 +77,25 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult() >= 1;
+    }
+
+    public function findActivityMemberships(Adherent $adherent, int $page = 1, int $limit = 5): PaginatorInterface
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('cm')
+            ->innerJoin('cm.committee', 'c')
+            ->where('cm.adherent = :adherent')
+            ->andWhere('c.status = :approved')
+            ->andWhere('c.approvedAt IS NOT NULL')
+            ->setParameter('adherent', $adherent)
+            ->setParameter('approved', BaseGroup::APPROVED)
+        ;
+
+        return $this->configurePaginator(
+            $queryBuilder,
+            $page,
+            $limit
+        );
     }
 
     public function findMemberships(Adherent $adherent): CommitteeMembershipCollection

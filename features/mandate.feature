@@ -30,31 +30,3 @@ Feature:
     Then the response status code should be 200
     And I should be on "/inscription/centre-interets"
 
-  Scenario: As an adherent, I should have a select with mandate options in my profile edition page
-    Given the following fixtures are loaded:
-      | LoadAdherentData    |
-    And I am logged as "jacques.picard@en-marche.fr"
-    When I am on "parametres/mon-compte/modifier"
-    Then I should see "Conseiller régional" in the "#adherent_mandates" element
-    And I should see "Conseiller départemental" in the "#adherent_mandates" element
-    And I should see "Maire" in the "#adherent_mandates" element
-    And I should see "Conseiller municipal" in the "#adherent_mandates" element
-    And I should see "Parlementaire" in the "#adherent_mandates" element
-    And I should see "Député Européen" in the "#adherent_mandates" element
-    And I should see "Conseiller consulaire" in the "#adherent_mandates" element
-
-  Scenario: As an adherent, I should be able to update my mandate information
-    Given the following fixtures are loaded:
-      | LoadAdherentData    |
-    And I am logged as "jacques.picard@en-marche.fr"
-    And I am on "parametres/mon-compte/modifier"
-    And I fill in the following:
-      | adherent[mandates][] | regional_councilor |
-    When I press "Enregistrer les modifications"
-    Then the response status code should be 200
-    And I should be on "parametres/mon-compte"
-    And I should see "Vos informations ont été mises à jour avec succès."
-
-    When I follow "Modifier mes informations"
-    Then I should see "Conseiller régional"
-
