@@ -451,6 +451,7 @@ class DonatorAdmin extends AbstractAdmin
         return new IteratorCallbackSourceIterator($this->getDonatorIterator(), function (array $donator) {
             /** @var Donator $donator */
             $donator = $donator[0];
+            $referenceDonation = $donator->getReferenceDonation();
             $adherent = $donator->getAdherent();
 
             $phone = $adherent instanceof Adherent ? PhoneNumberFormatter::format($adherent->getPhone()) : null;
@@ -464,7 +465,10 @@ class DonatorAdmin extends AbstractAdmin
                 'Adresse e-mail' => $donator->getEmailAddress(),
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
-                'Adresse de référence' => $donator->getReferenceAddress(),
+                'Adresse de référence' => $referenceDonation ? $referenceDonation->getAddress() : null,
+                'Code postal de référence' => $referenceDonation ? $referenceDonation->getPostalCode() : null,
+                'Ville de référence' => $referenceDonation ? $referenceDonation->getCityName() : null,
+                'Pays de référence' => $referenceDonation ? $referenceDonation->getCountry() : null,
                 'Nationalité de référence' => $donator->getReferenceNationality(),
                 'Tags du donateur' => implode(', ', $donator->getTags()->toArray()),
                 'Adhérent' => $adherent instanceof Adherent,
