@@ -38,7 +38,7 @@ class EmailContext extends RawMinkContext
         $emailRepository = $this->getEmailRepository();
 
         if (($nb = $emailRepository->count([])) !== $number) {
-            throw new \RuntimeException(sprintf('I found %d email(s) instead of %d', $number, $nb));
+            throw new \RuntimeException(sprintf('I found %d email(s) instead of %d', $nb, $number));
         }
     }
 
