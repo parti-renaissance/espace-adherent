@@ -236,7 +236,7 @@ Feature:
     Given I am logged as "assesseur@en-marche-dev.fr"
     When I am on "/comites/en-marche-comite-de-rouen"
     Then I should see "JE RETIRE MA CANDIDATURE"
-    And I should see "Voir la liste des candidats"
+    And I should see "Consulter la liste des candidats"
 
     When I click the "candidacies-list-modal--trigger" element
     Then I wait 5 second until I see "Liste des candidat(e)s :"
