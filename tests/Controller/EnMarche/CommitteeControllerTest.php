@@ -91,14 +91,10 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
-        self::assertCount(1, $crawler->selectButton('Quitter ce comité')->extract(['disabled']));
-        self::assertSame(
-            'En tant qu\'animateur, vous ne pouvez pas cesser de suivre votre comité.',
-            trim($crawler->filter('div.committee-follow--anonymous__link')->text())
-        );
+        self::assertNotContains('Quitter ce comité', $response->getContent());
     }
 
     public function testAuthenticatedCommitteeHostCanUnfollowCommittee()
@@ -139,8 +135,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        // Unfollow link must be disabled because there is no other host
-        $this->assertSame('disabled', $crawler->filter('.committee-unfollow')->attr('disabled'));
+        // Unfollow link must not exist because there is no other host
+        $this->assertSame(0, $crawler->filter('.committee-unfollow')->count());
         // Other follower/register links must not exist
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -156,7 +152,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertContains('2 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -175,7 +171,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('3 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertContains('3 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -190,7 +186,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertContains('2 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
