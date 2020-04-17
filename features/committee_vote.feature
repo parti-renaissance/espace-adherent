@@ -13,11 +13,11 @@ Feature:
     Then I should see 4 ".adherent__activity--committee" elements
     And I should see "RETIRER LA CANDIDATURE" 1 times
 
-    When I click the ".btn.btn--red.b__nudge--right-small" selector
+    When I click the ".btn.btn--ghosting--pink.b__nudge--right-small" selector
     And I wait 3 second until I see "Êtes-vous sûr de vouloir retirer votre candidature ?"
     And I click the ".modal-content .btn.btn--blue" selector
     Then I should be on "/espace-adherent/mes-comites"
-    And I should see 0 ".btn.btn--red.b__nudge--right-small" elements
+    And I should see 0 ".btn.btn--ghosting--pink.b__nudge--right-small" elements
     And I should have 2 emails
     And I should have 1 email "CommitteeCandidacyRemovedConfirmationMessage" for "assesseur@en-marche-dev.fr" with payload:
     """
