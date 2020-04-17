@@ -1,0 +1,139 @@
+#adherent-profile {
+    background-color: $gray--lighter;
+    padding-top: 60px;
+
+    min-height: 2000px;
+}
+
+.adherent-profile {
+
+    &__aside {
+        box-sizing: border-box;
+        width: 275px;
+        margin-right: 30px;
+    }
+
+    &__status {
+
+    }
+
+    &__roles {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        li {
+            font-size: 12px;
+            font-family: $font-roboto;
+            line-height: normal;
+            padding: 5px;
+            border-radius: 2px;
+            border: $black 1px solid;
+            margin: 0 5px 5px 0;
+
+        }
+    }
+
+    &__completion {
+        .gauge {
+            display: block;
+            background-color: grey;
+            width: 200px;
+            height: 5px;
+            border-radius: 50px;
+            position: relative;
+
+            span {
+                position: absolute;
+                border-radius: 50px;
+                height: 5px;
+                left: 0;
+                width: 50%;
+                background-color: $turquoise;
+            }
+        }
+    }
+
+    &__menu {
+
+        .menu-section {
+            margin: 25px 0;
+
+            &__heading {
+                position: relative;
+                margin-bottom: 25px;
+                font-size: 18px;
+                font-family: $font-roboto;
+                color: $silver-grey;
+                border: none;
+                padding-left: 38px;
+                line-height: 20px;
+
+                &.active {
+                    font-weight: bold;
+                    color: $black;
+                }
+
+                .icon-container {
+                    width: 20px;
+                    height: 20px;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+
+                    background-color: $lines-grey;
+                }
+            }
+
+            &__items {
+                display: block;
+
+                li {
+                    margin: 10px 0;
+                    padding-left: 38px;
+                    position: relative;
+
+                    a {
+                        font-size: 16px;
+                        font-family: $font-roboto;
+                        color: $silver-grey;
+                        border: none;
+
+                        &:hover {
+                            color: $black;
+                        }
+                    }
+
+                    &.active {
+
+                        a {
+                            color: $black;
+                        }
+
+                        &::before {
+                            content: '';
+                            display: block;
+                            position: absolute;
+                            top: calc(50% - 2px);
+                            left: 0;
+                            width: 4px;
+                            height: 4px;
+                            background-color: $turquoise;
+                            border-radius: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &__content {
+        flex-grow: 1;
+    }
+
+    &__section {
+        background-color: $white;
+        border-radius: 3px;
+        padding: 70px;
+    }
+}

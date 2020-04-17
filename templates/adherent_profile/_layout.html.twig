@@ -1,5 +1,82 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    {% block adherent_profil_content %}{% endblock %}
+    <main id="adherent-profile">
+        <div class="l__wrapper">
+            <div class="adherent-profile l__row l__row--v-stretch">
+                <aside class="adherent-profile__aside">
+                    <div class="adherent-profile__status b__nudge--top">
+                        <div class="l__row">
+                            <div class="">AR</div>
+                            <div>
+                                <div class="name">Alain R.</div>
+                                <div class="adhesion-date">inscrit en nov.2017</div>
+                            </div>
+                        </div>
+                        <ul class="adherent-profile__roles">
+                            <li>Référent(e)</li>
+                            <li>Conseiller départemental</li>
+                            <li>Référent(e)</li>
+                            <li>Référent(e)</li>
+                            <li>Conseiller départemental</li>
+                            <li>Référent(e)</li>
+                        </ul>
+                        <div class="adherent-profile__completion b__nudge--bottom-50">
+                            <div class="text--body b__nudge--bottom-small">Complétion du profil : 50%</div>
+                            <div class="gauge">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="adherent-profile__menu adherent-profile__menu--desktop">
+                        <ul class="adherent-profile__menu">
+                            <li class="menu-section">
+                                <div class="menu-section__heading active">
+                                    <div class="icon-container"></div>
+                                    Informations
+                                </div>
+                                <ul class="menu-section__items">
+                                    <li class="active"><a href="#">Général</a></li>
+                                    <li><a href="#">Certification du profil</a></li>
+                                    <li><a href="#">E-mail et mot de passe</a></li>
+                                    <li><a href="#">Centres d'intérêt</a></li>
+                                    <li><a href="#">Engagement</a></li>
+                                    <li><a href="#">Élections</a></li>
+                                    <li><a href="#">Communication</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-section">
+                                <div class="menu-section__heading">
+                                    <div class="icon-container"></div>
+                                    Activités
+                                </div>
+                                <!-- <ul class="menu-section__items">
+                                    <li><a href="#">Général</a></li>
+                                    <li><a href="#">Général</a></li>
+                                    <li><a href="#">Général</a></li>
+                                    <li><a href="#">Général</a></li>
+                                    <li><a href="#">Général</a></li>
+                                </ul> -->
+                            </li>
+                            <li class="menu-section">
+                                <a class="menu-section__heading" href="#">
+                                    <div class="icon-container"></div>
+                                    Documents
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="">
+                            <li><a href="">Formation</a></li>
+                            <li><a href="">Aide</a></li>
+                            <li><a href="">Déconnexion</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+                <div class="adherent-profile__content">
+                    {% block adherent_profile_content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}
