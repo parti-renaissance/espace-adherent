@@ -17,8 +17,9 @@
         <header class="background--blue space--60-0">
             <div class="l__wrapper pst--relative">
                 <div class="committee__header__plus">
+                    {% set items = [] %}
                     {% if is_granted('REPORT') %}
-                        {% set items = [
+                        {% set items = items|merge([
                             {
                                 href: report_path(committee, app.request.pathInfo),
                                 label: 'Signaler ce comité',
@@ -26,8 +27,23 @@
                                     class: 'text--body link--no-decor text--blue--dark',
                                 }
                             },
-                        ] %}
+                        ]) %}
+                    {% endif %}
 
+                    {% if is_host and can_unfollow(committee) %}
+                        {% set items = items|merge([
+                            {
+                                label: 'Quitter ce comité',
+                                linkAttr: {
+                                    class: 'text--body link--no-decor text--blue--dark committee-action-button',
+                                    'data-action': 'quitter',
+                                    'data-csrf-token': csrf_token('committee.unfollow')
+                                }
+                            },
+                        ]) %}
+                    {% endif %}
+
+                    {% if items|length > 0 %}
                         {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
                     {% endif %}
                 </div>
