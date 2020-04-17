@@ -23,6 +23,8 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeFeedItemRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
+use AppBundle\VotingPlatform\Event\CommitteeCandidacyEvent;
+use AppBundle\VotingPlatform\Events as VotingPlatformEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -412,10 +414,14 @@ class CommitteeManager
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
         if ($membership && $membership->isVotingCommittee()) {
-            $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $membership);
-            $membership->setCommitteeCandidacy($candidacy);
+            $membership->setCommitteeCandidacy(new CommitteeCandidacy($election = $committee->getCommitteeElection()));
 
             $this->getManager()->flush();
+
+            $this->dispatcher->dispatch(
+                VotingPlatformEvents::CANDIDACY_CREATED,
+                new CommitteeCandidacyEvent($election, $adherent, $this->getCommitteeSupervisor($committee))
+            );
         }
     }
 
@@ -427,6 +433,15 @@ class CommitteeManager
             $membership->removeCandidacy();
 
             $this->getManager()->flush();
+
+            $this->dispatcher->dispatch(
+                VotingPlatformEvents::CANDIDACY_REMOVED,
+                new CommitteeCandidacyEvent(
+                    $committee->getCommitteeElection(),
+                    $adherent,
+                    $this->getCommitteeSupervisor($committee)
+                )
+            );
         }
     }
 

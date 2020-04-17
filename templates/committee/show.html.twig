@@ -166,6 +166,7 @@
                                 <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
                                    class="btn btn--ghosting--blue btn--no-wrap em-confirm--trigger"
                                    data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+                                   id="remove-candidacy-link"
                                 >
                                     Je retire ma candidature
                                 </a>
@@ -302,6 +303,13 @@
                         );
                     });
                 });
+
+                if (window.location.search.indexOf('remove-candidacy') !== -1) {
+                    var removeCandidacyLinkElement = dom('#remove-candidacy-link');
+                    if (removeCandidacyLinkElement) {
+                        removeCandidacyLinkElement.click();
+                    }
+                }
 
                 {% if is_canary_enabled() and membership and committee.committeeElection %}
                     App.runCandidacyModal('#candidacies-list-modal--trigger', '{{ committee.uuid }}');

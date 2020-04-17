@@ -18,6 +18,101 @@ Feature:
     And I click the ".modal-content .btn.btn--blue" selector
     Then I should be on "/espace-adherent/mes-comites"
     And I should see 0 ".btn.btn--red.b__nudge--right-small" elements
+    And I should have 2 emails
+    And I should have 1 email "CommitteeCandidacyRemovedConfirmationMessage" for "assesseur@en-marche-dev.fr" with payload:
+    """
+    {
+        "template_name": "committee-candidacy-removed-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "[Désignations] Votre candidature a été annulée",
+            "from_email": "contact@en-marche.fr",
+            "global_merge_vars": [
+                {
+                    "name": "first_name",
+                    "content": "Bob"
+                },
+                {
+                    "name": "committee_name",
+                    "content": "En Marche - Comit\u00e9 de Rouen"
+                },
+                {
+                    "name": "candidacy_end_date",
+                    "content": "lundi 25 mai 2020, 00h00"
+                },
+                {
+                    "name": "vote_start_date",
+                    "content": "lundi 25 mai 2020, 08h00"
+                },
+                {
+                    "name": "vote_end_date",
+                    "content": "dimanche 7 juin 2020, 20h00"
+                },
+                {
+                    "name": "committee_url",
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-rouen?anonymous_authentication_intention=\/connexion#committee-toggle-candidacy"
+                }
+            ],
+            "from_name": "La R\u00e9publique En Marche !",
+            "to": [
+                {
+                    "email": "assesseur@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Bob Assesseur"
+                }
+            ]
+        }
+    }
+    """
+    And I should have 1 email "CommitteeRemovedCandidacyNotificationMessage" for "laura@deloche.com" with payload:
+    """
+    {
+        "template_name": "committee-removed-candidacy-notification",
+        "template_content": [],
+        "message": {
+            "subject": "[Désignations] Une candidature a été retirée",
+            "from_email": "contact@en-marche.fr",
+            "global_merge_vars": [
+                {
+                    "name": "supervisor_first_name",
+                    "content": "Laura"
+                },
+                {
+                    "name": "candidate_civility",
+                    "content": "M."
+                },
+                {
+                    "name": "candidate_first_name",
+                    "content": "Bob"
+                },
+                {
+                    "name": "candidate_last_name",
+                    "content": "Assesseur"
+                },
+                {
+                    "name": "vote_start_date",
+                    "content": "lundi 25 mai 2020, 08h00"
+                },
+                {
+                    "name": "vote_end_date",
+                    "content": "dimanche 7 juin 2020, 20h00"
+                },
+                {
+                    "name": "committee_url",
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-rouen"
+                }
+            ],
+            "from_name": "La R\u00e9publique En Marche !",
+            "to": [
+                {
+                    "email": "laura@deloche.com",
+                    "type": "to",
+                    "name": "Laura Deloche"
+                }
+            ]
+        }
+    }
+    """
 
     When I am on "/comites/en-marche-comite-de-rouen"
     Then I should see "JE CANDIDATE"
@@ -37,8 +132,104 @@ Feature:
     When I am on "/comites/en-marche-comite-de-rouen"
     Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de voter. Rendez-vous sur cette page pour choisir ou modifier votre comité."
 
-    When I am on "/comites/en-marche-comite-de-evry"
+    Given I am on "/comites/en-marche-comite-de-evry"
     Then I should see "JE CANDIDATE"
+    When I press "committee-toggle-candidacy"
+    Then I wait 3 second until I see "JE RETIRE MA CANDIDATURE"
+    And I should have 1 email "CommitteeCandidacyCreatedConfirmationMessage" for "assesseur@en-marche-dev.fr" with payload:
+    """
+    {
+        "template_name": "committee-candidacy-created-confirmation",
+        "template_content": [],
+        "message": {
+            "subject": "[Désignations] Vous êtes maintenant candidat(e) !",
+            "from_email": "contact@en-marche.fr",
+            "global_merge_vars": [
+                {
+                    "name": "first_name",
+                    "content": "Bob"
+                },
+                {
+                    "name": "committee_name",
+                    "content": "En Marche - Comité de Évry"
+                },
+                {
+                    "name": "candidacy_end_date",
+                    "content": "lundi 25 mai 2020, 00h00"
+                },
+                {
+                    "name": "vote_start_date",
+                    "content": "lundi 25 mai 2020, 08h00"
+                },
+                {
+                    "name": "vote_end_date",
+                    "content": "dimanche 7 juin 2020, 20h00"
+                },
+                {
+                    "name": "cancel_candidacy_url",
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-evry?remove-candidacy=1&anonymous_authentication_intention=\/connexion"
+                }
+            ],
+            "from_name": "La R\u00e9publique En Marche !",
+            "to": [
+                {
+                    "email": "assesseur@en-marche-dev.fr",
+                    "type": "to",
+                    "name": "Bob Assesseur"
+                }
+            ]
+        }
+    }
+    """
+    And I should have 1 email "CommitteeNewCandidacyNotificationMessage" for "francis.brioul@yahoo.com" with payload:
+    """
+    {
+        "template_name": "committee-new-candidacy-notification",
+        "template_content": [],
+        "message": {
+            "subject": "[Désignations] Une nouvelle candidature a été déposée",
+            "from_email": "contact@en-marche.fr",
+            "global_merge_vars": [
+                {
+                    "name": "supervisor_first_name",
+                    "content": "Francis"
+                },
+                {
+                    "name": "candidate_civility",
+                    "content": "M."
+                },
+                {
+                    "name": "candidate_first_name",
+                    "content": "Bob"
+                },
+                {
+                    "name": "candidate_last_name",
+                    "content": "Assesseur"
+                },
+                {
+                    "name": "vote_start_date",
+                    "content": "lundi 25 mai 2020, 08h00"
+                },
+                {
+                    "name": "vote_end_date",
+                    "content": "dimanche 7 juin 2020, 20h00"
+                },
+                {
+                    "name": "committee_url",
+                    "content": "http:\/\/test.enmarche.code\/comites\/en-marche-comite-de-evry"
+                }
+            ],
+            "from_name": "La R\u00e9publique En Marche !",
+            "to": [
+                {
+                    "email": "francis.brioul@yahoo.com",
+                    "type": "to",
+                    "name": "Francis Brioul"
+                }
+            ]
+        }
+    }
+    """
 
   @javascript
   Scenario: As member of the committee, I can see its candidacies modal
