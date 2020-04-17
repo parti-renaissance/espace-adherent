@@ -91,14 +91,10 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
         $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
 
-        $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
+        $this->assertResponseStatusCode(Response::HTTP_OK, $response = $this->client->getResponse());
 
-        self::assertCount(1, $crawler->selectButton('Quitter ce comité')->extract(['disabled']));
-        self::assertSame(
-            'En tant qu\'animateur, vous ne pouvez pas cesser de suivre votre comité.',
-            trim($crawler->filter('div.committee-follow--anonymous__link')->text())
-        );
+        self::assertNotContains('Quitter ce comité', $response->getContent());
     }
 
     public function testAuthenticatedCommitteeHostCanUnfollowCommittee()
@@ -139,8 +135,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->click($crawler->selectLink('En Marche Paris 8')->link());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        // Unfollow link must be disabled because there is no other host
-        $this->assertSame('disabled', $crawler->filter('.committee-unfollow')->attr('disabled'));
+        // Unfollow link must not exist because there is no other host
+        $this->assertSame(0, $crawler->filter('.committee-unfollow')->count());
         // Other follower/register links must not exist
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -156,7 +152,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertContains('2 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -175,7 +171,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('3 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertContains('3 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -190,7 +186,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('2 adhérents', $crawler->filter('.committee__card > .committee-members')->text());
+        $this->assertContains('2 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -206,8 +202,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->seeMessageForContactHosts($crawler);
         $this->assertSeeHosts($crawler, [
-            ['Francis B.', 'animateur'],
-            ['Jacques P.', 'co-animateur'],
+            ['FB', 'Francis B.', 'animateur'],
+            ['JP', 'Jacques P.', 'co-animateur'],
         ], false);
         $this->assertCountTimelineMessages($crawler, 2);
         $this->assertSeeTimelineMessages($crawler, [
@@ -285,8 +281,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSeeHosts($crawler, [
-            ['Jacques Picard', 'animateur'],
-            ['Gisele Berthoux', 'co-animateur'],
+            ['JP', 'Jacques Picard', 'animateur'],
+            ['GB', 'Gisele Berthoux', 'co-animateur'],
         ]);
         $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The adherent should not see the "register link"');
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
@@ -453,7 +449,10 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
 
     private function seeMembersCount(Crawler $crawler, string $membersCount): bool
     {
-        return $membersCount.' adhérent'.($membersCount > 1 ? 's' : '') === $crawler->filter('.committee__card .committee-members')->text();
+        return false !== strpos(
+            $crawler->filter('.committee__infos')->text(),
+            $membersCount.' adhérent'.($membersCount > 1 ? 's' : '')
+        );
     }
 
     private function seeHosts(Crawler $crawler, int $hostsCount): bool
@@ -467,8 +466,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTest
         $contact = $isConnected ? '\s+(Contacter)' : '';
 
         foreach ($hosts as $position => $host) {
-            list($name, $role) = $host;
-            $this->assertRegExp('/^'.preg_quote($name).'\s+'.$role.$contact.'?$/', trim($nodes->eq($position)->text()));
+            list($initials, $name, $role) = $host;
+            $this->assertRegExp(
+                '/^'.preg_quote($initials).'\s+'.preg_quote($name).'\s+'.$role.$contact.'?$/',
+                trim($nodes->eq($position)->text())
+            );
         }
     }
 

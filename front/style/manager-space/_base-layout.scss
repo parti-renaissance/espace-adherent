@@ -511,6 +511,7 @@
 // global components
 .alert {
     font-size: 15px;
+    font-family: $font-roboto;
     font-weight: normal;
     line-height: 20px;
     padding: 20px;
@@ -524,6 +525,12 @@
     &--tips-blue {
         background-color: $inf-modl--bkg-blue;
         color: $inf-modl--text-blue;
+    }
+
+    &--tips-white-pink {
+        background-color: $white;
+        color: $pink;
+        font-weight: bold;
     }
 
     &--error {

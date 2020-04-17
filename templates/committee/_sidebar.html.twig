@@ -1,39 +1,30 @@
 <aside class="committee__aside l__wrapper--aside">
-
-    <div class="committee__card b__nudge--top-40">
-        {% if is_granted('REPORT') %}
-            <a href="{{ report_path(committee, app.request.pathInfo) }}" class="text--body link--newblue">Signaler ce comité</a>
-        {% endif %}
-    </div>
-
-    <div class="committee__card b__nudge--top-large text--medium-small text--uppercase icon--with-text">
-        {{ include('components/participants.html.twig') }}
-        <span class="committee-members">{{ 'committee.members_count'|transchoice(committee.membersCount) }}</span>
-    </div>
     <div class="committee__card">
         <h5>À propos</h5>
         <div class="text--body" id="committee-description">{{ committee.description }}</div>
     </div>
     <div class="committee__card">
-        <h5 class="icon--with-text">
-            {{ include('components/admin.html.twig') }}
+        <h5>
             Administration
         </h5>
         {% if not has_role_user %}
-            <span class="text--summary text--gray">Connectez-vous pour pouvoir contacter les responsables de comité.</span>
+            <p class="text--summary text--gray b__nudge--bottom">Connectez-vous pour pouvoir contacter les responsables de comité.</p>
         {% endif %}
         <ul class="committee__hosts">
             {% for host in committee_hosts %}
-                <li class="committee-host text--body text--bold">
-                    <div>
-                        {{ has_role_adherent ? host.fullName : host.partialName }}
+                <li class="committee-host text--body b__nudge--bottom">
+                    <div class="avatar-initials avatar--small avatar--style-01">
+                        {{host.initials}}
+                    </div>
+                    <div class="b__nudge--left-medium">
+                        <div class="text--body text--bold">{{ has_role_adherent ? host.fullName : host.partialName }}</div>
                         <span class="text--normal text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
                     </div>
                     {% if is_host and app.user.equals(host) %}
-                        (vous)
+                        <span class="m-auto--left">(vous)</span>
                     {% elseif has_role_user %}
                         <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
-                           class="link--no-decor text--blue--dark text--normal b__nudge--left-small">
+                           class="link--no-decor text--blue--dark text--small m-auto--left">
                             Contacter
                         </a>
                     {% endif %}
@@ -41,22 +32,12 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="committee__card">
-        <h5 class="icon--with-text svg--black">
-            {{ include('components/location-pin.html.twig') }}
-            Localisation
-        </h5>
-
-        <div class="text--body">
-            <a href="https://www.google.com/maps/search/{{ committee.postalCode }}+{{ committee.cityName }}+{{ committee.countryName }}" target="_blank" class="link--blue--dark link--no-decor">{{ committee.cityName }}</a>
-            {% if committee.postalCode %}({{ committee.postalCode }}){% endif %}
-    </div>
 
     {% if committee.socialNetworksLinks|length > 0 %}
     <div class="committee__card">
         <h5>Suivez notre comité</h5>
         {% for key, link in committee.socialNetworksLinks %}
-            <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{key}} icon--with-text b__nudge--bottom-tiny">
+            <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{key}} b__nudge--bottom-tiny">
                 <i class="fa fa--auto fa-{{key}} text--medium"></i>
                 {{- link.label -}}
             </a>

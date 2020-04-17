@@ -7,7 +7,7 @@
     <div class="action-dropdown-menu--bounce">
         <div class="action-dropdown-menu--content">
             {% for item in items %}
-                <a href="{{ item.href }}"
+                <a{% if item.href is defined %} href="{{ item.href }}{% endif %}"
                     {% for attr,value in item.linkAttr|default({class: 'row-action'}) %}
                         {{ attr }}="{{ value }}"
                     {% endfor %}

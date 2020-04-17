@@ -15,18 +15,79 @@
         </div>
 
         <header class="background--blue space--60-0">
-            <div class="l__wrapper l__row l__row--h-stretch l__mobile--col">
+            <div class="l__wrapper pst--relative">
+                <div class="committee__header__plus">
+                    {% set items = [] %}
+                    {% if is_granted('REPORT') %}
+                        {% set items = items|merge([
+                            {
+                                href: report_path(committee, app.request.pathInfo),
+                                label: 'Signaler ce comité',
+                                linkAttr: {
+                                    class: 'text--body link--no-decor text--blue--dark',
+                                }
+                            },
+                        ]) %}
+                    {% endif %}
+
+                    {% if is_host and can_unfollow(committee) %}
+                        {% set items = items|merge([
+                            {
+                                label: 'Quitter ce comité',
+                                linkAttr: {
+                                    class: 'text--body link--no-decor text--blue--dark committee-action-button committee-unfollow',
+                                    'data-action': 'quitter',
+                                    'data-csrf-token': csrf_token('committee.unfollow')
+                                }
+                            },
+                        ]) %}
+                    {% endif %}
+
+                    {% if items|length > 0 %}
+                        {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="l__wrapper committee__header__content">
                 <div class="text--white committee__header__titles">
-                    <div class="text--uppercase text--small b__nudge--bottom-tiny">
+                    <div class="text--uppercase text--small b__nudge--bottom">
                         Comité local {% if is_host %}n°{{ committee.id }}{% endif %}
                     </div>
                     <div class="committee__name">
-                        {{ include('components/location-pin.html.twig') }}
-                        <h1 id="committee-name" class="text--large b__nudge--left-small">{{ committee.name }}</h1>
+                        <h1 id="committee-name" class="text--large">{{ committee.name }}</h1>
                     </div>
+                    <ul class="committee__infos">
+                        <li>
+                            {{ include('components/location.html.twig') }}
+                            <a href="https://www.google.com/maps/search/{{ committee.postalCode }}+{{ committee.cityName }}+{{ committee.countryName }}" target="_blank" class="link--blue--dark link--no-decor b__nudge--right-small">{{ committee.cityName }}</a>
+                            {% if committee.postalCode %}({{ committee.postalCode }}){% endif %}
+                        </li>
+                        <li>
+                            {{ include('components/users.html.twig') }}
+                            {{ 'committee.members_count'|transchoice(committee.membersCount) }}
+                        </li>
+                        <li>
+                            {{ include('components/share.html.twig') }}
+                            Partagez
+                            <ul class="committee__socials text--white">
+                                <li role="button" aria-label="Partagez sur Facebook"
+                                    onclick="App.share('facebook', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
+                                    <i class="fa fa-facebook-square"></i>
+                                </li>
+                                <li role="button" aria-label="Partagez via Twitter"
+                                    onclick="App.share('twitter', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
+                                    <i class="fa fa-twitter"></i>
+                                </li>
+                                <li role="button" aria-label="Partagez via email"
+                                    onclick="App.share('email', window.location.href, 'Rejoignez le comité : {{ committee.name }}')">
+                                    <i class="fa fa-envelope-o"></i>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="l__col">
+                <div class="committee__header__actions">
                     {% block committee_lcol %}{% endblock %}
                 </div>
             </div>
