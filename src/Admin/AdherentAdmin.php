@@ -59,6 +59,7 @@ class AdherentAdmin extends AbstractAdmin
 
     protected $accessMapping = [
         'ban' => 'BAN',
+        'certify' => 'CERTIFY',
     ];
 
     private $dispatcher;
@@ -88,6 +89,7 @@ class AdherentAdmin extends AbstractAdmin
     {
         $collection
             ->add('ban', $this->getRouterIdParameter().'/ban')
+            ->add('certify', $this->getRouterIdParameter().'/certify')
             ->remove('create')
             ->remove('delete')
         ;
@@ -95,19 +97,23 @@ class AdherentAdmin extends AbstractAdmin
 
     public function configureActionButtons($action, $object = null)
     {
-        if ('ban' === $action) {
+        if (\in_array($action, ['ban', 'certify'], true)) {
             $actions = parent::configureActionButtons('show', $object);
         } else {
             $actions = parent::configureActionButtons($action, $object);
         }
 
-        if (\in_array($action, ['edit', 'show', 'ban'], true)) {
+        if (\in_array($action, ['edit', 'show', 'ban', 'certify'], true)) {
             $actions['switch_user'] = ['template' => 'admin/adherent/action_button_switch_user.html.twig'];
         }
 
         if (\in_array($action, ['edit', 'show'], true)) {
             if ($this->canAccessObject('ban', $object) && $this->hasRoute('ban')) {
                 $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
+            }
+
+            if ($this->canAccessObject('certify', $object) && $this->hasRoute('certify')) {
+                $actions['certify'] = ['template' => 'admin/adherent/action_button_certify.html.twig'];
             }
         }
 
@@ -135,6 +141,9 @@ class AdherentAdmin extends AbstractAdmin
                 ])
                 ->add('firstName', null, [
                     'label' => 'Prénom',
+                ])
+                ->add('certifiedAt', null, [
+                    'label' => 'Certifié le',
                 ])
                 ->add('nickname', null, [
                     'label' => 'Pseudo',
@@ -431,6 +440,39 @@ HELP
             ->add('firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,
+            ])
+            ->add('certified', CallbackFilter::class, [
+                'label' => 'Certifié',
+                'show_filter' => true,
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'yes',
+                        'no',
+                    ],
+                    'choice_label' => function (string $choice) {
+                        return "global.$choice";
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, array $value) {
+                    switch ($value['value']) {
+                        case 'yes':
+                            $qb->andWhere("$alias.certifiedAt IS NOT NULL");
+
+                            return true;
+
+                        case 'no':
+                            $qb->andWhere("$alias.certifiedAt IS NULL");
+
+                            return true;
+                        default:
+                            return false;
+                    }
+                },
+            ])
+            ->add('certifiedAt', DateRangeFilter::class, [
+                'label' => 'Date de certification',
+                'field_type' => DateRangePickerType::class,
             ])
             ->add('nickname', null, [
                 'label' => 'Pseudo',
@@ -748,6 +790,10 @@ HELP
             ])
             ->add('firstName', null, [
                 'label' => 'Prénom',
+            ])
+            ->add('certified', null, [
+                'label' => 'Certifié',
+                'template' => 'admin/adherent/list_certified.html.twig',
             ])
             ->add('emailAddress', null, [
                 'label' => 'Adresse e-mail',

@@ -116,7 +116,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Adherent</argument>
-            <argument>AppBundle\Controller\Admin\AdminBanAdherentController</argument>
+            <argument>AppBundle\Controller\Admin\AdminAdherentCRUDController</argument>
             <argument type="service" id="event_dispatcher"/>
         </service>
 

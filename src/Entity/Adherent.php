@@ -1986,10 +1986,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function approveCertificationRequest(): void
     {
-        if ($this->isCertified()) {
-            throw new \LogicException('Adherent is already certified.');
-        }
-
         if (!$this->certificationRequest) {
             throw new \LogicException('Adherent has no certification request.');
         }
