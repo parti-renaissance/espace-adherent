@@ -483,6 +483,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $electionResultsReporter = false;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $certifiedAt;
+
+    /**
+     * @var CertificationRequest|null
+     *
+     * @ORM\OneToOne(targetEntity=CertificationRequest::class, inversedBy="adherent", cascade={"all"}, orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $certificationRequest;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -1933,5 +1948,57 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isToDelete(): bool
     {
         return self::TO_DELETE === $this->status;
+    }
+
+    public function getCertifiedAt(): ?\DateTime
+    {
+        return $this->certifiedAt;
+    }
+
+    public function isCertified(): bool
+    {
+        return null !== $this->certifiedAt;
+    }
+
+    public function certify(): void
+    {
+        $this->certifiedAt = new \DateTime();
+    }
+
+    public function getCertificationRequest(): ?CertificationRequest
+    {
+        return $this->certificationRequest;
+    }
+
+    public function setCertificationRequest(?CertificationRequest $certificationRequest): void
+    {
+        $this->certificationRequest = $certificationRequest;
+    }
+
+    public function startCertificationRequest(): void
+    {
+        if ($this->certificationRequest) {
+            throw new \LogicException('Adherent already has a certification request.');
+        }
+
+        $this->certificationRequest = new CertificationRequest($this);
+    }
+
+    public function approveCertificationRequest(): void
+    {
+        if ($this->isCertified()) {
+            throw new \LogicException('Adherent is already certified.');
+        }
+
+        if (!$this->certificationRequest) {
+            throw new \LogicException('Adherent has no certification request.');
+        }
+
+        if ($this->certificationRequest->isApproved()) {
+            throw new \LogicException('CertificationRequest is already approved.');
+        }
+
+        $this->certificationRequest->approve();
+        $this->certify();
     }
 }
