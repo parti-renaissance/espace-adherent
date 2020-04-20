@@ -34,12 +34,11 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
 
     public function onCandidacyCreated(CommitteeCandidacyEvent $event): void
     {
-        $election = $event->getElection();
-        $committee = $election->getCommittee();
+        $committee = $event->getCommittee();
 
         $this->mailer->sendMessage(CommitteeCandidacyCreatedConfirmationMessage::create(
             $event->getCandidate(),
-            $election,
+            $committee->getCommitteeElection(),
             $this->urlGenerator->generate(
                 'app_committee_show',
                 [
@@ -56,12 +55,11 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
 
     public function onCandidacyRemoved(CommitteeCandidacyEvent $event): void
     {
-        $election = $event->getElection();
-        $committee = $election->getCommittee();
+        $committee = $event->getCommittee();
 
         $this->mailer->sendMessage(CommitteeCandidacyRemovedConfirmationMessage::create(
             $event->getCandidate(),
-            $election,
+            $committee->getCommitteeElection(),
             $this->urlGenerator->generate(
                 'app_committee_show',
                 [
@@ -76,17 +74,21 @@ class SendCandidacyEmailsListener implements EventSubscriberInterface
         $this->notifySupervisor($event, CommitteeRemovedCandidacyNotificationMessage::class);
     }
 
+    /**
+     * @param CommitteeRemovedCandidacyNotificationMessage|CommitteeNewCandidacyNotificationMessage $messageClass
+     */
     private function notifySupervisor(CommitteeCandidacyEvent $event, string $messageClass): void
     {
         if ($supervisor = $event->getSupervisor()) {
             $this->mailer->sendMessage(
                 $messageClass::create(
+                    $event->getCommitteeCandidacy(),
+                    $event->getCommittee()->getCommitteeElection(),
                     $supervisor,
                     $event->getCandidate(),
-                    $event->getElection(),
                     $this->urlGenerator->generate(
                         'app_committee_show',
-                        ['slug' => $event->getElection()->getCommittee()->getSlug()],
+                        ['slug' => $event->getCommittee()->getSlug()],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     )
                 )

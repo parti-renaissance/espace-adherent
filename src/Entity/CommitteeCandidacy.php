@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -20,6 +21,13 @@ class CommitteeCandidacy
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column
+     */
+    private $gender;
+
+    /**
      * @var CommitteeElection
      *
      * @ORM\ManyToOne(targetEntity="CommitteeElection")
@@ -27,9 +35,10 @@ class CommitteeCandidacy
      */
     private $committeeElection;
 
-    public function __construct(CommitteeElection $election)
+    public function __construct(CommitteeElection $election, string $gender)
     {
         $this->committeeElection = $election;
+        $this->gender = $gender;
     }
 
     public function getId(): ?int
@@ -45,5 +54,30 @@ class CommitteeCandidacy
     public function setCommitteeElection(CommitteeElection $committeeElection): void
     {
         $this->committeeElection = $committeeElection;
+    }
+
+    public function getGender(): string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    public function getCivility(): string
+    {
+        return $this->isMale() ? 'M.' : 'Mme.';
+    }
+
+    public function isMale(): bool
+    {
+        return Genders::MALE === $this->gender;
+    }
+
+    public function isFemale(): bool
+    {
+        return Genders::FEMALE === $this->gender;
     }
 }

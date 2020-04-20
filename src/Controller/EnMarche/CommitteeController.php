@@ -10,6 +10,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use AppBundle\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -220,21 +221,40 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/candidater", name="app_committee_candidate", condition="request.request.has('token')", methods={"POST"})
+     * @Route("/candidater", name="app_committee_candidate", condition="request.query.has('token')", methods={"GET"})
      *
      * @Security("is_granted('MEMBER_OF_COMMITTEE', committee) and is_granted('ABLE_TO_CANDIDATE')")
      */
-    public function candidateAction(Request $request, Committee $committee, CommitteeManager $manager): Response
-    {
+    public function candidateAction(
+        UserInterface $adherent,
+        Request $request,
+        Committee $committee,
+        CommitteeManager $manager
+    ): Response {
         $this->disableInProduction();
 
-        if (!$this->isCsrfTokenValid('committee.candidate', $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid('committee.candidate', $request->query->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to candidate in committee.');
         }
 
-        $manager->candidateInCommittee($this->getUser(), $committee);
+        /** @var Adherent $adherent */
+        $candidacyGender = $adherent->getGender();
 
-        return new JsonResponse('OK', 200);
+        if ($adherent->isOtherGender()) {
+            $candidacyGender = $request->query->get('gender');
+
+            if (!$candidacyGender || !\in_array($candidacyGender, Genders::CIVILITY_CHOICES, true)) {
+                $this->addFlash('error', 'Le genre de la candidature n\'a pas été sélectionné');
+
+                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+            }
+        }
+
+        if ($manager->candidateInCommittee($adherent, $committee, $candidacyGender)) {
+            $this->addFlash('info', 'Votre candidature a bien été enregistrée');
+        }
+
+        return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
     }
 
     /**

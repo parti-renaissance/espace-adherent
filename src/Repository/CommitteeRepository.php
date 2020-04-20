@@ -200,10 +200,11 @@ class CommitteeRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->select('c AS committee')
             ->addSelect('SUM(IF(cm.enableVote = :true, 1, 0)) AS total_voters')
-            ->addSelect('SUM(IF(cm.committeeCandidacy IS NOT NULL AND adherent.gender = :male, 1, 0)) AS total_candidacy_male')
-            ->addSelect('SUM(IF(cm.committeeCandidacy IS NOT NULL AND adherent.gender = :female, 1, 0)) AS total_candidacy_female')
+            ->addSelect('SUM(IF(candidacy.id IS NOT NULL AND candidacy.gender = :male, 1, 0)) AS total_candidacy_male')
+            ->addSelect('SUM(IF(candidacy.id IS NOT NULL AND candidacy.gender = :female, 1, 0)) AS total_candidacy_female')
             ->where('c.status = :status')
             ->leftJoin(CommitteeMembership::class, 'cm', Join::WITH, 'cm.committee = c')
+            ->leftJoin('cm.committeeCandidacy', 'candidacy')
             ->leftJoin('cm.adherent', 'adherent')
             ->setParameters([
                 'status' => Committee::APPROVED,
