@@ -4,6 +4,9 @@ namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CertificationRequestRepository")
@@ -13,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CertificationRequest
 {
+    use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
     public const STATUS_PENDING = 'pending';
@@ -20,20 +24,34 @@ class CertificationRequest
     public const STATUS_REFUSED = 'refused';
 
     /**
-     * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
-    /**
      * @var string|null
      *
      * @ORM\Column(length=20)
      */
     private $status;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $documentName;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\File(
+     *     maxSize="5M",
+     *     mimeTypes={
+     *         "application/pdf",
+     *         "application/x-pdf",
+     *         "image/jpeg",
+     *         "image/png"
+     *     },
+     *     mimeTypesMessage="certification_request.document.mime_type"
+     * )
+     */
+    private $document;
 
     /**
      * @var array|null
@@ -52,17 +70,13 @@ class CertificationRequest
     public function __construct(Adherent $adherent)
     {
         $this->adherent = $adherent;
+        $this->uuid = Uuid::uuid4();
         $this->status = self::STATUS_PENDING;
     }
 
     public function __toString()
     {
         return sprintf('%s (%s)', $this->adherent, $this->status);
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getStatus(): ?string
@@ -113,5 +127,28 @@ class CertificationRequest
     public function refuse(): void
     {
         $this->status = self::STATUS_REFUSED;
+    }
+
+    public function getDocument(): ?UploadedFile
+    {
+        return $this->document;
+    }
+
+    public function setDocument(?UploadedFile $document): void
+    {
+        $this->document = $document;
+    }
+
+    public function getPathWithDirectory(): string
+    {
+        return sprintf('%s/%s', 'files/certification_requests/document', $this->documentName);
+    }
+
+    public function setDocumentNameFromUploadedFile(UploadedFile $document): void
+    {
+        $this->documentName = sprintf('%s.%s',
+            md5(sprintf('%s@%s', $this->getUuid(), $document->getClientOriginalName())),
+            $document->getClientOriginalExtension()
+        );
     }
 }

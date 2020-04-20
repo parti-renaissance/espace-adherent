@@ -5,14 +5,16 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20200420064558 extends AbstractMigration
+final class Version20200420091352 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE certification_request (
           id INT UNSIGNED AUTO_INCREMENT NOT NULL, 
           status VARCHAR(20) NOT NULL, 
+          document_name VARCHAR(255) DEFAULT NULL, 
           annotations JSON DEFAULT NULL, 
+          uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           created_at DATETIME NOT NULL, 
           updated_at DATETIME NOT NULL, 
           PRIMARY KEY(id)

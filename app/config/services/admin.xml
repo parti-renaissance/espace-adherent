@@ -120,6 +120,14 @@
             <argument type="service" id="event_dispatcher"/>
         </service>
 
+        <service id="app.admin.certification_request" class="AppBundle\Admin\CertificationRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Certifications" group="Adhérents" />
+
+            <argument />
+            <argument>AppBundle\Entity\CertificationRequest</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.invite" class="AppBundle\Admin\InviteAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Adhérents" />
 
