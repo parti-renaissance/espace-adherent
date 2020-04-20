@@ -21,7 +21,7 @@
                         <span class="text--normal text--gray b__nudge--bottom">{{ host.isSupervisorOf(committee) ? 'animateur' : 'co-animateur' }}</span>
                     </div>
                     {% if is_host and app.user.equals(host) %}
-                        <span class="m-auto--left">(vous)</span>
+                        <span class="text--small m-auto--left">(vous)</span>
                     {% elseif has_role_user %}
                         <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
                            class="link--no-decor text--blue--dark text--small m-auto--left">
