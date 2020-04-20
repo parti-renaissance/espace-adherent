@@ -1,82 +1,71 @@
 {% set candidacy_committee_membership = app.user.memberships.committeeCandidacyMembership %}
 
 <section class="committee__elections-box b__nudge--bottom-larger">
-    <h2 class="text--medium b__nudge--bottom">Candidater pour participer au Conseil Territorial</h2>
-    <div class="text--body">
-        Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark">la liste des candidats</a>
+    <h2 class="text--medium">Candidater pour participer au Conseil Territorial</h2>
+    <p class="text--body b__nudge--bottom b__nudge--top">
+        Mauris lacus odio, tempor et venenatis sed, tristique nec sem.
+    </p>
+
+    <div class="l__row">
+        <!-- <a href="#">boutons ici</a> -->
+        <!-- <a href="#">boutons ici</a> -->
+        <div class="">
+            Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark">la liste des candidats</a>
+        </div>
     </div>
+</section>
 
-    {% if is_granted('ABLE_TO_CANDIDATE') %}
-        {% if candidacy_committee_membership is not null %}
-            {% if candidacy_committee_membership == membership %}
-                <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
-                   class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger b__nudge--top-large"
-                   data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
-                   id="remove-candidacy-link"
-                >
-                    Je retire ma candidature
-                </a>
-            {% else %}
-                <div class="alert alert--tips-white-pink">
-                    Vous pouvez candidater dans le comité où vous avez choisi de voter.<br />
-                    Rendez-vous sur <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">cette page</a></strong>
-                    pour choisir ou modifier votre comité.
-                </div>
-            {% endif %}
+{% if is_granted('ABLE_TO_CANDIDATE') %}
+    {% if candidacy_committee_membership is not null %}
+        {% if candidacy_committee_membership == membership %}
+            <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
+               class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger"
+               data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+               id="remove-candidacy-link"
+            >
+                Je retire ma candidature
+            </a>
         {% else %}
-            {% if membership.isVotingCommittee %}
-                {% if app.user.isOtherGender() %}
-                    <a href="#"
-                       class="btn btn--pink btn--no-wrap em-modal--trigger b__nudge--top-large"
-                       id="committee-toggle-candidacy"
-                       data-confirm-content-element="#committee-candidacy-gender-choice-content"
-                    >Je candidate</a>
-
-                    <div class="hidden" id="committee-candidacy-gender-choice-content">
-                        <div class="font-roboto">
-                            <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
-                                Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
-                            </p>
-
-                            <div>
-                                {% set candidate_url_params = {slug: committee.slug, token: csrf_token('committee.candidate')} %}
-
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
-                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::MALE')})) }}">Homme</a>
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <a href="{{ path('app_committee_candidate', {slug: committee.slug, token: csrf_token('committee.candidate')}) }}"
-                       id="committee-toggle-candidacy"
-                       class="btn btn--pink btn--no-wrap b__nudge--top-large"
-                    >Je candidate</a>
-                {% endif %}
-            {% else %}
-                <div class="alert alert--tips-white-pink">
-                    Vous pouvez candidater dans le comité où vous avez choisi de voter.<br />
-                    Rendez-vous sur <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">cette page</a></strong>
-                    pour choisir ou modifier votre comité.
-                </div>
-            {% endif %}
+            <div class="alert alert--tips b__nudge__bottom-small">
+                Vous pouvez candidater dans le comité où vous avez choisi de voter.<br />
+                Rendez-vous sur <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">cette page</a></strong>
+                pour choisir ou modifier votre comité.
+            </div>
         {% endif %}
     {% else %}
-        <div class="alert alert--tips-white-pink">
-            Vous ne pouvez pas candidater
-            {% if app.user.referent %}
-                car vous êtes référent
-            {% elseif app.user.supervisor %}
-                car vous êtes Animateur Local
-            {% endif %}
-        </div>
+        {% if membership.isVotingCommittee %}
+            <button role="button"
+                    class="btn btn--pink btn--no-wrap committee-action-button b__nudge--top-large"
+                    id="committee-toggle-candidacy"
+                    data-action="candidater"
+                    data-csrf-token="{{ csrf_token('committee.candidate') }}">
+                <img src="{{ asset('images/loader-sm.gif') }}" id="committee-follow-btn-loader" />
+                Je candidate
+            </button>
+        {% else %}
+            <div class="alert alert--tips b__nudge__bottom-small">
+                Vous pouvez candidater dans le comité où vous avez choisi de voter.<br />
+                Rendez-vous sur <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">cette page</a></strong>
+                pour choisir ou modifier votre comité.
+            </div>
+        {% endif %}
     {% endif %}
+{% else %}
+    <div class="alert alert--tips b__nudge__bottom-small">
+        Vous ne pouvez pas candidater
+        {% if app.user.referent %}
+            car vous êtes référent
+        {% elseif app.user.supervisor %}
+            car vous êtes Animateur Local
+        {% endif %}
+    </div>
+{% endif %}
 
-    {% set count_male_candidates = count_committee_candidates(committee, true) %}
-    {% set count_female_candidates = count_committee_candidates(committee, false) %}
+{% set count_male_candidates = count_committee_candidates(committee, true) %}
+{% set count_female_candidates = count_committee_candidates(committee, false) %}
 
-    {% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
-        <div class="b__nudge--top-large alert alert--tips-white-pink">
-            {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
-        </div>
-    {% endif %}
-</section>
+{% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
+    <div class="alert alert--tips b__nudge__bottom-small">
+        {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
+    </div>
+{% endif %}

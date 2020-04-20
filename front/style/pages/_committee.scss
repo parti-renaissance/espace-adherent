@@ -77,6 +77,11 @@
     }
 
     &__header {
+        padding: 60px 0;
+
+        @media (min-width: $tablet) {
+            padding: 80px 0;
+        }
 
         &__content {
             display: flex;
@@ -364,10 +369,10 @@
 
     &__main {
         width: 100%;
-        margin: 20px 0 0;
+        margin-right: 0;
 
         @media (min-width: $tablet) {
-            margin: 70px 5% 0 0
+            margin-right: 5%;
         }
     }
 
@@ -394,6 +399,12 @@
     }
 
     &__timeline {
+        margin-top: 30px;
+
+        @media (min-width: $tablet) {
+            margin-top: 70px;
+        }
+
         &__item {
             padding: 30px 0;
             border-bottom: 1px solid $gray--light;
@@ -459,7 +470,7 @@
     &-event {
         // An event within the timeline
         background: $gray--lighter;
-        height: 200px;
+        min-height: 200px;
         margin: 0 auto;
         display: flex;
         margin-top: 20px;
@@ -477,7 +488,6 @@
 
         &-details {
             padding: 25px;
-            min-height: 150px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -536,33 +546,43 @@
 
     &__elections-box {
         box-sizing: border-box;
-        border: 1px solid $pink;
-        background-color: $pink--extra-light;
-        border-radius: 3px;
-        padding: 35px;
+        background-color: $white;
+        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.12);
+        border-radius: 4px;
+        padding: 40px;
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-between;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
+
+        @media (min-width: $tablet) {
+            margin-top: 70px;
+        }
+
+        h2 {
+            color: $pink;
+            max-width: 340px;
+        }
 
         .alert {
             width: 100%;
             box-sizing: border-box;
-            padding: 15px;
-            margin-top: 20px;
         }
 
         .alert:nth-child(1) {
             margin-top: 30px;
         }
 
-        // h2 {
-        //     font-weight: normal;
-        //     max-width: 310px;
-        // }
+    }
 
+    .action-menu-oval {
+        padding: 0;
+
+        &> a .oval {
+            background-color: $white;
+        }
     }
 }
 
