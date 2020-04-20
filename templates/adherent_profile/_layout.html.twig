@@ -6,14 +6,16 @@
             <div class="adherent-profile l__row l__row--v-stretch">
                 <aside class="adherent-profile__aside">
                     <div class="adherent-profile__status b__nudge--top">
-                        <div class="l__row">
-                            <div class="">AR</div>
-                            <div>
-                                <div class="name">Alain R.</div>
-                                <div class="adhesion-date">inscrit en nov.2017</div>
+                        <div class="l__row b__nudge--bottom-large">
+                            <div class="avatar-initials avatar--medium avatar--style-02">
+                                {{app.user.initials}}
+                            </div>
+                            <div class="adherent-profile__id">
+                                <div class="name">{{ app.user.partialName }}</div>
+                                <div class="adhesion-date">Inscrit{{ app.user.female ? "e" }} en {{ app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, 'MMMM yyyy') }}</div>
                             </div>
                         </div>
-                        <ul class="adherent-profile__roles">
+                        <ul class="adherent-profile__roles b__nudge--bottom-large">
                             <li>Référent(e)</li>
                             <li>Conseiller départemental</li>
                             <li>Référent(e)</li>
@@ -21,7 +23,7 @@
                             <li>Conseiller départemental</li>
                             <li>Référent(e)</li>
                         </ul>
-                        <div class="adherent-profile__completion b__nudge--bottom-50">
+                        <div class="profile-completion b__nudge--bottom-50">
                             <div class="text--body b__nudge--bottom-small">Complétion du profil : 50%</div>
                             <div class="gauge">
                                 <span></span>

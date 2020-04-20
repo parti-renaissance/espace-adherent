@@ -17,6 +17,24 @@
 
     }
 
+    &__id {
+        margin-left: 15px;
+        font-family: $font-roboto;
+
+        .name {
+            font-weight: bold;
+            color: $black;
+            font-size: 20px;
+        }
+
+        .adhesion-date {
+            color: $neutral-grey;
+            font-size: 14px;
+            line-height: normal;
+            margin-top: 6px;
+        }
+    }
+
     &__roles {
         display: flex;
         flex-direction: row;
@@ -26,26 +44,28 @@
             font-size: 12px;
             font-family: $font-roboto;
             line-height: normal;
+            color: $blue--azure;
             padding: 5px;
             border-radius: 2px;
-            border: $black 1px solid;
+            border: $blue--azure 1px solid;
             margin: 0 5px 5px 0;
 
         }
     }
 
-    &__completion {
+    .profile-completion {
         .gauge {
             display: block;
-            background-color: grey;
+            background-color: $gray--light;
             width: 200px;
             height: 5px;
-            border-radius: 50px;
+            border-radius: 5px;
             position: relative;
+            overflow: hidden;
 
             span {
                 position: absolute;
-                border-radius: 50px;
+                border-radius: 5px;
                 height: 5px;
                 left: 0;
                 width: 50%;
