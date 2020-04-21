@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-final class Version20200421052847 extends AbstractMigration
+final class Version20200421105333 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -14,7 +14,8 @@ final class Version20200421052847 extends AbstractMigration
           adherent_id INT UNSIGNED NOT NULL, 
           processed_by_id INT DEFAULT NULL, 
           status VARCHAR(20) NOT NULL, 
-          document_name VARCHAR(255) DEFAULT NULL, 
+          document_name VARCHAR(255) NOT NULL, 
+          document_mime_type VARCHAR(30) NOT NULL, 
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\', 
           created_at DATETIME NOT NULL, 
           updated_at DATETIME NOT NULL, 

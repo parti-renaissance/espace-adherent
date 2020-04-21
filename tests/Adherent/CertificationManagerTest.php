@@ -10,6 +10,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group certification
  */
 class CertificationManagerTest extends WebTestCase
 {
@@ -52,12 +53,12 @@ class CertificationManagerTest extends WebTestCase
         $adherent = $this->adherentRepository->findOneByEmail($email);
 
         self::assertFalse($adherent->isCertified());
-        self::assertFalse($adherent->hasPendingCertificationRequest());
+        self::assertFalse($adherent->getCertificationRequests()->hasPendingCertificationRequest());
 
         $certificationRequest = $this->certificationManager->createRequest($adherent);
 
-        self::assertTrue($adherent->hasPendingCertificationRequest());
-        self::assertSame($certificationRequest, $adherent->getPendingCertificationRequest());
+        self::assertTrue($adherent->getCertificationRequests()->hasPendingCertificationRequest());
+        self::assertSame($certificationRequest, $adherent->getCertificationRequests()->getPendingCertificationRequest());
         self::assertTrue($certificationRequest->isPending());
         self::assertFalse($adherent->isCertified());
     }
@@ -82,8 +83,8 @@ class CertificationManagerTest extends WebTestCase
         $this->manager->refresh($adherent);
         $this->manager->refresh($certificationRequest);
 
-        self::assertTrue($adherent->hasPendingCertificationRequest());
-        self::assertSame($certificationRequest, $adherent->getPendingCertificationRequest());
+        self::assertTrue($adherent->getCertificationRequests()->hasPendingCertificationRequest());
+        self::assertSame($certificationRequest, $adherent->getCertificationRequests()->getPendingCertificationRequest());
         self::assertTrue($certificationRequest->isPending());
         self::assertNotNull($certificationRequest->getDocumentName());
         self::assertTrue($this->getStorage()->has($certificationRequest->getPathWithDirectory()));

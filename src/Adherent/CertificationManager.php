@@ -21,14 +21,14 @@ class CertificationManager
 
     public function canRequest(Adherent $adherent): bool
     {
-        return !$adherent->isCertified() && !$adherent->getPendingCertificationRequest();
+        return !$adherent->isCertified() && !$adherent->getCertificationRequests()->hasPendingCertificationRequest();
     }
 
     public function createRequest(Adherent $adherent): CertificationRequest
     {
         $adherent->startCertificationRequest();
 
-        return $adherent->getPendingCertificationRequest();
+        return $adherent->getCertificationRequests()->getPendingCertificationRequest();
     }
 
     public function handleRequest(CertificationRequest $certificationRequest): void
@@ -44,7 +44,7 @@ class CertificationManager
             throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
-        $certificationRequest->setDocumentNameFromUploadedFile($certificationRequest->getDocument());
+        $certificationRequest->processDocument($certificationRequest->getDocument());
         $path = $certificationRequest->getPathWithDirectory();
 
         $this->storage->put($path, file_get_contents($certificationRequest->getDocument()->getPathname()));

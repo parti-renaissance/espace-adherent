@@ -19,13 +19,13 @@
             Votre demande de certification a été validée.
             Vous pouvez désormais prendre part à l’élection des animateurs de comités !
 
-        {% elseif app.user.hasPendingCertificationRequest %}
+        {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
 
             Demande de certification en attente
             <br><br>
             Votre demande de certification a bien été prise en compte par nos équipes.
 
-        {% elseif app.user.hasRefusedCertificationRequest %}
+        {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
 
             Demande de certification refusée
             <br><br>

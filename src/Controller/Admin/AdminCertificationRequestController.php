@@ -9,7 +9,6 @@ use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class AdminCertificationRequestController extends CRUDController
 {
@@ -120,15 +119,8 @@ class AdminCertificationRequestController extends CRUDController
         }
 
         $response = new Response($this->storage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $this->storage->getMimetype($filePath),
+            'Content-Type' => $certificationRequest->getDocumentMimeType(),
         ]);
-
-        $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $certificationRequest->getDocumentName()
-        );
-
-        $response->headers->set('Content-Disposition', $disposition);
 
         return $response;
     }

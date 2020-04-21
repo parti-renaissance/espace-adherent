@@ -90,53 +90,45 @@
 
         <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4 class="box-title">Document</h4>
                     </div>
-                    {% if object.hasDocument %}
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table table-bordered table-striped sonata-ba-list">
-                                <tbody>
-                                    <tr>
-                                        <th class="sonata-ba-list-field-header-text">Lien</th>
-                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                            <a href="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" target="_blank">
-                                                Cliquez ici pour voir le document
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="sonata-ba-list-field-header-text">Extension</th>
-                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                            {{ object.documentExtension|upper }}
-                                        </td>
-                                    </tr>
-                                    {% if object.isDocumentImage %}
-                                        <tr>
-                                            <th class="sonata-ba-list-field-header-text">Aperçu</th>
-                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                <a href="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" target="_blank">
-                                                    <img src="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" />
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="box-body">
-                            <div class="alert alert-warning" role="alert">
-                                Aucun document n'est associé à cette demande de certification.
-                            </div>
-                        </div>
-                    {% endif %}
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Lien</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        <a href="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" target="_blank">
+                                            Cliquez ici pour voir le document
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Mime Type</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.documentMimeType }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Aperçu</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        <embed type="{{ object.documentMimeType }}"
+                                               src="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}"
+                                               width="100%"
+                                               style="min-height: 400px"
+                                              >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h4 class="box-title">Actions</h4>

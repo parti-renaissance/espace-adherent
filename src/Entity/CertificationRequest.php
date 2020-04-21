@@ -33,9 +33,16 @@ class CertificationRequest
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
+     * @ORM\Column
      */
     private $documentName;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=30)
+     */
+    private $documentMimeType;
 
     /**
      * @var UploadedFile|null
@@ -89,6 +96,11 @@ class CertificationRequest
     public function getDocumentName(): ?string
     {
         return $this->documentName;
+    }
+
+    public function getDocumentMimeType(): ?string
+    {
+        return $this->documentMimeType;
     }
 
     public function getDocumentExtension(): ?string
@@ -155,25 +167,13 @@ class CertificationRequest
         return sprintf('%s/%s', 'files/certification_requests/document', $this->documentName);
     }
 
-    public function setDocumentNameFromUploadedFile(UploadedFile $document): void
+    public function processDocument(UploadedFile $document): void
     {
         $this->documentName = sprintf('%s.%s',
             $this->getUuid(),
             $document->getClientOriginalExtension()
         );
-    }
 
-    public function hasDocument(): bool
-    {
-        return null !== $this->documentName;
-    }
-
-    public function isDocumentImage(): bool
-    {
-        if (!$extension = $this->getDocumentExtension()) {
-            return false;
-        }
-
-        return \in_array($extension, ['jpg', 'jpeg', 'png'], true);
+        $this->documentMimeType = $document->getMimeType();
     }
 }

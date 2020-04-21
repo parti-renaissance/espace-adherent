@@ -9,6 +9,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group certification
  */
 class CertificationAuthorityManagerTest extends WebTestCase
 {
@@ -44,7 +45,7 @@ class CertificationAuthorityManagerTest extends WebTestCase
 
         self::assertFalse($adherent->isCertified());
 
-        $certificationRequest = $adherent->getPendingCertificationRequest();
+        $certificationRequest = $adherent->getCertificationRequests()->getPendingCertificationRequest();
         self::assertTrue($certificationRequest->isPending());
         self::assertNull($certificationRequest->getProcessedBy());
 
@@ -65,7 +66,7 @@ class CertificationAuthorityManagerTest extends WebTestCase
 
         self::assertFalse($adherent->isCertified());
 
-        $certificationRequest = $adherent->getPendingCertificationRequest();
+        $certificationRequest = $adherent->getCertificationRequests()->getPendingCertificationRequest();
         self::assertTrue($certificationRequest->isPending());
         self::assertNull($certificationRequest->getProcessedBy());
 

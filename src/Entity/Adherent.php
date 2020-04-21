@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Collection\AdherentCharterCollection;
+use AppBundle\Collection\CertificationRequestCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
@@ -1970,69 +1971,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->certifiedAt = new \DateTime();
     }
 
-    public function getCertificationRequests(): Collection
+    public function getCertificationRequests(): CertificationRequestCollection
     {
+        if (!$this->certificationRequests instanceof CertificationRequestCollection) {
+            $this->certificationRequests = new CertificationRequestCollection($this->certificationRequests->toArray());
+        }
+
         return $this->certificationRequests;
-    }
-
-    public function getPendingCertificationRequest(): ?CertificationRequest
-    {
-        $certificationRequest = $this
-            ->certificationRequests
-            ->filter(function (CertificationRequest $certificationRequest) {
-                return $certificationRequest->isPending();
-            })
-            ->first()
-        ;
-
-        return $certificationRequest ? $certificationRequest : null;
-    }
-
-    public function hasPendingCertificationRequest(): bool
-    {
-        return null !== $this->getPendingCertificationRequest();
-    }
-
-    public function getRefusedCertificationRequests(): Collection
-    {
-        return $this
-            ->certificationRequests
-            ->filter(function (CertificationRequest $certificationRequest) {
-                return $certificationRequest->isRefused();
-            })
-        ;
-    }
-
-    public function hasRefusedCertificationRequest(): bool
-    {
-        return !$this->getRefusedCertificationRequests()->isEmpty();
     }
 
     public function startCertificationRequest(): void
     {
-        if ($this->getPendingCertificationRequest()) {
+        if ($this->getCertificationRequests()->hasPendingCertificationRequest()) {
             throw new \LogicException('Adherent already has a pending certification request.');
         }
 
         $this->certificationRequests->add(new CertificationRequest($this));
-    }
-
-    public function approveCertificationRequest(): void
-    {
-        if (!$certificationRequest = $this->getPendingCertificationRequest()) {
-            throw new \LogicException('Adherent has no pending certification request.');
-        }
-
-        $certificationRequest->approve();
-        $this->certify();
-    }
-
-    public function refuseCertificationRequest(): void
-    {
-        if (!$certificationRequest = $this->getPendingCertificationRequest()) {
-            throw new \LogicException('Adherent has no pending certification request.');
-        }
-
-        $certificationRequest->refuse();
     }
 }

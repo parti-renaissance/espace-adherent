@@ -25,15 +25,16 @@ class CertificationAuthorityManager
 
     public function approve(CertificationRequest $certificationRequest, Administrator $administrator): void
     {
-        $certificationRequest->getAdherent()->approveCertificationRequest();
+        $certificationRequest->approve();
         $certificationRequest->setProcessedBy($administrator);
+        $certificationRequest->getAdherent()->certify();
 
         $this->entityManager->flush();
     }
 
     public function refuse(CertificationRequest $certificationRequest, Administrator $administrator): void
     {
-        $certificationRequest->getAdherent()->refuseCertificationRequest();
+        $certificationRequest->refuse();
         $certificationRequest->setProcessedBy($administrator);
 
         $this->entityManager->flush();

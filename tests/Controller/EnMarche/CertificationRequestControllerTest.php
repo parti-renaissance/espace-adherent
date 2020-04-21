@@ -8,6 +8,7 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 
 /**
  * @group functional
+ * @group certification
  */
 class CertificationRequestControllerTest extends WebTestCase
 {
