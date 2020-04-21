@@ -125,7 +125,12 @@
 
             <argument />
             <argument>AppBundle\Entity\CertificationRequest</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminCertificationRequestController</argument>
+
+            <call method="setTemplate">
+                <argument>show</argument>
+                <argument>admin/certification_request/show.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.invite" class="AppBundle\Admin\InviteAdmin">

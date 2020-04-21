@@ -3,10 +3,5 @@
 {% import 'admin/certification_request/_macros.html.twig' as macros %}
 
 {% block field %}
-    {% set adherent = object.adherent %}
-    <a href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
-        {{ adherent.fullName }}
-    </a>
-    <br>
-    <i>{{ adherent.emailAddress }}</i>
+    {{ macros.get_certification_request_adherent_summary(object.adherent) }}
 {% endblock %}

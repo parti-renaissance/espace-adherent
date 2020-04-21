@@ -3,7 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Adherent\BanManager;
-use AppBundle\Adherent\CertificationManager;
+use AppBundle\Adherent\CertificationAuthorityManager;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\ConfirmActionType;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -52,12 +52,12 @@ class AdminAdherentCRUDController extends CRUDController
         ]);
     }
 
-    public function certifyAction(Request $request, CertificationManager $certificationManager): Response
+    public function certifyAction(Request $request, CertificationAuthorityManager $certificationManager): Response
     {
         /** @var Adherent $adherent */
         $adherent = $this->admin->getSubject();
 
-        $this->admin->checkAccess('ban', $adherent);
+        $this->admin->checkAccess('certify', $adherent);
 
         if ($adherent->isCertified()) {
             $this->addFlash('error', sprintf(

@@ -1,0 +1,79 @@
+{% extends 'certification_request/_layout.html.twig' %}
+
+{% block certification_content %}
+
+    {{ form_start(form, { attr: { class: 'em-form', id: 'app_certification_request' } }) }}
+
+        {{ form_errors(form) }}
+
+        <h4>1. Mettez à jour vos informations personnelles</h4>
+
+        <p>
+            Votre prénom, nom et date de naissance doivent être renseignés dans vos paramètres
+            et concorder avec celles présente sur votre pièce d’identé
+        </p>
+        <p>
+            Nom: {{ app.user.lastName }}
+            <br>
+            Prénom: {{ app.user.firstName }}
+            <br>
+            Date de naissance: {{ app.user.birthDate|date('d/m/Y') }}
+            <br>
+            <a href="{{ path('app_user_edit') }}">
+                Éditer les informations
+            </a>
+        </p>
+
+        <h4>2. Téléchargez une pièce d'identité</h4>
+
+        <div class="em-form__group">
+            <div class="em-form__file">
+                {{ form_widget(form.document, { attr: { class: 'em-form__file--area' } }) }}
+                {{ form_label(form.document, 'Télécharger votre CNI recto ou votre passeport', { label_attr: { class: 'text--blue--dark' } }) }}
+                <span class="em-form__file--name">Aucun fichier sélectionné</span>
+            </div>
+            <div class="em-form__legend">Formats acceptés : jpg, png, pdf • Taille max. : 5Mo.</div>
+            {{ form_errors(form.document) }}
+        </div>
+
+        <p>
+            LaREM collecte une copie de votre pièce d’identité à des fin de vérification de votre profil
+            et pour prévenir toute tentative d’usurpation intégrée à la finalité général de gestion de l’adhésion.
+            Cette collecte est fondée sur l’exécution contractuelle du contrat d’adhésion.
+            Dès que nos vérifications sont effectuées, nous détruisons sans délai le document fourni.
+            Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit
+            à la limitation du  traitement  de données vous concernant, ainsi que d’un droit d’accès, de rectification,
+            de portabilité et d’effacement de vos données.
+            Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+            Vous pouvez consulter notre Politique de protection des données pour plus d’informations.
+        </p>
+
+        <button type="submit" class="btn btn-info btn-block">
+            Valider
+        </button>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('.em-form__file--area').bind('change', (event) => {
+            const $input = $(event.currentTarget);
+            const selectedFileName = $input.val();
+            const $fileName = $input.siblings('.em-form__file--name');
+            const $label = $input.siblings('.em-form__file--label');
+
+            if (0 < $input.length && 0 < selectedFileName.length) {
+                $fileName.html(selectedFileName.split('\\').pop());
+                $label.html('Modifier la pièce jointe');
+            }
+        });
+    </script>
+{% endblock %}

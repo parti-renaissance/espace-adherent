@@ -681,3 +681,10 @@ donator.extract.field.registeredAt: Date d'adhésion
 donator.extract.field.country: Pays de résidence
 donator.extract.field.postalCode: Code postal
 donator.extract.field.address: Adresse postale
+
+#
+# CertificationRequest
+#
+certification_request.status.pending: En attente
+certification_request.status.approved: Approuvée
+certification_request.status.refused: Refusée

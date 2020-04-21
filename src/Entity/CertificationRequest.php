@@ -54,18 +54,20 @@ class CertificationRequest
     private $document;
 
     /**
-     * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
-     */
-    private $annotations;
-
-    /**
      * @var Adherent
      *
-     * @ORM\OneToOne(targetEntity=Adherent::class, mappedBy="certificationRequest")
+     * @ORM\ManyToOne(targetEntity=Adherent::class, inversedBy="certificationRequests")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $adherent;
+
+    /**
+     * @var Administrator|null
+     *
+     * @ORM\ManyToOne(targetEntity=Administrator::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $processedBy;
 
     public function __construct(Adherent $adherent)
     {
@@ -76,32 +78,41 @@ class CertificationRequest
 
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->adherent, $this->status);
+        return (string) $this->adherent;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus(?string $status): void
+    public function getDocumentName(): ?string
     {
-        $this->status = $status;
+        return $this->documentName;
     }
 
-    public function getAnnotations(): ?array
+    public function getDocumentExtension(): ?string
     {
-        return $this->annotations;
-    }
+        if (!$extension = strrchr($this->documentName, '.')) {
+            return null;
+        }
 
-    public function setAnnotations(?array $annotations): void
-    {
-        $this->annotations = $annotations;
+        return substr($extension, 1);
     }
 
     public function getAdherent(): Adherent
     {
         return $this->adherent;
+    }
+
+    public function getProcessedBy(): ?Administrator
+    {
+        return $this->processedBy;
+    }
+
+    public function setProcessedBy(Administrator $administrator): void
+    {
+        $this->processedBy = $administrator;
     }
 
     public function isPending(): bool
@@ -147,8 +158,22 @@ class CertificationRequest
     public function setDocumentNameFromUploadedFile(UploadedFile $document): void
     {
         $this->documentName = sprintf('%s.%s',
-            md5(sprintf('%s@%s', $this->getUuid(), $document->getClientOriginalName())),
+            $this->getUuid(),
             $document->getClientOriginalExtension()
         );
+    }
+
+    public function hasDocument(): bool
+    {
+        return null !== $this->documentName;
+    }
+
+    public function isDocumentImage(): bool
+    {
+        if (!$extension = $this->getDocumentExtension()) {
+            return false;
+        }
+
+        return \in_array($extension, ['jpg', 'jpeg', 'png'], true);
     }
 }

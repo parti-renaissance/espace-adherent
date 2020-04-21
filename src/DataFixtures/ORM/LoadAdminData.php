@@ -75,7 +75,7 @@ class LoadAdminData extends Fixture
             'ROLE_ADMIN_REDIRECTIONS',
         ];
 
-        $superAdmin = $factory->createFromArray([
+        $superAdmin2fa = $factory->createFromArray([
             'email' => 'titouan.galopin@en-marche.fr',
             'password' => 'secret!12345',
             'roles' => $adminRoles,
@@ -102,11 +102,12 @@ class LoadAdminData extends Fixture
             'roles' => $adminRoles,
         ]));
 
-        $manager->persist($factory->createFromArray([
+        $manager->persist($superadmin = $factory->createFromArray([
             'email' => 'superadmin@en-marche-dev.fr',
             'password' => 'superadmin',
             'roles' => ['ROLE_SUPER_ADMIN'],
         ]));
+        $this->setReference('administrator-2', $superadmin);
 
         $manager->persist($factory->createFromArray([
             'email' => 'writer@en-marche-dev.fr',
@@ -114,7 +115,7 @@ class LoadAdminData extends Fixture
             'roles' => $writerRoles,
         ]));
 
-        $manager->persist($superAdmin);
+        $manager->persist($superAdmin2fa);
         $manager->persist($admin);
         $manager->persist($writer);
         $manager->flush();

@@ -1,0 +1,49 @@
+{% extends 'certification_request/_layout.html.twig' %}
+
+{% block certification_content %}
+
+    <h4>Votre profil certifié</h4>
+
+    <p>
+        Cela vous permet notamment de voter pour vos futurs animateurs et animatrices de comités locaux.
+        <br>
+        C’est simple, rapide et sécurisé !
+    </p>
+
+    <div class="certification-status">
+
+        {% if app.user.isCertified %}
+
+            Demande de certification confirmée
+            <br><br>
+            Votre demande de certification a été validée.
+            Vous pouvez désormais prendre part à l’élection des animateurs de comités !
+
+        {% elseif app.user.hasPendingCertificationRequest %}
+
+            Demande de certification en attente
+            <br><br>
+            Votre demande de certification a bien été prise en compte par nos équipes.
+
+        {% elseif app.user.hasRefusedCertificationRequest %}
+
+            Demande de certification refusée
+            <br><br>
+            Votre demande de certification a été refusée.
+            <br>
+            Vous pouvez <a href="{{ path('app_certification_request_form') }}">réessayer</a> à nouveau
+
+        {% else %}
+
+            Votre profil n'est pas encore certifié.
+            <br>
+            <a href="{{ path('app_certification_request_form') }}" class="btn btn-info btn-block">
+                Certifier mon profil
+
+            </a>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

@@ -3,7 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CertificationRequest;
+use AppBundle\Entity\Administrator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -17,6 +17,11 @@ class LoadCertificationRequestData extends Fixture
         $adherent2 = $this->getReference('adherent-2');
         /** @var Adherent $adherent3 */
         $adherent3 = $this->getReference('adherent-3');
+        /** @var Adherent $adherent4 */
+        $adherent4 = $this->getReference('adherent-4');
+
+        /** @var Administrator $administrator */
+        $administrator = $this->getReference('administrator-2');
 
         // Adherent certified without certification request
         $adherent1->certify();
@@ -24,9 +29,19 @@ class LoadCertificationRequestData extends Fixture
         // Adherent with pending certification request
         $adherent2->startCertificationRequest();
 
-        // Adherent with approved certification request
+        // Adherent with refused then approved certification request
         $adherent3->startCertificationRequest();
+        $adherent3->getPendingCertificationRequest()->setProcessedBy($administrator);
+        $adherent3->refuseCertificationRequest();
+
+        $adherent3->startCertificationRequest();
+        $adherent3->getPendingCertificationRequest()->setProcessedBy($administrator);
         $adherent3->approveCertificationRequest();
+
+        // Adherent with refused certification request
+        $adherent4->startCertificationRequest();
+        $adherent4->getPendingCertificationRequest()->setProcessedBy($administrator);
+        $adherent4->refuseCertificationRequest();
 
         $manager->flush();
     }
@@ -35,14 +50,7 @@ class LoadCertificationRequestData extends Fixture
     {
         return [
             LoadAdherentData::class,
+            LoadAdminData::class,
         ];
-    }
-
-    private function createCertification(Adherent $adherent, string $status): CertificationRequest
-    {
-        $certificationRequest = new CertificationRequest($adherent);
-        $adherent->setCertificationRequest($certificationRequest);
-
-        return $certificationRequest;
     }
 }

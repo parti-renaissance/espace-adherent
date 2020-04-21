@@ -1,0 +1,247 @@
+{% extends 'SonataAdminBundle:CRUD:show.html.twig' %}
+
+{% import 'admin/certification_request/_macros.html.twig' as macros %}
+
+{% set adherent = object.adherent %}
+
+{% block show %}
+
+    <div class="sonata-ba-view">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Informations générales</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Adhérent</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ macros.get_certification_request_adherent_summary(adherent) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Date</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.createdAt|localizeddate('medium', 'medium') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Statut</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ macros.get_certification_request_status_badge(object.status) }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Informations adhérent</h4>
+                    </div>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered table-striped sonata-ba-list">
+                            <tbody>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Nom</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ adherent.lastName }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Prénom</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ adherent.firstName }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Date de naissance</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ adherent.birthDate|localizeddate('full', 'none') }} ({{ adherent.age }} ans)
+                                        <br>
+                                        <i>{{ adherent.birthDate|date('d/m/Y') }}</i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">Téléphone</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {% if adherent.phone %}
+                                            {% set phone_number = adherent.phone|phone_number_format %}
+                                            <div class="b__nudge--top-10">
+                                                <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Document</h4>
+                    </div>
+                    {% if object.hasDocument %}
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-bordered table-striped sonata-ba-list">
+                                <tbody>
+                                    <tr>
+                                        <th class="sonata-ba-list-field-header-text">Lien</th>
+                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                            <a href="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" target="_blank">
+                                                Cliquez ici pour voir le document
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="sonata-ba-list-field-header-text">Extension</th>
+                                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                            {{ object.documentExtension|upper }}
+                                        </td>
+                                    </tr>
+                                    {% if object.isDocumentImage %}
+                                        <tr>
+                                            <th class="sonata-ba-list-field-header-text">Aperçu</th>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                <a href="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" target="_blank">
+                                                    <img src="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}" />
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="box-body">
+                            <div class="alert alert-warning" role="alert">
+                                Aucun document n'est associé à cette demande de certification.
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Actions</h4>
+                    </div>
+                    <div class="box-body">
+                        {% if object.isPending %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="{{ path('admin_app_certificationrequest_approve', { id: object.id }) }}" class="btn btn-success btn-block">
+                                        Approuver
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{ path('admin_app_certificationrequest_refuse', { id: object.id }) }}" class="btn btn-danger btn-block">
+                                        Refuser
+                                    </a>
+                                </div>
+                            </div>
+                            <hr>
+                            <p class="form-text text-muted text-center">
+                                Une confirmation vous sera demandée pour toute action
+                            </p>
+                        {% else %}
+                            <div class="alert alert-info" role="alert">
+                                Cette demande de certification a déjà été traitée.
+                                {% if object.processedBy or object.updatedAt %}
+                                    <br>
+                                    <i>
+                                        {% if object.processedBy %}
+                                            par <b>{{ object.processedBy }}</b>
+                                        {% endif %}
+                                        {% if object.updatedAt %}
+                                            le <b>{{ object.updatedAt|localizeddate }}</b>
+                                        {% endif %}
+                                    </i>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h4 class="box-title">Demandes associées</h4>
+                    </div>
+                    <div class="box-body">
+                        {% if adherent.certificationRequests|length > 1 %}
+                            <table class="table table-bordered table-striped sonata-ba-list">
+                                <thead>
+                                    <tr class="sonata-ba-list-field-header">
+                                        <th class="sonata-ba-list-field-header-text">#</th>
+                                        <th class="sonata-ba-list-field-header-text">Date</th>
+                                        <th class="sonata-ba-list-field-header-text">Statut</th>
+                                        <th class="sonata-ba-list-field-header-text">Informations</th>
+                                        <th class="sonata-ba-list-field-header-text">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for certificationRequest in adherent.certificationRequests %}
+                                        <tr>
+                                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                <b>{{ loop.index }}</b>
+                                            </td>
+                                            {% if certificationRequest is same as(object) %}
+                                                <td class="sonata-ba-list-field sonata-ba-list-field-text" colspan="4">
+                                                    <i>Demande actuelle</i>
+                                                </td>
+                                            {% else %}
+                                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                    {{ certificationRequest.createdAt|localizeddate }}
+                                                </td>
+                                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                    {{ macros.get_certification_request_status_badge(certificationRequest.status) }}
+                                                </td>
+                                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                    {% if certificationRequest.processedBy %}
+                                                        traitée par <i>{{ certificationRequest.processedBy }}</i>
+                                                        {% if certificationRequest.updatedAt %}
+                                                            <br>
+                                                            le <i>{{ certificationRequest.updatedAt|localizeddate }}</i>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                                    <a href="{{ path('admin_app_certificationrequest_show', { id: certificationRequest.id }) }}" class="btn btn-sm btn-default">
+                                                        <i class="fa fa-eye"></i> Afficher
+                                                    </a>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="alert alert-info" role="alert">
+                                Aucune autre demande faite par cet adhérent.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

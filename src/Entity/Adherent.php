@@ -491,12 +491,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $certifiedAt;
 
     /**
-     * @var CertificationRequest|null
+     * @var CertificationRequest[]|Collection
      *
-     * @ORM\OneToOne(targetEntity=CertificationRequest::class, inversedBy="adherent", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt": "ASC"})
      */
-    private $certificationRequest;
+    private $certificationRequests;
 
     public function __construct()
     {
@@ -506,6 +506,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
+        $this->certificationRequests = new ArrayCollection();
     }
 
     public static function create(
@@ -1962,39 +1963,76 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function certify(): void
     {
+        if ($this->certifiedAt) {
+            return;
+        }
+
         $this->certifiedAt = new \DateTime();
     }
 
-    public function getCertificationRequest(): ?CertificationRequest
+    public function getCertificationRequests(): Collection
     {
-        return $this->certificationRequest;
+        return $this->certificationRequests;
     }
 
-    public function setCertificationRequest(?CertificationRequest $certificationRequest): void
+    public function getPendingCertificationRequest(): ?CertificationRequest
     {
-        $this->certificationRequest = $certificationRequest;
+        $certificationRequest = $this
+            ->certificationRequests
+            ->filter(function (CertificationRequest $certificationRequest) {
+                return $certificationRequest->isPending();
+            })
+            ->first()
+        ;
+
+        return $certificationRequest ? $certificationRequest : null;
+    }
+
+    public function hasPendingCertificationRequest(): bool
+    {
+        return null !== $this->getPendingCertificationRequest();
+    }
+
+    public function getRefusedCertificationRequests(): Collection
+    {
+        return $this
+            ->certificationRequests
+            ->filter(function (CertificationRequest $certificationRequest) {
+                return $certificationRequest->isRefused();
+            })
+        ;
+    }
+
+    public function hasRefusedCertificationRequest(): bool
+    {
+        return !$this->getRefusedCertificationRequests()->isEmpty();
     }
 
     public function startCertificationRequest(): void
     {
-        if ($this->certificationRequest) {
-            throw new \LogicException('Adherent already has a certification request.');
+        if ($this->getPendingCertificationRequest()) {
+            throw new \LogicException('Adherent already has a pending certification request.');
         }
 
-        $this->certificationRequest = new CertificationRequest($this);
+        $this->certificationRequests->add(new CertificationRequest($this));
     }
 
     public function approveCertificationRequest(): void
     {
-        if (!$this->certificationRequest) {
-            throw new \LogicException('Adherent has no certification request.');
+        if (!$certificationRequest = $this->getPendingCertificationRequest()) {
+            throw new \LogicException('Adherent has no pending certification request.');
         }
 
-        if ($this->certificationRequest->isApproved()) {
-            throw new \LogicException('CertificationRequest is already approved.');
-        }
-
-        $this->certificationRequest->approve();
+        $certificationRequest->approve();
         $this->certify();
+    }
+
+    public function refuseCertificationRequest(): void
+    {
+        if (!$certificationRequest = $this->getPendingCertificationRequest()) {
+            throw new \LogicException('Adherent has no pending certification request.');
+        }
+
+        $certificationRequest->refuse();
     }
 }

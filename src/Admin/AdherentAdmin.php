@@ -112,7 +112,11 @@ class AdherentAdmin extends AbstractAdmin
                 $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
             }
 
-            if ($this->canAccessObject('certify', $object) && $this->hasRoute('certify')) {
+            if (
+                $this->canAccessObject('certify', $object)
+                && $this->hasRoute('certify')
+                && !$object->isCertified()
+            ) {
                 $actions['certify'] = ['template' => 'admin/adherent/action_button_certify.html.twig'];
             }
         }
