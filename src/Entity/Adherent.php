@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Collection\AdherentCharterCollection;
+use AppBundle\Collection\CertificationRequestCollection;
 use AppBundle\Collection\CitizenProjectMembershipCollection;
 use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
@@ -483,6 +484,21 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     private $electionResultsReporter = false;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $certifiedAt;
+
+    /**
+     * @var CertificationRequest[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"createdAt": "ASC"})
+     */
+    private $certificationRequests;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -491,6 +507,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->ideas = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->charters = new AdherentCharterCollection();
+        $this->certificationRequests = new ArrayCollection();
     }
 
     public static function create(
@@ -1933,5 +1950,42 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isToDelete(): bool
     {
         return self::TO_DELETE === $this->status;
+    }
+
+    public function getCertifiedAt(): ?\DateTime
+    {
+        return $this->certifiedAt;
+    }
+
+    public function isCertified(): bool
+    {
+        return null !== $this->certifiedAt;
+    }
+
+    public function certify(): void
+    {
+        if ($this->certifiedAt) {
+            return;
+        }
+
+        $this->certifiedAt = new \DateTime();
+    }
+
+    public function getCertificationRequests(): CertificationRequestCollection
+    {
+        if (!$this->certificationRequests instanceof CertificationRequestCollection) {
+            $this->certificationRequests = new CertificationRequestCollection($this->certificationRequests->toArray());
+        }
+
+        return $this->certificationRequests;
+    }
+
+    public function startCertificationRequest(): void
+    {
+        if ($this->getCertificationRequests()->hasPendingCertificationRequest()) {
+            throw new \LogicException('Adherent already has a pending certification request.');
+        }
+
+        $this->certificationRequests->add(new CertificationRequest($this));
     }
 }

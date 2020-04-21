@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% import 'admin/certification_request/_macros.html.twig' as macros %}
+
+{% block field %}
+    {{ macros.get_certification_request_status_badge(value) }}
+{% endblock %}

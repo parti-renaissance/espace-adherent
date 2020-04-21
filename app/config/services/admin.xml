@@ -116,8 +116,21 @@
 
             <argument />
             <argument>AppBundle\Entity\Adherent</argument>
-            <argument>AppBundle\Controller\Admin\AdminBanAdherentController</argument>
+            <argument>AppBundle\Controller\Admin\AdminAdherentCRUDController</argument>
             <argument type="service" id="event_dispatcher"/>
+        </service>
+
+        <service id="app.admin.certification_request" class="AppBundle\Admin\CertificationRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Certifications" group="Adhérents" />
+
+            <argument />
+            <argument>AppBundle\Entity\CertificationRequest</argument>
+            <argument>AppBundle\Controller\Admin\AdminCertificationRequestController</argument>
+
+            <call method="setTemplate">
+                <argument>show</argument>
+                <argument>admin/certification_request/show.html.twig</argument>
+            </call>
         </service>
 
         <service id="app.admin.invite" class="AppBundle\Admin\InviteAdmin">

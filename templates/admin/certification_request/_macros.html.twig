@@ -1,0 +1,23 @@
+{% macro get_certification_request_status_badge(status) %}
+    {% spaceless %}
+        <span class="badge
+            {% if status is constant('AppBundle\\Entity\\CertificationRequest::STATUS_APPROVED') %}
+                bg-green
+            {% elseif status is constant('AppBundle\\Entity\\CertificationRequest::STATUS_REFUSED') %}
+                bg-red
+            {% elseif status is constant('AppBundle\\Entity\\CertificationRequest::STATUS_PENDING') %}
+                bg-blue
+            {% endif %}
+            ">
+            {{ ('certification_request.status.'~status)|trans }}
+        </span>
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro get_certification_request_adherent_summary(adherent) %}
+    <a href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
+        {{ adherent.fullName }}
+    </a>
+    <br>
+    <i>{{ adherent.emailAddress }}</i>
+{% endmacro %}
