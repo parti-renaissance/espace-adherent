@@ -19,11 +19,6 @@ class CertificationManager
         $this->storage = $storage;
     }
 
-    public function canRequest(Adherent $adherent): bool
-    {
-        return !$adherent->isCertified() && !$adherent->getCertificationRequests()->hasPendingCertificationRequest();
-    }
-
     public function createRequest(Adherent $adherent): CertificationRequest
     {
         $adherent->startCertificationRequest();

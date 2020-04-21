@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Adherent\CertificationManager;
+use AppBundle\Adherent\CertificationPermissions;
 use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\CertificationRequestType;
@@ -38,7 +39,7 @@ class CertificationRequestController extends Controller
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$certificationManager->canRequest($adherent)) {
+        if (!$this->isGranted(CertificationPermissions::REQUEST)) {
             return $this->redirectToRoute('app_certification_request_home');
         }
 

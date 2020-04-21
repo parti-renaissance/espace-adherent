@@ -7,7 +7,7 @@
         </li>
 
         {% if is_canary_enabled() %}
-            <li class="{{ route starts with 'app_certification_request_' ? 'active' }}">
+            <li class="{{ is_active_route(app.request, 'app_certification_request_*') ? 'active' }} }}">
                 <a href="{{ path('app_certification_request_home') }}">Certification du profil</a>
             </li>
         {% endif %}

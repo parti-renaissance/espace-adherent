@@ -27,25 +27,6 @@ class CertificationManagerTest extends WebTestCase
     use ControllerTestTrait;
 
     /**
-     * @dataProvider provideCanRequest
-     */
-    public function testCanRequest(string $email, bool $canRequest): void
-    {
-        $adherent = $this->adherentRepository->findOneByEmail($email);
-
-        self::assertSame($canRequest, $this->certificationManager->canRequest($adherent));
-    }
-
-    public function provideCanRequest(): iterable
-    {
-        yield ['jacques.picard@en-marche.fr', false];
-        yield ['carl999@example.fr', false];
-        yield ['luciole1989@spambox.fr', true];
-        yield ['lolodie.dutemps@hotnix.tld', true];
-        yield ['thomas.leclerc@example.ch', true];
-    }
-
-    /**
      * @dataProvider provideCreateRequest
      */
     public function testCreateRequest(string $email): void
