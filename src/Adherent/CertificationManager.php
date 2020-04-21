@@ -38,7 +38,7 @@ class CertificationManager
         $this->entityManager->flush();
     }
 
-    public function uploadDocument(CertificationRequest $certificationRequest): void
+    private function uploadDocument(CertificationRequest $certificationRequest): void
     {
         if (!$certificationRequest->getDocument() instanceof UploadedFile) {
             throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));

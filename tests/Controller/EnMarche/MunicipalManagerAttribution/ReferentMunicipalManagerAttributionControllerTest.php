@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\AppBundle\Controller\EnMarche\MunicipalManagerAttribution;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
