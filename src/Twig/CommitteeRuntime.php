@@ -6,9 +6,8 @@ use AppBundle\Committee\CommitteeManager;
 use AppBundle\Committee\CommitteePermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\ValueObject\Genders;
+use AppBundle\Entity\CommitteeCandidacy;
+use AppBundle\Repository\CommitteeCandidacyRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeRuntime
@@ -17,16 +16,16 @@ class CommitteeRuntime
     private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';
 
     private $authorizationChecker;
-    private $committeeMembershipRepository;
     private $committeeManager;
+    private $committeeCandidacyRepository;
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CommitteeMembershipRepository $committeeMembershipRepository,
+        CommitteeCandidacyRepository $committeeCandidacyRepository,
         CommitteeManager $committeeManager = null
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->committeeMembershipRepository = $committeeMembershipRepository;
+        $this->committeeCandidacyRepository = $committeeCandidacyRepository;
         $this->committeeManager = $committeeManager;
     }
 
@@ -100,14 +99,14 @@ class CommitteeRuntime
 
     public function countCommitteeCandidates(Committee $committee, bool $countMaleOnly = null): int
     {
-        $memberships = $this->committeeMembershipRepository->getCandidacyMemberships($committee);
+        $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee);
 
         if (null === $countMaleOnly) {
-            return \count($memberships);
+            return \count($candidacies);
         }
 
-        return \count(array_filter($memberships, static function (CommitteeMembership $membership) use ($countMaleOnly) {
-            return ($countMaleOnly ? Genders::MALE : Genders::FEMALE) === $membership->getAdherent()->getGender();
+        return \count(array_filter($candidacies, static function (CommitteeCandidacy $candidacy) use ($countMaleOnly) {
+            return $countMaleOnly ? $candidacy->isMale() : $candidacy->isFemale();
         }));
     }
 }

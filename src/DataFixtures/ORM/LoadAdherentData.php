@@ -1009,7 +1009,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($assessor->followCommittee($committee8));
 
         $voteCommitteeMembership->enableVote();
-        $voteCommitteeMembership->setCommitteeCandidacy(new CommitteeCandidacy($committee6->getCommitteeElection()));
+        $voteCommitteeMembership->setCommitteeCandidacy(
+            new CommitteeCandidacy($committee6->getCommitteeElection(), $assessor->getGender())
+        );
 
         $manager->flush();
     }

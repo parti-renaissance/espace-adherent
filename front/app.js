@@ -12,6 +12,7 @@ import externalLinks from './listeners/external-links';
 import noJsRecaptcha from './listeners/no-js-recaptcha';
 import alogliaSearch from './listeners/algolia-search';
 import confirmModal from './listeners/confirm-modal';
+import emModal from './listeners/em-modal';
 
 class App {
     constructor() {
@@ -25,6 +26,7 @@ class App {
             noJsRecaptcha,
             alogliaSearch,
             confirmModal,
+            emModal,
         ];
     }
 

@@ -134,7 +134,7 @@ Feature:
 
     Given I am on "/comites/en-marche-comite-de-evry"
     Then I should see "JE CANDIDATE"
-    When I press "committee-toggle-candidacy"
+    When I follow "committee-toggle-candidacy"
     Then I wait 3 second until I see "JE RETIRE MA CANDIDATURE"
     And I should have 1 email "CommitteeCandidacyCreatedConfirmationMessage" for "assesseur@en-marche-dev.fr" with payload:
     """

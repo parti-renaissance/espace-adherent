@@ -409,27 +409,37 @@ class CommitteeManager
         $this->getManager()->flush();
     }
 
-    public function candidateInCommittee(Adherent $adherent, Committee $committee): void
+    public function candidateInCommittee(Adherent $adherent, Committee $committee, string $gender): bool
     {
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
         if ($membership && $membership->isVotingCommittee()) {
-            $membership->setCommitteeCandidacy(new CommitteeCandidacy($election = $committee->getCommitteeElection()));
+            $membership->setCommitteeCandidacy($candidacy = new CommitteeCandidacy(
+                $committee->getCommitteeElection(),
+                $gender
+            ));
 
             $this->getManager()->flush();
 
             $this->dispatcher->dispatch(
                 VotingPlatformEvents::CANDIDACY_CREATED,
-                new CommitteeCandidacyEvent($election, $adherent, $this->getCommitteeSupervisor($committee))
+                new CommitteeCandidacyEvent($candidacy, $committee, $adherent, $this->getCommitteeSupervisor($committee))
             );
+
+            return true;
         }
+
+        return false;
     }
 
     public function removeCandidacy(Adherent $adherent, Committee $committee): void
     {
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
-        if ($membership && $membership->getCommitteeCandidacy()) {
+        if ($membership && $candidacy = $membership->getCommitteeCandidacy()) {
+            // Initialise Doctrine Proxy object
+            $candidacy->getCommitteeElection();
+
             $membership->removeCandidacy();
 
             $this->getManager()->flush();
@@ -437,7 +447,8 @@ class CommitteeManager
             $this->dispatcher->dispatch(
                 VotingPlatformEvents::CANDIDACY_REMOVED,
                 new CommitteeCandidacyEvent(
-                    $committee->getCommitteeElection(),
+                    $candidacy,
+                    $committee,
                     $adherent,
                     $this->getCommitteeSupervisor($committee)
                 )

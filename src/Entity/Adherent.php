@@ -824,6 +824,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return Genders::FEMALE === $this->gender;
     }
 
+    public function isOtherGender(): bool
+    {
+        return Genders::OTHER === $this->gender;
+    }
+
     public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
