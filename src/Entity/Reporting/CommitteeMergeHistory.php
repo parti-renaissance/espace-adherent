@@ -147,7 +147,7 @@ class CommitteeMergeHistory
         return $this->revertedAt;
     }
 
-    public function reverted(Administrator $administrator): void
+    public function revert(Administrator $administrator): void
     {
         if ($this->isReverted()) {
             throw new \LogicException('CommitteeMergeHistory is already reverted.');

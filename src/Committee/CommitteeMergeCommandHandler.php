@@ -123,12 +123,19 @@ class CommitteeMergeCommandHandler
         $this->revertSourceCommitteeMemberships($sourceCommittee);
         $this->revertSourceCommitteeVotingMemberships($sourceCommittee, $mergedMemberships);
 
-        $this->dispatchCommitteeUpdate($sourceCommittee);
-        $this->dispatchCommitteeUpdate($destinationCommittee);
-
         $committeeMergeHistory->revert($administrator);
 
         $this->em->flush();
+
+        $this->dispatchCommitteeUpdate($sourceCommittee);
+        $this->dispatchCommitteeUpdate($destinationCommittee);
+
+        foreach ($mergedMemberships as $membership) {
+            $this->dispatcher->dispatch(
+                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
+                new UnfollowCommitteeEvent($membership->getAdherent(), $destinationCommittee)
+            );
+        }
     }
 
     private function revertDestinationCommitteeMemberships(
@@ -136,17 +143,11 @@ class CommitteeMergeCommandHandler
         CommitteeMembershipCollection $memberships
     ): void {
         foreach ($memberships as $membership) {
-            $adherent = $membership->getAdherent();
-
             $committee->decrementMembersCount();
+
             $this->em->remove($membership);
 
             $this->em->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
-
-            $this->dispatcher->dispatch(
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-                new UnfollowCommitteeEvent($adherent, $committee)
-            );
         }
     }
 
@@ -161,11 +162,6 @@ class CommitteeMergeCommandHandler
             if ($committee->getCreatedBy() === $adherent->getUuidAsString()) {
                 $membership->setPrivilege(CommitteeMembership::COMMITTEE_SUPERVISOR);
             }
-
-            $this->dispatcher->dispatch(
-                UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE,
-                new FollowCommitteeEvent($adherent, $committee)
-            );
         }
     }
 
