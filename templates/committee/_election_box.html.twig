@@ -7,7 +7,7 @@
         Mauris lacus odio, tempor et venenatis sed, tristique nec sem.
     </p>
 
-    <div class="l__row">
+    <div class="elections-actions">
         {% if able_to_candidate %}
             {% if candidacy_committee_membership is not null %}
                 {% if candidacy_committee_membership == membership %}
@@ -25,7 +25,7 @@
                 {% if membership.isVotingCommittee %}
                     {% if app.user.isOtherGender() %}
                         <a href="#"
-                           class="btn btn--pink btn--no-wrap em-modal--trigger b__nudge--top-large"
+                           class="btn btn--pink btn--no-wrap em-modal--trigger"
                            id="committee-toggle-candidacy"
                            data-confirm-content-element="#committee-candidacy-gender-choice-content"
                         >Je candidate</a>
@@ -47,7 +47,7 @@
                     {% else %}
                         <a href="{{ path('app_committee_candidate', {slug: committee.slug, token: csrf_token('committee.candidate')}) }}"
                            id="committee-toggle-candidacy"
-                           class="btn btn--pink btn--no-wrap b__nudge--top-large"
+                           class="btn btn--pink btn--no-wrap"
                         >Je candidate</a>
                     {% endif %}
                 {% else %}
@@ -56,7 +56,7 @@
             {% endif %}
         {% endif %}
 
-        <div class="">
+        <div class="candidacies-list text--body text--small text--gray">
             Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark">la liste des candidats</a>
         </div>
     </div>
