@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ElectedRepresentative\ZoneCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
