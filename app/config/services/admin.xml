@@ -1174,6 +1174,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.voting_platform.election" class="AppBundle\Admin\VotingPlatform\DesignationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Désignations" />
+
+            <argument />
+            <argument>AppBundle\Entity\VotingPlatform\Designation\Designation</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # ProgrammaticFoundation

@@ -688,3 +688,11 @@ donator.extract.field.address: Adresse postale
 certification_request.status.pending: En attente
 certification_request.status.approved: Approuvée
 certification_request.status.refused: Refusée
+
+#
+# VotingPlatform
+#
+voting_platform.designation.type_committee_adherent: Comités-Adhérents
+voting_platform.designation.zone_fr: France
+voting_platform.designation.zone_fde: FDE
+voting_platform.designation.zone_outre_mer: Outre-Mer
