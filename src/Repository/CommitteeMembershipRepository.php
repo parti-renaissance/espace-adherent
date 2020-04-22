@@ -573,10 +573,13 @@ SQL
         return 0 !== $this->count(['adherent' => $adherent, 'committee' => $committee]);
     }
 
+    /**
+     * @return CommitteeMembership[]
+     */
     public function getCandidacyMemberships(Committee $committee): array
     {
         return $this->createQueryBuilder('m')
-            ->addSelect('a')
+            ->addSelect('a', 'c')
             ->innerJoin('m.committeeCandidacy', 'c')
             ->innerJoin('m.adherent', 'a')
             ->where('m.committee = :committee')
