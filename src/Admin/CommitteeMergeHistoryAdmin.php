@@ -6,33 +6,39 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CommitteeMergeHistoryAdmin extends AbstractAdmin
 {
     protected $accessMapping = [
         'revert' => 'REVERT',
+        'merge' => 'MERGE',
     ];
 
     public function configureRoutes(RouteCollection $collection)
     {
         $collection
             ->clearExcept('list')
+            ->add('merge', 'merge')
             ->add('revert', $this->getRouterIdParameter().'/revert')
         ;
     }
 
     public function configureActionButtons($action, $object = null)
     {
-        return [
-            'merge' => [
-                'template' => 'admin/committee/merge/merge_button.html.twig',
-            ],
-        ];
+        if ('merge' === $action) {
+            $actions = parent::configureActionButtons('show', $object);
+        } else {
+            $actions = parent::configureActionButtons($action, $object);
+
+            $actions['merge'] = ['template' => 'admin/committee/merge/merge_button.html.twig'];
+        }
+
+        return $actions;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -83,6 +89,15 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
                 'label' => 'Fusionné par',
                 'show_filter' => true,
             ])
+            ->add('revertedAt', DateRangeFilter::class, [
+                'label' => 'Date d\'annulation',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('revertedBy', null, [
+                'label' => 'Annulé par',
+                'show_filter' => true,
+            ])
         ;
     }
 
@@ -100,6 +115,12 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
             ])
             ->add('date', null, [
                 'label' => 'Fusionné le',
+            ])
+            ->add('revertedBy', null, [
+                'label' => 'Annulé par',
+            ])
+            ->add('revertedAt', null, [
+                'label' => 'Annulé le',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

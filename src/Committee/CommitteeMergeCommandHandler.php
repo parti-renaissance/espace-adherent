@@ -126,7 +126,7 @@ class CommitteeMergeCommandHandler
         $this->dispatchCommitteeUpdate($sourceCommittee);
         $this->dispatchCommitteeUpdate($destinationCommittee);
 
-        $committeeMergeHistory->revertedBy($administrator);
+        $committeeMergeHistory->revert($administrator);
 
         $this->em->flush();
     }

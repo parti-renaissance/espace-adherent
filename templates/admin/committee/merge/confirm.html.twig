@@ -1,50 +1,39 @@
-{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
 {% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
 
-{% block sonata_page_content_header %}
-    <div class="sticky-wrapper">
-        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Fusion de comités</a>
-                </div>
-            </div>
-        </nav>
-    </div>
+{% block title %}
+    Fusion de comités
 {% endblock %}
 
-{% block sonata_admin_content %}
-    {% block notice %}
-        {{ parent() }}
-    {% endblock %}
-
-    <div class="col-md-6">
-        <div class="box box-danger">
-            <div class="box-header">
-                <h4 class="box-title">Comité source</h4>
-            </div>
-            <div class="box-body table-responsive no-padding">
-                {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: source_committee } %}
+{% block show %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h4 class="box-title">Comité source</h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: source_committee } %}
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="box box-success">
-            <div class="box-header">
-                <h4 class="box-title">
-                    Comité de destination
-                </h4>
-            </div>
-            <div class="box-body table-responsive no-padding">
-                {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: destination_committee } %}
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        Comité de destination
+                    </h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    {% include 'admin/committee/merge/_committee_summary.html.twig' with { committee: destination_committee } %}
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-12">
-        {{ form_start(form) }}
+        <div class="col-md-12">
+            {{ form_start(form) }}
             <div class="row">
                 <div class="col-md-6">
                     <div class="box box-warning">
@@ -70,13 +59,14 @@
                                 </div>
                                 <div>
                                     {{ form_widget(form.confirm, { label: 'Confirmer la fusion', attr: { class: 'btn btn-success' } }) }}
-                                    <a href="{{ path('app_admin_committee_merge') }}" class="btn btn-danger">Annuler</a>
+                                    <a href="{{ path('admin_app_reporting_committeemergehistory_merge') }}" class="btn btn-danger">Annuler</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {{ form_end(form) }}
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}

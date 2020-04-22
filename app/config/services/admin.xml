@@ -1220,15 +1220,5 @@
             <argument />
         </service>
 
-        <!--
-        ######################################################
-        # Menu
-        ######################################################
-        -->
-
-        <service id="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
-            <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
-        </service>
-
     </services>
 </container>

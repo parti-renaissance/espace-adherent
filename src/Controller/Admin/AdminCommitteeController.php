@@ -2,14 +2,11 @@
 
 namespace AppBundle\Controller\Admin;
 
-use AppBundle\Committee\CommitteeMergeCommand;
-use AppBundle\Committee\CommitteeMergeCommandHandler;
 use AppBundle\Committee\MultipleReferentsFoundException;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Exception\BaseGroupException;
 use AppBundle\Exception\CommitteeMembershipException;
-use AppBundle\Form\Admin\CommitteeMergeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,44 +109,6 @@ class AdminCommitteeController extends Controller
 
         return $this->redirectToRoute('app_admin_committee_members', [
             'id' => $committee->getId(),
-        ]);
-    }
-
-    /**
-     * @Route("/merge", name="app_admin_committee_merge", methods={"GET", "POST"})
-     *
-     * @Security("has_role('ROLE_ADMIN_COMMITTEES_MERGE')")
-     */
-    public function mergeAction(Request $request): Response
-    {
-        $committeeMergeCommand = new CommitteeMergeCommand($this->getUser());
-
-        $form = $this
-            ->createForm(CommitteeMergeType::class, $committeeMergeCommand)
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $committeeMergeHandler = $this->get(CommitteeMergeCommandHandler::class);
-
-            if ($form->get('confirm')->isClicked()) {
-                $committeeMergeHandler->handle($committeeMergeCommand);
-
-                $this->addFlash('success', 'Fusion effectuée avec succès!');
-
-                return $this->redirectToRoute('admin_app_reporting_committeemergehistory_list');
-            }
-
-            return $this->render('admin/committee/merge/confirm.html.twig', [
-                'form' => $form->createView(),
-                'source_committee' => $committeeMergeCommand->getSourceCommittee(),
-                'destination_committee' => $committeeMergeCommand->getDestinationCommittee(),
-                'new_members_count' => $committeeMergeHandler->countNewMembers($committeeMergeCommand),
-            ]);
-        }
-
-        return $this->render('admin/committee/merge/request.html.twig', [
-            'form' => $form->createView(),
         ]);
     }
 }
