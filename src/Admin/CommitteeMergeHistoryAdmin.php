@@ -14,9 +14,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CommitteeMergeHistoryAdmin extends AbstractAdmin
 {
+    protected $accessMapping = [
+        'revert' => 'REVERT',
+    ];
+
     public function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept('list');
+        $collection
+            ->clearExcept('list')
+            ->add('revert', $this->getRouterIdParameter().'/revert')
+        ;
     }
 
     public function configureActionButtons($action, $object = null)
@@ -93,6 +100,10 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
             ])
             ->add('date', null, [
                 'label' => 'Fusionné le',
+            ])
+            ->add('_action', null, [
+                'virtual_field' => true,
+                'template' => 'admin/committee/merge/list_actions.html.twig',
             ])
         ;
     }

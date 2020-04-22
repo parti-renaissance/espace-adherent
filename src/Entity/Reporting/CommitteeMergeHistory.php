@@ -3,9 +3,13 @@
 namespace AppBundle\Entity\Reporting;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use AppBundle\Collection\CommitteeMembershipCollection;
 use AppBundle\Entity\Administrator;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeMembership;
 use Cake\Chronos\Chronos;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,22 +53,55 @@ class CommitteeMergeHistory
     private $destinationCommittee;
 
     /**
-     * @var string
+     * @var Administrator|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $mergedBy;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeImmutable
      *
      * @ORM\Column(type="datetime_immutable")
      */
     private $date;
 
+    /**
+     * @var CommitteeMembership[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CommitteeMembership")
+     * @ORM\JoinTable(
+     *     name="committee_merge_histories_merged_memberships",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="committee_merge_history_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="committee_membership_id", referencedColumnName="id", unique=true, onDelete="CASCADE")
+     *     }
+     * )
+     */
+    private $mergedMemberships;
+
+    /**
+     * @var Administrator|null
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $revertedBy;
+
+    /**
+     * @var \DateTimeImmutable|null
+     *
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $revertedAt;
+
     public function __construct(
         Committee $sourceCommittee,
         Committee $destinationCommittee,
+        array $mergedMemberships,
         Administrator $admin,
         \DateTimeImmutable $date = null
     ) {
@@ -72,6 +109,7 @@ class CommitteeMergeHistory
         $this->destinationCommittee = $destinationCommittee;
         $this->mergedBy = $admin;
         $this->date = $date ?: new Chronos();
+        $this->mergedMemberships = new ArrayCollection($mergedMemberships);
     }
 
     public function getId(): ?int
@@ -97,5 +135,42 @@ class CommitteeMergeHistory
     public function getMergedBy(): Administrator
     {
         return $this->mergedBy;
+    }
+
+    public function getRevertedBy(): ?Administrator
+    {
+        return $this->revertedBy;
+    }
+
+    public function getRevertedAt(): ?\DateTimeImmutable
+    {
+        return $this->revertedAt;
+    }
+
+    public function revertedBy(Administrator $administrator): void
+    {
+        if ($this->isReverted()) {
+            throw new \LogicException('CommitteeMergeHistory is already reverted.');
+        }
+
+        $this->revertedBy = $administrator;
+        $this->revertedAt = new \DateTimeImmutable();
+    }
+
+    public function isReverted(): bool
+    {
+        return $this->revertedBy || $this->revertedAt;
+    }
+
+    /**
+     * @return CommitteeMembership[]|CommitteeMembershipCollection
+     */
+    public function getMergedMemberships(): Collection
+    {
+        if (!$this->mergedMemberships instanceof CommitteeMembershipCollection) {
+            $this->mergedMemberships = new CommitteeMembershipCollection($this->mergedMemberships->toArray());
+        }
+
+        return $this->mergedMemberships;
     }
 }

@@ -191,7 +191,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Reporting\CommitteeMergeHistory</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminCommitteeMergeHistoryController</argument>
         </service>
 
         <service id="app.admin.event" class="AppBundle\Admin\EventAdmin">

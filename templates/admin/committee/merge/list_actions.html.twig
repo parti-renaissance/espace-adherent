@@ -1,0 +1,10 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if not object.isReverted %}
+        <a href="{{ path('admin_app_reporting_committeemergehistory_revert', { id: object.id }) }}" class="btn btn-xs btn-default" title="Annuler">
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+            Annuler la fusion
+        </a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% block title %}
+    Annulation de la fusion de comités
+{% endblock %}
+
+{% block show %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="box box-solid box-warning">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        Annulation de la fusion de comités
+                    </h4>
+                </div>
+                <div class="box-body">
+                    <p>
+                        Cette action est irréversible.
+                    </p>
+                    <div class="row">
+                        <div class="col-md-1">
+                            {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-warning' } }) }}
+                        </div>
+                        <div class="col-md-1 col-md-offset-10">
+                            {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-info' } }) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
