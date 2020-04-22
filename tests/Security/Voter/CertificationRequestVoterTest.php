@@ -29,22 +29,27 @@ class CertificationRequestVoterTest extends AbstractAdherentVoterTest
     public function testAdherentCanRequest(
         bool $isCertified,
         bool $hasPendingCertificationRequest,
+        bool $hasBlockedCertificationRequest,
         bool $isGranted
     ): void {
-        $adherent = $this->getAdherentMock($isCertified, $hasPendingCertificationRequest);
+        $adherent = $this->getAdherentMock($isCertified, $hasPendingCertificationRequest, $hasBlockedCertificationRequest);
 
         $this->assertGrantedForAdherent($isGranted, true, $adherent, CertificationPermissions::REQUEST);
     }
 
     public function provideAdherentCanRequest(): iterable
     {
-        yield [true, false, false];
-        yield [false, true, false];
-        yield [false, false, true];
+        yield [true, false, false, false];
+        yield [false, true, false, false];
+        yield [false, false, true, false];
+        yield [false, false, false, true];
     }
 
-    private function getAdherentMock(bool $isCertified, bool $hasPendingCertificationRequest): Adherent
-    {
+    private function getAdherentMock(
+        bool $isCertified,
+        bool $hasPendingCertificationRequest,
+        bool $hasBlockedCertificationRequest
+    ): Adherent {
         $adherent = $this->createAdherentMock();
 
         $adherent->expects($this->any())
@@ -56,6 +61,10 @@ class CertificationRequestVoterTest extends AbstractAdherentVoterTest
         $certificationRequests->expects($this->any())
             ->method('hasPendingCertificationRequest')
             ->willReturn($hasPendingCertificationRequest)
+        ;
+        $certificationRequests->expects($this->any())
+            ->method('hasBlockedCertificationRequest')
+            ->willReturn($hasBlockedCertificationRequest)
         ;
         $adherent->expects($this->any())
             ->method('getCertificationRequests')

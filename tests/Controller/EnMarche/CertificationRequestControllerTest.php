@@ -47,9 +47,20 @@ class CertificationRequestControllerTest extends WebTestCase
         $this->assertCertificationRequestIsSuccessful();
     }
 
-    public function testNoCertificationRequest(): void
+    public function testBlockedCertificationRequest(): void
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
+
+        $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
+        $this->assertResponseStatusCode(200, $this->client->getResponse());
+        $this->assertContains('Demande de certification bloquée', $crawler->filter('.certification-status')->text());
+
+        $this->assertCertificationRequestIsDisabled();
+    }
+
+    public function testNoCertificationRequest(): void
+    {
+        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());

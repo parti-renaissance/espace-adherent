@@ -1976,6 +1976,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->certifiedAt = new \DateTime();
     }
 
+    public function uncertify(): void
+    {
+        $this->certifiedAt = null;
+    }
+
     public function getCertificationRequests(): CertificationRequestCollection
     {
         if (!$this->certificationRequests instanceof CertificationRequestCollection) {

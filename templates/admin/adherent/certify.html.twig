@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
 {% block title %}
-     Certifier {{ admin.toString(object)|truncate(15) }} ⚠️
+     Confirmer la certification de <b>{{ object.fullName }}</b>
 {% endblock %}
 
 {% block show %}
@@ -18,7 +18,7 @@
                                 {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
                             </div>
                             <div class="col-md-1 col-md-offset-10">
-                                {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-warning' } }) }}
+                                {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-info' } }) }}
                             </div>
                         </div>
                     </div>

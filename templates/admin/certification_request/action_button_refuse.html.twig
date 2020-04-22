@@ -1,5 +1,7 @@
-<li>
-    <a href="{{ admin.generateObjectUrl('refuse', object) }}" class="sonata-action-element" title="Refuser">
-        <i class="fa fa-check"></i>Refuser la certification
-    </a>
-</li>
+{% if is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::REFUSE'), object) %}
+    <li>
+        <a href="{{ admin.generateObjectUrl('refuse', object) }}" class="sonata-action-element" title="Refuser">
+            <i class="fa fa-check"></i> Refuser la certification
+        </a>
+    </li>
+{% endif %}

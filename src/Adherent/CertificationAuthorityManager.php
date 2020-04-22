@@ -18,7 +18,14 @@ class CertificationAuthorityManager
 
     public function certify(Adherent $adherent): void
     {
-        $adherent->certify();
+        $this->certifyAdherent($adherent);
+
+        $this->entityManager->flush();
+    }
+
+    public function uncertify(Adherent $adherent): void
+    {
+        $adherent->uncertify();
 
         $this->entityManager->flush();
     }
@@ -26,8 +33,9 @@ class CertificationAuthorityManager
     public function approve(CertificationRequest $certificationRequest, Administrator $administrator): void
     {
         $certificationRequest->approve();
-        $certificationRequest->setProcessedBy($administrator);
-        $certificationRequest->getAdherent()->certify();
+        $certificationRequest->process($administrator);
+
+        $this->certifyAdherent($certificationRequest->getAdherent());
 
         $this->entityManager->flush();
     }
@@ -35,8 +43,21 @@ class CertificationAuthorityManager
     public function refuse(CertificationRequest $certificationRequest, Administrator $administrator): void
     {
         $certificationRequest->refuse();
-        $certificationRequest->setProcessedBy($administrator);
+        $certificationRequest->process($administrator);
 
         $this->entityManager->flush();
+    }
+
+    public function block(CertificationRequest $certificationRequest, Administrator $administrator): void
+    {
+        $certificationRequest->block();
+        $certificationRequest->process($administrator);
+
+        $this->entityManager->flush();
+    }
+
+    private function certifyAdherent(Adherent $adherent): void
+    {
+        $adherent->certify();
     }
 }

@@ -17,11 +17,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CertificationRequest
 {
     use EntityIdentityTrait;
-    use EntityTimestampableTrait;
 
     public const STATUS_PENDING = 'pending';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REFUSED = 'refused';
+    public const STATUS_BLOCKED = 'blocked';
+
+    public const STATUS_CHOICES = [
+        self::STATUS_PENDING,
+        self::STATUS_APPROVED,
+        self::STATUS_REFUSED,
+        self::STATUS_BLOCKED,
+    ];
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     /**
      * @var string|null
@@ -76,8 +90,16 @@ class CertificationRequest
      */
     private $processedBy;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $processedAt;
+
     public function __construct(Adherent $adherent)
     {
+        $this->createdAt = new \DateTime();
         $this->adherent = $adherent;
         $this->uuid = Uuid::uuid4();
         $this->status = self::STATUS_PENDING;
@@ -86,6 +108,11 @@ class CertificationRequest
     public function __toString()
     {
         return (string) $this->adherent;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
     }
 
     public function getStatus(): string
@@ -122,9 +149,20 @@ class CertificationRequest
         return $this->processedBy;
     }
 
-    public function setProcessedBy(Administrator $administrator): void
+    public function getProcessedAt(): ?\DateTime
+    {
+        return $this->processedAt;
+    }
+
+    public function process(Administrator $administrator): void
     {
         $this->processedBy = $administrator;
+        $this->processedAt = new \DateTime();
+    }
+
+    public function isProcessed(): bool
+    {
+        return $this->processedBy || $this->processedAt;
     }
 
     public function isPending(): bool
@@ -142,6 +180,11 @@ class CertificationRequest
         return self::STATUS_REFUSED === $this->status;
     }
 
+    public function isBlocked(): bool
+    {
+        return self::STATUS_BLOCKED === $this->status;
+    }
+
     public function approve(): void
     {
         $this->status = self::STATUS_APPROVED;
@@ -150,6 +193,11 @@ class CertificationRequest
     public function refuse(): void
     {
         $this->status = self::STATUS_REFUSED;
+    }
+
+    public function block(): void
+    {
+        $this->status = self::STATUS_BLOCKED;
     }
 
     public function getDocument(): ?UploadedFile

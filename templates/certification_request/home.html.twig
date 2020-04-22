@@ -19,6 +19,12 @@
             Votre demande de certification a été validée.
             Vous pouvez désormais prendre part à l’élection des animateurs de comités !
 
+        {% elseif app.user.certificationRequests.hasBlockedCertificationRequest %}
+
+            Demande de certification bloquée
+            <br><br>
+            Vous ne pouvez pas refaire de nouvelle demande pour l'instant.
+
         {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
 
             Demande de certification en attente
