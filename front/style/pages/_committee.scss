@@ -548,7 +548,7 @@
     &__elections-box {
         box-sizing: border-box;
         background-color: $white;
-        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.12);
+        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.14);
         border-radius: 4px;
         padding: 40px;
         margin-top: 20px;
@@ -557,6 +557,13 @@
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: flex-start;
+
+        -webkit-transition: all 0.2s;
+        -o-transition: all 0.2s;
+        transition: all 0.2s;
+        -webkit-transition-timing-function: ease-out;
+        -o-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
 
         @media (min-width: $tablet) {
             margin-top: 70px;
@@ -586,17 +593,20 @@
             }
         }
 
+        &:hover {
+            background-color: $pink;
 
+            > h2,
+            > p,
+            .candidacies-list {
+                color: $white;
+            }
 
-        .alert {
-            width: 100%;
-            box-sizing: border-box;
+            .elections-actions > .btn {
+                background-color: $white;
+                color: $pink;
+            }
         }
-
-        .alert:nth-child(1) {
-            margin-top: 30px;
-        }
-
     }
 
     .action-menu-oval {

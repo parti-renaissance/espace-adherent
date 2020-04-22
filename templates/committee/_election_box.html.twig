@@ -63,7 +63,7 @@
 </section>
 
 {% if display_wrang_committee_message is defined %}
-    <div class="alert alert--tips b__nudge__bottom-small">
+    <div class="alert alert--tips b__nudge--bottom-small">
         Vous pouvez candidater dans le comité où vous avez choisi de voter.<br />
         Rendez-vous sur <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">cette page</a></strong>
         pour choisir ou modifier votre comité.
@@ -71,7 +71,7 @@
 {% endif %}
 
 {% if not able_to_candidate %}
-    <div class="alert alert--tips b__nudge__bottom-small">
+    <div class="alert alert--tips b__nudge--bottom-small">
         Vous ne pouvez pas candidater
         {% if app.user.referent %}
             car vous êtes référent
@@ -85,7 +85,7 @@
 {% set count_female_candidates = count_committee_candidates(committee, false) %}
 
 {% if (count_male_candidates > 0 and count_female_candidates < 1) or (count_male_candidates < 1 and count_female_candidates > 0) %}
-    <div class="alert alert--tips b__nudge__bottom-small">
+    <div class="alert alert--tips b__nudge--bottom-small">
         {{ count_female_candidates < 1 ? 'Aucune femme n\'est encore candidate' : 'Aucun homme n\'est encore candidat'}}. La désignation ne pourra pas avoir lieu.
     </div>
 {% endif %}
