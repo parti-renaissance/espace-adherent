@@ -133,6 +133,14 @@
             </call>
         </service>
 
+        <service id="app.admin.reporting.adherent_certification_history" class="AppBundle\Admin\Reporting\AdherentCertificationHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Historique de certification" group="Adhérents" />
+
+            <argument />
+            <argument>AppBundle\Entity\Reporting\AdherentCertificationHistory</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.invite" class="AppBundle\Admin\InviteAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Adhérents" />
 

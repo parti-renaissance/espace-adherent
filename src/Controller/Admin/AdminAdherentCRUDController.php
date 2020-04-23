@@ -74,7 +74,7 @@ class AdminAdherentCRUDController extends CRUDController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('allow')->isClicked()) {
-                $certificationManager->certify($adherent);
+                $certificationManager->certify($adherent, $this->getUser());
 
                 $this->addFlash('success', sprintf(
                     'L\'adhérent <b>%s</b> a bien été certifié.',
@@ -116,7 +116,7 @@ class AdminAdherentCRUDController extends CRUDController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('allow')->isClicked()) {
-                $certificationManager->uncertify($adherent);
+                $certificationManager->uncertify($adherent, $this->getUser());
 
                 $this->addFlash('warning', sprintf(
                     'L\'adhérent <b>%s</b> n\'est plus certifié.',

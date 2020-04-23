@@ -691,6 +691,12 @@ certification_request.status.refused: Refusée
 certification_request.status.blocked: Bloquée
 
 #
+# AdherentCertificationHistory
+#
+adherent_certification_history.action.certify: Certification
+adherent_certification_history.action.uncertify: Annulation de certification
+
+#
 # VotingPlatform
 #
 voting_platform.designation.type_committee_adherent: Comités-Adhérents

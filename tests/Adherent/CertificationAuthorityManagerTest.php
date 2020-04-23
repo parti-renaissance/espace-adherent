@@ -28,14 +28,29 @@ class CertificationAuthorityManagerTest extends WebTestCase
     public function testCertify(): void
     {
         $adherent = $this->adherentRepository->findOneByEmail('lolodie.dutemps@hotnix.tld');
+        $administrator = $this->getAdministratorRepository()->findOneBy(['emailAddress' => 'superadmin@en-marche-dev.fr']);
 
         self::assertFalse($adherent->isCertified());
 
-        $this->certificationAuthorityManager->certify($adherent);
+        $this->certificationAuthorityManager->certify($adherent, $administrator);
 
         $this->manager->refresh($adherent);
 
         self::assertTrue($adherent->isCertified());
+    }
+
+    public function testUncertify(): void
+    {
+        $adherent = $this->adherentRepository->findOneByEmail('michelle.dufour@example.ch');
+        $administrator = $this->getAdministratorRepository()->findOneBy(['emailAddress' => 'superadmin@en-marche-dev.fr']);
+
+        self::assertTrue($adherent->isCertified());
+
+        $this->certificationAuthorityManager->uncertify($adherent, $administrator);
+
+        $this->manager->refresh($adherent);
+
+        self::assertFalse($adherent->isCertified());
     }
 
     public function testApprove(): void

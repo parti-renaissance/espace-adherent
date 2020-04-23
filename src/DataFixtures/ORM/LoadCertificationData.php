@@ -37,7 +37,9 @@ class LoadCertificationData extends Fixture
         $administrator = $this->getReference('administrator-2');
 
         // Adherent certified without certification request
-        $adherent1->certify();
+        $this->certificationAuthorityManager->certify($adherent1, $administrator);
+        $this->certificationAuthorityManager->uncertify($adherent1, $administrator);
+        $this->certificationAuthorityManager->certify($adherent1, $administrator);
 
         // Adherent with pending certification request
         $this->createRequest($adherent2);
