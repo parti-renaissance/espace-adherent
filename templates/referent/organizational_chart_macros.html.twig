@@ -30,7 +30,9 @@
                         </span>
                         {% if ref_person_link %}
                             {% if ref_person_link.isCoReferent %}
-                                <span class="referent-person-link">{{ 'referent.coreferent_access'|trans }}</span>
+                                <span class="referent-person-link">
+                                    {{ (ref_person_link.isLimitedCoReferent ? 'referent.limited_coreferent_access' : 'referent.coreferent_access')|trans }}
+                                </span>
                             {% endif %}
                             {% if ref_person_link.isJecouteManager %}
                                 <span class="referent-person-link">{{ 'common.jecoute_manager'|trans }}</span>

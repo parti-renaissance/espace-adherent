@@ -7,6 +7,7 @@ use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,8 +44,14 @@ class ReferentPersonLinkType extends AbstractType
                 'label' => 'Adresse postale',
                 'form_full' => true,
             ])
-            ->add('isCoReferent', CheckboxType::class, [
-                'required' => false,
+            ->add('coReferent', ChoiceType::class, [
+                'choices' => [
+                    'referent.radio.co_referent' => ReferentPersonLink::CO_REFERENT,
+                    'referent.radio.limited_co_referent' => ReferentPersonLink::LIMITED_CO_REFERENT,
+                    'referent.radio.not_co_referent' => null,
+                ],
+                'expanded' => true,
+                'multiple' => false,
             ])
             ->add('isJecouteManager', CheckboxType::class, [
                 'required' => false,

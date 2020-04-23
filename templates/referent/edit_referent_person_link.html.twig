@@ -29,11 +29,13 @@
 
         {{ form_row(form.postalAddress) }}
 
-        <div class="form__checkbox">
-            {{ form_widget(form.isCoReferent) }}
-            <label class="form form__label" for="{{ form.isCoReferent.vars.id }}">
-                {{ 'referent.checkbox.co_referent'|trans|raw }}
+        <div>
+            <label class="form form__label" for="{{ form.coReferent.vars.id }}">
+                {{ 'referent.label.co_referent'|trans|raw }}
             </label>
+            <div class="form__radio--margin">
+                {{ form_widget(form.coReferent) }}
+            </div>
         </div>
 
         <div class="form__checkbox">
