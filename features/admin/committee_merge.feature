@@ -8,7 +8,7 @@ Feature: Merge committees from admin panel
     When I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: A committee can not be merged if it is not approved
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 2 |
       | ID du comité de destination | 1 |
@@ -20,7 +20,7 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee can not be merged if the destination committee is not approved
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 1 |
       | ID du comité de destination | 2 |
@@ -32,7 +32,7 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee can not be merged into itself
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 1 |
       | ID du comité de destination | 1 |
@@ -46,7 +46,7 @@ Feature: Merge committees from admin panel
   Scenario: A committee merge must trigger events in RabbitMQ
     Given I am on "/admin/app/committee/1/members"
     Then I should not see "francis.brioul@yahoo.com"
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 3 |
       | ID du comité de destination | 1 |
