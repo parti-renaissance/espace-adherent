@@ -10,4 +10,10 @@ class CertificationPermissions
     public const APPROVE = 'certification_request.approve';
     public const REFUSE = 'certification_request.refuse';
     public const BLOCK = 'certification_request.block';
+
+    public const REQUEST_PROCESS = [
+        self::APPROVE,
+        self::REFUSE,
+        self::BLOCK,
+    ];
 }
