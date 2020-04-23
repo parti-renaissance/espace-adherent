@@ -12,7 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LoadCertificationRequestData extends Fixture
+class LoadCertificationData extends Fixture
 {
     private $certificationManager;
     private $certificationAuthorityManager;
@@ -30,12 +30,16 @@ class LoadCertificationRequestData extends Fixture
         $adherent3 = $this->getReference('adherent-3');
         /** @var Adherent $adherent4 */
         $adherent4 = $this->getReference('adherent-4');
+        /** @var Adherent $adherent5 */
+        $adherent5 = $this->getReference('adherent-5');
 
         /** @var Administrator $administrator */
         $administrator = $this->getReference('administrator-2');
 
         // Adherent certified without certification request
-        $adherent1->certify();
+        $this->certificationAuthorityManager->certify($adherent1, $administrator);
+        $this->certificationAuthorityManager->uncertify($adherent1, $administrator);
+        $this->certificationAuthorityManager->certify($adherent1, $administrator);
 
         // Adherent with pending certification request
         $this->createRequest($adherent2);
@@ -50,6 +54,10 @@ class LoadCertificationRequestData extends Fixture
         // Adherent with refused certification request
         $certificationRequest = $this->createRequest($adherent4);
         $this->certificationAuthorityManager->refuse($certificationRequest, $administrator);
+
+        // Adherent with blocked certification request
+        $certificationRequest = $this->createRequest($adherent5);
+        $this->certificationAuthorityManager->block($certificationRequest, $administrator);
 
         $manager->flush();
     }

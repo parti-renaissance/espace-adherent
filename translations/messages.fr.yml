@@ -688,6 +688,13 @@ donator.extract.field.address: Adresse postale
 certification_request.status.pending: En attente
 certification_request.status.approved: Approuvée
 certification_request.status.refused: Refusée
+certification_request.status.blocked: Bloquée
+
+#
+# AdherentCertificationHistory
+#
+adherent_certification_history.action.certify: Certification
+adherent_certification_history.action.uncertify: Annulation de certification
 
 #
 # VotingPlatform

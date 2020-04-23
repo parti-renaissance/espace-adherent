@@ -1,26 +1,21 @@
 {% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
 {% block title %}
-     Demande de certification de <b>{{ admin.toString(object)|truncate(25) }}</b>
+     Annuler la certification de <b>{{ object.fullName }}</b>
 {% endblock %}
 
 {% block show %}
     <div class="row">
         <div class="col-md-12">
             {{ form_start(form) }}
-                <div class="box box-solid box-success">
+                <div class="box box-solid box-warning">
                     <div class="box-header">
-                        <h4 class="box-title">
-                            Confirmation de la demande de certification de <b>{{ object.adherent.fullName }}</b>
-                        </h4>
+                        <h4 class="box-title">Confirmez-vous l'annulation de certification de <b>{{ object.fullName }}</b>?</h4>
                     </div>
                     <div class="box-body">
-                        <p>
-                            Cette action est irréversible et entraîne la certification du compte de l'adhérent.
-                        </p>
                         <div class="row">
                             <div class="col-md-1">
-                                {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
+                                {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-warning' } }) }}
                             </div>
                             <div class="col-md-1 col-md-offset-10">
                                 {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-info' } }) }}

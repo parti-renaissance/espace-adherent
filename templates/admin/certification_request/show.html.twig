@@ -3,6 +3,9 @@
 {% import 'admin/certification_request/_macros.html.twig' as macros %}
 
 {% set adherent = object.adherent %}
+{% set can_approve = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::APPROVE'), object) %}
+{% set can_refuse = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::REFUSE'), object) %}
+{% set can_block = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::BLOCK'), object) %}
 
 {% block show %}
 
@@ -18,13 +21,25 @@
                         <table class="table table-bordered table-striped sonata-ba-list">
                             <tbody>
                                 <tr>
+                                    <th class="sonata-ba-list-field-header-text">ID</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.id }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="sonata-ba-list-field-header-text">UUID</th>
+                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                        {{ object.uuid }}
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th class="sonata-ba-list-field-header-text">Adhérent</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {{ macros.get_certification_request_adherent_summary(adherent) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="sonata-ba-list-field-header-text">Date</th>
+                                    <th class="sonata-ba-list-field-header-text">Date de création</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {{ object.createdAt|localizeddate('medium', 'medium') }}
                                     </td>
@@ -32,7 +47,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Statut</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ macros.get_certification_request_status_badge(object.status) }}
+                                        {{ macros.get_certification_request_status_badge(object) }}
                                     </td>
                                 </tr>
                             </tbody>
@@ -101,7 +116,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Lien</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        <a href="{{ path('admin_app_certificationrequest_document', { id: object.id, download: true }) }}" target="_blank">
+                                        <a href="{{ admin.generateObjectUrl('document', object, { download: true }) }}" target="_blank">
                                             Cliquez ici pour voir le document
                                         </a>
                                     </td>
@@ -116,7 +131,7 @@
                                     <th class="sonata-ba-list-field-header-text">Aperçu</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         <embed type="{{ object.documentMimeType }}"
-                                               src="{{ path('admin_app_certificationrequest_document', { id: object.id }) }}"
+                                               src="{{ admin.generateObjectUrl('document', object) }}"
                                                width="100%"
                                                style="min-height: 400px"
                                               >
@@ -134,38 +149,41 @@
                         <h4 class="box-title">Actions</h4>
                     </div>
                     <div class="box-body">
-                        {% if object.isPending %}
                             <div class="row">
-                                <div class="col-md-6">
-                                    <a href="{{ path('admin_app_certificationrequest_approve', { id: object.id }) }}" class="btn btn-success btn-block">
-                                        Approuver
-                                    </a>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="{{ path('admin_app_certificationrequest_refuse', { id: object.id }) }}" class="btn btn-danger btn-block">
-                                        Refuser
-                                    </a>
+                                <div class="col-md-12">
+                                    {% if can_approve or can_refuse or can_block %}
+                                        <p class="form-text text-muted text-center">
+                                            Une confirmation vous sera demandée pour toute action
+                                        </p>
+                                        <hr>
+                                        {% if can_approve %}
+                                            <a href="{{ admin.generateObjectUrl('approve', object) }}" class="btn btn-success btn-block">
+                                                <i class="fa fa-check"></i> Approuver
+                                            </a>
+                                        {% endif %}
+                                        {% if can_refuse %}
+                                            <a href="{{ admin.generateObjectUrl('refuse', object) }}" class="btn btn-danger btn-block">
+                                                <i class="fa fa-remove"></i> Refuser
+                                            </a>
+                                        {% endif %}
+                                        {% if can_block %}
+                                            <a href="{{ admin.generateObjectUrl('block', object) }}" class="btn btn-warning btn-block">
+                                                <i class="fa fa-stop-circle"></i> Bloquer
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        <p class="form-text text-muted text-center">
+                                            Aucune action possible
+                                        </p>
+                                    {% endif %}
                                 </div>
                             </div>
+
+                        {% if object.isProcessed %}
                             <hr>
                             <p class="form-text text-muted text-center">
-                                Une confirmation vous sera demandée pour toute action
+                                {{ macros.get_certification_request_processed_by(object) }}
                             </p>
-                        {% else %}
-                            <div class="alert alert-info" role="alert">
-                                Cette demande de certification a déjà été traitée.
-                                {% if object.processedBy or object.updatedAt %}
-                                    <br>
-                                    <i>
-                                        {% if object.processedBy %}
-                                            par <b>{{ object.processedBy }}</b>
-                                        {% endif %}
-                                        {% if object.updatedAt %}
-                                            le <b>{{ object.updatedAt|localizeddate }}</b>
-                                        {% endif %}
-                                    </i>
-                                {% endif %}
-                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -183,7 +201,7 @@
                             <table class="table table-bordered table-striped sonata-ba-list">
                                 <thead>
                                     <tr class="sonata-ba-list-field-header">
-                                        <th class="sonata-ba-list-field-header-text">#</th>
+                                        <th class="sonata-ba-list-field-header-text">ID</th>
                                         <th class="sonata-ba-list-field-header-text">Date</th>
                                         <th class="sonata-ba-list-field-header-text">Statut</th>
                                         <th class="sonata-ba-list-field-header-text">Informations</th>
@@ -191,33 +209,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for certificationRequest in adherent.certificationRequests %}
+                                    {% for certification_request in adherent.certificationRequests %}
                                         <tr>
                                             <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                <b>{{ loop.index }}</b>
+                                                <b>{{ certification_request.id }}</b>
                                             </td>
-                                            {% if certificationRequest is same as(object) %}
+                                            {% if certification_request is same as(object) %}
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text" colspan="4">
                                                     <i>Demande actuelle</i>
                                                 </td>
                                             {% else %}
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                    {{ certificationRequest.createdAt|localizeddate }}
+                                                    {{ certification_request.createdAt|localizeddate }}
                                                 </td>
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                    {{ macros.get_certification_request_status_badge(certificationRequest.status) }}
+                                                    {{ macros.get_certification_request_status_badge(certification_request) }}
                                                 </td>
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                    {% if certificationRequest.processedBy %}
-                                                        traitée par <i>{{ certificationRequest.processedBy }}</i>
-                                                        {% if certificationRequest.updatedAt %}
-                                                            <br>
-                                                            le <i>{{ certificationRequest.updatedAt|localizeddate }}</i>
-                                                        {% endif %}
+                                                    {% if certification_request.isProcessed %}
+                                                        {{ macros.get_certification_request_processed_by(certification_request) }}
                                                     {% endif %}
                                                 </td>
                                                 <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                                    <a href="{{ path('admin_app_certificationrequest_show', { id: certificationRequest.id }) }}" class="btn btn-sm btn-default">
+                                                    <a href="{{ admin.generateObjectUrl('show', certification_request) }}" class="btn btn-sm btn-default">
                                                         <i class="fa fa-eye"></i> Afficher
                                                     </a>
                                                 </td>

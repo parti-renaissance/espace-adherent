@@ -60,6 +60,7 @@ class AdherentAdmin extends AbstractAdmin
     protected $accessMapping = [
         'ban' => 'BAN',
         'certify' => 'CERTIFY',
+        'uncertify' => 'UNCERTIFY',
     ];
 
     private $dispatcher;
@@ -90,6 +91,7 @@ class AdherentAdmin extends AbstractAdmin
         $collection
             ->add('ban', $this->getRouterIdParameter().'/ban')
             ->add('certify', $this->getRouterIdParameter().'/certify')
+            ->add('uncertify', $this->getRouterIdParameter().'/uncertify')
             ->remove('create')
             ->remove('delete')
         ;
@@ -97,13 +99,13 @@ class AdherentAdmin extends AbstractAdmin
 
     public function configureActionButtons($action, $object = null)
     {
-        if (\in_array($action, ['ban', 'certify'], true)) {
+        if (\in_array($action, ['ban', 'certify', 'uncertify'], true)) {
             $actions = parent::configureActionButtons('show', $object);
         } else {
             $actions = parent::configureActionButtons($action, $object);
         }
 
-        if (\in_array($action, ['edit', 'show', 'ban', 'certify'], true)) {
+        if (\in_array($action, ['edit', 'show', 'ban', 'certify', 'uncertify'], true)) {
             $actions['switch_user'] = ['template' => 'admin/adherent/action_button_switch_user.html.twig'];
         }
 
@@ -112,12 +114,12 @@ class AdherentAdmin extends AbstractAdmin
                 $actions['ban'] = ['template' => 'admin/adherent/action_button_ban.html.twig'];
             }
 
-            if (
-                $this->canAccessObject('certify', $object)
-                && $this->hasRoute('certify')
-                && !$object->isCertified()
-            ) {
+            if ($this->canAccessObject('certify', $object) && $this->hasRoute('certify')) {
                 $actions['certify'] = ['template' => 'admin/adherent/action_button_certify.html.twig'];
+            }
+
+            if ($this->canAccessObject('uncertify', $object) && $this->hasRoute('uncertify')) {
+                $actions['uncertify'] = ['template' => 'admin/adherent/action_button_uncertify.html.twig'];
             }
         }
 

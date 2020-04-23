@@ -27,6 +27,7 @@ class CertificationRequestAdmin extends AbstractAdmin
     protected $accessMapping = [
         'approve' => 'APPROVE',
         'refuse' => 'REFUSE',
+        'block' => 'BLOCK',
         'document' => 'DOCUMENT',
     ];
 
@@ -36,23 +37,34 @@ class CertificationRequestAdmin extends AbstractAdmin
             ->clearExcept(['list', 'show', 'export'])
             ->add('approve', $this->getRouterIdParameter().'/approve')
             ->add('refuse', $this->getRouterIdParameter().'/refuse')
+            ->add('block', $this->getRouterIdParameter().'/block')
             ->add('document', $this->getRouterIdParameter().'/document')
         ;
     }
 
+    /**
+     * @param CertificationRequest|null $object
+     */
     public function configureActionButtons($action, $object = null)
     {
-        if (\in_array($action, ['approve', 'refuse'], true)) {
+        if (\in_array($action, ['approve', 'refuse', 'block'], true)) {
             $actions = parent::configureActionButtons('show', $object);
         } else {
             $actions = parent::configureActionButtons($action, $object);
         }
 
-        if ('show' === $action && $object->isPending()) {
-            $actions = array_merge($actions, [
-                'approve' => ['template' => 'admin/certification_request/action_button_approve.html.twig'],
-                'refuse' => ['template' => 'admin/certification_request/action_button_refuse.html.twig'],
-            ]);
+        if ('show' === $action) {
+            if ($this->canAccessObject('approve', $object) && $this->hasRoute('approve')) {
+                $actions['approve'] = ['template' => 'admin/certification_request/action_button_approve.html.twig'];
+            }
+
+            if ($this->canAccessObject('refuse', $object) && $this->hasRoute('refuse')) {
+                $actions['refuse'] = ['template' => 'admin/certification_request/action_button_refuse.html.twig'];
+            }
+
+            if ($this->canAccessObject('block', $object) && $this->hasRoute('block')) {
+                $actions['block'] = ['template' => 'admin/certification_request/action_button_block.html.twig'];
+            }
         }
 
         return $actions;
@@ -78,11 +90,7 @@ class CertificationRequestAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
                 'field_options' => [
-                    'choices' => [
-                        CertificationRequest::STATUS_PENDING,
-                        CertificationRequest::STATUS_APPROVED,
-                        CertificationRequest::STATUS_REFUSED,
-                    ],
+                    'choices' => CertificationRequest::STATUS_CHOICES,
                     'choice_label' => function (string $choice) {
                         return "certification_request.status.$choice";
                     },
@@ -90,8 +98,15 @@ class CertificationRequestAdmin extends AbstractAdmin
                 ],
             ])
             ->add('createdAt', DateRangeFilter::class, [
-                'label' => 'Date',
+                'label' => 'Date de création',
                 'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('processedBy', null, [
+                'label' => 'Traitée par',
+            ])
+            ->add('processedAt', DateRangeFilter::class, [
+                'label' => 'Date de traitement',
                 'field_type' => DateRangePickerType::class,
             ])
         ;
@@ -100,6 +115,9 @@ class CertificationRequestAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->addIdentifier('id', null, [
+                'label' => 'ID',
+            ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',
                 'template' => 'admin/certification_request/list_adherent.html.twig',
@@ -109,7 +127,13 @@ class CertificationRequestAdmin extends AbstractAdmin
                 'template' => 'admin/certification_request/list_status.html.twig',
             ])
             ->add('createdAt', null, [
-                'label' => 'Date',
+                'label' => 'Date de création',
+            ])
+            ->add('processedBy', null, [
+                'label' => 'Traitée par',
+            ])
+            ->add('processedAt', null, [
+                'label' => 'Date de traitement',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,

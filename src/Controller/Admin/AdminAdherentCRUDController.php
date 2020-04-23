@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Adherent\BanManager;
 use AppBundle\Adherent\CertificationAuthorityManager;
+use AppBundle\Adherent\CertificationPermissions;
 use AppBundle\Entity\Adherent;
 use AppBundle\Form\ConfirmActionType;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -24,9 +25,7 @@ class AdminAdherentCRUDController extends CRUDController
                 'Il est possible d\'exclure uniquement les adhérents sans aucun rôle (animateur, référent etc.).'
             );
 
-            return $this->redirectToRoute('admin_app_adherent_edit', [
-                'id' => $adherent->getId(),
-            ]);
+            return $this->redirectTo($adherent);
         }
 
         $form = $this
@@ -59,15 +58,13 @@ class AdminAdherentCRUDController extends CRUDController
 
         $this->admin->checkAccess('certify', $adherent);
 
-        if ($adherent->isCertified()) {
+        if (!$this->isGranted(CertificationPermissions::CERTIFY, $adherent)) {
             $this->addFlash('error', sprintf(
                 'L\'adhérent <b>%s</b> est déjà certifié.',
                 $adherent->getFullName()
             ));
 
-            return $this->redirectToRoute('admin_app_adherent_edit', [
-                'id' => $adherent->getId(),
-            ]);
+            return $this->redirectTo($adherent);
         }
 
         $form = $this
@@ -77,7 +74,7 @@ class AdminAdherentCRUDController extends CRUDController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('allow')->isClicked()) {
-                $certificationManager->certify($adherent);
+                $certificationManager->certify($adherent, $this->getUser());
 
                 $this->addFlash('success', sprintf(
                     'L\'adhérent <b>%s</b> a bien été certifié.',
@@ -85,13 +82,55 @@ class AdminAdherentCRUDController extends CRUDController
                 ));
             }
 
-            return $this->redirectToList();
+            return $this->redirectTo($adherent);
         }
 
-        return $this->render('admin/adherent/certify.html.twig', [
+        return $this->renderWithExtraParams('admin/adherent/certify.html.twig', [
             'form' => $form->createView(),
             'object' => $adherent,
             'action' => 'certify',
+            'elements' => $this->admin->getShow(),
+        ]);
+    }
+
+    public function uncertifyAction(Request $request, CertificationAuthorityManager $certificationManager): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->admin->getSubject();
+
+        $this->admin->checkAccess('uncertify', $adherent);
+
+        if (!$this->isGranted(CertificationPermissions::UNCERTIFY, $adherent)) {
+            $this->addFlash('error', sprintf(
+                'L\'adhérent <b>%s</b> n\'est pas certifié.',
+                $adherent->getFullName()
+            ));
+
+            return $this->redirectTo($adherent);
+        }
+
+        $form = $this
+            ->createForm(ConfirmActionType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('allow')->isClicked()) {
+                $certificationManager->uncertify($adherent, $this->getUser());
+
+                $this->addFlash('warning', sprintf(
+                    'L\'adhérent <b>%s</b> n\'est plus certifié.',
+                    $adherent->getFullName()
+                ));
+            }
+
+            return $this->redirectTo($adherent);
+        }
+
+        return $this->renderWithExtraParams('admin/adherent/uncertify.html.twig', [
+            'form' => $form->createView(),
+            'object' => $adherent,
+            'action' => 'uncertify',
             'elements' => $this->admin->getShow(),
         ]);
     }

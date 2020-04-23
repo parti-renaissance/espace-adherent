@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Adherent\CertificationAuthorityManager;
+use AppBundle\Adherent\CertificationPermissions;
 use AppBundle\Entity\CertificationRequest;
 use AppBundle\Form\ConfirmActionType;
 use League\Flysystem\Filesystem;
@@ -27,15 +28,13 @@ class AdminCertificationRequestController extends CRUDController
 
         $this->admin->checkAccess('approve', $certificationRequest);
 
-        if ($certificationRequest->isApproved()) {
+        if (!$this->isGranted(CertificationPermissions::APPROVE, $certificationRequest)) {
             $this->addFlash('error', sprintf(
-                'La demande de certification <b>%d</b> est déjà approuvée.',
+                'La demande de certification <b>%d</b> est déjà traitée et ne peut être approuvée.',
                 $certificationRequest->getId()
             ));
 
-            return $this->redirectToRoute('admin_app_certification_request_show', [
-                'id' => $certificationRequest->getId(),
-            ]);
+            return $this->redirectTo($certificationRequest);
         }
 
         $form = $this
@@ -56,7 +55,7 @@ class AdminCertificationRequestController extends CRUDController
             return $this->redirectTo($certificationRequest);
         }
 
-        return $this->render('admin/certification_request/approve.html.twig', [
+        return $this->renderWithExtraParams('admin/certification_request/approve.html.twig', [
             'form' => $form->createView(),
             'object' => $certificationRequest,
             'action' => 'approve',
@@ -71,15 +70,13 @@ class AdminCertificationRequestController extends CRUDController
 
         $this->admin->checkAccess('refuse', $certificationRequest);
 
-        if ($certificationRequest->isRefused()) {
+        if (!$this->isGranted(CertificationPermissions::REFUSE, $certificationRequest)) {
             $this->addFlash('error', sprintf(
-                'La demande de certification <b>%d</b> est déjà refusée.',
+                'La demande de certification <b>%d</b> est déjà traitée et ne peut être refusée.',
                 $certificationRequest->getId()
             ));
 
-            return $this->redirectToRoute('admin_app_certification_request_show', [
-                'id' => $certificationRequest->getId(),
-            ]);
+            return $this->redirectTo($certificationRequest);
         }
 
         $form = $this
@@ -100,10 +97,52 @@ class AdminCertificationRequestController extends CRUDController
             return $this->redirectTo($certificationRequest);
         }
 
-        return $this->render('admin/certification_request/refuse.html.twig', [
+        return $this->renderWithExtraParams('admin/certification_request/refuse.html.twig', [
             'form' => $form->createView(),
             'object' => $certificationRequest,
             'action' => 'refuse',
+            'elements' => $this->admin->getShow(),
+        ]);
+    }
+
+    public function blockAction(Request $request, CertificationAuthorityManager $certificationManager): Response
+    {
+        /** @var CertificationRequest $certificationRequest */
+        $certificationRequest = $this->admin->getSubject();
+
+        $this->admin->checkAccess('block', $certificationRequest);
+
+        if (!$this->isGranted(CertificationPermissions::BLOCK, $certificationRequest)) {
+            $this->addFlash('error', sprintf(
+                'La demande de certification <b>%d</b> est déjà traitée et ne peut être bloquée.',
+                $certificationRequest->getId()
+            ));
+
+            return $this->redirectTo($certificationRequest);
+        }
+
+        $form = $this
+            ->createForm(ConfirmActionType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('allow')->isClicked()) {
+                $certificationManager->block($certificationRequest, $this->getUser());
+
+                $this->addFlash('success', sprintf(
+                    'La demande de certification de l\'adhérent <b>%s</b> a bien été bloquée.',
+                    $certificationRequest->getAdherent()->getFullName()
+                ));
+            }
+
+            return $this->redirectTo($certificationRequest);
+        }
+
+        return $this->renderWithExtraParams('admin/certification_request/block.html.twig', [
+            'form' => $form->createView(),
+            'object' => $certificationRequest,
+            'action' => 'block',
             'elements' => $this->admin->getShow(),
         ]);
     }

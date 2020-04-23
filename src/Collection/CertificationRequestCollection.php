@@ -35,4 +35,21 @@ class CertificationRequestCollection extends ArrayCollection
     {
         return !$this->getRefusedCertificationRequests()->isEmpty();
     }
+
+    public function getBlockedCertificationRequest(): ?CertificationRequest
+    {
+        $certificationRequest = $this
+            ->filter(function (CertificationRequest $certificationRequest) {
+                return $certificationRequest->isBlocked();
+            })
+            ->first()
+        ;
+
+        return $certificationRequest ? $certificationRequest : null;
+    }
+
+    public function hasBlockedCertificationRequest(): bool
+    {
+        return null !== $this->getBlockedCertificationRequest();
+    }
 }

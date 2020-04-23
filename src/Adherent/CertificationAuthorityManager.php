@@ -5,38 +5,64 @@ namespace AppBundle\Adherent;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Administrator;
 use AppBundle\Entity\CertificationRequest;
+use AppBundle\Entity\Reporting\AdherentCertificationHistory;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CertificationAuthorityManager
 {
-    private $entityManager;
+    private $em;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->entityManager = $entityManager;
+        $this->em = $em;
     }
 
-    public function certify(Adherent $adherent): void
+    public function certify(Adherent $adherent, Administrator $administrator): void
     {
-        $adherent->certify();
+        $this->certifyAdherent($adherent, $administrator);
 
-        $this->entityManager->flush();
+        $this->em->flush();
+    }
+
+    public function uncertify(Adherent $adherent, Administrator $administrator): void
+    {
+        $adherent->uncertify();
+
+        $this->em->persist(AdherentCertificationHistory::createUncertify($adherent, $administrator));
+
+        $this->em->flush();
     }
 
     public function approve(CertificationRequest $certificationRequest, Administrator $administrator): void
     {
         $certificationRequest->approve();
-        $certificationRequest->setProcessedBy($administrator);
-        $certificationRequest->getAdherent()->certify();
+        $certificationRequest->process($administrator);
 
-        $this->entityManager->flush();
+        $this->certifyAdherent($certificationRequest->getAdherent(), $administrator);
+
+        $this->em->flush();
     }
 
     public function refuse(CertificationRequest $certificationRequest, Administrator $administrator): void
     {
         $certificationRequest->refuse();
-        $certificationRequest->setProcessedBy($administrator);
+        $certificationRequest->process($administrator);
 
-        $this->entityManager->flush();
+        $this->em->flush();
+    }
+
+    public function block(CertificationRequest $certificationRequest, Administrator $administrator): void
+    {
+        $certificationRequest->block();
+        $certificationRequest->process($administrator);
+
+        $this->em->flush();
+    }
+
+    private function certifyAdherent(Adherent $adherent, Administrator $administrator): void
+    {
+        $adherent->certify();
+
+        $this->em->persist(AdherentCertificationHistory::createCertify($adherent, $administrator));
     }
 }

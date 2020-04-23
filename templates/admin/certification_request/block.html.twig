@@ -8,19 +8,19 @@
     <div class="row">
         <div class="col-md-12">
             {{ form_start(form) }}
-            <div class="box box-solid box-danger">
+            <div class="box box-solid box-warning">
                 <div class="box-header">
                     <h4 class="box-title">
-                        Refus de la demande de certification de <b>{{ object.adherent.fullName }}</b>
+                        Bloquer la demande de certification de <b>{{ object.adherent.fullName }}</b>
                     </h4>
                 </div>
                 <div class="box-body">
                     <p>
-                        Cette action est irréversible.
+                        L'adhérent ne pourra plus demander de nouvelle certification tant que cette demande ne sera pas débloquée.
                     </p>
                     <div class="row">
                         <div class="col-md-1">
-                            {{ form_widget(form.allow, { label: 'Refuser', attr: { class: 'btn btn-danger' } }) }}
+                            {{ form_widget(form.allow, { label: 'Bloquer', attr: { class: 'btn btn-warning' } }) }}
                         </div>
                         <div class="col-md-1 col-md-offset-10">
                             {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-info' } }) }}

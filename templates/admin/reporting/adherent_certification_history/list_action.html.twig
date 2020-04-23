@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <span class="badge
+        {% if object.isCertify %}
+            bg-green
+        {% elseif object.isUncertify %}
+            bg-red
+        {% endif %}
+        ">
+        {{ ('adherent_certification_history.action.'~value)|trans }}
+    </span>
+{% endblock %}

@@ -14,8 +14,14 @@ class CertificationRequestVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return !$adherent->isCertified()
-            && !$adherent->getCertificationRequests()->hasPendingCertificationRequest()
+        if ($adherent->isCertified()) {
+            return false;
+        }
+
+        $certificationRequests = $adherent->getCertificationRequests();
+
+        return !$certificationRequests->hasBlockedCertificationRequest()
+            && !$certificationRequests->hasPendingCertificationRequest()
         ;
     }
 }
