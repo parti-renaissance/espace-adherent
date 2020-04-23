@@ -10,7 +10,6 @@ use AppBundle\Repository\AdherentRepository;
 use AppBundle\Repository\CommitteeMembershipRepository;
 use AppBundle\Repository\CommitteeRepository;
 use AppBundle\Statistics\StatisticsParametersFilter;
-use AppBundle\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -95,15 +94,15 @@ class CommitteesController extends Controller
             'metadata' => [
                 'total' => \count($memberships),
                 'males' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
-                    return Genders::MALE === $membership->getAdherent()->getGender();
+                    return $membership->getCommitteeCandidacy()->isMale();
                 })),
                 'females' => \count(array_filter($memberships, static function (CommitteeMembership $membership) {
-                    return Genders::FEMALE === $membership->getAdherent()->getGender();
+                    return $membership->getCommitteeCandidacy()->isFemale();
                 })),
             ],
             'candidacies' => array_map(static function (CommitteeMembership $membership) {
                 return [
-                    'gender' => $membership->getAdherent()->getGender(),
+                    'gender' => $membership->getCommitteeCandidacy()->getGender(),
                     'first_name' => $membership->getAdherent()->getFirstName(),
                     'last_name' => $membership->getAdherent()->getLastName(),
                     'created_at' => $membership->getCommitteeCandidacy()->getCreatedAt(),
