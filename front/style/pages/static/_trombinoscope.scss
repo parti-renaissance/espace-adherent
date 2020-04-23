@@ -1,0 +1,50 @@
+.content article {
+
+    .static-page-trombi {
+        &__item {
+
+            margin-bottom: 60px;
+
+             .head {
+                 display: flex;
+                 flex-wrap: wrap;
+                 align-items: center;
+
+                 .id {
+                     margin-bottom: 30px;
+
+                     h2 {
+                         color: $pink;
+                         margin: 0;
+                     }
+
+                     a {
+                         margin-right: 10px;
+                     }
+
+                     .fa {
+                         font-size: 18px;
+                     }
+                 }
+
+                 .photo {
+                    width: 210px;
+                    height: 150px;
+                    background-position: center center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    margin-bottom: 30px;
+                    margin-right: 30px;
+                 }
+             }
+
+             .description {
+                 color: $dark;
+                 font-size: 14px;
+                 line-height: 20px;
+                 margin: 0;
+                 text-align: justify;
+             }
+        }
+    }
+}
