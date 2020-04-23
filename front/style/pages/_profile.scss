@@ -156,4 +156,28 @@
     &__membership {
         margin-bottom: 20px;
     }
+
+    .certification-status {
+        padding: 30px 40px 40px;
+        margin-top: 40px;
+
+        &.certified {
+            background-image: url('/images/icons/certification/certification_confettis.svg');
+            background-position: center top -5px;
+            background-repeat: no-repeat;
+            background-size: 90%;
+        }
+
+        .title {
+            font-weight: bold;
+            color: $black;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        p {
+            margin: 0 auto;
+            max-width: 470px;
+        }
+    }
 }
