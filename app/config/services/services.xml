@@ -270,7 +270,7 @@
         <prototype namespace="AppBundle\Repository\" resource="../../../src/Repository/**" />
 
         <!-- Security -->
-        <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter/**"/>
+        <prototype namespace="AppBundle\Security\Voter\" resource="../../../src/Security/Voter"/>
         <service id="AppBundle\Security\Http\AuthenticationFailureHandler"/>
         <service id="AppBundle\Security\Http\Session\AnonymousFollowerSession" public="true" />
         <service id="AppBundle\Security\LoginFormAuthenticator">
