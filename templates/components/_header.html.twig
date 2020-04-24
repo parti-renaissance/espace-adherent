@@ -1,6 +1,7 @@
 {% set has_role_user = is_granted('ROLE_USER') %}
 {% set has_role_adherent = is_granted('ROLE_ADHERENT') %}
 {% set has_role_admin = is_granted('ROLE_ADMIN_DASHBOARD') %}
+{% set is_certified = is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::CERTIFIED')) %}
 
 <header>
     {% set adherent_committees = '' %}

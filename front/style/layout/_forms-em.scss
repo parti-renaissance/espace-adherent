@@ -230,6 +230,7 @@
         .character-count { @include em-form-chars-count; }
 
         .em-form__file {
+            box-sizing: border-box;
             font-family: $font-roboto;
             position: relative;
             height: 140px;
@@ -239,6 +240,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 10px;
+            text-align: center;
 
             input[type='file'] {
                 position: absolute;

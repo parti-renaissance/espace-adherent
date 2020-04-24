@@ -447,6 +447,10 @@
         &--left-small {
             margin-left: 10px;
         }
+
+        &--left-nano {
+            margin-left: 5px;
+        }
     }
 }
 // TODO: need better way to manage bg images, maybe a scss file just for that

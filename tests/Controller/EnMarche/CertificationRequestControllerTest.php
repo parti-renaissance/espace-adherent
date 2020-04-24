@@ -20,7 +20,7 @@ class CertificationRequestControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertContains('Demande de certification confirmée', $crawler->filter('.certification-status')->text());
+        $this->assertContains('Votre profil est certifié', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsDisabled();
     }

@@ -137,6 +137,9 @@
                     <a href="{{ has_role_adherent ? path('app_user_profile') }}" class="icon--with-text nav-dropdown__name">
                         {{ include('components/user.html.twig') }}
                         {{ app.user.firstName is defined ? app.user.firstName : ''}}
+                        {% if is_certified %}
+                            <img class="b__nudge--left-nano" src="{{ asset('/images/icons/certification/certified-sm.svg') }}" />
+                        {% endif %}
                     </a>
                 {% endif %}
                 {% if has_role_user %}
