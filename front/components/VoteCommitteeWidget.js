@@ -97,7 +97,7 @@ export default class VoteCommitteeWidget extends React.Component {
 
                 <div>
                     <button
-                        className="btn btn--ghosting--blue toggleModal b__nudge--right-nano"
+                        className="btn btn--ghosting--blue toggleModal b__nudge--right-small"
                         onClick={() => this.closeModalCallback(true)}
                     >
                         Annuler
