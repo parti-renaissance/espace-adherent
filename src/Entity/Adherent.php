@@ -619,10 +619,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ADHERENT';
         }
 
-        if ($this->isCertified()) {
-            $roles[] = 'ROLE_CERTIFIED';
-        }
-
         if ($this->isReferent()) {
             $roles[] = 'ROLE_REFERENT';
         }

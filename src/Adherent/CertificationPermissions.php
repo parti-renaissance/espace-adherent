@@ -4,6 +4,7 @@ namespace AppBundle\Adherent;
 
 class CertificationPermissions
 {
+    public const CERTIFIED = 'adherent.certified';
     public const CERTIFY = 'certification.certify';
     public const UNCERTIFY = 'certification.uncertify';
     public const REQUEST = 'certification_request.request';
