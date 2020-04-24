@@ -138,7 +138,7 @@
                         {{ include('components/user.html.twig') }}
                         {{ app.user.firstName is defined ? app.user.firstName : ''}}
                         {% if is_certified %}
-                            <img class="b__nudge--left-nano" src="{{ asset('/images/icons/certification/certified-sm.svg') }}" />
+                            {% include('components/_certification_logo.html.twig') %}
                         {% endif %}
                     </a>
                 {% endif %}

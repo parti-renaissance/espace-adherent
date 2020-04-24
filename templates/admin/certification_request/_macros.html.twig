@@ -16,14 +16,6 @@
     {% endspaceless %}
 {% endmacro %}
 
-{% macro get_certification_request_adherent_summary(adherent) %}
-    <a href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
-        {{ adherent.fullName }}
-    </a>
-    <br>
-    <i>{{ adherent.emailAddress }}</i>
-{% endmacro %}
-
 {% macro get_certification_request_processed_by(certification_request) %}
     {% if certification_request.isProcessed %}
         <i>

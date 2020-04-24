@@ -2,6 +2,6 @@
 
 {% block field %}
     {% if object.isCertified %}
-        <span class="fa fa-check"></span>
+        {% include('components/_certification_logo.html.twig') %}
     {% endif %}
 {% endblock %}

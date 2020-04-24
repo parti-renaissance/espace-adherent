@@ -1,0 +1,12 @@
+{% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
+    <a href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
+        {{ adherent.fullName }}
+    </a>
+{% else %}
+    {{ adherent.fullName }}
+{% endif %}
+{% if adherent.isCertified %}
+    {% include('components/_certification_logo.html.twig') %}
+{% endif %}
+<br>
+<i>{{ adherent.emailAddress }}</i>
