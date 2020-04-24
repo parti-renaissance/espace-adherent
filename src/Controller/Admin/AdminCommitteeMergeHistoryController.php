@@ -72,10 +72,12 @@ class AdminCommitteeMergeHistoryController extends CRUDController
             if ($form->get('allow')->isClicked()) {
                 $committeeMergeHandler->revert($committeeMergeHistory, $this->getUser());
 
-                $this->addFlash('success', 'La fusion de comités a bien été annulée.');
+                $this->addFlash('success', 'La fusion de comités a bien été annulée.<br>Veuillez nommer un animateur.');
             }
 
-            return $this->redirectToList();
+            return $this->redirectToRoute('app_admin_committee_members', [
+                'id' => $committeeMergeHistory->getSourceCommittee()->getId(),
+            ]);
         }
 
         return $this->renderWithExtraParams('admin/committee/merge/revert.html.twig', [
