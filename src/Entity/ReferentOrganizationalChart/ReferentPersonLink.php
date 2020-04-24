@@ -15,6 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ReferentPersonLink
 {
+    public const CO_REFERENT = 'co_referent';
+    public const LIMITED_CO_REFERENT = 'limited_co_referent';
+    public const CO_REFERENT_TYPES = [
+        self::CO_REFERENT,
+        self::LIMITED_CO_REFERENT,
+    ];
+
     /**
      * @var int
      *
@@ -85,11 +92,11 @@ class ReferentPersonLink
     private $adherent;
 
     /**
-     * @var bool
+     * @var string|null
      *
-     * @ORM\Column(type="boolean", options={"default": false})
+     * @ORM\Column(length=50, nullable=true)
      */
-    private $isCoReferent = false;
+    private $coReferent;
 
     /**
      * @var bool
@@ -191,14 +198,28 @@ class ReferentPersonLink
         $this->adherent = null;
     }
 
-    public function isCoReferent(): bool
+    public function getCoReferent(): ?string
     {
-        return $this->isCoReferent;
+        return $this->coReferent;
     }
 
-    public function setIsCoReferent(bool $isCoReferent): void
+    public function setCoReferent(?string $coReferent = null): void
     {
-        $this->isCoReferent = $isCoReferent;
+        if (null !== $coReferent && !\in_array($coReferent, self::CO_REFERENT_TYPES)) {
+            throw new \InvalidArgumentException(sprintf('Invalid co-referent type "%s". It must be one of %s.', $coReferent, implode(', ', self::CO_REFERENT_TYPES)));
+        }
+
+        $this->coReferent = $coReferent;
+    }
+
+    public function isCoReferent(): bool
+    {
+        return null !== $this->coReferent;
+    }
+
+    public function isLimitedCoReferent(): bool
+    {
+        return self::LIMITED_CO_REFERENT === $this->coReferent;
     }
 
     public function isJecouteManager(): bool

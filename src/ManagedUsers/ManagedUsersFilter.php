@@ -125,10 +125,16 @@ class ManagedUsersFilter
      */
     private $committee;
 
-    public function __construct(string $subscriptionType = null, array $referentTags = [])
+    /**
+     * @var string[]
+     */
+    private $committeeUuids = [];
+
+    public function __construct(string $subscriptionType = null, array $referentTags = [], array $committeeUuids = [])
     {
         $this->subscriptionType = $subscriptionType;
         $this->referentTags = $referentTags;
+        $this->committeeUuids = $committeeUuids;
     }
 
     public function getGender(): ?string
@@ -341,6 +347,11 @@ class ManagedUsersFilter
     public function setCommittee(?Committee $committee): void
     {
         $this->committee = $committee;
+    }
+
+    public function getCommitteeUuids(): array
+    {
+        return $this->committeeUuids;
     }
 
     public function toArray(): array

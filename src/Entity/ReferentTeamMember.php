@@ -36,9 +36,17 @@ class ReferentTeamMember
      */
     private $referent;
 
-    public function __construct(Adherent $referent)
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $limited = false;
+
+    public function __construct(Adherent $referent, bool $limited = false)
     {
         $this->referent = $referent;
+        $this->limited = $limited;
     }
 
     public function getId(): int
@@ -59,5 +67,15 @@ class ReferentTeamMember
     public function getReferent(): Adherent
     {
         return $this->referent;
+    }
+
+    public function isLimited(): bool
+    {
+        return $this->limited;
+    }
+
+    public function setLimited(bool $limited): void
+    {
+        $this->limited = $limited;
     }
 }

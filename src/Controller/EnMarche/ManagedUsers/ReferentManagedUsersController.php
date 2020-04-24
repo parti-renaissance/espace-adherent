@@ -41,7 +41,8 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
             ($referent->isCoReferent() ? $referent->getReferentOfReferentTeam() : $referent)
-                ->getManagedArea()->getTags()->toArray()
+                ->getManagedArea()->getTags()->toArray(),
+            $referent->isLimitedCoReferent() ? $referent->getMemberships()->getCommitteeUuids() : []
         );
     }
 }

@@ -1283,6 +1283,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->referentTeamMember instanceof ReferentTeamMember;
     }
 
+    public function isLimitedCoReferent(): bool
+    {
+        return $this->isCoReferent() && $this->referentTeamMember->isLimited();
+    }
+
     public function revokeReferent(): void
     {
         $this->managedArea = null;

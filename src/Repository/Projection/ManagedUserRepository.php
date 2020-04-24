@@ -139,6 +139,17 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($committees = $filter->getCommitteeUuids()) {
+            $committeesExpression = $qb->expr()->orX();
+
+            foreach ($committees as $key => $uuid) {
+                $committeesExpression->add("FIND_IN_SET(:committee_uuid_$key, u.committeeUuids) > 0");
+                $qb->setParameter("committee_uuid_$key", $uuid);
+            }
+
+            $qb->andWhere($committeesExpression);
+        }
+
         $typeExpression = $qb->expr()->orX();
 
         if ($filter->includeAdherentsNoCommittee()) {

@@ -51,8 +51,18 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                 ) {
                     if ($adherent->isCoReferent()) {
                         if (!$personLink->isCoReferent()) {
-                            $personLink->setIsCoReferent(true);
+                            $personLink->setCoReferent($adherent->isLimitedCoReferent() ? ReferentPersonLink::LIMITED_CO_REFERENT : ReferentPersonLink::CO_REFERENT);
                             $uow->recomputeSingleEntityChangeSet($this->manager->getClassMetadata(ReferentPersonLink::class), $personLink);
+                        } elseif ($personLink->isLimitedCoReferent() !== $adherent->isLimitedCoReferent()) {
+                            $referentTeamMember = $adherent->getReferentTeamMember();
+                            $referentTeamMember->setLimited($personLink->isLimitedCoReferent());
+                            array_map(static function (ReferentPersonLink $otherPersonLink) use ($personLink) {
+                                if ($personLink === $otherPersonLink) {
+                                    return;
+                                }
+                                $otherPersonLink->setCoReferent($personLink->getCoReferent());
+                            }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
+                            $uow->computeChangeSets();
                         }
                     } elseif ($personLink->isCoReferent()) {
                         $this->initializeCoReferentNewRole($personLink, $currentReferent, $adherent);
@@ -116,6 +126,15 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                 if ($personLink->isCoReferent()) {
                     if ($adherent && !$adherent->isCoReferent()) {
                         $this->initializeCoReferentNewRole($personLink, $currentReferent, $adherent);
+                    } elseif ($adherent && $adherent->isCoReferent()) {
+                        $referentTeamMember = $adherent->getReferentTeamMember();
+                        $referentTeamMember->setLimited($personLink->isLimitedCoReferent());
+                        array_map(static function (ReferentPersonLink $otherPersonLink) use ($personLink) {
+                            if ($personLink === $otherPersonLink) {
+                                return;
+                            }
+                            $otherPersonLink->setCoReferent($personLink->getCoReferent());
+                        }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
                     }
                 } else {
                     if ($adherent && $adherent->isCoReferent()) {
@@ -123,7 +142,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                             if ($personLink === $otherPersonLink) {
                                 return;
                             }
-                            $otherPersonLink->setIsCoReferent(false);
+                            $otherPersonLink->setCoReferent(null);
                         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
 
                         $this->manager->remove($adherent->getReferentTeamMember());
@@ -208,12 +227,13 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         Adherent $currentReferent,
         Adherent $adherent
     ): void {
-        $adherent->setReferentTeamMember($member = new ReferentTeamMember($currentReferent));
+        $adherent->setReferentTeamMember($member = new ReferentTeamMember($currentReferent, $personLink->isLimitedCoReferent()));
         $this->manager->persist($member);
+        $coReferent = $personLink->getCoReferent();
 
-        array_map(static function (ReferentPersonLink $personLink) use ($adherent) {
+        array_map(static function (ReferentPersonLink $personLink) use ($adherent, $coReferent) {
             $personLink->setAdherent($adherent);
-            $personLink->setIsCoReferent(true);
+            $personLink->setCoReferent($coReferent);
         }, $this->repository->findBy(['email' => $adherent->getEmailAddress(), 'referent' => $personLink->getReferent()]));
     }
 

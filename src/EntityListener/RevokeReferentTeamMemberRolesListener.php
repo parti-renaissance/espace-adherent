@@ -45,7 +45,7 @@ class RevokeReferentTeamMemberRolesListener
         }
 
         foreach ($this->entityManager->getRepository(ReferentPersonLink::class)->findByReferentEmail($adherent->getEmailAddress()) as $personLink) {
-            $personLink->setIsCoReferent(false);
+            $personLink->setCoReferent(null);
             $personLink->setIsMunicipalManagerSupervisor(false);
         }
 
