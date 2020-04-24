@@ -33,7 +33,7 @@
                         <a href="{{ has_role_adherent ? path('app_user_profile') : path('app_user_login') }}">
                             <div class="l__row text--bold">
                                 {{ app.user.firstName }}
-                                {% if app.user.isCertified %}
+                                {% if is_certified %}
                                     <img class="b__nudge--left-nano" src="{{ asset('/images/icons/certification/certified-sm.svg') }}" />
                                 {% endif %}
                             </div>
