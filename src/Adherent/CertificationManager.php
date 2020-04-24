@@ -21,9 +21,7 @@ class CertificationManager
 
     public function createRequest(Adherent $adherent): CertificationRequest
     {
-        $adherent->startCertificationRequest();
-
-        return $adherent->getCertificationRequests()->getPendingCertificationRequest();
+        return $adherent->startCertificationRequest();
     }
 
     public function handleRequest(CertificationRequest $certificationRequest): void

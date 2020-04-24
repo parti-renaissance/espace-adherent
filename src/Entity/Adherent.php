@@ -494,7 +494,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var CertificationRequest[]|Collection
      *
-     * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"createdAt": "ASC"})
      */
     private $certificationRequests;
@@ -1990,12 +1990,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->certificationRequests;
     }
 
-    public function startCertificationRequest(): void
+    public function startCertificationRequest(): CertificationRequest
     {
         if ($this->getCertificationRequests()->hasPendingCertificationRequest()) {
             throw new \LogicException('Adherent already has a pending certification request.');
         }
 
-        $this->certificationRequests->add(new CertificationRequest($this));
+        $pendingCertificationRequest = new CertificationRequest($this);
+
+        $this->certificationRequests->add($pendingCertificationRequest);
+
+        return $pendingCertificationRequest;
     }
 }
