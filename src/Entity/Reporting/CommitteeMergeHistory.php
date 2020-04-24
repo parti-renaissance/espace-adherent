@@ -155,6 +155,7 @@ class CommitteeMergeHistory
 
         $this->revertedBy = $administrator;
         $this->revertedAt = new \DateTimeImmutable();
+        $this->mergedMemberships = new CommitteeMembershipCollection();
     }
 
     public function isReverted(): bool

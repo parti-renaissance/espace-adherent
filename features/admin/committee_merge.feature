@@ -43,7 +43,6 @@ Feature: Merge committees from admin panel
     And I should not see "Confirmer la fusion"
     And "api_sync" should have 0 message
 
-    @debug
   Scenario: A committee merge and revert must trigger events in RabbitMQ
     Given I am on "/admin/committee/1/members"
     Then I should see 4 ".committee-members tbody tr" elements
@@ -77,7 +76,6 @@ Feature: Merge committees from admin panel
     And I follow "Annuler la fusion"
     Then the response status code should be 200
     And I press "Confirmer"
-    Then print last response
     Then the response status code should be 200
     And I should be on "/admin/committee/3/members"
     And I should see "La fusion de comités a bien été annulée."
