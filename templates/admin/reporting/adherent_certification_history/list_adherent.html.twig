@@ -1,11 +1,5 @@
 {% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
 
 {% block field %}
-    {% set adherent = object.adherent %}
-
-    <a href="{{ path('admin_app_adherent_edit', { id: adherent.id }) }}">
-        {{ adherent.fullName }}
-    </a>
-    <br>
-    <i>{{ adherent.emailAddress }}</i>
+    {% include('admin/adherent/_summary.html.twig') with { adherent: object.adherent } %}
 {% endblock %}

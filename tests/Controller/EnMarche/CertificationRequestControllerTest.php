@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\CertificationRequest;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\AppBundle\Controller\ControllerTestTrait;
@@ -13,6 +14,8 @@ use Tests\AppBundle\Controller\ControllerTestTrait;
 class CertificationRequestControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
+
+    private $certificationRequestRepository;
 
     public function testApprovedCertificationRequest(): void
     {
@@ -38,13 +41,15 @@ class CertificationRequestControllerTest extends WebTestCase
 
     public function testRefusedCertificationRequest(): void
     {
-        $this->authenticateAsAdherent($this->client, 'luciole1989@spambox.fr');
+        $this->authenticateAsAdherent($this->client, $email = 'luciole1989@spambox.fr');
+        $this->assertEquals(1, $this->countCertificationRequests($email));
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
         $this->assertContains('Demande de certification refusée', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsSuccessful();
+        $this->assertEquals(2, $this->countCertificationRequests($email));
     }
 
     public function testBlockedCertificationRequest(): void
@@ -60,13 +65,15 @@ class CertificationRequestControllerTest extends WebTestCase
 
     public function testNoCertificationRequest(): void
     {
-        $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
+        $this->authenticateAsAdherent($this->client, $email = 'kiroule.p@blabla.tld');
+        $this->assertEquals(0, $this->countCertificationRequests($email));
 
         $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
         $this->assertResponseStatusCode(200, $this->client->getResponse());
         $this->assertContains('Votre profil n\'est pas encore certifié.', $crawler->filter('.certification-status')->text());
 
         $this->assertCertificationRequestIsSuccessful();
+        $this->assertEquals(1, $this->countCertificationRequests($email));
     }
 
     private function assertCertificationRequestIsDisabled(): void
@@ -111,12 +118,30 @@ class CertificationRequestControllerTest extends WebTestCase
         parent::setUp();
 
         $this->init();
+
+        $this->certificationRequestRepository = $this->getRepository(CertificationRequest::class);
     }
 
     protected function tearDown()
     {
+        $this->certificationRequestRepository = null;
+
         $this->kill();
 
         parent::tearDown();
+    }
+
+    private function countCertificationRequests(string $email): int
+    {
+        return $this
+            ->certificationRequestRepository
+            ->createQueryBuilder('cr')
+            ->select('COUNT(cr)')
+            ->innerJoin('cr.adherent', 'adherent')
+            ->where('adherent.emailAddress = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }

@@ -35,7 +35,7 @@
                                 <tr>
                                     <th class="sonata-ba-list-field-header-text">Adhérent</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ macros.get_certification_request_adherent_summary(adherent) }}
+                                        {% include('admin/adherent/_summary.html.twig') with { adherent: adherent } %}
                                     </td>
                                 </tr>
                                 <tr>

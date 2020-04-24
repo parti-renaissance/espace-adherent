@@ -797,7 +797,7 @@ HELP
             ->add('firstName', null, [
                 'label' => 'Prénom',
             ])
-            ->add('certified', null, [
+            ->add('certifiedAt', null, [
                 'label' => 'Certifié',
                 'template' => 'admin/adherent/list_certified.html.twig',
             ])
