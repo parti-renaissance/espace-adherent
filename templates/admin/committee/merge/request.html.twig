@@ -1,26 +1,12 @@
-{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
 {% form_theme form '@SonataDoctrineORMAdmin/Form/form_admin_fields.html.twig' %}
 
-{% block sonata_page_content_header %}
-    <div class="sticky-wrapper">
-        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">
-                        Fusion de comités
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </div>
+{% block title %}
+    Fusion de comités
 {% endblock %}
 
-{% block sonata_admin_content %}
-    {% block notice %}
-        {{ parent() }}
-    {% endblock %}
-
+{% block show %}
     {{ form_start(form) }}
         <div class="row">
             <div class="col-md-6">

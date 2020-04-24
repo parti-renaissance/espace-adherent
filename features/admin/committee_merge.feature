@@ -8,7 +8,7 @@ Feature: Merge committees from admin panel
     When I am logged as "superadmin@en-marche-dev.fr" admin
 
   Scenario: A committee can not be merged if it is not approved
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 2 |
       | ID du comité de destination | 1 |
@@ -20,7 +20,7 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee can not be merged if the destination committee is not approved
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 1 |
       | ID du comité de destination | 2 |
@@ -32,7 +32,7 @@ Feature: Merge committees from admin panel
     And "api_sync" should have 0 message
 
   Scenario: A committee can not be merged into itself
-    Given I am on "/admin/committee/merge"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 1 |
       | ID du comité de destination | 1 |
@@ -43,17 +43,18 @@ Feature: Merge committees from admin panel
     And I should not see "Confirmer la fusion"
     And "api_sync" should have 0 message
 
-  Scenario: A committee merge must trigger events in RabbitMQ
-    Given I am on "/admin/app/committee/1/members"
-    Then I should not see "francis.brioul@yahoo.com"
-    Given I am on "/admin/committee/merge"
+  Scenario: A committee merge and revert must trigger events in RabbitMQ
+    Given I am on "/admin/committee/1/members"
+    Then I should see 4 ".committee-members tbody tr" elements
+    And I should not see "francis.brioul@yahoo.com"
+    Given I am on "/admin/app/reporting-committeemergehistory/merge"
     When I fill in the following:
       | ID du comité source         | 3 |
       | ID du comité de destination | 1 |
     Then I clean the "api_sync" queue
     And I press "Fusionner"
     Then the response status code should be 200
-    And I should see "l'arrivée de 1 nouveaux membres au sein du comité de destination En Marche Paris 8 (1)"
+    And I should see "l'arrivée de 1 nouveau(x) membre(s) au sein du comité de destination En Marche Paris 8 (1)"
     And "api_sync" should have 0 message
     Then I press "Confirmer la fusion"
     And the response status code should be 200
@@ -67,4 +68,20 @@ Feature: Merge committees from admin panel
     And I should not see "Animateur principal"
     And I should not see "Co-animateur"
     Then I am on "/admin/committee/1/members"
+    And I should see 5 ".committee-members tbody tr" elements
     And I should see "francis.brioul@yahoo.com"
+
+    Given I clean the queues
+    And I am on "/admin/app/reporting-committeemergehistory/list"
+    And I follow "Annuler la fusion"
+    Then the response status code should be 200
+    And I press "Confirmer"
+    Then the response status code should be 200
+    And I should be on "/admin/committee/3/members"
+    And I should see "La fusion de comités a bien été annulée."
+    And "api_sync" should have 2 messages
+
+    Then I am on "/admin/committee/1/members"
+    And I should see 4 ".committee-members tbody tr" elements
+    And I should not see "francis.brioul@yahoo.com"
+

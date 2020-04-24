@@ -199,7 +199,7 @@
 
             <argument />
             <argument>AppBundle\Entity\Reporting\CommitteeMergeHistory</argument>
-            <argument />
+            <argument>AppBundle\Controller\Admin\AdminCommitteeMergeHistoryController</argument>
         </service>
 
         <service id="app.admin.event" class="AppBundle\Admin\EventAdmin">
@@ -1234,16 +1234,6 @@
             <argument />
             <argument>AppBundle\Entity\ProgrammaticFoundation\Tag</argument>
             <argument />
-        </service>
-
-        <!--
-        ######################################################
-        # Menu
-        ######################################################
-        -->
-
-        <service id="AppBundle\Admin\EventListener\AdminCommitteeMergeMenuListener">
-            <tag name="kernel.event_listener" event="sonata.admin.event.configure.menu.sidebar" method="addMenuItems" />
         </service>
 
     </services>
