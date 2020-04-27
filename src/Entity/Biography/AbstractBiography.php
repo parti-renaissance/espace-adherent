@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Biography;
 
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\Entity\ImageOwnerInterface;
 use AppBundle\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractBiography
+abstract class AbstractBiography implements ImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

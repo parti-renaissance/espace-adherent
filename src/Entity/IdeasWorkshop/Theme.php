@@ -5,6 +5,7 @@ namespace AppBundle\Entity\IdeasWorkshop;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
 use AppBundle\Entity\EnabledInterface;
+use AppBundle\Entity\ImageOwnerInterface;
 use AppBundle\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -37,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Algolia\Index(autoIndex=false)
  */
-class Theme implements EnabledInterface
+class Theme implements EnabledInterface, ImageOwnerInterface
 {
     use ImageTrait;
 

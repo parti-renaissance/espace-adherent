@@ -53,4 +53,9 @@ trait ImageTrait
     {
         $this->image = $image;
     }
+
+    public function getImagePath(): string
+    {
+        return $this->getImageName();
+    }
 }
