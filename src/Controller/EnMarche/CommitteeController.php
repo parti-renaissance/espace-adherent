@@ -7,13 +7,17 @@ use AppBundle\Controller\CanaryControllerTrait;
 use AppBundle\Controller\EntityControllerTrait;
 use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
+use AppBundle\Entity\CommitteeCandidacy;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
+use AppBundle\Form\VotingPlatform\CandidateProfileType;
+use AppBundle\Image\ImageManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use AppBundle\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -221,21 +225,18 @@ class CommitteeController extends Controller
     }
 
     /**
-     * @Route("/candidater", name="app_committee_candidate", condition="request.query.has('token')", methods={"GET"})
+     * @Route("/candidater", name="app_committee_candidate", methods={"GET", "POST"})
      *
      * @Security("is_granted('MEMBER_OF_COMMITTEE', committee) and is_granted('ABLE_TO_CANDIDATE')")
      */
     public function candidateAction(
         UserInterface $adherent,
-        Request $request,
         Committee $committee,
-        CommitteeManager $manager
+        Request $request,
+        CommitteeManager $manager,
+        ImageManager $imageManager
     ): Response {
         $this->disableInProduction();
-
-        if (!$this->isCsrfTokenValid('committee.candidate', $request->query->get('token'))) {
-            throw $this->createAccessDeniedException('Invalid CSRF protection token to candidate in committee.');
-        }
 
         /** @var Adherent $adherent */
         $candidacyGender = $adherent->getGender();
@@ -250,11 +251,75 @@ class CommitteeController extends Controller
             }
         }
 
-        if ($manager->candidateInCommittee($adherent, $committee, $candidacyGender)) {
-            $this->addFlash('info', 'Votre candidature a bien été enregistrée');
+        $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $candidacyGender);
+
+        $form = $this
+            ->createForm(CandidateProfileType::class, $candidacy)
+            ->add('skip', SubmitType::class)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('save')->isClicked() && $candidacy->getImage()) {
+                $imageManager->saveImage($candidacy);
+            } elseif ($form->get('skip')->isClicked()) {
+                $candidacy->setBiography(null);
+            }
+
+            if ($manager->candidateInCommittee($candidacy, $adherent, $committee)) {
+                $this->addFlash('info', 'Votre candidature a bien été enregistrée');
+
+                return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+            }
         }
 
-        return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        return $this->render('committee/edit_candidacy.html.twig', [
+            'form' => $form->createView(),
+            'committee' => $committee,
+        ]);
+    }
+
+    /**
+     * @Route("/modifie-ma-candidature", name="app_committee_update_candidacy", methods={"GET", "POST"})
+     *
+     * @Security("is_granted('MEMBER_OF_COMMITTEE', committee)")
+     */
+    public function updateCandidacyAction(
+        Request $request,
+        Committee $committee,
+        UserInterface $adherent,
+        CommitteeManager $manager,
+        ImageManager $imageManager
+    ): Response {
+        $this->disableInProduction();
+
+        /** @var Adherent $adherent */
+        if (!$candidacy = $manager->getCandidacy($adherent, $committee)) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this
+            ->createForm(CandidateProfileType::class, $candidacy)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($candidacy->getImage()) {
+                $imageManager->saveImage($candidacy);
+            }
+
+            $manager->saveCandidacy($candidacy);
+
+            $this->addFlash('info', 'Votre candidature a bien été modifiée');
+
+            return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
+        }
+
+        return $this->render('committee/edit_candidacy.html.twig', [
+            'candidacy' => $candidacy,
+            'committee' => $committee,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

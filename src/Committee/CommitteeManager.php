@@ -409,15 +409,12 @@ class CommitteeManager
         $this->getManager()->flush();
     }
 
-    public function candidateInCommittee(Adherent $adherent, Committee $committee, string $gender): bool
+    public function candidateInCommittee(CommitteeCandidacy $candidacy, Adherent $adherent, Committee $committee): bool
     {
         $membership = $this->getCommitteeMembership($adherent, $committee);
 
         if ($membership && $membership->isVotingCommittee()) {
-            $membership->setCommitteeCandidacy($candidacy = new CommitteeCandidacy(
-                $committee->getCommitteeElection(),
-                $gender
-            ));
+            $membership->setCommitteeCandidacy($candidacy);
 
             $this->getManager()->flush();
 
@@ -615,5 +612,21 @@ class CommitteeManager
         }
 
         $this->dispatcher->dispatch(UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE, new FollowCommitteeEvent($adherent));
+    }
+
+    public function getCandidacy(Adherent $adherent, Committee $committee): ?CommitteeCandidacy
+    {
+        $membership = $this->getCommitteeMembership($adherent, $committee);
+
+        return $membership->getCommitteeCandidacy();
+    }
+
+    public function saveCandidacy(CommitteeCandidacy $candidacy)
+    {
+        if (!$candidacy->getId()) {
+            $this->getManager()->persist($candidacy);
+        }
+
+        $this->getManager()->flush();
     }
 }

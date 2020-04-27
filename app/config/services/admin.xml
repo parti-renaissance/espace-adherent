@@ -592,10 +592,6 @@
             <argument />
             <argument>AppBundle\Entity\IdeasWorkshop\Theme</argument>
             <argument />
-
-            <call method="setThemeManager">
-                <argument type="service" id="AppBundle\IdeasWorkshop\ThemeManager"/>
-            </call>
         </service>
 
         <service id="app.admin.ideas_workshop_guideline" class="AppBundle\Admin\IdeasWorkshopGuidelineAdmin">

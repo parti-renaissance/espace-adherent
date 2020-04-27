@@ -86,6 +86,10 @@
     &__header {
         padding: 60px 0;
 
+        &-slim {
+            padding: 20px 0;
+        }
+
         @media (min-width: $tablet) {
             padding: 80px 0;
         }
@@ -614,6 +618,28 @@
 
         &> a .oval {
             background-color: $white;
+        }
+    }
+
+    .image-cropper--container {
+        img {
+            max-width: 100%;
+        }
+    }
+
+    .preview-cropped-image {
+        display: none;
+
+        span {
+            border-radius: 50%;
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        img {
+            max-height: 150px;
         }
     }
 }

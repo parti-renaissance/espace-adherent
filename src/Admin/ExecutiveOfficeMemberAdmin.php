@@ -2,9 +2,9 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Biography\BiographyManager;
 use AppBundle\Entity\Biography\ExecutiveOfficeMember;
 use AppBundle\Form\PurifiedTextareaType;
+use AppBundle\Image\ImageManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -23,19 +23,14 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
     ];
 
     /**
-     * @var BiographyManager
+     * @var ImageManager
      */
-    private $biographyManager;
+    private $imageManager;
 
-    public function __construct(
-        string $code,
-        string $class,
-        string $baseControllerName,
-        BiographyManager $biographyManager
-    ) {
-        parent::__construct($code, $class, $baseControllerName);
-
-        $this->biographyManager = $biographyManager;
+    /** @required */
+    public function setImageManager(ImageManager $imageManager): void
+    {
+        $this->imageManager = $imageManager;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -191,7 +186,7 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
     {
         parent::postRemove($executiveOfficeMember);
 
-        $this->biographyManager->removeImage($executiveOfficeMember);
+        $this->imageManager->removeImage($executiveOfficeMember);
     }
 
     /**
@@ -202,7 +197,7 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
         parent::prePersist($executiveOfficeMember);
 
         if ($executiveOfficeMember->getImage()) {
-            $this->biographyManager->saveImage($executiveOfficeMember);
+            $this->imageManager->saveImage($executiveOfficeMember);
         }
     }
 
@@ -214,7 +209,7 @@ class ExecutiveOfficeMemberAdmin extends AbstractAdmin
         parent::preUpdate($executiveOfficeMember);
 
         if ($executiveOfficeMember->getImage()) {
-            $this->biographyManager->saveImage($executiveOfficeMember);
+            $this->imageManager->saveImage($executiveOfficeMember);
         }
     }
 }

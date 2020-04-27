@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/cropper.min.css') }}" />
+{% endblock %}
+
+{% block page_title %}
+    Modifier la candidature
+{% endblock %}
+
+{% block content %}
+    <main class="committee">
+        <header class="committee__header-slim background--blue">
+
+            <div class="l__wrapper committee__header__content">
+                <div class="text--white committee__header__titles">
+                    <div class="text--uppercase text--small b__nudge--bottom">
+                        Comité local
+                    </div>
+                    <div class="committee__name">
+                        <h2>{{ committee.name }}</h2>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="l__wrapper">
+            <div class="committee__main b__nudge--top-40">
+                <div>
+                    <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="link--no-decor link--blue--dark">⟵ Annuler</a>
+                </div>
+                <div class="l__wrapper--600">
+                    <h2 class="b__nudge--bottom-50">Votre candidature</h2>
+
+                    {{ form_start(form, {attr: {class: 'em-form'}}) }}
+
+                    {{ form_errors(form) }}
+
+                    <div class="em-form__group">
+                        <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
+
+                        {{ form_errors(form.image) }}
+
+                        <div class="em-form__file">
+                            <div class="em-form__file">
+                                {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
+                                {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark'}}) }}
+                                <span class="em-form__file--name custom-file-label">Aucun fichier sélectionné</span>
+                            </div>
+                            <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
+                        </div>
+
+                        {% if candidacy is defined and candidacy.imageName %}
+                            {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
+                        {% endif %}
+
+                        <div class="preview-cropped-image" style="{{ image_url is defined ? 'display: block;' }}">
+                            <p>
+                                <label class="em-form__label">Prévisualisation: </label>
+                            </p>
+                            <div class="text--center">
+                                <img src="{{ image_url is defined ? image_url }}" alt="preview-square"/>
+
+                                <span class="b__nudge--left-small"><img src="{{ image_url is defined ? image_url }}" alt="preview-circle"/></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="em-form__group">
+                        {{ form_label(form.biography, 'Biographie', {label_attr: {class: 'em-form__label'}}) }}
+                        {{ form_errors(form.biography) }}
+                        <div class="em-form__field--ctn">
+                            {{ form_widget(form.biography, {attr: {class: ' em-form__field ', rows: 50}}) }}
+                        </div>
+                    </div>
+
+                    <div>
+                        {{ form_row(form.save, {label: 'Valider', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
+
+                        {% if form.skip is defined %}
+                            {{ form_row(form.skip, {label: 'Passer cette étape', attr: {class: 'btn btn--gray btn--large-and-full b__nudge--top-15'}}) }}
+                        {% endif %}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-wrapper"></div>
+    </main>
+{% endblock %}
+
+{% block head_javascripts %}
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        Kernel.onLoad(function () {
+            var input = document.getElementById("{{form.image.vars.id}}");
+            var placeholder = input.parentElement.querySelector(".custom-file-label");
+
+            on(input, 'change', function () {
+                var value = input.value.replace('C:\\fakepath\\', '').trim();
+                placeholder.textContent = "" !== value ? value : (input.getAttribute('placeholder') || '');
+
+                App.runImageCropper(input);
+            });
+        });
+    </script>
+{% endblock %}
+

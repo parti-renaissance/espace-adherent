@@ -35,6 +35,8 @@ export default function () {
             event.preventDefault();
 
             const modalWrapper = document.createElement('div');
+            modalWrapper.style.display = 'inline-block';
+
             element.parentNode.insertBefore(modalWrapper, element);
 
             modal = render(

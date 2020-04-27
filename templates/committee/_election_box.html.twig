@@ -7,17 +7,12 @@
         Mauris lacus odio, tempor et venenatis sed, tristique nec sem.
     </p>
 
-    <div class="elections-actions">
+    <div class="elections-actions l__row--wrap">
         {% if able_to_candidate %}
             {% if candidacy_committee_membership is not null %}
                 {% if candidacy_committee_membership == membership %}
-                    <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
-                       class="btn btn--ghosting--pink btn--no-wrap em-confirm--trigger"
-                       data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
-                       id="remove-candidacy-link"
-                    >
-                        Je retire ma candidature
-                    </a>
+                    <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap">Je modifie ma candidature</a>
+                    {% set display_remove_candidacy_button = true %}
                 {% else %}
                     {% set display_wrang_committee_message = true %}
                 {% endif %}
@@ -37,7 +32,7 @@
                                 </p>
 
                                 <div>
-                                    {% set candidate_url_params = {slug: committee.slug, token: csrf_token('committee.candidate')} %}
+                                    {% set candidate_url_params = {slug: committee.slug} %}
 
                                     <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
                                     <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::MALE')})) }}">Homme</a>
@@ -45,7 +40,7 @@
                             </div>
                         </div>
                     {% else %}
-                        <a href="{{ path('app_committee_candidate', {slug: committee.slug, token: csrf_token('committee.candidate')}) }}"
+                        <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
                            id="committee-toggle-candidacy"
                            class="btn btn--pink btn--no-wrap"
                         >Je candidate</a>
@@ -59,6 +54,15 @@
         <div class="candidacies-list text--body text--small text--gray">
             Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark">la liste des candidats</a>
         </div>
+
+        {% if display_remove_candidacy_button is defined and display_remove_candidacy_button %}
+            <div class="text--smallest l__col--half b__nudge--top-10 text--center">
+                ou <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
+                      class="link--blue--dark link--no-decor em-confirm--trigger"
+                      data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
+                      id="remove-candidacy-link">je retire ma candidature</a>
+            </div>
+        {% endif %}
     </div>
 </section>
 
