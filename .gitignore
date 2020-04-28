@@ -13,6 +13,7 @@
 /web/built/
 /web/js/jquery.collection.js
 /web/select2/
+/web/css/cropper.min.css
 /.tmp
 /docker-compose.override.yml
 /gcloud-service-key.json

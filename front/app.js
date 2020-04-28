@@ -292,6 +292,12 @@ class App {
             module.default();
         });
     }
+
+    runImageCropper(inputElement) {
+        System.import('services/utils/imageCropper').catch((error) => { throw error; }).then((module) => {
+            module.default(inputElement);
+        });
+    }
 }
 
 window.App = new App();

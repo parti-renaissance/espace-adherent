@@ -5,13 +5,16 @@ namespace AppBundle\Entity;
 use AppBundle\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeCandidacyRepository")
  */
-class CommitteeCandidacy
+class CommitteeCandidacy implements ImageOwnerInterface
 {
     use TimestampableEntity;
+    use ImageTrait;
 
     /**
      * @ORM\Id
@@ -28,6 +31,25 @@ class CommitteeCandidacy
     private $gender;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max="2000")
+     */
+    private $biography;
+
+    /**
+     * @var UploadedFile|null
+     *
+     * @Assert\Image(
+     *     maxSize="5M",
+     *     mimeTypes={"image/jpeg", "image/png"}
+     * )
+     */
+    protected $image;
+
+    /**
      * @var CommitteeElection
      *
      * @ORM\ManyToOne(targetEntity="CommitteeElection")
@@ -35,7 +57,7 @@ class CommitteeCandidacy
      */
     private $committeeElection;
 
-    public function __construct(CommitteeElection $election, string $gender)
+    public function __construct(CommitteeElection $election, string $gender = null)
     {
         $this->committeeElection = $election;
         $this->gender = $gender;
@@ -79,5 +101,20 @@ class CommitteeCandidacy
     public function isFemale(): bool
     {
         return Genders::FEMALE === $this->gender;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): void
+    {
+        $this->biography = $biography;
+    }
+
+    public function getImagePath(): string
+    {
+        return sprintf('images/candidacies/profile/%s', $this->getImageName());
     }
 }

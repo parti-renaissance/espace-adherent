@@ -12,7 +12,6 @@ use AppBundle\Entity\AdherentCharter\ReferentCharter;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\CommitteeCandidacy;
 use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Entity\MunicipalManagerRoleAssociation;
@@ -1004,14 +1003,9 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent13->followCommittee($committee11));
         $manager->persist($adherent14->followCommittee($committee11));
         $manager->persist($assessor->followCommittee($committee5));
-        $manager->persist($voteCommitteeMembership = $assessor->followCommittee($committee6));
+        $manager->persist($assessor->followCommittee($committee6));
         $manager->persist($assessor->followCommittee($committee7));
         $manager->persist($assessor->followCommittee($committee8));
-
-        $voteCommitteeMembership->enableVote();
-        $voteCommitteeMembership->setCommitteeCandidacy(
-            new CommitteeCandidacy($committee6->getCommitteeElection(), $assessor->getGender())
-        );
 
         $manager->flush();
     }

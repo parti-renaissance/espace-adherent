@@ -3,7 +3,8 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadAdherentData |
+      | LoadAdherentData           |
+      | LoadCommitteeCandidacyData |
 
   @javascript
   Scenario: I can show a list of followed committees, then I can remove my candidacy and change the vote committee
@@ -135,7 +136,10 @@ Feature:
     Given I am on "/comites/en-marche-comite-de-evry"
     Then I should see "JE CANDIDATE"
     When I follow "committee-toggle-candidacy"
-    Then I wait 3 second until I see "JE RETIRE MA CANDIDATURE"
+    Then I should be on "/comites/en-marche-comite-de-evry/candidater"
+    When I press "Passer cette étape"
+    Then I should be on "/comites/en-marche-comite-de-evry"
+    And I should see "Votre candidature a bien été enregistrée"
     And I should have 1 email "CommitteeCandidacyCreatedConfirmationMessage" for "assesseur@en-marche-dev.fr" with payload:
     """
     {
@@ -235,7 +239,8 @@ Feature:
   Scenario: As member of the committee, I can see its candidacies modal
     Given I am logged as "assesseur@en-marche-dev.fr"
     When I am on "/comites/en-marche-comite-de-rouen"
-    Then I should see "JE RETIRE MA CANDIDATURE"
+    And I press "OK"
+    Then I should see "Retirer ma candidature"
     And I should see "Consulter la liste des candidats"
 
     When I click the "candidacies-list-modal--trigger" element

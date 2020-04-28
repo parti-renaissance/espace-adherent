@@ -29,7 +29,7 @@
 
     &__infos {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
@@ -39,24 +39,31 @@
         margin-top: 20px;
 
         @media (min-width: $tablet) {
-            flex-direction: row;
             align-items: flex-start;
             font-size: 16px;
             justify-content: flex-start;
         }
 
         li {
-            margin: 5px 0 5px 0;
+            margin: 5px 15px 5px 15px;
             display: flex;
             align-items: center;
             font-size: 18px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
 
             svg {
                 margin-right: 10px;
             }
 
             @media (min-width: $tablet) {
-                margin: 5px 30px 5px 0;
+                //margin: 5px 30px 5px 0;
             }
 
             a {
@@ -71,12 +78,21 @@
         flex-direction: row;
 
         li {
-            margin: 0 0 0 20px;
+            margin: 0 0 0 20px !important;
             cursor: pointer;
         }
     }
 
     &__header {
+        padding: 60px 0;
+
+        &--slim {
+            padding: 30px 0;
+        }
+
+        @media (min-width: $tablet) {
+            padding: 80px 0;
+        }
 
         &__content {
             display: flex;
@@ -364,10 +380,10 @@
 
     &__main {
         width: 100%;
-        margin: 20px 0 0;
+        margin-right: 0;
 
         @media (min-width: $tablet) {
-            margin: 70px 5% 0 0
+            margin-right: 5%;
         }
     }
 
@@ -394,6 +410,12 @@
     }
 
     &__timeline {
+        margin-top: 30px;
+
+        @media (min-width: $tablet) {
+            margin-top: 70px;
+        }
+
         &__item {
             padding: 30px 0;
             border-bottom: 1px solid $gray--light;
@@ -459,7 +481,7 @@
     &-event {
         // An event within the timeline
         background: $gray--lighter;
-        height: 200px;
+        min-height: 200px;
         margin: 0 auto;
         display: flex;
         margin-top: 20px;
@@ -477,7 +499,6 @@
 
         &-details {
             padding: 25px;
-            min-height: 150px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -528,41 +549,105 @@
 
     }
 
-    @media (max-width: $mobile) {
-        h2 {
-            margin-bottom: 20px;
-        }
-    }
-
     &__elections-box {
         box-sizing: border-box;
-        border: 1px solid $pink;
-        background-color: $pink--extra-light;
-        border-radius: 3px;
-        padding: 35px;
+        background-color: $white;
+        box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.14);
+        border-radius: 4px;
+        padding: 40px;
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-between;
-        align-items: center;
-        text-align: center;
+        align-items: flex-start;
 
-        .alert {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 15px;
-            margin-top: 20px;
+        -webkit-transition: all 0.2s;
+        -o-transition: all 0.2s;
+        transition: all 0.2s;
+        -webkit-transition-timing-function: ease-out;
+        -o-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+
+        @media (min-width: $tablet) {
+            margin-top: 70px;
         }
 
-        .alert:nth-child(1) {
-            margin-top: 30px;
+        h2 {
+            color: $pink;
+            max-width: 500px;
         }
 
-        // h2 {
-        //     font-weight: normal;
-        //     max-width: 310px;
-        // }
+        .elections-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
 
+            @media (min-width: $mobile) {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            > .btn {
+                margin: 0 0 20px 0;
+
+                @media (min-width: $mobile) {
+                    margin: 0 20px 0 0;
+                }
+            }
+
+            .candidacy-remove {
+                flex-basis: 100%;
+            }
+        }
+
+        &:hover {
+            background-color: $pink;
+
+            > h2,
+            > p,
+            .candidacies-list,
+            .candidacies-list a,
+            .candidacy-remove,
+            .candidacy-remove a {
+                color: $white;
+            }
+
+            .elections-actions > .btn {
+                background-color: $white;
+                color: $pink;
+            }
+        }
+    }
+
+    .action-menu-oval {
+        padding: 0;
+
+        &> a .oval {
+            background-color: $white;
+        }
+    }
+
+    .image-cropper--container {
+        img {
+            max-width: 100%;
+        }
+    }
+
+    .preview-cropped-image {
+        display: none;
+
+        span {
+            border-radius: 50%;
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        img {
+            max-height: 150px;
+        }
     }
 }
 

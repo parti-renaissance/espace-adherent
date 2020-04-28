@@ -66,7 +66,7 @@ export default class CandidaciesListWidget extends Modal {
 
         return (
             <div className="font-roboto">
-                <div className="text--bold text--default-large">Liste des candidat(e)s :</div>
+                <div className="text--bold text--default-large b__nudge--bottom-large">Liste des candidat(e)s :</div>
 
                 <div className="l__row">
                     <div className="l__col l__col--grow-1">
@@ -101,7 +101,7 @@ export default class CandidaciesListWidget extends Modal {
                     </div>
                 </div>
 
-                <p>Détail :</p>
+                <p className="b__nudge--top-large">Détail :</p>
                 <div className="l__row b__nudge--top-large">
                     <div className={'l__col l__col--half'}>{col1}</div>
                     <div className={'l__col l__col--half'}>{col2}</div>

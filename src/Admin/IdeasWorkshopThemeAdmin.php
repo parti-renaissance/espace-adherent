@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\IdeasWorkshop\ThemeManager;
+use AppBundle\Image\ImageManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,12 +17,13 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
         '_sort_order' => 'ASC',
         '_sort_by' => 'position',
     ];
+    /** @var ImageManager */
+    private $imageManager;
 
-    private $themeManager;
-
-    public function setThemeManager(ThemeManager $themeManager): void
+    /** @required */
+    public function setImageManager(ImageManager $imageManager): void
     {
-        $this->themeManager = $themeManager;
+        $this->imageManager = $imageManager;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -88,7 +89,7 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
     {
         parent::postRemove($theme);
 
-        $this->themeManager->removeImage($theme);
+        $this->imageManager->removeImage($theme);
     }
 
     public function prePersist($theme)
@@ -96,7 +97,7 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
         parent::prePersist($theme);
 
         if ($theme->getImage()) {
-            $this->themeManager->saveImage($theme);
+            $this->imageManager->saveImage($theme);
         }
     }
 
@@ -105,7 +106,7 @@ class IdeasWorkshopThemeAdmin extends AbstractAdmin
         parent::preUpdate($theme);
 
         if ($theme->getImage()) {
-            $this->themeManager->saveImage($theme);
+            $this->imageManager->saveImage($theme);
         }
     }
 }

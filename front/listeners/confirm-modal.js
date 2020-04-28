@@ -12,15 +12,13 @@ function cancelCallback(event) {
 function contentCallback(element) {
     return (
         <div className="font-roboto">
+            <div className="text--bold text--default-large">Candidature</div>
             <p className="b__nudge--top-15 b__nudge--bottom-large text--dark">
                 {element.dataset.confirmContent || 'Êtes-vous sûr ?'}
             </p>
-
-            <hr/>
-
             <div>
                 <a href={'#'} onClick={event => cancelCallback(event)}
-                   className="btn btn--ghosting--blue toggleModal b__nudge--right-nano"
+                   className="btn btn--ghosting--blue toggleModal b__nudge--right-small"
                 >
                     Annuler
                 </a>
@@ -37,6 +35,8 @@ export default function () {
             event.preventDefault();
 
             const modalWrapper = document.createElement('div');
+            modalWrapper.style.display = 'inline-block';
+
             element.parentNode.insertBefore(modalWrapper, element);
 
             modal = render(

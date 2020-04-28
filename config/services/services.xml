@@ -69,7 +69,6 @@
         <service id="AppBundle\Validator\ValidAdherentCoReferentValidator" />
 
         <!-- Biography -->
-        <service id="AppBundle\Biography\BiographyManager" />
         <service id="AppBundle\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
 
         <!-- Controller -->
@@ -541,7 +540,6 @@
         <service id="AppBundle\Storage\ImageStorage" />
 
         <!-- Ideas Workshop -->
-        <service id="AppBundle\IdeasWorkshop\ThemeManager" />
         <service id="AppBundle\Validator\CommitteeMemberValidator" />
         <service id="AppBundle\IdeasWorkshop\Listener\IdeaPublishListener" />
         <service id="AppBundle\IdeasWorkshop\Listener\IdeaExtendListener" />
