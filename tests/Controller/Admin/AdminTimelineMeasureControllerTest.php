@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller\Admin;
 
+use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
 use AppBundle\DataFixtures\ORM\LoadTimelineData;
 use AppBundle\Entity\Timeline\Manifesto;
 use AppBundle\Entity\Timeline\Measure;
@@ -266,6 +267,6 @@ class AdminTimelineMeasureControllerTest extends WebTestCase
 
     private function getIndexer(): DummyIndexer
     {
-        return $this->client->getContainer()->get('algolia.indexer');
+        return $this->client->getContainer()->get(Indexer::class);
     }
 }

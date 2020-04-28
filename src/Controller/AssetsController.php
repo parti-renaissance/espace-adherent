@@ -7,6 +7,7 @@ use AppBundle\Entity\Clarification;
 use AppBundle\Entity\CustomSearchResult;
 use AppBundle\Entity\Proposal;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Map\StaticMapProviderInterface;
 use AppBundle\Timeline\TimelineImageFactory;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
@@ -79,12 +80,16 @@ class AssetsController extends Controller
      * )
      * @Cache(maxage=900, smaxage=900)
      */
-    public function mapAction(Request $request, string $latitude, string $longitude)
-    {
+    public function mapAction(
+        Request $request,
+        StaticMapProviderInterface $mapProvider,
+        string $latitude,
+        string $longitude
+    ) {
         $coordinates = new Coordinates($latitude, $longitude);
         $size = $request->query->has('algolia') ? self::WIDTH.'x'.self::HEIGHT : null;
 
-        if (!$contents = $this->get('app.map.google_maps_static_provider')->get($coordinates, $size)) {
+        if (!$contents = $mapProvider->get($coordinates, $size)) {
             $contents = file_get_contents($this->createWhiteImage());
         }
 

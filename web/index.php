@@ -1,22 +1,16 @@
 <?php
 
 use AppBundle\Kernel;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__.'/../vendor/autoload.php';
+require dirname(__DIR__).'/config/bootstrap.php';
 
-if (getenv('APP_DEBUG')) {
-    // Deny if client address is remote and is not in a container
-    if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'], true) && false === getenv('SYMFONY_ALLOW_APPDEV')) {
-        header('HTTP/1.0 403 Forbidden');
-        exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
-    }
-
+if ($_SERVER['APP_DEBUG']) {
     Debug::enable();
 }
 
-if ('prod' === getenv('APP_ENV')) {
+if ('prod' === $_SERVER['APP_ENV']) {
     if (!empty($_SERVER['BASIC_AUTH_USER']) && !empty($_SERVER['BASIC_AUTH_PASSWORD']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
         if (!isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_USER'] !== $_SERVER['BASIC_AUTH_USER'] || $_SERVER['PHP_AUTH_PW'] !== $_SERVER['BASIC_AUTH_PASSWORD']) {
             header('HTTP/1.0 401 Unauthorized');
@@ -38,9 +32,9 @@ if ('prod' === getenv('APP_ENV')) {
     }
 }
 
-require __DIR__.'/../app/trusted_proxies.php';
+require __DIR__.'/../config/trusted_proxies.php';
 
-$kernel = new Kernel(getenv('APP_ENV'), getenv('APP_DEBUG'));
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

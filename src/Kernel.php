@@ -47,8 +47,6 @@ class Kernel extends BaseKernel
         // $container->setParameter('container.autowiring.strict_mode', true);
         $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $loader->load($this->getProjectDir().'/app/config/config_'.$this->environment.'.yml');
-
         $confDir = $this->getProjectDir().'/config';
 
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');

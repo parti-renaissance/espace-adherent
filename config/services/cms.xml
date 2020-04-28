@@ -8,7 +8,7 @@
         <service id="League\CommonMark\CommonMarkConverter" />
 
         <!-- Content -->
-        <prototype namespace="AppBundle\Content\" resource="../../../src/Content" />
+        <prototype namespace="AppBundle\Content\" resource="../../src/Content" />
 
         <!-- Feed -->
         <service id="app.feed_generator.article" class="AppBundle\Feed\ArticleFeedGenerator">

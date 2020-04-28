@@ -5,7 +5,7 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false" />
 
-        <prototype namespace="AppBundle\Twig\" resource="../../../src/Twig" />
+        <prototype namespace="AppBundle\Twig\" resource="../../src/Twig" />
 
         <service id="AppBundle\Twig\AdminReportRuntime">
             <tag name="twig.runtime" />

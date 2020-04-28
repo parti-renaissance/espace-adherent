@@ -78,9 +78,9 @@ RUN chmod 0444 gcloud-service-key.json && \
     mkdir /run/php && \
     mkdir var && \
 
-    SYMFONY_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
-    SYMFONY_ENV=prod bin/console cache:clear --no-warmup && \
-    SYMFONY_ENV=prod bin/console cache:warmup && \
+    APP_ENV=prod composer install --optimize-autoloader --no-interaction --no-ansi --no-dev && \
+    APP_ENV=prod bin/console cache:clear --no-warmup && \
+    APP_ENV=prod bin/console cache:warmup && \
 
     chown -R www-data:www-data var && \
 

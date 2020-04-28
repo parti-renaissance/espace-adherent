@@ -1,7 +1,20 @@
 imports:
-    - { resource: config_dev.yml }
+    - { resource: services_dev.yaml }
+
+parameters:
+    timeline_max_messages: 10
+    app_host: "test.%env(APP_HOST)%"
+    amp_host: "test.%env(AMP_HOST)%"
+    legislatives_host: "test.legislatives.%app_host%"
+    ssl_encryption_key: "%env(SSL_ENCRYPTION_KEY)%"
+    ssl_private_key: "%env(SSL_PRIVATE_KEY)%"
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
     app.map.google_maps_static_provider:
         class: 'Tests\AppBundle\Test\Map\DummyStaticMapProvider'
 
@@ -31,11 +44,5 @@ services:
         alias: AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
         public: true
 
-parameters:
-    env(DATABASE_NAME): "enmarche_test"
-    env(RABBITMQ_DSN): 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASSWORD)%@%env(RABBITMQ_HOST)%:%env(RABBITMQ_PORT)%/%2f?lazy=0&connection_timeout=10&read_write_timeout=200&heartbeat=100'
-    env(RECAPTCHA_PUBLIC_KEY): 'TEST_RECAPTCHA_PUBLIC_KEY'
-    env(GMAPS_API_KEY):
-    app_host: "test.%env(APP_HOST)%"
-    amp_host: "test.%env(AMP_HOST)%"
-    legislatives_host: "test.legislatives.%app_host%"
+    Algolia\AlgoliaSearchBundle\Indexer\Indexer:
+        alias: 'algolia.indexer'

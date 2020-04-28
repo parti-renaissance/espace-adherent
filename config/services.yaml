@@ -1,11 +1,6 @@
-imports:
-    - { resource: parameters.yml }
-    - { resource: services/ }
-
 parameters:
     locale:                               fr
     locales:                              [fr, en]
-    assets_hash:                          ~
     pattern_uuid:                         '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
     pattern_sha1:                         '[0-9A-Fa-f]{40}'
     pattern_coordinate:                   '-?\d+(\.\d{1,7})?'
@@ -36,3 +31,25 @@ parameters:
     adherent_message_committee_limit: 1000
     adherent_message_deputy_limit: 1000
     adherent_message_senator_limit: 1000
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    _instanceof:
+        AppBundle\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
+            tags: ['app.adherent.unregistration.handler']
+
+    Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
+
+    AppBundle\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
+
+    AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
+        arguments:
+            $handlers: !tagged 'app.adherent.unregistration.handler'
+        tags: ['messenger.message_handler']
+
+    AppBundle\Adherent\Unregistration\Handlers\:
+        resource: ../src/Adherent/Unregistration/Handlers/

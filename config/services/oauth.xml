@@ -6,7 +6,7 @@
 	<services>
 		<defaults autowire="true" autoconfigure="true" public="false" />
 
-		<prototype namespace="AppBundle\OAuth\" resource="../../../src/OAuth/" exclude="../../../src/OAuth/Model"/>
+		<prototype namespace="AppBundle\OAuth\" resource="../../src/OAuth/" exclude="../../src/OAuth/Model"/>
 
 		<service id="League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface" alias="AppBundle\OAuth\AuthorizationValidators\JsonWebTokenValidator" />
 
