@@ -7,6 +7,7 @@ use AppBundle\Donation\DonatorManager;
 use AppBundle\Donation\PayboxPaymentSubscription;
 use AppBundle\Entity\Donation;
 use AppBundle\Entity\Donator;
+use AppBundle\Repository\DonatorRepository;
 use AppBundle\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
@@ -27,6 +28,7 @@ class ImportDonationsCommand extends Command
     private $storage;
     private $postAddressFactory;
     private $donatorManager;
+    private $donatorRepository;
     private $em;
 
     private const TYPES_MAP = [
@@ -37,6 +39,10 @@ class ImportDonationsCommand extends Command
     private const GENDERS_MAP = [
         'H' => Genders::MALE,
         'F' => Genders::FEMALE,
+    ];
+
+    private const NULL_VALUES = [
+        'NON',
     ];
 
     private const COUNTRIES_MAP = [
@@ -53,9 +59,12 @@ class ImportDonationsCommand extends Command
         'danemark' => 'DK',
         'espagne' => 'ES',
         'etats-unis' => 'US',
+        'etats unis' => 'US',
+        'usa' => 'US',
         'france' => 'FR',
         'grece' => 'FR',
         'hong kong' => 'HK',
+        'hong kong (chine)' => 'HK',
         'ile maurice' => 'MU',
         'israel' => 'IL',
         'italie' => 'IT',
@@ -75,12 +84,22 @@ class ImportDonationsCommand extends Command
         'polynésie française' => 'PF',
         'portugal' => 'PT',
         'republique tcheque' => 'CZ',
+        'rep. tcheque' => 'CZ',
         'royaume-uni' => 'GB',
+        'royaume uni' => 'GB',
+        'uk' => 'GB',
         'singapour' => 'SG',
         'sri-lanka' => 'LK',
         'suisse' => 'CH',
+        'tahiti pf' => '',
         'thailande' => 'TH',
         'uae' => 'AE',
+    ];
+
+    private const NATIONALITY_MAP = [
+        'francaise' => 'FR',
+        'française' => 'FR',
+        'belge' => 'BE',
     ];
 
     /**
@@ -92,11 +111,13 @@ class ImportDonationsCommand extends Command
         FilesystemInterface $storage,
         PostAddressFactory $postAddressFactory,
         DonatorManager $donatorManager,
+        DonatorRepository $donatorRepository,
         EntityManagerInterface $em
     ) {
         $this->storage = $storage;
         $this->postAddressFactory = $postAddressFactory;
         $this->donatorManager = $donatorManager;
+        $this->donatorRepository = $donatorRepository;
         $this->em = $em;
 
         parent::__construct();
@@ -117,64 +138,114 @@ class ImportDonationsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->io->section('Starting import of Donation coordinates.');
+        try {
+            $this->em->beginTransaction();
 
-        $csv = Reader::createFromStream($this->storage->readStream($input->getArgument('filename')));
+            $this->handleImport($input->getArgument('filename'));
+
+            $this->em->commit();
+        } catch (\Exception $exception) {
+            $this->em->rollback();
+
+            throw $exception;
+        }
+    }
+
+    private function handleImport(string $filename): void
+    {
+        $this->io->section('Starting import of Donation.');
+
+        $csv = Reader::createFromStream($this->storage->readStream($filename));
         $csv->setHeaderOffset(0);
 
         $this->io->progressStart($total = $csv->count());
 
-        $line = 0;
+        $identifier = $this->getLastDonatorIdentifier();
+
+        $line = 1;
+        $count = 0;
         foreach ($csv as $row) {
-            $gender = $row['gender'];
-            $firstName = $row['firstName'];
-            $lastName = $row['lastName'];
-            $address = $row['address'];
-            $postalCode = str_pad($row['postalCode'], 5, '0', \STR_PAD_LEFT);
-            $cityName = $row['cityName'];
+            ++$line;
+
+            $gender = trim($row['gender']);
+            $firstName = trim($row['firstName']);
+            $lastName = trim($row['lastName']);
+            $email = trim($row['email']);
+            $address = trim($row['address']);
+            $postalCode = str_pad(trim($row['postalCode']), 5, '0', \STR_PAD_LEFT);
+            $cityName = trim($row['cityName']);
             $country = mb_strtolower(trim($row['country']));
-            $type = $row['type'];
-            $amount = $row['amount'];
-            $transferNumber = $row['transfer_number'];
-            $checkNumber = $row['check_number'];
-            $donatedAt = \DateTimeImmutable::createFromFormat('m/d/Y', $row['date']);
+            $nationality = mb_strtolower(trim($row['nationality']));
+            $type = mb_strtolower($row['type']);
+            $amount = trim($row['amount']);
+            $transferNumber = trim($row['transfer_number']);
+            $checkNumber = trim($row['check_number']);
+            $donatedAt = \DateTimeImmutable::createFromFormat('d/m/Y', trim($row['date']));
 
             if (!\array_key_exists($type, self::TYPES_MAP)) {
-                $this->io->text("\"$type\" is not a valid transaction type.");
+                $this->io->text("\"$type\" is not a valid transaction type. (line $line)");
 
                 continue;
             }
 
-            if (!\array_key_exists($gender, self::GENDERS_MAP)) {
-                $this->io->text("\"$gender\" is not a valid gender.");
+            if (empty($email) || \in_array($email, self::NULL_VALUES, true)) {
+                $email = null;
+            }
+
+            if (empty($gender)) {
+                $gender = null;
+            }
+
+            if ($gender && !\array_key_exists($gender, self::GENDERS_MAP)) {
+                $this->io->text("\"$gender\" is not a valid gender. (line $line)");
 
                 continue;
             }
 
             if (!\array_key_exists($country, self::COUNTRIES_MAP)) {
-                $this->io->text("\"$country\" is not a valid country.");
+                $this->io->text("\"$country\" is not a valid country. (line $line)");
 
                 continue;
             }
+
+            if (empty($nationality)) {
+                $nationality = null;
+            }
+
+            if ($nationality && !\array_key_exists($nationality, self::NATIONALITY_MAP)) {
+                $this->io->text("\"$nationality\" is not a valid nationality. (line $line)");
+
+                continue;
+            }
+
+            $amount = str_replace(',', '.', $amount);
+
+            if (!is_numeric($amount)) {
+                $this->io->text("\"$amount\" is not a valid amount. (line $line)");
+
+                continue;
+            }
+
+            $identifier = $this->incrementDonatorIdentifier($identifier);
 
             $donator = new Donator(
                 $lastName,
                 $firstName,
                 $cityName,
                 self::COUNTRIES_MAP[$country],
-                null,
-                self::GENDERS_MAP[$gender]
+                $email,
+                $gender ? self::GENDERS_MAP[$gender] : null
             );
 
-            $donator->setIdentifier($this->donatorManager->incrementeIdentifier(false));
+            $donator->setIdentifier($identifier);
 
             $donation = new Donation(
                 Uuid::uuid4(),
                 self::TYPES_MAP[$type],
-                $amount,
+                $amount * 100,
                 $donatedAt,
                 $this->postAddressFactory->createFlexible(
-                    self::COUNTRIES_MAP[$country],
+                    $country ? self::COUNTRIES_MAP[$country] : null,
                     $postalCode,
                     $cityName,
                     $address
@@ -182,7 +253,7 @@ class ImportDonationsCommand extends Command
                 null,
                 PayboxPaymentSubscription::NONE,
                 null,
-                self::COUNTRIES_MAP[$country],
+                $nationality ? self::NATIONALITY_MAP[$nationality] : null,
                 null,
                 $donator
             );
@@ -197,22 +268,39 @@ class ImportDonationsCommand extends Command
 
             $this->em->persist($donator);
             $this->em->persist($donation);
-            $this->em->flush();
 
-            ++$line;
+            ++$count;
 
             $this->io->progressAdvance();
 
-            if (0 === ($line % self::BATCH_SIZE)) {
+            if (0 === ($count % self::BATCH_SIZE)) {
+                $this->em->flush();
                 $this->em->clear();
             }
         }
+
+        $this->updateDonatorIdentifier($identifier);
 
         $this->em->flush();
         $this->em->clear();
 
         $this->io->progressFinish();
 
-        $this->io->success("$total donations imported successfully !");
+        $this->io->success("$count donations imported successfully !");
+    }
+
+    private function getLastDonatorIdentifier(): string
+    {
+        return $this->donatorManager->findLastIdentifier()->getIdentifier();
+    }
+
+    private function incrementDonatorIdentifier(string $identifier): string
+    {
+        return $this->donatorManager->getNextAccountId($identifier);
+    }
+
+    private function updateDonatorIdentifier(string $identifier): void
+    {
+        $this->donatorManager->updateIdentifier($identifier, false);
     }
 }
