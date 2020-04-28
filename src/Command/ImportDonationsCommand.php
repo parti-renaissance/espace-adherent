@@ -192,6 +192,12 @@ class ImportDonationsCommand extends Command
                 $email = null;
             }
 
+            if ($email && false === filter_var($email, \FILTER_VALIDATE_EMAIL)) {
+                $this->io->text("\"$email\" is not a valid email address. (line $line)");
+
+                $email = null;
+            }
+
             if (empty($gender)) {
                 $gender = null;
             }
@@ -218,7 +224,7 @@ class ImportDonationsCommand extends Command
                 continue;
             }
 
-            $amount = str_replace(',', '.', $amount);
+            $amount = str_replace([' ', ','], ['', '.'], $amount);
 
             if (!is_numeric($amount)) {
                 $this->io->text("\"$amount\" is not a valid amount. (line $line)");
