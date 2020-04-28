@@ -1,11 +1,10 @@
 #adherent-profile {
     background-color: $gray--lighter;
     padding-top: 60px;
-
-    min-height: 2000px;
 }
 
 .adherent-profile {
+    margin-bottom: 100px;
 
     &__aside {
         box-sizing: border-box;
@@ -163,4 +162,12 @@
             margin-bottom: 30px;
         }
     }
+
+    #engagement {
+        .form__checkbox,
+        .form__radio {
+            margin-bottom: 5px;
+        }
+    }
+
 }
