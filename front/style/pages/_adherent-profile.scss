@@ -9,8 +9,8 @@
 
     &__aside {
         box-sizing: border-box;
-        width: 275px;
         margin-right: 30px;
+        flex: 0 0 275px;
     }
 
     &__status {
@@ -100,8 +100,6 @@
                     position: absolute;
                     left: 0;
                     top: 0;
-
-                    background-color: $lines-grey;
                 }
             }
 
@@ -155,5 +153,14 @@
         background-color: $white;
         border-radius: 3px;
         padding: 70px;
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        .section-subtitle {
+            @include subtitle;
+            margin-bottom: 30px;
+        }
     }
 }

@@ -230,12 +230,21 @@ $text--size-extra-large--big: 128px;
     margin-left: 5px;
 }
 
+@mixin subtitle {
+    font-family: $font-gillsans;
+    font-size: 16px;
+    font-weight: normal;
+    color: $neutral-grey;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
 @mixin tabs-nav-item {
     font-family: $font-roboto;
     font-weight: normal;
     font-size: 16px;
     color: $silver-grey;
 }
+
 
 .text {
     &--breakword {

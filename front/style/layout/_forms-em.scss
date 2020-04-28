@@ -23,7 +23,7 @@
     padding: 0 12px;
     color: $black;
     margin: 0;
-    height: 60px;
+    height: 54px;
     border-radius: 3px;
     border: solid 1px $lines-grey;
     background-color: $white;
@@ -206,11 +206,11 @@
 .em-form {
 
     .em-form__section {
-        padding-bottom: 30px;
+        padding-bottom: 40px;
     }
 
     .em-form__group {
-        margin-bottom: 35px;
+        margin-bottom: 20px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;

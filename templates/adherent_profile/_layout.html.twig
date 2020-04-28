@@ -31,49 +31,52 @@
                         </div>
                     </div>
                     <nav class="adherent-profile__menu adherent-profile__menu--desktop">
-                        <ul class="adherent-profile__menu">
-                            <li class="menu-section">
-                                <div class="menu-section__heading active">
-                                    <div class="icon-container"></div>
-                                    Informations
+                        <div class="menu-section">
+                            <div class="menu-section__heading active">
+                                <div class="icon-container">
+                                    {% include('components/_adherent-menu/active/profile.html.twig') %}
                                 </div>
-                                <ul class="menu-section__items">
-                                    <li class="active"><a href="#">Général</a></li>
-                                    <li><a href="#">Certification du profil</a></li>
-                                    <li><a href="#">E-mail et mot de passe</a></li>
-                                    <li><a href="#">Centres d'intérêt</a></li>
-                                    <li><a href="#">Engagement</a></li>
-                                    <li><a href="#">Élections</a></li>
-                                    <li><a href="#">Communication</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-section">
-                                <div class="menu-section__heading">
-                                    <div class="icon-container"></div>
-                                    Activités
+                                <span>Informations</span>
+                            </div>
+                            <ul class="menu-section__items">
+                                <li class="active"><a href="#">Général</a></li>
+                                <li><a href="#">Certification du profil</a></li>
+                                <li><a href="#">E-mail et mot de passe</a></li>
+                                <li><a href="#">Centres d'intérêt</a></li>
+                                <li><a href="#">Engagement</a></li>
+                                <li><a href="#">Élections</a></li>
+                                <li><a href="#">Communication</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-section">
+                            <div class="menu-section__heading">
+                                <div class="icon-container">
+                                    {% include('components/_adherent-menu/default/activity.html.twig') %}
                                 </div>
-                                <!-- <ul class="menu-section__items">
-                                    <li><a href="#">Général</a></li>
-                                    <li><a href="#">Général</a></li>
-                                    <li><a href="#">Général</a></li>
-                                    <li><a href="#">Général</a></li>
-                                    <li><a href="#">Général</a></li>
-                                </ul> -->
-                            </li>
-                            <li class="menu-section">
-                                <a class="menu-section__heading" href="#">
-                                    <div class="icon-container"></div>
-                                    Documents
-                                </a>
-                            </li>
-                        </ul>
-
-                        <ul class="">
-                            <li><a href="">Formation</a></li>
-                            <li><a href="">Aide</a></li>
-                            <li><a href="">Déconnexion</a></li>
-                        </ul>
+                                <span>Activités</span>
+                            </div>
+                            <ul class="menu-section__items">
+                                <li><a href="#">Général</a></li>
+                                <li><a href="#">Général</a></li>
+                                <li><a href="#">Général</a></li>
+                                <li><a href="#">Général</a></li>
+                                <li><a href="#">Général</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-section">
+                            <a class="menu-section__heading" href="#">
+                                <div class="icon-container">
+                                    {% include('components/_adherent-menu/default/documents.html.twig') %}
+                                </div>
+                                <span>Documents</span>
+                            </a>
+                        </div>
                     </nav>
+                    <ul class="">
+                        <li><a href="">Formation</a></li>
+                        <li><a href="">Aide</a></li>
+                        <li><a href="">Déconnexion</a></li>
+                    </ul>
                 </aside>
                 <div class="adherent-profile__content">
                     {% block adherent_profile_content %}{% endblock %}

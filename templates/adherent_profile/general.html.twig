@@ -3,5 +3,154 @@
 {% block adherent_profile_content %}
     <section class="adherent-profile__section">
         <h1 class="text--medium-large">Général</h1>
+
+        <form class="em-form">
+
+            <div class="em-form__section">
+                <h2 class="section-subtitle">Votre identité</h2>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Prénom <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Nom <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Genre <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Nationalité <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Date de naissance <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+            </div>
+
+            <div class="em-form__section">
+                <h2 class="section-subtitle">Vos coordonnées</h2>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Adresse <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Code postal <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Ville <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Pays <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Téléphone <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+            </div>
+
+            <div class="em-form__section">
+                <h2 class="section-subtitle">Vos identifiants réseaux sociaux</h2>
+                <div class="em-form__group">
+                    <label for="" class="em-form__label">
+                        Facebook <span class="em-form__required">*</span>
+                    </label>
+                    <input type="text" class="em-form__field">
+                </div>
+                <div class="em-form__group">
+                    <label for="" class="em-form__label">
+                        Linkedin <span class="em-form__required">*</span>
+                    </label>
+                    <input type="text" class="em-form__field">
+                </div>
+                <div class="em-form__group">
+                    <label for="" class="em-form__label">
+                        Twitter <span class="em-form__required">*</span>
+                    </label>
+                    <input type="text" class="em-form__field">
+                </div>
+                <div class="em-form__group">
+                    <label for="" class="em-form__label">
+                        Télégram <span class="em-form__required">*</span>
+                    </label>
+                    <input type="text" class="em-form__field">
+                </div>
+            </div>
+
+            <div class="em-form__section">
+                <h2 class="section-subtitle">Votre situation professionnelle</h2>
+                <div class="em-form__row">
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Statut professionnel <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                    <div class="em-form__group">
+                        <label for="" class="em-form__label">
+                            Métier <span class="em-form__required">*</span>
+                        </label>
+                        <input type="text" class="em-form__field">
+                    </div>
+                </div>
+                <div class="em-form__group">
+                    <label for="" class="em-form__label">
+                        Secteur d'activité <span class="em-form__required">*</span>
+                    </label>
+                    <input type="text" class="em-form__field">
+                </div>
+            </div>
+
+            <div class="b__nudge--bottom-60">
+                <h2 class="section-subtitle">Suppression du compte</h2>
+                <div class="background--lighter space--30">
+                    <p class="text--body b__nudge--bottom-large b__nudge--top-0">
+                        Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement :
+                        il vous faut d'abord quitter vos responsabilités. Pour se faire, nous vous remercions de nous envoyer
+                        votre demande par e-mail à l'adresse suivante : territoires@en-marche.fr.
+                    </p>
+                    <button class="btn">Supprimer mon compte</button>
+                </div>
+            </div>
+
+            <button class="btn btn--blue">Enregistrer</button>
+        </form>
     </section>
 {% endblock %}
