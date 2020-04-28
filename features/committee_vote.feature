@@ -240,7 +240,7 @@ Feature:
     Given I am logged as "assesseur@en-marche-dev.fr"
     When I am on "/comites/en-marche-comite-de-rouen"
     And I press "OK"
-    Then I should see "JE RETIRE MA CANDIDATURE"
+    Then I should see "Retirer ma candidature"
     And I should see "Consulter la liste des candidats"
 
     When I click the "candidacies-list-modal--trigger" element
