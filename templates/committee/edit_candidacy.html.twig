@@ -12,11 +12,10 @@
 
 {% block content %}
     <main class="committee">
-        <header class="committee__header-slim background--blue">
-
+        <header class="committee__header--slim background--blue">
             <div class="l__wrapper committee__header__content">
                 <div class="text--white committee__header__titles">
-                    <div class="text--uppercase text--small b__nudge--bottom">
+                    <div class="text--uppercase text--small b__nudge--bottom-tiny">
                         Comité local
                     </div>
                     <div class="committee__name">
@@ -27,12 +26,12 @@
         </header>
 
         <div class="l__wrapper">
-            <div class="committee__main b__nudge--top-40">
+            <div class="committee__main b__nudge--top-50">
                 <div>
-                    <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="link--no-decor link--blue--dark">⟵ Annuler</a>
+                    <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="text--body link--no-decor link--blue--dark">⟵ Annuler</a>
                 </div>
                 <div class="l__wrapper--600">
-                    <h2 class="b__nudge--bottom-50">Votre candidature</h2>
+                    <h2 class="font-roboto text--medium b__nudge--bottom-50 b__nudge--top-50">Votre candidature</h2>
 
                     {{ form_start(form, {attr: {class: 'em-form'}}) }}
 
@@ -44,13 +43,11 @@
                         {{ form_errors(form.image) }}
 
                         <div class="em-form__file">
-                            <div class="em-form__file">
-                                {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
-                                {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark'}}) }}
-                                <span class="em-form__file--name custom-file-label">Aucun fichier sélectionné</span>
-                            </div>
-                            <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
+                            {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
+                            {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark em-form__file--label'}}) }}
+                            <span class="em-form__file--name custom-file-label">Aucun fichier sélectionné</span>
                         </div>
+                        <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
 
                         {% if candidacy is defined and candidacy.imageName %}
                             {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
@@ -80,7 +77,7 @@
                         {{ form_row(form.save, {label: 'Valider', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top-15'}}) }}
 
                         {% if form.skip is defined %}
-                            {{ form_row(form.skip, {label: 'Passer cette étape', attr: {class: 'btn btn--gray btn--large-and-full b__nudge--top-15'}}) }}
+                            {{ form_row(form.skip, {label: 'Passer cette étape', attr: {class: 'btn btn--ghosting-blue btn--large-and-full b__nudge--top-15'}}) }}
                         {% endif %}
                     </div>
 
@@ -114,4 +111,3 @@
         });
     </script>
 {% endblock %}
-

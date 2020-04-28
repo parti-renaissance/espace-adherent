@@ -86,8 +86,8 @@
     &__header {
         padding: 60px 0;
 
-        &-slim {
-            padding: 20px 0;
+        &--slim {
+            padding: 30px 0;
         }
 
         @media (min-width: $tablet) {
@@ -575,7 +575,7 @@
 
         h2 {
             color: $pink;
-            max-width: 340px;
+            max-width: 500px;
         }
 
         .elections-actions {
@@ -595,6 +595,10 @@
                     margin: 0 20px 0 0;
                 }
             }
+
+            .candidacy-remove {
+                flex-basis: 100%;
+            }
         }
 
         &:hover {
@@ -602,7 +606,10 @@
 
             > h2,
             > p,
-            .candidacies-list {
+            .candidacies-list,
+            .candidacies-list a,
+            .candidacy-remove,
+            .candidacy-remove a {
                 color: $white;
             }
 
