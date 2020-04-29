@@ -162,41 +162,43 @@
             </section>
         {% endif %}
 
-        <section class="l__wrapper">
-            <div class="newsletter l__row l__row--h-stretch b__border--black space--20-30 l__row--wrap l__tablet--col b__nudge--top b__nudge--bottom">
-                <div class="text--small text--uppercase space--10-0">Recevez la newsletter du mouvement</div>
-                <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap" name="app_newsletter_subscription">
-                    {{ form_widget(newsletter_form.email, {
-                        'attr': {
-                            'aria-label': 'Entrez votre adresse email',
-                            'title': 'common.email_address',
-                            'placeholder': 'common.email_address',
-                            'class': 'form__email'
-                        }
-                    }) }}
-                    {{ form_widget(newsletter_form.postalCode, {
-                        'attr': {
-                            'aria-label': 'Entrez votre code postal',
-                            'title': 'common.zip_code',
-                            'placeholder': 'common.zip_code',
-                            'class': 'form__zipcode'
-                        }
-                    }) }}
-                    {{ form_widget(newsletter_form.country, { placeholder: 'common.country' }) }}
+        {% if not app.user %}
+            <section class="l__wrapper">
+                <div class="newsletter l__row l__row--h-stretch b__border--black space--20-30 l__row--wrap l__tablet--col b__nudge--top b__nudge--bottom">
+                    <div class="text--small text--uppercase space--10-0">Recevez la newsletter du mouvement</div>
+                    <form method="post" action="{{ path('newsletter_subscription') }}" class="l__row l__row--wrap" name="app_newsletter_subscription">
+                        {{ form_widget(newsletter_form.email, {
+                            'attr': {
+                                'aria-label': 'Entrez votre adresse email',
+                                'title': 'common.email_address',
+                                'placeholder': 'common.email_address',
+                                'class': 'form__email'
+                            }
+                        }) }}
+                        {{ form_widget(newsletter_form.postalCode, {
+                            'attr': {
+                                'aria-label': 'Entrez votre code postal',
+                                'title': 'common.zip_code',
+                                'placeholder': 'common.zip_code',
+                                'class': 'form__zipcode'
+                            }
+                        }) }}
+                        {{ form_widget(newsletter_form.country, { placeholder: 'common.country' }) }}
 
-                    <button title="Je m'inscris" type="submit" class="form btn btn--green">Je m'inscris</button>
-                    <div class="l__row l__row--wrap l__tablet-col b__nudge--top-10">
-                        {{ form_row(newsletter_form.personalDataCollection) }}
-                    </div>
-                    <p class="text--gray text--small">
-                        Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
-                        Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
-                        Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
-                        Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
-                    </p>
-                </form>
-            </div>
-        </section>
+                        <button title="Je m'inscris" type="submit" class="form btn btn--green">Je m'inscris</button>
+                        <div class="l__row l__row--wrap l__tablet-col b__nudge--top-10">
+                            {{ form_row(newsletter_form.personalDataCollection) }}
+                        </div>
+                        <p class="text--gray text--small">
+                            Les données recueillies sur ce formulaire sont traitées par LaREM afin de vous envoyer la newsletter du mouvement et de permettre à LaREM de vous envoyer des communications politiques.
+                            Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à LaREM de traiter votre demande.
+                            Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès.
+                            Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 63 rue Sainte-Anne, 75002 Paris ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
+                        </p>
+                    </form>
+                </div>
+            </section>
+        {% endif %}
 
         <section class="background--blue space--60-0">
             <div class="l__wrapper--500 text--center b__nudge--bottom-larger">
