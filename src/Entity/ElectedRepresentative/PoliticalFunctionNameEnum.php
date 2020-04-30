@@ -21,6 +21,12 @@ final class PoliticalFunctionNameEnum extends Enum
     public const VICE_PRESIDENT_OF_SENATE = 'vice_president_of_senate';
     public const PRESIDENT_OF_COMMISSION = 'president_of_commission';
     public const PRESIDENT_OF_GROUP = 'president_of_group';
+    public const PRESIDENT_OF_EPCI = 'president_of_epci';
+    public const VICE_PRESIDENT_OF_EPCI = 'vice_president_of_epci';
+    public const DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL = 'deputy_vice_president_of_departmental_council';
+    public const OTHER_MEMBER_OF_STANDING_COMMITTEE = 'other_member_of_standing_committee';
+    public const OTHER_MEMBER = 'other_member';
+    public const NO_NAME = 'no_name';
 
     public const MAYOR_LABEL = 'Maire';
     public const DEPUTY_MAYOR_LABEL = 'Maire délégué';
@@ -29,6 +35,7 @@ final class PoliticalFunctionNameEnum extends Enum
     public const VICE_PRESIDENT_OF_REGIONAL_COUNCIL_LABEL = 'Vice-président de conseil régional';
     public const PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Président de conseil départemental';
     public const VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Vice-président de conseil départemental';
+    public const DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Vice-président délégué du conseil départemental';
     public const SECRETARY_LABEL = 'Secrétaire';
     public const QUAESTOR_LABEL = 'Questeur';
     public const PRESIDENT_OF_NATIONAL_ASSEMBLY_LABEL = 'Président de l\'Assemblée nationale';
@@ -37,6 +44,11 @@ final class PoliticalFunctionNameEnum extends Enum
     public const VICE_PRESIDENT_OF_SENATE_LABEL = 'Vice-président du Sénat';
     public const PRESIDENT_OF_COMMISSION_LABEL = 'Président de commission';
     public const PRESIDENT_OF_GROUP_LABEL = 'Président de groupe';
+    public const PRESIDENT_OF_EPCI_LABEL = 'Président d\'EPCI';
+    public const VICE_PRESIDENT_OF_EPCI_LABEL = 'Vice-président d\'EPCI';
+    public const OTHER_MEMBER_OF_STANDING_COMMITTEE_LABEL = 'Autre membre commission permanente';
+    public const OTHER_MEMBER_LABEL = 'Autre membre';
+    public const NO_NAME_LABEL = 'Fonction sans nom';
 
     public const CHOICES = [
         self::MAYOR_LABEL => self::MAYOR,
@@ -46,6 +58,7 @@ final class PoliticalFunctionNameEnum extends Enum
         self::VICE_PRESIDENT_OF_REGIONAL_COUNCIL_LABEL => self::VICE_PRESIDENT_OF_REGIONAL_COUNCIL,
         self::PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL => self::PRESIDENT_OF_DEPARTMENTAL_COUNCIL,
         self::VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL => self::VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL,
+        self::DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL => self::DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL,
         self::SECRETARY_LABEL => self::SECRETARY,
         self::QUAESTOR_LABEL => self::QUAESTOR,
         self::PRESIDENT_OF_NATIONAL_ASSEMBLY_LABEL => self::PRESIDENT_OF_NATIONAL_ASSEMBLY,
@@ -54,5 +67,10 @@ final class PoliticalFunctionNameEnum extends Enum
         self::VICE_PRESIDENT_OF_SENATE_LABEL => self::VICE_PRESIDENT_OF_SENATE,
         self::PRESIDENT_OF_COMMISSION_LABEL => self::PRESIDENT_OF_COMMISSION,
         self::PRESIDENT_OF_GROUP_LABEL => self::PRESIDENT_OF_GROUP,
+        self::PRESIDENT_OF_EPCI_LABEL => self::PRESIDENT_OF_EPCI,
+        self::VICE_PRESIDENT_OF_EPCI_LABEL => self::VICE_PRESIDENT_OF_EPCI,
+        self::OTHER_MEMBER_OF_STANDING_COMMITTEE_LABEL => self::OTHER_MEMBER_OF_STANDING_COMMITTEE,
+        self::OTHER_MEMBER_LABEL => self::OTHER_MEMBER,
+        self::NO_NAME_LABEL => self::NO_NAME,
     ];
 }

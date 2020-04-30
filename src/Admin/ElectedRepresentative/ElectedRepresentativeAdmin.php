@@ -233,15 +233,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'class' => 'col-md-6',
                 ]
             )
-                ->add('labels', CollectionType::class, [
-                    'entry_type' => ElectedRepresentativeLabelType::class,
-                    'label' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ])
-            ->end()
-            ->with('Étiquettes', ['class' => 'col-md-6'])
                 ->add('labels', 'sonata_type_collection', [
                     'by_reference' => false,
                     'label' => false,
