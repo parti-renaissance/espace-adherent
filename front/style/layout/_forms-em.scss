@@ -216,6 +216,12 @@
         justify-content: flex-end;
         color: $dark;
 
+        &.half {
+            @media (min-width: $mobile) {
+                width: calc((100% - 15px) / 2);
+            }
+        }
+
         .em-form__field--ctn { position: relative; }
 
         .em-form__field { @include em-form-field;}

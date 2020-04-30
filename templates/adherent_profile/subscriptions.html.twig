@@ -1,10 +1,90 @@
 {% extends 'adherent_profile/_layout.html.twig' %}
 
 {% block adherent_profile_content %}
-    <section class="adherent-profile__section">
+    <section class="adherent-profile__section" id="subscriptions">
         <h1 class="text--medium-large">Communications</h1>
 
         <form class="em-form">
+            <section class="em-form__section">
+                <h2 class="section-subtitle">Informations nationales</h2>
+                <div class="em-form__group">
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mail nationaux</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir la newsletter hebdomadaire nationale</label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="em-form__section">
+                <h2 class="section-subtitle">Informations locales</h2>
+                <div class="em-form__group">
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails de mon/ma candidat(e) aux municipales 2020</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails de mon/ma sénateur/trice</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails de mon/ma député(e)</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails de mon animateur(trice) local(e) de comité</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails de mon/ma référent(e) territorial(e)</label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="em-form__section">
+                <h2 class="section-subtitle">Informations spécifiques</h2>
+                <div class="em-form__group">
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails des porteurs de projets que je soutiens</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails des nouveaux projets citoyens près de chez vous</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Recevoir les e-mails de suivi d’une idée sur laquelle vous avez contribué ou voté</label>
+                    </div>
+                    <p class="text--body text--small text--gray b__nudge--none b__nudge--top">
+                        Les référents territoriaux sont les représentants du mouvement dans les zones géographiques qui leur sont attribuées.
+                        Ils y ont la charge de l'animation du mouvement au niveau local, de la coordination des comités locaux et du lien avec
+                        les instances nationales. Découvrez le/la vôtre en cliquant ici.
+                    </p>
+                </div>
+            </section>
+
+            <section class="em-form__section">
+                <h2 class="section-subtitle">Autres</h2>
+                <div class="em-form__group">
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">Je préfère être contacté(e) par voie postale</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">J’autorise LaREM à me contacter par téléphone</label>
+                    </div>
+                    <div class="form__checkbox">
+                        <input type="checkbox">
+                        <label for="">J’autorise LaREM à m'envoyer ponctuellement des SMS/MMS</label>
+                    </div>
+                </div>
+            </section>
 
 
             <button class="btn btn--blue">Enregistrer</button>

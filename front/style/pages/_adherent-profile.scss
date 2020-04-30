@@ -76,7 +76,7 @@
     &__menu {
 
         .menu-section {
-            margin: 25px 0;
+            margin: 35px 0;
 
             &__heading {
                 position: relative;
@@ -163,11 +163,37 @@
         }
     }
 
-    #engagement {
+    #engagement,
+    #subscriptions {
         .form__checkbox,
         .form__radio {
             margin-bottom: 5px;
         }
     }
 
+    #certification {
+        .certification-status {
+            padding: 30px 40px 40px;
+            margin-top: 40px;
+
+            &.certified {
+                background-image: url('/images/icons/certification/certification_confettis.svg');
+                background-position: center top -5px;
+                background-repeat: no-repeat;
+                background-size: 90%;
+            }
+
+            .title {
+                font-weight: bold;
+                color: $black;
+                margin-top: 15px;
+                font-size: 18px;
+            }
+
+            p {
+                margin: 0 auto;
+                max-width: 470px;
+            }
+        }
+    }
 }

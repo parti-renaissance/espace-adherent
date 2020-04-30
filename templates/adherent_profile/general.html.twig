@@ -1,8 +1,6 @@
 {% extends 'adherent_profile/_layout.html.twig' %}
 
 {% block adherent_profile_content %}
-
-    <!-- GENERAL -->
     <section class="adherent-profile__section">
         <h1 class="text--medium-large">Général</h1>
 
@@ -37,13 +35,11 @@
                         <input type="text" class="em-form__field">
                     </div>
                 </div>
-                <div class="em-form__row">
-                    <div class="em-form__group">
-                        <label for="" class="em-form__label">
-                            Date de naissance <span class="em-form__required">*</span>
-                        </label>
-                        <input type="text" class="em-form__field">
-                    </div>
+                <div class="em-form__group half">
+                    <label for="" class="em-form__label">
+                        Date de naissance <span class="em-form__required">*</span>
+                    </label>
+                    <input type="text" class="em-form__field">
                 </div>
             </div>
 
@@ -141,13 +137,22 @@
 
             <div class="b__nudge--bottom-60">
                 <h2 class="section-subtitle">Suppression du compte</h2>
-                <div class="background--lighter space--30">
-                    <p class="text--body b__nudge--bottom-large b__nudge--top-0">
-                        Si vous êtes candidat à une désignation interne, vous ne pouvez pas désadhérer du mouvement directement :
-                        il vous faut d'abord quitter vos responsabilités. Pour se faire, nous vous remercions de nous envoyer
-                        votre demande par e-mail à l'adresse suivante : territoires@en-marche.fr.
+                <div class="b__border space--30">
+                    <!-- TODO CAN LEAVE -->
+                    <!-- <p class="text--body b__nudge--bottom-large b__nudge--top-0">
+                        La suppression de votre compte adhérent engendrera... need wording
                     </p>
-                    <button class="btn">Supprimer mon compte</button>
+                    <button class="btn">Supprimer mon compte</button> -->
+
+                    <!-- TODO CANNOT LEAVE -->
+                    <p class="text--body b__nudge--none">
+                        Si vous êtes animateur local, référent, parlementaire, porteur de projet ou membre du conseil, vous ne
+                        pouvez pas supprimer votre compte directement : il vous faut d'abord quitter vos responsabilités.
+                        Pour se faire, vous pouvez écrire votre demande par e-mail à l'adresse suivante :
+                        <a href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>.
+                        <br /><br />
+                        Si vous êtes co-animateur local, votre animateur peut retirer votre rôle depuis son espace comité.
+                    </p>
                 </div>
             </div>
 

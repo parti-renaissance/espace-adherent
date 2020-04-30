@@ -337,6 +337,9 @@
     }
 
     &__nudge {
+        &--none {
+            margin: 0;
+        }
         &--top-60 {
             margin-top: 60px;
         }

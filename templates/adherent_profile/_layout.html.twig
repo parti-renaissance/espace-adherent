@@ -16,12 +16,9 @@
                             </div>
                         </div>
                         <ul class="adherent-profile__roles b__nudge--bottom-large">
-                            <li>Référent(e)</li>
-                            <li>Conseiller départemental</li>
-                            <li>Référent(e)</li>
-                            <li>Référent(e)</li>
-                            <li>Conseiller départemental</li>
-                            <li>Référent(e)</li>
+                            {% for role in get_adherent_role_labels(app.user) %}
+                                <li>{{ role }}</li>
+                            {% endfor %}
                         </ul>
                         <div class="profile-completion b__nudge--bottom-50">
                             <div class="text--body b__nudge--bottom-small">Complétion du profil : 50%</div>
@@ -39,13 +36,27 @@
                                 <span>Informations</span>
                             </div>
                             <ul class="menu-section__items">
-                                <li class="active"><a href="#">Général</a></li>
-                                <li><a href="#">Certification du profil</a></li>
-                                <li><a href="#">E-mail et mot de passe</a></li>
-                                <li><a href="#">Centres d'intérêt</a></li>
-                                <li><a href="#">Engagement</a></li>
-                                <li><a href="#">Élections</a></li>
-                                <li><a href="#">Communication</a></li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_general_information_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_general_information_update') }}">Général</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_certification_demand*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_certification_demand') }}">Certification du profil</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_email_password_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_email_password_update') }}">E-mail et mot de passe</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_interests_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_interests_update') }}">Centres d'intérêt</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_engagement_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_engagement_update') }}">Engagement</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_elections*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_elections') }}">Élections</a>
+                                </li>
+                                <li class="{{ is_active_route(app.request, 'app_adherent_profil_subscriptions_update*') ? 'active' }}">
+                                    <a href="{{ path('app_adherent_profil_subscriptions_update') }}">Communication</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="menu-section">
@@ -56,11 +67,11 @@
                                 <span>Activités</span>
                             </div>
                             <ul class="menu-section__items">
-                                <li><a href="#">Général</a></li>
-                                <li><a href="#">Général</a></li>
-                                <li><a href="#">Général</a></li>
-                                <li><a href="#">Général</a></li>
-                                <li><a href="#">Général</a></li>
+                                <li><a href="#">Mes comités</a></li>
+                                <li><a href="#">Mes événements</a></li>
+                                <li><a href="#">Mes projets citoyens</a></li>
+                                <li><a href="#">Mon atelier des idées</a></li>
+                                <li><a href="#">Mes dons</a></li>
                             </ul>
                         </div>
                         <div class="menu-section">

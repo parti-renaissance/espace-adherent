@@ -1,0 +1,39 @@
+{% extends 'adherent_profile/_layout.html.twig' %}
+
+{% block adherent_profile_content %}
+    <section class="adherent-profile__section" id="certification">
+        <h1 class="text--medium-large">Certification du profil</h1>
+
+        <h2 class="section-subtitle">Votre profil certifié</h2>
+        <div class="certification-status font-roboto b__border text--center b__nudge--bottom-large {{ app.user.isCertified ? 'certified' : '' }}">
+            {% if app.user.isCertified %}
+                <img src="{{ asset('/images/icons/certification/certified-lg.svg') }}" />
+                <div class="title">Votre profil est certifié</div>
+
+            {% elseif app.user.certificationRequests.hasBlockedCertificationRequest %}
+                <img src="{{ asset('/images/icons/certification/blocked.svg') }}" />
+                <div class="title b__nudge--bottom">Demande de certification bloquée</div>
+                <p>Vous ne pouvez pas refaire de nouvelle demande pour l'instant.</p>
+
+            {% elseif app.user.certificationRequests.hasPendingCertificationRequest %}
+                <img src="{{ asset('/images/icons/certification/on-waiting.svg') }}" />
+                <div class="title b__nudge--bottom">Demande de certification en attente</div>
+                <p>Votre demande est en attente d'approbation par nos équipes.</p>
+
+            {% elseif app.user.certificationRequests.hasRefusedCertificationRequest %}
+                <img src="{{ asset('/images/icons/certification/blocked.svg') }}" />
+                <div class="title b__nudge--bottom">Demande de certification refusée</div>
+                <p>Votre demande de certification a été refusée.<br />
+                Vous pouvez <a class="link--blue--dark link--no-decor" href="{{ path('app_certification_request_form') }}">réessayer</a>.</p>
+
+            {% else %}
+                <img src="{{ asset('/images/icons/certification/not-certified.svg') }}" />
+                <div class="title b__nudge--bottom">Votre profil n'est pas encore certifié.</div>
+                <p>Certifiez le avec une pièce d'identité, ça ne prend qu'une minute.</p>
+                <a href="{{ path('app_certification_request_form') }}" class="btn btn--blue b__nudge--top">Certifier mon profil</a>
+
+            {% endif %}
+        </div>
+
+    </section>
+{% endblock %}
