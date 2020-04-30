@@ -161,6 +161,27 @@
             @include subtitle;
             margin-bottom: 30px;
         }
+
+        .data-display {
+            font-family: $font-roboto;
+            margin-bottom: 40px;
+
+            &__item {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin: 10px 0;
+
+                .label {
+                    color: $neutral-grey;
+                    min-width: 40%;
+                }
+
+                .value {
+                    color: $dark;
+                }
+            }
+        }
     }
 
     #engagement,
