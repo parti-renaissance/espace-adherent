@@ -65,7 +65,7 @@ ALTER TABLE elected_representative_mandate
     ADD region_nom VARCHAR(255) DEFAULT NULL,
     ADD circo_legis_nom VARCHAR(255) DEFAULT NULL,
     ADD circo_legis_code INT(20) DEFAULT NULL,
-    ADD canonical VARCHAR(255) NOT NULL,
+    ADD canonical VARCHAR(255) DEFAULT NULL,
     ADD epci VARCHAR(255) DEFAULT NULL,
     ADD ville VARCHAR(255) DEFAULT NULL,
     ADD UNIQUE INDEX elected_representative_mandate_canonical (canonical),
@@ -2476,109 +2476,107 @@ WHERE m.commune_nom = 'Vallons-de-l''Erdre' AND m.dpt = '49' AND m.type = 'conse
 ;
 
 -- Ajouter les villes manquantes
-INSERT INTO elected_representative_zone (name, category_id) VALUES
-    ('Aubigny-en-Laonnois (02820)', 1),
-    ('Blaincourt-sur-Aube (10500)', 1),
-    ('Bouranton (10270)', 1),
-    ('Bouy-Luxembourg (10220)', 1),
-    ('Braye-sur-Maulne (37330)', 1),
-    ('Bréhémont (37130)', 1),
-    ('Brienne-la-Vieille (10500)', 1),
-    ('Cangey (37530)', 1),
-    ('Chauffour-lès-Bailly (10110)', 1),
-    ('Le Bono (56400)', 1),
-    ('Lion-sur-Mer (14780)', 1),
-    ('Maltot (14930)', 1),
-    ('Mézidon Vallée d''Auge (14270)', 1),
-    ('Montigny (14210)', 1),
-    ('Saint-Lucien (76780)', 1),
-    ('Saint-Quentin-de-Baron (33750)', 1),
-    ('Saint-Selve (33650)', 1),
-    ('Sigottier (05700)', 1),
-    ('Bournan (37240)', 1),
-    ('Le Boulay (37110)', 1),
-    ('Etaux (74800)', 1),
-    ('Marseille (13)', 1),
-    ('Lyon (69)', 1),
-    ('Anaa (98760)', 1),
-    ('Arutua (98761)', 1),
-    ('Bélep (98811)', 1),
-    ('Bora-Bora (98730)', 1),
-    ('Boulouparis (98812)', 1),
-    ('Bourail (98870)', 1),
-    ('Canala (98813)', 1),
-    ('Dumbéa (98830, 98835, 98837, 98839)', 1),
-    ('Faaa (98704)', 1),
-    ('Fakarava (98763)', 1),
-    ('Fangatau (98765)', 1),
-    ('Fatu-Hiva (98740)', 1),
-    ('Gambier (98755)', 1),
-    ('Hao (98767)', 1),
-    ('Hienghène (98815)', 1),
-    ('Hikueru (98768)', 1),
-    ('Hitiaa O Te Ra (98705)', 1),
-    ('Hiva-Oa (98741)', 1),
-    ('Houaïlou (98816)', 1),
-    ('Huahine (98731)', 1),
-    ('Île des Pins (98832)', 1),
-    ('Kaala-Gomen (98817)', 1),
-    ('Koné (98860)', 1),
-    ('Kouaoua (98818)', 1),
-    ('Koumac (98850)', 1),
-    ('La Foa (98880)', 1),
-    ('Lifou (98820, 98884, 98885)', 1),
-    ('Mahina (98709)', 1),
-    ('Makemo (98769)', 1),
-    ('Manihi (98771)', 1),
-    ('Maré (98828, 98878)', 1),
-    ('Maupiti (98732)', 1),
-    ('Miquelon-Langlade (97500)', 1),
-    ('Moindou (98819)', 1),
-    ('Moorea-Maiao (98728)', 1),
-    ('Napuka (98772)', 1),
-    ('Nouméa (98800)', 1),
-    ('Nuku-Hiva (98742)', 1),
-    ('Nukutavake (98773)', 1),
-    ('Ouégoa (98821)', 1),
-    ('Ouvéa (98814)', 1),
-    ('Paea (98711)', 1),
-    ('Païta (98890)', 1),
-    ('Papara (98712)', 1),
-    ('Papeete (98713, 98714)', 1),
-    ('Pirae (98716)', 1),
-    ('Poindimié (98822)', 1),
-    ('Ponérihouen (98823)', 1),
-    ('Pouébo (98824)', 1),
-    ('Pouembout (98825)', 1),
-    ('Poya (98827)', 1),
-    ('Pukapuka (98774)', 1),
-    ('Punaauia (98718)', 1),
-    ('Raivavae (98750)', 1),
-    ('Rangiroa (98776)', 1),
-    ('Rapa (98751)', 1),
-    ('Reao (98779)', 1),
-    ('Rimatara (98752)', 1),
-    ('Rurutu (98753)', 1),
-    ('Saint-Pierre (97500)', 1),
-    ('Sarraméa (98880)', 1),
-    ('Taha''a (98733)', 1),
-    ('Tahuata (98743)', 1),
-    ('Taiarapu-Est (98722)', 1),
-    ('Taiarapu-Ouest (98722)', 1),
-    ('Takaroa (98781)', 1),
-    ('Taputapuatea (98735)', 1),
-    ('Tatakoto (98783)', 1),
-    ('Teva I Uta (98726)', 1),
-    ('Thio (98829)', 1),
-    ('Touho (98831)', 1),
-    ('Tubuai (98754)', 1),
-    ('Tumaraa (98735)', 1),
-    ('Tureia (98784)', 1),
-    ('Ua-Huka (98744)', 1),
-    ('Ua-Pou (98745)', 1),
-    ('Uturoa (98735)', 1),
-    ('Yaté (98834)', 1)
-;
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Aubigny-en-Laonnois (02820)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Blaincourt-sur-Aube (10500)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bouranton (10270)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bouy-Luxembourg (10220)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Braye-sur-Maulne (37330)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bréhémont (37130)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Brienne-la-Vieille (10500)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Cangey (37530)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Chauffour-lès-Bailly (10110)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Le Bono (56400)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Lion-sur-Mer (14780)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Maltot (14930)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Mézidon Vallée d''Auge (14270)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Montigny (14210)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Saint-Lucien (76780)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Saint-Quentin-de-Baron (33750)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Saint-Selve (33650)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Sigottier (05700)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bournan (37240)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Le Boulay (37110)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Etaux (74800)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Marseille (13)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Lyon (69)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Anaa (98760)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Arutua (98761)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bélep (98811)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bora-Bora (98730)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Boulouparis (98812)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Bourail (98870)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Canala (98813)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Dumbéa (98830, 98835, 98837, 98839)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Faaa (98704)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Fakarava (98763)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Fangatau (98765)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Fatu-Hiva (98740)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Gambier (98755)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Hao (98767)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Hienghène (98815)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Hikueru (98768)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Hitiaa O Te Ra (98705)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Hiva-Oa (98741)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Houaïlou (98816)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Huahine (98731)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Île des Pins (98832)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Kaala-Gomen (98817)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Koné (98860)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Kouaoua (98818)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Koumac (98850)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('La Foa (98880)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Lifou (98820, 98884, 98885)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Mahina (98709)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Makemo (98769)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Manihi (98771)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Maré (98828, 98878)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Maupiti (98732)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Miquelon-Langlade (97500)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Moindou (98819)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Moorea-Maiao (98728)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Napuka (98772)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Nouméa (98800)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Nuku-Hiva (98742)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Nukutavake (98773)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Ouégoa (98821)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Ouvéa (98814)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Paea (98711)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Païta (98890)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Papara (98712)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Papeete (98713, 98714)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Pirae (98716)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Poindimié (98822)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Ponérihouen (98823)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Pouébo (98824)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Pouembout (98825)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Poya (98827)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Pukapuka (98774)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Punaauia (98718)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Raivavae (98750)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Rangiroa (98776)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Rapa (98751)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Reao (98779)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Rimatara (98752)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Rurutu (98753)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Saint-Pierre (97500)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Sarraméa (98880)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Taha''a (98733)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Tahuata (98743)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Taiarapu-Est (98722)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Taiarapu-Ouest (98722)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Takaroa (98781)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Taputapuatea (98735)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Tatakoto (98783)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Teva I Uta (98726)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Thio (98829)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Touho (98831)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Tubuai (98754)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Tumaraa (98735)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Tureia (98784)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Ua-Huka (98744)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Ua-Pou (98745)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Uturoa (98735)', 1);
+INSERT IGNORE INTO elected_representative_zone (name, category_id) VALUES ('Yaté (98834)', 1);
 
 UPDATE elected_representative_mandate
 SET zone_id = (SELECT id FROM elected_representative_zone zone WHERE zone.name = 'Etaux (74800)' AND category_id = 1)
@@ -2627,7 +2625,7 @@ WHERE commune_nom = 'Schoelcher' AND dpt = '' AND type = 'conseiller_municipal'
 
 UPDATE elected_representative_mandate
 SET zone_id = (SELECT id FROM elected_representative_zone zone WHERE zone.name = 'Saint-Pierre (97500)' AND category_id = 1)
-WHERE commune_nom = 'Saint-Pierre' AND dpt_nom = 'Saint-Pierre-et-Miquelon' AND type = 'conseiller_municipal'
+WHERE commune_nom = 'Saint-Pierre' AND dpt_nom = 'SAINT PIERRE ET MIQUELON' AND type = 'conseiller_municipal'
 ;
 
 UPDATE elected_representative_mandate mandate
@@ -2744,6 +2742,7 @@ UPDATE elected_representative_mandate SET epci = 'CC les Portes de l''Ile de Fra
 UPDATE elected_representative_mandate SET epci = 'CC Aygues-Ouvèze en Provence (Ccaop)' WHERE epci_nom = 'CC D''AYGUES-OUVEZE EN PROVENCE';
 UPDATE elected_representative_mandate SET epci = 'CA Etampois Sud Essonne' WHERE epci_nom = 'CA DE L''ETAMPOIS SUD ESSONNE (CCESE)';
 UPDATE elected_representative_mandate SET epci = 'CC Serre-Ponçon' WHERE epci_nom = 'CC DE SERRE-PONCON';
+UPDATE elected_representative_mandate SET epci = 'CC Terres Touloises' WHERE epci_nom = 'CC \\"TERRES TOULOISES\\"';
 
 UPDATE elected_representative_mandate mandate
 SET zone_id = (SELECT id FROM elected_representative_zone zone WHERE zone.name = mandate.epci AND category_id = 2)
@@ -3087,6 +3086,9 @@ SELECT COUNT(id) FROM elected_representative_political_function WHERE name IS NU
 SELECT COUNT(id) FROM elected_representatives_register WHERE (nom_fonction IS NULL OR nom_fonction = '') AND date_debut_fonction IS NOT NULL;
 -- Pour savoir les noms des fonctions
 SELECT DISTINCT name FROM elected_representative_political_function
+;
+-- Pour vérifier que les commentaires ont été ajoutés (doit être plus que 0, plutôt 53)
+SELECT COUNT(id) FROM elected_representative WHERE comment IS NOT NULL
 ;
 -- Etape 6: on supprime les tables et les champs temporaires
 ALTER TABLE elected_representative DROP canonical
