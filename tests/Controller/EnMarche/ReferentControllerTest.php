@@ -399,7 +399,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
+        $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertContains('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
@@ -416,7 +416,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertCount(7, $this->client->getCrawler()->filter('.status.status__1'));
+        $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertContains('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
         $this->assertContains('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
@@ -434,7 +434,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
+        $this->assertCount(3, $this->client->getCrawler()->filter('.status.status__1'));
         $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
         $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
         $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
@@ -475,7 +475,7 @@ class ReferentControllerTest extends WebTestCase
 
         $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
 
-        $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
+        $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
     }
 
     public function testReferentCanCreateAdherentMessageSuccessfully(): void

@@ -56,8 +56,8 @@ class ManagedUserRepositoryTest extends WebTestCase
     public function providesOnlyEmailSubscribers(): \Generator
     {
         yield [null, 3];
-        yield [true, 2];
-        yield [false, 1];
+        yield [true, 1];
+        yield [false, 2];
     }
 
     protected function setUp()

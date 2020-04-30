@@ -189,8 +189,13 @@ class ManagedUserRepository extends ServiceEntityRepository
         $qb->andWhere($typeExpression);
 
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
+            $subscriptionTypesCondition = 'FIND_IN_SET(:subscription_type, u.subscriptionTypes) > 0';
+            if (false === $filter->getEmailSubscription()) {
+                $subscriptionTypesCondition = '(FIND_IN_SET(:subscription_type, u.subscriptionTypes) = 0 OR u.subscriptionTypes IS NULL)';
+            }
+
             $qb
-                ->andWhere(sprintf('FIND_IN_SET(:subscription_type, u.subscriptionTypes) %s 0', $filter->getEmailSubscription() ? '>' : '='))
+                ->andWhere($subscriptionTypesCondition)
                 ->setParameter('subscription_type', $filter->getSubscriptionType())
             ;
         }

@@ -232,7 +232,7 @@ class ManagedUser
         int $isCommitteeMember = 0,
         int $isCommitteeHost = 0,
         int $isCommitteeSupervisor = 0,
-        array $subscriptionTypes = [],
+        ?array $subscriptionTypes = [],
         string $subscribedTags = null,
         \DateTime $createdAt = null,
         string $gender = null,
