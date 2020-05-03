@@ -182,6 +182,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $adherent;
 
