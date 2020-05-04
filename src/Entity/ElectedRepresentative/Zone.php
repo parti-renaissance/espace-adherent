@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity\ElectedRepresentative;
 
+use AppBundle\Entity\EntityReferentTagTrait;
+use AppBundle\Entity\ReferentTag;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
@@ -15,6 +19,8 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  */
 class Zone
 {
+    use EntityReferentTagTrait;
+
     /**
      * @var int|null
      *
@@ -43,10 +49,27 @@ class Zone
      */
     private $category;
 
+    /**
+     * @var Collection|ReferentTag[]
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\JoinTable(
+     *     name="elected_representative_zone_referent_tag",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="elected_representative_zone_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="referent_tag_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    protected $referentTags;
+
     public function __construct(ZoneCategory $category = null, string $name = null)
     {
         $this->category = $category;
         $this->name = $name;
+        $this->referentTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,5 +100,25 @@ class Zone
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    /**
+     * @return Collection|ReferentTag[]
+     */
+    public function getReferentTags(): Collection
+    {
+        return $this->referentTags;
+    }
+
+    public function addReferentTag(ReferentTag $referentTag): void
+    {
+        if (!$this->referentTags->contains($referentTag)) {
+            $this->referentTags->add($referentTag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTags->remove($referentTag);
     }
 }
