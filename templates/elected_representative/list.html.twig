@@ -1,0 +1,107 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <main>
+        <section class="b__nudge--bottom-huge">
+            <div class="datagrid__pre-table b__nudge--bottom-larger">
+                <h3>Élus</h3>
+
+                {% if total_count %}
+                    <span class="datagrid__count">
+                        <span>{{ elected_representatives.totalItems|number_format(0, ',', ' ') }}</span> sur {{ total_count|number_format(0, ',', ' ') }} élu{{ total_count > 1 ? 's' : '' }}
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="datagrid">
+                <div class="b__nudge--bottom-larger">
+                    <div class="datagrid__table-container">
+                        <table class="datagrid__table-manager">
+                            <thead>
+                            <tr>
+                                {% set order = filter.order and filter.order == 'd' ? 'a' : 'd' %}
+
+                                <th style="width: 100px;">
+                                    <a
+                                            href="{{ path("app_referent_elected_representatives_list", {f: filter.toArray()|merge({sort: 'lastName', order: order})}) }}"
+                                            class="sort-link sort-link--order-{{ filter.sort == 'lastName' ? filter.order : 'a' }}"
+                                    >
+                                        Identité
+                                    </a>
+                                </th>
+                                <th style="width: 100px;">Mandats actuels (nuance)</th>
+                                <th style="width: 100px;">Fonctions actuelles</th>
+                                <th style="width: 100px;">Étiquettes</th>
+                                <th style="width: 100px;">Réseaux sociaux</th>
+                                <th style="width: 100px;">Adhérent</th>
+                                <th style="width: 100px;">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for elected_representative in elected_representatives %}
+                                <tr class="referent__item">
+                                    <td class="adherent-identity">
+                                        <div class="adherent-name">
+                                            {{ elected_representative.lastName }} {{ elected_representative.firstName }}
+                                        </div>
+                                        <div class="adherent-caracs">
+                                            {{ elected_representative.gender ? ('male' == elected_representative.gender ? 'common.gender.man' : 'common.gender.woman')|trans : '~' }},
+                                            {{ elected_representative.age ? elected_representative.age ~ ' ans' : '~'}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% for mandate in elected_representative.mandates %}
+                                            <b>{{ mandate }}</b><br />
+                                            <i>{{ mandate.zone }}</i><br />
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for politicalFunction in elected_representative.politicalFunctions %}
+                                            {{ politicalFunction }}<br />
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for label in elected_representative.sortedLabels %}
+                                            {{ label }}<br />
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% for link in elected_representative.socialNetworkLinks %}
+                                            <a target="_blank" rel="noopener" href="{{ link.url }}">
+                                                <i class="fa fa-{{ link.type|lower }}-square"></i>
+                                            </a>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <span class="status status__{{ elected_representative.isAdherent ? '1' : '2' }}">
+                                            {{ (elected_representative.isAdherent is null ? 'global.maybe' : (elected_representative.isAdherent ? 'global.yes' : 'global.no'))|trans }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn-secondary btn-secondary--blue">Afficher</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="text--center">
+                                        <img src="{{ asset('/images/icons/icn_no-result.svg') }}" class="icn--no-result" width="30" />
+                                        Aucun résultat
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% if elected_representatives.count %}
+                    {% include 'components/_modern_pagination.html.twig' with {
+                        current_page: elected_representatives.currentPage,
+                        total_pages: elected_representatives.lastPage,
+                        pagination_route_params: {f: filter.toArray()}
+                    } %}
+                {% endif %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

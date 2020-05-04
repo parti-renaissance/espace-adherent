@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
  *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
  *
@@ -472,6 +472,16 @@ class ElectedRepresentative
         return $this->labels;
     }
 
+    public function getSortedLabels(): Collection
+    {
+        $iterator = $this->labels->getIterator();
+        $iterator->uasort(function (ElectedRepresentativeLabel $labelA, ElectedRepresentativeLabel $labelB) {
+            return $labelB->isOnGoing() <=> $labelA->isOnGoing();
+        });
+
+        return new ArrayCollection($iterator->getArrayCopy());
+    }
+
     public function getLabel(string $name): ?ElectedRepresentativeLabel
     {
         foreach ($this->labels as $label) {
@@ -524,6 +534,11 @@ class ElectedRepresentative
             $sponsorship = new Sponsorship($year, null, $this);
             $this->sponsorships->add($sponsorship);
         }
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
     }
 
     public function __toString(): string

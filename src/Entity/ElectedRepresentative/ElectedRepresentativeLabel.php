@@ -146,6 +146,6 @@ class ElectedRepresentativeLabel
 
     public function __toString(): string
     {
-        return $this->getname();
+        return $this->getName().($this->beginYear ? (' ('.$this->beginYear.($this->finishYear ? (' à '.$this->finishYear) : '').')') : '');
     }
 }

@@ -115,4 +115,9 @@ class SocialNetworkLink
     {
         $this->electedRepresentative = $electedRepresentative;
     }
+
+    public function __toString(): string
+    {
+        return $this->getUrl().' ('.$this->type.')';
+    }
 }

@@ -80,4 +80,11 @@ class LoadElectionCityCardData extends Fixture
 
         return $phone;
     }
+
+    public function getDependencies(): array
+    {
+        return [
+            LoadCityData::class,
+        ];
+    }
 }

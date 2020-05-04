@@ -506,10 +506,34 @@ class ReferentControllerTest extends WebTestCase
         self::assertCount(0, $crawler->filter('.form .form__errors'));
     }
 
+    public function testListElectedRepresentatives()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
+
+        $this->assertCount(4, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(1, $crawler->filter('.status.status__1'));
+        $this->assertContains('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('Conseiller(e) municipal(e) (NC)Clichy (92110)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('Maire', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('Président(e) d\'EPCI', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('PS (2016)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('Non', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('Conseiller(e) municipal(e) (DIV)Rouen (76000)Membre d\'EPCI (DIV)Rouen (76000)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains(' G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(1)->filter('td')->eq(3)->text()));
+        $this->assertContains('Peut-être', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('DUFOUR Michelle', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertContains('Oui', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertContains('LOBELL', $crawler->filter('tbody tr.referent__item')->eq(3)->text());
+    }
+
     public function providePages()
     {
         return [
             ['/espace-referent/utilisateurs'],
+            ['/espace-referent/elus'],
             ['/espace-referent/evenements'],
             ['/espace-referent/comites'],
             ['/espace-referent/projets-citoyens'],

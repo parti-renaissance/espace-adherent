@@ -13,7 +13,7 @@ class LoadZoneCategoryData extends Fixture
         foreach (ZoneCategory::ALL as $name) {
             $category = new ZoneCategory($name);
             $manager->persist($category);
-            $this->setReference('zone-category-'.mb_strtolower($category), $category);
+            $this->setReference('zone-category-'.mb_strtolower($name), $category);
         }
 
         $manager->flush();

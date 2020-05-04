@@ -413,4 +413,3 @@ WHERE zone_tag.referent_tag_id IS NULL AND zone.category_id = 7
 -- Pour supprimer toutes les données importées par la migration
 TRUNCATE TABLE elected_representative_zone_referent_tag
 ;
-
