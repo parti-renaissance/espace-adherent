@@ -22,9 +22,9 @@
                         </ul>
                         <div class="profile-completion b__nudge--bottom-50">
                             <div class="text--body b__nudge--bottom-small">
-                                <!-- If not completed -->
+                                <!-- If is not completed -->
                                 Complétion du profil : 50%
-                                <!-- If completed TODO
+                                <!-- If is completed TODO
                                 👏 Profil complété ! -->
                             </div>
                             <div class="gauge">
@@ -65,22 +65,22 @@
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <div class="menu-section__heading">
+                            <a href="{{ path('app_adherent_profil_activity') }}" class="menu-section__heading">
                                 <div class="icon-container">
                                     {% include('components/_adherent-menu/default/activity.html.twig') %}
                                 </div>
-                                <span>Activités</span>
-                            </div>
+                                <span href="">Activités</span>
+                            </a>
                             <ul class="menu-section__items">
-                                <li><a href="#">Mes comités</a></li>
-                                <li><a href="#">Mes événements</a></li>
-                                <li><a href="#">Mes projets citoyens</a></li>
-                                <li><a href="#">Mon atelier des idées</a></li>
-                                <li><a href="#">Mes dons</a></li>
+                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes comités</a></li>
+                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes événements</a></li>
+                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes projets citoyens</a></li>
+                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mon atelier des idées</a></li>
+                                <li><a href="{{ path('app_adherent_profil_activity') }}">Mes dons</a></li>
                             </ul>
                         </div>
                         <div class="menu-section">
-                            <a class="menu-section__heading" href="#">
+                            <a href="{{ path('app_adherent_profil_documents') }}" class="menu-section__heading">
                                 <div class="icon-container">
                                     {% include('components/_adherent-menu/default/documents.html.twig') %}
                                 </div>
