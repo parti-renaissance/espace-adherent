@@ -107,7 +107,7 @@ class LoadManagedUserData extends AbstractFixture implements ContainerAwareInter
             'is_committee_member' => 0,
             'is_committee_host' => 0,
             'is_committee_supervisor' => 1,
-            'subscription_types' => [SubscriptionTypeEnum::REFERENT_EMAIL, SubscriptionTypeEnum::MILITANT_ACTION_SMS],
+            'subscription_types' => null,
             'subscribedTags' => '77,59',
             'created_at' => '2017-08-12 16:12:13',
             'gender' => 'male',
