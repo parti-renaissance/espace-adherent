@@ -10,6 +10,11 @@
         box-sizing: border-box;
         margin-right: 30px;
         flex: 0 0 275px;
+        display: none;
+
+        @media (min-width: $tablet) {
+            display: block;
+        }
     }
 
     &__status {
