@@ -7,9 +7,6 @@
         <defaults autowire="true" autoconfigure="true" public="false">
             <bind key="$donationRequestUtilsLocator" type="service" id="app.donation_request.utils.locator" />
             <bind key="$environment">%kernel.environment%</bind>
-            <bind key="$mailchimpWebhookKey">%env(MAILCHIMP_WEBHOOK_KEY)%</bind>
-            <bind key="$mailchimpCampagnUrl">%env(MAILCHIMP_CAMPAGN_URL)%</bind>
-            <bind key="$mailchimpOrgId">%env(MAILCHIMP_ORG_ID)%</bind>
         </defaults>
 
         <!-- History -->
@@ -70,14 +67,6 @@
 
         <!-- Biography -->
         <service id="AppBundle\Validator\UniqueExecutiveOfficeMemberRoleValidator" />
-
-        <!-- Controller -->
-        <prototype namespace="AppBundle\Controller\" resource="../../src/Controller/">
-            <tag name="controller.service_arguments" />
-        </prototype>
-        <prototype namespace="AppBundle\Controller\Admin\" resource="../../src/Controller/Admin" public="true">
-            <tag name="controller.service_arguments" />
-        </prototype>
 
         <!-- Donation -->
         <service id="AppBundle\Command\DonationUpdateReferenceCommand" />

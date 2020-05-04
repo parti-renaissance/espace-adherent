@@ -1,0 +1,55 @@
+{% extends 'voting_platform/vote_step.html.twig' %}
+
+{% block vote_step_content %}
+    <div class="vote-tabs--container">
+        {{ form_start(form) }}
+
+        <div class="vote-tab--1 active">
+            <h2 class="b__nudge--bottom-large">Étape 1 : Sélectionnez une candidate femme</h2>
+
+            <div>
+                {% for group in candidate_groups|filter(group => form.womanCandidate[group.uuid.toString|replace({'-': '_'})] is defined) %}
+                    {% include 'voting_platform/vote_step/_candidate_row.html.twig' with {
+                        candidate: group.candidates|first,
+                        form: form.womanCandidate[group.uuid.toString|replace({'-': '_'})]
+                    } %}
+                {% endfor %}
+            </div>
+            <a href="javascript:toggleVoteTabs(false);" class="btn btn--blue">Confirmer</a>
+        </div>
+
+        <div class="vote-tab--2">
+            <h2>Étape 2 : Sélectionnez un candidat homme</h2>
+
+            <div>
+                {% for group in candidate_groups|filter(group => form.manCandidate[group.uuid.toString|replace({'-': '_'})] is defined) %}
+                    {% include 'voting_platform/vote_step/_candidate_row.html.twig' with {
+                        candidate: group.candidates|first,
+                        form: form.manCandidate[group.uuid.toString|replace({'-': '_'})]
+                    } %}
+                {% endfor %}
+            </div>
+
+            <div>
+                <a href="javascript:toggleVoteTabs(true)" class="link--no-decor">⟵ Retour</a>
+
+                <button type="submit" class="btn btn--blue">Confirmer</button>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block final_javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        function toggleVoteTabs(back) {
+            removeClass(dom('.vote-tab--' + (back ? 2 : 1)), 'active');
+            addClass(dom('.vote-tab--' + (back ? 1 : 2)), 'active');
+
+            return false;
+        }
+    </script>
+{% endblock %}

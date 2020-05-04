@@ -92,3 +92,36 @@ framework:
                     from:
                         - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
                     to : !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+        voting_process:
+            type: 'state_machine'
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - 'state'
+            initial_place: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALISE
+            supports:
+                - AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand
+            places:
+                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALISE
+                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
+                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::FINISH
+            transitions:
+                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_START:
+                    from:
+                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALISE
+                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
+                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_VOTE:
+                    from:
+                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
+                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_CONFIRM:
+                    from: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_FINISH:
+                    from: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::FINISH

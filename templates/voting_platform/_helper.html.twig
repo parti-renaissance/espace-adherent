@@ -1,0 +1,11 @@
+{% macro display_candidate_photo_box(candidate) %}
+    <div class="candidate-photo--container">
+        <span>
+            {% if candidate.hasPhoto %}
+                <img src="{{ path('asset_url', {path: candidate.imagePath}) }}" alt="photo candidat" />
+            {% else %}
+                {{ candidate.initials }}
+            {% endif %}
+        </span>
+    </div>
+{% endmacro %}

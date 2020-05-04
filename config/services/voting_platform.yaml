@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $mailer: '@app.mailer.transactional'
+            $votingProcessWorkflow: '@state_machine.voting_process'
 
     AppBundle\VotingPlatform\:
         resource: ../../src/VotingPlatform/
