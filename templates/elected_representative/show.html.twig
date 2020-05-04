@@ -1,0 +1,164 @@
+{% extends 'referent/_layout.html.twig' %}
+
+{% block referent_content %}
+    <main>
+        <section class="b__nudge--bottom-huge">
+            <a href="{{ path('app_referent_elected_representatives_list') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
+                ⟵ Retour
+            </a>
+
+            <h3 class="text--medium b__nudge--bottom-50">Fiche de l'élu</h3>
+
+            <div class="elected-representative-identity">
+                <h3>{{ elected_representative.fullName }}</h3>
+                <div>
+                    {{ elected_representative.gender ? ('male' == elected_representative.gender ? 'common.gender.man' : 'common.gender.woman')|trans : '~' }},
+                    {{ elected_representative.age ? elected_representative.age ~ ' ans' : '~' }}
+                </div>
+                <div class="elected-representative-social-networks">
+                    {% for link in elected_representative.socialNetworkLinks %}
+                        <a target="_blank" href="{{ link.url }}" class="link--no-decor">
+                            <i class="fa fa-{{ link.type|lower }}{{ link.type is constant('App\\Entity\\ElectedRepresentative\\SocialLinkTypeEnum::INSTAGRAM') ? '' : '-square' }}"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+                <div class="b__nudge--bottom-50">{{ elected_representative.isAdherent ? 'Adhérent' }}</div>
+            </div>
+
+            <div class="datagrid">
+                <div class="b__nudge--bottom-larger">
+                    <div style="float:left;">
+                        <div class="datagrid__table-container">
+                            <h3>Parrainages</h3>
+                            <table class="datagrid__table-manager small-min-width elected-representative-sponsorships">
+                                <thead>
+                                <tr>
+                                    <th>Candidat</th>
+                                    <th style="width: 50px;">Élection</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for sponsorship in elected_representative.sponsorships if sponsorship.candidate is not null %}
+                                    <tr class="referent__item">
+                                        <td>{{ sponsorship.candidate }}</td>
+                                        <td>{{ sponsorship.presidentialElectionYear }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="2">
+                                            Aucun
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="float:right;">
+                        <div class="datagrid__table-container">
+                            <h3>Étiquettes</h3>
+                            <table class="datagrid__table-manager small-min-width elected-representative-labels">
+                                <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th style="width: 100px;">Date de début</th>
+                                    <th style="width: 100px;">Date de fin</th>
+                                </tr>
+                                </thead>
+                                <tbody class="no-border-bottom">
+                                {% for label in elected_representative.labels %}
+                                    <tr class="referent__item">
+                                        <td>{{ label.name }}</td>
+                                        <td>{{ label.beginYear }}</td>
+                                        <td>{{ label.finishYear }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3">
+                                            Aucune
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="datagrid">
+                <div class="b__nudge--bottom-larger">
+                    <div class="datagrid__table-container">
+                        <h3>Mandats et Fonctions</h3>
+                        <table class="datagrid__table-manager elected-representative-mandates">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Mandat</th>
+                                <th style="width: 50px;">Nuance politique</th>
+                                <th style="width: 50px;">Soutien LaREM</th>
+                                <th style="width: 50px;">Date de début</th>
+                                <th style="width: 50px;">Date de fin</th>
+                                <th style="width: 50px;">Fontions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="no-border-bottom">
+                            {% for mandate in elected_representative.electedMandates %}
+                                <tr class="referent__item">
+                                    <td>{{ mandate.name }}</td>
+                                    <td>{{ mandate.politicalAffiliation }}</td>
+                                    <td>{{ mandate.laREMSupport ? "elected_representative.mandate.larem_support.#{mandate.laREMSupport}"|trans }}</td>
+                                    <td>{{ mandate.beginAt ? mandate.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}</td>
+                                    <td>{{ mandate.finishAt ? mandate.finishAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}</td>
+                                    <td>
+                                        {% for politicalFunction in mandate.politicalFunctions %}
+                                            {{ politicalFunction }}
+                                            {% if politicalFunction.beginAt %}
+                                                ({{ politicalFunction.beginAt|date('Y') }}{{ politicalFunction.finishAt ? '-' ~ politicalFunction.finishAt|date('Y') }})
+                                            {% endif %}
+                                            <br />
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="6">
+                                        Aucun
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <h3>Candidatures</h3>
+                        <table class="datagrid__table-manager elected-representative-candidacies">
+                            <thead>
+                            <tr>
+                                <th style="width: 100px;">Mandat</th>
+                                <th style="width: 50px;">Nuance politique</th>
+                                <th style="width: 50px;">Soutien LaREM</th>
+                                <th style="width: 50px;">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody class="no-border-bottom">
+                            {% for mandate in elected_representative.notElectedMandates %}
+                                <tr class="referent__item">
+                                    <td>{{ mandate.name }}</td>
+                                    <td>{{ mandate.politicalAffiliation }}</td>
+                                    <td>{{ mandate.laREMSupport ? "elected_representative.mandate.larem_support.#{mandate.laREMSupport}"|trans }}</td>
+                                    <td>{{ mandate.beginAt ? mandate.beginAt|localizeddate('none', 'none', 'fr_FR', null, 'd MMMM yyyy') }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">
+                                        Aucune
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -7,6 +7,7 @@ use App\Controller\CanaryControllerTrait;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use App\Form\ElectedRepresentative\ElectedRepresentativeFilterType;
@@ -316,6 +317,19 @@ class ReferentController extends Controller
             'elected_representatives' => $electedRepresentatives,
             'filter' => $filter,
             'total_count' => $electedRepresentativeRepository->countForReferentTags($filter->getReferentTags()),
+        ]);
+    }
+
+    /**
+     * @Route("/elus/{uuid}", name="app_referent_elected_representatives_show", methods={"GET"})
+     * @Security("is_granted('ROLE_REFERENT')")
+     */
+    public function showElectedRepresentative(Request $request, ElectedRepresentative $electedRepresentative): Response
+    {
+        $this->disableInProduction();
+
+        return $this->render('elected_representative/show.html.twig', [
+            'elected_representative' => $electedRepresentative,
         ]);
     }
 

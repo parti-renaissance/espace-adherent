@@ -4,6 +4,7 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Address\GeoCoder;
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\DataFixtures\ORM\LoadElectedRepresentativeData;
 use App\Entity\Event;
 use App\Entity\InstitutionalEvent;
 use App\Entity\ReferentManagedUsersMessage;
@@ -536,8 +537,50 @@ class ReferentControllerTest extends WebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus');
 
         $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
-        $this->assertContains('PARIS Circonscription', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertContains('PARIS Arrondissement', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertContains('PARIS Arrondissement', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertContains('PARIS Circonscription', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+    }
+
+    public function testShowElectedRepresentative()
+    {
+        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus/'.LoadElectedRepresentativeData::ELECTED_REPRESENTATIVE_1_UUID);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertContains('Michelle DUFOUR', $crawler->filter('.elected-representative-identity')->eq(0)->text());
+        $this->assertContains('François Hollande', $crawler->filter('.elected-representative-sponsorships tbody tr')->eq(0)->text());
+        $this->assertContains('Emmanuel Macron', $crawler->filter('.elected-representative-sponsorships tbody tr')->eq(1)->text());
+        $this->assertCount(1, $crawler->filter('.elected-representative-mandates tbody tr'));
+        $this->assertContains('Conseiller(e) municipal(e)', $crawler->filter('.elected-representative-mandates tbody tr')->text());
+        $this->assertContains('REM', $crawler->filter('.elected-representative-mandates tbody tr')->text());
+        $this->assertContains('Soutien officiel', $crawler->filter('.elected-representative-mandates tbody tr')->text());
+        $this->assertContains('23 juillet 2019', $crawler->filter('.elected-representative-mandates tbody tr')->text());
+        $this->assertContains(' Autre membre (2019) Président(e) d\'EPCI (2015)', preg_replace('/\s+/', ' ', $crawler->filter('.elected-representative-mandates tbody tr')->eq(0)->filter('td')->eq(5)->text()));
+        $this->assertCount(1, $crawler->filter('.elected-representative-labels tbody tr'));
+        $this->assertNotContains('Aucune', $crawler->filter('.elected-representative-labels tbody tr')->text());
+        $this->assertCount(0, $crawler->filter('.sponsorships tbody tr'));
+        $this->assertCount(1, $crawler->filter('.elected-representative-candidacies tbody tr'));
+        $this->assertContains('Aucune', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus/'.LoadElectedRepresentativeData::ELECTED_REPRESENTATIVE_2_UUID);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertContains('Delphine BOUILLOUX', $crawler->filter('.elected-representative-identity')->eq(0)->text());
+        $this->assertCount(5, $crawler->filter('.elected-representative-social-networks a'));
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/espace-referent/elus/'.LoadElectedRepresentativeData::ELECTED_REPRESENTATIVE_3_UUID);
+
+        $this->assertStatusCode(Response::HTTP_OK, $this->client);
+        $this->assertContains('Daniel BOULON', $crawler->filter('.elected-representative-identity')->eq(0)->text());
+        $this->assertCount(1, $crawler->filter('.elected-representative-mandates tbody tr'));
+        $this->assertCount(2, $crawler->filter('.elected-representative-labels tbody tr'));
+        $this->assertCount(0, $crawler->filter('.sponsorships tbody tr'));
+        $this->assertCount(1, $crawler->filter('.elected-representative-candidacies tbody tr'));
+        $this->assertContains('Membre d\'EPCI', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
+        $this->assertContains('DIV', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
+        $this->assertContains('Pas soutenu', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
+        $this->assertContains('11 janvier 2017', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
     }
 
     public function providePages()

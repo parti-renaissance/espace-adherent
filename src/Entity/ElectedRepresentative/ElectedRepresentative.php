@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,6 +31,13 @@ class ElectedRepresentative
      * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid")
+     */
+    private $uuid;
 
     /**
      * @var string
@@ -228,8 +237,10 @@ class ElectedRepresentative
         string $lastName,
         string $gender,
         \DateTime $birthDate,
-        int $officialId = null
+        int $officialId = null,
+        UuidInterface $uuid = null
     ) {
+        $this->uuid = $uuid ?: Uuid::uuid4();
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->gender = $gender;
@@ -247,6 +258,11 @@ class ElectedRepresentative
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
     }
 
     public function getLastName(): string
@@ -407,6 +423,20 @@ class ElectedRepresentative
         return $this->mandates;
     }
 
+    public function getElectedMandates(): Collection
+    {
+        return $this->mandates->filter(function (Mandate $mandate) {
+            return $mandate->isElected();
+        });
+    }
+
+    public function getNotElectedMandates(): Collection
+    {
+        return $this->mandates->filter(function (Mandate $mandate) {
+            return !$mandate->isElected();
+        });
+    }
+
     public function addMandate(Mandate $mandate): void
     {
         if (!$this->mandates->contains($mandate)) {
@@ -534,6 +564,11 @@ class ElectedRepresentative
             $sponsorship = new Sponsorship($year, null, $this);
             $this->sponsorships->add($sponsorship);
         }
+    }
+
+    public function getFullName(): string
+    {
+        return sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function getAge(): ?int
