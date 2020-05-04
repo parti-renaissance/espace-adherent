@@ -37,6 +37,8 @@ class LoadCommitteeCandidacyData extends Fixture
         $manager->persist($candidacy);
         $this->getImageManager()->saveImage($candidacy);
 
+        $this->setReference('committee-candidacy-1', $candidacy);
+
         $manager->flush();
     }
 

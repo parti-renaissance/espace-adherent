@@ -1,0 +1,49 @@
+{% extends 'voting_platform/_layout.html.twig' %}
+
+{% block page_title %}
+    Confirmation
+{% endblock %}
+
+{% block voting_platform_header %}
+    <h2>Mon bulletin de vote</h2>
+
+    <p>Confirmez vous ce bulletin de vote ?</p>
+{% endblock %}
+
+{% import 'voting_platform/_helper.html.twig' as helper %}
+
+{% block voting_platform_content %}
+    <div>
+        <div>
+            {% for candidateGroup in vote_command.candidateGroups %}
+                <div class="l__row">
+                    {% for candidate in candidateGroup.candidates %}
+                        {{ helper.display_candidate_photo_box(candidate) }}
+                    {% endfor %}
+                </div>
+
+                <div>
+                    {% for candidate in candidateGroup.candidates %}
+                        <span><strong>{{ candidate.fullName }}</strong></span>
+                        <span>{{ candidate.isMan ? 'H' : 'F' }}</span>
+
+                        {% if not loop.last %}
+                            <span class="separator"></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="link--no-decor link--blue--dark">Changer mon vote</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        {{ form_start(form) }}
+            <div>
+                {{ form_widget(form.allow, { label: 'Confirmer mon vote', attr: { class: 'btn btn--blue btn--large-and-full' } }) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+

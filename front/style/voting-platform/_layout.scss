@@ -1,0 +1,57 @@
+.voting-platform {
+    background: $btn--gray;
+
+    & > div {
+        background: white;
+    }
+
+    .vote-tabs--container {
+        .vote-tab--1,
+        .vote-tab--2 {
+            display: none;
+
+            &.active {
+                display: block;
+            }
+        }
+    }
+
+    .candidate {
+        &--box {
+            border: 1px solid #e5e5e5;
+            padding: 10px 15px;
+        }
+
+        &-photo--container {
+            span {
+                border-radius: 50%;
+                border: 1px solid #e2e2e2;
+                display: inline-block;
+                width: 90px;
+                height: 90px;
+                overflow: hidden;
+                background: $gray--lighter;
+                font-size: 27px;
+                line-height: 90px;
+                text-align: center;
+                color: $blue;
+                font-weight: bold;
+                font-style: italic;
+
+                img {
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .modal-content {
+        position: absolute;
+        border-radius: 0;
+        margin: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+    }
+}
