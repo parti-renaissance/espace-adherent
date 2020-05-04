@@ -286,3 +286,19 @@
         }
     }
 }
+
+.adherent-dropdown {
+    display: none;
+    background-color: teal;
+    position: absolute;
+    z-index: 50;
+    left: 0;
+    right: 0;
+    top: 64px;
+    padding: 40px 0;
+
+    &__col {
+        flex-basis: 0;
+        flex-grow: 1;
+    }
+}

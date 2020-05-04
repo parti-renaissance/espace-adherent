@@ -34,7 +34,7 @@
                     </div>
                     <nav class="adherent-profile__menu adherent-profile__menu--desktop">
                         <div class="menu-section">
-                            <div class="menu-section__heading active">
+                            <div class="menu-section__heading {{ is_active_route(app.request, ['app_adherent_profil_general_information_update*' , 'app_adherent_profil_certification_demand*'] ) ? 'active' }}">
                                 <div class="icon-container">
                                     {% include('components/_adherent-menu/active/profile.html.twig') %}
                                 </div>
