@@ -604,18 +604,17 @@
         &:hover {
             background-color: $pink;
 
-            > h2,
-            > p,
-            .candidacies-list,
-            .candidacies-list a,
-            .candidacy-remove,
-            .candidacy-remove a {
+            .box-el {
                 color: $white;
             }
 
-            .elections-actions > .btn {
-                background-color: $white;
-                color: $pink;
+            .box-el.btn {
+                color: $white;
+                border-color: $white;
+            }
+
+            a.box-el:not(.btn) {
+                font-weight: bold;
             }
         }
     }

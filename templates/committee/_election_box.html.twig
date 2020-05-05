@@ -2,7 +2,7 @@
 {% set able_to_candidate = is_granted('ABLE_TO_CANDIDATE') %}
 
 <section class="committee__elections-box b__nudge--bottom-larger">
-    <h2 class="text--medium b__nudge--bottom">Désignation du binôme d'adhérents siégeant au Conseil Territorial</h2>
+    <h2 class="text--medium b__nudge--bottom box-el">Désignation du binôme d'adhérents siégeant au Conseil Territorial</h2>
     <!-- <p class="text--body text--dark text--small b__nudge--bottom b__nudge--top">
         Candidatez pour représentez les adhérents de votre comité pour un mandat de 2 ans.
         Les candidatures sont ouvertes dans tous les comités du xx mois à HH:mm à xx mois à HH:mm.
@@ -13,7 +13,7 @@
         {% if able_to_candidate %}
             {% if candidacy_committee_membership is not null %}
                 {% if candidacy_committee_membership == membership %}
-                    <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap">Je modifie ma candidature</a>
+                    <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
                     {% set display_remove_candidacy_button = true %}
                 {% else %}
                     {% set display_wrang_committee_message = true %}
@@ -53,14 +53,14 @@
             {% endif %}
         {% endif %}
 
-        <div class="candidacies-list text--body text--small text--gray">
-            Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark">la liste des candidats</a>
+        <div class="candidacies-list text--body text--small text--gray box-el">
+            Consulter <a href="#" id="candidacies-list-modal--trigger" class="link--no-decor text--blue--dark box-el">la liste des candidats</a>
         </div>
 
         {% if display_remove_candidacy_button is defined and display_remove_candidacy_button %}
             <div class="candidacy-remove text--body text--small b__nudge--top">
                 <a href="{{ path('app_committee_remove_candidacy', {slug: committee.slug, back: true}) }}"
-                      class="link--no-decor text--blue--dark em-confirm--trigger"
+                      class="link--no-decor text--blue--dark em-confirm--trigger box-el"
                       data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"
                       id="remove-candidacy-link">Retirer ma candidature
                 </a>
