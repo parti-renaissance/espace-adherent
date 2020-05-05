@@ -1,6 +1,8 @@
 {% import 'voting_platform/_helper.html.twig' as helper %}
 
 <div class="candidate__box l__row  b__nudge--bottom-medium">
+    {{ form_widget(form) }}
+    {{ form_label(form, ' ') }}
     <div class="l__row box__content">
         {{ helper.display_candidate_photo_box(candidate) }}
         <div class="l__col b__nudge--left">
@@ -12,11 +14,11 @@
                     >Lire la présentation</a>
 
                     <div id="candidate-biography-content-{{ candidate.uuid.toString|slice(0, 8) }}" class="hidden">
-                        <h3 class="text--uppercase b__nudge--bottom-medium">Présentation</h3>
+                        <h3 class="text--muted text--uppercase b__nudge--bottom">Présentation</h3>
 
-                        <h2 class="b__nudge--bottom-large">{{ candidate.fullName }}</h2>
+                        <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidate.fullName }}</h2>
 
-                        <p>{{ candidate.biography }}</p>
+                        <p class="text--body text--dark">{{ candidate.biography }}</p>
                     </div>
                 {% else %}
                     <span class="text--body text--muted b__nudge--none">Présentation indisponible</span>
@@ -24,6 +26,4 @@
             </div>
         </div>
     </div>
-    {{ form_widget(form) }}
-    {{ form_label(form, ' ') }}
 </div>
