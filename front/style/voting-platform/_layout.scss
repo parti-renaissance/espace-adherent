@@ -11,7 +11,7 @@
     &__content {
         margin: 140px 0;
 
-        h1 {
+        .introduction-header h1 {
             line-height: normal;
             max-width: 650px;
         }
@@ -39,7 +39,6 @@
         margin: 24px 0;
         padding: 30px;
 
-        // INPUT & LABEL VOTE CARD STYLE
         input[type='radio'] {
             position: absolute;
             z-index: -1;
@@ -112,6 +111,7 @@
 
         .box__content {
             position: relative;
+            pointer-events: none;
 
             .candidate-name {
                 font-weight: normal;
@@ -126,8 +126,7 @@
             }
 
             .candidate-biography {
-                position: relative;
-                z-index: 5;
+                pointer-events: all;
             }
         }
     }
@@ -139,6 +138,35 @@
         right: 0;
         top: 0;
         bottom: 0;
-        width: 50%;
+        width: 100%;
+        max-width: 700px;
+        padding: 100px;
+
+        h3 {
+            font-weight: normal;
+        }
+    }
+
+    .ballot-paper {
+        background-color: $white;
+        box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
+        width: 420px;
+        height: 280px;
+        margin: 40px auto;
+
+        h3 {
+            display: inline-block;
+            font-weight: normal;
+            margin-right: 8px;
+        }
+    }
+
+    .candidate-gender {
+        color: $neutral-grey;
+        font-size: 10px;
+        font-family: $font-roboto;
+        border: solid 1px $neutral-grey;
+        height: 16px;
+        width: 12px;
     }
 }
