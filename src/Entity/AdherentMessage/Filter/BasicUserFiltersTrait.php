@@ -26,21 +26,21 @@ trait BasicUserFiltersTrait
      *
      * @ORM\Column(type="boolean")
      */
-    private $includeCommitteeSupervisors = true;
+    private $includeCommitteeSupervisors;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    private $includeCommitteeHosts = true;
+    private $includeCommitteeHosts;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
      */
-    private $includeCitizenProjectHosts = true;
+    private $includeCitizenProjectHosts;
 
     /**
      * @var Committee
@@ -49,52 +49,52 @@ trait BasicUserFiltersTrait
      */
     private $committee;
 
-    public function includeAdherentsNoCommittee(): bool
+    public function includeAdherentsNoCommittee(): ?bool
     {
         return $this->includeAdherentsNoCommittee;
     }
 
-    public function setIncludeAdherentsNoCommittee(bool $value): void
+    public function setIncludeAdherentsNoCommittee(?bool $value): void
     {
         $this->includeAdherentsNoCommittee = $value;
     }
 
-    public function includeAdherentsInCommittee(): bool
+    public function includeAdherentsInCommittee(): ?bool
     {
         return $this->includeAdherentsInCommittee;
     }
 
-    public function setIncludeAdherentsInCommittee(bool $value): void
+    public function setIncludeAdherentsInCommittee(?bool $value): void
     {
         $this->includeAdherentsInCommittee = $value;
     }
 
-    public function includeCommitteeSupervisors(): bool
+    public function includeCommitteeSupervisors(): ?bool
     {
         return $this->includeCommitteeSupervisors;
     }
 
-    public function setIncludeCommitteeSupervisors(bool $value): void
+    public function setIncludeCommitteeSupervisors(?bool $value): void
     {
         $this->includeCommitteeSupervisors = $value;
     }
 
-    public function includeCommitteeHosts(): bool
+    public function includeCommitteeHosts(): ?bool
     {
         return $this->includeCommitteeHosts;
     }
 
-    public function setIncludeCommitteeHosts(bool $value): void
+    public function setIncludeCommitteeHosts(?bool $value): void
     {
         $this->includeCommitteeHosts = $value;
     }
 
-    public function includeCitizenProjectHosts(): bool
+    public function includeCitizenProjectHosts(): ?bool
     {
         return $this->includeCitizenProjectHosts;
     }
 
-    public function setIncludeCitizenProjectHosts(bool $value): void
+    public function setIncludeCitizenProjectHosts(?bool $value): void
     {
         $this->includeCitizenProjectHosts = $value;
     }

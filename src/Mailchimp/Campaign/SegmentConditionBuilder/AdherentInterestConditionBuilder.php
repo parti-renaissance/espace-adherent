@@ -27,37 +27,50 @@ class AdherentInterestConditionBuilder extends AbstractConditionBuilder
         $filter = $campaign->getMessage()->getFilter();
 
         $conditions = [];
+        $interestIncludeKeys = [];
+        $interestExcludeKeys = [];
 
-        if (
-            $filter->includeCitizenProjectHosts()
-            || $filter->includeCommitteeHosts()
-            || $filter->includeCommitteeSupervisors()
-            || $filter->includeAdherentsInCommittee()
-            || $filter->includeAdherentsNoCommittee()
-        ) {
-            $interestKeys = [];
+        // include interests
+        if (true === $filter->includeCitizenProjectHosts()) {
+            $interestIncludeKeys[] = Manager::INTEREST_KEY_CP_HOST;
+        }
 
-            if ($filter->includeCitizenProjectHosts()) {
-                $interestKeys[] = Manager::INTEREST_KEY_CP_HOST;
-            }
+        if (true === $filter->includeCommitteeSupervisors()) {
+            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
+        }
 
-            if ($filter->includeCommitteeSupervisors()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
-            }
+        if (true === $filter->includeCommitteeHosts()) {
+            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
+        }
 
-            if ($filter->includeCommitteeHosts()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
-            }
+        if (true === $filter->includeAdherentsInCommittee()) {
+            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
+        }
 
-            if ($filter->includeAdherentsInCommittee()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_FOLLOWER;
-            }
+        if (true === $filter->includeAdherentsNoCommittee()) {
+            $interestIncludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER;
+        }
 
-            if ($filter->includeAdherentsNoCommittee()) {
-                $interestKeys[] = Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER;
-            }
+        // exclude interests
+        if (false === $filter->includeCitizenProjectHosts()) {
+            $interestExcludeKeys[] = Manager::INTEREST_KEY_CP_HOST;
+        }
 
-            $conditions[] = $this->buildInterestCondition($interestKeys, $this->mailchimpObjectIdMapping->getMemberGroupInterestGroupId(), false);
+        if (false === $filter->includeCommitteeSupervisors()) {
+            $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR;
+        }
+
+        if (false === $filter->includeCommitteeHosts()) {
+            $interestExcludeKeys[] = Manager::INTEREST_KEY_COMMITTEE_HOST;
+        }
+
+        // add conditions
+        if ($interestIncludeKeys) {
+            $conditions[] = $this->buildInterestCondition($interestIncludeKeys, $this->mailchimpObjectIdMapping->getMemberGroupInterestGroupId(), self::OP_INTEREST_ONE);
+        }
+
+        if ($interestExcludeKeys) {
+            $conditions[] = $this->buildInterestCondition($interestExcludeKeys, $this->mailchimpObjectIdMapping->getMemberGroupInterestGroupId(), self::OP_INTEREST_NONE);
         }
 
         if ($filter->getInterests()) {
