@@ -14,6 +14,7 @@ use AppBundle\Form\VotingPlatform\CandidateProfileType;
 use AppBundle\Image\ImageManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use AppBundle\ValueObject\Genders;
+use AppBundle\VotingPlatform\Designation\ElectionStaticDate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -276,6 +277,7 @@ class CommitteeController extends Controller
         return $this->render('committee/edit_candidacy.html.twig', [
             'form' => $form->createView(),
             'committee' => $committee,
+            'election_static_date' => new ElectionStaticDate(),
         ]);
     }
 
@@ -319,6 +321,7 @@ class CommitteeController extends Controller
             'candidacy' => $candidacy,
             'committee' => $committee,
             'form' => $form->createView(),
+            'election_static_date' => new ElectionStaticDate(),
         ]);
     }
 

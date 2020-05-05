@@ -16,6 +16,12 @@
         font-size: 16px;
     }
 
+    &--medium {
+        width: 66px;
+        height: 66px;
+        font-size: 22px;
+    }
+
     // style
     &--style-01 {
         background-color: $gray--lighter;

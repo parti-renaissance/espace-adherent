@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\VotingPlatform\Designation\ElectionStaticDate;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,16 +47,16 @@ class CommitteeElection
 
     public function getCandidacyPeriodEndDate(): \DateTimeInterface
     {
-        return \DateTime::createFromFormat('d/m/Y H:i:s', '25/05/2020 00:00:00');
+        return ElectionStaticDate::getCandidacyPeriodEndDate();
     }
 
     public function getVoteStartDate(): \DateTimeInterface
     {
-        return \DateTime::createFromFormat('d/m/Y H:i:s', '25/05/2020 08:00:00');
+        return ElectionStaticDate::getVoteStartDate();
     }
 
     public function getVoteEndDate(): \DateTimeInterface
     {
-        return \DateTime::createFromFormat('d/m/Y H:i:s', '07/06/2020 20:00:00');
+        return ElectionStaticDate::getVoteEndDate();
     }
 }
