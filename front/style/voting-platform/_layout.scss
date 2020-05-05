@@ -13,10 +13,13 @@
 
         h1 {
             line-height: normal;
+            max-width: 650px;
         }
     }
 
     .vote-tabs--container {
+        margin-top: 60px;
+
         .vote-tab--1,
         .vote-tab--2 {
             display: none;
@@ -41,6 +44,11 @@
             position: absolute;
             z-index: -1;
             opacity: 0;
+
+            &:checked + label {
+                box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
+                border: solid 1px $blue--dark;
+            }
 
             &:checked + label:before {
                 box-sizing: border-box;
@@ -71,6 +79,14 @@
             top: 0;
             bottom: 0;
             margin: 0;
+            border-radius: 3px;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+            border: solid 1px transparent;
+
+            &:hover {
+                border: solid 1px $blue--dark;
+            }
 
             &:before {
                 box-sizing: border-box;
@@ -112,11 +128,6 @@
             .candidate-biography {
                 position: relative;
                 z-index: 5;
-            }
-
-            .candidate-name,
-            .candidate-photo {
-                pointer-events: none;
             }
         }
     }
