@@ -34,7 +34,7 @@ class ImageManager
     public function removeImage(ImageOwnerInterface $object): void
     {
         if (!$object->hasImageName()) {
-            throw new \RuntimeException('This biography does not contain an image.');
+            throw new \RuntimeException('This object does not contain an image.');
         }
 
         $this->imageStorage->remove($object->getImagePath());

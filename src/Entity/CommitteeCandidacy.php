@@ -52,10 +52,12 @@ class CommitteeCandidacy implements ImageOwnerInterface
     /**
      * @var CommitteeElection
      *
-     * @ORM\ManyToOne(targetEntity="CommitteeElection")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CommitteeElection")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $committeeElection;
+
+    private $removeImage = false;
 
     public function __construct(CommitteeElection $election, string $gender = null)
     {
@@ -116,5 +118,15 @@ class CommitteeCandidacy implements ImageOwnerInterface
     public function getImagePath(): string
     {
         return sprintf('images/candidacies/profile/%s', $this->getImageName());
+    }
+
+    public function isRemoveImage(): bool
+    {
+        return $this->removeImage;
+    }
+
+    public function setRemoveImage(bool $value): void
+    {
+        $this->removeImage = $value;
     }
 }

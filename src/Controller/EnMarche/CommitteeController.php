@@ -306,7 +306,11 @@ class CommitteeController extends Controller
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($candidacy->getImage()) {
+            if ($candidacy->isRemoveImage()) {
+                if ($candidacy->hasImageName()) {
+                    $imageManager->removeImage($candidacy);
+                }
+            } elseif ($candidacy->getImage()) {
                 $imageManager->saveImage($candidacy);
             }
 

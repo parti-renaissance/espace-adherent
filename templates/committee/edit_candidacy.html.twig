@@ -50,27 +50,32 @@
                         </div>
                         {{ form_errors(form.image) }}
 
-                        <div class="em-form__file">
-                            {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
-                            {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark em-form__file--label'}}) }}
-                            <span class="em-form__file--name custom-file-label">Aucun fichier sélectionné</span>
-                        </div>
-                        <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
-
                         {% if candidacy is defined and candidacy.imageName %}
                             {% set image_url = path('asset_url', {path: candidacy.imagePath}) %}
                         {% endif %}
 
-                        <div class="preview-cropped-image" style="{{ image_url is defined ? 'display: block;' }}">
-                            <p>
-                                <label class="em-form__label">Prévisualisation: </label>
-                            </p>
-                            <div class="text--center">
-                                <img src="{{ image_url is defined ? image_url }}" alt="preview-square"/>
+                        <div class="em-form__file">
+                            {{ form_widget(form.image, {attr: {class: 'em-form__file--area', accept: 'image/*'}}) }}
+                            <div>
+                                <div class="image-uploader--label {{ image_url is defined ? 'hidden' }}">
+                                    {{ form_label(form.image, 'Télécharger une photo', {label_attr: {class: 'text--blue--dark em-form__file--label'}}) }}
+                                    <div class="em-form__file--name custom-file-label">Aucun fichier sélectionné</div>
+                                </div>
 
-                                <span class="b__nudge--left-small"><img src="{{ image_url is defined ? image_url }}" alt="preview-circle"/></span>
+                                <div class="image-uploader--preview {{ image_url is not defined ? 'hidden' }}">
+                                    <div>
+                                        <div class="preview-image--container" {% if image_url is defined %}style="background-image: url({{ image_url }})"{% endif %}></div>
+                                    </div>
+
+                                    <div>
+                                        <label for="{{ form.image.vars.id }}">Modifier</label>
+                                        <span class="separtor"><strong>·</strong></span>
+                                        <a href="#" class="link--no-decor link--blue delete-profile-image--trigger">Supprimer</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="em-form__legend">Formats acceptés : jpg, png • Taille max. : 5Mo.</div>
                     </div>
 
                     <div class="em-form__group">
@@ -110,15 +115,26 @@
 
     <script type="text/javascript">
         Kernel.onLoad(function () {
-            var input = document.getElementById("{{form.image.vars.id}}");
-            var placeholder = input.parentElement.querySelector(".custom-file-label");
+            var inputFile = dom('#' + '{{ form.image.vars.id }}');
 
-            on(input, 'change', function () {
-                var value = input.value.replace('C:\\fakepath\\', '').trim();
-                placeholder.textContent = "" !== value ? value : (input.getAttribute('placeholder') || '');
-
-                App.runImageCropper(input);
+            on(inputFile, 'change', function () {
+                App.runImageCropper(inputFile);
             });
+
+            on(dom('.delete-profile-image--trigger'), 'click', function (event) {
+                event.preventDefault();
+
+                {% if candidacy is defined %}
+                    inputFile.value = '';
+                    dom('#' + '{{ form.croppedImage.vars.id }}').value = -1;
+                {% else %}
+                    inputFile.value = '';
+                    dom('#' + '{{ form.croppedImage.vars.id }}').value = '';
+                {% endif %}
+
+                show(dom('.image-uploader--label'));
+                hide(dom('.image-uploader--preview'));
+            })
         });
     </script>
 {% endblock %}

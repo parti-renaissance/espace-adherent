@@ -48,13 +48,25 @@ export default class CandidaciesListWidget extends Modal {
         const col2 = [];
 
         this.state.data.candidacies.forEach((candidacy, index) => {
-            const template = <div key={index} className={'text--dark b__nudge--bottom-medium'}>
-                <span>{candidacy.first_name} {candidacy.last_name}</span><br/>
-                <span className={'text--small'}>
-                    Déclaré{'female' === candidacy.gender ? 'e ' : ' '}
-                    candidat{'female' === candidacy.gender ? 'e ' : ' '}
-                    le {moment(candidacy.created_at).format('DD/MM/YYYY')}
-                </span>
+            const template = <div key={index} className={'text--dark b__nudge--bottom-medium l__row'}>
+                <div className={'l__col profile-image--container'} style={
+                {
+                    ...(candidacy.photo ? { backgroundImage: `url("${candidacy.photo}")` } : {}),
+                }
+                }>
+                    {candidacy.photo ?
+                        '' :
+                        (candidacy.first_name.charAt(0) + candidacy.last_name.charAt(0)).toUpperCase()
+                    }
+                </div>
+                <div className='l__col b__nudge--left-small'>
+                    <div>{candidacy.first_name} {candidacy.last_name}</div>
+                    <div className='text--smallest'>
+                        Déclaré{'female' === candidacy.gender ? 'e ' : ' '}
+                        candidat{'female' === candidacy.gender ? 'e ' : ' '}
+                        le {moment(candidacy.created_at).format('DD/MM/YYYY')}
+                    </div>
+                </div>
             </div>;
 
             if (0 === index % 2) {

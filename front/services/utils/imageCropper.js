@@ -29,10 +29,7 @@ function displayCropperModal(url) {
         <Modal
             key={url}
             contentCallback={() => getModalContent(url)}
-            closeCallback={() => {
-                cropper.destroy();
-                cropper = null;
-            }}
+            closeCallback={(event) => handleCloseAction(url, event)}
         />,
         dom('#modal-wrapper')
     );
@@ -51,7 +48,7 @@ function getModalContent(url) {
             </div>
 
             <div className="b__nudge--top-15 text--center">
-                <a className={'btn'} onClick={handleCancelAction}>Annuler</a>
+                <a className={'btn'} onClick={() => handleCancelAction(url)}>Annuler</a>
                 <a className="btn btn--blue b__nudge--left-small" onClick={handleCropAction}>Appliquer</a>
             </div>
         </div>
@@ -74,14 +71,25 @@ function handleCropAction() {
     modal.hideModal();
 }
 
-function handleCancelAction() {
-    updatePreviewImages(dom('.image-cropper--container img').src);
+function handleCancelAction(imageOriginalUrl) {
+    updatePreviewImages(imageOriginalUrl);
+
     modal.hideModal();
 }
 
-function updatePreviewImages(src) {
-    const previewContainer = dom('.preview-cropped-image');
+function handleCloseAction(imageOriginalUrl, event) {
+    cropper.destroy();
+    cropper = null;
 
-    findAll(previewContainer, 'img').forEach((img) => img.src = src);
+    if (event.closed) {
+        updatePreviewImages(imageOriginalUrl);
+    }
+}
+
+function updatePreviewImages(src) {
+    const previewContainer = dom('.image-uploader--preview');
+
+    find(previewContainer, '.preview-image--container').style.backgroundImage = `url(${src})`;
     show(previewContainer);
+    hide(dom('.image-uploader--label'));
 }

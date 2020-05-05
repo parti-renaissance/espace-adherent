@@ -633,20 +633,44 @@
         }
     }
 
-    .preview-cropped-image {
-        display: none;
+    .image-uploader {
+        &--preview {
+            text-align: center;
 
-        span {
-            border-radius: 50%;
-            display: inline-block;
-            width: 150px;
-            height: 150px;
-            overflow: hidden;
-        }
+            label {
+                color: $blue;
+                font-size: 16px;
+                cursor: pointer;
 
-        img {
-            max-height: 150px;
+                &:hover {
+                    color: $blue--light;
+                }
+            }
         }
+    }
+
+    .preview-image--container,
+    .profile-image--container {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        border-radius: 50%;
+        font-size: 24px;
+        background-color: $gray--lighter;
+        font-weight: bold;
+        color: $blue;
+        font-style: italic;
+        text-align: center;
+    }
+
+    .profile-image--container {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
     }
 }
 
