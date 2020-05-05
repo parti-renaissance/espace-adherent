@@ -7,9 +7,13 @@ use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
 use AppBundle\DataFixtures\ORM\LoadEventData;
 use AppBundle\Entity\EventInvite;
 use AppBundle\Entity\EventRegistration;
+use AppBundle\Entity\NewsletterSubscription;
 use AppBundle\Mailer\Message\EventInvitationMessage;
 use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use AppBundle\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
+use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\EventRegistrationRepository;
+use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,8 +26,16 @@ class EventControllerTest extends AbstractEventControllerTest
     /** @var EventRegistrationRepository */
     private $repository;
 
+    /** @var EmailRepository */
+    private $emailRepository;
+
+    /** @var NewsletterSubscriptionRepository */
+    private $subscriptionsRepository;
+
     public function testAnonymousUserCanRegisterToEvent()
     {
+        $this->assertCount(5, $this->subscriptionsRepository->findAll());
+
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -79,6 +91,17 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->assertContains('Votre participation est bien enregistrée !', $crawler->filter('.committee-event-registration-confirmation p')->text());
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionConfirmationMessage::class));
+
+        $this->assertCount(6, $subscriptions = $this->subscriptionsRepository->findAll());
+
+        /** @var NewsletterSubscription $subscription */
+        $subscription = $subscriptions[5];
+
+        $this->assertSame('paupau75@example.org', $subscription->getEmail());
+        $this->assertNull($subscription->getPostalCode());
+        $this->assertNull($subscription->getCountry());
     }
 
     public function testRegisteredAdherentUserCanRegisterToEvent()
@@ -422,6 +445,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->init();
 
         $this->repository = $this->getEventRegistrationRepository();
+        $this->emailRepository = $this->getEmailRepository();
+        $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
     }
 
     protected function tearDown()
@@ -429,6 +454,8 @@ class EventControllerTest extends AbstractEventControllerTest
         $this->kill();
 
         $this->repository = null;
+        $this->emailRepository = null;
+        $this->subscriptionsRepository = null;
 
         parent::tearDown();
     }

@@ -3,8 +3,9 @@
 namespace Tests\AppBundle\Controller\EnMarche;
 
 use AppBundle\Entity\NewsletterSubscription;
+use AppBundle\Mailer\Message\NewsletterAdherentSubscriptionMessage;
 use AppBundle\Mailer\Message\NewsletterInvitationMessage;
-use AppBundle\Mailer\Message\NewsletterSubscriptionMessage;
+use AppBundle\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
 use AppBundle\Repository\EmailRepository;
 use AppBundle\Repository\NewsletterInviteRepository;
 use AppBundle\Repository\NewsletterSubscriptionRepository;
@@ -59,15 +60,81 @@ class NewsletterControllerTest extends WebTestCase
 
         /** @var NewsletterSubscription $subscription */
         $subscription = $subscriptions[5];
+        $token = $subscription->getToken();
 
+        $this->assertNotNull($token);
         $this->assertSame('titouan.galopin@en-marche.fr', $subscription->getEmail());
         $this->assertSame('10000', $subscription->getPostalCode());
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
 
         // Email should have been sent
-        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
 
-        // Try another time with the same email (should fail)
+        // Try another time with the same email (should not fail without confirmation)
+        $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
+            'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
+            'app_newsletter_subscription[postalCode]' => '20000',
+            'app_newsletter_subscription[personalDataCollection]' => true,
+        ]));
+
+        // Subscription should not have been saved
+        $this->assertCount(6, $subscriptions = $this->subscriptionsRepository->findAll());
+
+        /** @var NewsletterSubscription $subscription */
+        $subscription = $subscriptions[5];
+
+        // But its token should has been changed
+        $this->assertNotNull($subscription->getToken());
+        $this->assertSame($token, $subscription->getToken());
+        $this->assertSame('titouan.galopin@en-marche.fr', $subscription->getEmail());
+        $this->assertSame('10000', $subscription->getPostalCode());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        // Email should have been sent
+        $this->assertCountMails(2, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
+    }
+
+    public function testSubscriptionAndConfirmation()
+    {
+        $this->assertCount(5, $this->subscriptionsRepository->findAll());
+
+        // Initial form
+        $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
+            'app_newsletter_subscription[email]' => 'titouan.galopin@en-marche.fr',
+            'app_newsletter_subscription[postalCode]' => '10000',
+            'app_newsletter_subscription[personalDataCollection]' => true,
+        ]));
+
+        /** @var NewsletterSubscription $subscription */
+        $subscription = $this->subscriptionsRepository->findOneByEmail('titouan.galopin@en-marche.fr');
+
+        // Confirm subscription
+        $this->getEntityManager(NewsletterSubscription::class)->refresh($subscription);
+        $token = $subscription->getToken();
+        $confirmationUrl = sprintf('/newsletter/confirmation/%s/%s', $subscription->getUuid(), $token);
+
+        $this->client->request(Request::METHOD_GET, $confirmationUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+
+        $this->getEntityManager(NewsletterSubscription::class)->refresh($subscription);
+
+        $this->assertSame($token->toString(), $subscription->getToken()->toString());
+
+        // Try to confirm subscription one more time
+        $this->client->request(Request::METHOD_GET, $confirmationUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
+
+        // Try another time with the same email (should fail because subscription has been confirmed)
         $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -82,6 +149,27 @@ class NewsletterControllerTest extends WebTestCase
 
         // Subscription should not have been saved
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
+    }
+
+    public function testSubscriptionByAdherent()
+    {
+        $this->assertCount(5, $this->subscriptionsRepository->findAll());
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/newsletter');
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+
+        $this->client->submit($crawler->filter('form[name=app_newsletter_subscription]')->form([
+            'app_newsletter_subscription[email]' => 'jacques.picard@en-marche.fr',
+            'app_newsletter_subscription[postalCode]' => '92100',
+            'app_newsletter_subscription[personalDataCollection]' => true,
+        ]));
+
+        // Subscription should not have been saved
+        $this->assertCount(5, $subscriptions = $this->subscriptionsRepository->findAll());
+
+        // But email should have been sent
+        $this->assertCountMails(1, NewsletterAdherentSubscriptionMessage::class, 'jacques.picard@en-marche.fr');
     }
 
     public function testSubscriptionFromHome()
@@ -103,7 +191,7 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertCount(6, $this->subscriptionsRepository->findAll());
 
         // Email should have been sent
-        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionMessage::class));
+        $this->assertCountMails(1, NewsletterSubscriptionConfirmationMessage::class, 'titouan.galopin@en-marche.fr');
     }
 
     public function testInvitationAndRetry()
@@ -143,10 +231,11 @@ class NewsletterControllerTest extends WebTestCase
         $this->assertSame('Titouan Galopin', $invite2->getSenderFullName());
 
         // Email should have been sent
-        $this->assertCount(2, $messages = $this->emailRepository->findMessages(NewsletterInvitationMessage::class));
+        $this->assertCountMails(1, NewsletterInvitationMessage::class, 'hugo.hamon@clichy-beach.com');
         $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite1->getEmail()));
         $this->assertContains('/newsletter?mail=hugo.hamon%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
 
+        $this->assertCountMails(1, NewsletterInvitationMessage::class, 'jules.pietri@clichy-beach.com');
         $this->assertCount(1, $messages = $this->emailRepository->findRecipientMessages(NewsletterInvitationMessage::class, $invite2->getEmail()));
         $this->assertContains('/newsletter?mail=jules.pietri%40clichy-beach.com', $messages[0]->getRequestPayloadJson());
     }

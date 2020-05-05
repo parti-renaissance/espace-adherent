@@ -18,6 +18,7 @@ class LoadNewsletterSubscriptionData extends AbstractFixture implements Containe
         $factory = $this->container->get('app.newsletter_subscription.factory');
 
         $newsletterSubscription92 = $factory->create('abc@en-marche-dev.fr', '92110');
+        $newsletterSubscription92->setConfirmedAt(new \DateTime('2020-08-03'));
         $this->addReference('news-sub-92', $newsletterSubscription92);
 
         $newsletterSubscription77 = $factory->create('def@en-marche-dev.fr', '77000');

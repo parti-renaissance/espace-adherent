@@ -3,7 +3,9 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\NewsletterSubscription;
+use AppBundle\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,6 +13,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewsletterSubscriptionType extends AbstractType
 {
+    private $newsletterSubscriptionRepository;
+
+    public function __construct(NewsletterSubscriptionRepository $newsletterSubscriptionRepository)
+    {
+        $this->newsletterSubscriptionRepository = $newsletterSubscriptionRepository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -26,6 +35,25 @@ class NewsletterSubscriptionType extends AbstractType
             ])
             ->add('personalDataCollection', AcceptPersonalDataCollectType::class)
         ;
+
+        $builder->addModelTransformer(new CallbackTransformer(
+            function ($data) {
+                return $data;
+            },
+            function ($subscription) {
+                if ($subscription instanceof NewsletterSubscription) {
+                    $existingSubscription = $this->newsletterSubscriptionRepository->findOneNotConfirmedByEmail($subscription->getEmail());
+                    if ($existingSubscription) {
+                        $existingSubscription->setCountry($subscription->getCountry());
+                        $existingSubscription->setPostalCode($subscription->getPostalCode());
+
+                        return $existingSubscription;
+                    }
+                }
+
+                return $subscription;
+            }
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

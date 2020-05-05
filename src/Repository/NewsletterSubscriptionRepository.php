@@ -77,6 +77,32 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function findOneNotConfirmedByEmail(string $email): ?NewsletterSubscription
+    {
+        return $this
+            ->createQueryBuilder('newsletter')
+            ->where('newsletter.email = :email')
+            ->andWhere('newsletter.confirmedAt IS NULL')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findOneNotConfirmedByUuidAndToken(string $uuid, string $token): ?NewsletterSubscription
+    {
+        return $this
+            ->createQueryBuilder('newsletter')
+            ->where('newsletter.uuid = :uuid')
+            ->andWhere('newsletter.token = :token')
+            ->andWhere('newsletter.confirmedAt IS NULL')
+            ->setParameter('uuid', $uuid)
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function disableSoftDeleteableFilter(): self
     {
         if ($this->_em->getFilters()->has('softdeleteable') && $this->_em->getFilters()->isEnabled('softdeleteable')) {

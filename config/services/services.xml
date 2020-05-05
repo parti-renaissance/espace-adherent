@@ -730,5 +730,8 @@
         <service id="AppBundle\Command\ImportProgrammaticFoundationCommand" />
 
         <service id="AppBundle\Form\Admin\DonatorKinshipType" />
+
+        <!-- Newsletter -->
+        <service id="AppBundle\Form\NewsletterSubscriptionType" />
     </services>
 </container>

@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -74,16 +76,39 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
      */
     private $fromEvent;
 
+    /**
+     * @var \DateTimeInterface|null
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $confirmedAt;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid", unique=true, nullable=true)
+     */
+    private $uuid;
+
+    /**
+     * @var UuidInterface
+     *
+     * @ORM\Column(type="uuid", unique=true, nullable=true)
+     */
+    private $token;
+
     public function __construct(
         string $email = null,
         string $postalCode = null,
         string $country = null,
-        bool $fromEvent = false
+        bool $fromEvent = false,
+        UuidInterface $uuid = null
     ) {
         $this->email = $email;
         $this->postalCode = $postalCode;
         $this->country = $country;
         $this->fromEvent = $fromEvent;
+        $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
     public function __toString()
@@ -139,5 +164,45 @@ class NewsletterSubscription implements EntitySoftDeletedInterface
     public function isFromEvent(): bool
     {
         return $this->fromEvent;
+    }
+
+    public function setFromEvent(bool $fromEvent): bool
+    {
+        return $this->fromEvent = $fromEvent;
+    }
+
+    public function getConfirmedAt(): ?\DateTimeInterface
+    {
+        return $this->confirmedAt;
+    }
+
+    public function setConfirmedAt(?\DateTimeInterface $confirmedAt = null): void
+    {
+        $this->confirmedAt = $confirmedAt;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return null !== $this->confirmedAt;
+    }
+
+    public function getUuid(): ?UuidInterface
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(UuidInterface $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
+    public function getToken(): ?UuidInterface
+    {
+        return $this->token;
+    }
+
+    public function setToken(?UuidInterface $token = null): void
+    {
+        $this->token = $token;
     }
 }

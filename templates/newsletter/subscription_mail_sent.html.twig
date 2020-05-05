@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block footer '' %}
+
+{% block page_title 'Vous êtes désormais inscrit à notre newsletter' %}
+{% block canonical_url url('newsletter_subscription') %}
+
+{% block content %}
+
+    <main class="newsletter-result">
+        <h2>
+            Nous venons de vous envoyer un mail pour confirmer votre inscription à la newsletter. <br />
+            Rendez-vous dans votre boite mail.
+        </h2>
+
+        <p>
+            <a href="{{ path('homepage') }}" class="btn btn--blue">Retourner à l'accueil</a>
+        </p>
+    </main>
+
+{% endblock %}
