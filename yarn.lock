@@ -4395,10 +4395,10 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-macaddress@0.2.9:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.9.tgz#3579b8b9acd5b96b4553abf0f394185a86813cb3"
-  integrity sha512-k4F1JUof6cQXxNFzx3thLby4oJzXTXQueAOOts944Vqizn+Rjc2QNFenT9FJSLU1CH3PmrHRSyZs2E+Cqw+P2w==
+macaddress@0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.4.3.tgz#8790ac73bdb4c3da88d42d85f452d5c83a21bdf6"
+  integrity sha512-3FRlEfNbJ9N+wYa5gC2I1cqEaQL2MngeT9uHrNtxlBwn0M6U/FLTgG4euBBya90oymw/L6bf9/rSIUZ+zeLZhw==
 
 make-dir@^2.0.0:
   version "2.1.0"
