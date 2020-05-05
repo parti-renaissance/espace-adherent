@@ -10,7 +10,6 @@ import CitizenProjectTurnKey from './js/containers/CitizenProjectTurnKey';
 import CitizenProjectSearch from './js/containers/CitizenProjectSearch';
 
 import { history } from './js/store';
-import './App.css';
 
 const routes = [
     {
