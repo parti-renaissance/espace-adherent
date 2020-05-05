@@ -100,12 +100,15 @@ class CommitteesController extends Controller
                     return $membership->getCommitteeCandidacy()->isFemale();
                 })),
             ],
-            'candidacies' => array_map(static function (CommitteeMembership $membership) {
+            'candidacies' => array_map(function (CommitteeMembership $membership) {
+                $candidacy = $membership->getCommitteeCandidacy();
+
                 return [
-                    'gender' => $membership->getCommitteeCandidacy()->getGender(),
+                    'photo' => $candidacy->getImageName() ? $this->generateUrl('asset_url', ['path' => $candidacy->getImagePath()]) : null,
+                    'gender' => $candidacy->getGender(),
                     'first_name' => $membership->getAdherent()->getFirstName(),
                     'last_name' => $membership->getAdherent()->getLastName(),
-                    'created_at' => $membership->getCommitteeCandidacy()->getCreatedAt(),
+                    'created_at' => $candidacy->getCreatedAt(),
                 ];
             }, $memberships),
         ]);
