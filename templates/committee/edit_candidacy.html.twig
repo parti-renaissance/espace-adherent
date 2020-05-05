@@ -34,7 +34,9 @@
                     <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Votre candidature</h2>
                     <p class="text--body text--dark b__nudge--bottom-50">
                         Ajoutez une photo de vous et un texte de présentation à votre candidature.
-                        Ces informations resteront modifiables jusqu'à la clôture des candidatures le <strong>x mois</strong> à <strong>HH:mm</strong>.
+                        Ces informations resteront modifiables jusqu'à la clôture des candidatures le
+                        <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y") }}</strong>
+                        à <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}</strong>.
                         Si vous préférez ne rien mettre, cliquez sur « passer cette étape ».
                     </p>
                     {{ form_start(form, {attr: {class: 'em-form'}}) }}
