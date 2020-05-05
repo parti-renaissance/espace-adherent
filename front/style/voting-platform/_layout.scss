@@ -1,9 +1,24 @@
 .voting-platform {
-    background: $btn--gray;
+    background-color: $gray--lighter;
+    min-height: calc(100vh - 100px);
 
-    & > div {
-        background: white;
+    &__header {
+        width: 100%;
+        background-color: $white;
+        height: 100px;
     }
+
+    &__content {
+        margin: 140px 0;
+
+        h1 {
+            line-height: normal;
+        }
+    }
+
+    // & > div {
+    //     background: white;
+    // }
 
     .vote-tabs--container {
         .vote-tab--1,
