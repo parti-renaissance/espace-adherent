@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
-use AppBundle\Collection\EventRegistrationCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Event\EventRegistrationManager;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\Collection\EventRegistrationCollection;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\EventRegistration;
+use App\Event\EventRegistrationManager;
+use App\Repository\AdherentRepository;
+use App\Repository\CitizenActionRepository;
+use App\Repository\EventRegistrationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
 

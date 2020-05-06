@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\Mooc\AttachmentFile;
-use AppBundle\Entity\Mooc\AttachmentLink;
-use AppBundle\Entity\Mooc\BaseMoocElement;
-use AppBundle\Entity\Mooc\Chapter;
-use AppBundle\Entity\Mooc\Mooc;
-use AppBundle\Entity\Mooc\MoocElementTypeEnum;
+use App\Entity\Mooc\AttachmentFile;
+use App\Entity\Mooc\AttachmentLink;
+use App\Entity\Mooc\BaseMoocElement;
+use App\Entity\Mooc\Chapter;
+use App\Entity\Mooc\Mooc;
+use App\Entity\Mooc\MoocElementTypeEnum;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

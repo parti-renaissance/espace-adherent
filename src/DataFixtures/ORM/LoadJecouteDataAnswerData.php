@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Jecoute\Choice;
-use AppBundle\Entity\Jecoute\DataAnswer;
-use AppBundle\Entity\Jecoute\DataSurvey;
-use AppBundle\Entity\Jecoute\Survey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
+use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\DataAnswer;
+use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\Survey;
+use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

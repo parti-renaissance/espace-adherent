@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Election\VotePlaceResult;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Entity\Election\VotePlaceResult;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotePlaceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotePlaceRepository")
  *
  * @UniqueEntity(fields={"code"})
  *
@@ -135,7 +135,7 @@ class VotePlace
     /**
      * @var VotePlaceResult[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\VotePlaceResult", mappedBy="votePlace", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Election\VotePlaceResult", mappedBy="votePlace", fetch="EXTRA_LAZY")
      */
     private $voteResults;
 

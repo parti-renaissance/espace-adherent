@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Redirection\Dynamic;
+namespace App\Redirection\Dynamic;
 
 class RedirectionsProvider
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

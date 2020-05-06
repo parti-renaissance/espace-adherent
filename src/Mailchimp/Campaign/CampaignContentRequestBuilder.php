@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign;
+namespace App\Mailchimp\Campaign;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Mailchimp\Campaign\ContentSection\ContentSectionBuilderInterface;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignContentRequest;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Mailchimp\Campaign\ContentSection\ContentSectionBuilderInterface;
+use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use Psr\Container\ContainerInterface;
 
 class CampaignContentRequestBuilder

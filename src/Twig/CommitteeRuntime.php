@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeCandidacy;
-use AppBundle\Repository\CommitteeCandidacyRepository;
+use App\Committee\CommitteeManager;
+use App\Committee\CommitteePermissions;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
+use App\Repository\CommitteeCandidacyRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CommitteeRuntime

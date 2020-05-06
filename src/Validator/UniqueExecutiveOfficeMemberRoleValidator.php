@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Biography\ExecutiveOfficeMember;
-use AppBundle\Repository\Biography\ExecutiveOfficeMemberRepository;
+use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Repository\Biography\ExecutiveOfficeMemberRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

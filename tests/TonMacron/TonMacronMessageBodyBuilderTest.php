@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\TonMacron;
+namespace Tests\App\TonMacron;
 
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Repository\TonMacronChoiceRepository;
-use AppBundle\TonMacron\InvitationProcessor;
-use AppBundle\TonMacron\TonMacronMessageBodyBuilder;
+use App\Entity\TonMacronChoice;
+use App\Repository\TonMacronChoiceRepository;
+use App\TonMacron\InvitationProcessor;
+use App\TonMacron\TonMacronMessageBodyBuilder;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

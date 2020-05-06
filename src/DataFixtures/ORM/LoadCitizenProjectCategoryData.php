@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\EventCategory;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\EventCategory;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

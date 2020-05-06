@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\ValueObject\SHA1;
+use App\ValueObject\SHA1;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\App\TestHelperTrait;
 
 abstract class AbstractAdherentTokenTest extends TestCase
 {
@@ -24,7 +24,7 @@ abstract class AbstractAdherentTokenTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Exception\AdherentTokenMismatchException
+     * @expectedException \App\Exception\AdherentTokenMismatchException
      */
     public function testCannotActivateKeyForAnotherAdherent()
     {
@@ -37,7 +37,7 @@ abstract class AbstractAdherentTokenTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Exception\AdherentTokenAlreadyUsedException
+     * @expectedException \App\Exception\AdherentTokenAlreadyUsedException
      */
     public function testCannotActivateSameAdherentActivationTokenTwice()
     {

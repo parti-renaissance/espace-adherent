@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command\ChezVous;
+namespace App\Command\ChezVous;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Repository\ChezVous\CityRepository;
+use App\Entity\ChezVous\City;
+use App\Repository\ChezVous\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\Filesystem;

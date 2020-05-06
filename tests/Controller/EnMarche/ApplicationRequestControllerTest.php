@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\TechnicalSkill;
-use AppBundle\Entity\ApplicationRequest\Theme;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
-use AppBundle\Repository\ApplicationRequest\TechnicalSkillRepository;
-use AppBundle\Repository\ApplicationRequest\ThemeRepository;
-use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\TechnicalSkill;
+use App\Entity\ApplicationRequest\Theme;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Repository\ApplicationRequest\RunningMateRequestRepository;
+use App\Repository\ApplicationRequest\TechnicalSkillRepository;
+use App\Repository\ApplicationRequest\ThemeRepository;
+use App\Repository\ApplicationRequest\VolunteerRequestRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

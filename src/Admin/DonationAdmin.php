@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Donation\DonationEvents;
-use AppBundle\Donation\DonationWasCreatedEvent;
-use AppBundle\Donation\DonationWasUpdatedEvent;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\DonationTag;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\Transaction;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\Utils\PhoneNumberFormatter;
-use AppBundle\Utils\PhpConfigurator;
+use App\Donation\DonationEvents;
+use App\Donation\DonationWasCreatedEvent;
+use App\Donation\DonationWasUpdatedEvent;
+use App\Entity\Adherent;
+use App\Entity\Donation;
+use App\Entity\DonationTag;
+use App\Entity\PostAddress;
+use App\Entity\Transaction;
+use App\Form\UnitedNationsCountryType;
+use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

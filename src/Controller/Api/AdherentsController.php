@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\History\CommitteeMembershipHistoryHandler;
-use AppBundle\History\EmailSubscriptionHistoryHandler;
-use AppBundle\Membership\AdherentManager;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\History\CommitteeMembershipHistoryHandler;
+use App\History\EmailSubscriptionHistoryHandler;
+use App\Membership\AdherentManager;
+use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

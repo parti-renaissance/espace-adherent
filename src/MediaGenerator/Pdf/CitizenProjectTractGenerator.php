@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\MediaGenerator\Pdf;
+namespace App\MediaGenerator\Pdf;
 
-use AppBundle\MediaGenerator\BaseSnappyGenerator;
-use AppBundle\MediaGenerator\Command\CitizenProjectTractCommand;
-use AppBundle\MediaGenerator\Command\MediaCommandInterface;
-use AppBundle\MediaGenerator\MediaContent;
+use App\MediaGenerator\BaseSnappyGenerator;
+use App\MediaGenerator\Command\CitizenProjectTractCommand;
+use App\MediaGenerator\Command\MediaCommandInterface;
+use App\MediaGenerator\MediaContent;
 
 class CitizenProjectTractGenerator extends BaseSnappyGenerator
 {

@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\Entity\Reporting\CommitteeMembershipAction;
+use App\Entity\Reporting\CommitteeMembershipAction;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\NewsletterSubscription;
+use App\Entity\Adherent;
+use App\Entity\NewsletterSubscription;
 use Doctrine\ORM\EntityManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\Reporting\AdministratorExportHistory;
+use App\Entity\Administrator;
+use App\Entity\Reporting\AdministratorExportHistory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;

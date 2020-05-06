@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VotePlaceResults;
+namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
-use AppBundle\Entity\VotePlace;
-use AppBundle\Security\Voter\ManageVotePlaceVoter;
+use App\Entity\VotePlace;
+use App\Security\Voter\ManageVotePlaceVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

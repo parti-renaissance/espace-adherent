@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
-use AppBundle\Subscription\SubscriptionHandler;
+use App\Mailchimp\Webhook\EventTypeEnum;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
+use App\Subscription\SubscriptionHandler;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AdherentUnsubscribeHandler extends AbstractAdherentHandler

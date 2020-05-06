@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Interactive\MyEuropeProcessor;
-use AppBundle\ValueObject\Genders;
+use App\Entity\MyEuropeChoice;
+use App\Interactive\MyEuropeProcessor;
+use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

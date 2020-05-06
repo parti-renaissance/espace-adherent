@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\InstitutionalEvent;
+namespace App\InstitutionalEvent;
 
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Geocoder\GeocodableEntityEventInterface;
-use AppBundle\Geocoder\GeocodableInterface;
+use App\Entity\InstitutionalEvent;
+use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class InstitutionalEventEvent extends Event implements GeocodableEntityEventInterface

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\RepublicanSilence\TagExtractor;
+namespace Tests\App\RepublicanSilence\TagExtractor;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentManagedArea;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractor;
+use App\Entity\Adherent;
+use App\Entity\ReferentManagedArea;
+use App\Entity\ReferentTag;
+use App\RepublicanSilence\TagExtractor\ReferentTagExtractor;
 use PHPUnit\Framework\TestCase;
 
 class ReferentTagExtractorTest extends TestCase

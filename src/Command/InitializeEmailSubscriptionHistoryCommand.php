@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
-use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
+use App\Entity\Adherent;
+use App\Entity\Reporting\EmailSubscriptionHistory;
+use App\Entity\Reporting\EmailSubscriptionHistoryAction;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\QueryBuilder;

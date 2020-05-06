@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\Reporting;
+namespace App\Entity\Reporting;
 
-use AppBundle\Entity\Administrator;
+use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

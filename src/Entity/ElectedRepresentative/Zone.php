@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
-use AppBundle\Entity\EntityReferentTagTrait;
-use AppBundle\Entity\ReferentTag;
+use App\Entity\EntityReferentTagTrait;
+use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectedRepresentative\ZoneRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ZoneRepository")
  * @ORM\Table(
  *     name="elected_representative_zone",
  *     uniqueConstraints={
@@ -44,7 +44,7 @@ class Zone
     /**
      * @var ZoneCategory|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\ZoneCategory", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ZoneCategory", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
@@ -52,7 +52,7 @@ class Zone
     /**
      * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      * @ORM\JoinTable(
      *     name="elected_representative_zone_referent_tag",
      *     joinColumns={

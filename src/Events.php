@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle;
+namespace App;
 
 final class Events
 {

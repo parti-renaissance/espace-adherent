@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\MemberSummary;
+namespace App\Entity\MemberSummary;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Newsletter\Command;
+namespace App\Newsletter\Command;
 
-use AppBundle\Mailchimp\SynchronizeMessageInterface;
+use App\Mailchimp\SynchronizeMessageInterface;
 
 class MailchimpSyncNewsletterSubscriptionEntityCommand implements SynchronizeMessageInterface
 {

@@ -8,5 +8,5 @@ services:
             $mailchimpClient: 'csa_guzzle.client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
 
-    AppBundle\Command\:
+    App\Command\:
         resource: '../../src/Command/*'

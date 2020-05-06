@@ -1,22 +1,22 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\MemberSummary\Language;
-use AppBundle\Form\SummaryType;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Summary\Contract;
-use AppBundle\Summary\Contribution;
-use AppBundle\Summary\JobDuration;
-use AppBundle\Summary\JobLocation;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\MemberSummary\Language;
+use App\Form\SummaryType;
+use App\Membership\ActivityPositions;
+use App\Summary\Contract;
+use App\Summary\Contribution;
+use App\Summary\JobDuration;
+use App\Summary\JobLocation;
 use League\Glide\Signatures\SignatureFactory;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

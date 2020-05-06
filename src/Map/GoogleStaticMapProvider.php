@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Map;
+namespace App\Map;
 
-use AppBundle\Geocoder\Coordinates;
+use App\Geocoder\Coordinates;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;

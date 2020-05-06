@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\IdeasWorkshop;
+namespace App\Repository\IdeasWorkshop;
 
-use AppBundle\Entity\IdeasWorkshop\Question;
+use App\Entity\IdeasWorkshop\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

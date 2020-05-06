@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\Election\VotePlaceResult;
-use AppBundle\Entity\Election\VoteResultList;
-use AppBundle\Entity\Election\VoteResultListCollection;
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\CityRepository;
-use AppBundle\Repository\VotePlaceRepository;
+use App\Election\ElectionManager;
+use App\Entity\Election\VotePlaceResult;
+use App\Entity\Election\VoteResultList;
+use App\Entity\Election\VoteResultListCollection;
+use App\Entity\ElectionRound;
+use App\Entity\VotePlace;
+use App\Repository\CityRepository;
+use App\Repository\VotePlaceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;

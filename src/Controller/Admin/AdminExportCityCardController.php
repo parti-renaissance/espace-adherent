@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Admin\Election\CityCardAdmin;
-use AppBundle\Election\CityResultAggregator;
-use AppBundle\Election\VoteListNuanceEnum;
-use AppBundle\Entity\Election\CityCard;
-use AppBundle\Utils\PhpConfigurator;
+use App\Admin\Election\CityCardAdmin;
+use App\Election\CityResultAggregator;
+use App\Election\VoteListNuanceEnum;
+use App\Entity\Election\CityCard;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\QueryBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;

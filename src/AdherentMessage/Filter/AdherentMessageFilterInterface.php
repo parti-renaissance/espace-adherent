@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Filter;
+namespace App\AdherentMessage\Filter;
 
-use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 interface AdherentMessageFilterInterface extends AdherentMessageSynchronizedObjectInterface
 {

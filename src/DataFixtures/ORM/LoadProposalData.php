@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Content\ProposalFactory;
-use AppBundle\Entity\ProposalTheme;
+use App\Content\MediaFactory;
+use App\Content\ProposalFactory;
+use App\Entity\ProposalTheme;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

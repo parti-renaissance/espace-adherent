@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="order_articles")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderArticleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OrderArticleRepository")
  */
 class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
 {
@@ -39,7 +39,7 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
     /**
      * @var OrderSection[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\OrderSection", inversedBy="articles")
+     * @ORM\ManyToMany(targetEntity="App\Entity\OrderSection", inversedBy="articles")
      * @ORM\JoinTable(
      *     name="order_section_order_article",
      *     joinColumns={
@@ -64,7 +64,7 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
      */
     private $media;
 

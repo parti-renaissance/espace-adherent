@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\LegislativeCandidate;
-use AppBundle\Form\GenderType;
-use AppBundle\ValueObject\Genders;
+use App\Entity\LegislativeCandidate;
+use App\Form\GenderType;
+use App\ValueObject\Genders;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

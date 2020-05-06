@@ -8,11 +8,11 @@ services:
             $mailchimpCampagnUrl: '%env(MAILCHIMP_CAMPAIGN_URL)%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
 
-    AppBundle\Controller\:
+    App\Controller\:
         resource: ../../src/Controller/
         tags: ['controller.service_arguments']
 
-    AppBundle\Controller\Admin\:
+    App\Controller\Admin\:
         resource: ../../src/Controller/Admin
         public: true
         tags: ['controller.service_arguments']

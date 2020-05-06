@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Interactive;
+namespace App\Interactive;
 
-use AppBundle\Entity\MyEuropeInvitation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\MyEuropeMessage;
+use App\Entity\MyEuropeInvitation;
+use App\Mailer\MailerService;
+use App\Mailer\Message\MyEuropeMessage;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Procuration\Filter;
+namespace App\Procuration\Filter;
 
-use AppBundle\Exception\ProcurationException;
-use AppBundle\Intl\UnitedNationsBundle;
+use App\Exception\ProcurationException;
+use App\Intl\UnitedNationsBundle;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 

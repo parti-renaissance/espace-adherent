@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
-use AppBundle\Entity\DeputyManagedUsersMessage;
-use AppBundle\Repository\DeputyManagedUsersMessageRepository;
+use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\Entity\DeputyManagedUsersMessage;
+use App\Repository\DeputyManagedUsersMessageRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MessengerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional

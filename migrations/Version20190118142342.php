@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\Entity\AdherentTagEnum;
+use App\Entity\AdherentTagEnum;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

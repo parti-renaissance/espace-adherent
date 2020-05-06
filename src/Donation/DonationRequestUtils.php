@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Controller\EnMarche\DonationController;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Transaction;
-use AppBundle\Exception\InvalidDonationCallbackException;
-use AppBundle\Exception\InvalidDonationPayloadException;
-use AppBundle\Exception\InvalidDonationStatusException;
-use AppBundle\Exception\InvalidPayboxPaymentSubscriptionValueException;
-use AppBundle\Membership\MembershipRegistrationProcess;
+use App\Address\GeoCoder;
+use App\Controller\EnMarche\DonationController;
+use App\Entity\Adherent;
+use App\Entity\Donation;
+use App\Entity\Transaction;
+use App\Exception\InvalidDonationCallbackException;
+use App\Exception\InvalidDonationPayloadException;
+use App\Exception\InvalidDonationStatusException;
+use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
+use App\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

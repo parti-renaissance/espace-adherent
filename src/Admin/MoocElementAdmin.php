@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Mooc\AttachmentFile;
-use AppBundle\Entity\Mooc\BaseMoocElement;
-use AppBundle\Entity\Mooc\Chapter;
-use AppBundle\Entity\Mooc\MoocElementTypeEnum;
-use AppBundle\Form\Admin\BaseFileType;
-use AppBundle\Form\AttachmentLinkType;
-use AppBundle\Form\ImageType;
-use AppBundle\Form\PurifiedTextareaType;
+use App\Entity\Mooc\AttachmentFile;
+use App\Entity\Mooc\BaseMoocElement;
+use App\Entity\Mooc\Chapter;
+use App\Entity\Mooc\MoocElementTypeEnum;
+use App\Form\Admin\BaseFileType;
+use App\Form\AttachmentLinkType;
+use App\Form\ImageType;
+use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

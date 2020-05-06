@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Intl\UnitedNationsBundle;
+use App\Intl\FranceCitiesBundle;
+use App\Intl\UnitedNationsBundle;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

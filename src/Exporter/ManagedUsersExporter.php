@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Exporter;
+namespace App\Exporter;
 
-use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\Projection\ManagedUserRepository;
+use App\ManagedUsers\ManagedUsersFilter;
+use App\Repository\Projection\ManagedUserRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\DoctrineORMQuerySourceIterator;
 use Symfony\Component\HttpFoundation\Response;

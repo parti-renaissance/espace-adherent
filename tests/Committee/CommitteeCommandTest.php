@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Committee;
+namespace Tests\App\Committee;
 
-use AppBundle\Committee\CommitteeCommand;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\PostAddress;
+use App\Committee\CommitteeCommand;
+use App\Entity\Committee;
+use App\Entity\PostAddress;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

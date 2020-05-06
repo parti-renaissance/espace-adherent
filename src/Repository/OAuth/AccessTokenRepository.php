@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository\OAuth;
+namespace App\Repository\OAuth;
 
-use AppBundle\Entity\OAuth\AccessToken;
-use AppBundle\Entity\OAuth\Client;
+use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;

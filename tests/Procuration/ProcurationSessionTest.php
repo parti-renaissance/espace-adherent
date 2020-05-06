@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Procuration;
+namespace Tests\App\Procuration;
 
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Procuration\ElectionContext;
-use AppBundle\Procuration\ProcurationSession;
+use App\Entity\ProcurationRequest;
+use App\Procuration\ElectionContext;
+use App\Procuration\ProcurationSession;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -48,7 +48,7 @@ class ProcurationSessionTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Procuration\Exception\InvalidProcurationFlowException
+     * @expectedException \App\Procuration\Exception\InvalidProcurationFlowException
      * @expectedExceptionMessage An election context is required to start the flow.
      */
     public function testStartRequestRequiresElectionContext()
@@ -162,7 +162,7 @@ class ProcurationSessionTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Procuration\Exception\InvalidProcurationFlowException
+     * @expectedException \App\Procuration\Exception\InvalidProcurationFlowException
      * @expectedExceptionMessage No election context.
      */
     public function testGetElectionContextRequiresContext()

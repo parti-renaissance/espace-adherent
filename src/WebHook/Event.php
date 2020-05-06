@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\WebHook;
+namespace App\WebHook;
 
-use AppBundle\Membership\UserEvents;
+use App\Membership\UserEvents;
 use MyCLabs\Enum\Enum;
 
 /**

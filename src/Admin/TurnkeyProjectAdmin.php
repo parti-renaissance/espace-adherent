@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Entity\TurnkeyProjectFile;
-use AppBundle\Form\Admin\BaseFileType;
-use AppBundle\Form\PurifiedTextareaType;
-use AppBundle\TurnkeyProject\TurnkeyProjectManager;
+use App\Entity\TurnkeyProject;
+use App\Entity\TurnkeyProjectFile;
+use App\Form\Admin\BaseFileType;
+use App\Form\PurifiedTextareaType;
+use App\TurnkeyProject\TurnkeyProjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

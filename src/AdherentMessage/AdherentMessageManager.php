@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\AdherentMessage;
+namespace App\AdherentMessage;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

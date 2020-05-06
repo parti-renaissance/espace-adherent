@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Exception\EventRegistrationException;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Entity\EventRegistration;
+use App\Exception\EventRegistrationException;
+use App\Repository\EventRegistrationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class EventRegistrationManager

@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\CityCandidate;
-use AppBundle\Entity\Election\CityCard;
-use AppBundle\Entity\Election\CityManager;
-use AppBundle\Entity\Election\CityPrevision;
-use AppBundle\Repository\CityRepository;
-use AppBundle\ValueObject\Genders;
+use App\Entity\City;
+use App\Entity\Election\CityCandidate;
+use App\Entity\Election\CityCard;
+use App\Entity\Election\CityManager;
+use App\Entity\Election\CityPrevision;
+use App\Repository\CityRepository;
+use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemInterface;

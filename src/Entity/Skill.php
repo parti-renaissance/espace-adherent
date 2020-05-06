@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\SkillRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SkillRepository")
  * @ORM\Table(
  *     name="skills",
  *     uniqueConstraints={
@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Skill extends BaseSkill
 {
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Summary", mappedBy="skills")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Summary", mappedBy="skills")
      *
      * @var Summary[]
      */

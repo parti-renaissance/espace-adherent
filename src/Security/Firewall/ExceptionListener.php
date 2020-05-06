@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Security\Firewall;
+namespace App\Security\Firewall;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Firewall\ExceptionListener as BaseExceptionListener;

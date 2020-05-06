@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Membership\EventListener;
+namespace Tests\App\Membership\EventListener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Membership\EventListener\UserSubscriber;
-use AppBundle\Membership\UserEvent;
+use App\Entity\Adherent;
+use App\Entity\PostAddress;
+use App\Membership\EventListener\UserSubscriber;
+use App\Membership\UserEvent;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

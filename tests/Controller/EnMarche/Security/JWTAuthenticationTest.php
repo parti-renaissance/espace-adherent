@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche\Security;
+namespace Tests\App\Controller\EnMarche\Security;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Repository\CitizenProjectRepository;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
+use App\Repository\CitizenProjectRepository;
+use App\Repository\CommitteeRepository;
+use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\Console\Command\Command;

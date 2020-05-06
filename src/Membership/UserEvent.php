@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\SubscriptionType;
+use App\Entity\Adherent;
+use App\Entity\SubscriptionType;
 use Symfony\Component\EventDispatcher\Event;
 
 class UserEvent extends Event implements UserEventInterface

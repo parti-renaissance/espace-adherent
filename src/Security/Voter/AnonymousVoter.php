@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

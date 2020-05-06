@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
-use AppBundle\Exception\AdherentTokenAlreadyUsedException;
-use AppBundle\Exception\AdherentTokenExpiredException;
-use AppBundle\Exception\AdherentTokenMismatchException;
-use AppBundle\ValueObject\SHA1;
+use App\Exception\AdherentTokenAlreadyUsedException;
+use App\Exception\AdherentTokenExpiredException;
+use App\Exception\AdherentTokenMismatchException;
+use App\ValueObject\SHA1;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

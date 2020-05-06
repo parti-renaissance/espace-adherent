@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Admin;
+namespace Tests\App\Controller\Admin;
 
 use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Repository\ChezVous\CityRepository;
+use App\Entity\ChezVous\City;
+use App\Repository\ChezVous\CityRepository;
 use Doctrine\ORM\EntityRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\Test\Algolia\DummyIndexer;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Algolia\DummyIndexer;
 
 /**
  * @group functional

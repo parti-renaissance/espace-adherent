@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
+use App\Address\PostAddressFactory;
+use App\Entity\Donation;
+use App\Entity\Donator;
 
 class DonationFactory
 {

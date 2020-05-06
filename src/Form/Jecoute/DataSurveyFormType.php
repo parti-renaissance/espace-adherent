@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Form\Jecoute;
+namespace App\Form\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\NationalSurvey;
-use AppBundle\Jecoute\AgeRangeEnum;
-use AppBundle\Jecoute\GenderEnum;
-use AppBundle\Jecoute\ProfessionEnum;
-use AppBundle\Jecoute\SurveyTypeEnum;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
+use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\NationalSurvey;
+use App\Jecoute\AgeRangeEnum;
+use App\Jecoute\GenderEnum;
+use App\Jecoute\ProfessionEnum;
+use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Jecoute\LocalSurveyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Consumer\ChezVous;
+namespace App\Consumer\ChezVous;
 
-use AppBundle\Algolia\AlgoliaIndexedEntityManager;
-use AppBundle\Entity\ChezVous\MeasureType;
-use AppBundle\Producer\ChezVous\AlgoliaProducer;
-use AppBundle\Repository\ChezVous\CityRepository;
-use AppBundle\Repository\ChezVous\MeasureTypeRepository;
+use App\Algolia\AlgoliaIndexedEntityManager;
+use App\Entity\ChezVous\MeasureType;
+use App\Producer\ChezVous\AlgoliaProducer;
+use App\Repository\ChezVous\CityRepository;
+use App\Repository\ChezVous\MeasureTypeRepository;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareTrait;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Geocoder;
+namespace Tests\App\Geocoder;
 
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Geocoder\Geocoder;
+use App\Geocoder\Coordinates;
+use App\Geocoder\Geocoder;
 use Geocoder\Geocoder as BazingaGeocoder;
 use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
@@ -41,7 +41,7 @@ class GeocoderTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Geocoder\Exception\GeocodingException
+     * @expectedException \App\Geocoder\Exception\GeocodingException
      */
     public function testGeocodeAddressFails()
     {
@@ -57,7 +57,7 @@ class GeocoderTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Geocoder\Exception\GeocodingException
+     * @expectedException \App\Geocoder\Exception\GeocodingException
      */
     public function testCannotGeocodeAddress()
     {

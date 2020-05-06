@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentChangeEmailToken;
+use App\Entity\Adherent;
+use App\Entity\AdherentChangeEmailToken;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Committee\Event\FollowCommitteeEvent;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
-use AppBundle\Membership\UserEvents;
+use App\Committee\Event\FollowCommitteeEvent;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use App\Mailer\Message\CommitteeApprovalReferentMessage;
+use App\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\AssessorOfficeEnum;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
+use App\Entity\AssessorOfficeEnum;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
 use PHPUnit\Framework\TestCase;
 
 /**

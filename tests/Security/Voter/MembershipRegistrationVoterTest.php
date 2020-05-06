@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Security;
+namespace Tests\App\Security;
 
-use AppBundle\Membership\MembershipRegistrationPermissions;
-use AppBundle\Membership\MembershipRegistrationProcess;
-use AppBundle\Security\Voter\MembershipRegistrationVoter;
+use App\Membership\MembershipRegistrationPermissions;
+use App\Membership\MembershipRegistrationProcess;
+use App\Security\Voter\MembershipRegistrationVoter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

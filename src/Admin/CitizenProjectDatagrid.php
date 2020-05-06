@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Entity\CitizenProject;
+use App\CitizenProject\CitizenProjectManager;
+use App\Entity\CitizenProject;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class CitizenProjectDatagrid extends DatagridDecorator

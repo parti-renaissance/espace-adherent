@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form\TypeExtension;
+namespace App\Form\TypeExtension;
 
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberUtil;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Donation\PayboxPaymentUnsubscriptionErrorEnum;
+use App\Donation\PayboxPaymentUnsubscriptionErrorEnum;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PayboxPaymentUnsubscriptionException extends BadRequestHttpException

@@ -57,9 +57,9 @@ applications) selon le modèle suivant :
 ```php
 <?php
 
-namespace AppBundle\React\App;
+namespace App\React\App;
 
-use AppBundle\React\ReactAppInterface;
+use App\React\ReactAppInterface;
 use Symfony\Component\Routing\Route;
 
 class MyReactApp implements ReactAppInterface

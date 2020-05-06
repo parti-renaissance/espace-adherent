@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\CitizenProject;
+namespace Tests\App\CitizenProject;
 
-use AppBundle\Address\NullableAddress;
-use AppBundle\CitizenProject\CitizenProjectUpdateCommand;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\NullablePostAddress;
+use App\Address\NullableAddress;
+use App\CitizenProject\CitizenProjectUpdateCommand;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\CitizenProjectSkill;
+use App\Entity\Committee;
+use App\Entity\NullablePostAddress;
 use Doctrine\Common\Collections\Collection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;

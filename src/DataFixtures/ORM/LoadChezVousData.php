@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
-use AppBundle\ChezVous\Measure\BaisseNombreChomeurs;
-use AppBundle\ChezVous\Measure\MaisonServiceAccueilPublic as MaisonServiceAccueilPublicMeasure;
-use AppBundle\ChezVous\Measure\QuartierReconqueteRepublicaine;
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Department;
-use AppBundle\Entity\ChezVous\Marker;
-use AppBundle\Entity\ChezVous\Measure;
-use AppBundle\Entity\ChezVous\Region;
+use App\ChezVous\Marker\MaisonServiceAccueilPublic;
+use App\ChezVous\Measure\BaisseNombreChomeurs;
+use App\ChezVous\Measure\MaisonServiceAccueilPublic as MaisonServiceAccueilPublicMeasure;
+use App\ChezVous\Measure\QuartierReconqueteRepublicaine;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Department;
+use App\Entity\ChezVous\Marker;
+use App\Entity\ChezVous\Measure;
+use App\Entity\ChezVous\Region;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

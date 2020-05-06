@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCollection extends ArrayCollection

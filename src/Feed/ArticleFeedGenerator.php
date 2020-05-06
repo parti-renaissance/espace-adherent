@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Feed;
+namespace App\Feed;
 
-use AppBundle\Entity\Article;
-use AppBundle\Feed\Exception\FeedGeneratorException;
+use App\Entity\Article;
+use App\Feed\Exception\FeedGeneratorException;
 use League\CommonMark\CommonMarkConverter;
 use Suin\RSSWriter\Channel;
 use Suin\RSSWriter\Feed;

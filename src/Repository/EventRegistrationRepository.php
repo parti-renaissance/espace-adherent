@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Collection\EventRegistrationCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Statistics\StatisticsParametersFilter;
-use AppBundle\Utils\RepositoryUtils;
+use App\Collection\EventRegistrationCollection;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Entity\Event;
+use App\Entity\EventRegistration;
+use App\Statistics\StatisticsParametersFilter;
+use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;

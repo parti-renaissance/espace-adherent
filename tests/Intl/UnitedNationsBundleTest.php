@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Intl;
+namespace Tests\App\Intl;
 
-use AppBundle\Intl\UnitedNationsBundle;
+use App\Intl\UnitedNationsBundle;
 use PHPUnit\Framework\TestCase;
 
 class UnitedNationsBundleTest extends TestCase

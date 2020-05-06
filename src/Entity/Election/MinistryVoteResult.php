@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\City;
-use AppBundle\Entity\ElectionRound;
+use App\Entity\City;
+use App\Entity\ElectionRound;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Election\MinistryVoteResultRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Election\MinistryVoteResultRepository")
  *
  * @ORM\Table(uniqueConstraints={
  *     @ORM\UniqueConstraint(name="ministry_vote_result_city_round_unique", columns={"city_id", "election_round_id"}),
@@ -23,14 +23,14 @@ class MinistryVoteResult extends BaseVoteResult
     /**
      * @var City
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\City")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City")
      */
     private $city;
 
     /**
      * @var MinistryListTotalResult[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Election\MinistryListTotalResult", mappedBy="ministryVoteResult", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Election\MinistryListTotalResult", mappedBy="ministryVoteResult", cascade={"all"}, orphanRemoval=true)
      */
     private $listTotalResults;
 

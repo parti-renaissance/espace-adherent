@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\Media;
-use AppBundle\Entity\Referent;
-use AppBundle\Repository\MediaRepository;
-use AppBundle\Repository\ReferentRepository;
+use App\Content\MediaFactory;
+use App\Entity\Media;
+use App\Entity\Referent;
+use App\Repository\MediaRepository;
+use App\Repository\ReferentRepository;
 use Doctrine\ORM\EntityManager;
 use League\Flysystem\Filesystem;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

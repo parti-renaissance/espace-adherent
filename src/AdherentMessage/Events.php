@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\AdherentMessage;
+namespace App\AdherentMessage;
 
 final class Events
 {

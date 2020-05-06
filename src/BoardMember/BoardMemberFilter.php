@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\BoardMember;
+namespace App\BoardMember;
 
 use Symfony\Component\HttpFoundation\Request;
 

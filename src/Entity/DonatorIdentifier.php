@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="donator_identifier")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DonatorIdentifierRepository")*
+ * @ORM\Entity(repositoryClass="App\Repository\DonatorIdentifierRepository")*
  *
  * @Algolia\Index(autoIndex=false)
  */

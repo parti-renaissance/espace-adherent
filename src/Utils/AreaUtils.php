@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Utils;
+namespace App\Utils;
 
-use AppBundle\Entity\District;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Entity\District;
+use App\Intl\FranceCitiesBundle;
 
 class AreaUtils
 {

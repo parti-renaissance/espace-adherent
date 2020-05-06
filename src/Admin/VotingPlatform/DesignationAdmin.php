@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin\VotingPlatform;
+namespace App\Admin\VotingPlatform;
 
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
-use AppBundle\Form\Admin\DesignationTypeType;
-use AppBundle\Form\Admin\DesignationZoneType;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Form\Admin\DesignationTypeType;
+use App\Form\Admin\DesignationZoneType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

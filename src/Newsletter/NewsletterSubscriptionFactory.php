@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
-use AppBundle\Entity\NewsletterSubscription;
+use App\Entity\NewsletterSubscription;
 
 class NewsletterSubscriptionFactory
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Election\VoteListNuanceEnum;
-use AppBundle\Entity\Election\MinistryListTotalResult;
-use AppBundle\Entity\Election\MinistryVoteResult;
+use App\Election\VoteListNuanceEnum;
+use App\Entity\Election\MinistryListTotalResult;
+use App\Entity\Election\MinistryVoteResult;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

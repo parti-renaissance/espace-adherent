@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Procuration\Exception\InvalidProcurationFlowException;
+use App\Entity\ProcurationRequest;
+use App\Procuration\Exception\InvalidProcurationFlowException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ProcurationSession

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Security;
+namespace App\Security;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Role\SwitchUserRole;

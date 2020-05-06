@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election;
+namespace App\VotingPlatform\Election;
 
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
-use AppBundle\VotingPlatform\Election\VoteCommand\CommitteeAdherentVoteCommand;
-use AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand;
+use App\Entity\VotingPlatform\Election;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\VoteCommand\CommitteeAdherentVoteCommand;
+use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class VoteCommandStorage

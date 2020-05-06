@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Adherent\CertificationPermissions;
-use AppBundle\Entity\Adherent;
+use App\Adherent\CertificationPermissions;
+use App\Entity\Adherent;
 
 class CertificationVoter extends AbstractAdherentVoter
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Repository\MyEuropeChoiceRepository;
+use App\Entity\MyEuropeChoice;
+use App\Repository\MyEuropeChoiceRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

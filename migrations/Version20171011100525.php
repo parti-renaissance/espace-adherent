@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\DataFixtures\ORM\LoadBoardMemberRoleData;
+use App\DataFixtures\ORM\LoadBoardMemberRoleData;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

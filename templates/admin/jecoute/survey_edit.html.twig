@@ -14,7 +14,7 @@
             const selectConcernedZoneChoices = function (selectedInput) {
                const cityBloc = $("div.form-group[id$='_city']");
 
-               if ('{{ constant('AppBundle\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}'
+               if ('{{ constant('App\\Form\\Jecoute\\SurveyFormType::CITY_CHOICE') }}'
                    === $(selectedInput).val())
                {
                    cityBloc.show();
@@ -51,7 +51,7 @@
             const questionBlock = $(questionType).parents(".sonata-ba-field div[id$='_question']").first();
             const choicesBlock = questionBlock.find("div[id$='_question_choices']").first();
 
-            if ('{{ constant('AppBundle\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}'
+            if ('{{ constant('App\\Jecoute\\SurveyQuestionTypeEnum::SIMPLE_FIELD') }}'
                 === $(questionType).val()
             ) {
                 choicesBlock.hide();

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Validator\BannedAdherent;
-use AppBundle\Validator\CustomGender as AssertCustomGender;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use AppBundle\Validator\UniqueMembership as AssertUniqueMembership;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Validator\BannedAdherent;
+use App\Validator\CustomGender as AssertCustomGender;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\UniqueMembership as AssertUniqueMembership;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +23,7 @@ class MembershipRequest implements MembershipInterface
      *
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups={"Update"}
@@ -75,7 +75,7 @@ class MembershipRequest implements MembershipInterface
      * @var string|null
      *
      * @Assert\Choice(
-     *     callback={"AppBundle\Membership\ActivityPositions", "all"},
+     *     callback={"App\Membership\ActivityPositions", "all"},
      *     message="adherent.activity_position.invalid_choice",
      *     strict=true,
      *     groups={"Update"}
@@ -152,7 +152,7 @@ class MembershipRequest implements MembershipInterface
      * @var array
      *
      * @Assert\Choice(
-     *     callback={"AppBundle\Membership\Mandates", "all"}
+     *     callback={"App\Membership\Mandates", "all"}
      * )
      */
     private $mandates;

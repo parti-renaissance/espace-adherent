@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\DataFixtures\ORM\LoadMyEuropeData;
+use App\DataFixtures\ORM\LoadMyEuropeData;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

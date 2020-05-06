@@ -8,23 +8,23 @@ services:
         public: false
 
     app.geocoder:
-        class: 'Tests\AppBundle\Test\Geocoder\DummyGeocoder'
+        class: 'Tests\App\Test\Geocoder\DummyGeocoder'
         public: false
 
     app.mailer.transactional_client:
-        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
+        class: 'Tests\App\Test\Mailer\NullEmailClient'
         public: false
 
     app.mailer.campaign_client:
-        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
+        class: 'Tests\App\Test\Mailer\NullEmailClient'
         public: false
 
     app.recaptcha.api_client:
-        class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
+        class: 'Tests\App\Test\Recaptcha\DummyRecaptchaApiClient'
         public: false
 
     algolia.indexer:
-        class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
+        class: 'Tests\App\Test\Algolia\DummyIndexer'
 
     data_collector.messenger:
         class: Symfony\Component\Messenger\DataCollector\MessengerDataCollector

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Redirection\Dynamic;
+namespace Tests\App\Redirection\Dynamic;
 
-use AppBundle\Entity\Redirection;
-use AppBundle\Redirection\Dynamic\RedirectionManager;
+use App\Entity\Redirection;
+use App\Redirection\Dynamic\RedirectionManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

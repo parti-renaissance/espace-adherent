@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Mailer;
+namespace App\Mailer;
 
-use AppBundle\Mailer\Event\MailerEvent;
-use AppBundle\Mailer\Event\MailerEvents;
-use AppBundle\Mailer\Exception\MailerException;
-use AppBundle\Mailer\Message\Message;
-use AppBundle\Mailer\Transport\TransportInterface;
+use App\Mailer\Event\MailerEvent;
+use App\Mailer\Event\MailerEvents;
+use App\Mailer\Exception\MailerException;
+use App\Mailer\Message\Message;
+use App\Mailer\Transport\TransportInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MailerService

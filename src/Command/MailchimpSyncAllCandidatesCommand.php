@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="facebook_profile_uuid", columns="uuid"),
  *     @ORM\UniqueConstraint(name="facebook_profile_facebook_id", columns="facebook_id")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FacebookProfileRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FacebookProfileRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

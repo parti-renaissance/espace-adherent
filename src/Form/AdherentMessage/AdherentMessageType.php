@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageDataObject;
-use AppBundle\Form\PurifiedTextareaType;
+use App\AdherentMessage\AdherentMessageDataObject;
+use App\Form\PurifiedTextareaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

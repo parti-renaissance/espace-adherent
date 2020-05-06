@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Biography;
+namespace App\Entity\Biography;
 
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Entity\ImageOwnerInterface;
-use AppBundle\Entity\ImageTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;

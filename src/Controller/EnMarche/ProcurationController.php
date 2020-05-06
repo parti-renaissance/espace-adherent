@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Form\Procuration\ElectionContextType;
-use AppBundle\Form\Procuration\ProcurationProxyType;
-use AppBundle\Form\Procuration\ProcurationRequestType;
-use AppBundle\Procuration\ElectionContext;
-use AppBundle\Procuration\ProcurationManager;
-use AppBundle\Procuration\ProcurationSession;
-use AppBundle\Repository\ElectionRepository;
+use App\Entity\Adherent;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
+use App\Form\Procuration\ElectionContextType;
+use App\Form\Procuration\ProcurationProxyType;
+use App\Form\Procuration\ProcurationRequestType;
+use App\Procuration\ElectionContext;
+use App\Procuration\ProcurationManager;
+use App\Procuration\ProcurationSession;
+use App\Repository\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +39,7 @@ class ProcurationController extends Controller
     /**
      * @Route(
      *     "/choisir/{action}",
-     *     requirements={"action": AppBundle\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
+     *     requirements={"action": App\Procuration\ElectionContext::CONTROLLER_ACTION_REQUIREMENT},
      *     name="app_procuration_choose_election",
      *     methods={"GET", "POST"}
      * )

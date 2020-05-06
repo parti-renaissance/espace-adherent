@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Mooc\Mooc;
-use AppBundle\Normalizer\MoocNormalizer;
-use AppBundle\Repository\MoocRepository;
-use AppBundle\Sitemap\SitemapFactory;
+use App\Entity\Mooc\Mooc;
+use App\Normalizer\MoocNormalizer;
+use App\Repository\MoocRepository;
+use App\Sitemap\SitemapFactory;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer as JMSSerializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;

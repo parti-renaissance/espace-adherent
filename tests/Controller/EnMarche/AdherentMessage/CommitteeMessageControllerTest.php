@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche\AdherentMessage;
+namespace Tests\App\Controller\EnMarche\AdherentMessage;
 
-use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MessengerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional

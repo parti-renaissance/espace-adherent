@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentChangeEmailTokenRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentChangeEmailTokenRepository")
  * @ORM\Table(indexes={
  *     @ORM\Index(columns={"email", "used_at", "expired_at"})
  * })

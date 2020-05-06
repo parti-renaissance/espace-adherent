@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\LegislativeDistrictZone;
+use App\Entity\LegislativeDistrictZone;
 use PHPUnit\Framework\TestCase;
 
 class LegislativeDistrictZoneTest extends TestCase

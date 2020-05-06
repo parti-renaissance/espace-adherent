@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\PostAddress;
+use App\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
 
 class PostAddressTest extends TestCase

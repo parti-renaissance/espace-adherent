@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Assessor\AssessorRequestCommand;
-use AppBundle\Assessor\AssessorRequestEnum;
-use AppBundle\Entity\AssessorOfficeEnum;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\VotePlace\VotePlaceManager;
+use App\Assessor\AssessorRequestCommand;
+use App\Assessor\AssessorRequestEnum;
+use App\Entity\AssessorOfficeEnum;
+use App\Intl\FranceCitiesBundle;
+use App\VotePlace\VotePlaceManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;

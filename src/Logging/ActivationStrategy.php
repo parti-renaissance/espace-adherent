@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Logging;
+namespace App\Logging;
 
 use Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;

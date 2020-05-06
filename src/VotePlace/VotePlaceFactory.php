@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\VotePlace;
+namespace App\VotePlace;
 
-use AppBundle\Entity\VotePlace;
+use App\Entity\VotePlace;
 
 class VotePlaceFactory
 {

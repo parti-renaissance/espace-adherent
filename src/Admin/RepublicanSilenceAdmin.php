@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\RepublicanSilence;
-use AppBundle\RepublicanSilence\RepublicanSilenceManager;
+use App\Entity\RepublicanSilence;
+use App\RepublicanSilence\RepublicanSilenceManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

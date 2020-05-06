@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\EventRegistration;
+use App\Entity\EventRegistration;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class EventRegistrationCollection extends ArrayCollection

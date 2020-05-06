@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Adherent;
+namespace Tests\App\Adherent;
 
-use AppBundle\Adherent\CertificationManager;
-use AppBundle\Repository\AdherentRepository;
+use App\Adherent\CertificationManager;
+use App\Repository\AdherentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Test\Geocoder;
+namespace Tests\App\Test\Geocoder;
 
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Geocoder\Exception\GeocodingException;
-use AppBundle\Geocoder\GeocoderInterface;
+use App\Geocoder\Coordinates;
+use App\Geocoder\Exception\GeocodingException;
+use App\Geocoder\GeocoderInterface;
 
 class DummyGeocoder implements GeocoderInterface
 {

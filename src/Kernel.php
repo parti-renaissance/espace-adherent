@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle;
+namespace App;
 
-use AppBundle\DependencyInjection\Compiler\SecurityPass;
-use AppBundle\DependencyInjection\Compiler\StatisticsCalculatorPass;
+use App\DependencyInjection\Compiler\SecurityPass;
+use App\DependencyInjection\Compiler\StatisticsCalculatorPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;

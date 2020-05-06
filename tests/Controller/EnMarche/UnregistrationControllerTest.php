@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Unregistration;
+use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
+use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
+use App\Entity\Adherent;
+use App\Entity\Unregistration;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

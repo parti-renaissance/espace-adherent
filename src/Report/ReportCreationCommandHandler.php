@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Report;
+namespace App\Report;
 
 use Doctrine\ORM\EntityManagerInterface;
 

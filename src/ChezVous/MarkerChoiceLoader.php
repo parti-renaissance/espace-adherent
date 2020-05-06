@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\ChezVous;
+namespace App\ChezVous;
 
-use AppBundle\ChezVous\Marker\DedoublementClasses;
-use AppBundle\ChezVous\Marker\MaisonServiceAccueilPublic;
-use AppBundle\ChezVous\Marker\MissionBern;
+use App\ChezVous\Marker\DedoublementClasses;
+use App\ChezVous\Marker\MaisonServiceAccueilPublic;
+use App\ChezVous\Marker\MissionBern;
 
 class MarkerChoiceLoader
 {

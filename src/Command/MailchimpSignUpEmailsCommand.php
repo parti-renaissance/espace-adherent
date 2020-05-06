@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\SubscriptionType;
-use AppBundle\Mailchimp\SignUp\SignUpHandler;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\SubscriptionType;
+use App\Mailchimp\SignUp\SignUpHandler;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Csv\Reader;
 use League\Flysystem\Filesystem;

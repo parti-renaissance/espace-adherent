@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 /**
  * This trait gives the ability to an entity to become CRUDable. It means it

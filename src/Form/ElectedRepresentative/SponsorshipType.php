@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\ElectedRepresentative;
+namespace App\Form\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\Sponsorship;
+use App\Entity\ElectedRepresentative\Sponsorship;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

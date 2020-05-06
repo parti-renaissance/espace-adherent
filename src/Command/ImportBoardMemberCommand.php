@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\BoardMember\Role;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Entity\BoardMember\BoardMember;
+use App\Entity\BoardMember\Role;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Election\CityResultAggregator;
-use AppBundle\Election\CityResults;
-use AppBundle\Election\ElectionManager;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\CityVoteResult;
-use AppBundle\Entity\Election\MinistryListTotalResult;
-use AppBundle\Entity\Election\MinistryVoteResult;
+use App\Election\CityResultAggregator;
+use App\Election\CityResults;
+use App\Election\ElectionManager;
+use App\Entity\City;
+use App\Entity\Election\CityVoteResult;
+use App\Entity\Election\MinistryListTotalResult;
+use App\Entity\Election\MinistryVoteResult;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ElectionVoteResultRuntime implements RuntimeExtensionInterface

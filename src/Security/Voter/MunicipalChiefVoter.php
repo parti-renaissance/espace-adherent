@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Entity\Adherent;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Intl\FranceCitiesBundle;
 
 class MunicipalChiefVoter extends AbstractAdherentVoter
 {

@@ -1,22 +1,22 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Admin;
+namespace Tests\App\Controller\Admin;
 
 use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
-use AppBundle\DataFixtures\ORM\LoadTimelineData;
-use AppBundle\Entity\Timeline\Manifesto;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Repository\Timeline\ManifestoRepository;
-use AppBundle\Repository\Timeline\MeasureRepository;
-use AppBundle\Repository\Timeline\ProfileRepository;
-use AppBundle\Repository\Timeline\ThemeRepository;
+use App\DataFixtures\ORM\LoadTimelineData;
+use App\Entity\Timeline\Manifesto;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\Theme;
+use App\Repository\Timeline\ManifestoRepository;
+use App\Repository\Timeline\MeasureRepository;
+use App\Repository\Timeline\ProfileRepository;
+use App\Repository\Timeline\ThemeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\Test\Algolia\DummyIndexer;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Algolia\DummyIndexer;
 
 /**
  * @group functional

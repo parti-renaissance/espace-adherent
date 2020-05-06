@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Utils\PhoneNumberFormatter;
+use App\Entity\ProcurationRequest;
+use App\Utils\PhoneNumberFormatter;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyReminderMessage extends Message

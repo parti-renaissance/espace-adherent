@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Security;
+namespace Tests\App\Security;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Membership\ActivityPositions;
-use AppBundle\Security\AdherentLoginTimestampRecorder;
+use App\Entity\Adherent;
+use App\Entity\PostAddress;
+use App\Membership\ActivityPositions;
+use App\Security\AdherentLoginTimestampRecorder;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

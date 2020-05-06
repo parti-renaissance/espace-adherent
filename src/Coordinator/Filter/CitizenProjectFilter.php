@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Coordinator\Filter;
+namespace App\Coordinator\Filter;
 
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenProject;
 
 class CitizenProjectFilter extends AbstractCoordinatorAreaFilter
 {

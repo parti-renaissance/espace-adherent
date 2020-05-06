@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\AdherentMessage;
+namespace App\AdherentMessage;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
-use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
-use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
-use AppBundle\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
+use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use Ramsey\Uuid\Uuid;
 
 class AdherentMessageFactory

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Entity\TurnkeyProjectFile;
+use App\Entity\TurnkeyProject;
+use App\Entity\TurnkeyProjectFile;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

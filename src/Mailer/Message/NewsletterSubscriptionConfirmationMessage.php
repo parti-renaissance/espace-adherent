@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\NewsletterSubscription;
+use App\Entity\NewsletterSubscription;
 use Ramsey\Uuid\Uuid;
 
 final class NewsletterSubscriptionConfirmationMessage extends Message

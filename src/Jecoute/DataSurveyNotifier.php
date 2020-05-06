@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Jecoute;
+namespace App\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DataSurveyAnsweredMessage;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\Jecoute\DataSurveyRepository;
+use App\Entity\Jecoute\DataSurvey;
+use App\Mailer\MailerService;
+use App\Mailer\Message\DataSurveyAnsweredMessage;
+use App\Repository\AdherentRepository;
+use App\Repository\Jecoute\DataSurveyRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DataSurveyNotifier implements EventSubscriberInterface

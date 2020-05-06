@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Api;
+namespace App\Api;
 
-use AppBundle\Exception\EventException;
-use AppBundle\Repository\EventRepository;
+use App\Exception\EventException;
+use App\Repository\EventRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventProvider

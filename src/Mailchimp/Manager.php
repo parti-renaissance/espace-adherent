@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Mailchimp;
+namespace App\Mailchimp;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Mailchimp\Campaign\CampaignContentRequestBuilder;
-use AppBundle\Mailchimp\Campaign\CampaignRequestBuilder;
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
-use AppBundle\Mailchimp\Exception\InvalidCampaignIdException;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
-use AppBundle\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
-use AppBundle\Mailchimp\Synchronisation\RequestBuilder;
-use AppBundle\Newsletter\NewsletterValueObject;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
+use App\Mailchimp\Campaign\CampaignRequestBuilder;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Exception\InvalidCampaignIdException;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommandInterface;
+use App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder;
+use App\Mailchimp\Synchronisation\RequestBuilder;
+use App\Newsletter\NewsletterValueObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

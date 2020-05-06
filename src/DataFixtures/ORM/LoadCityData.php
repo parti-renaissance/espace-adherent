@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Region;
-use AppBundle\Utils\AreaUtils;
+use App\Entity\City;
+use App\Entity\Department;
+use App\Entity\Region;
+use App\Utils\AreaUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

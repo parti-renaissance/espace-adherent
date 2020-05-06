@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\BaseGroup;
-use AppBundle\Entity\CoordinatorAreaInterface;
+use App\Entity\BaseGroup;
+use App\Entity\CoordinatorAreaInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

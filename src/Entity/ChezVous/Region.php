@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ChezVous;
+namespace App\Entity\ChezVous;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ChezVous\RegionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ChezVous\RegionRepository")
  * @ORM\Table(name="chez_vous_regions")
  *
  * @UniqueEntity("code")

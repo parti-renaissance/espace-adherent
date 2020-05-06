@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Admin;
+namespace Tests\App\Controller\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadIdeaData;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\DataFixtures\ORM\LoadIdeaData;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

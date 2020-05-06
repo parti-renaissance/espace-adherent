@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\OAuth\Store;
+namespace App\OAuth\Store;
 
-use AppBundle\Entity\OAuth\AccessToken as PersistentAccessToken;
-use AppBundle\OAuth\Model\AccessToken as InMemoryAccessToken;
-use AppBundle\OAuth\PersistentTokenFactory;
-use AppBundle\Repository\OAuth\AccessTokenRepository;
+use App\Entity\OAuth\AccessToken as PersistentAccessToken;
+use App\OAuth\Model\AccessToken as InMemoryAccessToken;
+use App\OAuth\PersistentTokenFactory;
+use App\Repository\OAuth\AccessTokenRepository;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface as OAuthAccessTokenRepository;

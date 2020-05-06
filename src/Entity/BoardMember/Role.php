@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\BoardMember;
+namespace App\Entity\BoardMember;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BoardMember\RoleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\BoardMember\RoleRepository")
  * @ORM\Table(
  *     name="roles",
  *     uniqueConstraints={
@@ -48,7 +48,7 @@ class Role
     private $name = '';
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\BoardMember\BoardMember", mappedBy="roles")
+     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\BoardMember", mappedBy="roles")
      *
      * @var BoardMember[]
      */

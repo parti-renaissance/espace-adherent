@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MunicipalSite;
+namespace App\MunicipalSite;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;

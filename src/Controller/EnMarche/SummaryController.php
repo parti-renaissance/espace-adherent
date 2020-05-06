@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Summary;
-use AppBundle\Membership\MemberActivityTracker;
-use AppBundle\Summary\SummaryManager;
+use App\Entity\Summary;
+use App\Membership\MemberActivityTracker;
+use App\Summary\SummaryManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

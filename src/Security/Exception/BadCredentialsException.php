@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Security\Exception;
+namespace App\Security\Exception;
 
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 

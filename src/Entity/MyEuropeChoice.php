@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MyEuropeChoiceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MyEuropeChoiceRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

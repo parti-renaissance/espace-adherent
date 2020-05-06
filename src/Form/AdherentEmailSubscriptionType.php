@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\SubscriptionType;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\SubscriptionType;
+use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

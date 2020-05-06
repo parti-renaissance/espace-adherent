@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
 use MyCLabs\Enum\Enum;
 

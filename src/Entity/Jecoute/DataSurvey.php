@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Validator\DataSurveyConstraint;
+use App\Entity\Adherent;
+use App\Validator\DataSurveyConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,7 +29,7 @@ class DataSurvey
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $author;
@@ -86,21 +86,21 @@ class DataSurvey
     /**
      * @ORM\Column(length=30, nullable=true)
      *
-     * @Assert\Choice(callback={"AppBundle\Jecoute\ProfessionEnum", "all"})
+     * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
      */
     private $profession;
 
     /**
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\Choice(callback={"AppBundle\Jecoute\AgeRangeEnum", "all"})
+     * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
      */
     private $ageRange;
 
     /**
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\Choice(callback={"AppBundle\Jecoute\GenderEnum", "all"})
+     * @Assert\Choice(callback={"App\Jecoute\GenderEnum", "all"})
      */
     private $gender;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Jecoute\GenderEnum;
-use AppBundle\Membership\MembershipRequest;
-use AppBundle\Validator\CustomGender;
-use AppBundle\Validator\CustomGenderValidator;
+use App\Jecoute\GenderEnum;
+use App\Membership\MembershipRequest;
+use App\Validator\CustomGender;
+use App\Validator\CustomGenderValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class CustomGenderValidatorTest extends ConstraintValidatorTestCase

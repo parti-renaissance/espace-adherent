@@ -1,23 +1,23 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\BoardMember\BoardMemberFilter;
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Coordinator\CoordinatorManagedAreaUtils;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\City;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\District;
-use AppBundle\Entity\ReferentManagedArea;
-use AppBundle\Statistics\StatisticsParametersFilter;
-use AppBundle\Subscription\SubscriptionTypeEnum;
-use AppBundle\Utils\AreaUtils;
-use AppBundle\Utils\RepositoryUtils;
+use App\BoardMember\BoardMemberFilter;
+use App\Collection\AdherentCollection;
+use App\Coordinator\CoordinatorManagedAreaUtils;
+use App\Entity\Adherent;
+use App\Entity\BoardMember\BoardMember;
+use App\Entity\CitizenProject;
+use App\Entity\City;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Entity\District;
+use App\Entity\ReferentManagedArea;
+use App\Statistics\StatisticsParametersFilter;
+use App\Subscription\SubscriptionTypeEnum;
+use App\Utils\AreaUtils;
+use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;

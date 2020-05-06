@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\Listener;
+namespace App\Mailchimp\Campaign\Listener;
 
-use AppBundle\Mailchimp\Events;
-use AppBundle\Mailchimp\RequestEvent;
+use App\Mailchimp\Events;
+use App\Mailchimp\RequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SetCampaignReplyToSubscriber implements EventSubscriberInterface

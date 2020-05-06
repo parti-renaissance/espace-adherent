@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
+use App\Mailchimp\Webhook\EventTypeEnum;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class AdherentSubscribeHandler extends AbstractAdherentHandler

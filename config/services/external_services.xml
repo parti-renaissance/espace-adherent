@@ -5,7 +5,7 @@
     <services>
 
         <!-- Recaptcha -->
-        <service id="app.recaptcha.api_client" class="AppBundle\Recaptcha\RecaptchaApiClient" public="false">
+        <service id="app.recaptcha.api_client" class="App\Recaptcha\RecaptchaApiClient" public="false">
             <argument>%env(RECAPTCHA_PRIVATE_KEY)%</argument>
             <argument type="collection">
                 <argument key="timeout">5.0</argument>
@@ -14,56 +14,56 @@
             <argument type="service" id="request_stack"/>
         </service>
 
-        <service id="app.validator.recaptcha" class="AppBundle\Validator\RecaptchaValidator">
+        <service id="app.validator.recaptcha" class="App\Validator\RecaptchaValidator">
             <argument type="service" id="app.recaptcha.api_client"/>
             <tag name="validator.constraint_validator" alias="app.validator.recaptcha"/>
         </service>
 
         <!-- Mailer (transactional) -->
-        <service id="app.mailer.transactional" class="AppBundle\Mailer\MailerService" public="false">
+        <service id="app.mailer.transactional" class="App\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_transactional"/>
             <argument type="service" id="app.mailer.message_factory.transactional"/>
         </service>
 
-        <service id="app.mailer.transactional_client" class="AppBundle\Mandrill\EmailClient" public="false">
+        <service id="app.mailer.transactional_client" class="App\Mandrill\EmailClient" public="false">
             <argument type="service" id="csa_guzzle.client.mandrill_api"/>
         </service>
 
-        <service id="app.mailer.transport.rabbitmq_transactional" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
+        <service id="app.mailer.transport.rabbitmq_transactional" class="App\Mailer\Transport\RabbitMQTransport" public="false">
             <argument type="service" id="old_sound_rabbit_mq.mailer_transactional_producer" />
         </service>
 
-        <service id="app.mailer.message_factory.transactional" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+        <service id="app.mailer.message_factory.transactional" class="App\Mailer\EmailTemplateFactory" public="false">
             <argument>%transactional_sender_email%</argument>
             <argument>%transactional_sender_name%</argument>
-            <argument>AppBundle\Mandrill\EmailTemplate</argument>
+            <argument>App\Mandrill\EmailTemplate</argument>
         </service>
 
         <!-- Mailer (campaign) -->
-        <service id="app.mailer.campaign" class="AppBundle\Mailer\MailerService" public="false">
+        <service id="app.mailer.campaign" class="App\Mailer\MailerService" public="false">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="app.mailer.transport.rabbitmq_campaign"/>
             <argument type="service" id="app.mailer.message_factory.campaign"/>
         </service>
 
-        <service id="app.mailer.campaign_client" class="AppBundle\Mandrill\EmailClient" public="false">
+        <service id="app.mailer.campaign_client" class="App\Mandrill\EmailClient" public="false">
             <argument type="service" id="csa_guzzle.client.mandrill_api"/>
         </service>
 
-        <service id="app.mailer.transport.rabbitmq_campaign" class="AppBundle\Mailer\Transport\RabbitMQTransport" public="false">
+        <service id="app.mailer.transport.rabbitmq_campaign" class="App\Mailer\Transport\RabbitMQTransport" public="false">
             <argument type="service" id="old_sound_rabbit_mq.mailer_campaign_producer" />
         </service>
 
-        <service id="app.mailer.message_factory.campaign" class="AppBundle\Mailer\EmailTemplateFactory" public="false">
+        <service id="app.mailer.message_factory.campaign" class="App\Mailer\EmailTemplateFactory" public="false">
             <argument>%campaign_sender_email%</argument>
             <argument>%campaign_sender_name%</argument>
-            <argument>AppBundle\Mandrill\EmailTemplate</argument>
+            <argument>App\Mandrill\EmailTemplate</argument>
         </service>
 
-        <service id="AppBundle\Mailer\EventSubscriber\EmailPersisterEventSubscriber">
+        <service id="App\Mailer\EventSubscriber\EmailPersisterEventSubscriber">
             <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="AppBundle\Repository\EmailRepository"/>
+            <argument type="service" id="App\Repository\EmailRepository"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 

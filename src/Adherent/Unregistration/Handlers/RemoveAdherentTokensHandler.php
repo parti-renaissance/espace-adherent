@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\AdherentActivationTokenRepository;
-use AppBundle\Repository\AdherentResetPasswordTokenRepository;
+use App\Entity\Adherent;
+use App\Repository\AdherentActivationTokenRepository;
+use App\Repository\AdherentResetPasswordTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RemoveAdherentTokensHandler implements UnregistrationAdherentHandlerInterface

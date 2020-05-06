@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ApplicationRequest;
+namespace App\Repository\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class VolunteerRequestRepository extends AbstractApplicationRequestRepository

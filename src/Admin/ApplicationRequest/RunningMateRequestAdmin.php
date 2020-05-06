@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\ApplicationRequest;
+namespace App\Admin\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\Theme;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\Theme;
 use League\Flysystem\Filesystem;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

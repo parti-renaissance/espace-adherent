@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election\VoteCommand;
+namespace App\VotingPlatform\Election\VoteCommand;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

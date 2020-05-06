@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Reporting\EmailSubscriptionHistory;
-use AppBundle\Entity\Reporting\EmailSubscriptionHistoryAction;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Entity\Adherent;
+use App\Entity\Reporting\EmailSubscriptionHistory;
+use App\Entity\Reporting\EmailSubscriptionHistoryAction;
+use App\Repository\AdherentRepository;
+use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

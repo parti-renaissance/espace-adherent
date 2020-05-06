@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Admin;
+namespace Tests\App\Controller\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadIdeaThreadCommentData;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Repository\ThreadCommentRepository;
+use App\DataFixtures\ORM\LoadIdeaThreadCommentData;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\Repository\ThreadCommentRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

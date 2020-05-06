@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Controller\PrintControllerTrait;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Event\EventCanceledHandler;
-use AppBundle\Event\EventCommand;
-use AppBundle\Event\EventContactMembersCommand;
-use AppBundle\Exception\BadUuidRequestException;
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Form\ContactMembersType;
-use AppBundle\Form\EventCommandType;
+use App\Controller\PrintControllerTrait;
+use App\Entity\Event;
+use App\Entity\EventRegistration;
+use App\Event\EventCanceledHandler;
+use App\Event\EventCommand;
+use App\Event\EventContactMembersCommand;
+use App\Exception\BadUuidRequestException;
+use App\Exception\InvalidUuidException;
+use App\Form\ContactMembersType;
+use App\Form\EventCommandType;
 use Knp\Bundle\SnappyBundle\Snappy\Response\SnappyResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

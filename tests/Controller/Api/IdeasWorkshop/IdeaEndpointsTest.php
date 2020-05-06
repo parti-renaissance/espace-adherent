@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Api\IdeasWorkshop;
+namespace Tests\App\Controller\Api\IdeasWorkshop;
 
-use AppBundle\DataFixtures\ORM\LoadIdeaData;
-use AppBundle\DataFixtures\ORM\LoadUserDocumentData;
-use AppBundle\Entity\IdeasWorkshop\Answer;
+use App\DataFixtures\ORM\LoadIdeaData;
+use App\DataFixtures\ORM\LoadUserDocumentData;
+use App\Entity\IdeasWorkshop\Answer;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 class IdeaEndpointTest extends WebTestCase
 {

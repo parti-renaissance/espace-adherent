@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Event\Filter;
+namespace App\Event\Filter;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

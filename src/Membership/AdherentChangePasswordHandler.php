@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

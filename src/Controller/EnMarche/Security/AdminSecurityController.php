@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Security;
+namespace App\Controller\EnMarche\Security;
 
-use AppBundle\Entity\Administrator;
-use AppBundle\Form\LoginType;
-use AppBundle\Security\QrCodeResponseFactory;
+use App\Entity\Administrator;
+use App\Form\LoginType;
+use App\Security\QrCodeResponseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

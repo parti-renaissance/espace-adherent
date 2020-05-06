@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\OAuth;
+namespace App\Entity\OAuth;
 
-use AppBundle\Entity\EntityIdentityTrait;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 

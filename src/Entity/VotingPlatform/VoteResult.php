@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,7 +37,7 @@ class VoteResult
     /**
      * @var Election
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Election")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;
@@ -52,7 +52,7 @@ class VoteResult
     /**
      * @var VoteChoice[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VotingPlatform\VoteChoice", mappedBy="voteResult", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\VoteChoice", mappedBy="voteResult", cascade={"all"})
      */
     private $voteChoices;
 

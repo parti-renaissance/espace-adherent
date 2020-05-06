@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Formation;
+namespace App\Entity\Formation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityMediaInterface;
-use AppBundle\Entity\EntityMediaTrait;
-use AppBundle\Entity\PositionTrait;
+use App\Entity\EntityMediaInterface;
+use App\Entity\EntityMediaTrait;
+use App\Entity\PositionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="formation_modules")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Formation\ModuleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Formation\ModuleRepository")
 
  * @Algolia\Index(autoIndex=false)
  *
@@ -77,7 +77,7 @@ class Module implements EntityMediaInterface
     /**
      * @var Axe|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Formation\Axe", inversedBy="modules")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Formation\Axe", inversedBy="modules")
      *
      * @Assert\NotBlank(message="Veuillez renseigner un axe.")
      */
@@ -87,7 +87,7 @@ class Module implements EntityMediaInterface
      * @var Collection|File[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\Formation\File",
+     *     targetEntity="App\Entity\Formation\File",
      *     cascade={"persist", "remove"},
      *     mappedBy="module",
      *     orphanRemoval=true

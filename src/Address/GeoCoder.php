@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Address;
+namespace App\Address;
 
 use GeoIp2\Exception\GeoIp2Exception;
 use GeoIp2\Model\City;

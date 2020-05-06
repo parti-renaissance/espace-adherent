@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Referent;
+namespace Tests\App\Referent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Referent\ReferentTagManager;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\Adherent;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ReferentTag;
+use App\Referent\ReferentTagManager;
+use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

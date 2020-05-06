@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\Repository\CommitteeRepository;
+use App\Repository\CommitteeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

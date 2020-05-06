@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\ValueObject\Genders;
+use App\Entity\EntityIdentityTrait;
+use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -58,7 +58,7 @@ class Candidate
     /**
      * @var CandidateGroup
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\CandidateGroup", inversedBy="candidates")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\CandidateGroup", inversedBy="candidates")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $candidateGroup;

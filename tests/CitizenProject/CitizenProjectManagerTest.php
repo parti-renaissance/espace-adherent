@@ -1,22 +1,22 @@
 <?php
 
-namespace Tests\AppBundle\CitizenProject;
+namespace Tests\App\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectAuthority;
-use AppBundle\CitizenProject\CitizenProjectFollowerChangeEvent;
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Events;
+use App\CitizenProject\CitizenProjectAuthority;
+use App\CitizenProject\CitizenProjectFollowerChangeEvent;
+use App\CitizenProject\CitizenProjectManager;
+use App\CitizenProject\CitizenProjectWasUpdatedEvent;
+use App\Collection\AdherentCollection;
+use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\Entity\Adherent;
+use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group citizenProject

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\AdherentCharter;
+namespace App\AdherentCharter;
 
 use MyCLabs\Enum\Enum;
 

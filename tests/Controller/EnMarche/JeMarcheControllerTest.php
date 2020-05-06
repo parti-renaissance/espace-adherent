@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailer\Message\JeMarcheReportMessage;
-use AppBundle\Repository\JeMarcheReportRepository;
+use App\Entity\JeMarcheReport;
+use App\Mailer\Message\JeMarcheReportMessage;
+use App\Repository\JeMarcheReportRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Storage;
+namespace App\Storage;
 
-use AppBundle\Entity\EntityFileInterface;
+use App\Entity\EntityFileInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;

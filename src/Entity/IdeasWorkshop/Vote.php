@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthorInterface;
+use App\Entity\Adherent;
+use App\Entity\AuthorInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -39,9 +39,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VoteRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VoteRepository")
  * @ORM\Table(name="ideas_workshop_vote")
- * @ORM\EntityListeners({"AppBundle\EntityListener\VoteListener"})
+ * @ORM\EntityListeners({"App\EntityListener\VoteListener"})
  *
  * @UniqueEntity(fields={"idea", "author", "type"})
  *
@@ -69,7 +69,7 @@ class Vote implements AuthorInterface
     private $idea;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
      * @Assert\NotNull
@@ -81,7 +81,7 @@ class Vote implements AuthorInterface
     /**
      * @ORM\Column(length=10)
      *
-     * @Assert\Choice(callback={"AppBundle\Entity\IdeasWorkshop\VoteTypeEnum", "toArray"})
+     * @Assert\Choice(callback={"App\Entity\IdeasWorkshop\VoteTypeEnum", "toArray"})
      *
      * @SymfonySerializer\Groups({"idea_list_read", "idea_vote_read", "idea_vote_write"})
      */

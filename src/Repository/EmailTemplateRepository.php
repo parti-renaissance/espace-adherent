@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\EmailTemplate;
+use App\Entity\EmailTemplate;
 use Doctrine\ORM\EntityRepository;
 
 class EmailTemplateRepository extends EntityRepository

@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\HomeBlock;
-use AppBundle\Entity\LiveLink;
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Exception\SitemapException;
-use AppBundle\Form\NewsletterSubscriptionType;
-use AppBundle\Sitemap\SitemapFactory;
+use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\HomeBlock;
+use App\Entity\LiveLink;
+use App\Entity\NewsletterSubscription;
+use App\Exception\SitemapException;
+use App\Form\NewsletterSubscriptionType;
+use App\Sitemap\SitemapFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,7 +50,7 @@ class HomeController extends Controller
     /**
      * @Route(
      *     "/sitemap_{type}_{page}.xml",
-     *     requirements={"type": AppBundle\Sitemap\SitemapFactory::ALL_TYPES, "page": "\d+"},
+     *     requirements={"type": App\Sitemap\SitemapFactory::ALL_TYPES, "page": "\d+"},
      *     defaults={"page": "1"},
      *     name="app_sitemap",
      *     methods={"GET"}

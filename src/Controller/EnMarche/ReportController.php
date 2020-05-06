@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Form\ReportCommandType;
-use AppBundle\Report\ReportCommand;
-use AppBundle\Report\ReportCreationCommandHandler;
-use AppBundle\Report\ReportManager;
-use AppBundle\Report\ReportType;
+use App\Form\ReportCommandType;
+use App\Report\ReportCommand;
+use App\Report\ReportCreationCommandHandler;
+use App\Report\ReportManager;
+use App\Report\ReportType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class ReportController extends AbstractController
      *     "/report/{type}/{uuid}",
      *     name="app_report",
      *     requirements={
-     *         "type": AppBundle\Report\ReportType::TYPES_URI_PATTERN,
+     *         "type": App\Report\ReportType::TYPES_URI_PATTERN,
      *         "uuid": "%pattern_uuid%"
      *     },
      *     methods={"GET", "POST"}

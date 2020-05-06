@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Event\EventFactory;
-use AppBundle\Events;
+use App\Entity\CitizenAction;
+use App\Event\EventFactory;
+use App\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

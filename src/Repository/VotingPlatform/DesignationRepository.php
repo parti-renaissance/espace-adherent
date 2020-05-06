@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\VotingPlatform;
+namespace App\Repository\VotingPlatform;
 
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

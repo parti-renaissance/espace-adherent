@@ -33,7 +33,7 @@
                             <div class="b__nudge--bottom text--summary">
                                 Je veux voter au nom d'un(e) citoyen(ne) de ma ville.
                             </div>
-                            <a href="{{ path('app_procuration_choose_election', { action: constant('AppBundle\\Procuration\\ElectionContext::ACTION_PROPOSAL') }) }}" class="btn btn--primary">
+                            <a href="{{ path('app_procuration_choose_election', { action: constant('App\\Procuration\\ElectionContext::ACTION_PROPOSAL') }) }}" class="btn btn--primary">
                                 Je me porte mandataire
                             </a>
                         </div>
@@ -44,7 +44,7 @@
                                 Un(e) habitant(e) de ma ville va voter en mon nom.
                             </div>
 
-                            <a href="{{ path('app_procuration_choose_election', { action: constant('AppBundle\\Procuration\\ElectionContext::ACTION_REQUEST') }) }}" class="btn btn--blue">
+                            <a href="{{ path('app_procuration_choose_election', { action: constant('App\\Procuration\\ElectionContext::ACTION_REQUEST') }) }}" class="btn btn--blue">
                                 Je donne procuration
                             </a>
                         </div>

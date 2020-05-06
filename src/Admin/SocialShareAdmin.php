@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\SocialShare;
-use AppBundle\Twig\AssetRuntime;
+use App\Entity\SocialShare;
+use App\Twig\AssetRuntime;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

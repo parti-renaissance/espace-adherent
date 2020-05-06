@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\DataTransformer;
+namespace App\Form\DataTransformer;
 
-use AppBundle\Entity\Donator;
-use AppBundle\Repository\DonatorRepository;
+use App\Entity\Donator;
+use App\Repository\DonatorRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Newsletter\Handler;
+namespace App\Newsletter\Handler;
 
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
-use AppBundle\Newsletter\NewsletterValueObject;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Entity\NewsletterSubscription;
+use App\Mailchimp\Manager;
+use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
+use App\Newsletter\NewsletterValueObject;
+use App\Repository\NewsletterSubscriptionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

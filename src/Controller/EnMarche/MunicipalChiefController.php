@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\StatisticsAggregator;
-use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\AdherentMessageRepository;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\MunicipalEventRepository;
-use AppBundle\Security\Voter\MunicipalChiefVoter;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\StatisticsAggregator;
+use App\ApplicationRequest\ApplicationRequestRepository;
+use App\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\Entity\Adherent;
+use App\Repository\AdherentMessageRepository;
+use App\Repository\AdherentRepository;
+use App\Repository\MunicipalEventRepository;
+use App\Security\Voter\MunicipalChiefVoter;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

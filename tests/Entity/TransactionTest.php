@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Transaction;
+use App\Entity\Donation;
+use App\Entity\Transaction;
 use PHPUnit\Framework\TestCase;
 
 class TransactionTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
  *     @ORM\UniqueConstraint(name="ton_macron_choices_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="ton_macron_choices_content_key_unique", columns="content_key")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TonMacronChoiceRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TonMacronChoiceRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\DataFixtures\AutoIncrementResetter;
-use AppBundle\Entity\IdeasWorkshop\Vote;
-use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
+use App\DataFixtures\AutoIncrementResetter;
+use App\Entity\IdeasWorkshop\Vote;
+use App\Entity\IdeasWorkshop\VoteTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Doctrine;
+namespace App\Doctrine;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use AppBundle\Entity\IdeasWorkshop\Consultation;
+use App\Entity\IdeasWorkshop\Consultation;
 use Doctrine\ORM\QueryBuilder;
 
 class ConsultationExtension implements ContextAwareQueryCollectionExtensionInterface

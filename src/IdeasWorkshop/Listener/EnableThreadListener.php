@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop\Listener;
+namespace App\IdeasWorkshop\Listener;
 
-use AppBundle\Entity\IdeasWorkshop\BaseComment;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\IdeasWorkshop\Events;
+use App\Entity\IdeasWorkshop\BaseComment;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\IdeasWorkshop\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

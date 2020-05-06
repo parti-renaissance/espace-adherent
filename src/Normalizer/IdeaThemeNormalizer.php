@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\IdeasWorkshop\Theme;
+use App\Entity\IdeasWorkshop\Theme;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

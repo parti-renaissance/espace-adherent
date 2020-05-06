@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Coordinator;
+namespace App\Controller\EnMarche\Coordinator;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Coordinator\Filter\AbstractCoordinatorAreaFilter;
-use AppBundle\Coordinator\Filter\CitizenProjectFilter;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Exception\BaseGroupException;
-use AppBundle\Form\CoordinatorAreaType;
+use App\CitizenProject\CitizenProjectManager;
+use App\Coordinator\Filter\AbstractCoordinatorAreaFilter;
+use App\Coordinator\Filter\CitizenProjectFilter;
+use App\Entity\CitizenProject;
+use App\Exception\BaseGroupException;
+use App\Form\CoordinatorAreaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\TonMacron\InvitationProcessor;
-use AppBundle\ValueObject\Genders;
+use App\Entity\TonMacronChoice;
+use App\TonMacron\InvitationProcessor;
+use App\ValueObject\Genders;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

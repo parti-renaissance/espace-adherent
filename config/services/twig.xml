@@ -5,15 +5,15 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false" />
 
-        <prototype namespace="AppBundle\Twig\" resource="../../src/Twig" />
+        <prototype namespace="App\Twig\" resource="../../src/Twig" />
 
-        <service id="AppBundle\Twig\AdminReportRuntime">
+        <service id="App\Twig\AdminReportRuntime">
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\AdherentMessageRuntime" />
+        <service id="App\Twig\AdherentMessageRuntime" />
 
-        <service id="AppBundle\Twig\AdherentRuntime">
+        <service id="App\Twig\AdherentRuntime">
             <argument key="$interests">%adherent_interests%</argument>
             <tag name="twig.runtime" />
         </service>
@@ -21,7 +21,7 @@
         <service id="Twig\Extensions\IntlExtension" />
 
         <!-- Twig runtimes must be tagged -->
-        <service id="AppBundle\Twig\AssetRuntime">
+        <service id="App\Twig\AssetRuntime">
             <argument type="service" id="router" />
             <argument type="service" id="twig.extension.assets" />
             <argument>%kernel.secret%</argument>
@@ -30,31 +30,31 @@
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\CommitteeRuntime">
+        <service id="App\Twig\CommitteeRuntime">
             <argument type="service" id="security.authorization_checker"/>
-            <argument type="service" id="AppBundle\Repository\CommitteeCandidacyRepository"/>
+            <argument type="service" id="App\Repository\CommitteeCandidacyRepository"/>
             <argument type="service" id="app.committee.manager"/>
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\ElectionVoteResultRuntime">
-            <argument type="service" id="AppBundle\Election\ElectionManager"/>
+        <service id="App\Twig\ElectionVoteResultRuntime">
+            <argument type="service" id="App\Election\ElectionManager"/>
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\CitizenProjectRuntime">
+        <service id="App\Twig\CitizenProjectRuntime">
             <tag name="twig.runtime"/>
         </service>
 
-        <service id="AppBundle\Twig\FormRuntime">
+        <service id="App\Twig\FormRuntime">
             <tag name="twig.runtime"/>
         </service>
 
-        <service id="AppBundle\Twig\MarkdownRuntime">
+        <service id="App\Twig\MarkdownRuntime">
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\MunicipalSiteRuntime">
+        <service id="App\Twig\MunicipalSiteRuntime">
             <argument type="service" key="$cache">
                 <service class="Symfony\Component\Cache\Simple\Psr6Cache">
                     <argument type="service" id="app.cache.municipal_site" />
@@ -63,32 +63,32 @@
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\ReportRuntime">
+        <service id="App\Twig\ReportRuntime">
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\AnonymousRuntime">
+        <service id="App\Twig\AnonymousRuntime">
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\CitizenActionExtension" />
+        <service id="App\Twig\CitizenActionExtension" />
 
-        <service id="AppBundle\Twig\CitizenActionRuntime">
+        <service id="App\Twig\CitizenActionRuntime">
             <argument type="service" id="security.authorization_checker"/>
             <tag name="twig.runtime"/>
         </service>
 
-        <service id="AppBundle\Twig\PaymentExtension" />
+        <service id="App\Twig\PaymentExtension" />
 
-        <service id="AppBundle\Twig\EventRuntime">
+        <service id="App\Twig\EventRuntime">
             <tag name="twig.runtime"/>
         </service>
 
-        <service id="AppBundle\Twig\IdeasWorkshopRuntime">
+        <service id="App\Twig\IdeasWorkshopRuntime">
             <tag name="twig.runtime" />
         </service>
 
-        <service id="AppBundle\Twig\CanaryExtension">
+        <service id="App\Twig\CanaryExtension">
             <argument key="$canaryMode">%env(ENABLE_CANARY)%</argument>
         </service>
 

@@ -3,10 +3,10 @@
 {% block summary_photo %}
     {{ parent() }}
     <div class="cv__header__photo--modify">
-        <a href="{{ path('app_summary_manager_step', { step: constant('AppBundle\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">
+        <a href="{{ path('app_summary_manager_step', { step: constant('App\\Form\\SummaryType::STEP_PHOTO') }) }}" class="button">
             Modifier ma photo</a>
         <div id="summary_remove_photo">
-            {{ delete_form(path('app_summary_manager_remove_photo'), constant('AppBundle\\Summary\\SummaryManager::DELETE_PHOTO_TOKEN')) }}
+            {{ delete_form(path('app_summary_manager_remove_photo'), constant('App\\Summary\\SummaryManager::DELETE_PHOTO_TOKEN')) }}
         </div>
     </div>
 {% endblock %}

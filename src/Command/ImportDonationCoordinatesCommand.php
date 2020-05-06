@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Donation;
-use AppBundle\Geocoder\Coordinates;
+use App\Entity\Donation;
+use App\Geocoder\Coordinates;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;

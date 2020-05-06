@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\Article;
-use AppBundle\Entity\Clarification;
-use AppBundle\Entity\CustomSearchResult;
-use AppBundle\Entity\Proposal;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Map\StaticMapProviderInterface;
-use AppBundle\Timeline\TimelineImageFactory;
+use App\Entity\Article;
+use App\Entity\Clarification;
+use App\Entity\CustomSearchResult;
+use App\Entity\Proposal;
+use App\Geocoder\Coordinates;
+use App\Map\StaticMapProviderInterface;
+use App\Timeline\TimelineImageFactory;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Signatures\SignatureException;

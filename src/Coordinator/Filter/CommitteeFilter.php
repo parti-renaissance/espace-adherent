@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Coordinator\Filter;
+namespace App\Coordinator\Filter;
 
-use AppBundle\Entity\Committee;
+use App\Entity\Committee;
 
 class CommitteeFilter extends AbstractCoordinatorAreaFilter
 {

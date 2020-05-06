@@ -4,7 +4,7 @@
 {% block meta_description 'Chaque vote compte. Donnez ou proposez procuration avec En Marche !' %}
 {% block canonical_url url('app_procuration_choose_election', { action: action }) %}
 
-{% set is_request = constant('AppBundle\\Procuration\\ElectionContext::ACTION_REQUEST') is same as(action) %}
+{% set is_request = constant('App\\Procuration\\ElectionContext::ACTION_REQUEST') is same as(action) %}
 
 {% block procuration_content %}
     <section class="procuration__content l__wrapper--slim space--60-0">

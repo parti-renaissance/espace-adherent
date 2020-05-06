@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Csv;
+namespace App\Csv;
 
 use League\Csv\AbstractCsv;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;

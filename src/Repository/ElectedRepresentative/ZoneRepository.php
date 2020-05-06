@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository\ElectedRepresentative;
+namespace App\Repository\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\MandateTypeEnum;
-use AppBundle\Entity\ElectedRepresentative\Zone;
-use AppBundle\Entity\ElectedRepresentative\ZoneCategory;
+use App\Entity\ElectedRepresentative\MandateTypeEnum;
+use App\Entity\ElectedRepresentative\Zone;
+use App\Entity\ElectedRepresentative\ZoneCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

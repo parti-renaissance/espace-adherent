@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Invitation;
+namespace App\Invitation;
 
-use AppBundle\Entity\Invite;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\MovementInvitationMessage;
+use App\Entity\Invite;
+use App\Mailer\MailerService;
+use App\Mailer\Message\MovementInvitationMessage;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 

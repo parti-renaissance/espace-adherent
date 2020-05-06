@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\CitizenProjectCategorySkill;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\TurnkeyProjectFile;
-use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
-use AppBundle\Exception\CitizenProjectNotApprovedException;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
-use AppBundle\Storage\FileRequestHandler;
+use App\CitizenProject\CitizenProjectManager;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\CitizenProjectCategorySkill;
+use App\Entity\Committee;
+use App\Entity\TurnkeyProjectFile;
+use App\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
+use App\Exception\CitizenProjectNotApprovedException;
+use App\Security\Http\Session\AnonymousFollowerSession;
+use App\Storage\FileRequestHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Adherent\CertificationManager;
-use AppBundle\Adherent\CertificationPermissions;
-use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Entity\Adherent;
-use AppBundle\Form\CertificationRequestType;
+use App\Adherent\CertificationManager;
+use App\Adherent\CertificationPermissions;
+use App\Controller\CanaryControllerTrait;
+use App\Entity\Adherent;
+use App\Form\CertificationRequestType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

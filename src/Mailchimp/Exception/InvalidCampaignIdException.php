@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Exception;
+namespace App\Mailchimp\Exception;
 
 class InvalidCampaignIdException extends \InvalidArgumentException
 {

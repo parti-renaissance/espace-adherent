@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ class AssessorRoleAssociation
     /**
      * @var VotePlace
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\VotePlace")
+     * @ORM\OneToOne(targetEntity="App\Entity\VotePlace")
      */
     private $votePlace;
 

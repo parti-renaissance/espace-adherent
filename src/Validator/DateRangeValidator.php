@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;

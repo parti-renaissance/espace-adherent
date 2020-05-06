@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Geocoder;
+namespace Tests\App\Geocoder;
 
-use AppBundle\Geocoder\Coordinates;
+use App\Geocoder\Coordinates;
 use PHPUnit\Framework\TestCase;
-use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
+use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class DummyGeocoderTest extends TestCase
 {
     /**
-     * @expectedException \AppBundle\Geocoder\Exception\GeocodingException
+     * @expectedException \App\Geocoder\Exception\GeocodingException
      */
     public function testGeocodeAddressFails()
     {

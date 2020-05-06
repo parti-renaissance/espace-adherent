@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\History\CommitteeMembershipHistoryHandler;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Statistics\StatisticsParametersFilter;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\History\CommitteeMembershipHistoryHandler;
+use App\Repository\AdherentRepository;
+use App\Repository\CommitteeMembershipRepository;
+use App\Repository\CommitteeRepository;
+use App\Statistics\StatisticsParametersFilter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

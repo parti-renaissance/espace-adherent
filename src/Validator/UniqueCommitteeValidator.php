@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Committee\CommitteeCommand;
-use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeRepository;
+use App\Committee\CommitteeCommand;
+use App\Entity\Committee;
+use App\Repository\CommitteeRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

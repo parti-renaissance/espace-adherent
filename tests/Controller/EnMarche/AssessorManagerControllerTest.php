@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Assessor\Filter\AssessorRequestFilters;
-use AppBundle\Assessor\Filter\VotePlaceFilters;
-use AppBundle\Mailer\Message\AssessorRequestAssociateMessage;
+use App\Assessor\Filter\AssessorRequestFilters;
+use App\Assessor\Filter\VotePlaceFilters;
+use App\Mailer\Message\AssessorRequestAssociateMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

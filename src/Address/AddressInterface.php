@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Address;
+namespace App\Address;
 
 interface AddressInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Form\Election;
+namespace App\Form\Election;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

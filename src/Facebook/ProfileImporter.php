@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Facebook;
+namespace App\Facebook;
 
-use AppBundle\Entity\FacebookProfile;
-use AppBundle\Repository\FacebookProfileRepository;
+use App\Entity\FacebookProfile;
+use App\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 

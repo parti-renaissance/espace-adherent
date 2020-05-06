@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Jecoute;
+namespace App\Form\Jecoute;
 
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use App\Entity\Jecoute\Question;
+use App\Jecoute\SurveyQuestionTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

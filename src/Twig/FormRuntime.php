@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Form\DeleteEntityType;
+use App\Form\DeleteEntityType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRenderer;
 use Twig\Environment;

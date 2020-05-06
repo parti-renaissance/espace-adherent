@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="live_links")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LiveLinkRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LiveLinkRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CommitteeContactMembersCommand

@@ -5,22 +5,22 @@
 {% set pages = [
     {
         'route': coordinator_path,
-        'status': constant('AppBundle\\Entity\\CitizenProject::PENDING'),
+        'status': constant('App\\Entity\\CitizenProject::PENDING'),
         'label': 'Projets en attente'
     },
     {
         'route': coordinator_path,
-        'status': constant('AppBundle\\Entity\\CitizenProject::PRE_APPROVED'),
+        'status': constant('App\\Entity\\CitizenProject::PRE_APPROVED'),
         'label': 'Projets pré-validés'
     },
     {
         'route': coordinator_path,
-        'status': constant('AppBundle\\Entity\\CitizenProject::PRE_REFUSED'),
+        'status': constant('App\\Entity\\CitizenProject::PRE_REFUSED'),
         'label': 'Projets pré-refusés'
     },
     {
         'route': coordinator_path,
-        'status': constant('AppBundle\\Entity\\CitizenProject::APPROVED'),
+        'status': constant('App\\Entity\\CitizenProject::APPROVED'),
         'label': 'Projets lancés'
     }
 ] %}

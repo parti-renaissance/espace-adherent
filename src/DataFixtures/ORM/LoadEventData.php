@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Committee\Feed\CommitteeEvent;
-use AppBundle\Committee\Feed\CommitteeFeedManager;
-use AppBundle\Committee\Feed\CommitteeMessage;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event as EntityEvent;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Event\EventFactory;
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Event\EventRegistrationFactory;
+use App\Committee\Feed\CommitteeEvent;
+use App\Committee\Feed\CommitteeFeedManager;
+use App\Committee\Feed\CommitteeMessage;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event as EntityEvent;
+use App\Entity\PostAddress;
+use App\Event\EventFactory;
+use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;

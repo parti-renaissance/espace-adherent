@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Controller\EnMarche\InteractiveController;
-use AppBundle\Interactive\MyEuropeProcessor;
-use AppBundle\Interactive\MyEuropeProcessorHandler;
-use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\MyEuropeChoiceRepository;
-use AppBundle\Repository\MyEuropeInvitationRepository;
+use App\Controller\EnMarche\InteractiveController;
+use App\Interactive\MyEuropeProcessor;
+use App\Interactive\MyEuropeProcessorHandler;
+use App\Repository\EmailRepository;
+use App\Repository\MyEuropeChoiceRepository;
+use App\Repository\MyEuropeInvitationRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

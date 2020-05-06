@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Jecoute;
+namespace App\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\DataSurvey;
 use Symfony\Component\EventDispatcher\Event;
 
 class DataSurveyEvent extends Event

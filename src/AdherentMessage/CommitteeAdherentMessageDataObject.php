@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\AdherentMessage;
+namespace App\AdherentMessage;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 
 class CommitteeAdherentMessageDataObject extends AdherentMessageDataObject
 {

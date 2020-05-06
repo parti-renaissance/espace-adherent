@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\MediaGenerator\Command;
+namespace App\MediaGenerator\Command;
 
-use AppBundle\MediaGenerator\ColorUtils;
+use App\MediaGenerator\ColorUtils;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CitizenProjectImageCommand extends AbstractCitizenProjectMediaCommand

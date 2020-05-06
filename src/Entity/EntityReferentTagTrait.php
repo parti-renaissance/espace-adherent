@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +11,7 @@ trait EntityReferentTagTrait
     /**
      * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
     protected $referentTags;
 

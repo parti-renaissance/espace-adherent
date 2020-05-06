@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Election;
+namespace App\Admin\Election;
 
-use AppBundle\Address\Address;
+use App\Address\Address;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;

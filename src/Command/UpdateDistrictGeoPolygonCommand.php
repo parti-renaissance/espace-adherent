@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\District;
-use AppBundle\Entity\GeoData;
-use AppBundle\Geo\GeometryFactory;
-use AppBundle\Repository\DistrictRepository;
+use App\Entity\District;
+use App\Entity\GeoData;
+use App\Geo\GeometryFactory;
+use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command;

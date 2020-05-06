@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Search;
+namespace App\Search;
 
 interface SearchResultsProviderInterface
 {

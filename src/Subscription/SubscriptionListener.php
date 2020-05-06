@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Subscription;
+namespace App\Subscription;
 
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SubscriptionListener implements EventSubscriberInterface

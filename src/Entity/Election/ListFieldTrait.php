@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
-use AppBundle\Election\VoteListNuanceEnum;
+use App\Election\VoteListNuanceEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

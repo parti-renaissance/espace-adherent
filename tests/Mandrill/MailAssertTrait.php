@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Mandrill;
+namespace Tests\App\Mandrill;
 
-use AppBundle\Entity\Email;
+use App\Entity\Email;
 
 trait MailAssertTrait
 {

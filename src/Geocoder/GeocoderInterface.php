@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Geocoder;
+namespace App\Geocoder;
 
-use AppBundle\Geocoder\Exception\GeocodingException;
+use App\Geocoder\Exception\GeocodingException;
 
 interface GeocoderInterface
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Repository\Election;
+namespace App\Repository\Election;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election;
-use AppBundle\Entity\Election\VotePlaceResult;
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\GeoFilterTrait;
+use App\Entity\City;
+use App\Entity\Election;
+use App\Entity\Election\VotePlaceResult;
+use App\Entity\ElectionRound;
+use App\Entity\VotePlace;
+use App\Repository\GeoFilterTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;

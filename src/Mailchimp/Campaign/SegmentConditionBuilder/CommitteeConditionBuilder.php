@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
+namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Mailchimp\Exception\InvalidFilterException;
-use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Exception\InvalidFilterException;
+use App\Mailchimp\Exception\StaticSegmentIdMissingException;
 
 class CommitteeConditionBuilder extends AbstractStaticSegmentConditionBuilder
 {

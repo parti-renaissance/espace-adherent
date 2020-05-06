@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
+namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\MailchimpCampaign;
 
 abstract class AbstractStaticSegmentConditionBuilder extends AbstractConditionBuilder
 {

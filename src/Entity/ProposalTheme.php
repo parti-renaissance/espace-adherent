@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="proposals_themes")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProposalThemeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProposalThemeRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

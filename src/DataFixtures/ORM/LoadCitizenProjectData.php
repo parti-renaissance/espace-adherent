@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\CitizenProject\CitizenProjectFactory;
-use AppBundle\DataFixtures\AutoIncrementResetter;
-use AppBundle\Entity\NullablePostAddress;
+use App\CitizenProject\CitizenProjectFactory;
+use App\DataFixtures\AutoIncrementResetter;
+use App\Entity\NullablePostAddress;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

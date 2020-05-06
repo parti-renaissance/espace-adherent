@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;

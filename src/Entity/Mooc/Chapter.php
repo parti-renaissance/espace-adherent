@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;

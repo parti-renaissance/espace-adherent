@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\Transaction;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Donation;
+use App\Entity\PostAddress;
+use App\Entity\Transaction;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 

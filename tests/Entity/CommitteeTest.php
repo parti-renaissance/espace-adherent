@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Geocoder\Coordinates;
+use App\Entity\Committee;
+use App\Entity\PostAddress;
+use App\Geocoder\Coordinates;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -113,7 +113,7 @@ class CommitteeTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Exception\CommitteeAlreadyApprovedException
+     * @expectedException \App\Exception\CommitteeAlreadyApprovedException
      */
     public function testApproveCommitteeTwice()
     {

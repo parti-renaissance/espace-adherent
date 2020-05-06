@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\ApplicationRequest\Filter;
+namespace App\ApplicationRequest\Filter;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequestTag;
-use AppBundle\Entity\ApplicationRequest\Theme;
+use App\Entity\ApplicationRequest\ApplicationRequestTag;
+use App\Entity\ApplicationRequest\Theme;
 
 class ListFilter
 {

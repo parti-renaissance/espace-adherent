@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\MediaGenerator;
+namespace App\MediaGenerator;
 
 class MediaContent
 {

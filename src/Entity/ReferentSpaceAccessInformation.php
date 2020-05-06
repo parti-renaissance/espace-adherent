@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReferentSpaceAccessInformationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReferentSpaceAccessInformationRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -35,7 +35,7 @@ class ReferentSpaceAccessInformation
     private $lastDate;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(name="adherent_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $adherent;

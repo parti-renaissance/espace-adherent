@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="medias")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
  *
  * @UniqueEntity(fields={"path"})
  *

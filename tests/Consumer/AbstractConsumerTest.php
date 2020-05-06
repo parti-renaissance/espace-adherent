@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Consumer;
+namespace Tests\App\Consumer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AbstractConsumerTest extends TestCase
 {
-    const CLASS_NAME = 'AppBundle\Consumer\AbstractConsumer';
+    const CLASS_NAME = 'App\Consumer\AbstractConsumer';
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Designation;
+namespace App\VotingPlatform\Designation;
 
 use MyCLabs\Enum\Enum;
 

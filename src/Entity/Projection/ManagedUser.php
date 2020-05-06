@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\Projection;
+namespace App\Entity\Projection;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Subscription\SubscriptionTypeEnum;
-use AppBundle\ValueObject\Genders;
+use App\Subscription\SubscriptionTypeEnum;
+use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -17,7 +17,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Table(name="projection_managed_users", indexes={
  *     @ORM\Index(name="projection_managed_users_search", columns={"status", "postal_code", "country"})
  * })
- * @ORM\Entity(readOnly=true, repositoryClass="AppBundle\Repository\Projection\ManagedUserRepository")
+ * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\Projection\ManagedUserRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

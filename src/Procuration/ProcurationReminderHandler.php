@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
-use AppBundle\Mailer\MailerService;
+use App\Mailer\MailerService;
 
 class ProcurationReminderHandler
 {

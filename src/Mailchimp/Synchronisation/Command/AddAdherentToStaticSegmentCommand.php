@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Command;
+namespace App\Mailchimp\Synchronisation\Command;
 
 class AddAdherentToStaticSegmentCommand extends AbstractUpdateStaticSegmentCommand
 {

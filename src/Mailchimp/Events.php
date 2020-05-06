@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailchimp;
+namespace App\Mailchimp;
 
 final class Events
 {

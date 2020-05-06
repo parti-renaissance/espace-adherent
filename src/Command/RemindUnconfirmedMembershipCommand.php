@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Membership\MembershipRequestHandler;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Membership\MembershipRequestHandler;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

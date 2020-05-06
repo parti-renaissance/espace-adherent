@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form\Jecoute;
+namespace App\Form\Jecoute;
 
-use AppBundle\Entity\Jecoute\Choice;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Repository\Jecoute\SuggestedQuestionRepository;
+use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;

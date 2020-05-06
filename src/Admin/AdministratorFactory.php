@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Administrator;
+use App\Entity\Administrator;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class AdministratorFactory

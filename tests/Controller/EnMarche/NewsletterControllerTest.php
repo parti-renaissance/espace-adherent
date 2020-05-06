@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\Message\NewsletterAdherentSubscriptionMessage;
-use AppBundle\Mailer\Message\NewsletterInvitationMessage;
-use AppBundle\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
-use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\NewsletterInviteRepository;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\Entity\NewsletterSubscription;
+use App\Mailer\Message\NewsletterAdherentSubscriptionMessage;
+use App\Mailer\Message\NewsletterInvitationMessage;
+use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
+use App\Repository\EmailRepository;
+use App\Repository\NewsletterInviteRepository;
+use App\Repository\NewsletterSubscriptionRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

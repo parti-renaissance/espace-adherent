@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Committee\CommitteeEvent;
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Events;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\Intl\UnitedNationsBundle;
+use App\Committee\CommitteeEvent;
+use App\Committee\CommitteeManager;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Events;
+use App\Form\UnitedNationsCountryType;
+use App\Intl\UnitedNationsBundle;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

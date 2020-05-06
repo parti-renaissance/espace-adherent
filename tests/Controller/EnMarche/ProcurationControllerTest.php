@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Procuration\ElectionContext;
-use AppBundle\Procuration\ProcurationSession;
-use AppBundle\Repository\ProcurationProxyRepository;
-use AppBundle\Repository\ProcurationRequestRepository;
+use App\Entity\ElectionRound;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
+use App\Procuration\ElectionContext;
+use App\Procuration\ProcurationSession;
+use App\Repository\ProcurationProxyRepository;
+use App\Repository\ProcurationRequestRepository;
 use libphonenumber\PhoneNumber;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

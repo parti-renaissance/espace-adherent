@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Admin;
+namespace Tests\App\Controller\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadClientData;
-use AppBundle\Entity\OAuth\AccessToken;
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\Entity\OAuth\RefreshToken;
+use App\DataFixtures\ORM\LoadClientData;
+use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\Client;
+use App\Entity\OAuth\RefreshToken;
 use Doctrine\ORM\EntityManager;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

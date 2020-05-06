@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Address\Address;
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventCategory;
-use AppBundle\Validator\DateRange;
+use App\Address\Address;
+use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event;
+use App\Entity\EventCategory;
+use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

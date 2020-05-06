@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\BadPoliticalFunctionNameException;
+use App\Exception\BadPoliticalFunctionNameException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,7 +28,7 @@ class PoliticalFunction
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
+     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
      */
     private $name;
 
@@ -78,7 +78,7 @@ class PoliticalFunction
     /**
      * @var ElectedRepresentative|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="politicalFunctions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="politicalFunctions")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
@@ -88,7 +88,7 @@ class PoliticalFunction
     /**
      * @var Mandate|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\Mandate")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Mandate")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\IdeasWorkshop\Events;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Entity\IdeasWorkshop\Idea;
+use App\IdeasWorkshop\Events;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;

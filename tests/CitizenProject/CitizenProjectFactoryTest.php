@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\AppBundle\CitizenProject;
+namespace Tests\App\CitizenProject;
 
-use AppBundle\Address\NullableAddress;
-use AppBundle\CitizenProject\CitizenProjectCreationCommand;
-use AppBundle\CitizenProject\CitizenProjectFactory;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Entity\NullablePostAddress;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\NullableAddress;
+use App\CitizenProject\CitizenProjectCreationCommand;
+use App\CitizenProject\CitizenProjectFactory;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\CitizenProjectSkill;
+use App\Entity\NullablePostAddress;
+use App\Entity\PostAddress;
+use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 

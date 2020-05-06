@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Jecoute;
+namespace App\Controller\EnMarche\Jecoute;
 
-use AppBundle\Jecoute\JecouteSpaceEnum;
+use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 

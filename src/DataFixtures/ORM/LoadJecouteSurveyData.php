@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\DataFixtures\AutoIncrementResetter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\NationalSurvey;
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
+use App\DataFixtures\AutoIncrementResetter;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\NationalSurvey;
+use App\Entity\Jecoute\Question;
+use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

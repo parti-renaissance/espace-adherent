@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller\Api\IdeasWorkshop;
+namespace App\Controller\Api\IdeasWorkshop;
 
-use AppBundle\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\Thread;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 

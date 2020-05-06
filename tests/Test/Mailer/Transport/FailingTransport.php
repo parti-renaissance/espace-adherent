@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Test\Mailer\Transport;
+namespace Tests\App\Test\Mailer\Transport;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
-use AppBundle\Mailer\Exception\MailerException;
-use AppBundle\Mailer\Transport\TransportInterface;
+use App\Mailer\AbstractEmailTemplate;
+use App\Mailer\Exception\MailerException;
+use App\Mailer\Transport\TransportInterface;
 
 class FailingTransport implements TransportInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Geocoder\Coordinates;
+use App\Geocoder\Coordinates;
 use Doctrine\ORM\QueryBuilder;
 
 trait NearbyTrait

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\MunicipalManager\Filter;
+namespace App\MunicipalManager\Filter;
 
-use AppBundle\Entity\ReferentTag;
+use App\Entity\ReferentTag;
 
 class AssociationCityFilter
 {

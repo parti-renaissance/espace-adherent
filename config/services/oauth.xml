@@ -6,17 +6,17 @@
 	<services>
 		<defaults autowire="true" autoconfigure="true" public="false" />
 
-		<prototype namespace="AppBundle\OAuth\" resource="../../src/OAuth/" exclude="../../src/OAuth/Model"/>
+		<prototype namespace="App\OAuth\" resource="../../src/OAuth/" exclude="../../src/OAuth/Model"/>
 
-		<service id="League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface" alias="AppBundle\OAuth\AuthorizationValidators\JsonWebTokenValidator" />
+		<service id="League\OAuth2\Server\AuthorizationValidators\AuthorizationValidatorInterface" alias="App\OAuth\AuthorizationValidators\JsonWebTokenValidator" />
 
-		<service id="AppBundle\OAuth\AuthorizationServerFactory">
+		<service id="App\OAuth\AuthorizationServerFactory">
 			<argument key="$privateKey">%env(SSL_PRIVATE_KEY)%</argument>
 			<argument key="$encryptionKey">%env(SSL_ENCRYPTION_KEY)%</argument>
 		</service>
 
 		<service id="League\OAuth2\Server\AuthorizationServer">
-			<factory service="AppBundle\OAuth\AuthorizationServerFactory" method="createServer" />
+			<factory service="App\OAuth\AuthorizationServerFactory" method="createServer" />
 		</service>
 
 		<service id="League\OAuth2\Server\ResourceServer">

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Election;
+namespace App\Admin\Election;
 
-use AppBundle\Form\Admin\Election\CityManagerType;
+use App\Form\Admin\Election\CityManagerType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 

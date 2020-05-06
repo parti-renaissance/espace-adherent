@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Membership\MembershipRegistrationProcess;
-use AppBundle\Repository\TransactionRepository;
-use AppBundle\Validator\MaxFiscalYearDonation;
-use AppBundle\Validator\MaxFiscalYearDonationValidator;
+use App\Address\GeoCoder;
+use App\Donation\DonationRequest;
+use App\Donation\DonationRequestUtils;
+use App\Donation\PayboxPaymentSubscription;
+use App\Membership\MembershipRegistrationProcess;
+use App\Repository\TransactionRepository;
+use App\Validator\MaxFiscalYearDonation;
+use App\Validator\MaxFiscalYearDonationValidator;
 use Cocur\Slugify\Slugify;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ServiceLocator;

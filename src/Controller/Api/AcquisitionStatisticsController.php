@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Statistics\Acquisition\Aggregator;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Statistics\Acquisition\Aggregator;
+use App\Statistics\Acquisition\StatisticsRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

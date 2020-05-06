@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Membership\MembershipRegistrationPermissions;
-use AppBundle\Membership\MembershipRegistrationProcess;
+use App\Membership\MembershipRegistrationPermissions;
+use App\Membership\MembershipRegistrationProcess;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

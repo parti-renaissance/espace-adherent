@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign;
+namespace App\Mailchimp\Campaign;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
 
 class SegmentConditionsBuilder
 {

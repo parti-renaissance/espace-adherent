@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Events;
-use AppBundle\Referent\ReferentTagManager;
+use App\Entity\TurnkeyProject;
+use App\Events;
+use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

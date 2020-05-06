@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\Listener;
+namespace App\Mailchimp\Campaign\Listener;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\Mailchimp\Events;
-use AppBundle\Mailchimp\RequestEvent;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Mailchimp\Events;
+use App\Mailchimp\RequestEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface

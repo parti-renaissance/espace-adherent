@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Event;
-use AppBundle\Entity\SynchronizedEntity;
-use AppBundle\Event\EventEvent;
-use AppBundle\Events;
+use App\Entity\Event;
+use App\Entity\SynchronizedEntity;
+use App\Event\EventEvent;
+use App\Events;
 
 class ApiScheduleEventCreationCommand extends ApiScheduleEntityCreationCommand
 {

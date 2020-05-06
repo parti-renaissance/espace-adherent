@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Entity\EventCategory;
-use AppBundle\Event\BaseEventCommand;
-use AppBundle\Form\DataTransformer\EventDateTimeZoneTransformer;
+use App\Entity\EventCategory;
+use App\Event\BaseEventCommand;
+use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

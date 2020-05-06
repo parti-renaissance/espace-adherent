@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\ApplicationRequest\ApplicationRequestHandler;
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Form\ApplicationRequest\RunningMateRequestType;
-use AppBundle\Form\ApplicationRequest\VolunteerRequestType;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Utils\AreaUtils;
+use App\ApplicationRequest\ApplicationRequestHandler;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Form\ApplicationRequest\RunningMateRequestType;
+use App\Form\ApplicationRequest\VolunteerRequestType;
+use App\Intl\FranceCitiesBundle;
+use App\Utils\AreaUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

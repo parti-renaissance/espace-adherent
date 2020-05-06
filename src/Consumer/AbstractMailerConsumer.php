@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Consumer;
+namespace App\Consumer;
 
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Mailer\EmailClientInterface;
-use AppBundle\Mailer\Exception\MailerException;
-use AppBundle\Repository\EmailRepository;
+use App\Exception\InvalidUuidException;
+use App\Mailer\EmailClientInterface;
+use App\Mailer\Exception\MailerException;
+use App\Repository\EmailRepository;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;

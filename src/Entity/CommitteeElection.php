@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
-use AppBundle\VotingPlatform\Designation\ElectionStaticDate;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\VotingPlatform\Designation\ElectionStaticDate;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeElectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CommitteeElectionRepository")
  */
 class CommitteeElection
 {
@@ -29,7 +29,7 @@ class CommitteeElection
     /**
      * @var Designation
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Designation\Designation")
+     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
      */
     private $designation;
 

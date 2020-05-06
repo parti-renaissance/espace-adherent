@@ -2,126 +2,126 @@ framework:
     workflows:
         ton_macron_invitation:
             type: state_machine
-            supports: [AppBundle\TonMacron\InvitationProcessor]
+            supports: [App\TonMacron\InvitationProcessor]
             places:
-                - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INFO
-                - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
-                - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS
-                - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_SELF_REASONS
-                - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SUMMARY
-                - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SENT
+                - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INFO
+                - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
+                - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS
+                - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_SELF_REASONS
+                - !php/const App\TonMacron\InvitationProcessor::STATE_SUMMARY
+                - !php/const App\TonMacron\InvitationProcessor::STATE_SENT
             transitions:
-                !php/const AppBundle\TonMacron\InvitationProcessor::TRANSITION_FILL_INFO:
+                !php/const App\TonMacron\InvitationProcessor::TRANSITION_FILL_INFO:
                     from:
-                        - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INFO
-                    to: !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
-                !php/const AppBundle\TonMacron\InvitationProcessor::TRANSITION_FILL_PROJECT:
+                        - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INFO
+                    to: !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
+                !php/const App\TonMacron\InvitationProcessor::TRANSITION_FILL_PROJECT:
                     from:
-                        - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
-                    to: !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS
-                !php/const AppBundle\TonMacron\InvitationProcessor::TRANSITION_FILL_INTERESTS:
+                        - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_PROJECT
+                    to: !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS
+                !php/const App\TonMacron\InvitationProcessor::TRANSITION_FILL_INTERESTS:
                     from:
-                        - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS
-                    to: !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_SELF_REASONS
-                !php/const AppBundle\TonMacron\InvitationProcessor::TRANSITION_FILL_REASONS:
+                        - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_FRIEND_INTERESTS
+                    to: !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_SELF_REASONS
+                !php/const App\TonMacron\InvitationProcessor::TRANSITION_FILL_REASONS:
                     from:
-                        - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_NEEDS_SELF_REASONS
-                    to: !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SUMMARY
-                !php/const AppBundle\TonMacron\InvitationProcessor::TRANSITION_SEND:
+                        - !php/const App\TonMacron\InvitationProcessor::STATE_NEEDS_SELF_REASONS
+                    to: !php/const App\TonMacron\InvitationProcessor::STATE_SUMMARY
+                !php/const App\TonMacron\InvitationProcessor::TRANSITION_SEND:
                     from:
-                        - !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SUMMARY
-                    to: !php/const AppBundle\TonMacron\InvitationProcessor::STATE_SENT
+                        - !php/const App\TonMacron\InvitationProcessor::STATE_SUMMARY
+                    to: !php/const App\TonMacron\InvitationProcessor::STATE_SENT
         my_europe:
             type: state_machine
-            supports: [AppBundle\Interactive\MyEuropeProcessor]
+            supports: [App\Interactive\MyEuropeProcessor]
             places:
-                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
-                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
-                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
-                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
-                - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SENT
+                - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
+                - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
+                - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
+                - !php/const App\Interactive\MyEuropeProcessor::STATE_SUMMARY
+                - !php/const App\Interactive\MyEuropeProcessor::STATE_SENT
             transitions:
-                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_FILL_INFO:
+                !php/const App\Interactive\MyEuropeProcessor::TRANSITION_FILL_INFO:
                     from:
-                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
-                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
-                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_FILL_CASES:
+                        - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_INFO
+                    to: !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
+                !php/const App\Interactive\MyEuropeProcessor::TRANSITION_FILL_CASES:
                     from:
-                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
-                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
-                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_FILL_APPRECIATIONS:
+                        - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_CASES
+                    to: !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
+                !php/const App\Interactive\MyEuropeProcessor::TRANSITION_FILL_APPRECIATIONS:
                     from:
-                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
-                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
-                !php/const AppBundle\Interactive\MyEuropeProcessor::TRANSITION_SEND:
+                        - !php/const App\Interactive\MyEuropeProcessor::STATE_NEEDS_FRIEND_APPRECIATIONS
+                    to: !php/const App\Interactive\MyEuropeProcessor::STATE_SUMMARY
+                !php/const App\Interactive\MyEuropeProcessor::TRANSITION_SEND:
                     from:
-                        - !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SUMMARY
-                    to: !php/const AppBundle\Interactive\MyEuropeProcessor::STATE_SENT
+                        - !php/const App\Interactive\MyEuropeProcessor::STATE_SUMMARY
+                    to: !php/const App\Interactive\MyEuropeProcessor::STATE_SENT
 
         assessor_request:
             type: state_machine
-            initial_place: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-            supports: [AppBundle\Assessor\AssessorRequestCommand]
+            initial_place: !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+            supports: [App\Assessor\AssessorRequestCommand]
             places:
-                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
+                - !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+                - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                - !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                - !php/const App\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
             transitions:
-                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_FILL_PERSONAL_INFO:
+                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_FILL_PERSONAL_INFO:
                     from:
-                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                        - !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+                    to: !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
 
-                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_FILL_ASSESSOR_INFO:
+                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_FILL_ASSESSOR_INFO:
                     from:
-                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                        - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                    to: !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
 
-                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_VALID_SUMMARY:
+                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_VALID_SUMMARY:
                     from:
-                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                    to: !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
+                        - !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                    to: !php/const App\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
 
-                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_BACK_ASSESSOR_INFO:
+                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_BACK_ASSESSOR_INFO:
                     from:
-                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                    to : !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                        - !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
+                    to : !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
 
-                !php/const AppBundle\Assessor\AssessorRequestEnum::TRANSITION_BACK_PERSONAL_INFO:
+                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_BACK_PERSONAL_INFO:
                     from:
-                        - !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-                    to : !php/const AppBundle\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
+                        - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
+                    to : !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
         voting_process:
             type: 'state_machine'
             marking_store:
                 type: 'single_state'
                 arguments:
                     - 'state'
-            initial_place: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
+            initial_place: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
             supports:
-                - AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand
+                - App\VotingPlatform\Election\VoteCommand\VoteCommand
             places:
-                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
-                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
-                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
-                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
-                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::FINISH
+                - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
+                - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::START
+                - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::FINISH
             transitions:
-                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_START:
+                !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_START:
                     from:
-                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
-                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
-                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
-                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
-                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_VOTE:
+                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
+                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                    to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::START
+                !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_VOTE:
                     from:
-                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
-                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
-                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
-                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_CONFIRM:
-                    from: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
-                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
-                !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_FINISH:
-                    from: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
-                    to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::FINISH
+                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::START
+                        - !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                    to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_CONFIRM:
+                    from: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::VOTE
+                    to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                !php/const App\VotingPlatform\Election\VoteCommandStateEnum::TO_FINISH:
+                    from: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
+                    to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::FINISH

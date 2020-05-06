@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity\MemberSummary;
+namespace App\Entity\MemberSummary;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntitySpanTrait;
-use AppBundle\Entity\Summary;
-use AppBundle\Summary\Contract;
-use AppBundle\Summary\SummaryItemPositionableInterface;
+use App\Entity\EntitySpanTrait;
+use App\Entity\Summary;
+use App\Summary\Contract;
+use App\Summary\SummaryItemPositionableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -94,7 +94,7 @@ class JobExperience implements SummaryItemPositionableInterface
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\Contract", "all"})
+     * @Assert\Choice(strict=true, callback={"\App\Summary\Contract", "all"})
      */
     private $contract = '';
 
@@ -104,7 +104,7 @@ class JobExperience implements SummaryItemPositionableInterface
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(strict=true, callback={"\AppBundle\Summary\JobDuration", "all"})
+     * @Assert\Choice(strict=true, callback={"\App\Summary\JobDuration", "all"})
      */
     private $duration = '';
 
@@ -127,7 +127,7 @@ class JobExperience implements SummaryItemPositionableInterface
     /**
      * @var Summary|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Summary", inversedBy="experiences")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Summary", inversedBy="experiences")
      */
     private $summary;
 

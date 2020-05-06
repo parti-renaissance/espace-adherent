@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
-use AppBundle\ValueObject\Genders;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="assessor_requests")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AssessorRequestRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AssessorRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -32,7 +32,7 @@ class AssessorRequest
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true
      * )
@@ -220,7 +220,7 @@ class AssessorRequest
      *
      * @Assert\NotBlank(message="assessor.office.invalid_choice")
      * @Assert\Choice(
-     *     callback={"AppBundle\Entity\AssessorOfficeEnum", "toArray"},
+     *     callback={"App\Entity\AssessorOfficeEnum", "toArray"},
      *     message="assessor.office.invalid_choice",
      *     strict=true
      * )

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\OAuth\Client;
+use App\Entity\OAuth\Client;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -24,7 +24,7 @@ class ClientTest extends TestCase
 
     /**
      * @expectedException \DomainException
-     * @expectedExceptionMessage "dummy" is not a valid grant type. Use constants defined in AppBundle\OAuth\Model\GrantTypeEnum.
+     * @expectedExceptionMessage "dummy" is not a valid grant type. Use constants defined in App\OAuth\Model\GrantTypeEnum.
      */
     public function testSetAllowedGrantThrowExceptionsWhenInvalidDataAreGiven(): void
     {

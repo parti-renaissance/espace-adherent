@@ -10,7 +10,7 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.address(form.address) }}
-            {{ js.ckeditor('committee_event_description', null, constant('AppBundle\\Entity\\UserDocument::TYPE_EVENT')) }}
+            {{ js.ckeditor('committee_event_description', null, constant('App\\Entity\\UserDocument::TYPE_EVENT')) }}
             App.startDateFieldsSynchronisation('{{ form.beginAt.vars.full_name|e('js') }}', '{{ form.finishAt.vars.full_name|e('js') }}')
         });
     </script>

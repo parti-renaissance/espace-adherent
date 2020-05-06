@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\ProcurationRequest;
+use App\Entity\ProcurationRequest;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationProxyCancelledMessage extends Message

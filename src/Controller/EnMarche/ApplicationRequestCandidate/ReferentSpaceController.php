@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ApplicationRequestCandidate;
+namespace App\Controller\EnMarche\ApplicationRequestCandidate;
 
-use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
-use AppBundle\ApplicationRequest\Filter\ListFilter;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use App\ApplicationRequest\ApplicationRequestRepository;
+use App\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\ApplicationRequest\Filter\ListFilter;
+use App\Entity\ApplicationRequest\ApplicationRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass
  *
- * @ORM\EntityListeners({"AppBundle\EntityListener\FileListener"})
+ * @ORM\EntityListeners({"App\EntityListener\FileListener"})
  */
 abstract class BaseFile implements EntityFileInterface
 {

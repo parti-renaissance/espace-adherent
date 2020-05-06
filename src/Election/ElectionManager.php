@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Election;
+namespace App\Election;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\BaseVoteResult;
-use AppBundle\Entity\Election\CityVoteResult;
-use AppBundle\Entity\Election\MinistryVoteResult;
-use AppBundle\Entity\Election\VotePlaceResult;
-use AppBundle\Entity\Election\VoteResultListCollection;
-use AppBundle\Entity\ElectionRound;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\Election\CityVoteResultRepository;
-use AppBundle\Repository\Election\MinistryVoteResultRepository;
-use AppBundle\Repository\Election\VotePlaceResultRepository;
-use AppBundle\Repository\Election\VoteResultListCollectionRepository;
-use AppBundle\Repository\ElectionRepository;
+use App\Entity\City;
+use App\Entity\Election\BaseVoteResult;
+use App\Entity\Election\CityVoteResult;
+use App\Entity\Election\MinistryVoteResult;
+use App\Entity\Election\VotePlaceResult;
+use App\Entity\Election\VoteResultListCollection;
+use App\Entity\ElectionRound;
+use App\Entity\VotePlace;
+use App\Repository\Election\CityVoteResultRepository;
+use App\Repository\Election\MinistryVoteResultRepository;
+use App\Repository\Election\VotePlaceResultRepository;
+use App\Repository\Election\VoteResultListCollectionRepository;
+use App\Repository\ElectionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ElectionManager

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Image;
-use AppBundle\Validator\ImageObject as AssertImageObject;
+use App\Entity\Image;
+use App\Validator\ImageObject as AssertImageObject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,7 +17,7 @@ class MoocImageElement extends BaseMoocElement
     /**
      * @var Image|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"all"}, orphanRemoval=true)
      *
      * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},

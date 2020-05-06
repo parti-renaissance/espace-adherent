@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Repository\CommitteeRepository;
+use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 abstract class AbstractCommitteeCalculator extends AbstractCalculator
 {

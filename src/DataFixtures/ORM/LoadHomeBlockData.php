@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\HomeBlockFactory;
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\HomeBlock;
-use AppBundle\Entity\Media;
+use App\Content\HomeBlockFactory;
+use App\Content\MediaFactory;
+use App\Entity\HomeBlock;
+use App\Entity\Media;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Content\PageFactory;
-use AppBundle\Entity\Page;
+use App\Content\MediaFactory;
+use App\Content\PageFactory;
+use App\Entity\Page;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

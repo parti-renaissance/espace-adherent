@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Page;
+use App\Entity\Page;
 use Doctrine\ORM\EntityRepository;
 
 class PageRepository extends EntityRepository

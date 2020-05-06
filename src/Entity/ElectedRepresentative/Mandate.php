@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\BadMandateTypeException;
+use App\Exception\BadMandateTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectedRepresentative\MandateRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\MandateRepository")
  * @ORM\Table(name="elected_representative_mandate")
  *
  * @Algolia\Index(autoIndex=false)
@@ -28,7 +28,7 @@ class Mandate
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
+     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
      */
     private $type;
 
@@ -42,11 +42,11 @@ class Mandate
     /**
      * @var Zone|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
      * @ORM\JoinColumn
      *
      * @Assert\Expression(
-     *     "value !== null or (value == null and this.getType() === constant('AppBundle\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
+     *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
      */
@@ -92,7 +92,7 @@ class Mandate
      * @ORM\Column(length=10)
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Election\VoteListNuanceEnum", "toArray"})
+     * @Assert\Choice(callback={"App\Election\VoteListNuanceEnum", "toArray"})
      */
     private $politicalAffiliation;
 
@@ -101,7 +101,7 @@ class Mandate
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
+     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
      */
     private $laREMSupport;
 

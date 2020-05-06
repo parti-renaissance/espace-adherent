@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Validator\ChezVous;
+namespace App\Validator\ChezVous;
 
 use Symfony\Component\Validator\Constraint;
 

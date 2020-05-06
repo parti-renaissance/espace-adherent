@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter;
+namespace Tests\App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
+use App\Entity\Adherent;
+use App\Security\Voter\AbstractAdherentVoter;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

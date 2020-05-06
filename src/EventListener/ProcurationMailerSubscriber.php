@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Procuration\Event\ProcurationEvents;
-use AppBundle\Procuration\Event\ProcurationProxyEvent;
-use AppBundle\Procuration\Event\ProcurationRequestEvent;
-use AppBundle\Procuration\ProcurationProxyMessageFactory;
+use App\Mailer\MailerService;
+use App\Procuration\Event\ProcurationEvents;
+use App\Procuration\Event\ProcurationProxyEvent;
+use App\Procuration\Event\ProcurationRequestEvent;
+use App\Procuration\ProcurationProxyMessageFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProcurationMailerSubscriber implements EventSubscriberInterface

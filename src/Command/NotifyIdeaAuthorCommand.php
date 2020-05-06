@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\IdeaFinalizeNotificationMessage;
-use AppBundle\Mailer\Message\IdeaFinalizePreNotificationMessage;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Mailer\MailerService;
+use App\Mailer\Message\IdeaFinalizeNotificationMessage;
+use App\Mailer\Message\IdeaFinalizePreNotificationMessage;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

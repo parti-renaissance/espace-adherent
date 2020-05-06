@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Report\Report;
-use AppBundle\Entity\Report\ReportStatusEnum;
-use AppBundle\Report\ReportType;
+use App\Entity\Adherent;
+use App\Entity\Report\Report;
+use App\Entity\Report\ReportStatusEnum;
+use App\Report\ReportType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

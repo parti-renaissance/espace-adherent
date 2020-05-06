@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;

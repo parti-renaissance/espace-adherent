@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\CommitteeCandidacy;
-use AppBundle\Entity\VotingPlatform\Candidate;
-use AppBundle\Entity\VotingPlatform\CandidateGroup;
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\Entity\VotingPlatform\ElectionEntity;
-use AppBundle\Entity\VotingPlatform\Voter;
-use AppBundle\Entity\VotingPlatform\VotersList;
-use AppBundle\ValueObject\Genders;
+use App\Entity\CommitteeCandidacy;
+use App\Entity\VotingPlatform\Candidate;
+use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\Voter;
+use App\Entity\VotingPlatform\VotersList;
+use App\ValueObject\Genders;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

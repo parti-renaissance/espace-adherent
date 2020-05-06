@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Form\DataTransformer;
+namespace Tests\App\Form\DataTransformer;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Event\EventCommand;
-use AppBundle\Form\DataTransformer\EventDateTimeZoneTransformer;
+use App\Entity\Adherent;
+use App\Event\EventCommand;
+use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use PHPUnit\Framework\TestCase;
 
 class EventDateTimeZoneTransformerTest extends TestCase

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Transport;
+namespace App\Mailer\Transport;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
+use App\Mailer\AbstractEmailTemplate;
 
 interface TransportInterface
 {

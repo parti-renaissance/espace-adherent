@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
+namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\DeputyAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
-use AppBundle\Entity\AdherentMessage\ReferentAdherentMessage;
-use AppBundle\Entity\AdherentMessage\SenatorAdherentMessage;
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\MunicipalChiefAdherentMessage;
+use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\SenatorAdherentMessage;
+use App\Subscription\SubscriptionTypeEnum;
 
 class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 {

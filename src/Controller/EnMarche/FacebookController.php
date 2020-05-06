@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\FacebookProfile;
-use AppBundle\Exception\BadUuidRequestException;
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Repository\FacebookProfileRepository;
+use App\Entity\FacebookProfile;
+use App\Exception\BadUuidRequestException;
+use App\Exception\InvalidUuidException;
+use App\Repository\FacebookProfileRepository;
 use Facebook\Exceptions\FacebookSDKException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;

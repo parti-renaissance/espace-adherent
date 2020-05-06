@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\Referent;
-use AppBundle\Exporter\ReferentPersonLinkExport;
-use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
+use App\Entity\Referent;
+use App\Exporter\ReferentPersonLinkExport;
+use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

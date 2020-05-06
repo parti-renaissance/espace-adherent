@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Jecoute\SurveyTypeEnum;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\Jecoute\SurveyTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +14,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\SurveyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SurveyRepository")
  * @ORM\Table(name="jecoute_survey")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")

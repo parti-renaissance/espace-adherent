@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Admin\ChezVous;
+namespace App\Form\Admin\ChezVous;
 
-use AppBundle\ChezVous\MarkerChoiceLoader;
-use AppBundle\Entity\ChezVous\Marker;
+use App\ChezVous\MarkerChoiceLoader;
+use App\Entity\ChezVous\Marker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;

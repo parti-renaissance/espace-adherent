@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\Coordinator\CoordinatorAreaSectors;
+use App\Coordinator\CoordinatorAreaSectors;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

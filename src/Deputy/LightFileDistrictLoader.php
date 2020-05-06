@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Deputy;
+namespace App\Deputy;
 
-use AppBundle\Entity\District;
-use AppBundle\Entity\GeoData;
-use AppBundle\Geo\GeometryFactory;
+use App\Entity\District;
+use App\Entity\GeoData;
+use App\Geo\GeometryFactory;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;

@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Procuration\Event\ProcurationEvents;
-use AppBundle\Procuration\Event\ProcurationProxyEvent;
-use AppBundle\Procuration\Event\ProcurationRequestEvent;
-use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
-use AppBundle\Procuration\Filter\ProcurationRequestFilters;
-use AppBundle\Repository\ProcurationProxyRepository;
-use AppBundle\Repository\ProcurationRequestRepository;
+use App\Entity\Adherent;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
+use App\Procuration\Event\ProcurationEvents;
+use App\Procuration\Event\ProcurationProxyEvent;
+use App\Procuration\Event\ProcurationRequestEvent;
+use App\Procuration\Filter\ProcurationProxyProposalFilters;
+use App\Procuration\Filter\ProcurationRequestFilters;
+use App\Repository\ProcurationProxyRepository;
+use App\Repository\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\ElectedRepresentative;
+namespace App\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\Mandate;
+use App\Entity\ElectedRepresentative\Mandate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

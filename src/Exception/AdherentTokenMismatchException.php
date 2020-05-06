@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Entity\AdherentExpirableTokenInterface;
+use App\Entity\AdherentExpirableTokenInterface;
 use Ramsey\Uuid\UuidInterface;
 
 final class AdherentTokenMismatchException extends AdherentTokenException

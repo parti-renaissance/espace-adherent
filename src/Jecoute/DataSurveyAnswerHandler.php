@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Jecoute;
+namespace App\Jecoute;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Jecoute\DataSurvey;
+use App\Entity\Adherent;
+use App\Entity\Jecoute\DataSurvey;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

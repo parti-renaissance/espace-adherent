@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Repository\CommitteeMembershipRepository;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\CommitteeMembership;
+use App\Repository\CommitteeMembershipRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

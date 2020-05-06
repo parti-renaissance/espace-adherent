@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Facebook;
+namespace App\Facebook;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;

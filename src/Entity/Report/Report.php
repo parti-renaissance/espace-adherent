@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Entity\Report;
+namespace App\Entity\Report;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthoredTrait;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\Report\IdeasWorkshop\IdeaReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadCommentReport;
-use AppBundle\Entity\Report\IdeasWorkshop\ThreadReport;
+use App\Entity\Adherent;
+use App\Entity\AuthoredTrait;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\Report\IdeasWorkshop\IdeaReport;
+use App\Entity\Report\IdeasWorkshop\ThreadCommentReport;
+use App\Entity\Report\IdeasWorkshop\ThreadReport;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReportRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReportRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({
@@ -66,7 +66,7 @@ abstract class Report
     /**
      * @var string
      *
-     * @ORM\Column(length=16, options={"default": AppBundle\Entity\Report\ReportStatusEnum::STATUS_UNRESOLVED})
+     * @ORM\Column(length=16, options={"default": App\Entity\Report\ReportStatusEnum::STATUS_UNRESOLVED})
      */
     private $status = ReportStatusEnum::STATUS_UNRESOLVED;
 

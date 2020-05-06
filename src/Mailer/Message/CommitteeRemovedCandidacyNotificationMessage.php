@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CommitteeCandidacy;
-use AppBundle\Entity\CommitteeElection;
+use App\Entity\Adherent;
+use App\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeElection;
 use Ramsey\Uuid\Uuid;
 
 final class CommitteeRemovedCandidacyNotificationMessage extends Message

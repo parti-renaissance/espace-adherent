@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mandrill;
+namespace App\Mandrill;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
+use App\Mailer\AbstractEmailTemplate;
 
 final class EmailTemplate extends AbstractEmailTemplate
 {

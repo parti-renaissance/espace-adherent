@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\ValueObject;
+namespace App\ValueObject;
 
 final class Genders
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
+use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
 use League\Csv\Reader;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command;

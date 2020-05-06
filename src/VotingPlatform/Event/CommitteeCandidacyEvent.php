@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Event;
+namespace App\VotingPlatform\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeCandidacy;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
 use Symfony\Component\EventDispatcher\Event;
 
 class CommitteeCandidacyEvent extends Event

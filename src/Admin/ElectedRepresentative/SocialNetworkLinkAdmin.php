@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\ElectedRepresentative;
+namespace App\Admin\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\SocialLinkTypeEnum;
+use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;

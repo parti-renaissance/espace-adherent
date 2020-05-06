@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Address\GeoCoder;
-use AppBundle\Report\ReportType;
+use App\Address\GeoCoder;
+use App\Report\ReportType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  *
  * @Algolia\Index
  */
@@ -21,14 +21,14 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
     use UserDocumentTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\EventCategory")
      *
      * @Algolia\Attribute
      */
     protected $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      *
      * @Algolia\Attribute
      */
@@ -47,7 +47,7 @@ class Event extends BaseEvent implements UserDocumentInterface, SynchronizedEnti
     /**
      * @var UserDocument[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\UserDocument", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="event_user_documents",
      *     joinColumns={

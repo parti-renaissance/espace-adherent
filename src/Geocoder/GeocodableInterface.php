@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Geocoder;
+namespace App\Geocoder;
 
 interface GeocodableInterface
 {

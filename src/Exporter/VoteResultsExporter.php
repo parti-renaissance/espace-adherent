@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exporter;
+namespace App\Exporter;
 
-use AppBundle\Entity\Election\VotePlaceResult;
+use App\Entity\Election\VotePlaceResult;
 use Doctrine\ORM\Query;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;

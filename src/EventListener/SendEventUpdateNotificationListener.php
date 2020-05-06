@@ -1,17 +1,17 @@
 <?php
 
-namespace AppBundle\EventListener;
+namespace App\EventListener;
 
-use AppBundle\CitizenAction\CitizenActionEvent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Event\EventEvent;
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionUpdateMessage;
-use AppBundle\Mailer\Message\EventUpdateMessage;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\CitizenAction\CitizenActionEvent;
+use App\Entity\BaseEvent;
+use App\Entity\CitizenAction;
+use App\Entity\PostAddress;
+use App\Event\EventEvent;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CitizenActionUpdateMessage;
+use App\Mailer\Message\EventUpdateMessage;
+use App\Repository\EventRegistrationRepository;
 use DateTimeInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

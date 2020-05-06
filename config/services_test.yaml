@@ -16,32 +16,32 @@ services:
         public: true
 
     app.map.google_maps_static_provider:
-        class: 'Tests\AppBundle\Test\Map\DummyStaticMapProvider'
+        class: 'Tests\App\Test\Map\DummyStaticMapProvider'
 
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
     old_sound_rabbit_mq.mailer_campaign_producer:
-        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
+        class: 'Tests\App\Test\Producer\MailerNullProducer'
         public: false
 
     old_sound_rabbit_mq.mailer_transactional_producer:
-        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
+        class: 'Tests\App\Test\Producer\MailerNullProducer'
         public: false
 
     old_sound_rabbit_mq.deputy_message_dispatcher_producer:
-        class: 'Tests\AppBundle\Test\Producer\DeputyMessageNullProducer'
+        class: 'Tests\App\Test\Producer\DeputyMessageNullProducer'
 
     old_sound_rabbit_mq.chezvous_algolia_producer:
-        class: 'Tests\AppBundle\Test\Producer\ChezVous\AlgoliaNullProducer'
+        class: 'Tests\App\Test\Producer\ChezVous\AlgoliaNullProducer'
 
-    Tests\AppBundle\Consumer\DummyConsumer: ~
+    Tests\App\Consumer\DummyConsumer: ~
 
-    Tests\AppBundle\Test\Payment\PayboxProvider:
+    Tests\App\Test\Payment\PayboxProvider:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'
-    test.AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
-        alias: AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
+    test.App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
+        alias: App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
         public: true
 
     Algolia\AlgoliaSearchBundle\Indexer\Indexer:

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,7 +63,7 @@ class ElectedRepresentativeLabel
     /**
      * @var ElectedRepresentative
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="labels")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="labels")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\TypeExtension;
+namespace App\Form\TypeExtension;
 
-use AppBundle\Utils\EmojisRemover;
+use App\Utils\EmojisRemover;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

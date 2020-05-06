@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\ReferentTag;
+use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;

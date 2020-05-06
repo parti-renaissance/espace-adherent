@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Assessor\AssessorRequestHandler;
-use AppBundle\Form\AssessorRequestType;
-use AppBundle\VotePlace\VotePlaceManager;
+use App\Assessor\AssessorRequestHandler;
+use App\Form\AssessorRequestType;
+use App\VotePlace\VotePlaceManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

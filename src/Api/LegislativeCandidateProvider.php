@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Api;
+namespace App\Api;
 
-use AppBundle\Entity\LegislativeCandidate;
-use AppBundle\Repository\LegislativeCandidateRepository;
-use AppBundle\Twig\AssetRuntime;
+use App\Entity\LegislativeCandidate;
+use App\Repository\LegislativeCandidateRepository;
+use App\Twig\AssetRuntime;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LegislativeCandidateProvider

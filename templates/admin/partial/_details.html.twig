@@ -1,4 +1,4 @@
-{% if object is instanceof('AppBundle\\Entity\\EntitySoftDeletedInterface') and object.getDeletedAt() is not null %}
+{% if object is instanceof('App\\Entity\\EntitySoftDeletedInterface') and object.getDeletedAt() is not null %}
     <span class="badge bg-yellow">supprimé</span>
 {% endif %}
 

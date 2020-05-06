@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -56,7 +56,7 @@ class Choice
     /**
      * @var DataAnswer[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Jecoute\DataAnswer", fetch="EAGER", mappedBy="selectedChoices")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Jecoute\DataAnswer", fetch="EAGER", mappedBy="selectedChoices")
      */
     private $dataAnswers;
 

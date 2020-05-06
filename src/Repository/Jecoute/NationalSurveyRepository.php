@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository\Jecoute;
+namespace App\Repository\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
-use AppBundle\Entity\Jecoute\NationalSurvey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
+use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\NationalSurvey;
+use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

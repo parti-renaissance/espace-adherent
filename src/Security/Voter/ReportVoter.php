@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Administrator;
-use AppBundle\Report\ReportPermissions;
+use App\Entity\Administrator;
+use App\Report\ReportPermissions;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;

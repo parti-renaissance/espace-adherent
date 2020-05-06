@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election\Listener;
+namespace App\VotingPlatform\Election\Listener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\Entity\VotingPlatform\Vote;
-use AppBundle\Entity\VotingPlatform\VoteChoice;
-use AppBundle\Entity\VotingPlatform\Voter;
-use AppBundle\Entity\VotingPlatform\VoteResult;
-use AppBundle\Repository\VotingPlatform\CandidateGroupRepository;
-use AppBundle\Repository\VotingPlatform\ElectionRepository;
-use AppBundle\Repository\VotingPlatform\VoterRepository;
-use AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand;
-use AppBundle\VotingPlatform\Election\VoteCommandStateEnum;
+use App\Entity\Adherent;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\Vote;
+use App\Entity\VotingPlatform\VoteChoice;
+use App\Entity\VotingPlatform\Voter;
+use App\Entity\VotingPlatform\VoteResult;
+use App\Repository\VotingPlatform\CandidateGroupRepository;
+use App\Repository\VotingPlatform\ElectionRepository;
+use App\Repository\VotingPlatform\VoterRepository;
+use App\VotingPlatform\Election\VoteCommand\VoteCommand;
+use App\VotingPlatform\Election\VoteCommandStateEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Security;

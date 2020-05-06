@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Consumer;
+namespace Tests\App\Consumer;
 
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
-use AppBundle\Entity\Election;
+use App\Entity\Election;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 

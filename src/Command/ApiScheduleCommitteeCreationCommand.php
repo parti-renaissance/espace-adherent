@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Committee\CommitteeEvent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\SynchronizedEntity;
-use AppBundle\Events;
+use App\Committee\CommitteeEvent;
+use App\Entity\Committee;
+use App\Entity\SynchronizedEntity;
+use App\Events;
 
 class ApiScheduleCommitteeCreationCommand extends ApiScheduleEntityCreationCommand
 {

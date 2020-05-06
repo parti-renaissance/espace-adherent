@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\Committee;
+use App\Entity\Committee;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ManagedCommitteesExporter

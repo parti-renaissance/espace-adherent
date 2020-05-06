@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Address;
+namespace Tests\App\Address;
 
-use AppBundle\Address\Address;
+use App\Address\Address;
 use PHPUnit\Framework\TestCase;
 
 /**

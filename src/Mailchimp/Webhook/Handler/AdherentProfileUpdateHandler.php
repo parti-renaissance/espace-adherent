@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
-use AppBundle\Subscription\SubscriptionHandler;
+use App\Entity\Adherent;
+use App\Mailchimp\Webhook\EventTypeEnum;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
+use App\Subscription\SubscriptionHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;

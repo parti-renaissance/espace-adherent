@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\OAuth\Store;
+namespace App\OAuth\Store;
 
-use AppBundle\Entity\OAuth\RefreshToken as PersistentRefreshToken;
-use AppBundle\OAuth\Model\RefreshToken as InMemoryRefreshToken;
-use AppBundle\OAuth\PersistentTokenFactory;
-use AppBundle\Repository\OAuth\RefreshTokenRepository;
+use App\Entity\OAuth\RefreshToken as PersistentRefreshToken;
+use App\OAuth\Model\RefreshToken as InMemoryRefreshToken;
+use App\OAuth\PersistentTokenFactory;
+use App\Repository\OAuth\RefreshTokenRepository;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface as  OAuthRefreshTokenRepositoryInterface;
 

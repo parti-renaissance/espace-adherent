@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Transport;
+namespace Tests\App\Mailer\Transport;
 
-use AppBundle\Mailer\Transport\ApiTransport;
+use App\Mailer\Transport\ApiTransport;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use GuzzleHttp\Psr7\Response as HttpResponse;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailer\DummyEmailClient;
-use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
+use Tests\App\Test\Mailer\DummyEmailClient;
+use Tests\App\Test\Mailer\DummyEmailTemplate;
 
 class ApiTransportTest extends TestCase
 {
     /**
-     * @expectedException \AppBundle\Mailer\Exception\MailerException
+     * @expectedException \App\Mailer\Exception\MailerException
      * @expectedExceptionMessage Unable to send email to recipients.
      */
     public function testCannotSendTemplateEmail()

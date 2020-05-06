@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Repository;
+namespace Tests\App\Repository;
 
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Repository\TonMacronChoiceRepository;
+use App\Entity\TonMacronChoice;
+use App\Repository\TonMacronChoiceRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

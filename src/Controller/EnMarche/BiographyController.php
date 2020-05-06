@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\Biography\ExecutiveOfficeMember;
-use AppBundle\Repository\Biography\ExecutiveOfficeMemberRepository;
+use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Repository\Biography\ExecutiveOfficeMemberRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Election\VoteResultList;
-use AppBundle\Entity\Election\VoteResultListCollection;
+use App\Entity\Election\VoteResultList;
+use App\Entity\Election\VoteResultListCollection;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

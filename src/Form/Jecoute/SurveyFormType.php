@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Jecoute;
+namespace App\Form\Jecoute;
 
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\Survey;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\Survey;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

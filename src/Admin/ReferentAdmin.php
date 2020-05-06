@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Referent;
-use AppBundle\Form\GenderType;
-use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
-use AppBundle\ValueObject\Genders;
+use App\Entity\Referent;
+use App\Form\GenderType;
+use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
+use App\ValueObject\Genders;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

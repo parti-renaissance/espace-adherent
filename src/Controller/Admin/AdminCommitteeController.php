@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Committee\MultipleReferentsFoundException;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Exception\BaseGroupException;
-use AppBundle\Exception\CommitteeMembershipException;
+use App\Committee\MultipleReferentsFoundException;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Exception\BaseGroupException;
+use App\Exception\CommitteeMembershipException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

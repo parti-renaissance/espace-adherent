@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace App\Mailchimp\Synchronisation\Handler;
 
-use AppBundle\AdherentMessage\StaticSegmentInterface;
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailchimp\Exception\StaticSegmentIdMissingException;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
-use AppBundle\Mailchimp\Synchronisation\Command\UpdateStaticSegmentCommandInterface;
-use AppBundle\Repository\AdherentRepository;
+use App\AdherentMessage\StaticSegmentInterface;
+use App\Entity\Adherent;
+use App\Mailchimp\Exception\StaticSegmentIdMissingException;
+use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
+use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
+use App\Mailchimp\Synchronisation\Command\UpdateStaticSegmentCommandInterface;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

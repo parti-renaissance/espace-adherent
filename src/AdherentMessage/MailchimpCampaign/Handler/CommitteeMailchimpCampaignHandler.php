@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\AdherentMessage\MailchimpCampaign\Handler;
+namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 
 class CommitteeMailchimpCampaignHandler extends AbstractMailchimpCampaignHandler
 {

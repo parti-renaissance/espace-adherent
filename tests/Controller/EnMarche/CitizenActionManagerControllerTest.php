@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Mailer\Message\CitizenActionCancellationMessage;
-use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
-use AppBundle\Mailer\Message\CitizenActionNotificationMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\DataFixtures\ORM\LoadCitizenActionData;
+use App\Entity\CitizenAction;
+use App\Mailer\Message\CitizenActionCancellationMessage;
+use App\Mailer\Message\CitizenActionContactParticipantsMessage;
+use App\Mailer\Message\CitizenActionNotificationMessage;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

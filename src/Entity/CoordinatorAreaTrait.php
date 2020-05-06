@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
-use AppBundle\Exception\CoordinatorAreaAlreadyTreatedException;
+use App\Exception\CoordinatorAreaAlreadyTreatedException;
 
 trait CoordinatorAreaTrait
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\BoardMember\BoardMemberFilter;
-use AppBundle\BoardMember\BoardMemberMessage;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Form\BoardMemberMessageType;
+use App\BoardMember\BoardMemberFilter;
+use App\BoardMember\BoardMemberMessage;
+use App\Entity\Adherent;
+use App\Entity\BoardMember\BoardMember;
+use App\Form\BoardMemberMessageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

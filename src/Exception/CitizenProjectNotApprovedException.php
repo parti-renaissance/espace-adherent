@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenProject;
 use Throwable;
 
 class CitizenProjectNotApprovedException extends CitizenProjectException

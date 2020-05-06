@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Newsletter\Listener;
+namespace App\Newsletter\Listener;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\NewsletterAdherentSubscriptionMessage;
-use AppBundle\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
-use AppBundle\Newsletter\Events;
-use AppBundle\Newsletter\NewsletterEvent;
+use App\Mailer\MailerService;
+use App\Mailer\Message\NewsletterAdherentSubscriptionMessage;
+use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
+use App\Newsletter\Events;
+use App\Newsletter\NewsletterEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

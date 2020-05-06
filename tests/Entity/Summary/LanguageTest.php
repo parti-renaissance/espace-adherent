@@ -2,7 +2,7 @@
 
 namespace Entity\Summary;
 
-use AppBundle\Entity\MemberSummary\Language;
+use App\Entity\MemberSummary\Language;
 use PHPUnit\Framework\TestCase;
 
 class LanguageTest extends TestCase

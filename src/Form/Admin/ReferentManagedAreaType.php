@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Entity\ReferentManagedArea;
-use AppBundle\Entity\ReferentTag;
+use App\Entity\ReferentManagedArea;
+use App\Entity\ReferentTag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

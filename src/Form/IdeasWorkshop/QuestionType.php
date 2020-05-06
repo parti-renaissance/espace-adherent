@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\IdeasWorkshop;
+namespace App\Form\IdeasWorkshop;
 
-use AppBundle\Entity\IdeasWorkshop\Question;
+use App\Entity\IdeasWorkshop\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

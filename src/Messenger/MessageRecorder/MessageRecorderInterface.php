@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Messenger\MessageRecorder;
+namespace App\Messenger\MessageRecorder;
 
 use Symfony\Component\Messenger\Envelope;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Donation\DonatorMergeCommand;
+use App\Donation\DonatorMergeCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;

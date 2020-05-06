@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\OAuth\Store;
+namespace App\OAuth\Store;
 
-use AppBundle\Entity\OAuth\AuthorizationCode as PersistentAuthorizationCode;
-use AppBundle\OAuth\Model\AuthorizationCode as InMemoryAuthorizationCode;
-use AppBundle\OAuth\PersistentTokenFactory;
-use AppBundle\Repository\OAuth\AuthorizationCodeRepository;
+use App\Entity\OAuth\AuthorizationCode as PersistentAuthorizationCode;
+use App\OAuth\Model\AuthorizationCode as InMemoryAuthorizationCode;
+use App\OAuth\PersistentTokenFactory;
+use App\Repository\OAuth\AuthorizationCodeRepository;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface as OAuthAuthCodeRepositoryInterface;
 

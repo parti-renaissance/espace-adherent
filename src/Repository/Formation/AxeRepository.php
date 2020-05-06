@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\Formation;
+namespace App\Repository\Formation;
 
-use AppBundle\Entity\Formation\Axe;
+use App\Entity\Formation\Axe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

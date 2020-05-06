@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election\VotePlaceResults;
+namespace App\Controller\EnMarche\Election\VotePlaceResults;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

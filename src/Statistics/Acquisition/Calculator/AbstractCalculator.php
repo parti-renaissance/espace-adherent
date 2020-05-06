@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 abstract class AbstractCalculator implements CalculatorInterface
 {

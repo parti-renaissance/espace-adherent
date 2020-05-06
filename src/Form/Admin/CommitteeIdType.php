@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Form\DataTransformer\CommitteeToIdTransformer;
+use App\Form\DataTransformer\CommitteeToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;

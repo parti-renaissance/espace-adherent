@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository\Biography;
+namespace App\Repository\Biography;
 
-use AppBundle\Collection\ExecutiveOfficeMemberCollection;
-use AppBundle\Entity\Biography\ExecutiveOfficeMember;
+use App\Collection\ExecutiveOfficeMemberCollection;
+use App\Entity\Biography\ExecutiveOfficeMember;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;

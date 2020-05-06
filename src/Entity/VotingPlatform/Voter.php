@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\VoterRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoterRepository")
  *
  * @ORM\Table(name="voting_platform_voter")
  *
@@ -27,7 +27,7 @@ class Voter
     /**
      * @var Adherent
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $adherent;

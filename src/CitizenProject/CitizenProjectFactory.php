@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\PostAddressFactory;
+use App\Entity\CitizenProject;
+use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 

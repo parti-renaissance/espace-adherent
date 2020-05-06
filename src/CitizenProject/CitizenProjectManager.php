@@ -1,26 +1,26 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Collection\CitizenProjectMembershipCollection;
-use AppBundle\Coordinator\Filter\CitizenProjectFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCommitteeSupport;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Events;
-use AppBundle\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
-use AppBundle\Exception\CitizenProjectNotApprovedException;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\CitizenProjectCommitteeSupportRepository;
-use AppBundle\Repository\CitizenProjectMembershipRepository;
-use AppBundle\Repository\CitizenProjectRepository;
+use App\Collection\AdherentCollection;
+use App\Collection\CitizenProjectMembershipCollection;
+use App\Coordinator\Filter\CitizenProjectFilter;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCommitteeSupport;
+use App\Entity\CitizenProjectMembership;
+use App\Entity\Committee;
+use App\Entity\TurnkeyProject;
+use App\Events;
+use App\Exception\CitizenProjectCommitteeSupportAlreadySupportException;
+use App\Exception\CitizenProjectNotApprovedException;
+use App\Geocoder\Coordinates;
+use App\Repository\AdherentRepository;
+use App\Repository\CitizenActionRepository;
+use App\Repository\CitizenProjectCommitteeSupportRepository;
+use App\Repository\CitizenProjectMembershipRepository;
+use App\Repository\CitizenProjectRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;

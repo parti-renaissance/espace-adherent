@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Test\Payment;
+namespace Tests\App\Test\Payment;
 
 use Lexik\Bundle\PayboxBundle\Paybox\System\Tools;
 

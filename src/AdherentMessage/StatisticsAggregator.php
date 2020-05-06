@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\AdherentMessage;
+namespace App\AdherentMessage;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 
 class StatisticsAggregator
 {

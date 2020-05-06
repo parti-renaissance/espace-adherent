@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Repository\DonationRepository;
+use App\Donation\DonationRequest;
+use App\Repository\DonationRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraint;

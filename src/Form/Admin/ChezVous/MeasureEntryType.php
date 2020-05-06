@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Admin\ChezVous;
+namespace App\Form\Admin\ChezVous;
 
-use AppBundle\ChezVous\MeasureChoiceLoader;
+use App\ChezVous\MeasureChoiceLoader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

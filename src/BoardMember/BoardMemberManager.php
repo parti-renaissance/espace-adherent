@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\BoardMember;
+namespace App\BoardMember;
 
-use AppBundle\Collection\AdherentCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\BoardMember\RoleRepository;
+use App\Collection\AdherentCollection;
+use App\Entity\Adherent;
+use App\Entity\BoardMember\BoardMember;
+use App\Repository\AdherentRepository;
+use App\Repository\BoardMember\RoleRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class BoardMemberManager

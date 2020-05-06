@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\VotePlace;
+namespace App\VotePlace;
 
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\VotePlaceRepository;
+use App\Entity\VotePlace;
+use App\Repository\VotePlaceRepository;
 
 class VotePlaceManager
 {

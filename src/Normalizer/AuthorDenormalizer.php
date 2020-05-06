@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\AuthorInterface;
+use App\Entity\AuthorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;

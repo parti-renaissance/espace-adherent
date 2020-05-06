@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Serializer;
+namespace App\Serializer;
 
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\MunicipalEvent;
+use App\Entity\BaseEvent;
+use App\Entity\CitizenAction;
+use App\Entity\Event;
+use App\Entity\MunicipalEvent;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 

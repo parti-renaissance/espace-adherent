@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Utils;
+namespace App\Utils;
 
 class EmojisRemover
 {

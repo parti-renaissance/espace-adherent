@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\ValueObject\Genders;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use libphonenumber\PhoneNumberUtil;

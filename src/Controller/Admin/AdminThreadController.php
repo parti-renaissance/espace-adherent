@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\IdeasWorkshop\Events;
+use App\Entity\IdeasWorkshop\Thread;
+use App\IdeasWorkshop\Events;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

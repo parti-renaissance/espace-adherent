@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Filter;
+namespace App\Admin\Filter;
 
-use AppBundle\Entity\ReferentTag;
+use App\Entity\ReferentTag;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 

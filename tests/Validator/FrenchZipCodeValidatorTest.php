@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Address\Address;
-use AppBundle\Validator\FrenchZipCode;
-use AppBundle\Validator\FrenchZipCodeValidator;
+use App\Address\Address;
+use App\Validator\FrenchZipCode;
+use App\Validator\FrenchZipCodeValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class FrenchZipCodeValidatorTest extends ConstraintValidatorTestCase

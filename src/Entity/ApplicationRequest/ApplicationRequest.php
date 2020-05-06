@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity\ApplicationRequest;
+namespace App\Entity\ApplicationRequest;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\EntityReferentTagTrait;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Entity\ReferentTaggableEntity;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Entity\Adherent;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityReferentTagTrait;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\ReferentTaggableEntity;
+use App\Intl\FranceCitiesBundle;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,7 +31,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\NotBlank(message="common.gender.not_blank")
-     * @Assert\Choice(choices=AppBundle\ValueObject\Genders::CHOICES, strict=true)
+     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES, strict=true)
      */
     private $gender;
 
@@ -165,7 +165,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     /**
      * @var Theme[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\Theme")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\Theme")
      *
      * @Assert\Count(min=1, minMessage="application_request.favorite_themes.min")
      */
@@ -181,7 +181,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $adherent;
@@ -190,7 +190,7 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      * @var ApplicationRequestTag[]|Collection
      *
      * @Assert\Valid(groups={"ApplicationRequestTag"})
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\ApplicationRequestTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\ApplicationRequestTag")
      */
     protected $tags;
 

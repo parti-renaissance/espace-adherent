@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Exception\ProcurationException;
-use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
-use AppBundle\Procuration\Filter\ProcurationRequestFilters;
-use AppBundle\Procuration\ProcurationManager;
-use AppBundle\Repository\ElectionRoundRepository;
-use AppBundle\Repository\ProcurationRequestRepository;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
+use App\Exception\ProcurationException;
+use App\Procuration\Filter\ProcurationProxyProposalFilters;
+use App\Procuration\Filter\ProcurationRequestFilters;
+use App\Procuration\ProcurationManager;
+use App\Repository\ElectionRoundRepository;
+use App\Repository\ProcurationRequestRepository;
 use Doctrine\DBAL\Driver\DriverException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -118,7 +118,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/mandataires/{id}/{action}",
-     *     requirements={ "id": "\d+", "action": AppBundle\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
+     *     requirements={ "id": "\d+", "action": App\Entity\ProcurationProxy::ACTIONS_URI_REGEX },
      *     name="app_procuration_manager_proposal_transform",
      *     methods={"GET"}
      * )
@@ -163,7 +163,7 @@ class ProcurationManagerController extends Controller
     /**
      * @Route(
      *     "/demande/{id}/{action}/{token}",
-     *     requirements={"id": "\d+", "action": AppBundle\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
+     *     requirements={"id": "\d+", "action": App\Entity\ProcurationRequest::ACTIONS_URI_REGEX},
      *     name="app_procuration_manager_request_transform",
      *     methods={"GET"}
      * )
@@ -200,7 +200,7 @@ class ProcurationManagerController extends Controller
      *     name="app_procuration_manager_request_associate",
      *     methods={"GET", "POST"}
      * )
-     * @ParamConverter("proxy", class="AppBundle\Entity\ProcurationProxy", options={"id": "proxyId"})
+     * @ParamConverter("proxy", class="App\Entity\ProcurationProxy", options={"id": "proxyId"})
      */
     public function requestAssociateAction(
         Request $sfRequest,

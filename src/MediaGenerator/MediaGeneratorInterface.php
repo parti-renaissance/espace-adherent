@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\MediaGenerator;
+namespace App\MediaGenerator;
 
-use AppBundle\MediaGenerator\Command\MediaCommandInterface;
+use App\MediaGenerator\Command\MediaCommandInterface;
 
 interface MediaGeneratorInterface
 {

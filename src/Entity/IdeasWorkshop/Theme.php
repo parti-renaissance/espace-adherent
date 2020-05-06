@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Entity\EnabledInterface;
-use AppBundle\Entity\ImageOwnerInterface;
-use AppBundle\Entity\ImageTrait;
+use App\Entity\EnabledInterface;
+use App\Entity\ImageOwnerInterface;
+use App\Entity\ImageTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Facebook;
+namespace App\Facebook;
 
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\Point;

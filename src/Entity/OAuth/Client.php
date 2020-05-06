@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\OAuth;
+namespace App\Entity\OAuth;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\EntitySoftDeletableTrait;
-use AppBundle\Entity\EntitySoftDeletedInterface;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Entity\WebHook\WebHook;
-use AppBundle\OAuth\Model\GrantTypeEnum;
-use AppBundle\OAuth\Model\Scope;
-use AppBundle\OAuth\SecretGenerator;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntitySoftDeletableTrait;
+use App\Entity\EntitySoftDeletedInterface;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\WebHook\WebHook;
+use App\OAuth\Model\GrantTypeEnum;
+use App\OAuth\Model\Scope;
+use App\OAuth\SecretGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
- * @ORM\Entity(repositoryClass="AppBundle\Repository\OAuth\ClientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OAuth\ClientRepository")
  * @ORM\Table(name="oauth_clients", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="oauth_clients_uuid_unique", columns="uuid")
  * })
@@ -86,7 +86,7 @@ class Client implements EntitySoftDeletedInterface
     /**
      * @var Collection|WebHook[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WebHook\WebHook", mappedBy="client", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\WebHook\WebHook", mappedBy="client", cascade={"all"}, orphanRemoval=true)
      *
      * @Assert\Valid
      */

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Security\EventListener;
+namespace App\Security\EventListener;
 
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\TurnkeyProject;
+namespace App\TurnkeyProject;
 
-use AppBundle\Entity\TurnkeyProject;
-use AppBundle\Repository\TurnkeyProjectRepository;
+use App\Entity\TurnkeyProject;
+use App\Repository\TurnkeyProjectRepository;
 use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

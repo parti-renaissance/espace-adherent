@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Reporting\CommitteeMembershipAction;
-use AppBundle\Entity\Reporting\CommitteeMembershipHistory;
-use AppBundle\Statistics\StatisticsParametersFilter;
-use AppBundle\Utils\RepositoryUtils;
+use App\Entity\Adherent;
+use App\Entity\Reporting\CommitteeMembershipAction;
+use App\Entity\Reporting\CommitteeMembershipHistory;
+use App\Statistics\StatisticsParametersFilter;
+use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;

@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity\ChezVous;
+namespace App\Entity\ChezVous;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\ChezVous\MeasurePayload;
+use App\Validator\ChezVous\MeasurePayload;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ChezVous\MeasureRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureRepository")
  * @ORM\Table(name="chez_vous_measures", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="chez_vous_measures_city_type_unique", columns={"city_id", "type_id"}),
  * })

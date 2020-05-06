@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\AppBundle\CitizenProject;
+namespace Tests\App\CitizenProject;
 
-use AppBundle\CitizenProject\CitizenProjectManagementAuthority;
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\CitizenProject\CitizenProjectWasApprovedEvent;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenProjectData;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Events;
+use App\CitizenProject\CitizenProjectManagementAuthority;
+use App\CitizenProject\CitizenProjectManager;
+use App\CitizenProject\CitizenProjectWasApprovedEvent;
+use App\CitizenProject\CitizenProjectWasUpdatedEvent;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCitizenProjectData;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Events;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\Event;

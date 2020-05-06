@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentSpaceAccessInformation;
-use AppBundle\Repository\ReferentSpaceAccessInformationRepository;
+use App\Entity\Adherent;
+use App\Entity\ReferentSpaceAccessInformation;
+use App\Repository\ReferentSpaceAccessInformationRepository;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class AdherentRuntime implements RuntimeExtensionInterface

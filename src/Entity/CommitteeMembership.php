@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         @ORM\Index(name="committees_memberships_role_idx", columns="privilege")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CommitteeMembershipRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CommitteeMembershipRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -102,7 +102,7 @@ class CommitteeMembership
      * @var CommitteeCandidacy|null
      *
      * @ORM\OneToOne(
-     *     targetEntity="AppBundle\Entity\CommitteeCandidacy",
+     *     targetEntity="App\Entity\CommitteeCandidacy",
      *     cascade={"all"},
      *     orphanRemoval=true,
      *     inversedBy="committeeMembership"

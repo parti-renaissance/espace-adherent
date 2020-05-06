@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Api;
+namespace Tests\App\Controller\Api;
 
-use AppBundle\Form\AdherentRegistrationType;
-use AppBundle\Form\BecomeAdherentType;
-use AppBundle\Form\DonationRequestType;
-use AppBundle\Form\UserRegistrationType;
+use App\Form\AdherentRegistrationType;
+use App\Form\BecomeAdherentType;
+use App\Form\DonationRequestType;
+use App\Form\UserRegistrationType;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ApiControllerTestTrait;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ApiControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

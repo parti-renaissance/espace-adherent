@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\ApplicationRequest;
+namespace App\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\ApplicationRequest;
 use Symfony\Component\EventDispatcher\Event;
 
 class ApplicationRequestEvent extends Event

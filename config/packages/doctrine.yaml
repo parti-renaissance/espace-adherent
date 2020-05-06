@@ -15,7 +15,7 @@ doctrine:
         types:
             uuid:           Ramsey\Uuid\Doctrine\UuidType
             phone_number:   Misd\PhoneNumberBundle\Doctrine\DBAL\Types\PhoneNumberType
-            geo_point:      AppBundle\Doctrine\DBAL\Types\GeoPointType
+            geo_point:      App\Doctrine\DBAL\Types\GeoPointType
             geometry:       CrEOF\Spatial\DBAL\Types\GeometryType
             polygon:        CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
             multipolygon:   CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
@@ -28,7 +28,7 @@ doctrine:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'AppBundle\Entity'
+                prefix: 'App\Entity'
                 alias: App
 
         filters:
@@ -39,7 +39,7 @@ doctrine:
                 class: A2lix\I18nDoctrineBundle\Doctrine\ORM\Filter\OneLocaleFilter
                 enabled: true
             enabled:
-                class:   AppBundle\Doctrine\Filter\EnabledFilter
+                class:   App\Doctrine\Filter\EnabledFilter
                 enabled: true
 
         dql:
@@ -55,7 +55,7 @@ doctrine:
                 st_within: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\STWithin
                 point: CrEOF\Spatial\ORM\Query\AST\Functions\MySql\Point
             string_functions:
-                json_contains: AppBundle\Query\Mysql\JsonContains
+                json_contains: App\Query\Mysql\JsonContains
                 find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
                 json_length: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonLength
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
@@ -64,4 +64,4 @@ doctrine:
                 if: DoctrineExtensions\Query\Mysql\IfElse
 
         hydrators:
-            EventHydrator: AppBundle\Doctrine\Hydrators\EventHydrator
+            EventHydrator: App\Doctrine\Hydrators\EventHydrator

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Storage;
+namespace Tests\App\Storage;
 
-use AppBundle\Storage\FilesystemAdapterFactory;
+use App\Storage\FilesystemAdapterFactory;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Cached\CachedAdapter;
 use PHPUnit\Framework\TestCase;

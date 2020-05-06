@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\ManagedUsers;
+namespace App\Controller\EnMarche\ManagedUsers;
 
-use AppBundle\Exporter\ManagedUsersExporter;
-use AppBundle\ManagedUsers\ManagedUsersFilter;
-use AppBundle\Repository\Projection\ManagedUserRepository;
+use App\Exporter\ManagedUsersExporter;
+use App\ManagedUsers\ManagedUsersFilter;
+use App\Repository\Projection\ManagedUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\ReferentArea;
+use App\Entity\ReferentArea;
 use Doctrine\ORM\EntityRepository;
 
 class ReferentAreaRepository extends EntityRepository

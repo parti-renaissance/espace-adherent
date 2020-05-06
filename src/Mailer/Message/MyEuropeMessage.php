@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\MyEuropeInvitation;
+use App\Entity\MyEuropeInvitation;
 use Ramsey\Uuid\Uuid;
 
 final class MyEuropeMessage extends Message

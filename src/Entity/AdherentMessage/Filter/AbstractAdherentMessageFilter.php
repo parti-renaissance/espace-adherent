@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,7 +25,7 @@ abstract class AbstractAdherentMessageFilter implements AdherentMessageFilterInt
     /**
      * @var AdherentMessageInterface
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AdherentMessage\AbstractAdherentMessage", mappedBy="filter")
+     * @ORM\OneToOne(targetEntity="App\Entity\AdherentMessage\AbstractAdherentMessage", mappedBy="filter")
      */
     private $message;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\ChezVous\Measure;
+namespace App\ChezVous\Measure;
 
-use AppBundle\Entity\ChezVous\City;
-use AppBundle\Entity\ChezVous\Measure;
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\City;
+use App\Entity\ChezVous\Measure;
+use App\Entity\ChezVous\MeasureType;
 
 class DedoublementClasses extends AbstractMeasure
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Procuration;
+namespace Tests\App\Procuration;
 
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Procuration\ProcurationReliabilityProcessor;
+use App\Entity\ProcurationProxy;
+use App\Procuration\ProcurationReliabilityProcessor;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

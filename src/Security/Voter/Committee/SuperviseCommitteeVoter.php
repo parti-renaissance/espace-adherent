@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Security\Voter\Committee;
+namespace App\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
+use App\Committee\CommitteePermissions;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Security\Voter\AbstractAdherentVoter;
 
 class SuperviseCommitteeVoter extends AbstractAdherentVoter
 {

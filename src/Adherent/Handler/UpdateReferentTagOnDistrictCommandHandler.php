@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Adherent\Handler;
+namespace App\Adherent\Handler;
 
-use AppBundle\Adherent\Command\UpdateReferentTagOnDistrictCommand;
+use App\Adherent\Command\UpdateReferentTagOnDistrictCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

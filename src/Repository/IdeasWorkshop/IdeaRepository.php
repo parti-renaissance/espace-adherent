@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Repository\IdeasWorkshop;
+namespace App\Repository\IdeasWorkshop;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\IdeasWorkshop\Answer;
-use AppBundle\Entity\IdeasWorkshop\AuthorCategoryEnum;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\IdeaStatusEnum;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\IdeasWorkshop\VoteTypeEnum;
-use AppBundle\Repository\UuidEntityRepositoryTrait;
+use App\Entity\Adherent;
+use App\Entity\IdeasWorkshop\Answer;
+use App\Entity\IdeasWorkshop\AuthorCategoryEnum;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\IdeaStatusEnum;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\Entity\IdeasWorkshop\VoteTypeEnum;
+use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;

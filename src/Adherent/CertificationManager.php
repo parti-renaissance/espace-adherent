@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Adherent;
+namespace App\Adherent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CertificationRequest;
+use App\Entity\Adherent;
+use App\Entity\CertificationRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

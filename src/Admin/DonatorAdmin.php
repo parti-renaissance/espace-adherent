@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Donation\DonatorManager;
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Entity\DonatorTag;
-use AppBundle\Entity\Transaction;
-use AppBundle\Form\Admin\DonatorKinshipType;
-use AppBundle\Form\GenderType;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\Repository\DonationRepository;
-use AppBundle\Utils\PhoneNumberFormatter;
-use AppBundle\Utils\PhpConfigurator;
+use App\Donation\DonatorManager;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Adherent;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Entity\DonatorTag;
+use App\Entity\Transaction;
+use App\Form\Admin\DonatorKinshipType;
+use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
+use App\Repository\DonationRepository;
+use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

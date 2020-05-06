@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Validator\UniqueCommittee as AssertUniqueCommittee;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Validator\UniqueCommittee as AssertUniqueCommittee;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

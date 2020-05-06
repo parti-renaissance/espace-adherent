@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\BaseFile;
+use App\Entity\BaseFile;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

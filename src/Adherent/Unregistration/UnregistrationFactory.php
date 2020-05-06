@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration;
+namespace App\Adherent\Unregistration;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Unregistration;
+use App\Entity\Adherent;
+use App\Entity\Unregistration;
 
 class UnregistrationFactory
 {

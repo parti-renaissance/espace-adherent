@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Entity\EventRegistration;
+use App\Entity\EventRegistration;
 
 class EventRegistrationException extends \RuntimeException
 {

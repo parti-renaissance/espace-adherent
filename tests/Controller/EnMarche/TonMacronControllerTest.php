@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Entity\Email;
-use AppBundle\Entity\TonMacronChoice;
-use AppBundle\Entity\TonMacronFriendInvitation;
-use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\TonMacronChoiceRepository;
-use AppBundle\Repository\TonMacronFriendInvitationRepository;
-use AppBundle\TonMacron\InvitationProcessor;
-use AppBundle\TonMacron\InvitationProcessorHandler;
+use App\Entity\Email;
+use App\Entity\TonMacronChoice;
+use App\Entity\TonMacronFriendInvitation;
+use App\Repository\EmailRepository;
+use App\Repository\TonMacronChoiceRepository;
+use App\Repository\TonMacronFriendInvitationRepository;
+use App\TonMacron\InvitationProcessor;
+use App\TonMacron\InvitationProcessorHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

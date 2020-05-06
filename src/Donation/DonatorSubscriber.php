@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Repository\AdherentRepository;
+use App\Repository\AdherentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

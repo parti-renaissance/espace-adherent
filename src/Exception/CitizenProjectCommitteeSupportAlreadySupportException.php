@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
 use Throwable;
 
 class CitizenProjectCommitteeSupportAlreadySupportException extends CitizenProjectCommitteeSupportException

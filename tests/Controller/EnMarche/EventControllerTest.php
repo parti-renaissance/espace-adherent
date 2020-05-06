@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadEventCategoryData;
-use AppBundle\DataFixtures\ORM\LoadEventData;
-use AppBundle\Entity\EventInvite;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Entity\NewsletterSubscription;
-use AppBundle\Mailer\Message\EventInvitationMessage;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
-use AppBundle\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
-use AppBundle\Repository\EmailRepository;
-use AppBundle\Repository\EventRegistrationRepository;
-use AppBundle\Repository\NewsletterSubscriptionRepository;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadEventCategoryData;
+use App\DataFixtures\ORM\LoadEventData;
+use App\Entity\EventInvite;
+use App\Entity\EventRegistration;
+use App\Entity\NewsletterSubscription;
+use App\Mailer\Message\EventInvitationMessage;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
+use App\Repository\EmailRepository;
+use App\Repository\EventRegistrationRepository;
+use App\Repository\NewsletterSubscriptionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

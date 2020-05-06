@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
 use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;

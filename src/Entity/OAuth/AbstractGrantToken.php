@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\OAuth;
+namespace App\Entity\OAuth;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -17,7 +17,7 @@ abstract class AbstractGrantToken extends AbstractToken
     private $scopes = [];
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OAuth\Client")
+     * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\Client")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
@@ -25,7 +25,7 @@ abstract class AbstractGrantToken extends AbstractToken
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;

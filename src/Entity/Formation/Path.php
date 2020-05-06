@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Formation;
+namespace App\Entity\Formation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\PositionTrait;
+use App\Entity\PositionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Formation\PathRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Formation\PathRepository")
  * @ORM\Table(name="formation_paths")
  *
  * @Algolia\Index(autoIndex=false)

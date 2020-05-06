@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\AppBundle\Admin;
+namespace Tests\App\Admin;
 
-use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Repository\CommitteeRepository;
+use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Repository\CommitteeRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MessengerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\MessengerTestTrait;
 
 /**
  * @group functional

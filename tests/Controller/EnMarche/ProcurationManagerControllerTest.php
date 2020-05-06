@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Procuration\Filter\ProcurationProxyProposalFilters;
-use AppBundle\Procuration\Filter\ProcurationRequestFilters;
+use App\Procuration\Filter\ProcurationProxyProposalFilters;
+use App\Procuration\Filter\ProcurationRequestFilters;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

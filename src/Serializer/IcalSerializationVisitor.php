@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Serializer;
+namespace App\Serializer;
 
 use JMS\Serializer\GenericSerializationVisitor;
 use Sabre\VObject\Component\VCalendar;

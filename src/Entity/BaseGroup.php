@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Geocoder\GeoPointInterface;
+use App\Entity\Report\ReportableInterface;
+use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;

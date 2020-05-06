@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp;
+namespace App\Mailchimp;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Mailchimp\Campaign\Request\EditCampaignRequest;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Mailchimp\Campaign\Request\EditCampaignRequest;
 use Symfony\Component\EventDispatcher\Event;
 
 class RequestEvent extends Event

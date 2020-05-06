@@ -34,7 +34,7 @@
 
             <br/>
 
-            {% if space_name != constant('AppBundle\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
+            {% if space_name != constant('App\\Event\\EventManagerSpaceEnum::MUNICIPAL_CHIEF') %}
                 <a href="{{ path("app_#{space_name}_event_manager_events_mine") }}" class="back-to-list text--normal link--no-decor b__nudge--bottom">
                     Voir tous mes événements
                 </a>

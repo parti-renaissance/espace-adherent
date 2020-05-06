@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EventRegistration;
+use App\Entity\Adherent;
+use App\Entity\EventRegistration;
 
 class MemberActivityCollection
 {

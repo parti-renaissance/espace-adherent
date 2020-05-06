@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Exception\EventException;
+use App\Entity\EventRegistration;
+use App\Exception\EventException;
 
 class EventRegistrationExporter
 {

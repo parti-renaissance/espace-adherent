@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository\ReferentOrganizationalChart;
+namespace App\Repository\ReferentOrganizationalChart;
 
-use AppBundle\Entity\Referent;
-use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\Referent;
+use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;

@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Security;
+namespace App\Controller\EnMarche\Security;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentChangeEmailToken;
-use AppBundle\Entity\AdherentResetPasswordToken;
-use AppBundle\Exception\AdherentTokenExpiredException;
-use AppBundle\Form\AdherentResetPasswordType;
-use AppBundle\Form\LoginType;
-use AppBundle\Membership\AdherentChangeEmailHandler;
-use AppBundle\Membership\MembershipRequestHandler;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Entity\AdherentChangeEmailToken;
+use App\Entity\AdherentResetPasswordToken;
+use App\Exception\AdherentTokenExpiredException;
+use App\Form\AdherentResetPasswordType;
+use App\Form\LoginType;
+use App\Membership\AdherentChangeEmailHandler;
+use App\Membership\MembershipRequestHandler;
+use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

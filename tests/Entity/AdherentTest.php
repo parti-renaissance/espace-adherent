@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\Entity\BoardMember\BoardMember;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Membership\ActivityPositions;
+use App\Entity\Adherent;
+use App\Entity\AdherentActivationToken;
+use App\Entity\BoardMember\BoardMember;
+use App\Entity\CommitteeMembership;
+use App\Entity\PostAddress;
+use App\Entity\ReferentTag;
+use App\Geocoder\Coordinates;
+use App\Membership\ActivityPositions;
 use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\App\TestHelperTrait;
 
 class AdherentTest extends TestCase
 {
@@ -87,7 +87,7 @@ class AdherentTest extends TestCase
     }
 
     /**
-     * @expectedException \AppBundle\Exception\AdherentAlreadyEnabledException
+     * @expectedException \App\Exception\AdherentAlreadyEnabledException
      */
     public function testActivateAdherentAccountTwice(): void
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="administrators", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="administrators_email_address_unique", columns="email_address")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdministratorRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AdministratorRepository")
  *
  * @UniqueEntity(fields={"emailAddress"})
  *

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

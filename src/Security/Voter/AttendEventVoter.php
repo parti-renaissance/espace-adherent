@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\CitizenAction\CitizenActionPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseEvent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventPermissions;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\CitizenAction\CitizenActionPermissions;
+use App\Entity\Adherent;
+use App\Entity\BaseEvent;
+use App\Entity\CitizenAction;
+use App\Entity\Event;
+use App\Event\EventPermissions;
+use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class AttendEventVoter extends AbstractAdherentVoter

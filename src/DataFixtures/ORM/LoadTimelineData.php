@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Timeline\Manifesto;
-use AppBundle\Entity\Timeline\ManifestoTranslation;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\MeasureTranslation;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\ProfileTranslation;
-use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Entity\Timeline\ThemeTranslation;
+use App\Entity\Timeline\Manifesto;
+use App\Entity\Timeline\ManifestoTranslation;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\MeasureTranslation;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\ProfileTranslation;
+use App\Entity\Timeline\Theme;
+use App\Entity\Timeline\ThemeTranslation;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

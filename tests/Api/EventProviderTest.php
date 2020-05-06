@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Api;
+namespace Tests\App\Api;
 
-use AppBundle\Api\EventProvider;
-use AppBundle\Entity\Event;
-use AppBundle\Repository\EventRepository;
+use App\Api\EventProvider;
+use App\Entity\Event;
+use App\Repository\EventRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Tests\AppBundle\TestHelperTrait;
+use Tests\App\TestHelperTrait;
 
 /**
  * @group api

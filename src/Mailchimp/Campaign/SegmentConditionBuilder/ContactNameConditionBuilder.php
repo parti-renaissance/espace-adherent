@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
+namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
-use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Mailchimp\Synchronisation\Request\MemberRequest;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\AdherentMessage\Filter\MunicipalChiefFilter;
+use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
 {

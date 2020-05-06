@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Search;
+namespace App\Search;
 
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Geocoder\Exception\GeocodingException;
-use AppBundle\Geocoder\GeocoderInterface;
+use App\Geocoder\Coordinates;
+use App\Geocoder\Exception\GeocodingException;
+use App\Geocoder\GeocoderInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Request;
 

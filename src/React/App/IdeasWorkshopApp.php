@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\React\App;
+namespace App\React\App;
 
-use AppBundle\React\PageMetaData;
-use AppBundle\React\PageMetaDataInterface;
-use AppBundle\React\ReactAppInterface;
+use App\React\PageMetaData;
+use App\React\PageMetaDataInterface;
+use App\React\ReactAppInterface;
 use Symfony\Component\Routing\Route;
 
 class IdeasWorkshopApp implements ReactAppInterface

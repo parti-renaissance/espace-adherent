@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\React;
+namespace App\React;
 
-use AppBundle\Controller\ReactController;
-use AppBundle\React\App\CitizenProjectApp;
-use AppBundle\React\App\IdeasWorkshopApp;
+use App\Controller\ReactController;
+use App\React\App\CitizenProjectApp;
+use App\React\App\IdeasWorkshopApp;
 use Symfony\Component\Routing\RouteCollection;
 
 class ReactAppRegistry

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\Campaign\SegmentConditionBuilder;
+namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
+use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 
 abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterface
 {

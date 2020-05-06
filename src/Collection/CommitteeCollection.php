@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\Committee;
+use App\Entity\Committee;
 use Doctrine\Common\Collections\ArrayCollection;
 
 final class CommitteeCollection extends ArrayCollection

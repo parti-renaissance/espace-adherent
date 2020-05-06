@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Invite;
+use App\Entity\Invite;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Constraint;

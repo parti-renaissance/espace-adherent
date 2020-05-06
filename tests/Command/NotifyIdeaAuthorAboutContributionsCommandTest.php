@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\App\Command;
 
-use AppBundle\Mailer\Message\IdeaNotificationWithoutContributionsMessage;
+use App\Mailer\Message\IdeaNotificationWithoutContributionsMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group command

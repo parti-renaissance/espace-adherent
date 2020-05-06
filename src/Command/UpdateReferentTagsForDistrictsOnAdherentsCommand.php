@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Adherent\Command\UpdateReferentTagOnDistrictCommand;
-use AppBundle\Entity\Adherent;
+use App\Adherent\Command\UpdateReferentTagOnDistrictCommand;
+use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

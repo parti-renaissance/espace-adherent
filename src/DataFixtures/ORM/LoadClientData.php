@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\OAuth\Model\GrantTypeEnum;
-use AppBundle\OAuth\Model\Scope;
+use App\Entity\OAuth\Client;
+use App\OAuth\Model\GrantTypeEnum;
+use App\OAuth\Model\Scope;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Listener;
+namespace App\AdherentMessage\Listener;
 
-use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
-use AppBundle\AdherentMessage\StaticSegmentInterface;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\Committee\CommitteeEvent;
-use AppBundle\Events;
+use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\StaticSegmentInterface;
+use App\CitizenProject\CitizenProjectWasUpdatedEvent;
+use App\Committee\CommitteeEvent;
+use App\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 

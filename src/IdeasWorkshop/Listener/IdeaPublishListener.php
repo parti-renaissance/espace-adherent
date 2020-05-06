@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop\Listener;
+namespace App\IdeasWorkshop\Listener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\IdeasWorkshop\Command\SendMailForPublishedIdeaCommand;
+use App\Entity\IdeasWorkshop\Idea;
+use App\IdeasWorkshop\Command\SendMailForPublishedIdeaCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;

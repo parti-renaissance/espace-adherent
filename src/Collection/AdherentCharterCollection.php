@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\AdherentCharter\AdherentCharterTypeEnum;
-use AppBundle\Entity\AdherentCharter\AdherentCharterInterface;
-use AppBundle\Entity\AdherentCharter\DeputyCharter;
-use AppBundle\Entity\AdherentCharter\MunicipalChiefCharter;
-use AppBundle\Entity\AdherentCharter\ReferentCharter;
-use AppBundle\Entity\AdherentCharter\SenatorCharter;
+use App\AdherentCharter\AdherentCharterTypeEnum;
+use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentCharter\DeputyCharter;
+use App\Entity\AdherentCharter\MunicipalChiefCharter;
+use App\Entity\AdherentCharter\ReferentCharter;
+use App\Entity\AdherentCharter\SenatorCharter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ReferentOrganizationalChart;
+namespace App\Entity\ReferentOrganizationalChart;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

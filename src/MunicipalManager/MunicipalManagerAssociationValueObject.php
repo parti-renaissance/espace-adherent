@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\MunicipalManager;
+namespace App\MunicipalManager;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\City;
+use App\Entity\Adherent;
+use App\Entity\City;
 
 class MunicipalManagerAssociationValueObject
 {

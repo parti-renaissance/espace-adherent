@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
-use AppBundle\Repository\ThreadCommentRepository;
-use AppBundle\Repository\ThreadRepository;
-use AppBundle\Repository\VoteRepository;
+use App\Entity\Adherent;
+use App\Repository\IdeasWorkshop\IdeaRepository;
+use App\Repository\ThreadCommentRepository;
+use App\Repository\ThreadRepository;
+use App\Repository\VoteRepository;
 
 class UpdateIdeaWorkshopHandler implements UnregistrationAdherentHandlerInterface
 {

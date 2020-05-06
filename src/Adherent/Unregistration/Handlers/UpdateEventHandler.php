@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\CitizenActionRepository;
-use AppBundle\Repository\EventRepository;
-use AppBundle\Repository\InstitutionalEventRepository;
+use App\Entity\Adherent;
+use App\Repository\CitizenActionRepository;
+use App\Repository\EventRepository;
+use App\Repository\InstitutionalEventRepository;
 
 class UpdateEventHandler implements UnregistrationAdherentHandlerInterface
 {

@@ -55,6 +55,6 @@
     {{ form_end(training_form) }}
 
     {% if training_form.vars.data and not training_form.vars.data.new %}
-        {{ delete_form(path('app_summary_manager_remove_training', { id: training_form.vars.data.id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_TRAINING_TOKEN')) }}
+        {{ delete_form(path('app_summary_manager_remove_training', { id: training_form.vars.data.id }), constant('App\\Summary\\SummaryManager::DELETE_TRAINING_TOKEN')) }}
     {% endif %}
 {% endblock %}

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\FacebookVideo;
-use AppBundle\Entity\Page;
+use App\Entity\FacebookVideo;
+use App\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Each time you add or update a custom url with an hardcoded slug in the controller code, you must update the
- * AppBundle\Entity\Page::URLS constant and reindex algolia's page index.
+ * App\Entity\Page::URLS constant and reindex algolia's page index.
  */
 class PageController extends Controller
 {

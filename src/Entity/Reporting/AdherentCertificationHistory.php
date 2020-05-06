@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\Reporting;
+namespace App\Entity\Reporting;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,7 +42,7 @@ class AdherentCertificationHistory
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $adherent;
@@ -50,7 +50,7 @@ class AdherentCertificationHistory
     /**
      * @var Administrator|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $administrator;

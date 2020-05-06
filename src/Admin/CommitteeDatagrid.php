@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Committee\CommitteeManager;
+use App\Committee\CommitteeManager;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
 class CommitteeDatagrid extends DatagridDecorator

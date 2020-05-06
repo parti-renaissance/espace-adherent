@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\TonMacron;
+namespace App\TonMacron;
 
-use AppBundle\Repository\TonMacronChoiceRepository;
+use App\Repository\TonMacronChoiceRepository;
 
 class TonMacronMessageBodyBuilder
 {

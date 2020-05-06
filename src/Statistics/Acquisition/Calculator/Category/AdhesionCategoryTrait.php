@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator\Category;
+namespace App\Statistics\Acquisition\Calculator\Category;
 
 trait AdhesionCategoryTrait
 {

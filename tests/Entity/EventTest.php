@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventCategory;
-use AppBundle\Entity\PostAddress;
+use App\Entity\Adherent;
+use App\Entity\Event;
+use App\Entity\EventCategory;
+use App\Entity\PostAddress;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 

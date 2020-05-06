@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentMessage;
+namespace App\Controller\EnMarche\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 

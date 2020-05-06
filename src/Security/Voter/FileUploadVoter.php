@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Documents\DocumentPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\UserDocument;
+use App\Documents\DocumentPermissions;
+use App\Entity\Adherent;
+use App\Entity\UserDocument;
 
 class FileUploadVoter extends AbstractAdherentVoter
 {

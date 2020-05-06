@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Entity\Timeline;
+namespace App\Entity\Timeline;
 
 use A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\AbstractTranslatableEntity;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
-use AppBundle\Entity\EntityMediaTrait;
+use App\Entity\AbstractTranslatableEntity;
+use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Entity\EntityMediaTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="timeline_manifestos")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Timeline\ManifestoRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Timeline\ManifestoRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

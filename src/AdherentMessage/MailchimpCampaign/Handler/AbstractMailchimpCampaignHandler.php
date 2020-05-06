@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\AdherentMessage\MailchimpCampaign\Handler;
+namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\MailchimpCampaign;
 
 abstract class AbstractMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {

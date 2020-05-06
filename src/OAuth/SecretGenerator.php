@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
 class SecretGenerator
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Assessor\AssessorRole;
+namespace App\Assessor\AssessorRole;
 
-use AppBundle\Assessor\AssessorRoleAssociationValueObject;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AssessorRoleAssociation;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\AdherentRepository;
+use App\Assessor\AssessorRoleAssociationValueObject;
+use App\Entity\Adherent;
+use App\Entity\AssessorRoleAssociation;
+use App\Entity\VotePlace;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AssessorAssociationManager

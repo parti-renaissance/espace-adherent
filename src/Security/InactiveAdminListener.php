@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security;
+namespace App\Security;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

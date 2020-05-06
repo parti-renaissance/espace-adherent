@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

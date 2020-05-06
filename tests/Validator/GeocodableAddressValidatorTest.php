@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Validator;
+namespace Tests\App\Validator;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\PostAddress;
-use AppBundle\Geocoder\GeocodableInterface;
-use AppBundle\Validator\GeocodableAddress;
-use AppBundle\Validator\GeocodableAddressValidator;
+use App\Address\Address;
+use App\Entity\PostAddress;
+use App\Geocoder\GeocodableInterface;
+use App\Validator\GeocodableAddress;
+use App\Validator\GeocodableAddressValidator;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
-use Tests\AppBundle\Test\Geocoder\DummyGeocoder;
+use Tests\App\Test\Geocoder\DummyGeocoder;
 
 class GeocodableAddressValidatorTest extends ConstraintValidatorTestCase
 {

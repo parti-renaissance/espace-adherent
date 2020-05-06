@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command\ChezVous;
+namespace App\Command\ChezVous;
 
-use AppBundle\Command\AlgoliaSynchronizeCommand as BaseCommand;
-use AppBundle\Entity\ChezVous\City;
+use App\Command\AlgoliaSynchronizeCommand as BaseCommand;
+use App\Entity\ChezVous\City;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

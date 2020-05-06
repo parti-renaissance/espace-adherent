@@ -1,16 +1,16 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Repository\EventRegistrationRepository;
+use App\Committee\CommitteeManager;
+use App\Entity\Adherent;
+use App\Entity\Event;
+use App\Entity\EventRegistration;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\EventCancellationMessage;
+use App\Mailer\Message\EventNotificationMessage;
+use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\HTMLPurifier\Injector;
+namespace App\HTMLPurifier\Injector;
 
 class ImageDimension extends \HTMLPurifier_Injector
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\EventRegistration;
-use AppBundle\Mailer\Message\EventCancellationMessage;
-use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
+use App\Entity\EventRegistration;
+use App\Mailer\Message\EventCancellationMessage;
+use App\Mailer\Message\EventNotificationMessage;
+use App\Mailer\Message\MessageRecipient;
 
 class EventCancellationMessageTest extends AbstractEventMessageTest
 {

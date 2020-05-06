@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

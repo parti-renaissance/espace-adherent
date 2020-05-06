@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Election\Listener;
+namespace App\Election\Listener;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Election\BaseVoteResult;
-use AppBundle\Entity\Election\ListTotalResult;
-use AppBundle\Entity\Election\MinistryListTotalResult;
+use App\Entity\Adherent;
+use App\Entity\Election\BaseVoteResult;
+use App\Entity\Election\ListTotalResult;
+use App\Entity\Election\MinistryListTotalResult;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;

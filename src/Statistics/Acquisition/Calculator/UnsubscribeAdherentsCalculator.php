@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Repository\UnregistrationRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Repository\UnregistrationRepository;
+use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 class UnsubscribeAdherentsCalculator extends AbstractCalculator
 {

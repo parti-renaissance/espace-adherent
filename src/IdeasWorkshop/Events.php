@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop;
+namespace App\IdeasWorkshop;
 
 final class Events
 {

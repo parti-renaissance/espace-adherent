@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\VotingPlatform\Election\Listener;
+namespace App\VotingPlatform\Election\Listener;
 
-use AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand;
-use AppBundle\VotingPlatform\Election\VoteCommandStateEnum;
-use AppBundle\VotingPlatform\Election\VoteCommandStorage;
+use App\VotingPlatform\Election\VoteCommand\VoteCommand;
+use App\VotingPlatform\Election\VoteCommandStateEnum;
+use App\VotingPlatform\Election\VoteCommandStorage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 

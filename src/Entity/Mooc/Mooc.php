@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityTimestampableTrait;
-use AppBundle\Entity\Image;
-use AppBundle\Validator\ImageObject as AssertImageObject;
+use App\Entity\EntityTimestampableTrait;
+use App\Entity\Image;
+use App\Validator\ImageObject as AssertImageObject;
 use Cake\Chronos\MutableDate;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MoocRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MoocRepository")
  * @ORM\Table(
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="mooc_slug", columns="slug")
@@ -140,7 +140,7 @@ class Mooc
     /**
      * @var Image|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"all"}, orphanRemoval=true)
      *
      * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},
@@ -154,7 +154,7 @@ class Mooc
     /**
      * @var Image|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Image", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"all"}, orphanRemoval=true)
      *
      * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},

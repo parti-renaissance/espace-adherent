@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Adherent\CertificationAuthorityManager;
-use AppBundle\Adherent\CertificationManager;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\CertificationRequest;
+use App\Adherent\CertificationAuthorityManager;
+use App\Adherent\CertificationManager;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Entity\CertificationRequest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\Filesystem;

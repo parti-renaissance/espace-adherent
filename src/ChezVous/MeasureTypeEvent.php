@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\ChezVous;
+namespace App\ChezVous;
 
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\MeasureType;
 use Symfony\Component\EventDispatcher\Event;
 
 class MeasureTypeEvent extends Event

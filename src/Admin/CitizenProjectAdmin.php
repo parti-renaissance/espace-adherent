@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\CitizenProject\CitizenProjectManager;
-use AppBundle\CitizenProject\CitizenProjectWasUpdatedEvent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Events;
-use AppBundle\Form\PurifiedTextareaType;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\Intl\UnitedNationsBundle;
-use AppBundle\Referent\ReferentTagManager;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\CitizenProjectMembershipRepository;
-use AppBundle\Repository\CitizenProjectRepository;
+use App\CitizenProject\CitizenProjectManager;
+use App\CitizenProject\CitizenProjectWasUpdatedEvent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectSkill;
+use App\Events;
+use App\Form\PurifiedTextareaType;
+use App\Form\UnitedNationsCountryType;
+use App\Intl\UnitedNationsBundle;
+use App\Referent\ReferentTagManager;
+use App\Repository\AdherentRepository;
+use App\Repository\CitizenProjectMembershipRepository;
+use App\Repository\CitizenProjectRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

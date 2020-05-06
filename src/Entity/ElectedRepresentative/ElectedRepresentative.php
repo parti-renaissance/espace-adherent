@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +57,7 @@ class ElectedRepresentative
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true
      * )
@@ -143,7 +143,7 @@ class ElectedRepresentative
     /**
      * @var Adherent|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $adherent;
@@ -152,7 +152,7 @@ class ElectedRepresentative
      * @var SocialNetworkLink[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ElectedRepresentative\SocialNetworkLink",
+     *     targetEntity="App\Entity\ElectedRepresentative\SocialNetworkLink",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
      *     orphanRemoval=true,
@@ -167,7 +167,7 @@ class ElectedRepresentative
      * @var Mandate[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ElectedRepresentative\Mandate",
+     *     targetEntity="App\Entity\ElectedRepresentative\Mandate",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
      *     orphanRemoval=true
@@ -182,7 +182,7 @@ class ElectedRepresentative
      * PoliticalFunction[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ElectedRepresentative\PoliticalFunction",
+     *     targetEntity="App\Entity\ElectedRepresentative\PoliticalFunction",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
      *     orphanRemoval=true,
@@ -197,7 +197,7 @@ class ElectedRepresentative
      * @var ElectedRepresentativeLabel[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ElectedRepresentative\ElectedRepresentativeLabel",
+     *     targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentativeLabel",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
      *     orphanRemoval=true,
@@ -212,7 +212,7 @@ class ElectedRepresentative
      * Sponsorship[]|Collection
      *
      * @ORM\OneToMany(
-     *     targetEntity="AppBundle\Entity\ElectedRepresentative\Sponsorship",
+     *     targetEntity="App\Entity\ElectedRepresentative\Sponsorship",
      *     mappedBy="electedRepresentative",
      *     cascade={"all"},
      *     orphanRemoval=true,

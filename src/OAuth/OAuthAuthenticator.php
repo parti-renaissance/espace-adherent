@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
-use AppBundle\OAuth\Model\ApiUser;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Security\Exception\BadCredentialsException;
+use App\OAuth\Model\ApiUser;
+use App\Repository\AdherentRepository;
+use App\Security\Exception\BadCredentialsException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Ramsey\Uuid\Uuid;

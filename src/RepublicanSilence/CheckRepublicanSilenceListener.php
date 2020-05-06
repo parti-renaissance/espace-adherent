@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\RepublicanSilence;
+namespace App\RepublicanSilence;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
+use App\Entity\Adherent;
+use App\RepublicanSilence\TagExtractor\ReferentTagExtractorInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;

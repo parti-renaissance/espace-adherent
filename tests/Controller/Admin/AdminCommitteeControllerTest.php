@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Admin;
+namespace Tests\App\Controller\Admin;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use AppBundle\Mailer\Message\CommitteeApprovalReferentMessage;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
+use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

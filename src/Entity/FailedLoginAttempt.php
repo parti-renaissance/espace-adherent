@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Security\LoginAttemptSignature;
+use App\Security\LoginAttemptSignature;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FailedLoginAttemptRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FailedLoginAttemptRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

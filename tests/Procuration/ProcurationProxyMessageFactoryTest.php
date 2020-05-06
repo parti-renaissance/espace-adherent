@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Procuration;
+namespace Tests\App\Procuration;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Mailer\Message\ProcurationProxyCancelledMessage;
-use AppBundle\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
-use AppBundle\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
-use AppBundle\Procuration\ProcurationProxyMessageFactory;
-use AppBundle\Routing\RemoteUrlGenerator;
+use App\Entity\Adherent;
+use App\Entity\ProcurationProxy;
+use App\Entity\ProcurationRequest;
+use App\Mailer\Message\ProcurationProxyCancelledMessage;
+use App\Mailer\Message\ProcurationProxyRegistrationConfirmationMessage;
+use App\Mailer\Message\ProcurationRequestRegistrationConfirmationMessage;
+use App\Procuration\ProcurationProxyMessageFactory;
+use App\Routing\RemoteUrlGenerator;
 use libphonenumber\PhoneNumberUtil;
 use PHPUnit\Framework\TestCase;
 

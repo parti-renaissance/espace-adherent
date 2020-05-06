@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Utils\AreaUtils;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Intl\FranceCitiesBundle;
+use App\Utils\AreaUtils;
+use App\Validator\Recaptcha as AssertRecaptcha;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="procuration_requests")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProcurationRequestRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProcurationRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -73,14 +73,14 @@ class ProcurationRequest
      *
      * @var ProcurationProxy
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProcurationProxy", inversedBy="foundRequests")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationProxy", inversedBy="foundRequests")
      */
     private $foundProxy;
 
     /**
      * The user who associated the found proxy.
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(name="procuration_request_found_by_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $foundBy;
@@ -92,7 +92,7 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups={"profile"}
@@ -149,7 +149,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=15, groups={"profile"})
      * @Assert\Expression(
-     *     "(this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "(this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"profile"}
      * )
@@ -181,7 +181,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=255, groups={"profile"})
      * @Assert\Expression(
-     *     "not (this.getCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
+     *     "not (this.getCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null)",
      *     message="procuration.state.not_empty",
      *     groups={"profile"}
      * )
@@ -236,7 +236,7 @@ class ProcurationRequest
      *
      * @Assert\Length(max=15, groups={"vote"})
      * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('AppBundle\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
+     *     "(this.getVoteCountry() == constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Utils\\AreaUtils::CODE_FRANCE') and value == null)",
      *     message="procuration.postal_code.not_empty",
      *     groups={"vote"}
      * )
@@ -284,7 +284,7 @@ class ProcurationRequest
     /**
      * @var ElectionRound[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ElectionRound")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ElectionRound")
      * @ORM\JoinTable(name="procuration_requests_to_election_rounds")
      *
      * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"election_rounds"})
@@ -298,7 +298,7 @@ class ProcurationRequest
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"election_rounds"})
      * @Assert\Choice(
-     *     callback={"AppBundle\Entity\ProcurationRequest", "getReasons"},
+     *     callback={"App\Entity\ProcurationRequest", "getReasons"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups={"election_rounds"}

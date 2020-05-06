@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Consumer;
+namespace Tests\App\Consumer;
 
-use AppBundle\Entity\Email;
-use AppBundle\Exception\InvalidUuidException;
-use AppBundle\Mailer\EmailClientInterface;
-use AppBundle\Mailer\Exception\MailerException;
-use AppBundle\Repository\EmailRepository;
+use App\Entity\Email;
+use App\Exception\InvalidUuidException;
+use App\Mailer\EmailClientInterface;
+use App\Mailer\Exception\MailerException;
+use App\Repository\EmailRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Exception\ConnectException;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractMailerConsumerTest extends TestCase
 {
-    const CLASS_NAME = 'AppBundle\Consumer\AbstractMailerConsumer';
+    const CLASS_NAME = 'App\Consumer\AbstractMailerConsumer';
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|ValidatorInterface

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Http;
+namespace App\Security\Http;
 
-use AppBundle\Entity\FailedLoginAttempt;
-use AppBundle\Repository\FailedLoginAttemptRepository;
+use App\Entity\FailedLoginAttempt;
+use App\Repository\FailedLoginAttemptRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;

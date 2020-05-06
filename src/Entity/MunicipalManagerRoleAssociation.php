@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -26,7 +26,7 @@ class MunicipalManagerRoleAssociation
     /**
      * @var City[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\City")
+     * @ORM\ManyToMany(targetEntity="App\Entity\City")
      * @ORM\JoinTable(name="municipal_manager_role_association_cities",
      *     joinColumns={@ORM\JoinColumn(name="municipal_manager_role_association_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="city_id", referencedColumnName="id", unique=true)}

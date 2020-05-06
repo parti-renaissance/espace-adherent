@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Committee;
+namespace App\Committee;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CommitteeContactMembersMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CommitteeContactMembersMessage;
 
 class CommitteeContactMembersCommandHandler
 {

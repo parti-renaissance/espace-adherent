@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\DataFixtures\ORM\LoadCitizenActionData;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\EventRegistration;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\DataFixtures\ORM\LoadCitizenActionData;
+use App\Entity\CitizenAction;
+use App\Entity\EventRegistration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CitizenActionControllerTest extends AbstractEventControllerTest
 {
     /**
-     * @var \AppBundle\Repository\EventRegistrationRepository
+     * @var \App\Repository\EventRegistrationRepository
      */
     private $repository;
 

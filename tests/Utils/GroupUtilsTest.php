@@ -2,11 +2,11 @@
 
 namespace Tests\Utils;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Utils\GroupUtils;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Utils\GroupUtils;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional

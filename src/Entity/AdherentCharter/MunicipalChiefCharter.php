@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\AdherentCharter;
+namespace App\Entity\AdherentCharter;
 
 use Doctrine\ORM\Mapping as ORM;
 

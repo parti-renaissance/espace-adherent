@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Contact\ContactMessage;
+use App\Contact\ContactMessage;
 use Ramsey\Uuid\Uuid;
 
 final class AdherentContactMessage extends Message

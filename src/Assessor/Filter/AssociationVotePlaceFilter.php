@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Assessor\Filter;
+namespace App\Assessor\Filter;
 
-use AppBundle\Entity\ReferentTag;
+use App\Entity\ReferentTag;
 
 class AssociationVotePlaceFilter
 {

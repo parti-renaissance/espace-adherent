@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Adherent\Unregistration\UnregistrationCommand;
-use AppBundle\Adherent\UnregistrationHandler;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentActivationToken;
-use AppBundle\History\EmailSubscriptionHistoryHandler;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailer\Message\AdherentAccountActivationReminderMessage;
-use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
-use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
-use AppBundle\OAuth\CallbackManager;
-use AppBundle\Referent\ReferentTagManager;
+use App\Address\PostAddressFactory;
+use App\Adherent\Unregistration\UnregistrationCommand;
+use App\Adherent\UnregistrationHandler;
+use App\Entity\Adherent;
+use App\Entity\AdherentActivationToken;
+use App\History\EmailSubscriptionHistoryHandler;
+use App\Mailer\MailerService;
+use App\Mailer\Message\AdherentAccountActivationMessage;
+use App\Mailer\Message\AdherentAccountActivationReminderMessage;
+use App\Mailer\Message\AdherentAccountConfirmationMessage;
+use App\Mailer\Message\AdherentTerminateMembershipMessage;
+use App\OAuth\CallbackManager;
+use App\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

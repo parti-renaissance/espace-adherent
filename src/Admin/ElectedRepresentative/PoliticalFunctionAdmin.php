@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin\ElectedRepresentative;
+namespace App\Admin\ElectedRepresentative;
 
-use AppBundle\Entity\ElectedRepresentative\Mandate;
-use AppBundle\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
-use AppBundle\Repository\ElectedRepresentative\MandateRepository;
+use App\Entity\ElectedRepresentative\Mandate;
+use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
+use App\Repository\ElectedRepresentative\MandateRepository;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;

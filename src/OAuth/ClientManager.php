@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\OAuth;
+namespace App\OAuth;
 
-use AppBundle\Entity\OAuth\Client;
+use App\Entity\OAuth\Client;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ClientManager

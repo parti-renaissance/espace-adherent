@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Documents;
+namespace App\Documents;
 
 final class DocumentPermissions
 {

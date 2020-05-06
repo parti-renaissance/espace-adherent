@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 
 interface UnregistrationAdherentHandlerInterface
 {

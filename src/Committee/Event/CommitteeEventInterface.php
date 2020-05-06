@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace App\Committee\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
+use App\Entity\Adherent;
+use App\Entity\Committee;
 
 interface CommitteeEventInterface
 {

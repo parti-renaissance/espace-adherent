@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\ProcurationRequest;
-use AppBundle\Form\GenderType;
-use AppBundle\Form\UnitedNationsCountryType;
+use App\Entity\ProcurationRequest;
+use App\Form\GenderType;
+use App\Form\UnitedNationsCountryType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

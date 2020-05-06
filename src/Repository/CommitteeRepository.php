@@ -1,21 +1,21 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Address\Address;
-use AppBundle\Collection\CommitteeCollection;
-use AppBundle\Coordinator\Filter\CommitteeFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
-use AppBundle\Entity\District;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Search\SearchParametersFilter;
-use AppBundle\ValueObject\Genders;
-use AppBundle\VotingPlatform\Designation\DesignationZoneEnum;
+use App\Address\Address;
+use App\Collection\CommitteeCollection;
+use App\Coordinator\Filter\CommitteeFilter;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
+use App\Entity\District;
+use App\Entity\Event;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Geocoder\Coordinates;
+use App\Intl\FranceCitiesBundle;
+use App\Search\SearchParametersFilter;
+use App\ValueObject\Genders;
+use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;

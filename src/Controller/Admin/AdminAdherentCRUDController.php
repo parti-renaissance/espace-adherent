@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Controller\Admin;
+namespace App\Controller\Admin;
 
-use AppBundle\Adherent\BanManager;
-use AppBundle\Adherent\CertificationAuthorityManager;
-use AppBundle\Adherent\CertificationPermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Form\ConfirmActionType;
+use App\Adherent\BanManager;
+use App\Adherent\CertificationAuthorityManager;
+use App\Adherent\CertificationPermissions;
+use App\Entity\Adherent;
+use App\Form\ConfirmActionType;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

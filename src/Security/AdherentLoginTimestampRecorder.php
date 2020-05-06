@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Security;
+namespace App\Security;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

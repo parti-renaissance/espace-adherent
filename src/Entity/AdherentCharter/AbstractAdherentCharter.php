@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentCharter;
+namespace App\Entity\AdherentCharter;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,7 +33,7 @@ abstract class AbstractAdherentCharter implements AdherentCharterInterface
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent", inversedBy="charters")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="charters")
      */
     private $adherent;
 

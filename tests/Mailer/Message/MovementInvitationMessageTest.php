@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\Invite;
-use AppBundle\Mailer\Message\MessageRecipient;
-use AppBundle\Mailer\Message\MovementInvitationMessage;
+use App\Entity\Invite;
+use App\Mailer\Message\MessageRecipient;
+use App\Mailer\Message\MovementInvitationMessage;
 use PHPUnit\Framework\TestCase;
 
 class MovementInvitationMessageTest extends TestCase

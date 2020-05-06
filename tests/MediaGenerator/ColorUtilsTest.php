@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\MediaGenerator;
+namespace Tests\App\MediaGenerator;
 
-use AppBundle\MediaGenerator\ColorUtils;
+use App\MediaGenerator\ColorUtils;
 use PHPUnit\Framework\TestCase;
 
 class ColorUtilsTest extends TestCase

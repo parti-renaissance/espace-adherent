@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Email;
+use App\Entity\Email;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -32,7 +32,7 @@ class EmailRepository extends ServiceEntityRepository
             ->where('e.messageClass = :class')
             ->andWhere('e.recipients LIKE :recipient')
             ->orderBy('e.createdAt', 'DESC')
-            ->setParameter('class', str_replace('AppBundle\\Mailer\\Message\\', '', $messageClass))
+            ->setParameter('class', str_replace('App\\Mailer\\Message\\', '', $messageClass))
             ->setParameter('recipient', '%'.$recipient.'%')
             ->getQuery()
             ->getResult()
@@ -50,7 +50,7 @@ class EmailRepository extends ServiceEntityRepository
         if ($messageClass) {
             $qb
                 ->where('e.messageClass = :class')
-                ->setParameter('class', str_replace('AppBundle\\Mailer\\Message\\', '', $messageClass))
+                ->setParameter('class', str_replace('App\\Mailer\\Message\\', '', $messageClass))
             ;
         }
 
@@ -66,7 +66,7 @@ class EmailRepository extends ServiceEntityRepository
             ->createQueryBuilder('e')
             ->where('e.messageClass = :class')
             ->orderBy('e.createdAt', 'DESC')
-            ->setParameter('class', str_replace('AppBundle\\Mailer\\Message\\', '', $messageClass))
+            ->setParameter('class', str_replace('App\\Mailer\\Message\\', '', $messageClass))
             ->getQuery()
             ->getResult()
         ;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\CertificationRequest;
+use App\Entity\CertificationRequest;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class CertificationRequestCollection extends ArrayCollection

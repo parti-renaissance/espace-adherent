@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

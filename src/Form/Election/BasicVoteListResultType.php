@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Election;
+namespace App\Form\Election;
 
-use AppBundle\Entity\Election\MinistryListTotalResult;
-use AppBundle\Form\VoteResultListType;
+use App\Entity\Election\MinistryListTotalResult;
+use App\Form\VoteResultListType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;

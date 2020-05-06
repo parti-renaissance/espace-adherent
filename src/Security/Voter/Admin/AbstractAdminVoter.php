@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Security\Voter\Admin;
+namespace App\Security\Voter\Admin;
 
-use AppBundle\Entity\Administrator;
+use App\Entity\Administrator;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

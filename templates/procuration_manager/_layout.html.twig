@@ -26,27 +26,27 @@
                         {% set pages = [
                             {
                                 route: 'app_procuration_manager_requests',
-                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
+                                status: constant('App\\Procuration\\Filter\\ProcurationRequestFilters::UNPROCESSED'),
                                 label: 'Demandes à traiter'
                             },
                             {
                                 route: 'app_procuration_manager_requests',
-                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
+                                status: constant('App\\Procuration\\Filter\\ProcurationRequestFilters::PROCESSED'),
                                 label: 'Demandes traitées'
                             },
                             {
                                 route: 'app_procuration_manager_proposals',
-                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
+                                status: constant('App\\Procuration\\Filter\\ProcurationProxyProposalFilters::UNASSOCIATED'),
                                 label: 'Mandataires disponibles'
                             },
                             {
                                 route: 'app_procuration_manager_proposals',
-                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
+                                status: constant('App\\Procuration\\Filter\\ProcurationProxyProposalFilters::ASSOCIATED'),
                                 label: 'Mandataires traités'
                             },
                             {
                                 route: 'app_procuration_manager_proposals',
-                                status: constant('AppBundle\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED'),
+                                status: constant('App\\Procuration\\Filter\\ProcurationProxyProposalFilters::DISABLED'),
                                 label: 'Mandataires désactivés'
                             }
                         ] %}

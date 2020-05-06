@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\Election;
+namespace App\Controller\EnMarche\Election;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

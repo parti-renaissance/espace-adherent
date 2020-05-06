@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\RepublicanSilence\TagExtractor;
+namespace App\RepublicanSilence\TagExtractor;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 
 interface ReferentTagExtractorInterface
 {

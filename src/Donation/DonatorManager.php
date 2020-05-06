@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\DonatorIdentifier;
-use AppBundle\Repository\DonatorIdentifierRepository;
+use App\Entity\DonatorIdentifier;
+use App\Repository\DonatorIdentifierRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class DonatorManager

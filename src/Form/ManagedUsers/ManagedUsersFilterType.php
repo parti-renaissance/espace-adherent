@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Form\ManagedUsers;
+namespace App\Form\ManagedUsers;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Form\EventListener\IncludeExcludeFilterRoleListener;
-use AppBundle\Form\FilterRoleType;
-use AppBundle\Form\GenderType;
-use AppBundle\Form\MemberInterestsChoiceType;
-use AppBundle\Form\MyReferentTagChoiceType;
-use AppBundle\ManagedUsers\ManagedUsersFilter;
+use App\Entity\ReferentTag;
+use App\Form\EventListener\IncludeExcludeFilterRoleListener;
+use App\Form\FilterRoleType;
+use App\Form\GenderType;
+use App\Form\MemberInterestsChoiceType;
+use App\Form\MyReferentTagChoiceType;
+use App\ManagedUsers\ManagedUsersFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

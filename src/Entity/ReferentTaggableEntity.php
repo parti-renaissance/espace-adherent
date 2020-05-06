@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 interface ReferentTaggableEntity extends EntityPostAddressInterface
 {

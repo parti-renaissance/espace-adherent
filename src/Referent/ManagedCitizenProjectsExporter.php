@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenProject;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ManagedCitizenProjectsExporter

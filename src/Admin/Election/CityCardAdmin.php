@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin\Election;
+namespace App\Admin\Election;
 
-use AppBundle\Entity\Election\CityCard;
-use AppBundle\Form\Admin\Election\CityCandidateType;
-use AppBundle\Form\Admin\Election\CityPrevisionType;
+use App\Entity\Election\CityCard;
+use App\Form\Admin\Election\CityCandidateType;
+use App\Form\Admin\Election\CityPrevisionType;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

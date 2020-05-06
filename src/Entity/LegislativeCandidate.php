@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="legislative_candidates", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="legislative_candidates_slug_unique", columns="slug")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\LegislativeCandidateRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LegislativeCandidateRepository")
  *
  * @Algolia\Index(autoIndex=false)
  * @UniqueEntity(fields="slug", groups="Admin")
@@ -53,7 +53,7 @@ class LegislativeCandidate implements EntityMediaInterface
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true,
      *     groups="Admin"
@@ -132,7 +132,7 @@ class LegislativeCandidate implements EntityMediaInterface
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\LegislativeDistrictZone", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\LegislativeDistrictZone", fetch="EAGER")
      *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Valid

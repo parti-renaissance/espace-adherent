@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Form\Admin;
+namespace App\Form\Admin;
 
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Form\Jecoute\ChoiceFormType;
-use AppBundle\Form\Jecoute\QuestionChoiceType;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use App\Entity\Jecoute\Question;
+use App\Form\Jecoute\ChoiceFormType;
+use App\Form\Jecoute\QuestionChoiceType;
+use App\Jecoute\SurveyQuestionTypeEnum;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

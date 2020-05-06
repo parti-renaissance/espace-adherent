@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\OAuth\Model;
+namespace App\OAuth\Model;
 
 use MyCLabs\Enum\Enum;
 

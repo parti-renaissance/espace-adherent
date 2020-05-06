@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\DataFixtures\ORM\LoadSkillData;
+use App\DataFixtures\ORM\LoadSkillData;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

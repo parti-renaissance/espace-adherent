@@ -71,6 +71,6 @@
     {{ form_end(experience_form) }}
 
     {% if experience_form.vars.data and not experience_form.vars.data.new %}
-        {{ delete_form(path('app_summary_manager_remove_experience', { id: experience_form.vars.data.id }), constant('AppBundle\\Summary\\SummaryManager::DELETE_EXPERIENCE_TOKEN')) }}
+        {{ delete_form(path('app_summary_manager_remove_experience', { id: experience_form.vars.data.id }), constant('App\\Summary\\SummaryManager::DELETE_EXPERIENCE_TOKEN')) }}
     {% endif %}
 {% endblock %}

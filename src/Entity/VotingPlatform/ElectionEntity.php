@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Committee;
+use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +27,7 @@ class ElectionEntity
     /**
      * @var Committee|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", cascade={"all"})
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $committee;
@@ -35,7 +35,7 @@ class ElectionEntity
     /**
      * @var Election
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\VotingPlatform\Election", inversedBy="electionEntity")
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="electionEntity")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;

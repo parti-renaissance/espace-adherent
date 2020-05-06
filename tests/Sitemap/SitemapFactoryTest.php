@@ -1,19 +1,19 @@
 <?php
 
-namespace Test\AppBundle\Sitemap;
+namespace Test\App\Sitemap;
 
-use AppBundle\Entity\Article;
-use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\OrderArticle;
-use AppBundle\Entity\Page;
-use AppBundle\Exception\SitemapException;
-use AppBundle\Repository\ArticleCategoryRepository;
-use AppBundle\Repository\ArticleRepository;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\OrderArticleRepository;
-use AppBundle\Repository\PageRepository;
-use AppBundle\Sitemap\SitemapFactory;
+use App\Entity\Article;
+use App\Entity\ArticleCategory;
+use App\Entity\Committee;
+use App\Entity\OrderArticle;
+use App\Entity\Page;
+use App\Exception\SitemapException;
+use App\Repository\ArticleCategoryRepository;
+use App\Repository\ArticleRepository;
+use App\Repository\CommitteeRepository;
+use App\Repository\OrderArticleRepository;
+use App\Repository\PageRepository;
+use App\Sitemap\SitemapFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Exception\PayboxPaymentUnsubscriptionException;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DonationUnsubscriptionConfirmationMessage;
+use App\Entity\Adherent;
+use App\Entity\Donation;
+use App\Exception\PayboxPaymentUnsubscriptionException;
+use App\Mailer\MailerService;
+use App\Mailer\Message\DonationUnsubscriptionConfirmationMessage;
 use Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request as LexikRequest;
 
 class PayboxPaymentUnsubscription

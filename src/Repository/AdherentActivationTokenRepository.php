@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\AdherentActivationToken;
+use App\Entity\AdherentActivationToken;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class AdherentActivationTokenRepository extends AbstractAdherentTokenRepository

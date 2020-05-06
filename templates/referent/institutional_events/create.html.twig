@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block referent_content %}
-    {% set is_edit_view = form.vars.view == constant('AppBundle\\Form\\InstitutionalEventCommandType::EDIT_VIEW') %}
+    {% set is_edit_view = form.vars.view == constant('App\\Form\\InstitutionalEventCommandType::EDIT_VIEW') %}
 
     <a href="{{ path('app_referent_institutional_events') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
          ⟵ Annuler

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp\SignUp;
+namespace App\Mailchimp\SignUp;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;

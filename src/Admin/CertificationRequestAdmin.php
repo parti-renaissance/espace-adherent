@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\CertificationRequest;
-use AppBundle\Utils\PhoneNumberFormatter;
-use AppBundle\Utils\PhpConfigurator;
+use App\Entity\CertificationRequest;
+use App\Utils\PhoneNumberFormatter;
+use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

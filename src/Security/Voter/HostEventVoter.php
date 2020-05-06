@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Event\EventPermissions;
+use App\Entity\Adherent;
+use App\Entity\Event;
+use App\Event\EventPermissions;
 
 class HostEventVoter extends AbstractAdherentVoter
 {

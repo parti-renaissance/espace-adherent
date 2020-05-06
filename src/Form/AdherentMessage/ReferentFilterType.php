@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\Entity\AdherentMessage\Filter\ReferentUserFilter;
-use AppBundle\Form\MyReferentTagChoiceType;
+use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
+use App\Form\MyReferentTagChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

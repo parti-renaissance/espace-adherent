@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\ManagedArea;
+use App\Entity\Adherent;
+use App\Entity\AssessorRequest;
+use App\Entity\ManagedArea;
 
 class ManageAssessorVoter extends AbstractAdherentVoter
 {

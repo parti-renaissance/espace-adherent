@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Repository\ApplicationRequest;
+namespace App\Repository\ApplicationRequest;
 
-use AppBundle\ApplicationRequest\Filter\ListFilter;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\ApplicationRequest\Filter\ListFilter;
+use App\Entity\Adherent;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Entity\ReferentTag;
+use App\Intl\FranceCitiesBundle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;

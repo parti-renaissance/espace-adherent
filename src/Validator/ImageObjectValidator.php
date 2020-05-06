@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Image;
+use App\Entity\Image;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ImageValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

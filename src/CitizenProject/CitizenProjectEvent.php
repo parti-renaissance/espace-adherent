@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Geocoder\GeocodableEntityEventInterface;
-use AppBundle\Geocoder\GeocodableInterface;
+use App\Entity\CitizenProject;
+use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class CitizenProjectEvent extends Event implements GeocodableEntityEventInterface

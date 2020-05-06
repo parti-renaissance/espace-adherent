@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Repository\Jecoute;
+namespace App\Repository\Jecoute;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Jecoute\DataSurvey;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Repository\ReferentTrait;
+use App\Entity\Adherent;
+use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Entity\ReferentTag;
+use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;

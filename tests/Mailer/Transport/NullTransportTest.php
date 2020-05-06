@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Transport;
+namespace Tests\App\Mailer\Transport;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Tests\AppBundle\Test\Mailer\DummyEmailTemplate;
-use Tests\AppBundle\Test\Mailer\Transport\NullTransport;
+use Tests\App\Test\Mailer\DummyEmailTemplate;
+use Tests\App\Test\Mailer\Transport\NullTransport;
 
 class NullTransportTest extends TestCase
 {

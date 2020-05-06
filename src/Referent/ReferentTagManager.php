@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Entity\ReferentTaggableEntity;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Repository\ReferentTagRepository;
-use AppBundle\Utils\AreaUtils;
+use App\Entity\Adherent;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ReferentTag;
+use App\Entity\ReferentTaggableEntity;
+use App\Intl\FranceCitiesBundle;
+use App\Repository\ReferentTagRepository;
+use App\Utils\AreaUtils;
 
 class ReferentTagManager
 {

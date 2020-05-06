@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
+use App\AdherentMessage\CommitteeAdherentMessageDataObject;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

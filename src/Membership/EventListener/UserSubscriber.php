@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Membership\EventListener;
+namespace App\Membership\EventListener;
 
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;

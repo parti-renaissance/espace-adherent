@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="election_rounds")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ElectionRoundRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ElectionRoundRepository")
  *
  * @UniqueEntity({"election", "label"})
  *
@@ -48,7 +48,7 @@ class ElectionRound
     /**
      * @var Election|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Election", inversedBy="rounds")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="rounds")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotNull

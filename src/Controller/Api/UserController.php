@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\OAuth\Model\ApiUser;
+use App\Entity\Adherent;
+use App\OAuth\Model\ApiUser;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use League\OAuth2\Server\Exception\OAuthServerException;

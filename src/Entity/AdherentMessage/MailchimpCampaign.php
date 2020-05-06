@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage;
+namespace App\Entity\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
+use App\AdherentMessage\AdherentMessageSynchronizedObjectInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -29,7 +29,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     /**
      * @var MailchimpCampaignReport|null
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\AdherentMessage\MailchimpCampaignReport", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="App\Entity\AdherentMessage\MailchimpCampaignReport", cascade={"all"})
      */
     private $report;
 
@@ -57,7 +57,7 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
     /**
      * @var AdherentMessageInterface|AbstractAdherentMessage
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AdherentMessage\AbstractAdherentMessage", inversedBy="mailchimpCampaigns")
+     * @ORM\ManyToOne(targetEntity="App\Entity\AdherentMessage\AbstractAdherentMessage", inversedBy="mailchimpCampaigns")
      */
     private $message;
 

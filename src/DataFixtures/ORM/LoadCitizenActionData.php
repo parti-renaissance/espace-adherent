@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\PostAddress;
-use AppBundle\Event\EventFactory;
-use AppBundle\Event\EventRegistrationCommand;
-use AppBundle\Event\EventRegistrationFactory;
+use App\Entity\PostAddress;
+use App\Event\EventFactory;
+use App\Event\EventRegistrationCommand;
+use App\Event\EventRegistrationFactory;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

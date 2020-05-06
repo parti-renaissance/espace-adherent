@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Validator\UniqueTurnkeyProjectPinned;
-use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use App\Validator\UniqueTurnkeyProjectPinned;
+use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\UniqueConstraint(name="turnkey_project_slug_unique", columns="slug")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TurnkeyProjectRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TurnkeyProjectRepository")
  *
  * @UniqueTurnkeyProjectPinned
  *
@@ -88,7 +88,7 @@ class TurnkeyProject
     /**
      * @var CitizenProjectCategory
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CitizenProjectCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CitizenProjectCategory")
      *
      * @Assert\NotNull
      */

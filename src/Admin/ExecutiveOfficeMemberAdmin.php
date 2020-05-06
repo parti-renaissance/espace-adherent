@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Biography\ExecutiveOfficeMember;
-use AppBundle\Form\PurifiedTextareaType;
-use AppBundle\Image\ImageManager;
+use App\Entity\Biography\ExecutiveOfficeMember;
+use App\Form\PurifiedTextareaType;
+use App\Image\ImageManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

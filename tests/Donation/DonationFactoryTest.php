@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\AppBundle\Donation;
+namespace Tests\App\Donation;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Address\PostAddressFactory;
-use AppBundle\Donation\DonationFactory;
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Donation\DonationRequestUtils;
-use AppBundle\Entity\Donator;
-use AppBundle\Membership\MembershipRegistrationProcess;
+use App\Address\GeoCoder;
+use App\Address\PostAddressFactory;
+use App\Donation\DonationFactory;
+use App\Donation\DonationRequest;
+use App\Donation\DonationRequestUtils;
+use App\Entity\Donator;
+use App\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;

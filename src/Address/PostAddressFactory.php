@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Address;
+namespace App\Address;
 
-use AppBundle\Entity\NullablePostAddress;
-use AppBundle\Entity\PostAddress;
+use App\Entity\NullablePostAddress;
+use App\Entity\PostAddress;
 
 class PostAddressFactory
 {

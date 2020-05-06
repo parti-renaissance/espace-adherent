@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\TonMacron;
+namespace App\TonMacron;
 
-use AppBundle\Entity\TonMacronChoice;
+use App\Entity\TonMacronChoice;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,27 +55,27 @@ final class InvitationProcessor
 
     /**
      * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Choice(callback={"AppBundle\ValueObject\Genders", "all"}, strict=true, groups={"fill_info"})
+     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, strict=true, groups={"fill_info"})
      */
     public $friendGender;
 
     /**
      * @var TonMacronChoice|null
      *
-     * @Assert\Type("AppBundle\Entity\TonMacronChoice", groups={"fill_info"})
+     * @Assert\Type("App\Entity\TonMacronChoice", groups={"fill_info"})
      */
     public $friendPosition;
 
     /**
      * @Assert\NotBlank(groups={"fill_project"})
-     * @Assert\Type("AppBundle\Entity\TonMacronChoice", groups={"fill_project"})
+     * @Assert\Type("App\Entity\TonMacronChoice", groups={"fill_project"})
      */
     public $friendProject;
 
     /**
      * @Assert\Count(min=2, max=2, exactMessage="ton_macron.invitation.friend_interests.count", groups={"fill_interests"})
      * @Assert\All({
-     *     @Assert\Type("AppBundle\Entity\TonMacronChoice")
+     *     @Assert\Type("App\Entity\TonMacronChoice")
      * }, groups={"fill_interests"})
      */
     public $friendInterests = [];
@@ -83,7 +83,7 @@ final class InvitationProcessor
     /**
      * @Assert\Count(min=2, max=2, exactMessage="ton_macron.invitation.self_reasons.count", groups={"fill_reasons"})
      * @Assert\All({
-     *     @Assert\Type("AppBundle\Entity\TonMacronChoice")
+     *     @Assert\Type("App\Entity\TonMacronChoice")
      * }, groups={"fill_reasons"})
      */
     public $selfReasons;

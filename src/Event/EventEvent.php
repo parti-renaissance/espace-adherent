@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event as CommitteeEvent;
-use AppBundle\Geocoder\GeocodableEntityEventInterface;
-use AppBundle\Geocoder\GeocodableInterface;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event as CommitteeEvent;
+use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocodableInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class EventEvent extends Event implements GeocodableEntityEventInterface

@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
-use AppBundle\Entity\Administrator;
-use AppBundle\Jecoute\SurveyTypeEnum;
+use App\Entity\Administrator;
+use App\Jecoute\SurveyTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Jecoute\NationalSurveyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Jecoute\NationalSurveyRepository")
  */
 class NationalSurvey extends Survey
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $administrator;

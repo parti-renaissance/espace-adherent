@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\ValueObject;
+namespace Tests\App\ValueObject;
 
-use AppBundle\Utils\EmojisRemover;
+use App\Utils\EmojisRemover;
 use PHPUnit\Framework\TestCase;
 
 class EmojisRemoverTest extends TestCase

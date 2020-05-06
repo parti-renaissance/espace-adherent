@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Deputy\DeputyMessage;
+use App\Deputy\DeputyMessage;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Table(name="deputy_managed_users_message")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DeputyManagedUsersMessageRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DeputyManagedUsersMessageRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -18,7 +18,7 @@ class DeputyManagedUsersMessage extends ManagedUsersMessage
     /**
      * @var District
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District")
+     * @ORM\ManyToOne(targetEntity="App\Entity\District")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $district;

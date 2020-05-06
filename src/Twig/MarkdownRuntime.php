@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
 use League\CommonMark\CommonMarkConverter;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity\Reporting;
+namespace App\Entity\Reporting;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Collection\CommitteeMembershipCollection;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeMembership;
+use App\Collection\CommitteeMembershipCollection;
+use App\Entity\Administrator;
+use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -39,7 +39,7 @@ class CommitteeMergeHistory
     /**
      * @var Committee
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sourceCommittee;
@@ -47,7 +47,7 @@ class CommitteeMergeHistory
     /**
      * @var Committee
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
      * @ORM\JoinColumn(nullable=false)
      */
     private $destinationCommittee;
@@ -55,7 +55,7 @@ class CommitteeMergeHistory
     /**
      * @var Administrator|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $mergedBy;
@@ -70,7 +70,7 @@ class CommitteeMergeHistory
     /**
      * @var CommitteeMembership[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\CommitteeMembership")
+     * @ORM\ManyToMany(targetEntity="App\Entity\CommitteeMembership")
      * @ORM\JoinTable(
      *     name="committee_merge_histories_merged_memberships",
      *     joinColumns={
@@ -86,7 +86,7 @@ class CommitteeMergeHistory
     /**
      * @var Administrator|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Administrator")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $revertedBy;

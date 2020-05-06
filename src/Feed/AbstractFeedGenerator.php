@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Feed;
+namespace App\Feed;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

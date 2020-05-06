@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\ArticleFactory;
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\ArticleCategory;
+use App\Content\ArticleFactory;
+use App\Content\MediaFactory;
+use App\Entity\ArticleCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;

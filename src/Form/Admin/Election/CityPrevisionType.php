@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\Admin\Election;
+namespace App\Form\Admin\Election;
 
-use AppBundle\Entity\Election\CityPrevision;
+use App\Entity\Election\CityPrevision;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

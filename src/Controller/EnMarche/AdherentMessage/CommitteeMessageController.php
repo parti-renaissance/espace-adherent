@@ -1,21 +1,21 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentMessage;
+namespace App\Controller\EnMarche\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageFactory;
-use AppBundle\AdherentMessage\AdherentMessageManager;
-use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\CommitteeAdherentMessageDataObject;
-use AppBundle\AdherentMessage\Filter\FilterFormFactory;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Form\AdherentMessage\CommitteeAdherentMessageType;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Repository\AdherentMessageRepository;
+use App\AdherentMessage\AdherentMessageFactory;
+use App\AdherentMessage\AdherentMessageManager;
+use App\AdherentMessage\AdherentMessageStatusEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\CommitteeAdherentMessageDataObject;
+use App\AdherentMessage\Filter\FilterFormFactory;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\Committee;
+use App\Entity\CommitteeFeedItem;
+use App\Form\AdherentMessage\CommitteeAdherentMessageType;
+use App\Mailchimp\Manager;
+use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

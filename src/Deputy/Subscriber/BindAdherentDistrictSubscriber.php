@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Deputy\Subscriber;
+namespace App\Deputy\Subscriber;
 
-use AppBundle\Entity\District;
-use AppBundle\Membership\AdherentEvent;
-use AppBundle\Membership\AdherentEvents;
-use AppBundle\Repository\DistrictRepository;
+use App\Entity\District;
+use App\Membership\AdherentEvent;
+use App\Membership\AdherentEvents;
+use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

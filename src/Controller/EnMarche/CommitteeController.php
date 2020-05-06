@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Controller\CanaryControllerTrait;
-use AppBundle\Controller\EntityControllerTrait;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeCandidacy;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Form\CommitteeFeedItemMessageType;
-use AppBundle\Form\VotingPlatform\CandidacyBiographyType;
-use AppBundle\Image\ImageManager;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
-use AppBundle\ValueObject\Genders;
-use AppBundle\VotingPlatform\Designation\ElectionStaticDate;
+use App\Committee\CommitteeManager;
+use App\Controller\CanaryControllerTrait;
+use App\Controller\EntityControllerTrait;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeFeedItem;
+use App\Form\CommitteeFeedItemMessageType;
+use App\Form\VotingPlatform\CandidacyBiographyType;
+use App\Image\ImageManager;
+use App\Security\Http\Session\AnonymousFollowerSession;
+use App\ValueObject\Genders;
+use App\VotingPlatform\Designation\ElectionStaticDate;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

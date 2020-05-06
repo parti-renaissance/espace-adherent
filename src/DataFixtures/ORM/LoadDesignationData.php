@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
-use AppBundle\VotingPlatform\Designation\DesignationZoneEnum;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Designation\DesignationZoneEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Consumer;
+namespace App\Consumer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;

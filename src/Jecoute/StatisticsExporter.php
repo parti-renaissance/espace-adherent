@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Jecoute;
+namespace App\Jecoute;
 
-use AppBundle\Repository\Jecoute\DataAnswerRepository;
+use App\Repository\Jecoute\DataAnswerRepository;
 use Ramsey\Uuid\Uuid;
 
 class StatisticsExporter

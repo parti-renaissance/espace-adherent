@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Address\AddressInterface;
-use AppBundle\Address\GeocodableAddress;
-use AppBundle\Geocoder\Coordinates;
-use AppBundle\Geocoder\GeocodableInterface;
-use AppBundle\Geocoder\GeoPointInterface;
-use AppBundle\Intl\FranceCitiesBundle;
+use App\Address\AddressInterface;
+use App\Address\GeocodableAddress;
+use App\Geocoder\Coordinates;
+use App\Geocoder\GeocodableInterface;
+use App\Geocoder\GeoPointInterface;
+use App\Intl\FranceCitiesBundle;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Intl;
 

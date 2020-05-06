@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\ElectedRepresentative;
+namespace App\Entity\ElectedRepresentative;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Exception\BadSocialLinkTypeException;
+use App\Exception\BadSocialLinkTypeException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,7 +52,7 @@ class SocialNetworkLink
      * @ORM\Column
      *
      * @Assert\NotBlank
-     * @Assert\Choice(callback={"AppBundle\Entity\ElectedRepresentative\SocialLinkTypeEnum", "toArray"})
+     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\SocialLinkTypeEnum", "toArray"})
      */
     private $type;
 

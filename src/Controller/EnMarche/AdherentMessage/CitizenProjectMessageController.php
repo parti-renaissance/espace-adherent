@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche\AdherentMessage;
+namespace App\Controller\EnMarche\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageDataObject;
-use AppBundle\AdherentMessage\AdherentMessageFactory;
-use AppBundle\AdherentMessage\AdherentMessageManager;
-use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Form\AdherentMessage\AdherentMessageType;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Repository\AdherentMessageRepository;
+use App\AdherentMessage\AdherentMessageDataObject;
+use App\AdherentMessage\AdherentMessageFactory;
+use App\AdherentMessage\AdherentMessageManager;
+use App\AdherentMessage\AdherentMessageStatusEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
+use App\Entity\CitizenProject;
+use App\Form\AdherentMessage\AdherentMessageType;
+use App\Mailchimp\Manager;
+use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

@@ -2,7 +2,7 @@
 
 namespace Migrations;
 
-use AppBundle\Entity\Donation;
+use App\Entity\Donation;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 

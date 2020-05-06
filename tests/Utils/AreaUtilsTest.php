@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Utils;
+namespace Tests\App\Utils;
 
-use AppBundle\Utils\AreaUtils;
+use App\Utils\AreaUtils;
 use PHPUnit\Framework\TestCase;
 
 class AreaUtilsTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Storage;
+namespace App\Storage;
 
 use League\Flysystem\Filesystem;
 use League\Glide\Server;

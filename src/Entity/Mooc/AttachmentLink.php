@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Mooc;
+namespace App\Entity\Mooc;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityTimestampableTrait;
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

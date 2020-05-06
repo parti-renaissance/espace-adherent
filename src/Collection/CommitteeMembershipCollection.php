@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Collection;
+namespace App\Collection;
 
-use AppBundle\Entity\CommitteeMembership;
+use App\Entity\CommitteeMembership;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class CommitteeMembershipCollection extends ArrayCollection

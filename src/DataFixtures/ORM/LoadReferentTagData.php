@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Intl\UnitedNationsBundle;
-use AppBundle\Repository\ReferentTagRepository;
+use App\Entity\ReferentTag;
+use App\Intl\UnitedNationsBundle;
+use App\Repository\ReferentTagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 

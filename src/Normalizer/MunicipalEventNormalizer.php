@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Entity\MunicipalEvent;
+use App\Entity\MunicipalEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;

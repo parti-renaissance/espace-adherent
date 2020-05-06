@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Mailchimp\Synchronisation\Handler;
+namespace App\Mailchimp\Synchronisation\Handler;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Mailchimp\Manager;
+use App\Mailchimp\Synchronisation\Command\AddApplicationRequestCandidateCommand;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

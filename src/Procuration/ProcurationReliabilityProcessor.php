@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Procuration;
+namespace App\Procuration;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ProcurationProxy;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Entity\ProcurationProxy;
+use App\Repository\AdherentRepository;
 
 class ProcurationReliabilityProcessor
 {

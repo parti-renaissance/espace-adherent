@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Jecoute;
+namespace App\Entity\Jecoute;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthoredInterface;
-use AppBundle\Entity\EntityIdentityTrait;
+use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
+use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -56,7 +56,7 @@ class SurveyQuestion implements AuthoredInterface
     private $position;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Jecoute\DataAnswer", mappedBy="surveyQuestion")
+     * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\DataAnswer", mappedBy="surveyQuestion")
      */
     private $dataAnswers;
 

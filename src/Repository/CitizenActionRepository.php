@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenProject;
+use App\Entity\CitizenAction;
+use App\Entity\CitizenProject;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

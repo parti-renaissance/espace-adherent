@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="redirections")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RedirectionRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\RedirectionListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\RedirectionRepository")
+ * @ORM\EntityListeners({"App\EntityListener\RedirectionListener"})
  *
  * @Algolia\Index(autoIndex=false)
  *

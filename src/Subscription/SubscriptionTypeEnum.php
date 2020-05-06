@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Subscription;
+namespace App\Subscription;
 
 use MyCLabs\Enum\Enum;
 

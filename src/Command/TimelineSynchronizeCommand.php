@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Timeline\Manifesto;
-use AppBundle\Entity\Timeline\Measure;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\Theme;
+use App\Entity\Timeline\Manifesto;
+use App\Entity\Timeline\Measure;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\Theme;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\Jecoute;
+namespace App\Repository\Jecoute;
 
-use AppBundle\Entity\Jecoute\SuggestedQuestion;
+use App\Entity\Jecoute\SuggestedQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

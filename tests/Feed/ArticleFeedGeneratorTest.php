@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Feed;
+namespace Tests\App\Feed;
 
-use AppBundle\Entity\Article;
-use AppBundle\Entity\ArticleCategory;
-use AppBundle\Feed\ArticleFeedGenerator;
-use AppBundle\Feed\Exception\FeedGeneratorException;
+use App\Entity\Article;
+use App\Entity\ArticleCategory;
+use App\Feed\ArticleFeedGenerator;
+use App\Feed\Exception\FeedGeneratorException;
 use League\CommonMark\CommonMarkConverter;
 use PHPUnit\Framework\TestCase;
 use Suin\RSSWriter\FeedInterface;

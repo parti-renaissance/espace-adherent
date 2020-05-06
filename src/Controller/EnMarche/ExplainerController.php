@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\OrderArticle;
-use AppBundle\Entity\OrderSection;
-use AppBundle\Entity\Page;
+use App\Entity\OrderArticle;
+use App\Entity\OrderSection;
+use App\Entity\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;

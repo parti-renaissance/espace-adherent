@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\RepublicanSilence\TagExtractor;
+namespace App\RepublicanSilence\TagExtractor;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Entity\PostAddress;
+use App\Entity\Adherent;
+use App\Entity\CitizenProjectMembership;
+use App\Entity\PostAddress;
 
 class CitizenProjectReferentTagExtractor implements ReferentTagExtractorInterface
 {

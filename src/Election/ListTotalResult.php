@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Election;
+namespace App\Election;
 
-use AppBundle\Entity\Election\VoteResultList;
+use App\Entity\Election\VoteResultList;
 
 class ListTotalResult
 {

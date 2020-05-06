@@ -39,17 +39,17 @@ services:
         public: false
 
     _instanceof:
-        AppBundle\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
+        App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
             tags: ['app.adherent.unregistration.handler']
 
     Algolia\AlgoliaSearchBundle\Indexer\Indexer: '@algolia.indexer'
 
-    AppBundle\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
+    App\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
 
-    AppBundle\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
+    App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
         arguments:
             $handlers: !tagged 'app.adherent.unregistration.handler'
         tags: ['messenger.message_handler']
 
-    AppBundle\Adherent\Unregistration\Handlers\:
+    App\Adherent\Unregistration\Handlers\:
         resource: ../src/Adherent/Unregistration/Handlers/

@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Assessor\Filter\AssessorRequestFilters;
-use AppBundle\Assessor\Filter\VotePlaceFilters;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\AssessorRequestRepository;
-use AppBundle\Repository\VotePlaceRepository;
+use App\Assessor\Filter\AssessorRequestFilters;
+use App\Assessor\Filter\VotePlaceFilters;
+use App\Entity\Adherent;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
+use App\Repository\AssessorRequestRepository;
+use App\Repository\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

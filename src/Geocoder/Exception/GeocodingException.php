@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Geocoder\Exception;
+namespace App\Geocoder\Exception;
 
 class GeocodingException extends \RuntimeException
 {

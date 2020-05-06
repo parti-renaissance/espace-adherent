@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Producer;
+namespace App\Producer;
 
-use AppBundle\Deputy\DeputyMessage;
+use App\Deputy\DeputyMessage;
 
 interface DeputyMessageDispatcherProducerInterface
 {

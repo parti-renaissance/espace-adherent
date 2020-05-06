@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Interactive;
+namespace App\Interactive;
 
-use AppBundle\Entity\MyEuropeChoice;
-use AppBundle\Validator\Recaptcha as AssertRecaptcha;
+use App\Entity\MyEuropeChoice;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -52,21 +52,21 @@ final class MyEuropeProcessor
 
     /**
      * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Choice(callback={"AppBundle\ValueObject\Genders", "all"}, strict=true, groups={"fill_info"})
+     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, strict=true, groups={"fill_info"})
      */
     public $friendGender;
 
     /**
      * @var MyEuropeChoice|null
      *
-     * @Assert\Type("AppBundle\Entity\MyEuropeChoice", groups={"fill_info"})
+     * @Assert\Type("App\Entity\MyEuropeChoice", groups={"fill_info"})
      */
     public $friendPosition;
 
     /**
      * @Assert\Count(min=1, max=2, minMessage="interactive.friend_cases.min", maxMessage="interactive.friend_cases.max", groups={"fill_cases"})
      * @Assert\All({
-     *     @Assert\Type("AppBundle\Entity\MyEuropeChoice")
+     *     @Assert\Type("App\Entity\MyEuropeChoice")
      * }, groups={"fill_cases"})
      */
     public $friendCases = [];
@@ -74,7 +74,7 @@ final class MyEuropeProcessor
     /**
      * @Assert\Count(min=1, max=2, minMessage="interactive.friend_appreciations.min", maxMessage="interactive.friend_appreciations.max", groups={"fill_appreciations"})
      * @Assert\All({
-     *     @Assert\Type("AppBundle\Entity\MyEuropeChoice")
+     *     @Assert\Type("App\Entity\MyEuropeChoice")
      * }, groups={"fill_appreciations"})
      */
     public $friendAppreciations;

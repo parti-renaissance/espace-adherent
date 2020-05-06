@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Newsletter;
+namespace App\Newsletter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\NewsletterSubscription;
+use App\Entity\Adherent;
+use App\Entity\NewsletterSubscription;
 use Symfony\Component\EventDispatcher\Event;
 
 class NewsletterEvent extends Event

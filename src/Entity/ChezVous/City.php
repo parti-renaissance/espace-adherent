@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\ChezVous;
+namespace App\Entity\ChezVous;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\ChezVous\MeasureChoiceLoader;
-use AppBundle\Entity\AlgoliaIndexedEntityInterface;
+use App\ChezVous\MeasureChoiceLoader;
+use App\Entity\AlgoliaIndexedEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ChezVous\CityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ChezVous\CityRepository")
  * @ORM\Table(name="chez_vous_cities")
  *
  * @UniqueEntity("slug")

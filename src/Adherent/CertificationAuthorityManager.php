@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Adherent;
+namespace App\Adherent;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\CertificationRequest;
-use AppBundle\Entity\Reporting\AdherentCertificationHistory;
+use App\Entity\Adherent;
+use App\Entity\Administrator;
+use App\Entity\CertificationRequest;
+use App\Entity\Reporting\AdherentCertificationHistory;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CertificationAuthorityManager

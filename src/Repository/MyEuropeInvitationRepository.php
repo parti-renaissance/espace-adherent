@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 class MyEuropeInvitationRepository extends InteractiveInvitationRepository
 {

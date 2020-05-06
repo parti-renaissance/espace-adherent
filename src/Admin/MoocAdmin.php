@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Mooc\Chapter;
-use AppBundle\Form\ImageType;
-use AppBundle\Form\PurifiedTextareaType;
+use App\Entity\Mooc\Chapter;
+use App\Form\ImageType;
+use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

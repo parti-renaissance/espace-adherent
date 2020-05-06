@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\BannedAdherentRepository;
+use App\Entity\Adherent;
+use App\Repository\BannedAdherentRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

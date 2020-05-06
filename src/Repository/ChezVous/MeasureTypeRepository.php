@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ChezVous;
+namespace App\Repository\ChezVous;
 
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\MeasureType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

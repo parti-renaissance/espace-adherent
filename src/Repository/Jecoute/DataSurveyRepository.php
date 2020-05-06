@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\Jecoute;
+namespace App\Repository\Jecoute;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\DataSurvey;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

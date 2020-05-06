@@ -12,7 +12,7 @@
             </span>
         </td>
         <td class="datagrid__table__col--left">
-            {{ constant('AppBundle\\Entity\\VotePlace::MAX_ASSESSOR_REQUESTS') - votePlace.assessorRequests|length }}
+            {{ constant('App\\Entity\\VotePlace::MAX_ASSESSOR_REQUESTS') - votePlace.assessorRequests|length }}
         </td>
         <td>
             {% if not votePlace.getAvailableOffices is empty %}

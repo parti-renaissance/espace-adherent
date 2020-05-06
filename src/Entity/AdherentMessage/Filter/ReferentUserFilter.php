@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage\Filter;
+namespace App\Entity\AdherentMessage\Filter;
 
-use AppBundle\Entity\ReferentTag;
+use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +32,7 @@ class ReferentUserFilter extends AbstractUserFilter
     /**
      * @var ReferentTag[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      *
      * @Assert\NotNull
      */

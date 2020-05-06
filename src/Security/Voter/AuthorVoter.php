@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AuthoredInterface;
+use App\Entity\Adherent;
+use App\Entity\AuthoredInterface;
 
 class AuthorVoter extends AbstractAdherentVoter
 {

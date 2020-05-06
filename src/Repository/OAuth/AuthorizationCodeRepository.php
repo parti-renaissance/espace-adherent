@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\OAuth;
+namespace App\Repository\OAuth;
 
-use AppBundle\Entity\OAuth\AuthorizationCode;
+use App\Entity\OAuth\AuthorizationCode;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;

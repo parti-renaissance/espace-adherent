@@ -1,26 +1,26 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Address\GeoCoder;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
-use AppBundle\Form\InstitutionalEventCommandType;
-use AppBundle\Form\ReferentPersonLinkType;
-use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
-use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Referent\ManagedCitizenProjectsExporter;
-use AppBundle\Referent\ManagedInstitutionalEventsExporter;
-use AppBundle\Referent\OrganizationalChartManager;
-use AppBundle\Repository\CitizenProjectRepository;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\InstitutionalEventRepository;
-use AppBundle\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
-use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
-use AppBundle\Repository\ReferentRepository;
+use App\Address\GeoCoder;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\InstitutionalEvent;
+use App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
+use App\Form\InstitutionalEventCommandType;
+use App\Form\ReferentPersonLinkType;
+use App\InstitutionalEvent\InstitutionalEventCommand;
+use App\InstitutionalEvent\InstitutionalEventCommandHandler;
+use App\Intl\FranceCitiesBundle;
+use App\Referent\ManagedCitizenProjectsExporter;
+use App\Referent\ManagedInstitutionalEventsExporter;
+use App\Referent\OrganizationalChartManager;
+use App\Repository\CitizenProjectRepository;
+use App\Repository\CommitteeRepository;
+use App\Repository\InstitutionalEventRepository;
+use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
+use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
+use App\Repository\ReferentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * All the route names should start with 'app_referent_', if not you should modify AppBundle\EventListener\RecordReferentLastVisitListener.
+ * All the route names should start with 'app_referent_', if not you should modify App\EventListener\RecordReferentLastVisitListener.
  *
  * @Route("/espace-referent")
  */

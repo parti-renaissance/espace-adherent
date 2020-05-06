@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\IdeasWorkshop\Answer;
-use AppBundle\Entity\UserDocument;
+use App\Entity\CommitteeFeedItem;
+use App\Entity\Event;
+use App\Entity\IdeasWorkshop\Answer;
+use App\Entity\UserDocument;
 use Doctrine\ORM\EntityRepository;
 
 class UserDocumentRepository extends EntityRepository

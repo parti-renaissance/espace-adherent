@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
 use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;

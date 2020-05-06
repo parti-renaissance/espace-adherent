@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Newsletter\Command;
+namespace App\Newsletter\Command;
 
 class MailchimpSyncSiteNewsletterCommand
 {

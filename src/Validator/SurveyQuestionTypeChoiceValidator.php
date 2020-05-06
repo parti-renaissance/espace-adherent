@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
+use App\Entity\Jecoute\Question;
+use App\Jecoute\SurveyQuestionTypeEnum;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Fixer;
+namespace App\Fixer;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -22,7 +22,7 @@ final class SensioToSymfonyRouteFixer extends AbstractFixer
                 new CodeSample(
                     '<?php 
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
 - use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 + use Symfony\Component\Routing\Annotation\Route;                       

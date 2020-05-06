@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\Formation;
+namespace App\Entity\Formation;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\BaseFile;
+use App\Entity\BaseFile;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Csv\CsvResponseFactory;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Utils\PhoneNumberFormatter;
+use App\Csv\CsvResponseFactory;
+use App\Repository\AdherentRepository;
+use App\Utils\PhoneNumberFormatter;
 use League\Csv\Writer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;

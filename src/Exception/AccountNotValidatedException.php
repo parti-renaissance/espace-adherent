@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 
 class AccountNotValidatedException extends AccountStatusException

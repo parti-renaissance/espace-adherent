@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaignReport;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Repository\MailchimpCampaignRepository;
+use App\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\MailchimpCampaignReport;
+use App\Mailchimp\Manager;
+use App\Repository\MailchimpCampaignRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Command\Command;

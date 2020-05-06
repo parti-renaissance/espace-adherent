@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\LegislativeCandidate;
-use AppBundle\Entity\LegislativeDistrictZone;
-use AppBundle\ValueObject\Genders;
+use App\Entity\LegislativeCandidate;
+use App\Entity\LegislativeDistrictZone;
+use App\ValueObject\Genders;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 

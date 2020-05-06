@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\VotingPlatform;
+namespace App\Form\VotingPlatform;
 
-use AppBundle\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeCandidacy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

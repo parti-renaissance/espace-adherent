@@ -406,7 +406,7 @@
                         <th class="sonata-ba-list-field-header-text">Dernière remontée</th>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             le {{ totals.updatedAt|localizeddate('none', 'none', 'fr_FR', null, "d MMM yyyy à HH:mm") }}
-                            {% if totals.updatedBy is instanceof('AppBundle\\Entity\\Adherent') %}
+                            {% if totals.updatedBy is instanceof('App\\Entity\\Adherent') %}
                                 <br/>par
                                 <a href="{{ path('admin_app_adherent_edit', { id: totals.updatedBy.id }) }}" target="_blank">
                                     {{ totals.updatedBy.fullName }}

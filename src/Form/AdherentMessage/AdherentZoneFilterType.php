@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Form\AdherentMessage;
+namespace App\Form\AdherentMessage;
 
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Form\CommitteeChoiceType;
-use AppBundle\Form\EventListener\IncludeExcludeFilterRoleListener;
-use AppBundle\Form\FilterRoleType;
-use AppBundle\Form\GenderType;
-use AppBundle\Form\MemberInterestsChoiceType;
-use AppBundle\Repository\CommitteeRepository;
+use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Form\CommitteeChoiceType;
+use App\Form\EventListener\IncludeExcludeFilterRoleListener;
+use App\Form\FilterRoleType;
+use App\Form\GenderType;
+use App\Form\MemberInterestsChoiceType;
+use App\Repository\CommitteeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;

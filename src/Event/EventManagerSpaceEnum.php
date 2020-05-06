@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
 use MyCLabs\Enum\Enum;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
 use MyCLabs\Enum\Enum;
 

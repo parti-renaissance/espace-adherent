@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="articles")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
- * @ORM\EntityListeners({"AppBundle\EntityListener\ArticleListener"})
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
+ * @ORM\EntityListeners({"App\EntityListener\ArticleListener"})
  *
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
@@ -38,7 +38,7 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     /**
      * @var ArticleCategory|null
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ArticleCategory")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      *
      * @Assert\NotBlank
@@ -66,7 +66,7 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     /**
      * @var Media
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Media", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
      *
      * @Assert\NotBlank
      * @Assert\Valid

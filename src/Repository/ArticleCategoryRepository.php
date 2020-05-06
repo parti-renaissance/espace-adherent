@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\ArticleCategory;
+use App\Entity\ArticleCategory;
 use Doctrine\ORM\EntityRepository;
 
 class ArticleCategoryRepository extends EntityRepository

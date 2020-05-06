@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\EnMarche;
+namespace App\Controller\EnMarche;
 
-use AppBundle\Entity\TonMacronFriendInvitation;
-use AppBundle\Form\TonMacronInvitationType;
+use App\Entity\TonMacronFriendInvitation;
+use App\Form\TonMacronInvitationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

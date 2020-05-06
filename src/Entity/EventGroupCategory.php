@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventGroupCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EventGroupCategoryRepository")
  * @ORM\Table(
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="event_group_category_name_unique", columns="name"),
@@ -24,7 +24,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class EventGroupCategory extends BaseEventCategory
 {
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EventCategory", mappedBy="eventGroupCategory", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="App\Entity\EventCategory", mappedBy="eventGroupCategory", fetch="EAGER")
      * @ORM\OrderBy({"name": "ASC"})
      */
     private $eventCategories;

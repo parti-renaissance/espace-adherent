@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(name="adherent_activation_token_unique", columns="value"),
  *     @ORM\UniqueConstraint(name="adherent_activation_token_account_unique", columns={"value", "adherent_uuid"})
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AdherentActivationTokenRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AdherentActivationTokenRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\RuntimeExtensionInterface;

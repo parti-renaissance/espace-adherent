@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Donation;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\DonationThanksMessage;
-use AppBundle\Repository\DonationRepository;
-use AppBundle\Repository\TransactionRepository;
+use App\Entity\Donation;
+use App\Mailer\MailerService;
+use App\Mailer\Message\DonationThanksMessage;
+use App\Repository\DonationRepository;
+use App\Repository\TransactionRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Lexik\Bundle\PayboxBundle\Event\PayboxEvents;
 use Lexik\Bundle\PayboxBundle\Event\PayboxResponseEvent;

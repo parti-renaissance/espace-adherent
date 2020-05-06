@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Admin\Extension;
+namespace App\Admin\Extension;
 
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

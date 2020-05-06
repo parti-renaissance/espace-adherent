@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\ApplicationRequest\Listener;
+namespace App\ApplicationRequest\Listener;
 
-use AppBundle\ApplicationRequest\ApplicationRequestRepository;
-use AppBundle\Membership\AdherentEvent;
-use AppBundle\Membership\AdherentEvents;
-use AppBundle\Membership\UserEmailEvent;
-use AppBundle\Membership\UserEvents;
+use App\ApplicationRequest\ApplicationRequestRepository;
+use App\Membership\AdherentEvent;
+use App\Membership\AdherentEvents;
+use App\Membership\UserEmailEvent;
+use App\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UpdateAdherentRelationSubscriber implements EventSubscriberInterface

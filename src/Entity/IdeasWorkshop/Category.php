@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use ApiPlatform\Core\Annotation\ApiResource;
-use AppBundle\Entity\EnabledInterface;
+use App\Entity\EnabledInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;

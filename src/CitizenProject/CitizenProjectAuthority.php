@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\Membership\UserEvent;
-use AppBundle\Membership\UserEvents;
-use AppBundle\Repository\CitizenProjectMembershipRepository;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
+use App\Membership\UserEvent;
+use App\Membership\UserEvents;
+use App\Repository\CitizenProjectMembershipRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CitizenProjectAuthority

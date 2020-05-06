@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository\Election;
+namespace App\Repository\Election;
 
-use AppBundle\Entity\City;
-use AppBundle\Entity\Election\VoteResultListCollection;
-use AppBundle\Entity\ElectionRound;
+use App\Entity\City;
+use App\Entity\Election\VoteResultListCollection;
+use App\Entity\ElectionRound;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

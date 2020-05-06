@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\BoardMember\BoardMemberMessage as BoardMemberMessageModel;
-use AppBundle\Entity\Adherent;
+use App\BoardMember\BoardMemberMessage as BoardMemberMessageModel;
+use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
 final class BoardMemberContactAdherentsMessage extends Message

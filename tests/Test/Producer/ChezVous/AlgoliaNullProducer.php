@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Test\Producer\ChezVous;
+namespace Tests\App\Test\Producer\ChezVous;
 
-use AppBundle\Entity\ChezVous\MeasureType;
-use AppBundle\Producer\ChezVous\AlgoliaProducerInterface;
+use App\Entity\ChezVous\MeasureType;
+use App\Producer\ChezVous\AlgoliaProducerInterface;
 
 class AlgoliaNullProducer implements AlgoliaProducerInterface
 {

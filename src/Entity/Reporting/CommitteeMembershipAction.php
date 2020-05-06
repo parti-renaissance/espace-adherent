@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Reporting;
+namespace App\Entity\Reporting;
 
 use MyCLabs\Enum\Enum;
 

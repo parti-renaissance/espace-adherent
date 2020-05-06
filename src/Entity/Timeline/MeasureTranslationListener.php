@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Timeline;
+namespace App\Entity\Timeline;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 

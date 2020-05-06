@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity\IdeasWorkshop;
+namespace App\Entity\IdeasWorkshop;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\EnabledInterface;
-use AppBundle\Entity\EntitySoftDeletableTrait;
-use AppBundle\Entity\EntitySoftDeletedInterface;
-use AppBundle\Entity\EntityTimestampableTrait;
+use App\Entity\Adherent;
+use App\Entity\EnabledInterface;
+use App\Entity\EntitySoftDeletableTrait;
+use App\Entity\EntitySoftDeletedInterface;
+use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation as SymfonySerializer;
@@ -55,7 +55,7 @@ abstract class BaseComment implements EnabledInterface, EntitySoftDeletedInterfa
     protected $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
      * @SymfonySerializer\Groups({"idea_thread_comment_read", "idea_thread_list_read", "idea_read"})

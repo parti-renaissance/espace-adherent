@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
+use App\Entity\Adherent;
+use App\Mailer\Message\AdherentAccountActivationMessage;
+use App\Mailer\Message\MessageRecipient;
 use PHPUnit\Framework\TestCase;
 
 class AdherentAccountActivationMessageTest extends TestCase

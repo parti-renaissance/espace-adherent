@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EventCategoryRepository")
  * @ORM\Table(
  *     name="events_categories",
  *     uniqueConstraints={
@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EventCategory extends BaseEventCategory
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventGroupCategory", inversedBy="eventCategories")
+     * @ORM\ManyToOne(targetEntity="App\Entity\EventGroupCategory", inversedBy="eventCategories")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank
      */

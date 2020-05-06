@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Repository\WebHookRepository;
-use AppBundle\WebHook\Event;
+use App\Repository\WebHookRepository;
+use App\WebHook\Event;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

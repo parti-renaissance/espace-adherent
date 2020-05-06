@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\EventRepository;
+use App\Entity\Adherent;
+use App\Repository\CommitteeRepository;
+use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

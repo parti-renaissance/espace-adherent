@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeCandidacy;
-use AppBundle\Image\ImageManager;
-use AppBundle\ValueObject\Genders;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeCandidacy;
+use App\Image\ImageManager;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

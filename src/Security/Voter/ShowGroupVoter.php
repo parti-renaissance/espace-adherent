@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Security\Voter;
+namespace App\Security\Voter;
 
-use AppBundle\CitizenProject\CitizenProjectPermissions;
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\BaseGroup;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
+use App\CitizenProject\CitizenProjectPermissions;
+use App\Committee\CommitteePermissions;
+use App\Entity\Adherent;
+use App\Entity\BaseGroup;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ShowGroupVoter extends AbstractAdherentVoter

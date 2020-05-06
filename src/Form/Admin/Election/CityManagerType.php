@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Admin\Election;
+namespace App\Form\Admin\Election;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Election\CityManager;
+use App\Address\Address;
+use App\Entity\Election\CityManager;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

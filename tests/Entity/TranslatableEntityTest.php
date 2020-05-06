@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\EntityTranslationInterface;
-use AppBundle\Entity\Timeline\Profile;
+use App\Entity\EntityTranslationInterface;
+use App\Entity\Timeline\Profile;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 

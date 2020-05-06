@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\MunicipalManager\MunicipalManagerRole;
+namespace App\MunicipalManager\MunicipalManagerRole;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\City;
-use AppBundle\Entity\MunicipalManagerRoleAssociation;
-use AppBundle\MunicipalManager\MunicipalManagerAssociationValueObject;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Entity\City;
+use App\Entity\MunicipalManagerRoleAssociation;
+use App\MunicipalManager\MunicipalManagerAssociationValueObject;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class MunicipalManagerAssociationManager

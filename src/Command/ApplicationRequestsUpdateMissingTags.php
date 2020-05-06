@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Referent\ReferentTagManager;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Referent\ReferentTagManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

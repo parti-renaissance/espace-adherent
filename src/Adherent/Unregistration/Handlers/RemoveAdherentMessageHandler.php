@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\AdherentMessageRepository;
+use App\Entity\Adherent;
+use App\Repository\AdherentMessageRepository;
 
 class RemoveAdherentMessageHandler implements UnregistrationAdherentHandlerInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity\ApplicationRequest;
+namespace App\Entity\ApplicationRequest;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\ApplicationRequest\ApplicationRequestTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="application_request_volunteer")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\VolunteerRequestRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -21,7 +21,7 @@ class VolunteerRequest extends ApplicationRequest
     /**
      * @var TechnicalSkill[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApplicationRequest\TechnicalSkill")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\TechnicalSkill")
      *
      * @Assert\Count(min=1, minMessage="application_request.technical_skills.min")
      */

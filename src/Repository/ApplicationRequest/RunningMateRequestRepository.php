@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ApplicationRequest;
+namespace App\Repository\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\RunningMateRequest;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class RunningMateRequestRepository extends AbstractApplicationRequestRepository

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Handler;
+namespace App\AdherentMessage\Handler;
 
-use AppBundle\AdherentMessage\Command\AdherentMessageChangeCommand;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Mailchimp\Manager;
-use AppBundle\Repository\AdherentMessageRepository;
+use App\AdherentMessage\Command\AdherentMessageChangeCommand;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Mailchimp\Manager;
+use App\Repository\AdherentMessageRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailer\Exception;
+namespace App\Mailer\Exception;
 
 class MailerException extends \RuntimeException
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Entity\AdherentMessage;
+namespace App\Entity\AdherentMessage;
 
-use AppBundle\AdherentMessage\AdherentMessageDataObject;
-use AppBundle\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use AppBundle\Entity\AuthoredInterface;
+use App\AdherentMessage\AdherentMessageDataObject;
+use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
+use App\Entity\AuthoredInterface;
 use Ramsey\Uuid\UuidInterface;
 
 interface AdherentMessageInterface extends AuthoredInterface

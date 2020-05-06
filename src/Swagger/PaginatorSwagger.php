@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Swagger;
+namespace App\Swagger;
 
 class PaginatorSwagger
 {

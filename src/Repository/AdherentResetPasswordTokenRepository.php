@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\AdherentResetPasswordToken;
+use App\Entity\AdherentResetPasswordToken;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class AdherentResetPasswordTokenRepository extends AbstractAdherentTokenRepository

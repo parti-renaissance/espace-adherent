@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Subscription\SubscriptionTypeEnum;
 
 class NewsletterAdherentSubscriptionFridayListCalculator extends AbstractNewsletterSubscriptionCalculator
 {

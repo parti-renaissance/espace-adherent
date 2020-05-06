@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\ReferentOrganizationalChart;
+namespace App\Repository\ReferentOrganizationalChart;
 
-use AppBundle\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem;
+use App\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\FacebookVideo;
+use App\Entity\FacebookVideo;
 use Doctrine\ORM\EntityRepository;
 
 class FacebookVideoRepository extends EntityRepository

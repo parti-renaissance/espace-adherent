@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\SocialShare;
-use AppBundle\Entity\SocialShareCategory;
+use App\Content\MediaFactory;
+use App\Entity\SocialShare;
+use App\Entity\SocialShareCategory;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

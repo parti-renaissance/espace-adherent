@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Address\NullableAddress;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectCategory;
-use AppBundle\Entity\CitizenProjectSkill;
-use AppBundle\Entity\Committee;
-use AppBundle\Validator\WysiwygLength as AssertWysiwygLength;
+use App\Address\NullableAddress;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectCategory;
+use App\Entity\CitizenProjectSkill;
+use App\Entity\Committee;
+use App\Validator\WysiwygLength as AssertWysiwygLength;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use libphonenumber\PhoneNumber;
@@ -58,7 +58,7 @@ class CitizenProjectCommand
 
     /**
      * @Assert\NotNull
-     * @Assert\Type("AppBundle\Entity\CitizenProjectCategory")
+     * @Assert\Type("App\Entity\CitizenProjectCategory")
      */
     public $category;
 

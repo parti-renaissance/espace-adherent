@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Statistics\Acquisition\Calculator;
+namespace App\Statistics\Acquisition\Calculator;
 
-use AppBundle\Entity\Reporting\CommitteeMembershipAction;
-use AppBundle\Repository\CommitteeMembershipHistoryRepository;
-use AppBundle\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
-use AppBundle\Statistics\Acquisition\StatisticsRequest;
+use App\Entity\Reporting\CommitteeMembershipAction;
+use App\Repository\CommitteeMembershipHistoryRepository;
+use App\Statistics\Acquisition\Calculator\Category\AdhesionCategoryTrait;
+use App\Statistics\Acquisition\StatisticsRequest;
 
 class CommitteeMemberCalculator extends AbstractCalculator
 {

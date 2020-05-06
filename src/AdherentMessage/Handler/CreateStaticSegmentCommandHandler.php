@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Handler;
+namespace App\AdherentMessage\Handler;
 
-use AppBundle\AdherentMessage\Command\CreateStaticSegmentCommand;
-use AppBundle\AdherentMessage\StaticSegmentInterface;
-use AppBundle\Mailchimp\Manager;
+use App\AdherentMessage\Command\CreateStaticSegmentCommand;
+use App\AdherentMessage\StaticSegmentInterface;
+use App\Mailchimp\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

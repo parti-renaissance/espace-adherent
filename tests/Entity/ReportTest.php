@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenAction;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\IdeasWorkshop\Idea;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\Entity\Report\Report;
+use App\Entity\Adherent;
+use App\Entity\CitizenAction;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
+use App\Entity\Event;
+use App\Entity\IdeasWorkshop\Idea;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\Entity\Report\Report;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
 
@@ -56,7 +56,7 @@ class ReportTest extends TestCase
     /**
      * @dataProvider provideSubjectClass
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Some reasons are not valid "toto", they are defined in AppBundle\Entity\Report\ReportReasonEnum::REASONS_LIST
+     * @expectedExceptionMessage Some reasons are not valid "toto", they are defined in App\Entity\Report\ReportReasonEnum::REASONS_LIST
      */
     public function testItShouldValidateReasons(string $subjectClass): void
     {
@@ -66,7 +66,7 @@ class ReportTest extends TestCase
     /**
      * @dataProvider provideSubjectClass
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $comment is filed but AppBundle\Entity\Report\ReportReasonEnum::REASON_OTHER is not provided in $reasons
+     * @expectedExceptionMessage $comment is filed but App\Entity\Report\ReportReasonEnum::REASON_OTHER is not provided in $reasons
      */
     public function testItShouldRequireOtherReasonWhenCommentIsProvided(string $subjectClass): void
     {

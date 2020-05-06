@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\VotePlace\VotePlaceManager;
+use App\VotePlace\VotePlaceManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Workflow\StateMachine;

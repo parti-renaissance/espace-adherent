@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Donation;
+use App\Entity\Donator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;

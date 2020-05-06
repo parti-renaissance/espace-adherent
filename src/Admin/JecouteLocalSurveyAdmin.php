@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Form\Admin\JecouteAdminSurveyQuestionFormType;
-use AppBundle\Form\Jecoute\SurveyFormType;
+use App\Form\Admin\JecouteAdminSurveyQuestionFormType;
+use App\Form\Jecoute\SurveyFormType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

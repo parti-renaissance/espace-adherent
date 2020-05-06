@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Committee\Feed;
+namespace App\Committee\Feed;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\Event as EntityEvent;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Event as EntityEvent;
 
 class CommitteeEvent
 {

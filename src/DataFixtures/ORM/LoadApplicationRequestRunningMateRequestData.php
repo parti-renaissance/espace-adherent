@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\ValueObject\Genders;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;

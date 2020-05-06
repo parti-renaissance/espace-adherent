@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         @ORM\Index(columns={"email_address", "first_name", "last_name"}),
  *     },
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DonatorRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DonatorRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -126,7 +126,7 @@ class Donator
     private $referenceDonation;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\DonatorTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\DonatorTag")
      */
     private $tags;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Form\ElectionRoundType;
-use AppBundle\Form\PurifiedTextareaType;
+use App\Form\ElectionRoundType;
+use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

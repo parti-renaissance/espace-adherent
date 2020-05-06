@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Address;
+namespace App\Address;
 
-use AppBundle\Geocoder\GeocodableInterface;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Validator\Address as AssertValidAddress;
-use AppBundle\Validator\FrenchZipCode;
-use AppBundle\Validator\GeocodableAddress as AssertGeocodableAddress;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\Geocoder\GeocodableInterface;
+use App\Intl\FranceCitiesBundle;
+use App\Validator\Address as AssertValidAddress;
+use App\Validator\FrenchZipCode;
+use App\Validator\GeocodableAddress as AssertGeocodableAddress;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,7 +38,7 @@ class Address implements AddressInterface, GeocodableInterface
 
     /**
      * @Assert\Length(max=255, groups={"Default", "Update"})
-     * @Assert\Expression(expression="(this.getCountry() === constant('AppBundle\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update"})
+     * @Assert\Expression(expression="(this.getCountry() === constant('App\\Address\\Address::FRANCE') and this.getCity()) or value", message="common.city_name.not_blank", groups={"Update"})
      */
     private $cityName;
 

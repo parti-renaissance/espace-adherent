@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Committee\Event;
+namespace App\Committee\Event;
 
 class UnfollowCommitteeEvent extends AbstractCommitteeMembershipEvent
 {

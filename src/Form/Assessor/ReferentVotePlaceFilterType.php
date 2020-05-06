@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\Assessor;
+namespace App\Form\Assessor;
 
-use AppBundle\Form\DataTransformer\StringToArrayTransformer;
-use AppBundle\Form\UnitedNationsCountryType;
+use App\Form\DataTransformer\StringToArrayTransformer;
+use App\Form\UnitedNationsCountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 

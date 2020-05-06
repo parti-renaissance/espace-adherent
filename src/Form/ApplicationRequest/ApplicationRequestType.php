@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Form\ApplicationRequest;
+namespace App\Form\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ApplicationRequest\Theme;
-use AppBundle\Form\AddressType;
-use AppBundle\Intl\FranceCitiesBundle;
-use AppBundle\Repository\ApplicationRequest\ThemeRepository;
-use AppBundle\ValueObject\Genders;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\Theme;
+use App\Form\AddressType;
+use App\Intl\FranceCitiesBundle;
+use App\Repository\ApplicationRequest\ThemeRepository;
+use App\ValueObject\Genders;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Entity\WebHook;
+namespace App\Entity\WebHook;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\EntityIdentityTrait;
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\WebHook\Event;
-use AppBundle\WebHook\Service;
+use App\Entity\EntityIdentityTrait;
+use App\Entity\OAuth\Client;
+use App\WebHook\Event;
+use App\WebHook\Service;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\WebHookRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\WebHookRepository")
  * @ORM\Table(name="web_hooks", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="web_hook_uuid_unique", columns="uuid"),
  *     @ORM\UniqueConstraint(name="web_hook_event_client_id_unique", columns={"event", "client_id"})
@@ -40,7 +40,7 @@ class WebHook
      *
      * @var Client
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OAuth\Client", inversedBy="webHooks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\Client", inversedBy="webHooks")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotNull

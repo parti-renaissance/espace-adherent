@@ -22,7 +22,7 @@ default:
                     dispatcher: "@event_dispatcher"
                 - EmailContext
                 - ReferentTagContext:
-                    adherentRepository: "@AppBundle\\Repository\\AdherentRepository"
+                    adherentRepository: "@App\\Repository\\AdherentRepository"
                 - SecurityContext
                 - FeatureContext
                 - DonationContext
@@ -30,7 +30,7 @@ default:
         Behat\Symfony2Extension:
             kernel:
                 bootstrap: features/bootstrap/bootstrap.php
-                class: AppBundle\Kernel
+                class: App\Kernel
         Behat\MinkExtension:
             base_url: "http://test.enmarche.code"
             sessions:

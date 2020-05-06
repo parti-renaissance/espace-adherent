@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\LiveLink;
+use App\Entity\LiveLink;
 use Doctrine\ORM\EntityRepository;
 
 class LiveLinkRepository extends EntityRepository

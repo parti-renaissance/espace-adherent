@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Donator;
+use App\Entity\Donator;
 
 class DonatorFactory
 {

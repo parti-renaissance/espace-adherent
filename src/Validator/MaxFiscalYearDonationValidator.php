@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Donation\DonationRequest;
-use AppBundle\Repository\TransactionRepository;
+use App\Donation\DonationRequest;
+use App\Repository\TransactionRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

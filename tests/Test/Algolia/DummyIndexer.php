@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Test\Algolia;
+namespace Tests\App\Test\Algolia;
 
 use Algolia\AlgoliaSearchBundle\Indexer\Indexer;
 use Doctrine\ORM\EntityManager;

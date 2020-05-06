@@ -1,13 +1,13 @@
 <?php
 
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Repository\DonatorRepository;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Repository\DonatorRepository;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Tests\AppBundle\Test\Payment\PayboxProvider;
+use Tests\App\Test\Payment\PayboxProvider;
 
 class DonationContext extends \Behat\MinkExtension\Context\RawMinkContext
 {

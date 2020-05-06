@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\TonMacron\InvitationProcessor;
+use App\TonMacron\InvitationProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -13,7 +13,7 @@ use Ramsey\Uuid\UuidInterface;
  * @ORM\Table(name="ton_macron_friend_invitations", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="ton_macron_friend_invitations_uuid_unique", columns="uuid")
  * })
- * @ORM\Entity(repositoryClass="AppBundle\Repository\TonMacronFriendInvitationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TonMacronFriendInvitationRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -78,7 +78,7 @@ class TonMacronFriendInvitation
     private $createdAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\TonMacronChoice", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="App\Entity\TonMacronChoice", fetch="EAGER")
      * @ORM\JoinTable(
      *     name="ton_macron_friend_invitation_has_choices",
      *     joinColumns={

@@ -1,23 +1,23 @@
 <?php
 
-namespace Tests\AppBundle\Controller\EnMarche;
+namespace Tests\App\Controller\EnMarche;
 
-use AppBundle\Donation\PayboxPaymentSubscription;
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Entity\Transaction;
-use AppBundle\Mailer\Message\DonationThanksMessage;
-use AppBundle\Repository\DonationRepository;
-use AppBundle\Repository\DonatorIdentifierRepository;
-use AppBundle\Repository\DonatorRepository;
-use AppBundle\Repository\TransactionRepository;
+use App\Donation\PayboxPaymentSubscription;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Entity\Transaction;
+use App\Mailer\Message\DonationThanksMessage;
+use App\Repository\DonationRepository;
+use App\Repository\DonatorIdentifierRepository;
+use App\Repository\DonatorRepository;
+use App\Repository\TransactionRepository;
 use Goutte\Client as PayboxClient;
 use GuzzleHttp\Client;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\Test\Payment\PayboxProvider;
+use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Test\Payment\PayboxProvider;
 
 /**
  * @group functional

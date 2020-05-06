@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Admin\ProgrammaticFoundation;
+namespace App\Admin\ProgrammaticFoundation;
 
-use AppBundle\Entity\ProgrammaticFoundation\Approach;
-use AppBundle\Form\PurifiedTextareaType;
+use App\Entity\ProgrammaticFoundation\Approach;
+use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

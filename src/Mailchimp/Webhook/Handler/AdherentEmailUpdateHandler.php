@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailchimp\Webhook\Handler;
+namespace App\Mailchimp\Webhook\Handler;
 
-use AppBundle\Mailchimp\Webhook\EventTypeEnum;
-use AppBundle\Membership\AdherentChangeEmailHandler;
+use App\Mailchimp\Webhook\EventTypeEnum;
+use App\Membership\AdherentChangeEmailHandler;
 
 class AdherentEmailUpdateHandler extends AbstractAdherentHandler
 {

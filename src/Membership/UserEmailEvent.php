@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Membership;
+namespace App\Membership;
 
-use AppBundle\Entity\Adherent;
+use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\Event;
 
 class UserEmailEvent extends Event

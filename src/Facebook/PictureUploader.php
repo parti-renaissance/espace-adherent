@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Facebook;
+namespace App\Facebook;
 
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;

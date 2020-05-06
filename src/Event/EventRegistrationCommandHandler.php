@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\Event;
-use AppBundle\Events;
+use App\Entity\Event;
+use App\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventRegistrationCommandHandler

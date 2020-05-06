@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\SocialShareCategory;
+use App\Entity\SocialShareCategory;
 use Doctrine\ORM\EntityRepository;
 
 class SocialShareCategoryRepository extends EntityRepository

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Exporter;
+namespace App\Exporter;
 
-use AppBundle\Assessor\Filter\AssessorRequestExportFilter;
-use AppBundle\Entity\AssessorRequest;
-use AppBundle\Entity\VotePlace;
-use AppBundle\Repository\AssessorRequestRepository;
+use App\Assessor\Filter\AssessorRequestExportFilter;
+use App\Entity\AssessorRequest;
+use App\Entity\VotePlace;
+use App\Repository\AssessorRequestRepository;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
 use Symfony\Component\HttpFoundation\Response;

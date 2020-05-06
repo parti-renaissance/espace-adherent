@@ -1,13 +1,13 @@
 <?php
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\OAuth\AccessToken;
-use AppBundle\Entity\OAuth\Client;
-use AppBundle\OAuth\Model\AccessToken as AccessTokenModel;
-use AppBundle\OAuth\Model\Client as ClientModel;
-use AppBundle\OAuth\Model\Scope;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\OAuth\ClientRepository;
+use App\Entity\Adherent;
+use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\Client;
+use App\OAuth\Model\AccessToken as AccessTokenModel;
+use App\OAuth\Model\Client as ClientModel;
+use App\OAuth\Model\Scope;
+use App\Repository\AdherentRepository;
+use App\Repository\OAuth\ClientRepository;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behatch\Context\RestContext as BehatchRestContext;

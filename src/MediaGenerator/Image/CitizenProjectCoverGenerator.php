@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\MediaGenerator\Image;
+namespace App\MediaGenerator\Image;
 
-use AppBundle\MediaGenerator\BaseSnappyGenerator;
-use AppBundle\MediaGenerator\Command\MediaCommandInterface;
-use AppBundle\MediaGenerator\MediaContent;
+use App\MediaGenerator\BaseSnappyGenerator;
+use App\MediaGenerator\Command\MediaCommandInterface;
+use App\MediaGenerator\MediaContent;
 
 class CitizenProjectCoverGenerator extends BaseSnappyGenerator
 {

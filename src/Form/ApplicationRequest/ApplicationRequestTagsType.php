@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Form\ApplicationRequest;
+namespace App\Form\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\ApplicationRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

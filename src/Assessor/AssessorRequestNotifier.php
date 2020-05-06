@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Assessor;
+namespace App\Assessor;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\AssessorRequestAssociateMessage;
-use AppBundle\Mailer\Message\AssessorRequestConfirmationMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\AssessorRequestAssociateMessage;
+use App\Mailer\Message\AssessorRequestConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;

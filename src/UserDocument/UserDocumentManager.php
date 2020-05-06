@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\UserDocument;
+namespace App\UserDocument;
 
-use AppBundle\Entity\UserDocument;
+use App\Entity\UserDocument;
 use Doctrine\Common\Persistence\ObjectManager;
 use League\Flysystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

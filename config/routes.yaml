@@ -119,7 +119,7 @@ map_events:
     host:    "%app_host%"
     path:    /evenements/la-carte
     methods: GET
-    defaults: { _controller: 'AppBundle\Controller\EnMarche\MapController:eventsAction' }
+    defaults: { _controller: 'App\Controller\EnMarche\MapController:eventsAction' }
 
 react_citizen_projects:
     host:     "%app_host%"
@@ -188,6 +188,6 @@ app_static_page:
     host:    "%app_host%"
     path:    /{slug}
     methods: GET
-    defaults: { _controller: 'AppBundle\Controller\EnMarche\PageController:showPageAction' }
+    defaults: { _controller: 'App\Controller\EnMarche\PageController:showPageAction' }
     requirements:
         slug: .+

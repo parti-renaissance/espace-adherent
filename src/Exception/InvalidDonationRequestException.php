@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Exception;
+namespace App\Exception;
 
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 

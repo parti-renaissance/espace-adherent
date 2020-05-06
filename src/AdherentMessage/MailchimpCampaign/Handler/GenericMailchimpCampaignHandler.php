@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\AdherentMessage\MailchimpCampaign\Handler;
+namespace App\AdherentMessage\MailchimpCampaign\Handler;
 
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\MailchimpCampaign;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\MailchimpCampaign;
 
 class GenericMailchimpCampaignHandler implements MailchimpCampaignHandlerInterface
 {

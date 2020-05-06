@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Referent;
+namespace App\Referent;
 
-use AppBundle\Entity\InstitutionalEvent;
+use App\Entity\InstitutionalEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ManagedInstitutionalEventsExporter

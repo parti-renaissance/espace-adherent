@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Entity\Donation;
-use AppBundle\Entity\Donator;
-use AppBundle\Repository\AdherentRepository;
-use AppBundle\Repository\DonatorRepository;
+use App\Entity\Donation;
+use App\Entity\Donator;
+use App\Repository\AdherentRepository;
+use App\Repository\DonatorRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

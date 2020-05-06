@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Donation;
+namespace App\Donation;
 
-use AppBundle\Address\Address;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
-use AppBundle\Form\DonationRequestType;
-use AppBundle\Validator\FrenchAddressOrNationalityDonation;
-use AppBundle\Validator\MaxFiscalYearDonation;
-use AppBundle\Validator\MaxMonthDonation;
-use AppBundle\Validator\PayboxSubscription as AssertPayboxSubscription;
-use AppBundle\Validator\UniqueDonationSubscription;
-use AppBundle\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
-use AppBundle\ValueObject\Genders;
+use App\Address\Address;
+use App\Entity\Adherent;
+use App\Entity\Donation;
+use App\Form\DonationRequestType;
+use App\Validator\FrenchAddressOrNationalityDonation;
+use App\Validator\MaxFiscalYearDonation;
+use App\Validator\MaxMonthDonation;
+use App\Validator\PayboxSubscription as AssertPayboxSubscription;
+use App\Validator\UniqueDonationSubscription;
+use App\Validator\UnitedNationsCountry as AssertUnitedNationsCountry;
+use App\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,7 +39,7 @@ class DonationRequest
     /**
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
+     *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      *     strict=true
      * )

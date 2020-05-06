@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailer;
+namespace App\Mailer;
 
 interface EmailClientInterface
 {

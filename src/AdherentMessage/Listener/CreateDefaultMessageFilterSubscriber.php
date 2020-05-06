@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\AdherentMessage\Listener;
+namespace App\AdherentMessage\Listener;
 
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\AdherentMessage\Events;
-use AppBundle\AdherentMessage\Filter\FilterFactory;
-use AppBundle\AdherentMessage\MessageEvent;
-use AppBundle\Entity\Adherent;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\AdherentMessage\Events;
+use App\AdherentMessage\Filter\FilterFactory;
+use App\AdherentMessage\MessageEvent;
+use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface

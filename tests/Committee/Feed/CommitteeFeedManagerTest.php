@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\AppBundle\Committee\Feed;
+namespace Tests\App\Committee\Feed;
 
-use AppBundle\Committee\Feed\CommitteeFeedManager;
-use AppBundle\Committee\Feed\CommitteeMessage;
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Mailer\Message\CommitteeMessageNotificationMessage;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Repository\CommitteeRepository;
-use AppBundle\Repository\EmailRepository;
+use App\Committee\Feed\CommitteeFeedManager;
+use App\Committee\Feed\CommitteeMessage;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\CommitteeFeedItem;
+use App\Mailer\Message\CommitteeMessageNotificationMessage;
+use App\Repository\CommitteeMembershipRepository;
+use App\Repository\CommitteeRepository;
+use App\Repository\EmailRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group committee

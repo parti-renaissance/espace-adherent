@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Procuration\Filter;
+namespace App\Procuration\Filter;
 
-use AppBundle\Exception\ProcurationException;
+use App\Exception\ProcurationException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace App\Normalizer;
 
-use AppBundle\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
+use App\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

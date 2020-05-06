@@ -1,23 +1,23 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\CommitteeCandidacy;
-use AppBundle\Entity\CommitteeElection;
-use AppBundle\Entity\VotingPlatform\Candidate;
-use AppBundle\Entity\VotingPlatform\CandidateGroup;
-use AppBundle\Entity\VotingPlatform\Designation\Designation;
-use AppBundle\Entity\VotingPlatform\Election;
-use AppBundle\Entity\VotingPlatform\ElectionEntity;
-use AppBundle\Entity\VotingPlatform\Voter;
-use AppBundle\Entity\VotingPlatform\VotersList;
-use AppBundle\Repository\CommitteeCandidacyRepository;
-use AppBundle\Repository\CommitteeElectionRepository;
-use AppBundle\Repository\CommitteeMembershipRepository;
-use AppBundle\Repository\VotingPlatform\DesignationRepository;
-use AppBundle\Repository\VotingPlatform\ElectionRepository;
-use AppBundle\Repository\VotingPlatform\VoterRepository;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
+use App\Entity\CommitteeCandidacy;
+use App\Entity\CommitteeElection;
+use App\Entity\VotingPlatform\Candidate;
+use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionEntity;
+use App\Entity\VotingPlatform\Voter;
+use App\Entity\VotingPlatform\VotersList;
+use App\Repository\CommitteeCandidacyRepository;
+use App\Repository\CommitteeElectionRepository;
+use App\Repository\CommitteeMembershipRepository;
+use App\Repository\VotingPlatform\DesignationRepository;
+use App\Repository\VotingPlatform\ElectionRepository;
+use App\Repository\VotingPlatform\VoterRepository;
+use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

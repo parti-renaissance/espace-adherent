@@ -16,7 +16,7 @@
     <script type="text/javascript">
         Kernel.onLoad(function(di) {
             {{ js.toggleDisplayingElement("##{form.vars.id}_sendNotification", "##{form.vars.id}_subject") }}
-            {{ js.ckeditor(form.vars.id ~ '_content', null, constant('AppBundle\\Entity\\UserDocument::TYPE_COMMITTEE_FEED'), 5000, true) }}
+            {{ js.ckeditor(form.vars.id ~ '_content', null, constant('App\\Entity\\UserDocument::TYPE_COMMITTEE_FEED'), 5000, true) }}
         });
     </script>
 {% endblock %}

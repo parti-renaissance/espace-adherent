@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Entity\VotingPlatform;
+namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\VotersListRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VotersListRepository")
  *
  * @ORM\Table(name="voting_platform_voters_list")
  *
@@ -27,7 +27,7 @@ class VotersList
     /**
      * @var string
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\VotingPlatform\Election")
+     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $election;
@@ -35,7 +35,7 @@ class VotersList
     /**
      * @var Voter[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\VotingPlatform\Voter", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"})
      * @ORM\JoinTable(name="voting_platform_voters_list_voter", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
      */
     private $voters;

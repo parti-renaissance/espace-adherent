@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Producer\ChezVous;
+namespace App\Producer\ChezVous;
 
-use AppBundle\Entity\ChezVous\MeasureType;
+use App\Entity\ChezVous\MeasureType;
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
 
 class AlgoliaProducer extends Producer implements AlgoliaProducerInterface

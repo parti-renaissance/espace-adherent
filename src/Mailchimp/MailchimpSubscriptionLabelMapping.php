@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailchimp;
+namespace App\Mailchimp;
 
-use AppBundle\Subscription\SubscriptionTypeEnum;
+use App\Subscription\SubscriptionTypeEnum;
 
 final class MailchimpSubscriptionLabelMapping
 {

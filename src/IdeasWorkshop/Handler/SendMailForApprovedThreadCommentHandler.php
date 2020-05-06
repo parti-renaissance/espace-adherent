@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\IdeasWorkshop\Handler;
+namespace App\IdeasWorkshop\Handler;
 
-use AppBundle\Entity\IdeasWorkshop\BaseComment;
-use AppBundle\Entity\IdeasWorkshop\Thread;
-use AppBundle\Entity\IdeasWorkshop\ThreadComment;
-use AppBundle\IdeasWorkshop\Command\SendMailForApprovedThreadCommentCommand;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\ApprovedIdeaCommentMessage;
+use App\Entity\IdeasWorkshop\BaseComment;
+use App\Entity\IdeasWorkshop\Thread;
+use App\Entity\IdeasWorkshop\ThreadComment;
+use App\IdeasWorkshop\Command\SendMailForApprovedThreadCommentCommand;
+use App\Mailer\MailerService;
+use App\Mailer\Message\ApprovedIdeaCommentMessage;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

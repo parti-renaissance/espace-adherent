@@ -1,4 +1,4 @@
-{% if is_granted(constant('AppBundle\\Adherent\\CertificationPermissions::CERTIFY'), object) %}
+{% if is_granted(constant('App\\Adherent\\CertificationPermissions::CERTIFY'), object) %}
     <li>
         <a href="{{ admin.generateObjectUrl('certify', object) }}" class="sonata-action-element" title="Certifier">
             <i class="fa fa-check"></i> Certifier cet adhérent

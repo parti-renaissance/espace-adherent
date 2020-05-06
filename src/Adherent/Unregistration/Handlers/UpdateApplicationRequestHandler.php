@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Repository\ApplicationRequest\RunningMateRequestRepository;
-use AppBundle\Repository\ApplicationRequest\VolunteerRequestRepository;
+use App\Entity\Adherent;
+use App\Repository\ApplicationRequest\RunningMateRequestRepository;
+use App\Repository\ApplicationRequest\VolunteerRequestRepository;
 
 class UpdateApplicationRequestHandler implements UnregistrationAdherentHandlerInterface
 {

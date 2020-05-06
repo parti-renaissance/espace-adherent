@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\CitizenProject;
+namespace App\CitizenProject;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenProjectContactActorsMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CitizenProjectContactActorsMessage;
 
 class CitizenProjectContactActorsCommandHandler
 {

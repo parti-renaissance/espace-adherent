@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\ElectedRepresentativesRegister;
-use AppBundle\Repository\ElectedRepresentativesRegisterRepository;
+use App\Entity\ElectedRepresentativesRegister;
+use App\Repository\ElectedRepresentativesRegisterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use League\Flysystem\Filesystem;

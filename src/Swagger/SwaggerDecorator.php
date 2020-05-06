@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Swagger;
+namespace App\Swagger;
 
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;

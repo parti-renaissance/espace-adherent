@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Form\EventListener;
+namespace App\Form\EventListener;
 
-use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
-use AppBundle\Form\FilterRoleType;
+use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
+use App\Form\FilterRoleType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Filter;
+namespace App\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;

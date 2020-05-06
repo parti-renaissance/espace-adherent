@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Event;
-use AppBundle\Entity\MunicipalEvent;
+use App\Entity\Adherent;
+use App\Entity\Event;
+use App\Entity\MunicipalEvent;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class MunicipalEventRepository extends EventRepository

@@ -1,19 +1,19 @@
 <?php
 
-namespace AppBundle\Repository;
+namespace App\Repository;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
-use AppBundle\AdherentMessage\AdherentMessageStatusEnum;
-use AppBundle\AdherentMessage\AdherentMessageTypeEnum;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentMessage\AbstractAdherentMessage;
-use AppBundle\Entity\AdherentMessage\AdherentMessageInterface;
-use AppBundle\Entity\AdherentMessage\CitizenProjectAdherentMessage;
-use AppBundle\Entity\AdherentMessage\CommitteeAdherentMessage;
-use AppBundle\Entity\AdherentMessage\Filter\CitizenProjectFilter;
-use AppBundle\Entity\AdherentMessage\Filter\CommitteeFilter;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\Committee;
+use App\AdherentMessage\AdherentMessageStatusEnum;
+use App\AdherentMessage\AdherentMessageTypeEnum;
+use App\Entity\Adherent;
+use App\Entity\AdherentMessage\AbstractAdherentMessage;
+use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\CitizenProjectAdherentMessage;
+use App\Entity\AdherentMessage\CommitteeAdherentMessage;
+use App\Entity\AdherentMessage\Filter\CitizenProjectFilter;
+use App\Entity\AdherentMessage\Filter\CommitteeFilter;
+use App\Entity\CitizenProject;
+use App\Entity\Committee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;

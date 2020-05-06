@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\React\ReactAppRegistry;
-use AppBundle\Security\Http\Session\AnonymousFollowerSession;
+use App\React\ReactAppRegistry;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

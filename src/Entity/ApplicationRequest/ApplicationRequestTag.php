@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\ApplicationRequest;
+namespace App\Entity\ApplicationRequest;
 
 use Doctrine\ORM\Mapping as ORM;
 

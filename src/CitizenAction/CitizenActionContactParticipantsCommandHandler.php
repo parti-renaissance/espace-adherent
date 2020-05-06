@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\CitizenAction;
+namespace App\CitizenAction;
 
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\CitizenActionContactParticipantsMessage;
+use App\Mailer\MailerService;
+use App\Mailer\Message\CitizenActionContactParticipantsMessage;
 
 class CitizenActionContactParticipantsCommandHandler
 {

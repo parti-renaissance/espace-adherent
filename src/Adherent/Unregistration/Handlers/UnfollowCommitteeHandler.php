@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration\Handlers;
+namespace App\Adherent\Unregistration\Handlers;
 
-use AppBundle\Committee\CommitteeManager;
-use AppBundle\Entity\Adherent;
+use App\Committee\CommitteeManager;
+use App\Entity\Adherent;
 
 class UnfollowCommitteeHandler implements UnregistrationAdherentHandlerInterface
 {

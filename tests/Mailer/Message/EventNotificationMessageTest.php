@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Mailer\Message\EventNotificationMessage;
-use AppBundle\Mailer\Message\MessageRecipient;
+use App\Entity\Adherent;
+use App\Mailer\Message\EventNotificationMessage;
+use App\Mailer\Message\MessageRecipient;
 
 class EventNotificationMessageTest extends AbstractEventMessageTest
 {

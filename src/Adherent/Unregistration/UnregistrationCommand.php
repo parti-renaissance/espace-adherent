@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Adherent\Unregistration;
+namespace App\Adherent\Unregistration;
 
-use AppBundle\Entity\Administrator;
+use App\Entity\Administrator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UnregistrationCommand

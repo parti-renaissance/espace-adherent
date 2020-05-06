@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace App\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ class ConsularManagedArea
     /**
      * @var ConsularDistrict
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ConsularDistrict")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ConsularDistrict")
      */
     private $consularDistrict;
 

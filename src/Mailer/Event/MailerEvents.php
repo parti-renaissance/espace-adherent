@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Mailer\Event;
+namespace App\Mailer\Event;
 
 final class MailerEvents
 {

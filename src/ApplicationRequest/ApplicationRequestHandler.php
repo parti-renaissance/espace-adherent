@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\ApplicationRequest;
+namespace App\ApplicationRequest;
 
-use AppBundle\Entity\ApplicationRequest\ApplicationRequest;
-use AppBundle\Entity\ApplicationRequest\RunningMateRequest;
-use AppBundle\Entity\ApplicationRequest\VolunteerRequest;
-use AppBundle\Referent\ReferentTagManager;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\ApplicationRequest\ApplicationRequest;
+use App\Entity\ApplicationRequest\RunningMateRequest;
+use App\Entity\ApplicationRequest\VolunteerRequest;
+use App\Referent\ReferentTagManager;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\Filesystem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

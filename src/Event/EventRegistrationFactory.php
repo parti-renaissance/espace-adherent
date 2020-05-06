@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Event;
+namespace App\Event;
 
-use AppBundle\Entity\EventRegistration;
+use App\Entity\EventRegistration;
 
 class EventRegistrationFactory
 {

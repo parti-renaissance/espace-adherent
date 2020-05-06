@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\EventSubscriber;
+namespace App\EventSubscriber;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\AdherentTagEnum;
-use AppBundle\Repository\IdeasWorkshop\IdeaRepository;
+use App\Entity\Adherent;
+use App\Entity\AdherentTagEnum;
+use App\Repository\IdeasWorkshop\IdeaRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\ApplicationRequest\Listener;
+namespace App\ApplicationRequest\Listener;
 
-use AppBundle\ApplicationRequest\ApplicationRequestEvent;
-use AppBundle\ApplicationRequest\Events;
-use AppBundle\Mailer\MailerService;
-use AppBundle\Mailer\Message\ApplicationRequestConfirmationMessage;
+use App\ApplicationRequest\ApplicationRequestEvent;
+use App\ApplicationRequest\Events;
+use App\Mailer\MailerService;
+use App\Mailer\Message\ApplicationRequestConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

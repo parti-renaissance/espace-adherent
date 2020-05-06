@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Documents;
+namespace Tests\App\Documents;
 
-use AppBundle\Documents\DocumentRepository;
+use App\Documents\DocumentRepository;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Memory\MemoryAdapter;
 use PHPUnit\Framework\TestCase;

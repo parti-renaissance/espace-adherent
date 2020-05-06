@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Image;
-use AppBundle\Entity\Mooc\Mooc;
+use App\Entity\Image;
+use App\Entity\Mooc\Mooc;
 use Cake\Chronos\MutableDateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

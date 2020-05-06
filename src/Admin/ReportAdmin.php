@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\Report\ReportReasonEnum;
-use AppBundle\Entity\Report\ReportStatusEnum;
-use AppBundle\Report\ReportType;
-use AppBundle\Repository\ReportRepository;
+use App\Entity\Report\ReportReasonEnum;
+use App\Entity\Report\ReportStatusEnum;
+use App\Report\ReportType;
+use App\Repository\ReportRepository;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;

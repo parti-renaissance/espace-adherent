@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\DataFixtures\ORM;
+namespace App\DataFixtures\ORM;
 
-use AppBundle\Entity\Mooc\AttachmentLink;
-use AppBundle\Entity\Mooc\MoocVideoElement;
+use App\Entity\Mooc\AttachmentLink;
+use App\Entity\Mooc\MoocVideoElement;
 use Cake\Chronos\MutableDateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;

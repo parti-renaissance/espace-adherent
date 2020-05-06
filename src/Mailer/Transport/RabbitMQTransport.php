@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Mailer\Transport;
+namespace App\Mailer\Transport;
 
-use AppBundle\Mailer\AbstractEmailTemplate;
-use AppBundle\Producer\MailerProducerInterface;
+use App\Mailer\AbstractEmailTemplate;
+use App\Producer\MailerProducerInterface;
 
 class RabbitMQTransport implements TransportInterface
 {

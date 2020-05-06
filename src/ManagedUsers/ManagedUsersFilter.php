@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\ManagedUsers;
+namespace App\ManagedUsers;
 
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\ReferentTag;
+use App\Entity\Committee;
+use App\Entity\ReferentTag;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

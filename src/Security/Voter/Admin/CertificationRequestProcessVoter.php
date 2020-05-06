@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Security\Voter\Admin;
+namespace App\Security\Voter\Admin;
 
-use AppBundle\Adherent\CertificationPermissions;
-use AppBundle\Entity\Administrator;
-use AppBundle\Entity\CertificationRequest;
+use App\Adherent\CertificationPermissions;
+use App\Entity\Administrator;
+use App\Entity\CertificationRequest;
 
 class CertificationRequestProcessVoter extends AbstractAdminVoter
 {

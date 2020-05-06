@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\OAuth\Store;
+namespace App\OAuth\Store;
 
-use AppBundle\OAuth\Model\Client;
-use AppBundle\OAuth\Model\Scope;
+use App\OAuth\Model\Client;
+use App\OAuth\Model\Scope;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;

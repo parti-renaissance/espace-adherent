@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Election;
+namespace App\Entity\Election;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,7 +40,7 @@ class CityCandidate
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Assert\Choice(choices=AppBundle\ValueObject\Genders::CHOICES, strict=true)
+     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES, strict=true)
      */
     private $gender;
 

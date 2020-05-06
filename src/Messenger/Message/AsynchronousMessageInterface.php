@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Messenger\Message;
+namespace App\Messenger\Message;
 
 interface AsynchronousMessageInterface
 {

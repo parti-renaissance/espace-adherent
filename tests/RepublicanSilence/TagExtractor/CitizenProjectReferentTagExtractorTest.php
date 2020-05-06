@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\RepublicanSilence\TagExtractor;
+namespace Tests\App\RepublicanSilence\TagExtractor;
 
-use AppBundle\Collection\CitizenProjectMembershipCollection;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\CitizenProject;
-use AppBundle\Entity\CitizenProjectMembership;
-use AppBundle\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
+use App\Collection\CitizenProjectMembershipCollection;
+use App\Entity\Adherent;
+use App\Entity\CitizenProject;
+use App\Entity\CitizenProjectMembership;
+use App\RepublicanSilence\TagExtractor\CitizenProjectReferentTagExtractor;
 use PHPUnit\Framework\TestCase;
 
 class CitizenProjectReferentTagExtractorTest extends TestCase

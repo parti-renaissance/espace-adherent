@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Timeline;
+namespace App\Timeline;
 
-use AppBundle\Content\MediaFactory;
-use AppBundle\Entity\Media;
-use AppBundle\Entity\Timeline\Profile;
-use AppBundle\Entity\Timeline\Theme;
-use AppBundle\Repository\MediaRepository;
+use App\Content\MediaFactory;
+use App\Entity\Media;
+use App\Entity\Timeline\Profile;
+use App\Entity\Timeline\Theme;
+use App\Repository\MediaRepository;
 use Cocur\Slugify\Slugify;
 use League\Flysystem\Filesystem as Storage;
 use Symfony\Component\Filesystem\Filesystem;

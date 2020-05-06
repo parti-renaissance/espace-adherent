@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Form;
+namespace App\Form;
 
-use AppBundle\Address\Address;
-use AppBundle\Membership\Mandates;
-use AppBundle\Membership\MembershipRequest;
+use App\Address\Address;
+use App\Membership\Mandates;
+use App\Membership\MembershipRequest;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;

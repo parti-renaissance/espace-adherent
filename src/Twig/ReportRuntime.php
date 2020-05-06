@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Twig;
+namespace App\Twig;
 
-use AppBundle\Entity\Report\ReportableInterface;
-use AppBundle\Report\ReportType;
+use App\Entity\Report\ReportableInterface;
+use App\Report\ReportType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ReportRuntime

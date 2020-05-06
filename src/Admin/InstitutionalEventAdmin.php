@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Admin;
+namespace App\Admin;
 
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Events;
-use AppBundle\Form\InstitutionalEventCategoryType;
-use AppBundle\Form\UnitedNationsCountryType;
-use AppBundle\InstitutionalEvent\InstitutionalEventEvent;
-use AppBundle\Referent\ReferentTagManager;
+use App\Entity\InstitutionalEvent;
+use App\Events;
+use App\Form\InstitutionalEventCategoryType;
+use App\Form\UnitedNationsCountryType;
+use App\InstitutionalEvent\InstitutionalEventEvent;
+use App\Referent\ReferentTagManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

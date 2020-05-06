@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Content;
+namespace App\Content;
 
-use AppBundle\Entity\Page;
+use App\Entity\Page;
 
 class PageFactory
 {

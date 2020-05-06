@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Repository\BoardMember;
+namespace App\Repository\BoardMember;
 
-use AppBundle\Entity\BoardMember\Role;
+use App\Entity\BoardMember\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

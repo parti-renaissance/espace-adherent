@@ -44,11 +44,11 @@
                 Afficher
             </a><br>
             {% if not request.data.enabled %}
-                <a href="{{ path('app_assessor_manager_request_transform', { uuid: request.data.uuid, action: constant('AppBundle\\Entity\\ActionEnum::ACTION_ENABLE') }) }}">
+                <a href="{{ path('app_assessor_manager_request_transform', { uuid: request.data.uuid, action: constant('App\\Entity\\ActionEnum::ACTION_ENABLE') }) }}">
                     Réactiver
                 </a>
             {% else %}
-                <a href="{{ path('app_assessor_manager_request_transform', { uuid: request.data.uuid, action: constant('AppBundle\\Entity\\ActionEnum::ACTION_DISABLE') }) }}">
+                <a href="{{ path('app_assessor_manager_request_transform', { uuid: request.data.uuid, action: constant('App\\Entity\\ActionEnum::ACTION_DISABLE') }) }}">
                     Désactiver
                 </a>
             {% endif %}

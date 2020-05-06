@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Admin\Reporting;
+namespace App\Admin\Reporting;
 
-use AppBundle\Entity\Reporting\AdherentCertificationHistory;
+use App\Entity\Reporting\AdherentCertificationHistory;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

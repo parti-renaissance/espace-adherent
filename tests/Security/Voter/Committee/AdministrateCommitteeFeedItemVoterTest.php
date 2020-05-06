@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\AppBundle\Security\Voter\Committee;
+namespace Tests\App\Security\Voter\Committee;
 
-use AppBundle\Committee\CommitteePermissions;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
-use AppBundle\Entity\CommitteeFeedItem;
-use AppBundle\Security\Voter\AbstractAdherentVoter;
-use AppBundle\Security\Voter\Committee\AdministrateCommitteeFeedItemVoter;
+use App\Committee\CommitteePermissions;
+use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\CommitteeFeedItem;
+use App\Security\Voter\AbstractAdherentVoter;
+use App\Security\Voter\Committee\AdministrateCommitteeFeedItemVoter;
 use PHPUnit_Framework_MockObject_MockObject;
-use Tests\AppBundle\Security\Voter\AbstractAdherentVoterTest;
+use Tests\App\Security\Voter\AbstractAdherentVoterTest;
 
 class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTest
 {

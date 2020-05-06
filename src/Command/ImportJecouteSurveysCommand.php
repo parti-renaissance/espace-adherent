@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Command;
+namespace App\Command;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Jecoute\Choice;
-use AppBundle\Entity\Jecoute\LocalSurvey;
-use AppBundle\Entity\Jecoute\Question;
-use AppBundle\Entity\Jecoute\SuggestedQuestion;
-use AppBundle\Entity\Jecoute\SurveyQuestion;
-use AppBundle\Jecoute\SurveyQuestionTypeEnum;
-use AppBundle\Repository\AdherentRepository;
+use App\Entity\Adherent;
+use App\Entity\Jecoute\Choice;
+use App\Entity\Jecoute\LocalSurvey;
+use App\Entity\Jecoute\Question;
+use App\Entity\Jecoute\SuggestedQuestion;
+use App\Entity\Jecoute\SurveyQuestion;
+use App\Jecoute\SurveyQuestionTypeEnum;
+use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

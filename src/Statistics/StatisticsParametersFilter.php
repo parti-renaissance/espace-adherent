@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Statistics;
+namespace App\Statistics;
 
-use AppBundle\Entity\Committee;
-use AppBundle\Repository\CommitteeRepository;
+use App\Entity\Committee;
+use App\Repository\CommitteeRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

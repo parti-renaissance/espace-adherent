@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Mailer\Message;
+namespace App\Mailer\Message;
 
-use AppBundle\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\DataSurvey;
 use Ramsey\Uuid\Uuid;
 
 final class DataSurveyAnsweredMessage extends Message

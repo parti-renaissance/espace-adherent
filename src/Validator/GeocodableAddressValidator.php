@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Validator;
+namespace App\Validator;
 
-use AppBundle\Geocoder\Exception\GeocodingException;
-use AppBundle\Geocoder\GeocodableInterface;
-use AppBundle\Geocoder\GeocoderInterface;
+use App\Geocoder\Exception\GeocodingException;
+use App\Geocoder\GeocodableInterface;
+use App\Geocoder\GeocoderInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

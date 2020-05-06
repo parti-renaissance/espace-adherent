@@ -1,13 +1,13 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace App\Controller\Api;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Form\Jecoute\DataSurveyFormType;
-use AppBundle\Jecoute\DataSurveyAnswerHandler;
-use AppBundle\Jecoute\SurveyTypeEnum;
-use AppBundle\Repository\Jecoute\LocalSurveyRepository;
-use AppBundle\Repository\Jecoute\NationalSurveyRepository;
+use App\Entity\Adherent;
+use App\Form\Jecoute\DataSurveyFormType;
+use App\Jecoute\DataSurveyAnswerHandler;
+use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Jecoute\LocalSurveyRepository;
+use App\Repository\Jecoute\NationalSurveyRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

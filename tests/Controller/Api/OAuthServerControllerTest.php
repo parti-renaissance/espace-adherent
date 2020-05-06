@@ -1,18 +1,18 @@
 <?php
 
-namespace AppBundle\Tests\Controller\Front;
+namespace App\Tests\Controller\Front;
 
-use AppBundle\DataFixtures\ORM\LoadAdherentData;
-use AppBundle\Entity\OAuth\AccessToken;
-use AppBundle\Entity\OAuth\AuthorizationCode;
-use AppBundle\OAuth\Model\Client;
-use AppBundle\OAuth\Model\Scope;
+use App\DataFixtures\ORM\LoadAdherentData;
+use App\Entity\OAuth\AccessToken;
+use App\Entity\OAuth\AuthorizationCode;
+use App\OAuth\Model\Client;
+use App\OAuth\Model\Scope;
 use Defuse\Crypto\Crypto;
 use League\OAuth2\Server\CryptKey;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 /**
  * @group functional
@@ -409,7 +409,7 @@ class OAuthServerControllerTest extends WebTestCase
 
         $client = new Client($accessToken->getClient()->getUuid()->toString(), []);
 
-        $token = new \AppBundle\OAuth\Model\AccessToken();
+        $token = new \App\OAuth\Model\AccessToken();
         $token->setClient($client);
         $token->setIdentifier($identifier);
         $token->setExpiryDateTime(\DateTime::createFromFormat('U', $accessToken->getExpiryDateTime()->getTimestamp()));

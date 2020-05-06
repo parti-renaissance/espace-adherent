@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Mailer\Message;
+namespace Tests\App\Mailer\Message;
 
-use AppBundle\Entity\JeMarcheReport;
-use AppBundle\Mailer\Message\JeMarcheReportMessage;
+use App\Entity\JeMarcheReport;
+use App\Mailer\Message\JeMarcheReportMessage;
 use PHPUnit\Framework\TestCase;
 
 class JeMarcheReportMessageTest extends TestCase

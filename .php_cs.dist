@@ -37,8 +37,8 @@ return PhpCsFixer\Config::create()
         new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer,
         new PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenStatementsFixer,
         new PedroTroller\CS\Fixer\Comment\UselessCommentFixer,
-        new AppBundle\Fixer\DoctrineMigrationCleanFixer,
-        new AppBundle\Fixer\SensioToSymfonyRouteFixer,
-        new AppBundle\Fixer\MethodToRouteAnnotationFixer,
+        new App\Fixer\DoctrineMigrationCleanFixer,
+        new App\Fixer\SensioToSymfonyRouteFixer,
+        new App\Fixer\MethodToRouteAnnotationFixer,
     ])
 ;

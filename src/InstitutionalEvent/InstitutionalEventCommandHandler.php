@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\InstitutionalEvent;
+namespace App\InstitutionalEvent;
 
-use AppBundle\Entity\InstitutionalEvent;
-use AppBundle\Event\EventFactory;
-use AppBundle\Events;
+use App\Entity\InstitutionalEvent;
+use App\Event\EventFactory;
+use App\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

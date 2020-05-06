@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Entity\Reporting;
+namespace App\Entity\Reporting;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Entity\SubscriptionType;
+use App\Entity\Adherent;
+use App\Entity\ReferentTag;
+use App\Entity\SubscriptionType;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
  *         @ORM\Index(name="adherent_email_subscription_histories_adherent_date_idx", columns="date")
  *     }
  * )
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EmailSubscriptionHistoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EmailSubscriptionHistoryRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -50,7 +50,7 @@ class EmailSubscriptionHistory
     /**
      * @var SubscriptionType
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SubscriptionType")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubscriptionType")
      * @ORM\JoinColumn(nullable=false)
      */
     private $subscriptionType;
@@ -58,7 +58,7 @@ class EmailSubscriptionHistory
     /**
      * @var Collection|ReferentTag[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      * @ORM\JoinTable(name="adherent_email_subscription_history_referent_tag")
      */
     private $referentTags;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Controller\Api;
+namespace Tests\App\Controller\Api;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\AppBundle\Controller\ControllerTestTrait;
+use Tests\App\Controller\ControllerTestTrait;
 
 class CrmParisControllerTest extends WebTestCase
 {
