@@ -19,9 +19,15 @@ export default class Modal extends React.Component {
     render() {
         return (
             <div className="em-modal" style={{ display: this.state.display ? 'block' : 'none' }}>
-                <div className="modal-background" onClick={() => this.hideModal({ closed: true })}></div>
+                <div
+                    className="modal-background"
+                    {...(this.props.withClose ? { onClick: () => this.hideModal({ closed: true }) } : {})}
+                ></div>
                 <div className="modal-content">
-                    <span className="close" onClick={() => this.hideModal({ closed: true })}/>
+                    {this.props.withClose ?
+                        <span className="close" onClick={() => this.hideModal({ closed: true })}/>
+                        : ''
+                    }
                     {this.renderContent()}
                 </div>
             </div>
@@ -44,6 +50,10 @@ export default class Modal extends React.Component {
         return this.contentCallback();
     }
 }
+
+Modal.defaultProps = {
+    withClose: true,
+};
 
 Modal.propsType = {
     content: PropTypes.string,

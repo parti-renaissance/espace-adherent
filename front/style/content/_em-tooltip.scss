@@ -1,0 +1,60 @@
+.em-tooltip {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+
+    &--trigger {
+        display: block;
+        min-width: 18px;
+        height: 18px;
+        background-color: $white;
+        box-sizing: border-box;
+        line-height: 15px;
+        font-size: 13px;
+        font-family: $font-roboto;
+        text-align: center;
+        border-radius: 20px;
+        border: 2px solid #e1e5ea;
+        font-weight: 700;
+        color: #444;
+        cursor: pointer;
+    }
+
+    &--content {
+        display: none;
+        width: 400px;
+        z-index: 25;
+        box-sizing: border-box;
+        background: #d3e2f0;
+        padding: 20px;
+        text-align: left;
+        border-radius: 3px;
+        color: #444;
+        position: absolute;
+        top: 30px;
+        left: -190px;
+        transition: opacity .125s ease-in-out;
+        -webkit-transition: opacity .125s ease-in-out;
+        font-family: $font-roboto;
+
+        div {
+            font-size: 18px;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            margin: 0;
+        }
+    }
+
+    &:hover {
+        .em-tooltip--content {
+            display: block;
+        }
+    }
+}
