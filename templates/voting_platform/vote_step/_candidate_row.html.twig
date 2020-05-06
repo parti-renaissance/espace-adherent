@@ -3,9 +3,9 @@
 <div class="candidate__box l__row  b__nudge--bottom-medium">
     {{ form_widget(form) }}
     {{ form_label(form, ' ') }}
-    <div class="l__row box__content">
+    <div class="box__content">
         {{ helper.display_candidate_photo_box(candidate) }}
-        <div class="l__col b__nudge--left">
+        <div class="candidate-infos">
             <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>
             <div class="candidate-biography">
                 {% if candidate.hasBiography %}

@@ -37,7 +37,11 @@
         background-color: $white;
         border-radius: 3px;
         margin: 24px 0;
-        padding: 30px;
+        padding: 30px 30px 60px;
+
+        @media (min-width: $mobile) {
+            padding: 30px;
+        }
 
         input[type='radio'] {
             position: absolute;
@@ -101,17 +105,43 @@
                 align-items: center;
                 justify-content: center;
                 position: absolute;
-                top: calc(50% - 11px);
-                right: 8%;
+                left: calc(50% - 11px);
+                bottom: 20px;
                 transition: all 0.2s;
                 -webkit-transition: all 0.2s;
                 border-radius: 50px;
+
+                @media (min-width: $mobile) {
+                    left: auto;
+                    bottom: auto;
+                    top: calc(50% - 11px);
+                    right: 8%;
+                }
             }
         }
 
         .box__content {
             position: relative;
             pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+
+            @media (min-width: $mobile) {
+                flex-direction: row;
+            }
+
+            .candidate-infos {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                @media (min-width: $mobile) {
+                    align-items: flex-start;
+                    margin-left: 20px;
+                }
+            }
 
             .candidate-name {
                 font-weight: normal;
@@ -119,6 +149,11 @@
 
             .candidate-photo {
                 overflow: hidden;
+                margin-bottom: 10px;
+
+                @media (min-width: $mobile) {
+                    margin-bottom: 0;
+                }
 
                 img {
                     height: 100%;
