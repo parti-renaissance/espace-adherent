@@ -4,6 +4,8 @@ namespace AppBundle\Form\AdherentMessage;
 
 use AppBundle\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use AppBundle\Form\CommitteeChoiceType;
+use AppBundle\Form\EventListener\IncludeExcludeFilterRoleListener;
+use AppBundle\Form\FilterRoleType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MemberInterestsChoiceType;
 use AppBundle\Repository\CommitteeRepository;
@@ -17,14 +19,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdherentZoneFilterType extends AbstractType
 {
+    /** @var IncludeExcludeFilterRoleListener */
+    private $includeExcludeFilterRoleListener;
+
+    public function __construct(IncludeExcludeFilterRoleListener $includeExcludeFilterRoleListener)
+    {
+        $this->includeExcludeFilterRoleListener = $includeExcludeFilterRoleListener;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('includeAdherentsNoCommittee', CheckboxType::class, ['required' => false])
             ->add('includeAdherentsInCommittee', CheckboxType::class, ['required' => false])
-            ->add('includeCommitteeHosts', CheckboxType::class, ['required' => false])
-            ->add('includeCommitteeSupervisors', CheckboxType::class, ['required' => false])
-            ->add('includeCitizenProjectHosts', CheckboxType::class, ['required' => false])
+            ->add('includeRoles', FilterRoleType::class, ['required' => false])
+            ->add('excludeRoles', FilterRoleType::class, ['required' => false])
             ->add('gender', GenderType::class, [
                 'placeholder' => 'Tous',
                 'expanded' => true,
@@ -45,6 +54,8 @@ class AdherentZoneFilterType extends AbstractType
                 },
             ])
         ;
+
+        $builder->addEventSubscriber($this->includeExcludeFilterRoleListener);
     }
 
     public function configureOptions(OptionsResolver $resolver)

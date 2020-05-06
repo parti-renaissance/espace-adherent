@@ -6,6 +6,10 @@ use AppBundle\Mailchimp\Campaign\MailchimpObjectIdMapping;
 
 abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterface
 {
+    protected const OP_INTEREST_ONE = 'interestcontains';
+    protected const OP_INTEREST_ALL = 'interestcontainsall';
+    protected const OP_INTEREST_NONE = 'interestnotcontains';
+
     protected $mailchimpObjectIdMapping;
 
     public function __construct(MailchimpObjectIdMapping $mailchimpObjectIdMapping)
@@ -13,11 +17,14 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
         $this->mailchimpObjectIdMapping = $mailchimpObjectIdMapping;
     }
 
-    protected function buildInterestCondition(array $interestKeys, string $groupId, bool $matchAll = true): array
-    {
+    protected function buildInterestCondition(
+        array $interestKeys,
+        string $groupId,
+        string $op = self::OP_INTEREST_ALL
+    ): array {
         return [
             'condition_type' => 'Interests',
-            'op' => $matchAll ? 'interestcontainsall' : 'interestcontains',
+            'op' => $op,
             'field' => sprintf('interests-%s', $groupId),
             'value' => array_values(
                 array_intersect_key($this->mailchimpObjectIdMapping->getInterestIds(), array_fill_keys($interestKeys, true))

@@ -580,6 +580,9 @@ adherent_message.limit.committee: animateurs
 adherent_message.limit.referent: référents
 adherent_message.limit.deputy: députés
 adherent_message.limit.senator: sénateurs
+adherent_message.filter.role.CommitteeHosts: 'Co-animateurs de comités locaux'
+adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locaux'
+adherent_message.filter.role.CitizenProjectHosts: 'Porteurs de projets citoyens'
 draft: Brouillon
 sent: Envoyé
 

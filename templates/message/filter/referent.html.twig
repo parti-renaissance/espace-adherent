@@ -29,12 +29,19 @@
                         {% endif %}
 
                         <div class="filter__row">
-                            <label class="filter__label">Rôles</label>
+                            <label class="filter__label">Adhérents</label>
                             {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité', attr: {class: 'candidate-incompatible'}}) }}
                             {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)', attr: {class: 'candidate-incompatible'}}) }}
-                            {{ form_row(form.includeCommitteeSupervisors, {label: 'Animateurs de comités locaux', attr: {class: 'candidate-incompatible'}}) }}
-                            {{ form_row(form.includeCommitteeHosts, {label: 'Co-animateurs de comités locaux', attr: {class: 'candidate-incompatible'}}) }}
-                            {{ form_row(form.includeCitizenProjectHosts, {label: 'Porteurs de projets citoyens', attr: {class: 'candidate-incompatible'}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Inclure les rôles</label>
+                            {{ form_row(form.includeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.excludeRoles.vars.id}}) }}
+                        </div>
+
+                        <div class="filter__row">
+                            <label class="filter__label">Exclure les rôles</label>
+                            {{ form_row(form.excludeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.includeRoles.vars.id}}) }}
                         </div>
 
                         <div class="filter__row" id="candidate-checkboxes-container">
@@ -157,6 +164,21 @@
             candidateChangeHandler();
 
             $('#candidate-checkboxes-container input').on('change', candidateChangeHandler);
+
+            $('.js-role-select').on('change', function() {
+                var selectedRoles = $(this).val(),
+                    $oppositeOptions = $('#'+$(this).data('opposite')).find('option'),
+                    $oppositeOption
+                ;
+
+                for (var i = 0; i < $oppositeOptions.length; i++) {
+                    $oppositeOption = $($oppositeOptions[i]);
+                    // disable or re-enable options for the opposite select
+                    $oppositeOption.attr('disabled', $.inArray($oppositeOption.val(), selectedRoles) > -1);
+                }
+            });
+
+            $('.js-role-select').trigger('change');
         });
     </script>
 {% endblock %}

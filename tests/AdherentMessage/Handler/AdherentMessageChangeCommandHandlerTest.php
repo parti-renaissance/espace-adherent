@@ -184,7 +184,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontains',
                                     'field' => 'interests-A',
-                                    'value' => [2, 3, 4, 5, 6],
+                                    'value' => [5, 6],
                                 ],
                             ],
                         ],
@@ -232,7 +232,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontains',
                                     'field' => 'interests-A',
-                                    'value' => [2, 3, 4, 5, 6],
+                                    'value' => [5, 6],
                                 ],
                             ],
                         ],
@@ -304,7 +304,7 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontains',
                                     'field' => 'interests-A',
-                                    'value' => [2, 3, 4, 5, 6],
+                                    'value' => [5, 6],
                                 ],
                             ],
                         ],
@@ -333,7 +333,12 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
     public function testSenatorMessageGeneratesGoodPayloads(): void
     {
         $message = $this->preparedMessage(SenatorAdherentMessage::class);
-        $message->setFilter($filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')));
+        $filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1')); // 5 and 6 are included by default
+        $filter->setIncludeCitizenProjectHosts(false); // exclude 2
+        $filter->setIncludeCommitteeSupervisors(false); // exclude 3
+        $filter->setIncludeCommitteeHosts(true); // include 4
+
+        $message->setFilter($filter);
         $tag->setExternalId(123);
 
         (new AdherentZoneMailchimpCampaignHandler())->handle($message);
@@ -373,7 +378,13 @@ class AdherentMessageChangeCommandHandlerTest extends TestCase
                                     'condition_type' => 'Interests',
                                     'op' => 'interestcontains',
                                     'field' => 'interests-A',
-                                    'value' => [2, 3, 4, 5, 6],
+                                    'value' => [4, 5, 6],
+                                ],
+                                [
+                                    'condition_type' => 'Interests',
+                                    'op' => 'interestnotcontains',
+                                    'field' => 'interests-A',
+                                    'value' => [2, 3],
                                 ],
                             ],
                         ],
