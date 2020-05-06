@@ -5,7 +5,7 @@
         {{ form_start(form) }}
 
         <div class="vote-tab--1 active">
-            <h2 class="b__nudge--bottom-large">Étape 1 : Sélectionnez une candidate femme</h2>
+            <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape 1 : Sélectionnez une candidate femme</h2>
 
             <div>
                 {% for group in candidate_groups|filter(group => form.womanCandidate[group.uuid.toString|replace({'-': '_'})] is defined) %}
@@ -15,11 +15,11 @@
                     } %}
                 {% endfor %}
             </div>
-            <a href="javascript:toggleVoteTabs(false);" class="btn btn--blue">Confirmer</a>
+            <a href="javascript:toggleVoteTabs(false);" class="btn btn--blue btn--large-and-full b__nudge--top-large">Confirmer</a>
         </div>
 
         <div class="vote-tab--2">
-            <h2>Étape 2 : Sélectionnez un candidat homme</h2>
+            <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape 2 : Sélectionnez un candidat homme</h2>
 
             <div>
                 {% for group in candidate_groups|filter(group => form.manCandidate[group.uuid.toString|replace({'-': '_'})] is defined) %}
@@ -31,9 +31,8 @@
             </div>
 
             <div>
-                <a href="javascript:toggleVoteTabs(true)" class="link--no-decor">⟵ Retour</a>
-
-                <button type="submit" class="btn btn--blue">Confirmer</button>
+                <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top-large">Confirmer</button>
+                <a href="javascript:toggleVoteTabs(true)" class="btn btn--ghosting--blue btn--large-and-full b__nudge--top-15">⟵ Retour</a>
             </div>
         </div>
 

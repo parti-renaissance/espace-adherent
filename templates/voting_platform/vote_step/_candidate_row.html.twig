@@ -1,35 +1,29 @@
 {% import 'voting_platform/_helper.html.twig' as helper %}
 
-<div class="l__row candidate--box b__nudge--bottom-medium">
-    <div class="l__col">
+<div class="candidate__box l__row  b__nudge--bottom-medium">
+    {{ form_widget(form) }}
+    {{ form_label(form, ' ') }}
+    <div class="box__content">
         {{ helper.display_candidate_photo_box(candidate) }}
-    </div>
-
-    <div class="l__col">
-        <h3>{{ candidate.fullName }}</h3>
-
-        <div>
-            {% if candidate.hasBiography %}
-                <p>
-                    <a href="#" class="link--no-decor em-modal--trigger"
+        <div class="candidate-infos">
+            <h3 class="candidate-name text--medium b__nudge--bottom-tiny">{{ candidate.fullName }}</h3>
+            <div class="candidate-biography">
+                {% if candidate.hasBiography %}
+                    <a href="#" class="text--body link--no-decor text--blue--dark b__nudge--none em-modal--trigger"
                       data-confirm-content-element="#candidate-biography-content-{{ candidate.uuid.toString|slice(0, 8) }}"
                     >Lire la présentation</a>
-                </p>
 
-                <div id="candidate-biography-content-{{ candidate.uuid.toString|slice(0, 8) }}" class="hidden">
-                    <h3 class="text--uppercase b__nudge--bottom-medium">Présentation</h3>
+                    <div id="candidate-biography-content-{{ candidate.uuid.toString|slice(0, 8) }}" class="hidden">
+                        <h3 class="text--muted text--uppercase b__nudge--bottom">Présentation</h3>
 
-                    <h2 class="b__nudge--bottom-large">{{ candidate.fullName }}</h2>
+                        <h2 class="text--medium-large b__nudge--bottom-larger">{{ candidate.fullName }}</h2>
 
-                    <p>{{ candidate.biography }}</p>
-                </div>
-            {% else %}
-                <span class="text--muted text--small">Présentation indisponible</span>
-            {% endif %}
+                        <p class="text--body text--dark">{{ candidate.biography }}</p>
+                    </div>
+                {% else %}
+                    <span class="text--body text--muted b__nudge--none">Présentation indisponible</span>
+                {% endif %}
+            </div>
         </div>
-    </div>
-
-    <div class="l__col">
-        {{ form_widget(form) }}
     </div>
 </div>

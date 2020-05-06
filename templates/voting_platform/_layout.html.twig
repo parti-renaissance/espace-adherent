@@ -7,24 +7,26 @@
 {% block banner '' %}
 
 {% block header %}
-    <div>
-        <img src="{{ asset('logo/em-logo.svg') }}" />
-    </div>
+    <header class="voting-platform__header">
+        <!-- <img src="{{ asset('logo/em-logo.svg') }}" /> -->
+    </header>
 {% endblock %}
 
 {% block content %}
-    <div class="voting-platform">
-        <div class="l__wrapper--600 b__nudge--top-50 space--30">
-            {% block voting_platform_header %}
-                <div>
-                    <h1>{{ election.title }}</h1>
-                    <p class="text--smallest">du {{ election.startDate|date('d/m/Y') }} au {{ election.endDate|date('d/m/Y') }}</p>
+    <main class="voting-platform">
+        <div class="voting-platform__content">
+            <div class="l__wrapper--slim">
+                {% block voting_platform_header %}
+                <div class="introduction-header">
+                    <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
+                    <p class="text--body b__nudge--bottom-large">du {{ election.startDate|date('d/m/Y') }} au {{ election.endDate|date('d/m/Y') }}</p>
                 </div>
-            {% endblock %}
+                {% endblock %}
 
-            {% block voting_platform_content '' %}
+                {% block voting_platform_content '' %}
+            </div>
         </div>
-    </div>
+    </main>
 {% endblock %}
 
 {% block footer '' %}

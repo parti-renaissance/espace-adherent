@@ -5,45 +5,38 @@
 {% endblock %}
 
 {% block voting_platform_header %}
-    <h2>Mon bulletin de vote</h2>
-
-    <p>Confirmez vous ce bulletin de vote ?</p>
+    <div class="confirmation-header text--center">
+        <h1 class="text--larger b__nudge--bottom-large">Mon bulletin de vote</h1>
+        <p class="text--body text--default-large text--dark">Confirmez vous ce bulletin de vote ?</p>
+    </div>
 {% endblock %}
 
 {% import 'voting_platform/_helper.html.twig' as helper %}
 
 {% block voting_platform_content %}
-    <div>
-        <div>
-            {% for candidateGroup in vote_command.candidateGroups %}
-                <div class="l__row">
+    <div class="ballot-paper-container">
+        {% for candidateGroup in vote_command.candidateGroups %}
+            <div class="ballot-paper l__col l__col--center">
+                <div class="l__row l__row--center b__nudge--bottom-small">
                     {% for candidate in candidateGroup.candidates %}
-                        {{ helper.display_candidate_photo_box(candidate) }}
-                    {% endfor %}
-                </div>
-
-                <div>
-                    {% for candidate in candidateGroup.candidates %}
-                        <span><strong>{{ candidate.fullName }}</strong></span>
-                        <span>{{ candidate.isMan ? 'H' : 'F' }}</span>
+                        <h3 class="text--medium">{{ candidate.fullName }}</h3>
+                        <span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span>
 
                         {% if not loop.last %}
                             <span class="separator"></span>
                         {% endif %}
                     {% endfor %}
                 </div>
-
-                <div>
-                    <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="link--no-decor link--blue--dark">Changer mon vote</a>
-                </div>
-            {% endfor %}
-        </div>
-
-        {{ form_start(form) }}
-            <div>
-                {{ form_widget(form.allow, { label: 'Confirmer mon vote', attr: { class: 'btn btn--blue btn--large-and-full' } }) }}
+                <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="text--body link--no-decor link--blue--dark">
+                    Changer mon vote
+                </a>
             </div>
-        {{ form_end(form) }}
+        {% endfor %}
     </div>
-{% endblock %}
 
+    {{ form_start(form) }}
+        <div>
+            {{ form_widget(form.allow, { label: 'Confirmer mon vote', attr: { class: 'btn btn--blue btn--large-and-full' } }) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
