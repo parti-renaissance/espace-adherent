@@ -39,15 +39,15 @@ Feature:
                 },
                 {
                     "name": "candidacy_end_date",
-                    "content": "lundi 25 mai 2020, 00h00"
+                    "content": "lundi 22 juin 2020, 00h00"
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 25 mai 2020, 08h00"
+                    "content": "lundi 22 juin 2020, 08h00"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 7 juin 2020, 20h00"
+                    "content": "dimanche 5 juillet 2020, 20h00"
                 },
                 {
                     "name": "committee_url",
@@ -92,11 +92,11 @@ Feature:
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 25 mai 2020, 08h00"
+                    "content": "lundi 22 juin 2020, 08h00"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 7 juin 2020, 20h00"
+                    "content": "dimanche 5 juillet 2020, 20h00"
                 },
                 {
                     "name": "committee_url",
@@ -119,7 +119,7 @@ Feature:
     Then I should see "JE CANDIDATE"
 
     When I am on "/comites/en-marche-comite-de-evry"
-    Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de voter. Rendez-vous sur cette page pour choisir ou modifier votre comité."
+    Then I should see "Vous ne pouvez candidater que dans le comité où vous avez choisi de voter."
 
     When I am on "/espace-adherent/mes-comites"
     And I click the ".adherent__activity--committee .switch" selector
@@ -131,7 +131,7 @@ Feature:
     Then I wait 3 second until I see "En Marche - Comité de Évry"
 
     When I am on "/comites/en-marche-comite-de-rouen"
-    Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de voter. Rendez-vous sur cette page pour choisir ou modifier votre comité."
+    Then I should see "Vous ne pouvez candidater que dans le comité où vous avez choisi de voter."
 
     Given I am on "/comites/en-marche-comite-de-evry"
     Then I should see "JE CANDIDATE"
@@ -159,15 +159,15 @@ Feature:
                 },
                 {
                     "name": "candidacy_end_date",
-                    "content": "lundi 25 mai 2020, 00h00"
+                    "content": "lundi 22 juin 2020, 00h00"
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 25 mai 2020, 08h00"
+                    "content": "lundi 22 juin 2020, 08h00"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 7 juin 2020, 20h00"
+                    "content": "dimanche 5 juillet 2020, 20h00"
                 },
                 {
                     "name": "cancel_candidacy_url",
@@ -212,11 +212,11 @@ Feature:
                 },
                 {
                     "name": "vote_start_date",
-                    "content": "lundi 25 mai 2020, 08h00"
+                    "content": "lundi 22 juin 2020, 08h00"
                 },
                 {
                     "name": "vote_end_date",
-                    "content": "dimanche 7 juin 2020, 20h00"
+                    "content": "dimanche 5 juillet 2020, 20h00"
                 },
                 {
                     "name": "committee_url",
