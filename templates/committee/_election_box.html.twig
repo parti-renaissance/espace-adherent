@@ -42,35 +42,37 @@
     </p>
 
     <div class="elections-actions l__row--wrap">
-        {% if member_is_candidate_in_committee %}
-            <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
-        {% elseif candidacy_committee_membership is null and member_voting_in_committee %}
-            {% if app.user.isOtherGender() %}
-                <a href="#"
-                   class="btn btn--pink btn--no-wrap em-modal--trigger"
-                   id="committee-toggle-candidacy"
-                   data-confirm-content-element="#committee-candidacy-gender-choice-content"
-                >Je candidate</a>
+        {% if able_to_candidate %}
+            {% if member_is_candidate_in_committee %}
+                <a href="{{ path('app_committee_update_candidacy', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap box-el">Je modifie ma candidature</a>
+            {% elseif candidacy_committee_membership is null and member_voting_in_committee %}
+                {% if app.user.isOtherGender() %}
+                    <a href="#"
+                       class="btn btn--pink btn--no-wrap em-modal--trigger"
+                       id="committee-toggle-candidacy"
+                       data-confirm-content-element="#committee-candidacy-gender-choice-content"
+                    >Je candidate</a>
 
-                <div class="hidden" id="committee-candidacy-gender-choice-content">
-                    <div class="text--center font-roboto">
-                        <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
-                            Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
-                        </p>
+                    <div class="hidden" id="committee-candidacy-gender-choice-content">
+                        <div class="text--center font-roboto">
+                            <p class="b__nudge--top-15 b__nudge--bottom-large text--dark">
+                                Souhaitez-vous candidater en tant que <strong>Femme</strong> ou <strong>Homme</strong> ?
+                            </p>
 
-                        <div>
-                            {% set candidate_url_params = {slug: committee.slug} %}
+                            <div>
+                                {% set candidate_url_params = {slug: committee.slug} %}
 
-                            <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
-                            <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::MALE')})) }}">Homme</a>
+                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::FEMALE')})) }}">Femme</a>
+                                <a class="btn btn--ghosting--blue toggleModal b__nudge--right-nano" href="{{ path('app_committee_candidate', candidate_url_params|merge({gender: constant('AppBundle\\ValueObject\\Genders::MALE')})) }}">Homme</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% else %}
-                <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
-                   id="committee-toggle-candidacy"
-                   class="btn btn--pink btn--no-wrap"
-                >Je candidate</a>
+                {% else %}
+                    <a href="{{ path('app_committee_candidate', {slug: committee.slug}) }}"
+                       id="committee-toggle-candidacy"
+                       class="btn btn--pink btn--no-wrap"
+                    >Je candidate</a>
+                {% endif %}
             {% endif %}
         {% endif %}
 
