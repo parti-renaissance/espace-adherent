@@ -61,6 +61,7 @@ class CommitteeController extends Controller
             'committee_timeline' => $feeds,
             'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
             'committee_timeline_max_messages' => $this->getParameter('timeline_max_messages'),
+            'election_static_date' => new ElectionStaticDate(),
         ]);
     }
 

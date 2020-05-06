@@ -604,6 +604,10 @@
         &:hover {
             background-color: $pink;
 
+            & > p {
+                color: $white;
+            }
+
             .box-el {
                 color: $white;
             }

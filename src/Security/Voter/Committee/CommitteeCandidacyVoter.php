@@ -11,11 +11,12 @@ class CommitteeCandidacyVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($adherent->isReferent()) {
-            return false;
-        }
-
-        if ($adherent->isSupervisor()) {
+        if (
+            $adherent->isReferent()
+            || $adherent->isSupervisor()
+            || $adherent->isDeputy()
+            || $adherent->isSenator()
+        ) {
             return false;
         }
 
