@@ -353,7 +353,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public function findByPartialName(string $search, int $limit = 10): array
     {
         return $this
-            ->createPartialNameQueryBuilder('committee')
+            ->createPartialNameQueryBuilder($search, 'committee')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
