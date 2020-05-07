@@ -2,41 +2,40 @@
 
 namespace AppBundle\VotingPlatform\Election\VoteCommand;
 
-use AppBundle\Entity\VotingPlatform\CandidateGroup;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CommitteeAdherentVoteCommand extends VoteCommand
 {
     /**
-     * @var CandidateGroup
+     * @var string|null
      *
      * @Assert\NotBlank
      */
     private $womanCandidate;
 
     /**
-     * @var CandidateGroup
+     * @var string|null
      *
      * @Assert\NotBlank
      */
     private $manCandidate;
 
-    public function getManCandidate(): ?CandidateGroup
+    public function getManCandidate(): ?string
     {
         return $this->manCandidate;
     }
 
-    public function setManCandidate(CandidateGroup $manCandidate): void
+    public function setManCandidate(?string $manCandidate): void
     {
         $this->manCandidate = $manCandidate;
     }
 
-    public function getWomanCandidate(): ?CandidateGroup
+    public function getWomanCandidate(): ?string
     {
         return $this->womanCandidate;
     }
 
-    public function setWomanCandidate(CandidateGroup $womanCandidate): void
+    public function setWomanCandidate(?string $womanCandidate): void
     {
         $this->womanCandidate = $womanCandidate;
     }

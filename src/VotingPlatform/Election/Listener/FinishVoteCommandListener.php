@@ -3,8 +3,13 @@
 namespace AppBundle\VotingPlatform\Election\Listener;
 
 use AppBundle\Entity\Adherent;
+use AppBundle\Entity\VotingPlatform\Election;
 use AppBundle\Entity\VotingPlatform\Vote;
+use AppBundle\Entity\VotingPlatform\VoteChoice;
 use AppBundle\Entity\VotingPlatform\Voter;
+use AppBundle\Entity\VotingPlatform\VoteResult;
+use AppBundle\Repository\VotingPlatform\CandidateGroupRepository;
+use AppBundle\Repository\VotingPlatform\ElectionRepository;
 use AppBundle\Repository\VotingPlatform\VoterRepository;
 use AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand;
 use AppBundle\VotingPlatform\Election\VoteCommandStateEnum;
@@ -18,15 +23,21 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     private $entityManager;
     private $security;
     private $voterRepository;
+    private $electionRepository;
+    private $candidateGroupRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         Security $security,
-        VoterRepository $voterRepository
+        VoterRepository $voterRepository,
+        ElectionRepository $electionRepository,
+        CandidateGroupRepository $candidateGroupRepository
     ) {
         $this->entityManager = $entityManager;
         $this->security = $security;
         $this->voterRepository = $voterRepository;
+        $this->electionRepository = $electionRepository;
+        $this->candidateGroupRepository = $candidateGroupRepository;
     }
 
     public static function getSubscribedEvents()
@@ -44,18 +55,28 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             return;
         }
 
-        $voter = $this->getVoter();
+        $election = $this->electionRepository->findByUuid($command->getElectionUuid());
 
-        $voter->addVote($this->createVoteObject($command));
-
-        if (!$voter->getId()) {
-            $this->entityManager->persist($voter);
+        if (!$election instanceof Election) {
+            return;
         }
+
+        // 1. create vote history for the current voter
+        $vote = $this->generateVote($election);
+
+        // 2. generate a unique key to save the vote result with
+        $voterKey = $this->generateVoterKey();
+
+        // 3. create vote result with unique key
+        $voteResult = $this->createVoteResult($election, $command, $voterKey);
+
+        $this->entityManager->persist($vote);
+        $this->entityManager->persist($voteResult);
 
         $this->entityManager->flush();
     }
 
-    private function getVoter(): Voter
+    private function generateVote(Election $election): Vote
     {
         /** @var Adherent $adherent */
         $adherent = $this->security->getUser();
@@ -64,17 +85,34 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             $voter = new Voter($adherent);
         }
 
-        return $voter;
+        return new Vote($voter, $election);
     }
 
-    private function createVoteObject(VoteCommand $command): Vote
+    private function createVoteResult(Election $election, VoteCommand $command, string $voterKey): VoteResult
     {
-        $vote = new Vote($this->entityManager->merge($command->getElection()));
+        $voteResult = new VoteResult($election, $voterKey);
 
-        foreach ($command->getCandidateGroups() as $group) {
-            $vote->addCandidateGroup($this->entityManager->merge($group));
+        foreach ($command->getCandidateGroups() as $choice) {
+            $voteChoice = new VoteChoice();
+
+            if (VoteChoice::BLANK_VOTE_VALUE == $choice) {
+                $voteChoice->setIsBlank(true);
+            } else {
+                if (!$group = $this->candidateGroupRepository->findOneByUuid($choice)) {
+                    throw new \RuntimeException(sprintf('Candidate group not found with uuid "%s"', $choice));
+                }
+
+                $voteChoice->setCandidateGroup($group);
+            }
+
+            $voteResult->addVoteChoice($voteChoice);
         }
 
-        return $vote;
+        return $voteResult;
+    }
+
+    private function generateVoterKey(): string
+    {
+        return uniqid();
     }
 }

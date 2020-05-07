@@ -4,8 +4,6 @@ namespace AppBundle\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\Adherent;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,16 +28,9 @@ class Voter
      * @var Adherent
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $adherent;
-
-    /**
-     * @var Vote[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VotingPlatform\Vote", cascade={"all"}, mappedBy="voter")
-     */
-    private $votes;
 
     /**
      * @var \DateTime
@@ -51,7 +42,6 @@ class Voter
     public function __construct(Adherent $adherent)
     {
         $this->adherent = $adherent;
-        $this->votes = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -63,13 +53,5 @@ class Voter
     public function getAdherent(): Adherent
     {
         return $this->adherent;
-    }
-
-    public function addVote(Vote $vote): void
-    {
-        if (!$this->votes->contains($vote)) {
-            $vote->setVoter($this);
-            $this->votes->add($vote);
-        }
     }
 }

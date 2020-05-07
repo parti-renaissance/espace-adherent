@@ -586,9 +586,9 @@ button.btn {
     &--disabled {
         border-color: #c9c9c9;
         color: #999;
+        cursor: not-allowed;
 
         &:hover {
-            cursor: default;
             background: #fff;
             transition: 0s;
             border-color: #c9c9c9;

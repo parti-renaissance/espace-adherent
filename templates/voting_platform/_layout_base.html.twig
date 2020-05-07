@@ -1,24 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% block page_title '' %} | Election
+    {% block page_title '' %} | Élection
 {% endblock %}
 
 {% block banner '' %}
 
 {% block header %}
-    {% block committee_related_election %}
-        <div class="space--10-0 background--blue">
-            <div class="l__wrapper--wide">
-                <a href="#" target="_blank" class="text--body text--small text--white link--no-decor">Retourner au comité <span class="text--bold">ComitteeName</span> →</a>
-            </div>
-        </div>
-    {% endblock %}
     <header class="voting-platform__header">
         <div class="l__wrapper--wide l__row l__row--h-stretch l__row--wrap">
             <div class="l__row">
-                <a href="#" class="link--no-decor text--logo b__nudge--right-large">EM!</a>
-                <a href="#" class="text--body link--no-decor">Introduction au vote</a>
+                <a href="{{ path('homepage') }}" class="link--no-decor text--logo b__nudge--right-large">EM!</a>
+                <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="text--body link--no-decor">Introduction au vote</a>
             </div>
             <div class="anonymous l__row">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
@@ -32,26 +25,23 @@
 
 {% block content %}
     <main class="voting-platform">
-
-        {% block ornaments %}
-            <div class="voting-platform__ornaments">
-                <img src="{{ asset('images/vote-platform-ornaments/ornament-1.png') }}" class="ornament ornament--1" />
-                <img src="{{ asset('images/vote-platform-ornaments/ornament-2.png') }}" class="ornament ornament--2" />
-                <img src="{{ asset('images/vote-platform-ornaments/ornament-3.png') }}" class="ornament ornament--3" />
-            </div>
-        {% endblock %}
+        <div class="voting-platform__ornaments">
+            <img src="{{ asset('images/vote-platform-ornaments/ornament-1.png') }}" class="ornament ornament--1" />
+            <img src="{{ asset('images/vote-platform-ornaments/ornament-2.png') }}" class="ornament ornament--2" />
+            <img src="{{ asset('images/vote-platform-ornaments/ornament-3.png') }}" class="ornament ornament--3" />
+        </div>
 
         <div class="voting-platform__content">
-                {% block voting_platform_header %}
+            {% block voting_platform_header %}
                 <div class="l__wrapper--slim">
                     <div class="introduction-header">
                         <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
                         <p class="text--body text--default-large text--muted b__nudge--bottom-large">du {{ election.startDate|date('d/m/Y') }} au {{ election.endDate|date('d/m/Y') }}</p>
                     </div>
                 </div>
-                {% endblock %}
+            {% endblock %}
 
-                {% block voting_platform_content '' %}
+            {% block voting_platform_content '' %}
         </div>
     </main>
 {% endblock %}

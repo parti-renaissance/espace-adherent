@@ -4,6 +4,7 @@ namespace AppBundle\VotingPlatform\Election\VoteCommand;
 
 use AppBundle\Entity\VotingPlatform\CandidateGroup;
 use AppBundle\Entity\VotingPlatform\Election;
+use AppBundle\Entity\VotingPlatform\VoteChoice;
 use AppBundle\VotingPlatform\Election\VoteCommandStateEnum;
 
 class VoteCommand
@@ -19,13 +20,13 @@ class VoteCommand
     private $candidateGroups = [];
 
     /**
-     * @var Election
+     * @var string
      */
-    private $election;
+    private $electionUuid;
 
     public function __construct(Election $election)
     {
-        $this->election = $election;
+        $this->electionUuid = $election->getUuid()->toString();
     }
 
     public function getState(): string
@@ -44,14 +45,6 @@ class VoteCommand
     public function getCandidateGroups(): array
     {
         return $this->candidateGroups;
-    }
-
-    /**
-     * @param CandidateGroup[]
-     */
-    public function setCandidateGroups(array $candidateGroups): void
-    {
-        $this->candidateGroups = $candidateGroups;
     }
 
     public function isStart(): bool
@@ -74,8 +67,15 @@ class VoteCommand
         return VoteCommandStateEnum::FINISH === $this->state;
     }
 
-    public function getElection(): Election
+    public function getElectionUuid(): string
     {
-        return $this->election;
+        return $this->electionUuid;
+    }
+
+    public function getCandidateGroupUuids(): array
+    {
+        return array_filter($this->getCandidateGroups(), static function (string $value) {
+            return VoteChoice::BLANK_VOTE_VALUE !== $value;
+        });
     }
 }

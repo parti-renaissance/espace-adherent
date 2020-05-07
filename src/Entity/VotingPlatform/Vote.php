@@ -3,7 +3,6 @@
 namespace AppBundle\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,7 +28,7 @@ class Vote
     /**
      * @var Voter
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Voter", inversedBy="votes")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Voter", inversedBy="votes", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $voter;
@@ -43,37 +42,16 @@ class Vote
     private $election;
 
     /**
-     * @var CandidateGroup
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\VotingPlatform\CandidateGroup")
-     * @ORM\JoinTable(name="voting_platform_vote_candidate_group", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
-     */
-    private $candidateGroups;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      */
     private $votedAt;
 
-    public function __construct(Election $election)
-    {
-        $this->election = $election;
-        $this->votedAt = new \DateTime();
-
-        $this->candidateGroups = new ArrayCollection();
-    }
-
-    public function addCandidateGroup(CandidateGroup $group): void
-    {
-        if (!$this->candidateGroups->contains($group)) {
-            $this->candidateGroups->add($group);
-        }
-    }
-
-    public function setVoter(Voter $voter): void
+    public function __construct(Voter $voter, Election $election)
     {
         $this->voter = $voter;
+        $this->election = $election;
+        $this->votedAt = new \DateTime();
     }
 }

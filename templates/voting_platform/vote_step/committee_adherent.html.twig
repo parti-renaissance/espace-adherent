@@ -7,28 +7,27 @@
         <div class="vote-tab--1 active">
             <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape 1 : Sélectionnez une candidate femme</h2>
 
+            {{ form_errors(form.womanCandidate) }}
+
+            {% include 'voting_platform/vote_step/_candiates_list.html.twig' with {
+                candidate_groups: candidate_groups,
+                form: form.womanCandidate
+            } %}
+
             <div>
-                {% for group in candidate_groups|filter(group => form.womanCandidate[group.uuid.toString|replace({'-': '_'})] is defined) %}
-                    {% include 'voting_platform/vote_step/_candidate_row.html.twig' with {
-                        candidate: group.candidates|first,
-                        form: form.womanCandidate[group.uuid.toString|replace({'-': '_'})]
-                    } %}
-                {% endfor %}
+                <a href="#" class="btn btn--blue btn--large-and-full b__nudge--top-large {{ not form.womanCandidate.vars.value ? 'btn--disabled' }} confirm-vote--trigger">Confirmer</a>
             </div>
-            <a href="javascript:toggleVoteTabs(false);" class="btn btn--blue btn--large-and-full b__nudge--top-large">Confirmer</a>
         </div>
 
         <div class="vote-tab--2">
             <h2 class="text--body text--black text--default-large b__nudge--bottom-larger">Étape 2 : Sélectionnez un candidat homme</h2>
 
-            <div>
-                {% for group in candidate_groups|filter(group => form.manCandidate[group.uuid.toString|replace({'-': '_'})] is defined) %}
-                    {% include 'voting_platform/vote_step/_candidate_row.html.twig' with {
-                        candidate: group.candidates|first,
-                        form: form.manCandidate[group.uuid.toString|replace({'-': '_'})]
-                    } %}
-                {% endfor %}
-            </div>
+            {{ form_errors(form.manCandidate) }}
+
+            {% include 'voting_platform/vote_step/_candiates_list.html.twig' with {
+                candidate_groups: candidate_groups,
+                form: form.manCandidate
+            } %}
 
             <div>
                 <button type="submit" class="btn btn--blue btn--large-and-full b__nudge--top-large">Confirmer</button>
@@ -44,9 +43,32 @@
     {{ parent() }}
 
     <script type="text/javascript">
+        findAll(dom('.vote-tab--1'), 'input').forEach(function(input) {
+            once(input, 'change', function () {
+                removeClass(dom('.confirm-vote--trigger'), 'btn--disabled');
+            });
+        });
+
+        on(dom('.confirm-vote--trigger'), 'click', function(event) {
+            event.preventDefault();
+            var checked = Array.prototype.slice.call(findAll(
+                dom('.vote-tab--1'),
+                'input[name="{{ form.womanCandidate.vars.full_name }}"]'
+            )).filter(function(input) { return input.checked;})
+
+            if (!checked.length) {
+                alert('Vous n\'avez pas fait de choix');
+                return;
+            }
+
+            toggleVoteTabs(false);
+        })
+
         function toggleVoteTabs(back) {
             removeClass(dom('.vote-tab--' + (back ? 2 : 1)), 'active');
             addClass(dom('.vote-tab--' + (back ? 1 : 2)), 'active');
+
+            window.scroll({top: 0, left: 0, behavior: 'smooth'});
 
             return false;
         }

@@ -3,7 +3,6 @@
 namespace AppBundle\Repository\VotingPlatform;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\VotingPlatform\Election;
 use AppBundle\Entity\VotingPlatform\VotersList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -15,15 +14,16 @@ class VotersListRepository extends ServiceEntityRepository
         parent::__construct($registry, VotersList::class);
     }
 
-    public function existsForElection(Adherent $adherent, Election $election): bool
+    public function existsForElection(Adherent $adherent, string $electionUuid): bool
     {
         return 0 < (int) $this->createQueryBuilder('list')
             ->select('COUNT(1)')
             ->innerJoin('list.voters', 'voter')
-            ->where('voter.adherent = :adherent AND list.election = :election')
+            ->innerJoin('list.election', 'election')
+            ->where('voter.adherent = :adherent AND election.uuid = :election_uuid')
             ->setParameters([
                 'adherent' => $adherent,
-                'election' => $election,
+                'election_uuid' => $electionUuid,
             ])
             ->getQuery()
             ->getSingleScalarResult()

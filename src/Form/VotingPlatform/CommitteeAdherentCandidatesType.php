@@ -3,6 +3,7 @@
 namespace AppBundle\Form\VotingPlatform;
 
 use AppBundle\Entity\VotingPlatform\CandidateGroup;
+use AppBundle\Entity\VotingPlatform\VoteChoice;
 use AppBundle\VotingPlatform\Election\VoteCommand\CommitteeAdherentVoteCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,10 +14,10 @@ class CommitteeAdherentCandidatesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('womanCandidate', CandidateType::class, [
+            ->add('womanCandidate', VoteChoiceType::class, [
                 'choices' => $this->getFilteredCandidates($options['candidates'], true),
             ])
-            ->add('manCandidate', CandidateType::class, [
+            ->add('manCandidate', VoteChoiceType::class, [
                 'choices' => $this->getFilteredCandidates($options['candidates'], false),
             ])
         ;
@@ -39,13 +40,21 @@ class CommitteeAdherentCandidatesType extends AbstractType
      */
     private function getFilteredCandidates(array $candidates, bool $womenOnly): array
     {
-        return array_values(array_filter($candidates, static function (CandidateGroup $group) use ($womenOnly) {
+        $candidates = array_filter($candidates, static function (CandidateGroup $group) use ($womenOnly) {
             if ($womenOnly) {
                 return current($group->getCandidates())->isWoman();
             }
 
             return current($group->getCandidates())->isMan();
-        }));
+        });
+
+        $choices = array_map(static function (CandidateGroup $group) {
+            return $group->getUuid()->toString();
+        }, $candidates);
+
+        $choices[] = VoteChoice::BLANK_VOTE_VALUE;
+
+        return $choices;
     }
 
     public function getBlockPrefix()

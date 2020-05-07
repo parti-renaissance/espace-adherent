@@ -25,85 +25,84 @@ use Symfony\Component\Routing\Annotation\Route;
 class VotingPlatformController extends AbstractController
 {
     private $redirectManager;
+    private $storage;
+    private $processor;
+    private $candidateGroupRepository;
 
-    public function __construct(RedirectManager $redirectManager)
-    {
+    public function __construct(
+        RedirectManager $redirectManager,
+        VoteCommandStorage $storage,
+        VoteCommandProcessor $processor,
+        CandidateGroupRepository $candidateGroupRepository
+    ) {
         $this->redirectManager = $redirectManager;
+        $this->storage = $storage;
+        $this->processor = $processor;
+        $this->candidateGroupRepository = $candidateGroupRepository;
     }
 
     /**
      * @Route("", name="_index", methods={"GET"})
      */
-    public function indexAction(
-        Election $election,
-        VoteCommandStorage $manager,
-        VoteCommandProcessor $processor
-    ): Response {
-        $voteCommand = $manager->getVoteCommand($election);
+    public function indexAction(Election $election): Response
+    {
+        $voteCommand = $this->storage->getVoteCommand($election);
 
-        if (!$processor->canStart($voteCommand)) {
+        if (!$this->processor->canStart($voteCommand)) {
             return $this->redirect($this->redirectManager->getRedirection($election));
         }
 
-        $processor->doStart($voteCommand);
+        $this->processor->doStart($voteCommand);
 
-        return $this->render('voting_platform/index.html.twig', [
-            'election' => $election,
-        ]);
+        return $this->renderElectionTemplate('voting_platform/index.html.twig', $election);
     }
 
     /**
      * @Route("/vote", name="_vote_step", methods={"GET", "POST"})
      */
-    public function voteAction(
-        Request $request,
-        Election $election,
-        VoteCommandStorage $manager,
-        VoteCommandProcessor $processor,
-        CandidateGroupRepository $candidateGroupRepository
-    ): Response {
-        $voteCommand = $manager->getVoteCommand($election);
+    public function voteAction(Request $request, Election $election): Response
+    {
+        $voteCommand = $this->storage->getVoteCommand($election);
 
-        if (!$processor->canVote($voteCommand)) {
+        if (!$this->processor->canVote($voteCommand)) {
             return $this->redirectToElectionRoute('app_voting_platform_index', $election);
         }
 
-        $processor->doVote($voteCommand);
+        $this->processor->doVote($voteCommand);
 
         $form = $this
             ->createForm(
                 $this->getCandidateFormType($election),
                 $voteCommand,
-                ['candidates' => $candidateGroups = $candidateGroupRepository->findForElection($election)]
+                ['candidates' => $candidateGroups = $this->candidateGroupRepository->findForElection($election)]
             )
             ->handleRequest($request)
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $processor->doConfirm($voteCommand);
+            $this->processor->doConfirm($voteCommand);
 
             return $this->redirectToElectionRoute('app_voting_platform_confirm_step', $election);
         }
 
-        return $this->render(sprintf('voting_platform/vote_step/%s.html.twig', $election->getDesignationType()), [
-            'election' => $election,
-            'form' => $form->createView(),
-            'candidate_groups' => $candidateGroups,
-        ]);
+        return $this->renderElectionTemplate(
+            sprintf('voting_platform/vote_step/%s.html.twig', $election->getDesignationType()),
+            $election,
+            [
+                'form' => $form->createView(),
+                'candidate_groups' => $candidateGroups,
+            ]
+        );
     }
 
     /**
      * @Route("/confirmer", name="_confirm_step", methods={"GET", "POST"})
      */
-    public function confirmAction(
-        Request $request,
-        Election $election,
-        VoteCommandStorage $storage,
-        VoteCommandProcessor $processor
-    ): Response {
-        $voteCommand = $storage->getVoteCommand($election);
+    public function confirmAction(Request $request, Election $election): Response
+    {
+        $voteCommand = $this->storage->getVoteCommand($election);
 
-        if (!$processor->canConfirm($voteCommand)) {
+        if (!$this->processor->canConfirm($voteCommand)) {
             return $this->redirectToElectionRoute('app_voting_platform_vote_step', $election);
         }
 
@@ -114,15 +113,15 @@ class VotingPlatformController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid() && $form->get('allow')->isClicked()) {
-            $processor->doFinish($voteCommand);
+            $this->processor->doFinish($voteCommand);
 
             return $this->redirectToElectionRoute('app_voting_platform_finish_step', $election);
         }
 
-        return $this->render('voting_platform/confirmation.html.twig', [
-            'election' => $election,
+        return $this->renderElectionTemplate('voting_platform/confirmation.html.twig', $election, [
             'form' => $form->createView(),
             'vote_command' => $voteCommand,
+            'candidate_groups' => $this->candidateGroupRepository->findByUuids($voteCommand->getCandidateGroupUuids()),
         ]);
     }
 
@@ -131,9 +130,7 @@ class VotingPlatformController extends AbstractController
      */
     public function finishAction(Election $election): Response
     {
-        return $this->render('voting_platform/finish.html.twig', [
-            'election' => $election,
-        ]);
+        return $this->renderElectionTemplate('voting_platform/finish.html.twig', $election);
     }
 
     private function getCandidateFormType(Election $election): string
@@ -148,5 +145,13 @@ class VotingPlatformController extends AbstractController
     protected function redirectToElectionRoute(string $routeName, Election $election): Response
     {
         return $this->redirectToRoute($routeName, ['uuid' => $election->getUuid()]);
+    }
+
+    private function renderElectionTemplate(string $template, Election $election, array $params = []): Response
+    {
+        return $this->render($template, array_merge($params, [
+            'base_layout' => sprintf('voting_platform/_layout_%s.html.twig', $election->getDesignationType()),
+            'election' => $election,
+        ]));
     }
 }

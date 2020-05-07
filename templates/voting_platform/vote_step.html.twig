@@ -1,10 +1,8 @@
-{% extends 'voting_platform/_layout.html.twig' %}
+{% extends base_layout %}
 
 {% block page_title %}
     Vote élection
 {% endblock %}
-
-{% form_theme form with 'voting_platform/form_theme.html.twig' %}
 
 {% block voting_platform_content %}
     <div class="l__wrapper--slim">

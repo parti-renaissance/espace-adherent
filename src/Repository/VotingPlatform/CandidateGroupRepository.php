@@ -28,4 +28,21 @@ class CandidateGroupRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByUuids(array $uuids): array
+    {
+        return $this->createQueryBuilder('cg')
+            ->addSelect('candidate')
+            ->innerJoin('cg.candidates', 'candidate')
+            ->where('cg.uuid IN (:uuids)')
+            ->setParameter('uuids', $uuids)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOneByUuid(string $uuid): ?CandidateGroup
+    {
+        return $this->findOneBy(['uuid' => $uuid]);
+    }
 }

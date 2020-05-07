@@ -11,7 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\ElectionRepository")
  *
  * @ORM\Table(name="voting_platform_election")
  *

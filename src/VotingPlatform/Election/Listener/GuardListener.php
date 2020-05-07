@@ -49,14 +49,14 @@ class GuardListener implements EventSubscriberInterface
         /** @var Adherent $adherent */
         $adherent = $this->security->getUser();
 
-        $adherentIsInVotersList = $this->votersListRepository->existsForElection($adherent, $command->getElection());
+        $adherentIsInVotersList = $this->votersListRepository->existsForElection($adherent, $command->getElectionUuid());
 
         if (!$adherentIsInVotersList) {
             $this->isGranted = false;
             $event->setBlocked(true);
         }
 
-        $alreadyVoted = $this->voteRepository->alreadyVoted($adherent, $command->getElection());
+        $alreadyVoted = $this->voteRepository->alreadyVoted($adherent, $command->getElectionUuid());
 
         if ($alreadyVoted) {
             $this->isGranted = false;
