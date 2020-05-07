@@ -8,8 +8,8 @@ old_sound_rabbit_mq:
             vhost: '/'
             lazy: false
             connection_timeout: 10
-            read_write_timeout: 10
-            heartbeat: 5
+            read_write_timeout: 30
+            heartbeat: 15
 
     producers:
         mailer_campaign:
