@@ -1,0 +1,29 @@
+{% extends 'form_theme.html.twig' %}
+
+{% block _referent_person_link_restrictedCommittees_entry_row %}
+    {% spaceless %}
+        <div class="summary-committee">
+            <span class="committee-remove">X</span>
+            <span class="committee-value">&nbsp;{% if value is not empty and value.name is defined %}{{ value['name'] }}{% endif %}</span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty and value.uuid is defined %}value="{{ value['uuid'] }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block _referent_person_link_restrictedCities_entry_row %}
+    {% spaceless %}
+        <div class="type-and-select__item summary-favorite-city">
+            <span class="type-and-select__item--value favorite-city-value">
+                &nbsp;
+                {% if value is not empty %}
+                    {% set city_data = get_city_data_from_insee_code(value) %}
+                    {{ city_data.name }} ({{  city_data.postal_code }})
+                {% endif %}
+            </span>
+            <span class="type-and-select__item--remove favorite-city-remove">
+                <img src="{{ asset('/images/icons/icn_remove-item.svg') }}" />
+            </span>
+            <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+    {% endspaceless %}
+{% endblock %}

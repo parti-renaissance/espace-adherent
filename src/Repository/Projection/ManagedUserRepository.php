@@ -4,6 +4,7 @@ namespace AppBundle\Repository\Projection;
 
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use AppBundle\Entity\Projection\ManagedUser;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\ManagedUsers\ManagedUsersFilter;
 use AppBundle\Repository\PaginatorTrait;
 use AppBundle\Repository\ReferentTagRepository;
@@ -139,6 +140,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        $restrictionsExpression = $qb->expr()->orX();
+
         if ($committees = $filter->getCommitteeUuids()) {
             $committeesExpression = $qb->expr()->orX();
 
@@ -147,7 +150,35 @@ class ManagedUserRepository extends ServiceEntityRepository
                 $qb->setParameter("committee_uuid_$key", $uuid);
             }
 
-            $qb->andWhere($committeesExpression);
+            $restrictionsExpression->add($committeesExpression);
+        }
+
+        if ($cities = $filter->getCities()) {
+            $citiesExpression = $qb->expr()->orX();
+
+            foreach ($cities as $key => $inseeCode) {
+                $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
+                $postalCode = $city ? $city['postal_code'] : null;
+
+                if (!$postalCode) {
+                    continue;
+                }
+
+                $cityExpression = $qb->expr()->andX(
+                    'u.postalCode = :city_postalCode_'.$key,
+                    'u.country = :country_france'
+                );
+                $qb->setParameter('city_postalCode_'.$key, $postalCode);
+                $qb->setParameter('country_france', 'FR');
+
+                $citiesExpression->add($cityExpression);
+            }
+
+            $restrictionsExpression->add($citiesExpression);
+        }
+
+        if ($restrictionsExpression->count()) {
+            $qb->andWhere($restrictionsExpression);
         }
 
         $typeExpression = $qb->expr()->orX();

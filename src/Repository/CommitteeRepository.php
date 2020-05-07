@@ -352,14 +352,34 @@ class CommitteeRepository extends ServiceEntityRepository
 
     public function findByPartialName(string $search, int $limit = 10): array
     {
-        return $this->createQueryBuilder('committee')
-            ->where('committee.canonicalName LIKE :search')
-            ->andWhere('committee.status = :status')
-            ->setParameter('search', '%'.strtolower($search).'%')
-            ->setParameter('status', Committee::APPROVED)
+        return $this
+            ->createPartialNameQueryBuilder('committee')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function findByPartialNameForReferent(Adherent $referent, string $search, int $limit = 10): array
+    {
+        $qb = $this
+            ->createPartialNameQueryBuilder($search, $alias = 'committee')
+            ->setMaxResults($limit)
+        ;
+
+        $this->applyReferentGeoFilter($qb, $referent, $alias);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    private function createPartialNameQueryBuilder(string $search, string $alias = 'c'): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder($alias)
+            ->where("$alias.canonicalName LIKE :search")
+            ->andWhere("$alias.status = :status")
+            ->setParameter('search', '%'.strtolower($search).'%')
+            ->setParameter('status', Committee::APPROVED)
         ;
     }
 
