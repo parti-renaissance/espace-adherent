@@ -52,7 +52,7 @@ class VoteResult
     /**
      * @var VoteChoice[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VotingPlatform\VoteChoice", mappedBy="vote", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VotingPlatform\VoteChoice", mappedBy="voteResult", cascade={"all"})
      */
     private $voteChoices;
 

@@ -28,7 +28,7 @@ class Vote
     /**
      * @var Voter
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Voter", inversedBy="votes", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Voter", cascade={"all"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $voter;
