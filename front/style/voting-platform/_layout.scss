@@ -1,12 +1,26 @@
 .voting-platform {
     position: relative;
     background-color: $gray--lighter;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 80px);
 
     &__header {
+        box-sizing: border-box;
         width: 100%;
         background-color: $white;
-        height: 100px;
+
+        > div {
+            height: 80px;
+        }
+
+        .anonymous {
+            span {
+                color: $neutral-grey;
+                text-transform: uppercase;
+                font-size: 14px;
+                line-height: normal;
+                margin-left: 5px;
+            }
+        }
     }
 
     &__ornaments {
@@ -27,9 +41,13 @@
     }
 
     &__content {
-        margin: 140px 0;
+        margin: 60px 0;
         position: relative;
         z-index: 2;
+
+        @media (min-width: $tablet) {
+            margin: 140px 0;
+        }
 
         .introduction-header h1 {
             line-height: normal;
@@ -195,7 +213,10 @@
         bottom: 0;
         width: 100%;
         max-width: 700px;
-        padding: 100px;
+
+        @media (min-width: $tablet) {
+            padding: 100px;
+        }
 
         h3 {
             font-weight: normal;
