@@ -223,12 +223,57 @@
         }
     }
 
+    .ballot-paper-container {
+        margin: 50px auto 30px;
+
+        @media (min-width: $tablet) {
+            padding: 0 35px;
+            margin: 50px auto 80px;
+        }
+    }
+
     .ballot-paper {
-        background-color: $white;
-        box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
-        width: 420px;
-        height: 280px;
-        margin: 40px auto;
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+
+        &:first-child {
+            margin: 0 auto 30px;
+            z-index: 4;
+
+            @media (min-width: $tablet) {
+                margin-right: auto;
+                margin-left: initial;
+                margin-bottom: 0;
+            }
+        }
+
+        &:last-child {
+            margin: 0 auto;
+            z-index: 3;
+
+            @media (min-width: $tablet) {
+                margin-left: auto;
+                margin-right: initial;
+                margin-top: -200px;
+            }
+        }
+
+        &__area {
+            padding-bottom: 66.67%;
+            position: relative;
+            background-color: $white;
+            box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        &__content {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
 
         h3 {
             display: inline-block;
