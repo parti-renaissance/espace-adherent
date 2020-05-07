@@ -5,37 +5,45 @@
 {% endblock %}
 
 {% block voting_platform_header %}
-    <div class="confirmation-header text--center">
-        <h1 class="text--larger b__nudge--bottom-large">Mon bulletin de vote</h1>
-        <p class="text--body text--default-large text--dark">Confirmez vous ce bulletin de vote ?</p>
+    <div class="l__wrapper--slim">
+        <div class="confirmation-header text--center">
+            <h1 class="text--larger b__nudge--bottom-large">Mon bulletin de vote</h1>
+            <p class="text--body text--default-large text--dark">Confirmez vous ce bulletin de vote ?</p>
+        </div>
     </div>
 {% endblock %}
 
 {% import 'voting_platform/_helper.html.twig' as helper %}
 
 {% block voting_platform_content %}
-    <div class="ballot-paper-container">
-        {% for candidateGroup in vote_command.candidateGroups %}
-            <div class="ballot-paper l__col l__col--center">
-                <div class="l__row l__row--center b__nudge--bottom-small">
-                    {% for candidate in candidateGroup.candidates %}
-                        <h3 class="text--medium">{{ candidate.fullName }}</h3>
-                        <span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span>
+    <div class="l__wrapper--narrow">
+        <div class="ballot-paper-container">
+            {% for candidateGroup in vote_command.candidateGroups %}
+                <div class="ballot-paper">
+                    <div class="ballot-paper__area">
+                        <div class="ballot-paper__content l__col">
+                            <div class="l__row l__row--center b__nudge--bottom-small">
+                                {% for candidate in candidateGroup.candidates %}
+                                    <h3 class="text--medium">{{ candidate.fullName }}</h3>
+                                    <span class="candidate-gender l__col l__col--center">{{ candidate.isMan ? 'H' : 'F' }}</span>
 
-                        {% if not loop.last %}
-                            <span class="separator"></span>
-                        {% endif %}
-                    {% endfor %}
+                                    {% if not loop.last %}
+                                        <span class="separator"></span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="text--body text--center link--no-decor link--blue--dark">
+                                Changer mon vote
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="text--body link--no-decor link--blue--dark">
-                    Changer mon vote
-                </a>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 
     {{ form_start(form) }}
-        <div>
+        <div class="l__wrapper--slim">
             {{ form_widget(form.allow, { label: 'Confirmer mon vote', attr: { class: 'btn btn--blue btn--large-and-full' } }) }}
         </div>
     {{ form_end(form) }}

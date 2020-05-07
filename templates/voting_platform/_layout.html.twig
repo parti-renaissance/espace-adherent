@@ -42,16 +42,16 @@
         {% endblock %}
 
         <div class="voting-platform__content">
-            <div class="l__wrapper--slim">
                 {% block voting_platform_header %}
-                <div class="introduction-header">
-                    <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
-                    <p class="text--body text--default-large text--muted b__nudge--bottom-large">du {{ election.startDate|date('d/m/Y') }} au {{ election.endDate|date('d/m/Y') }}</p>
+                <div class="l__wrapper--slim">
+                    <div class="introduction-header">
+                        <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
+                        <p class="text--body text--default-large text--muted b__nudge--bottom-large">du {{ election.startDate|date('d/m/Y') }} au {{ election.endDate|date('d/m/Y') }}</p>
+                    </div>
                 </div>
                 {% endblock %}
 
                 {% block voting_platform_content '' %}
-            </div>
         </div>
     </main>
 {% endblock %}
