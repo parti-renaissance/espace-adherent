@@ -36,9 +36,13 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
 
     private function updateGeocodableEntity(GeoPointInterface $geocodable): void
     {
-        if ($coordinates = $this->geocode($geocodable->getGeocodableAddress())) {
-            $geocodable->updateCoordinates($coordinates);
-            $this->manager->flush();
+        if ($geocodable->getGeocodableHash() !== $hash = md5($address = $geocodable->getGeocodableAddress())) {
+            if ($coordinates = $this->geocode($address)) {
+                $geocodable->updateCoordinates($coordinates);
+                $geocodable->setGeocodableHash($hash);
+
+                $this->manager->flush();
+            }
         }
     }
 

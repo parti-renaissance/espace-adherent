@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
-use AppBundle\Address\NullableAddress;
 use AppBundle\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -121,7 +120,9 @@ trait EntityNullablePostAddressTrait
 
     public function updateCoordinates(Coordinates $coordinates): void
     {
-        $this->postAddress ? $this->postAddress->updateCoordinates($coordinates) : new NullableAddress();
+        if ($this->postAddress) {
+            $this->postAddress->updateCoordinates($coordinates);
+        }
     }
 
     /**
@@ -133,5 +134,17 @@ trait EntityNullablePostAddressTrait
             'lng' => $this->getLongitude(),
             'lat' => $this->getLatitude(),
         ];
+    }
+
+    public function getGeocodableHash(): ?string
+    {
+        return $this->postAddress ? $this->postAddress->getGeocodableHash() : null;
+    }
+
+    public function setGeocodableHash(string $hash): void
+    {
+        if ($this->postAddress) {
+            $this->postAddress->setGeocodableHash($hash);
+        }
     }
 }

@@ -93,6 +93,13 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
      */
     private $region;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $geocodableHash;
+
     private function __construct(
         string $country,
         string $postalCode,
@@ -249,5 +256,15 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
     public function setRegion($region): void
     {
         $this->region = $region;
+    }
+
+    public function getGeocodableHash(): ?string
+    {
+        return $this->geocodableHash;
+    }
+
+    public function setGeocodableHash(string $hash): void
+    {
+        $this->geocodableHash = $hash;
     }
 }
