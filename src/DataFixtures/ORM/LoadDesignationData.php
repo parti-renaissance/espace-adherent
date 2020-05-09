@@ -16,10 +16,11 @@ class LoadDesignationData extends Fixture
         $designation->setZones([DesignationZoneEnum::FRANCE]);
         $designation->setType(DesignationTypeEnum::COMMITTEE_ADHERENT);
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
-        $designation->setCandidacyEndDate(new \DateTime('+1 week'));
+        $designation->setCandidacyEndDate(new \DateTime());
         $designation->setVoteStartDate(new \DateTime('+1 week'));
         $designation->setVoteEndDate(new \DateTime('+4 week'));
 
+        $this->setReference('designation-1', $designation);
         $manager->persist($designation);
 
         $manager->flush();

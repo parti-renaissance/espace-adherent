@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\VotingPlatform\Designation\Designation;
 use AppBundle\VotingPlatform\Designation\ElectionStaticDate;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,9 +26,16 @@ class CommitteeElection
      */
     private $committee;
 
-    public function __construct(Committee $committee)
+    /**
+     * @var Designation
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VotingPlatform\Designation\Designation")
+     */
+    private $designation;
+
+    public function __construct(Designation $designation = null)
     {
-        $this->committee = $committee;
+        $this->designation = $designation;
     }
 
     public function getId(): int
@@ -43,6 +51,11 @@ class CommitteeElection
     public function setCommittee(Committee $committee): void
     {
         $this->committee = $committee;
+    }
+
+    public function setDesignation(Designation $designation): void
+    {
+        $this->designation = $designation;
     }
 
     public function getCandidacyPeriodEndDate(): \DateTimeInterface

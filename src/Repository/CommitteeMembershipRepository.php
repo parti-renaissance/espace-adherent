@@ -116,6 +116,9 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * @return CommitteeMembership[]
+     */
     public function findVotingMemberships(Committee $committee): array
     {
         return $this
@@ -604,6 +607,20 @@ SQL
             ])
             ->getQuery()
             ->execute()
+        ;
+    }
+
+    public function committeeHasVoters(Committee $committee): bool
+    {
+        return (bool) $this->createQueryBuilder('cm')
+            ->select('COUNT(1)')
+            ->where('cm.committee = :committee AND cm.enableVote = :true')
+            ->setParameters([
+                'committee' => $committee,
+                'true' => true,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 }

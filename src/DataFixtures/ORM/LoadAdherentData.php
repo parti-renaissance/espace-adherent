@@ -12,6 +12,7 @@ use AppBundle\Entity\AdherentCharter\ReferentCharter;
 use AppBundle\Entity\AdherentResetPasswordToken;
 use AppBundle\Entity\AssessorRoleAssociation;
 use AppBundle\Entity\BoardMember\BoardMember;
+use AppBundle\Entity\CommitteeElection;
 use AppBundle\Entity\CoordinatorManagedArea;
 use AppBundle\Entity\MunicipalChiefManagedArea;
 use AppBundle\Entity\MunicipalManagerRoleAssociation;
@@ -814,6 +815,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 673654349',
         ]);
         $committee5->approved();
+        $committee5->setCommitteeElection(new CommitteeElection($this->getReference('designation-1')));
         $this->addReference('committee-5', $committee5);
 
         $committee6 = $committeeFactory->createFromArray([
@@ -826,6 +828,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             'phone' => '33 234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
+        $committee6->setCommitteeElection(new CommitteeElection($this->getReference('designation-1')));
         $this->addReference('committee-6', $committee6);
 
         $committee7 = $committeeFactory->createFromArray([
@@ -979,6 +982,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
         $manager->persist($adherent7->superviseCommittee($committee4));
         $manager->persist($adherent7->superviseCommittee($committee5));
         $manager->persist($adherent2->followCommittee($committee1));
+        $manager->persist($adherent2->followCommittee($committee6));
         $manager->persist($adherent4->followCommittee($committee1));
         $manager->persist($adherent5->hostCommittee($committee1));
         $manager->persist($adherent6->followCommittee($committee2));
@@ -1036,6 +1040,7 @@ class LoadAdherentData extends AbstractFixture implements ContainerAwareInterfac
             LoadSubscriptionTypeData::class,
             LoadVotePlaceData::class,
             LoadCityData::class,
+            LoadDesignationData::class,
         ];
     }
 }

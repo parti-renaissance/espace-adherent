@@ -61,20 +61,28 @@ class CommitteesControllerTest extends WebTestCase
         $this->assertArrayHasKey('metadata', $data);
 
         self::assertSame([
-            'total' => 1,
+            'total' => 2,
             'males' => 1,
-            'females' => 0,
+            'females' => 1,
         ], $data['metadata']);
 
         $this->assertArrayHasKey('candidacies', $data);
 
-        self::assertCount(1, $data['candidacies']);
+        self::assertCount(2, $data['candidacies']);
 
-        self::assertArraySubset([[
+        self::assertArraySubset([
+            'photo' => '/assets/images/candidacies/profile/d12d8c8acd3f8fb0ee8faddec72868c6.jpg',
             'gender' => 'male',
             'first_name' => 'Bob',
             'last_name' => 'Assesseur',
-        ]], $data['candidacies']);
+        ], $data['candidacies'][0]);
+
+        self::assertArraySubset([
+            'photo' => null,
+            'gender' => 'female',
+            'first_name' => 'Carl',
+            'last_name' => 'Mirabeau',
+        ], $data['candidacies'][1]);
     }
 
     public function setUp()

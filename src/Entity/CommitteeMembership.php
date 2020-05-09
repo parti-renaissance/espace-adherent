@@ -101,7 +101,12 @@ class CommitteeMembership
     /**
      * @var CommitteeCandidacy|null
      *
-     * @ORM\OneToOne(targetEntity="CommitteeCandidacy", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="AppBundle\Entity\CommitteeCandidacy",
+     *     cascade={"all"},
+     *     orphanRemoval=true,
+     *     inversedBy="committeeMembership"
+     * )
      */
     private $committeeCandidacy;
 
@@ -230,7 +235,7 @@ class CommitteeMembership
         return $this->committeeCandidacy;
     }
 
-    public function setCommitteeCandidacy(CommitteeCandidacy $committeeCandidacy): void
+    public function setCommitteeCandidacy(?CommitteeCandidacy $committeeCandidacy): void
     {
         $this->committeeCandidacy = $committeeCandidacy;
     }

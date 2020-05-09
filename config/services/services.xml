@@ -410,6 +410,8 @@
         <!-- Deputy -->
         <service id="AppBundle\Command\CreateReferentTagsForDistrictsCommand" />
         <service id="AppBundle\Command\UpdateReferentTagsForDistrictsOnAdherentsCommand" />
+        <service id="AppBundle\Command\VotingPlatformConfigureCommand" />
+        <service id="AppBundle\Command\VotingPlatformInitializeCommitteeElectionCommand" />
         <service id="AppBundle\Deputy\Subscriber\BindAdherentDistrictSubscriber" />
         <service id="AppBundle\Deputy\DistrictLoader" public="true" />
         <service id="AppBundle\Deputy\LightFileDistrictLoader" public="true" />
