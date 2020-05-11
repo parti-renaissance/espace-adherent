@@ -6,7 +6,7 @@ use MyCLabs\Enum\Enum;
 
 class VoteCommandStateEnum extends Enum
 {
-    public const INITIALISE = 'initialise';
+    public const INITIALIZE = 'initialize';
     public const START = 'start';
     public const VOTE = 'vote';
     public const CONFIRM = 'confirm';

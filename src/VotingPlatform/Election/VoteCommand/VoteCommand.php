@@ -12,7 +12,7 @@ class VoteCommand
     /**
      * @var string
      */
-    private $state = VoteCommandStateEnum::INITIALISE;
+    private $state = VoteCommandStateEnum::INITIALIZE;
 
     /**
      * @var CandidateGroup[]

@@ -98,11 +98,11 @@ framework:
                 type: 'single_state'
                 arguments:
                     - 'state'
-            initial_place: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALISE
+            initial_place: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
             supports:
                 - AppBundle\VotingPlatform\Election\VoteCommand\VoteCommand
             places:
-                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALISE
+                - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
                 - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START
                 - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
                 - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
@@ -110,7 +110,7 @@ framework:
             transitions:
                 !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::TO_START:
                     from:
-                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALISE
+                        - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::INITIALIZE
                         - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::VOTE
                         - !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
                     to: !php/const AppBundle\VotingPlatform\Election\VoteCommandStateEnum::START

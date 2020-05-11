@@ -112,7 +112,7 @@ class VotingPlatformController extends AbstractController
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted() && $form->isValid() && $form->get('allow')->isClicked()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->processor->doFinish($voteCommand);
 
             return $this->redirectToElectionRoute('app_voting_platform_finish_step', $election);
