@@ -29,7 +29,6 @@ class ReferentTag
     public const TYPE_DEPARTMENT = 'department';
     public const TYPE_COUNTRY = 'country';
     public const TYPE_DISTRICT = 'district';
-    public const TYPE_BOROUGH = 'borough';
 
     /**
      * @ORM\Id
@@ -141,15 +140,5 @@ class ReferentTag
     public function isDistrictTag(): bool
     {
         return self::TYPE_DISTRICT === $this->type;
-    }
-
-    public function isDepartmentTag(): bool
-    {
-        return self::TYPE_DEPARTMENT === $this->type;
-    }
-
-    public function isBoroughTag(): bool
-    {
-        return self::TYPE_BOROUGH === $this->type;
     }
 }

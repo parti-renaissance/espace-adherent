@@ -2,9 +2,6 @@
 
 namespace AppBundle\Intl;
 
-use AppBundle\Entity\ReferentTag;
-use AppBundle\Utils\AreaUtils;
-
 class FranceCitiesBundle
 {
     public const DOMTOM_INSEE_CODE = [
@@ -146,12 +143,8 @@ class FranceCitiesBundle
      * - postal codes if given parameter is a number
      * - city names otherwise
      */
-    public static function searchCities(
-        string $search,
-        int $maxResults = 20,
-        array $ignore = [],
-        array $filters = []
-    ): array {
+    public static function searchCities(string $search, int $maxResults = 20, array $ignore = []): array
+    {
         $search = self::canonicalizeCityName($search);
 
         $list = [];
@@ -159,18 +152,6 @@ class FranceCitiesBundle
         foreach (self::$cities as $postalCode => $cities) {
             foreach ($cities as $inseeCode => $cityName) {
                 $inseeCode = str_pad($inseeCode, 5, '0', \STR_PAD_LEFT);
-
-                $matchFilters = false;
-                foreach ($filters as $filter) {
-                    if (0 === strpos($inseeCode, $filter)) {
-                        $matchFilters = true;
-                        break;
-                    }
-                }
-
-                if (!empty($filters) && !$matchFilters) {
-                    continue;
-                }
 
                 if (\in_array($inseeCode, $ignore)) {
                     continue;
@@ -209,24 +190,6 @@ class FranceCitiesBundle
         }
 
         return $list;
-    }
-
-    /**
-     * @param ReferentTag[]|array $tags
-     */
-    public static function searchCitiesForTags(array $tags, string $search, int $maxResults = 10): array
-    {
-        $filters = [];
-        foreach ($tags as $tag) {
-            if (AreaUtils::PREFIX_POSTALCODE_CORSICA === $tag->getCode()) {
-                $filters[] = AreaUtils::CODE_CORSICA_A;
-                $filters[] = AreaUtils::CODE_CORSICA_B;
-            } elseif ($tag->isDepartmentTag() || $tag->isBoroughTag()) {
-                $filters[] = $tag->getCode();
-            }
-        }
-
-        return self::searchCities($search, $maxResults, [], $filters);
     }
 
     /**
