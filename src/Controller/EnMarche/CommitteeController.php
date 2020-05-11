@@ -10,7 +10,7 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeCandidacy;
 use AppBundle\Entity\CommitteeFeedItem;
 use AppBundle\Form\CommitteeFeedItemMessageType;
-use AppBundle\Form\VotingPlatform\CandidateProfileType;
+use AppBundle\Form\VotingPlatform\CandidacyBiographyType;
 use AppBundle\Image\ImageManager;
 use AppBundle\Security\Http\Session\AnonymousFollowerSession;
 use AppBundle\ValueObject\Genders;
@@ -256,7 +256,7 @@ class CommitteeController extends Controller
         $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $candidacyGender);
 
         $form = $this
-            ->createForm(CandidateProfileType::class, $candidacy)
+            ->createForm(CandidacyBiographyType::class, $candidacy)
             ->add('skip', SubmitType::class)
             ->handleRequest($request)
         ;
@@ -302,7 +302,7 @@ class CommitteeController extends Controller
         }
 
         $form = $this
-            ->createForm(CandidateProfileType::class, $candidacy)
+            ->createForm(CandidacyBiographyType::class, $candidacy)
             ->handleRequest($request)
         ;
 

@@ -73,7 +73,7 @@ trait EntityPersonNameTrait
     {
         $normalized = self::normalize($this->firstName);
 
-        return strtoupper($normalized[0]);
+        return mb_strtoupper(mb_substr($normalized, 0, 1));
     }
 
     public function getInitials(): string

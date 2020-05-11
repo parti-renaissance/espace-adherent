@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+        bind:
+            $mailchimpOrgId: '%env(MAILCHIMP_ORG_ID)%'
+            $mailchimpCampagnUrl: '%env(MAILCHIMP_CAMPAIGN_URL)%'
+            $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
+
+    AppBundle\Controller\:
+        resource: ../../src/Controller/
+        tags: ['controller.service_arguments']
+
+    AppBundle\Controller\Admin\:
+        resource: ../../src/Controller/Admin
+        public: true
+        tags: ['controller.service_arguments']

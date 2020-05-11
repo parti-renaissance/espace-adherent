@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CandidateProfileType extends AbstractType
+class CandidacyBiographyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -1,0 +1,8 @@
+<div>
+    {% for choice in form %}
+        {% include 'voting_platform/vote_step/_candidate_box.html.twig' with {
+            candidate_group: candidate_groups|filter(group => group.uuid.toString == choice.vars.value)|first,
+            form: choice
+        } %}
+    {% endfor %}
+</div>

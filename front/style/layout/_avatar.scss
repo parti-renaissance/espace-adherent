@@ -22,6 +22,12 @@
         font-size: 22px;
     }
 
+    &--large {
+        width: 90px;
+        height: 90px;
+        font-size: 30px;
+    }
+
     // style
     &--style-01 {
         background-color: $gray--lighter;

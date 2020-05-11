@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% block page_title '' %} | Élection
+{% endblock %}
+
+{% block banner '' %}
+
+{% block header %}
+    <header class="voting-platform__header">
+        <div class="l__wrapper--wide l__row l__row--h-stretch l__row--wrap">
+            <div class="l__row">
+                <a href="{{ path('homepage') }}" class="link--no-decor text--logo b__nudge--right-large">EM!</a>
+                <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="text--body link--no-decor">Introduction au vote</a>
+            </div>
+            <div class="anonymous l__row">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+                  <path fill-rule="evenodd" fill="#8C8C8C" d="M15.9175223,6 L17.3892911,6.85673959 L9.8631458,20 L8.39137706,19.1432604 L9.28819756,17.577132 C7.41210851,16.7152734 5.8904293,15.2203164 5.00025146,13.3678126 C6.42549259,10.3995772 9.47207172,8.34912794 13.0002355,8.34912794 C13.5116923,8.34912794 14.0130288,8.39221724 14.5007744,8.4749445 L15.9175223,6 Z M17.6643593,9.6671122 C19.1025632,10.5541588 20.2665313,11.8391993 21.000699,13.3675336 C19.5742955,16.3352307 16.5280038,18.3852203 13.0002355,18.3852203 C12.8917613,18.3852203 12.7837424,18.3832821 12.6762118,18.3794385 L13.747953,16.509291 C15.0754574,16.1731316 16.0594101,14.9486471 16.0594101,13.4895655 C16.0594101,13.2746076 16.038054,13.0647415 15.9973896,12.8620575 L15.9503648,12.661845 L17.6643593,9.6671122 Z M13.0117235,10.3784544 C11.3285327,10.3784544 9.96403689,11.7713463 9.96403689,13.4895655 C9.96403689,14.1851818 10.1876795,14.8274765 10.5655707,15.3456115 L13.3957028,10.40291 C13.2699341,10.3867704 13.1417801,10.3784544 13.0117235,10.3784544 Z"/>
+                </svg>
+                <span>Session anonyme</span>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <main class="voting-platform">
+        <div class="voting-platform__ornaments">
+            <img src="{{ asset('images/vote-platform-ornaments/ornament-1.png') }}" class="ornament ornament--1" />
+            <img src="{{ asset('images/vote-platform-ornaments/ornament-2.png') }}" class="ornament ornament--2" />
+            <img src="{{ asset('images/vote-platform-ornaments/ornament-3.png') }}" class="ornament ornament--3" />
+        </div>
+
+        <div class="voting-platform__content">
+            {% block voting_platform_header %}
+                <div class="l__wrapper--slim">
+                    <div class="introduction-header">
+                        <h1 class="text--larger b__nudge--bottom-large">{{ election.title }}</h1>
+                        <p class="text--body text--default-large text--muted b__nudge--bottom-large">du {{ election.startDate|date('d/m/Y') }} au {{ election.endDate|date('d/m/Y') }}</p>
+                    </div>
+                </div>
+            {% endblock %}
+
+            {% block voting_platform_content '' %}
+        </div>
+    </main>
+{% endblock %}
+
+{% block footer '' %}

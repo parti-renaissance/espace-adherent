@@ -1,0 +1,293 @@
+.voting-platform {
+    position: relative;
+    background-color: $gray--lighter;
+    min-height: calc(100vh - 80px);
+
+    &__header {
+        box-sizing: border-box;
+        width: 100%;
+        background-color: $white;
+
+        > div {
+            height: 80px;
+        }
+
+        .anonymous {
+            span {
+                color: $neutral-grey;
+                text-transform: uppercase;
+                font-size: 14px;
+                line-height: normal;
+                margin-left: 5px;
+            }
+        }
+    }
+
+    &__ornaments {
+        position: relative;
+        z-index: 1;
+        display: none;
+        @media (min-width: $tablet) {
+            display: block;
+        }
+
+        .ornament {
+            position: absolute;
+
+            &--3 { width: 230px; left: 0; top: 0; }
+            &--2 { width: 278px; left: calc(50% - (278px / 2)); top: 0;}
+            &--1 { width: 227px; right: 0; top: 0;}
+        }
+    }
+
+    &__content {
+        margin: 60px 0;
+        position: relative;
+        z-index: 2;
+
+        @media (min-width: $tablet) {
+            margin: 140px 0;
+        }
+
+        .introduction-header h1 {
+            line-height: normal;
+            max-width: 650px;
+        }
+    }
+
+    .vote-tabs--container {
+        margin-top: 60px;
+
+        .vote-tab--1,
+        .vote-tab--2 {
+            display: none;
+
+            &.active {
+                display: block;
+            }
+        }
+    }
+
+    .candidate__box {
+
+        position: relative;
+        border: 1px solid $lines-grey;
+        background-color: $white;
+        border-radius: 3px;
+        margin: 24px 0;
+        padding: 30px 30px 60px;
+
+        @media (min-width: $mobile) {
+            padding: 30px;
+        }
+
+        input[type='radio'] {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+
+            &:checked + label {
+                box-shadow: 0 0 0 5px rgba(29, 95, 209, 0.1);
+                border: solid 1px $blue--dark;
+            }
+
+            &:checked + label:before {
+                box-sizing: border-box;
+                border: 8px solid $blue--dark;
+                background: $white;
+                content: '';
+            }
+
+            &:disabled + label {
+                cursor: not-allowed;
+
+                &:before {
+                    background-color: $pale-grey;
+
+                    &:hover {
+                        border-color: $lines-grey;
+                    }
+                }
+            }
+        }
+
+        label {
+            display: inline-block;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            right : 0;
+            top: 0;
+            bottom: 0;
+            margin: 0;
+            border-radius: 3px;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+            border: solid 1px transparent;
+
+            &:hover {
+                border: solid 1px $blue--dark;
+            }
+
+            &:before {
+                box-sizing: border-box;
+                content: ' ';
+                width: 22px;
+                height: 22px;
+                min-width: 22px;
+                min-height: 22px;
+                margin-right: 15px;
+                background: $white;
+                border: 2px solid $lines-grey;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                left: calc(50% - 11px);
+                bottom: 20px;
+                transition: all 0.2s;
+                -webkit-transition: all 0.2s;
+                border-radius: 50px;
+
+                @media (min-width: $mobile) {
+                    left: auto;
+                    bottom: auto;
+                    top: calc(50% - 11px);
+                    right: 8%;
+                }
+            }
+        }
+
+        .box__content {
+            position: relative;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+
+            @media (min-width: $mobile) {
+                flex-direction: row;
+            }
+
+            .candidate-infos {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                @media (min-width: $mobile) {
+                    align-items: flex-start;
+                    margin-left: 20px;
+                }
+            }
+
+            .candidate-name {
+                font-weight: normal;
+            }
+
+            .candidate-photo {
+                overflow: hidden;
+                margin-bottom: 10px;
+
+                @media (min-width: $mobile) {
+                    margin-bottom: 0;
+                }
+
+                img {
+                    height: 100%;
+                }
+            }
+
+            .candidate-biography {
+                pointer-events: all;
+            }
+        }
+    }
+
+    .modal-content {
+        position: absolute;
+        border-radius: 0;
+        margin: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 700px;
+
+        @media (min-width: $tablet) {
+            padding: 100px;
+        }
+
+        h3 {
+            font-weight: normal;
+        }
+    }
+
+    .ballot-paper-container {
+        margin: 50px auto 30px;
+
+        @media (min-width: $tablet) {
+            padding: 0 35px;
+            margin: 50px auto 80px;
+        }
+    }
+
+    .ballot-paper {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+
+        &:first-child {
+            margin: 0 auto 30px;
+            z-index: 4;
+
+            @media (min-width: $tablet) {
+                margin-right: auto;
+                margin-left: initial;
+                margin-bottom: 0;
+            }
+        }
+
+        &:last-child {
+            margin: 0 auto;
+            z-index: 3;
+
+            @media (min-width: $tablet) {
+                margin-left: auto;
+                margin-right: initial;
+                margin-top: -200px;
+            }
+        }
+
+        &__area {
+            padding-bottom: 66.67%;
+            position: relative;
+            background-color: $white;
+            box-shadow: 0 30px 40px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        &__content {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        h3 {
+            display: inline-block;
+            font-weight: normal;
+            margin-right: 8px;
+        }
+    }
+
+    .candidate-gender {
+        color: $neutral-grey;
+        font-size: 10px;
+        font-family: $font-roboto;
+        border: solid 1px $neutral-grey;
+        height: 16px;
+        width: 12px;
+    }
+}
