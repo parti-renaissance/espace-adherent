@@ -38,11 +38,14 @@ class ReferentManagedUsersController extends AbstractManagedUsersController
         /** @var Adherent $referent */
         $referent = $this->getUser();
 
+        $referentTeamMember = $referent->getReferentTeamMember();
+
         return new ManagedUsersFilter(
             SubscriptionTypeEnum::REFERENT_EMAIL,
             ($referent->isCoReferent() ? $referent->getReferentOfReferentTeam() : $referent)
                 ->getManagedArea()->getTags()->toArray(),
-            $referent->isLimitedCoReferent() ? $referent->getMemberships()->getCommitteeUuids() : []
+            $referent->isLimitedCoReferent() ? $referentTeamMember->getRestrictedCommitteeUuids() : [],
+            $referent->isLimitedCoReferent() ? $referentTeamMember->getRestrictedCities() : []
         );
     }
 }
