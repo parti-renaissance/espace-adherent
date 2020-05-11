@@ -130,11 +130,21 @@ class ManagedUsersFilter
      */
     private $committeeUuids = [];
 
-    public function __construct(string $subscriptionType = null, array $referentTags = [], array $committeeUuids = [])
-    {
+    /**
+     * @var string[]
+     */
+    private $cities = [];
+
+    public function __construct(
+        string $subscriptionType = null,
+        array $referentTags = [],
+        array $committeeUuids = [],
+        array $cities = []
+    ) {
         $this->subscriptionType = $subscriptionType;
         $this->referentTags = $referentTags;
         $this->committeeUuids = $committeeUuids;
+        $this->cities = $cities;
     }
 
     public function getGender(): ?string
@@ -352,6 +362,11 @@ class ManagedUsersFilter
     public function getCommitteeUuids(): array
     {
         return $this->committeeUuids;
+    }
+
+    public function getCities(): array
+    {
+        return $this->cities;
     }
 
     public function toArray(): array
