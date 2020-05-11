@@ -153,24 +153,21 @@ class ManagedUserRepository extends ServiceEntityRepository
         $typeExpression = $qb->expr()->orX();
 
         if ($filter->includeAdherentsNoCommittee()) {
-            $typeExpression->add('u.type = :type_anc AND u.isCommitteeMember = 0');
-            $qb->setParameter('type_anc', ManagedUser::TYPE_ADHERENT);
+            $typeExpression->add('u.isCommitteeMember = 0');
         }
 
         if ($filter->includeAdherentsInCommittee()) {
-            $typeExpression->add('u.type = :type_aic AND u.isCommitteeMember = 1');
-            $qb->setParameter('type_aic', ManagedUser::TYPE_ADHERENT);
+            $typeExpression->add('u.isCommitteeMember = 1');
         }
 
-        if ($filter->includeCommitteeHosts()) {
-            $typeExpression->add('u.type = :type_h AND u.isCommitteeHost = 1');
-            $qb->setParameter('type_h', ManagedUser::TYPE_ADHERENT);
+        // includes
+        if (true === $filter->includeCommitteeHosts()) {
+            $typeExpression->add('u.isCommitteeHost = 1');
         }
 
-        if ($filter->includeCommitteeSupervisors()) {
+        if (true === $filter->includeCommitteeSupervisors()) {
             $and = new Andx();
-            $and->add('u.type = :type_s AND u.isCommitteeSupervisor = 1');
-            $qb->setParameter('type_s', ManagedUser::TYPE_ADHERENT);
+            $and->add('u.isCommitteeSupervisor = 1');
 
             $supervisorExpression = $qb->expr()->orX();
             foreach ($filter->getReferentTags() as $key => $code) {
@@ -182,11 +179,24 @@ class ManagedUserRepository extends ServiceEntityRepository
             $typeExpression->add($and);
         }
 
-        if ($filter->includeCitizenProjectHosts()) {
+        if (true === $filter->includeCitizenProjectHosts()) {
             $typeExpression->add('json_length(u.citizenProjectsOrganizer) > 0');
         }
 
         $qb->andWhere($typeExpression);
+
+        // excludes
+        if (false === $filter->includeCommitteeHosts()) {
+            $qb->andWhere('u.isCommitteeHost = 0');
+        }
+
+        if (false === $filter->includeCommitteeSupervisors()) {
+            $qb->andWhere('u.isCommitteeSupervisor = 0');
+        }
+
+        if (false === $filter->includeCitizenProjectHosts()) {
+            $qb->andWhere('u.citizenProjectsOrganizer IS NULL OR json_length(u.citizenProjectsOrganizer) = 0');
+        }
 
         if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
             $subscriptionTypesCondition = 'FIND_IN_SET(:subscription_type, u.subscriptionTypes) > 0';

@@ -156,6 +156,20 @@
             });
 
             App.runReferentUserList('referent-user__committees-modal--trigger');
+
+            $('.js-role-select').on('change', function() {
+                var selectedRoles = $(this).val(),
+                    $oppositeOptions = $('#'+$(this).data('opposite')).find('option'),
+                    $oppositeOption
+                ;
+
+                for (var i = 0; i < $oppositeOptions.length; i++) {
+                    $oppositeOption = $($oppositeOptions[i]);
+                    // disable or re-enable options for the opposite select
+                    $oppositeOption.attr('disabled', $.inArray($oppositeOption.val(), selectedRoles) > -1);
+                }
+            });
+            $('.js-role-select').trigger('change');
         });
     </script>
 {% endblock %}
