@@ -2,11 +2,84 @@
 
 namespace Tests\AppBundle\Intl;
 
+use AppBundle\Entity\ReferentTag;
 use AppBundle\Intl\FranceCitiesBundle;
 use PHPUnit\Framework\TestCase;
 
 class FranceCitiesBundleTest extends TestCase
 {
+    /**
+     * @dataProvider provideSearchCitiesForTags
+     */
+    public function testSearchCitiesForTags(array $tags, string $search, array $expectedCities): void
+    {
+        $this->assertEquals($expectedCities, FranceCitiesBundle::searchCitiesForTags($tags, $search));
+    }
+
+    public function provideSearchCitiesForTags(): iterable
+    {
+        yield [
+            [
+                $this->createReferentTag('92', true, false),
+            ],
+            'Bois Colom',
+            [
+                [
+                    'name' => 'Bois-Colombes',
+                    'postal_code' => '92270',
+                    'insee_code' => '92009',
+                ],
+            ],
+        ];
+        yield [
+            [
+                $this->createReferentTag('77', true, false),
+            ],
+            'Bois Colom',
+            [],
+        ];
+
+        yield [
+            [
+                $this->createReferentTag('92', true, false),
+            ],
+            'Melun',
+            [],
+        ];
+        yield [
+            [
+                $this->createReferentTag('77', true, false),
+            ],
+            'Melun',
+            [
+                [
+                    'name' => 'Melun',
+                    'postal_code' => '77000',
+                    'insee_code' => '77288',
+                ],
+            ],
+        ];
+    }
+
+    private function createReferentTag(string $code, bool $isDepartmentTag, bool $isBoroughTag): ReferentTag
+    {
+        $tag = $this->createMock(ReferentTag::class);
+        $tag->expects($this->any())
+            ->method('getCode')
+            ->willReturn($code)
+        ;
+        $tag->expects($this->any())
+            ->method('isDepartmentTag')
+            ->willReturn($isDepartmentTag)
+        ;
+        $tag->expects($this->any())
+            ->method('isBoroughTag')
+            ->willReturn($isBoroughTag)
+        ;
+
+        return $tag;
+    }
+
     /**
      * @dataProvider providePostalCodes
      */

@@ -3,12 +3,15 @@
 namespace AppBundle\Controller\EnMarche;
 
 use AppBundle\Address\GeoCoder;
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Committee;
 use AppBundle\Entity\InstitutionalEvent;
 use AppBundle\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem;
 use AppBundle\Form\InstitutionalEventCommandType;
 use AppBundle\Form\ReferentPersonLinkType;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommand;
 use AppBundle\InstitutionalEvent\InstitutionalEventCommandHandler;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Referent\ManagedCitizenProjectsExporter;
 use AppBundle\Referent\ManagedInstitutionalEventsExporter;
 use AppBundle\Referent\OrganizationalChartManager;
@@ -20,6 +23,7 @@ use AppBundle\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepositor
 use AppBundle\Repository\ReferentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -223,5 +227,56 @@ class ReferentController extends Controller
             'form' => $form->createView(),
             'person_organizational_chart_item' => $personOrganizationalChartItem,
         ]);
+    }
+
+    /**
+     * @Route("/mon-equipe/autocompletion/comite",
+     *     name="app_referent_referent_person_link_autocomplete_committee",
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"GET"}
+     * )
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
+     */
+    public function committeeAutocompleteAction(Request $request, CommitteeRepository $committeeRepository)
+    {
+        if (!$term = $request->query->get('term')) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        /** @var Adherent $referent */
+        $referent = $this->getUser();
+
+        $committees = $committeeRepository->findByPartialNameForReferent($referent, $term);
+
+        foreach ($committees as $committee) {
+            $result[] = [
+                'uuid' => $committee->getUuid()->toString(),
+                'name' => $committee->getName(),
+            ];
+        }
+
+        return new JsonResponse($result ?? []);
+    }
+
+    /**
+     * @Route("/mon-equipe/autocompletion/ville",
+     *     name="app_referent_referent_person_link_autocomplete_city",
+     *     condition="request.isXmlHttpRequest()",
+     *     methods={"GET"}
+     * )
+     * @Security("is_granted('ROLE_REFERENT') and is_granted('IS_ROOT_REFERENT')")
+     */
+    public function cityAutocompleteAction(Request $request): JsonResponse
+    {
+        if (!$search = $request->query->get('search')) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        /** @var Adherent $referent */
+        $referent = $this->getUser();
+
+        $managedTags = $referent->getManagedArea()->getTags();
+
+        return new JsonResponse(FranceCitiesBundle::searchCitiesForTags($managedTags->toArray(), $search));
     }
 }

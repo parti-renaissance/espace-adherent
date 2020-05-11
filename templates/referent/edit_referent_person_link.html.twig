@@ -1,5 +1,30 @@
 {% extends 'referent/_layout.html.twig' %}
 
+{% form_theme form 'referent/_form_theme.html.twig' %}
+
+{% block javascripts %}
+    {% import 'javascript.js.twig' as js %}
+
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/sonataadmin/vendor/jqueryui/ui/jquery-ui.js') }}></script>
+    <script type="text/javascript">
+        Kernel.onLoad(function() {
+            {{ js.committee(
+                '#referent_person_link_restrictedCommittees',
+                '#referent_person_link_restrictedCommittees_search',
+                path('app_referent_referent_person_link_autocomplete_committee'),
+                '#referent_person_link_restrictedCommittees_search'
+            ) }}
+            {{ js.applicationFavoriteCities(
+                '#referent_person_link_restrictedCities',
+                '#referent_person_link_restrictedCities_search',
+                path('app_referent_referent_person_link_autocomplete_city'),
+                '#referent_person_link_restrictedCities_search'
+            ) }}
+        });
+    </script>
+{% endblock %}
+
 {% block referent_content %}
     <a href="{{ path('app_referent_organizational_chart') }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom">
          ⟵ Retour
@@ -29,13 +54,36 @@
 
         {{ form_row(form.postalAddress) }}
 
-        <div>
+        <div id="referent_person_link_coReferent">
             <label class="form form__label" for="{{ form.coReferent.vars.id }}">
                 {{ 'referent.label.co_referent'|trans|raw }}
             </label>
-            <div class="form__radio--margin">
-                {{ form_widget(form.coReferent) }}
-            </div>
+            {% for choice in form.coReferent %}
+
+                <div class="form__radio--margin">
+                    {{ form_row(choice) }}
+                </div>
+
+                {% if 'referent.radio.limited_co_referent' == choice.vars.label %}
+                    <div class="em-form__group em-form__type-and-select">
+                        {{ form_label(form.restrictedCommittees_search, 'Comités', { required: true }) }}
+                        {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité' } }) }}
+                        {{ form_errors(form.restrictedCommittees) }}
+                        <div class="type-and-select__tags">
+                            {{ form_widget(form.restrictedCommittees) }}
+                        </div>
+                    </div>
+
+                    <div class="em-form__group em-form__type-and-select">
+                        {{ form_label(form.restrictedCities_search, 'Villes', { required: true }) }}
+                        {{ form_widget(form.restrictedCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
+                        {{ form_errors(form.restrictedCities) }}
+                        <div class="type-and-select__tags">
+                            {{ form_widget(form.restrictedCities) }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
 
         <div class="form__checkbox">
