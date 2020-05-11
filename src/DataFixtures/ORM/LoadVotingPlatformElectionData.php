@@ -95,7 +95,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
     private function loadCommitteeAdherentElections(): void
     {
         $election = new Election(
-            'Élections du binôme d’adhérent',
+            'Désignation du binôme d’adhérents siégeant au Conseil territorial',
             DesignationTypeEnum::COMMITTEE_ADHERENT,
             new \DateTime('-1 week'),
             new \DateTime('+2 weeks'),
@@ -112,7 +112,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->manager->persist($election);
 
         $election = new Election(
-            'Élections du binôme d’adhérent',
+            'Désignation du binôme d’adhérents siégeant au Conseil territorial',
             DesignationTypeEnum::COMMITTEE_ADHERENT,
             new \DateTime('-1 week'),
             new \DateTime('+2 weeks'),

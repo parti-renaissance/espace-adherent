@@ -9,7 +9,7 @@
         background-color: $white;
 
         > div {
-            height: 80px;
+            min-height: 80px;
         }
 
         .anonymous {
@@ -55,7 +55,7 @@
         }
 
         .has-voted-header {
-            margin-top: 200px;
+            margin-top: 15vh;
         }
     }
 
@@ -299,7 +299,11 @@
 
     .envelope-container {
         width: 100%;
-        margin-top: -150px;
+        margin-top: -30%;
+
+        @media (min-width: 460px) {
+            margin-top: -130px;
+        }
 
         .envelope {
             display: block;
@@ -315,13 +319,14 @@
             }
 
             .tip {
+                will-change: transform;
                 transform-origin: 50% 100%;
                 animation-name: closeTip;
                 animation-direction: normal;
                 animation-duration: 0.75s;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
-                animation-delay: 1s;
+                animation-delay: 1.75s;
                 z-index: 1;
 
                 animation-iteration-count: 1;
@@ -341,26 +346,32 @@
 
             .body {
                 z-index: 2;
-                margin-top: -8px;
+                margin-top: -24.5%;
+
+                @media (min-width: 460px) {
+                    margin-top: -108px;
+                }
             }
 
             .paper {
-                //animation-name: slideIn;
+                transform: translate(21px, -50px);
+                animation-name: slideIn;
                 animation-direction: normal;
-                animation-duration: 1s;
+                animation-duration: 0.75s;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
+                animation-delay: 1s;
 
                 animation-iteration-count: 1;
             }
 
             @keyframes slideIn {
                 0% {
-                    transform: translate(22px, 78px);
+                    transform: translate(21px, -50px);
                 }
 
                 100% {
-                    transform: translate(22px, 200px);
+                    transform: translate(21px, 17px);
                 }
             }
 

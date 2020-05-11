@@ -7,8 +7,8 @@
 {% block voting_platform_header %}
     <div class="l__wrapper--slim">
         <div class="confirmation-header text--center">
-            <h1 class="text--larger b__nudge--bottom-large">Mon bulletin de vote</h1>
-            <p class="text--body text--default-large text--dark">Confirmez vous ce bulletin de vote ?</p>
+            <h1 class="text--larger b__nudge--bottom-large">Mon bulletin de désignation</h1>
+            <p class="text--body text--default-large text--dark">Confirmez-vous votre bulletin ?</p>
         </div>
     </div>
 {% endblock %}
@@ -33,11 +33,11 @@
                                         {% endif %}
                                     {% endfor %}
                                 {% else %}
-                                    <h3 class="text--medium">Vote blanc</h3>
+                                    <h3 class="text--medium">Bulletin blanc</h3>
                                 {% endif %}
                             </div>
                             <a href="{{ path('app_voting_platform_vote_step', {uuid: election.uuid}) }}" class="text--body text--center link--no-decor link--blue--dark">
-                                Changer mon vote
+                                Modifier mon choix
                             </a>
                         </div>
                     </div>
