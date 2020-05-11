@@ -3,11 +3,8 @@
 namespace AppBundle\Entity\ReferentOrganizationalChart;
 
 use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Committee;
 use AppBundle\Entity\Referent;
 use AppBundle\Validator\ValidAdherentCoReferent;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -115,25 +112,10 @@ class ReferentPersonLink
      */
     private $isMunicipalManagerSupervisor = false;
 
-    /**
-     * @var Committee[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Committee")
-     */
-    private $restrictedCommittees;
-
-    /**
-     * @var array|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    private $restrictedCities = [];
-
     public function __construct(PersonOrganizationalChartItem $personOrganizationalChartItem, Referent $referent)
     {
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
         $this->referent = $referent;
-        $this->restrictedCommittees = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,39 +251,6 @@ class ReferentPersonLink
         ?PersonOrganizationalChartItem $personOrganizationalChartItem
     ): void {
         $this->personOrganizationalChartItem = $personOrganizationalChartItem;
-    }
-
-    public function getRestrictedCommittees(): Collection
-    {
-        return $this->restrictedCommittees;
-    }
-
-    public function addRestrictedCommittee(Committee $restrictedCommittee): void
-    {
-        if (!$this->restrictedCommittees->contains($restrictedCommittee)) {
-            $this->restrictedCommittees->add($restrictedCommittee);
-        }
-    }
-
-    public function removeRestrictedCommittee(Committee $restrictedCommittee): void
-    {
-        $this->restrictedCommittees->removeElement($restrictedCommittee);
-    }
-
-    public function getRestrictedCities(): ?array
-    {
-        return $this->restrictedCities;
-    }
-
-    public function setRestrictedCities(?array $restrictedCities): void
-    {
-        $this->restrictedCities = $restrictedCities;
-    }
-
-    public function emptyRestrictions(): void
-    {
-        $this->restrictedCommittees = new ArrayCollection();
-        $this->restrictedCities = [];
     }
 
     public function getAdminDisplay(): string

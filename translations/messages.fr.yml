@@ -293,7 +293,7 @@ referent.filter.interests: Choisissez des centres d'intérêt
 referent.managed_area: Zone gérée
 referent.label.co_referent: "Donner un accès à l'onglet&nbsp;<i>Adhérents</i> :"
 referent.radio.co_referent: accès complet
-referent.radio.limited_co_referent: "accès restreint aux comités et villes suivantes:"
+referent.radio.limited_co_referent: accès uniquement aux adhérents de son ou ses comités d’appartenance
 referent.radio.not_co_referent: pas d'accès
 referent.checkbox.jecoute_manager: Donner un accès à l'espace&nbsp;<i>J'écoute</i>
 referent.checkbox.municipal_manager_supervisor: Donner un accès à l'onglet&nbsp;<i>Responsables Communaux</i>

@@ -54,7 +54,8 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                             $personLink->setCoReferent($adherent->isLimitedCoReferent() ? ReferentPersonLink::LIMITED_CO_REFERENT : ReferentPersonLink::CO_REFERENT);
                             $uow->recomputeSingleEntityChangeSet($this->manager->getClassMetadata(ReferentPersonLink::class), $personLink);
                         } elseif ($personLink->isLimitedCoReferent() !== $adherent->isLimitedCoReferent()) {
-                            $this->updateReferentTeamMemberFromPersonLink($adherent->getReferentTeamMember(), $personLink);
+                            $referentTeamMember = $adherent->getReferentTeamMember();
+                            $referentTeamMember->setLimited($personLink->isLimitedCoReferent());
                             array_map(static function (ReferentPersonLink $otherPersonLink) use ($personLink) {
                                 if ($personLink === $otherPersonLink) {
                                     return;
@@ -126,7 +127,8 @@ class ManageReferentTeamMembersListener implements EventSubscriber
                     if ($adherent && !$adherent->isCoReferent()) {
                         $this->initializeCoReferentNewRole($personLink, $currentReferent, $adherent);
                     } elseif ($adherent && $adherent->isCoReferent()) {
-                        $this->updateReferentTeamMemberFromPersonLink($adherent->getReferentTeamMember(), $personLink);
+                        $referentTeamMember = $adherent->getReferentTeamMember();
+                        $referentTeamMember->setLimited($personLink->isLimitedCoReferent());
                         array_map(static function (ReferentPersonLink $otherPersonLink) use ($personLink) {
                             if ($personLink === $otherPersonLink) {
                                 return;
@@ -225,12 +227,7 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         Adherent $currentReferent,
         Adherent $adherent
     ): void {
-        $adherent->setReferentTeamMember($member = new ReferentTeamMember(
-            $currentReferent,
-            $personLink->isLimitedCoReferent(),
-            $personLink->getRestrictedCommittees()->toArray(),
-            $personLink->getRestrictedCities()
-        ));
+        $adherent->setReferentTeamMember($member = new ReferentTeamMember($currentReferent, $personLink->isLimitedCoReferent()));
         $this->manager->persist($member);
         $coReferent = $personLink->getCoReferent();
 
@@ -281,14 +278,5 @@ class ManageReferentTeamMembersListener implements EventSubscriber
         if ($adherent->isMunicipalManagerSupervisor()) {
             $this->removeMunicipalManagerSupervisorRoleIfNotUsed($adherent, $personLink->getReferent());
         }
-    }
-
-    private function updateReferentTeamMemberFromPersonLink(
-        ReferentTeamMember $member,
-        ReferentPersonLink $personLink
-    ): void {
-        $member->setLimited($personLink->isLimitedCoReferent());
-        $member->setRestrictedCommitttees($personLink->getRestrictedCommittees()->toArray());
-        $member->setRestrictedCities($personLink->getRestrictedCities());
     }
 }

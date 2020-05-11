@@ -334,13 +334,13 @@ $(document).ready(function() {
 });
 {% endmacro %}
 
-{% macro applicationFavoriteCities(idFavoriteCitiesListField, idFavoriteCitiesSearchField, urlSearch, disabledFavoriteCitiesEnterIds, maxCity = 0) %}
+{% macro applicationFavoriteCities(idFavoriteCitiesListField, idFavoriteCitiesSearchField, urlSearch, disabledFavoriteCitiesEnterIds, maxCity) %}
 $(document).ready(function() {
     var maxCity = {{ maxCity }};
     var favoriteCitiesList = $('{{ idFavoriteCitiesListField|raw }}');
     var favoriteCitiesSelectedCount = favoriteCitiesList.find('.summary-favorite-city').length;
 
-    if (0 !== maxCity && favoriteCitiesSelectedCount >= maxCity) {
+    if (favoriteCitiesSelectedCount >= {{ maxCity }}) {
         $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', true);
     }
 
@@ -352,7 +352,7 @@ $(document).ready(function() {
             $(this).parent().remove();
             favoriteCitiesSelectedCount--;
 
-            if (0 !== maxCity && favoriteCitiesSelectedCount < maxCity) {
+            if (favoriteCitiesSelectedCount < maxCity) {
                 $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', false);
             }
 
@@ -385,7 +385,7 @@ $(document).ready(function() {
         $('{{ idFavoriteCitiesSearchField|raw }}').val('');
         removeFavoriteCity();
 
-        if (0 !== maxCity && favoriteCitiesSelectedCount === maxCity) {
+        if (favoriteCitiesSelectedCount === maxCity) {
             $('{{ idFavoriteCitiesSearchField|raw }}').prop('disabled', true);
         }
     };

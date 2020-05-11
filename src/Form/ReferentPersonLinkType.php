@@ -3,29 +3,22 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use AppBundle\Form\DataTransformer\CommitteeTransformer;
 use AppBundle\Repository\AdherentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReferentPersonLinkType extends AbstractType
 {
     private $adherentRepository;
-    private $committeeTransformer;
 
-    public function __construct(AdherentRepository $adherentRepository, CommitteeTransformer $committeeTransformer)
+    public function __construct(AdherentRepository $adherentRepository)
     {
         $this->adherentRepository = $adherentRepository;
-        $this->committeeTransformer = $committeeTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -60,34 +53,6 @@ class ReferentPersonLinkType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
             ])
-            ->add('restrictedCommittees', CollectionType::class, [
-                'required' => false,
-                'entry_type' => TextType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('restrictedCommittees_search', TextType::class, [
-                'mapped' => false,
-                'required' => false,
-                'filter_emojis' => true,
-                'attr' => [
-                    'placeholder' => 'Ajouter le comité local',
-                ],
-            ])
-            ->add('restrictedCities', CollectionType::class, [
-                'required' => true,
-                'entry_type' => TextType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('restrictedCities_search', SearchType::class, [
-                'mapped' => false,
-                'required' => false,
-            ])
             ->add('isJecouteManager', CheckboxType::class, [
                 'required' => false,
             ])
@@ -109,18 +74,6 @@ class ReferentPersonLinkType extends AbstractType
                 return $value;
             }
         ));
-        $builder->get('restrictedCommittees')->addModelTransformer($this->committeeTransformer);
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            $data = $event->getData();
-
-            if (!$data instanceof ReferentPersonLink) {
-                return;
-            }
-
-            if (!$data->isLimitedCoReferent()) {
-                $data->emptyRestrictions();
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
