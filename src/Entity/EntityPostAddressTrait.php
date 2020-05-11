@@ -146,4 +146,14 @@ trait EntityPostAddressTrait
             'lat' => $this->getLatitude(),
         ];
     }
+
+    public function getGeocodableHash(): ?string
+    {
+        return $this->postAddress->getGeocodableHash();
+    }
+
+    public function setGeocodableHash(string $hash): void
+    {
+        $this->postAddress->setGeocodableHash($hash);
+    }
 }

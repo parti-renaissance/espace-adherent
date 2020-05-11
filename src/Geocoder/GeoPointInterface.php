@@ -23,4 +23,8 @@ interface GeoPointInterface extends GeocodableInterface
      * @return float
      */
     public function getLatitude(): ?float;
+
+    public function getGeocodableHash(): ?string;
+
+    public function setGeocodableHash(string $hash): void;
 }
