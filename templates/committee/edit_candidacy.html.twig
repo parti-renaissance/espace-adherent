@@ -34,9 +34,9 @@
                     <h2 class="font-roboto text--medium b__nudge--bottom-large b__nudge--top-50">Votre candidature</h2>
                     <p class="text--body text--dark b__nudge--bottom-50">
                         Ajoutez une photo de vous et un texte de présentation à votre candidature.
-                        Ces informations resteront modifiables jusqu'à la clôture des candidatures le
-                        <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y") }}</strong>
-                        à <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}</strong>.
+                        Ces informations resteront modifiables jusqu'à la clôture des candidatures.
+                        <!-- le <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y") }}</strong>
+                        à <strong>{{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "HH'h'mm") }}</strong> -->
                         Si vous préférez ne rien mettre, cliquez sur « passer cette étape ».
                     </p>
                     {{ form_start(form, {attr: {class: 'em-form'}}) }}
@@ -46,7 +46,7 @@
                     <div class="em-form__group">
                         <label for="{{ form.image.vars.id }}" class="em-form__label">Ajouter une photo</label>
                         <div class="text--body text--dark b__nudge--bottom-small">
-                            Une photo d'identité permettra aux électeurs de mieux vous reconnaître.
+                            Une photo d'identité permettra aux adhérents de mieux vous reconnaître.
                         </div>
                         {{ form_errors(form.image) }}
 
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="em-form__group">
-                        {{ form_label(form.biography, 'Biographie', {label_attr: {class: 'em-form__label'}}) }}
+                        {{ form_label(form.biography, 'Présentation', {label_attr: {class: 'em-form__label'}}) }}
                         <div class="text--body text--dark b__nudge--bottom-small">
                             Motivez votre candidature par une présentation rapide.
                         </div>

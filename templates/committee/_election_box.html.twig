@@ -6,8 +6,8 @@
 
 <section class="committee__elections-box b__nudge--bottom-larger">
     <div class="l__row">
-        <h2 class="text--medium b__nudge--bottom box-el">
-            Désignation du binôme d'adhérents siégeant au Conseil Territorial
+        <h2 class="text--medium box-el">
+            Désignation du binôme d'adhérents siégeant au conseil territorial
             <div class="em-tooltip">
                 <span class="em-tooltip--trigger">?</span>
                 <div class="em-tooltip--content">
@@ -24,21 +24,21 @@
         {% if member_is_candidate_in_committee %}
 
             Vous êtes candidat pour représenter les adhérents de votre comité.
-            Vous pouvez modifier ou retirer votre candidature jusqu'au
-            {{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+            <!-- Vous pouvez modifier ou retirer votre candidature jusqu'au
+            {{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
 
         {% else %}
             {% if member_voting_in_committee %}
-                Candidatez pour représentez les adhérents de votre comité pour un mandat de 2 ans.
+                Candidatez pour représenter les adhérents de votre comité pour un mandat de 2 ans.
             {% endif %}
 
-            Les candidatures sont ouvertes dans tous les comités du
+            <!-- Les candidatures sont ouvertes dans tous les comités du
             {{ election_static_date.candidacyPeriodStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-            au {{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+            au {{ election_static_date.candidacyPeriodEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
         {% endif %}
 
-        Le scrutin se tiendra en ligne du {{ election_static_date.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
-        au {{ election_static_date.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}.
+        <!-- La designation se tiendra en ligne du {{ election_static_date.voteStartDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}
+        au {{ election_static_date.voteEndDate|localizeddate('none', 'none', 'fr_FR', null, "dd MMMM y à HH'h'mm") }}. -->
     </p>
 
     <div class="elections-actions l__row--wrap">
@@ -94,9 +94,8 @@
 
 {% if able_to_candidate and not member_voting_in_committee %}
     <div class="alert alert--tips b__nudge--bottom-small">
-        Vous ne pouvez candidater que dans le comité où vous avez choisi de voter.<br />
-        Rendez-vous dans <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">vos activités</a></strong>
-        pour choisir ou modifier votre comité de vote.
+        Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations.<br />
+        Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">mes activités</a></strong> pour choisir ou modifier votre comité de désignation
     </div>
 {% endif %}
 
