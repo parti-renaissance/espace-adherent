@@ -239,7 +239,7 @@ class ReferentController extends Controller
      */
     public function committeeAutocompleteAction(Request $request, CommitteeRepository $committeeRepository)
     {
-        if (!$term = $request->query->get('search')) {
+        if (!$term = $request->query->get('term')) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
