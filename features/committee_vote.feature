@@ -119,19 +119,19 @@ Feature:
     Then I should see "JE CANDIDATE"
 
     When I am on "/comites/en-marche-comite-de-evry"
-    Then I should see "Vous ne pouvez candidater que dans le comité où vous avez choisi de voter."
+    Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations."
 
     When I am on "/espace-adherent/mes-comites"
     And I click the ".adherent__activity--committee .switch" selector
     Then I should see "Changement du comité de vote"
-    And I should see "Vous êtes sur le point de changer votre comité de vote. Vous ne pourrez plus voter dans le comité En Marche - Comité de Rouen, êtes-vous sûr de vouloir maintenant voter dans le comité En Marche - Comité de Évry ?"
+    And I should see "Vous êtes sur le point de changer votre comité de désignation. Vous ne participerez plus aux désignations dans le comité En Marche - Comité de Rouen, êtes-vous sûr de vouloir maintenant participer aux désignations dans le comité En Marche - Comité de Évry ?"
     And I should see "CONFIRMER"
 
     When I click the "button.btn.btn--blue" selector
     Then I wait 3 second until I see "En Marche - Comité de Évry"
 
     When I am on "/comites/en-marche-comite-de-rouen"
-    Then I should see "Vous ne pouvez candidater que dans le comité où vous avez choisi de voter."
+    Then I should see "Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations."
 
     Given I am on "/comites/en-marche-comite-de-evry"
     Then I should see "JE CANDIDATE"
