@@ -321,14 +321,12 @@
             .tip {
                 will-change: transform;
                 transform-origin: 50% 100%;
-                animation-name: closeTip;
                 animation-direction: normal;
                 animation-duration: 0.75s;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
-                animation-delay: 1.75s;
+                animation-delay: 1.25s;
                 z-index: 1;
-
                 animation-iteration-count: 1;
             }
 
@@ -355,13 +353,11 @@
 
             .paper {
                 transform: translate(21px, -50px);
-                animation-name: slideIn;
                 animation-direction: normal;
                 animation-duration: 0.75s;
                 animation-timing-function: ease-in-out;
                 animation-fill-mode: forwards;
-                animation-delay: 1s;
-
+                animation-delay: .5s;
                 animation-iteration-count: 1;
             }
 
@@ -375,6 +371,15 @@
                 }
             }
 
+            &.active {
+                .tip {
+                    animation-name: closeTip;
+                }
+
+                .paper {
+                    animation-name: slideIn;
+                }
+            }
         }
     }
 }
