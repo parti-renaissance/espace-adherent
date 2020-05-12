@@ -15,14 +15,14 @@ final class MandateTypeEnum extends Enum
     public const SENATOR = 'senateur';
     public const EURO_DEPUTY = 'euro_depute';
 
-    public const CITY_COUNCIL_LABEL = 'Conseiller municipal';
+    public const CITY_COUNCIL_LABEL = 'Conseiller(e) municipal(e)';
     public const EPCI_MEMBER_LABEL = 'Membre d\'EPCI';
-    public const DEPARTMENTAL_COUNCIL_LABEL = 'Conseiller départemental';
-    public const REGIONAL_COUNCIL_LABEL = 'Conseiller régional';
+    public const DEPARTMENTAL_COUNCIL_LABEL = 'Conseiller(e) départemental(e)';
+    public const REGIONAL_COUNCIL_LABEL = 'Conseiller(e) régional(e)';
     public const CORSICA_ASSEMBLY_MEMBER_LABEL = 'Membre de l\'Assemblée de Corse';
-    public const DEPUTY_LABEL = 'Député';
-    public const SENATOR_LABEL = 'Sénateur';
-    public const EURO_DEPUTY_LABEL = 'Député européen';
+    public const DEPUTY_LABEL = 'Député(e)';
+    public const SENATOR_LABEL = 'Sénateur(rice)';
+    public const EURO_DEPUTY_LABEL = 'Député(e) européen(ne)';
 
     public const CHOICES = [
         self::CITY_COUNCIL_LABEL => self::CITY_COUNCIL,
