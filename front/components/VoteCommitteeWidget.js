@@ -87,7 +87,7 @@ export default class VoteCommitteeWidget extends React.Component {
     confirmContent(oldSwitcherData) {
         return (
             <div className="font-roboto">
-                <div className="text--bold text--default-large">Changement du comité de vote</div>
+                <div className="text--bold text--default-large">Changement du comité de désignation</div>
                 <p className="b__nudge--top-15 b__nudge--bottom-large text--dark">
                     Vous êtes sur le point de changer votre comité de désignation.
                     Vous ne participerez plus aux désignations dans le

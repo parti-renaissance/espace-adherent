@@ -7,7 +7,7 @@
 <section class="committee__elections-box b__nudge--bottom-larger">
     <div class="l__row">
         <h2 class="text--medium box-el">
-            Désignation du binôme d'adhérents siégeant au conseil territorial
+            Désignation du binôme d'adhérents siégeant au Conseil territorial
             <div class="em-tooltip">
                 <span class="em-tooltip--trigger">?</span>
                 <div class="em-tooltip--content">
@@ -95,7 +95,7 @@
 {% if able_to_candidate and not member_voting_in_committee %}
     <div class="alert alert--tips b__nudge--bottom-small">
         Vous pouvez candidater dans le comité où vous avez choisi de participer aux désignations.<br />
-        Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">mes activités</a></strong> pour choisir ou modifier votre comité de désignation
+        Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">mes activités</a></strong> pour choisir ou modifier votre comité de désignation.
     </div>
 {% endif %}
 
@@ -115,8 +115,8 @@
         Vous ne pouvez donc pas candidater à cette désignation mais pourrez y voter.
 
         {% if not app.user.supervisor %}
-            Rendez-vous dans <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">vos activités</a></strong>
-            pour choisir ou modifier votre comité de vote.
+            Rendez-vous sur la page <strong><a class="link--no-decor text--blue--dark" href="{{ path('app_adherent_committees') }}">vos activités</a></strong>
+            pour choisir ou modifier votre comité de désignation.
         {% endif %}
     </div>
 {% endif %}
