@@ -26,29 +26,27 @@ final class PoliticalFunctionNameEnum extends Enum
     public const DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL = 'deputy_vice_president_of_departmental_council';
     public const OTHER_MEMBER_OF_STANDING_COMMITTEE = 'other_member_of_standing_committee';
     public const OTHER_MEMBER = 'other_member';
-    public const NO_NAME = 'no_name';
 
     public const MAYOR_LABEL = 'Maire';
-    public const DEPUTY_MAYOR_LABEL = 'Maire délégué';
-    public const MAYOR_ASSISTANT_LABEL = 'Adjoint au maire';
-    public const PRESIDENT_OF_REGIONAL_COUNCIL_LABEL = 'Président de conseil régional';
-    public const VICE_PRESIDENT_OF_REGIONAL_COUNCIL_LABEL = 'Vice-président de conseil régional';
-    public const PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Président de conseil départemental';
-    public const VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Vice-président de conseil départemental';
-    public const DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Vice-président délégué du conseil départemental';
+    public const DEPUTY_MAYOR_LABEL = 'Maire délégué(e)';
+    public const MAYOR_ASSISTANT_LABEL = 'Adjoint(e) au maire';
+    public const PRESIDENT_OF_REGIONAL_COUNCIL_LABEL = 'Président(e) de conseil régional';
+    public const VICE_PRESIDENT_OF_REGIONAL_COUNCIL_LABEL = 'Vice-président(e) de conseil régional';
+    public const PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Président(e) de conseil départemental';
+    public const VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Vice-président(e) de conseil départemental';
+    public const DEPUTY_VICE_PRESIDENT_OF_DEPARTMENTAL_COUNCIL_LABEL = 'Vice-président(e) délégué du conseil départemental';
     public const SECRETARY_LABEL = 'Secrétaire';
-    public const QUAESTOR_LABEL = 'Questeur';
-    public const PRESIDENT_OF_NATIONAL_ASSEMBLY_LABEL = 'Président de l\'Assemblée nationale';
-    public const VICE_PRESIDENT_OF_NATIONAL_ASSEMBLY_LABEL = 'Vice-président de l\'Assemblée nationale';
-    public const PRESIDENT_OF_SENATE_LABEL = 'Président du Sénat';
-    public const VICE_PRESIDENT_OF_SENATE_LABEL = 'Vice-président du Sénat';
-    public const PRESIDENT_OF_COMMISSION_LABEL = 'Président de commission';
-    public const PRESIDENT_OF_GROUP_LABEL = 'Président de groupe';
-    public const PRESIDENT_OF_EPCI_LABEL = 'Président d\'EPCI';
-    public const VICE_PRESIDENT_OF_EPCI_LABEL = 'Vice-président d\'EPCI';
+    public const QUAESTOR_LABEL = 'Questeur(rice)';
+    public const PRESIDENT_OF_NATIONAL_ASSEMBLY_LABEL = 'Président(e) de l\'Assemblée nationale';
+    public const VICE_PRESIDENT_OF_NATIONAL_ASSEMBLY_LABEL = 'Vice-président(e) de l\'Assemblée nationale';
+    public const PRESIDENT_OF_SENATE_LABEL = 'Président(e) du Sénat';
+    public const VICE_PRESIDENT_OF_SENATE_LABEL = 'Vice-président(e) du Sénat';
+    public const PRESIDENT_OF_COMMISSION_LABEL = 'Président(e) de commission';
+    public const PRESIDENT_OF_GROUP_LABEL = 'Président(e) de groupe';
+    public const PRESIDENT_OF_EPCI_LABEL = 'Président(e) d\'EPCI';
+    public const VICE_PRESIDENT_OF_EPCI_LABEL = 'Vice-président(e) d\'EPCI';
     public const OTHER_MEMBER_OF_STANDING_COMMITTEE_LABEL = 'Autre membre commission permanente';
     public const OTHER_MEMBER_LABEL = 'Autre membre';
-    public const NO_NAME_LABEL = 'Fonction sans nom';
 
     public const CHOICES = [
         self::MAYOR_LABEL => self::MAYOR,
@@ -71,6 +69,5 @@ final class PoliticalFunctionNameEnum extends Enum
         self::VICE_PRESIDENT_OF_EPCI_LABEL => self::VICE_PRESIDENT_OF_EPCI,
         self::OTHER_MEMBER_OF_STANDING_COMMITTEE_LABEL => self::OTHER_MEMBER_OF_STANDING_COMMITTEE,
         self::OTHER_MEMBER_LABEL => self::OTHER_MEMBER,
-        self::NO_NAME_LABEL => self::NO_NAME,
     ];
 }
