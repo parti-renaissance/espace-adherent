@@ -379,8 +379,13 @@ SQL
             }
 
             if (null !== $filter->isSubscribed()) {
+                $subscriptionCondition = 'st_codes LIKE :subscription_code';
+                if (false === $filter->isSubscribed()) {
+                    $subscriptionCondition = 'st_codes IS NULL OR st_codes NOT LIKE :subscription_code';
+                }
+
                 $qb
-                    ->having('st_codes '.($filter->isSubscribed() ? '' : 'NOT').' LIKE :subscription_code')
+                    ->having($subscriptionCondition)
                     ->setParameter('subscription_code', '%'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL.'%')
                 ;
             }
