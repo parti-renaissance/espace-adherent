@@ -3,6 +3,8 @@
 namespace AppBundle\Form\ManagedUsers;
 
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Form\EventListener\IncludeExcludeFilterRoleListener;
+use AppBundle\Form\FilterRoleType;
 use AppBundle\Form\GenderType;
 use AppBundle\Form\MemberInterestsChoiceType;
 use AppBundle\Form\MyReferentTagChoiceType;
@@ -20,14 +22,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ManagedUsersFilterType extends AbstractType
 {
+    /** @var IncludeExcludeFilterRoleListener */
+    private $includeExcludeFilterRoleListener;
+
+    public function __construct(IncludeExcludeFilterRoleListener $includeExcludeFilterRoleListener)
+    {
+        $this->includeExcludeFilterRoleListener = $includeExcludeFilterRoleListener;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('includeAdherentsNoCommittee', CheckboxType::class, ['required' => false])
             ->add('includeAdherentsInCommittee', CheckboxType::class, ['required' => false])
-            ->add('includeCommitteeHosts', CheckboxType::class, ['required' => false])
-            ->add('includeCommitteeSupervisors', CheckboxType::class, ['required' => false])
-            ->add('includeCitizenProjectHosts', CheckboxType::class, ['required' => false])
+            ->add('includeRoles', FilterRoleType::class, ['required' => false])
+            ->add('excludeRoles', FilterRoleType::class, ['required' => false])
             ->add('gender', GenderType::class, [
                 'placeholder' => 'Tous',
                 'expanded' => true,
@@ -87,6 +96,8 @@ class ManagedUsersFilterType extends AbstractType
                 },
             ));
         }
+
+        $builder->addEventSubscriber($this->includeExcludeFilterRoleListener);
     }
 
     public function getBlockPrefix()

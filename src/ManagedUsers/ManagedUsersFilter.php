@@ -75,17 +75,17 @@ class ManagedUsersFilter
     /**
      * @var bool
      */
-    private $includeCommitteeSupervisors = true;
+    private $includeCommitteeSupervisors;
 
     /**
      * @var bool
      */
-    private $includeCommitteeHosts = true;
+    private $includeCommitteeHosts;
 
     /**
      * @var bool
      */
-    private $includeCitizenProjectHosts = true;
+    private $includeCitizenProjectHosts;
 
     /**
      * @var ReferentTag[]
@@ -262,32 +262,32 @@ class ManagedUsersFilter
         $this->includeAdherentsInCommittee = $value;
     }
 
-    public function includeCommitteeSupervisors(): bool
+    public function includeCommitteeSupervisors(): ?bool
     {
         return $this->includeCommitteeSupervisors;
     }
 
-    public function setIncludeCommitteeSupervisors(bool $value): void
+    public function setIncludeCommitteeSupervisors(?bool $value): void
     {
         $this->includeCommitteeSupervisors = $value;
     }
 
-    public function includeCommitteeHosts(): bool
+    public function includeCommitteeHosts(): ?bool
     {
         return $this->includeCommitteeHosts;
     }
 
-    public function setIncludeCommitteeHosts(bool $value): void
+    public function setIncludeCommitteeHosts(?bool $value): void
     {
         $this->includeCommitteeHosts = $value;
     }
 
-    public function includeCitizenProjectHosts(): bool
+    public function includeCitizenProjectHosts(): ?bool
     {
         return $this->includeCitizenProjectHosts;
     }
 
-    public function setIncludeCitizenProjectHosts(bool $value): void
+    public function setIncludeCitizenProjectHosts(?bool $value): void
     {
         $this->includeCitizenProjectHosts = $value;
     }

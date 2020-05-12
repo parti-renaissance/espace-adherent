@@ -216,6 +216,8 @@
         <service id="AppBundle\Form\Jecoute\SurveyQuestionFormType"/>
         <service id="AppBundle\Form\ElectedRepresentative\ZoneType"/>
         <service id="AppBundle\Form\AdherentMessage\AdherentZoneFilterType"/>
+        <service id="AppBundle\Form\ManagedUsers\ManagedUsersFilterType"/>
+        <service id="AppBundle\Form\ManagedUsers\ReferentManagedUsersFilterType"/>
 
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">

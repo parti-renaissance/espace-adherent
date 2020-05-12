@@ -18,12 +18,19 @@
                     {% endif %}
 
                     <div class="filter__row">
-                        <label class="filter__label">Rôles</label>
+                        <label class="filter__label">Adhérents</label>
                         {{ form_row(form.includeAdherentsNoCommittee, {label: 'Adhérents ne faisant partie d\'aucun comité'}) }}
                         {{ form_row(form.includeAdherentsInCommittee, {label: 'Adhérents faisant partie d\'au moins un comité (hors animateurs)'}) }}
-                        {{ form_row(form.includeCommitteeSupervisors, {label: 'Animateurs de comités locaux'}) }}
-                        {{ form_row(form.includeCommitteeHosts, {label: 'Co-animateurs de comités locaux'}) }}
-                        {{ form_row(form.includeCitizenProjectHosts, {label: 'Porteurs de projets citoyens'}) }}
+                    </div>
+
+                    <div class="filter__row">
+                        <label class="filter__label">Inclure les rôles</label>
+                        {{ form_row(form.includeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.excludeRoles.vars.id}}) }}
+                    </div>
+
+                    <div class="filter__row">
+                        <label class="filter__label">Exclure les rôles</label>
+                        {{ form_row(form.excludeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.includeRoles.vars.id}}) }}
                     </div>
                 </div>
             </div>
