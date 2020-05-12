@@ -288,8 +288,9 @@
 }
 
 .adherent-dropdown {
-    display: none;
-    background-color: teal;
+    //display: none;
+    border-top: 1px solid $lines-grey;
+    background-color: $white;
     position: absolute;
     z-index: 50;
     left: 0;
@@ -300,5 +301,30 @@
     &__col {
         flex-basis: 0;
         flex-grow: 1;
+        margin-right: 24px;
+
+        &:last-child { margin-right: 0; }
+    }
+
+    &__menu {
+
+        &--head {
+            @include subtitle;
+            display: inline-block;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        &--items {
+            li {
+                margin: 10px 0;
+
+                a {
+                    font-family: $font-roboto;
+                    border: none;
+                }
+
+            }
+        }
     }
 }

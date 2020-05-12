@@ -22,8 +22,12 @@
     }
 
     &__id {
-        margin-left: 15px;
+
         font-family: $font-roboto;
+
+        aside & {
+            margin-left: 15px;
+        }
 
         .name {
             font-weight: bold;
@@ -49,7 +53,7 @@
             font-family: $font-roboto;
             line-height: normal;
             color: $blue--azure;
-            padding: 5px;
+            padding: 4px;
             border-radius: 2px;
             border: $blue--azure 1px solid;
             margin: 0 5px 5px 0;
@@ -57,7 +61,7 @@
         }
     }
 
-    .profile-completion {
+    &__completion {
         .gauge {
             display: block;
             background-color: $gray--light;
