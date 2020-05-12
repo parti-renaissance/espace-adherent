@@ -6,6 +6,7 @@ use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeCandidacy;
 use AppBundle\Image\ImageManager;
+use AppBundle\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -38,6 +39,16 @@ class LoadCommitteeCandidacyData extends Fixture
         $this->getImageManager()->saveImage($candidacy);
 
         $this->setReference('committee-candidacy-1', $candidacy);
+
+        $adherent = $this->getReference('adherent-2');
+
+        $voteCommitteeMembership = $adherent->getMembershipFor($committee);
+        $voteCommitteeMembership->enableVote();
+        $voteCommitteeMembership->setCommitteeCandidacy(
+            $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), Genders::FEMALE)
+        );
+
+        $manager->persist($candidacy);
 
         $manager->flush();
     }

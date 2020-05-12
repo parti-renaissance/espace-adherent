@@ -205,13 +205,13 @@ class CommitteeManagerTest extends WebTestCase
     {
         $adherent = $this->getAdherent(LoadAdherentData::ADHERENT_2_UUID);
 
-        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
-        $this->assertCount(1, $this->findCommitteeMembershipHistoryByAdherent($adherent));
+        $this->assertCount(2, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(2, $this->findCommitteeMembershipHistoryByAdherent($adherent));
 
         $this->committeeManager->followCommittees($adherent, [LoadAdherentData::COMMITTEE_1_UUID]);
 
-        $this->assertCount(1, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
-        $this->assertCount(1, $this->findCommitteeMembershipHistoryByAdherent($adherent));
+        $this->assertCount(2, $this->getCommitteeMembershipRepository()->findMemberships($adherent));
+        $this->assertCount(2, $this->findCommitteeMembershipHistoryByAdherent($adherent));
     }
 
     public function testFollowThenUnfollowCommittees(): void
@@ -302,6 +302,8 @@ class CommitteeManagerTest extends WebTestCase
         // Change privileges of the second member: FOLLOWER => SUPERVISOR
         $this->assertEquals(true, $adherent2->getMembershipFor($committee)->isFollower());
         $this->assertEquals(false, $adherent2->getMembershipFor($committee)->isSupervisor());
+
+        $adherent2->getMembershipFor($this->getCommittee(LoadAdherentData::COMMITTEE_6_UUID))->setCommitteeCandidacy(null);
 
         $this->committeeManager->changePrivilege($adherent2, $committee, CommitteeMembership::COMMITTEE_SUPERVISOR);
 

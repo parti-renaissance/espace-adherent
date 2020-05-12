@@ -57,6 +57,13 @@ class CommitteeCandidacy implements ImageOwnerInterface
      */
     private $committeeElection;
 
+    /**
+     * @var CommitteeMembership
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommitteeMembership", mappedBy="committeeCandidacy")
+     */
+    private $committeeMembership;
+
     private $removeImage = false;
 
     public function __construct(CommitteeElection $election, string $gender = null)
@@ -117,7 +124,10 @@ class CommitteeCandidacy implements ImageOwnerInterface
 
     public function getImagePath(): string
     {
-        return sprintf('images/candidacies/profile/%s', $this->getImageName());
+        return $this->getImageName() ?
+            sprintf('images/candidacies/profile/%s', $this->getImageName())
+            : ''
+        ;
     }
 
     public function isRemoveImage(): bool
@@ -128,5 +138,15 @@ class CommitteeCandidacy implements ImageOwnerInterface
     public function setRemoveImage(bool $value): void
     {
         $this->removeImage = $value;
+    }
+
+    public function getCommitteeMembership(): ?CommitteeMembership
+    {
+        return $this->committeeMembership;
+    }
+
+    public function setCommitteeMembership(CommitteeMembership $committeeMembership): void
+    {
+        $this->committeeMembership = $committeeMembership;
     }
 }

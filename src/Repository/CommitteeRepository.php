@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Address\Address;
 use AppBundle\Collection\CommitteeCollection;
 use AppBundle\Coordinator\Filter\CommitteeFilter;
 use AppBundle\Entity\Adherent;
@@ -9,12 +10,16 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\CommitteeMembership;
 use AppBundle\Entity\District;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\VotingPlatform\Designation\Designation;
 use AppBundle\Geocoder\Coordinates;
+use AppBundle\Intl\FranceCitiesBundle;
 use AppBundle\Search\SearchParametersFilter;
 use AppBundle\ValueObject\Genders;
+use AppBundle\VotingPlatform\Designation\DesignationZoneEnum;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Ramsey\Uuid\UuidInterface;
@@ -550,5 +555,46 @@ class CommitteeRepository extends ServiceEntityRepository
         });
 
         return $committees;
+    }
+
+    /**
+     * @return Committee[]
+     */
+    public function findAllWithoutStartedElection(Designation $designation, int $offset = 0, int $limit = 200): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.committeeElection', 'el')
+            ->where('el IS NULL AND c.status = :status')
+            ->setParameter('status', Committee::APPROVED)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->groupBy('c')
+        ;
+
+        if (DesignationZoneEnum::toArray() !== array_intersect(DesignationZoneEnum::toArray(), $designation->getZones())) {
+            $zoneCondition = new Orx();
+
+            // Outre-Mer condition
+            $zoneCondition->add(sprintf(
+                'c.postAddress.country = :fr AND SUBSTRING(c.postAddress.postalCode, 1, 3) %s (:outremer_codes)',
+                \in_array(DesignationZoneEnum::OUTRE_MER, $designation->getZones(), true) ? 'IN' : 'NOT IN'
+            ));
+
+            // France vs FDE
+            if ([DesignationZoneEnum::FRANCE, DesignationZoneEnum::FDE] !== array_intersect([DesignationZoneEnum::FRANCE, DesignationZoneEnum::FDE], $designation->getZones())) {
+                $zoneCondition->add(sprintf(
+                    'c.postAddress.country %s :fr',
+                    \in_array(DesignationZoneEnum::FRANCE, $designation->getZones(), true) ? '=' : '!='
+                ));
+            }
+
+            $qb
+                ->andWhere($zoneCondition)
+                ->setParameter('fr', Address::FRANCE)
+                ->setParameter('outremer_codes', array_keys(FranceCitiesBundle::DOMTOM_INSEE_CODE))
+            ;
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

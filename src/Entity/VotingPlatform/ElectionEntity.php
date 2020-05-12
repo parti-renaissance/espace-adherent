@@ -32,13 +32,26 @@ class ElectionEntity
      */
     private $committee;
 
+    /**
+     * @var Election
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\VotingPlatform\Election", inversedBy="electionEntity")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $election;
+
+    public function __construct(Committee $committee = null)
+    {
+        $this->committee = $committee;
+    }
+
+    public function setElection(Election $election): void
+    {
+        $this->election = $election;
+    }
+
     public function getCommittee(): ?Committee
     {
         return $this->committee;
-    }
-
-    public function setCommittee(?Committee $committee): void
-    {
-        $this->committee = $committee;
     }
 }

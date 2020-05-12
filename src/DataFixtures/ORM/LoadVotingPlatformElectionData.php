@@ -10,7 +10,6 @@ use AppBundle\Entity\VotingPlatform\ElectionEntity;
 use AppBundle\Entity\VotingPlatform\Voter;
 use AppBundle\Entity\VotingPlatform\VotersList;
 use AppBundle\ValueObject\Genders;
-use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,8 +18,8 @@ use Ramsey\Uuid\Uuid;
 
 class LoadVotingPlatformElectionData extends AbstractFixture implements DependentFixtureInterface
 {
-    private const ELECTION_UUID1 = 'd678c30a-a94b-4ecf-8cfc-0e06d1fb16df';
-    private const ELECTION_UUID2 = '278ec098-e5f2-45e3-9faf-a9b2cb9305fd';
+    public const ELECTION_UUID1 = 'd678c30a-a94b-4ecf-8cfc-0e06d1fb16df';
+    public const ELECTION_UUID2 = '278ec098-e5f2-45e3-9faf-a9b2cb9305fd';
 
     /**
      * @var \Faker\Generator
@@ -58,6 +57,7 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         return [
             LoadAdherentData::class,
             LoadCommitteeCandidacyData::class,
+            LoadDesignationData::class,
         ];
     }
 
@@ -95,16 +95,11 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
     private function loadCommitteeAdherentElections(): void
     {
         $election = new Election(
-            'Désignation du binôme d’adhérents siégeant au Conseil territorial',
-            DesignationTypeEnum::COMMITTEE_ADHERENT,
-            new \DateTime('-1 week'),
-            new \DateTime('+2 weeks'),
+            $this->getReference('designation-1'),
             Uuid::fromString(self::ELECTION_UUID1)
         );
 
-        $electionEntity = new ElectionEntity();
-        $electionEntity->setCommittee($this->getReference('committee-6'));
-        $election->setElectionEntity($electionEntity);
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-6')));
 
         $this->loadCandidates($election);
         $this->loadVoters($election);
@@ -112,16 +107,11 @@ class LoadVotingPlatformElectionData extends AbstractFixture implements Dependen
         $this->manager->persist($election);
 
         $election = new Election(
-            'Désignation du binôme d’adhérents siégeant au Conseil territorial',
-            DesignationTypeEnum::COMMITTEE_ADHERENT,
-            new \DateTime('-1 week'),
-            new \DateTime('+2 weeks'),
+            $this->getReference('designation-1'),
             Uuid::fromString(self::ELECTION_UUID2)
         );
 
-        $electionEntity = new ElectionEntity();
-        $electionEntity->setCommittee($this->getReference('committee-5'));
-        $election->setElectionEntity($electionEntity);
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-5')));
 
         $this->loadCandidates($election);
         $this->loadVoters($election);

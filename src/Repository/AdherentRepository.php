@@ -134,7 +134,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function loadUserByUsername($username)
     {
-        $query = $this
+        return $this
             ->createQueryBuilder('a')
             ->addSelect('pma')
             ->addSelect('ccpa')
@@ -165,9 +165,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->where('a.emailAddress = :username')
             ->setParameter('username', $username)
             ->getQuery()
+            ->getOneOrNullResult()
         ;
-
-        return $query->getOneOrNullResult();
     }
 
     public function refreshUser(UserInterface $user)

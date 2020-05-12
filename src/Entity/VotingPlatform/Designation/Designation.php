@@ -5,13 +5,14 @@ namespace AppBundle\Entity\VotingPlatform\Designation;
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Entity\EntityIdentityTrait;
 use AppBundle\Entity\EntityTimestampableTrait;
+use AppBundle\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VotingPlatform\DesignationRepository")
  *
  * @Algolia\Index(autoIndex=false)
  */
@@ -158,5 +159,15 @@ class Designation
     public function setResultDisplayDelay(int $resultDisplayDelay): void
     {
         $this->resultDisplayDelay = $resultDisplayDelay;
+    }
+
+    public function getTitle(): string
+    {
+        switch ($this->type) {
+            case DesignationTypeEnum::COMMITTEE_ADHERENT:
+                return 'Désignation du binôme d’adhérents siégeant au Conseil territorial';
+        }
+
+        return '';
     }
 }

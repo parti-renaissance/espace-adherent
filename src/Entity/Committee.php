@@ -170,7 +170,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     /**
      * @var CommitteeElection|null
      *
-     * @ORM\OneToOne(targetEntity="CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
      */
     private $committeeElection;
 
@@ -263,6 +263,7 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
 
     public function setCommitteeElection(CommitteeElection $committeeElection): void
     {
+        $committeeElection->setCommittee($this);
         $this->committeeElection = $committeeElection;
     }
 
