@@ -21,6 +21,28 @@
                 path('app_referent_referent_person_link_autocomplete_city'),
                 '#referent_person_link_restrictedCities_search'
             ) }}
+
+            $(document).ready(function() {
+                var coReferentChoices = $('input[name="referent_person_link[coReferent][]"]');
+                var restrictionFields = $('#referent_person_link_restrictedCommittees_search, #referent_person_link_restrictedCities_search');
+                var restrictedCommittees = $('#referent_person_link_restrictedCommittees');
+                var restrictedCities = $('#referent_person_link_restrictedCities');
+
+                coReferentChoices.change(function() {
+                    // Uncheck other choices
+                    if ($(this).is(':checked')) {
+                        coReferentChoices.not(this).prop('checked', false);
+                    }
+
+                    var isLimitedCoReferentChecked = $('input[name="referent_person_link[coReferent][]"][value="limited_co_referent"]').is(':checked');
+                    restrictionFields.prop('disabled', !isLimitedCoReferentChecked);
+
+                    if (!isLimitedCoReferentChecked) {
+                        restrictedCommittees.empty();
+                        restrictedCities.empty();
+                    }
+                }).change();
+            });
         });
     </script>
 {% endblock %}
@@ -55,31 +77,35 @@
         {{ form_row(form.postalAddress) }}
 
         <div id="referent_person_link_coReferent">
-            <label class="form form__label" for="{{ form.coReferent.vars.id }}">
-                {{ 'referent.label.co_referent'|trans|raw }}
-            </label>
             {% for choice in form.coReferent %}
-
-                <div class="form__radio--margin">
-                    {{ form_row(choice) }}
+                <div class="form__checkbox">
+                    {{ form_widget(choice, { label: choice.vars.label|trans|raw }) }}
+                    <label class="form form__label required" for="{{ choice.vars.id }}">
+                        {{ choice.vars.label|trans|raw }}
+                    </label>
                 </div>
 
                 {% if 'referent.radio.limited_co_referent' == choice.vars.label %}
-                    <div class="em-form__group em-form__type-and-select">
-                        {{ form_label(form.restrictedCommittees_search, 'Comités', { required: true }) }}
-                        {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité' } }) }}
-                        {{ form_errors(form.restrictedCommittees) }}
-                        <div class="type-and-select__tags">
-                            {{ form_widget(form.restrictedCommittees) }}
+                    <div class="l__row">
+                        <div class="l__col--half">
+                            <div class="em-form__group em-form__type-and-select">
+                                {{ form_label(form.restrictedCommittees_search, 'Comités', { required: true }) }}
+                                {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité' } }) }}
+                                {{ form_errors(form.restrictedCommittees) }}
+                                <div class="type-and-select__tags">
+                                    {{ form_widget(form.restrictedCommittees) }}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="em-form__group em-form__type-and-select">
-                        {{ form_label(form.restrictedCities_search, 'Villes', { required: true }) }}
-                        {{ form_widget(form.restrictedCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
-                        {{ form_errors(form.restrictedCities) }}
-                        <div class="type-and-select__tags">
-                            {{ form_widget(form.restrictedCities) }}
+                        <div class="l__col--half">
+                            <div class="em-form__group em-form__type-and-select">
+                                {{ form_label(form.restrictedCities_search, 'Villes', { required: true }) }}
+                                {{ form_widget(form.restrictedCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
+                                {{ form_errors(form.restrictedCities) }}
+                                <div class="type-and-select__tags">
+                                    {{ form_widget(form.restrictedCities) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}

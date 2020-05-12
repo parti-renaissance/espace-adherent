@@ -55,10 +55,9 @@ class ReferentPersonLinkType extends AbstractType
                 'choices' => [
                     'referent.radio.co_referent' => ReferentPersonLink::CO_REFERENT,
                     'referent.radio.limited_co_referent' => ReferentPersonLink::LIMITED_CO_REFERENT,
-                    'referent.radio.not_co_referent' => null,
                 ],
                 'expanded' => true,
-                'multiple' => false,
+                'multiple' => true,
             ])
             ->add('restrictedCommittees', CollectionType::class, [
                 'required' => false,
@@ -109,6 +108,24 @@ class ReferentPersonLinkType extends AbstractType
                 return $value;
             }
         ));
+        $builder
+            ->get('coReferent')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($coReferent) {
+                    return [$coReferent];
+                },
+                function ($coReferentChoices) {
+                    if (\in_array(ReferentPersonLink::LIMITED_CO_REFERENT, $coReferentChoices)) {
+                        return ReferentPersonLink::LIMITED_CO_REFERENT;
+                    } elseif (\in_array(ReferentPersonLink::CO_REFERENT, $coReferentChoices)) {
+                        return ReferentPersonLink::CO_REFERENT;
+                    } else {
+                        return null;
+                    }
+                }
+            ))
+        ;
+
         $builder->get('restrictedCommittees')->addModelTransformer($this->committeeTransformer);
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
