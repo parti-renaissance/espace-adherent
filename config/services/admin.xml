@@ -1171,14 +1171,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.elected.representatives.register" class="App\Admin\ElectedRepresentativesRegisterAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Registre des élus" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\ElectedRepresentativesRegister</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.voting_platform.election" class="App\Admin\VotingPlatform\DesignationAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Désignations statutaires" group="Désignations" />
 
