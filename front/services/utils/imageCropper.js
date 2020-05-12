@@ -65,7 +65,7 @@ function handleCropAction() {
 
     updatePreviewImages(dataUrl);
 
-    dom('#candidate_profile_croppedImage').value = dataUrl;
+    dom('#candidacy_biography_croppedImage').value = dataUrl;
     fileElement.value = '';
 
     modal.hideModal();
