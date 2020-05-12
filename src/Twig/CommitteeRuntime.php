@@ -9,8 +9,9 @@ use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Repository\CommitteeCandidacyRepository;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class CommitteeRuntime
+class CommitteeRuntime implements RuntimeExtensionInterface
 {
     private const COLOR_STATUS_NOT_FINAL = 'text--gray';
     private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';

@@ -6,8 +6,9 @@ use App\Entity\IdeasWorkshop\Idea;
 use App\Entity\IdeasWorkshop\Thread;
 use App\Entity\IdeasWorkshop\ThreadComment;
 use App\Entity\Report\ReportableInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class IdeasWorkshopRuntime
+class IdeasWorkshopRuntime implements RuntimeExtensionInterface
 {
     public function isIdea(ReportableInterface $idea): string
     {

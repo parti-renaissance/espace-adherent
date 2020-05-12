@@ -5,10 +5,11 @@ namespace App\Twig;
 use App\Entity\Media;
 use League\Glide\Signatures\SignatureFactory;
 use Symfony\Bridge\Twig\Extension\AssetExtension as BaseAssetExtension;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class AssetRuntime
+class AssetRuntime implements RuntimeExtensionInterface
 {
     private $router;
     private $symfonyAssetExtension;
@@ -17,7 +18,7 @@ class AssetRuntime
     private $hash;
 
     public function __construct(
-        Router $router,
+        RouterInterface $router,
         BaseAssetExtension $symfonyAssetExtension,
         string $secret,
         string $env,

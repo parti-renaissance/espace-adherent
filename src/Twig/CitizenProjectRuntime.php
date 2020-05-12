@@ -6,8 +6,9 @@ use App\CitizenProject\CitizenProjectPermissions;
 use App\Entity\Adherent;
 use App\Entity\CitizenProject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class CitizenProjectRuntime
+class CitizenProjectRuntime implements RuntimeExtensionInterface
 {
     private const COLOR_STATUS_NOT_FINAL = 'text--gray';
     private const COLOR_STATUS_ADMINISTRATOR = 'text--bold text--blue--dark';

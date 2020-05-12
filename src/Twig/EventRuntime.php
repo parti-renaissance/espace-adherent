@@ -7,8 +7,9 @@ use App\Entity\Adherent;
 use App\Entity\Event;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class EventRuntime
+class EventRuntime implements RuntimeExtensionInterface
 {
     private $eventRegistrationRepository;
 

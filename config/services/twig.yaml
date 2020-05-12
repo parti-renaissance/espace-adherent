@@ -1,0 +1,30 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Twig\Extensions\IntlExtension: ~
+
+    App\Twig\:
+        resource: ../../src/Twig/
+
+    App\Twig\AssetRuntime:
+        arguments:
+            $secret: '%kernel.secret%'
+            $env: '%kernel.environment%'
+            $hash: '%assets_hash%'
+
+    App\Twig\MunicipalSiteRuntime:
+        arguments:
+            $cache: !service
+                class: Symfony\Component\Cache\Simple\Psr6Cache
+                arguments:
+                    - '@app.cache.municipal_site'
+
+    App\Twig\CanaryExtension:
+        $canaryMode: '%env(ENABLE_CANARY)%'
+
+    App\Twig\AdherentRuntime:
+        arguments:
+            $interests: '%adherent_interests%'

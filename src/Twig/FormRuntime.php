@@ -15,8 +15,9 @@ use App\Form\DeleteEntityType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRenderer;
 use Twig\Environment;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class FormRuntime
+class FormRuntime implements RuntimeExtensionInterface
 {
     private $formFactory;
 
