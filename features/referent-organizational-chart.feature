@@ -58,47 +58,47 @@ Feature: Make sure we can see and interact with organizational chart
     When I follow "Michel VASSEUR Responsable Financier"
     Then I should see 1 "#referent_person_link_coReferent" element
     And I should see "Donner un accès à l'onglet Adhérents"
-    And the "referent_person_link_coReferent_2" checkbox should be checked
+    And the "referent_person_link[coReferent][]" checkbox should not be checked
 
   Scenario: As a root referent I can transform a member to co-referent
     Given I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
-    And the "referent_person_link[coReferent]" field should contain "2"
-    And I select "0" from "referent_person_link[coReferent]"
+    Then the "referent_person_link[coReferent][]" checkbox should not be checked
+    And I check "referent_person_link_coReferent_0"
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
-    Then the "referent_person_link[coReferent]" field should contain "0"
+    Then the "referent_person_link_coReferent_0" checkbox should be checked
 
-    When I select "2" from "referent_person_link[coReferent]"
+    When I uncheck "referent_person_link_coReferent_0"
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
-    Then the "referent_person_link[coReferent]" field should contain "2"
+    Then the "referent_person_link[coReferent][]" checkbox should not be checked
 
   Scenario: As a root referent I can transform a member to co-referent with limited access
     Given I am logged as "referent@en-marche-dev.fr"
     And I am on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
-    And the "referent_person_link[coReferent]" field should contain "2"
-    And I select "1" from "referent_person_link[coReferent]"
+    And the "referent_person_link[coReferent][]" checkbox should not be checked
+    And I check "referent_person_link_coReferent_1"
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
-    Then the "referent_person_link[coReferent]" field should contain "1"
+    Then the "referent_person_link_coReferent_1" checkbox should be checked
 
-    When I select "2" from "referent_person_link[coReferent]"
+    When I uncheck "referent_person_link_coReferent_1"
     And I press "Sauvegarder"
     Then I should be on "/espace-referent/mon-equipe"
 
     When I follow "Carl Mirabeau Responsable digital"
-    Then the "referent_person_link[coReferent]" field should contain "2"
+    And the "referent_person_link[coReferent][]" checkbox should not be checked
 
   Scenario: As a root referent I can add a J'ecoute manager
     Given I am logged as "referent@en-marche-dev.fr"
