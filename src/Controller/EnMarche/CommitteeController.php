@@ -211,7 +211,7 @@ class CommitteeController extends Controller
         if ($adherent->getMemberships()->getCommitteeCandidacyMembership()) {
             return $this->json([
                 'status' => 'NOK',
-                'error' => 'Vous devez retirer votre candidature pour pouvoir changer de comité de vote.',
+                'error' => 'Vous devez retirer votre candidature pour pouvoir changer de comité de désignation.',
             ], Response::HTTP_BAD_REQUEST);
         }
 
