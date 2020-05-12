@@ -3,7 +3,6 @@
 {% block certification_content %}
 
     <p class="b__nudge--top text--bold">Votre profil certifié</p>
-    <p>Cela vous permet notamment de voter pour vos futurs animateurs et animatrices de comités locaux. C’est simple, rapide et sécurisé !</p>
 
     <div class="certification-status b__border text--center b__nudge--bottom-large {{ app.user.isCertified ? 'certified' : '' }}">
         {% if app.user.isCertified %}
