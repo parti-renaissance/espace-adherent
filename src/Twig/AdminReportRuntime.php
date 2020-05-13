@@ -5,8 +5,9 @@ namespace App\Twig;
 use App\Admin\ReportAdmin;
 use App\Entity\Report\Report;
 use Sonata\DoctrineORMAdminBundle\Builder\ShowBuilder;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class AdminReportRuntime
+class AdminReportRuntime implements RuntimeExtensionInterface
 {
     private $reportAdmin;
     private $builder;

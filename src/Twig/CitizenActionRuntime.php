@@ -6,8 +6,9 @@ use App\CitizenAction\CitizenActionPermissions;
 use App\Entity\CitizenAction;
 use App\Entity\CitizenProject;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class CitizenActionRuntime
+class CitizenActionRuntime implements RuntimeExtensionInterface
 {
     private $authorizationChecker;
 

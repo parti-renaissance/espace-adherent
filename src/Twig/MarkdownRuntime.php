@@ -3,8 +3,9 @@
 namespace App\Twig;
 
 use League\CommonMark\CommonMarkConverter;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class MarkdownRuntime
+class MarkdownRuntime implements RuntimeExtensionInterface
 {
     private $markdownParser;
 

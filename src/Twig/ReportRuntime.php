@@ -5,8 +5,9 @@ namespace App\Twig;
 use App\Entity\Report\ReportableInterface;
 use App\Report\ReportType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class ReportRuntime
+class ReportRuntime implements RuntimeExtensionInterface
 {
     private $urlGenerator;
 

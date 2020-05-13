@@ -5,8 +5,9 @@ namespace App\Twig;
 use App\Entity\Adherent;
 use App\MunicipalSite\ApiDriver;
 use Psr\SimpleCache\CacheInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class MunicipalSiteRuntime
+class MunicipalSiteRuntime implements RuntimeExtensionInterface
 {
     private const CACHE_KEY_PATTERN = 'municipal_site_%s';
 
