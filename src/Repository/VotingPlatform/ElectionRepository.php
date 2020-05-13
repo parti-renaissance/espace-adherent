@@ -34,4 +34,23 @@ class ElectionRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
         ;
     }
+
+    public function findOneForCommittee(Committee $committee): ?Election
+    {
+        return $this->createQueryBuilder('e')
+            ->addSelect('d', 'ee')
+            ->innerJoin('e.designation', 'd')
+            ->innerJoin('e.electionEntity', 'ee')
+            ->where('ee.committee = :committee')
+            ->andWhere('d = :designation')
+            ->setParameters([
+                'committee' => $committee,
+                'designation' => $committee->getCommitteeElection()->getDesignation(),
+            ])
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

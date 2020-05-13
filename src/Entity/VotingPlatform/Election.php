@@ -3,6 +3,7 @@
 namespace App\Entity\VotingPlatform;
 
 use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
+use App\Entity\EntityDesignationTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,13 +21,7 @@ use Ramsey\Uuid\UuidInterface;
 class Election
 {
     use EntityIdentityTrait;
-
-    /**
-     * @var Designation
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
-     */
-    private $designation;
+    use EntityDesignationTrait;
 
     /**
      * @var ElectionEntity
@@ -60,16 +55,6 @@ class Election
         return $this->designation->getTitle();
     }
 
-    public function getStartDate(): \DateTime
-    {
-        return $this->designation->getVoteStartDate();
-    }
-
-    public function getEndDate(): \DateTime
-    {
-        return $this->designation->getVoteEndDate();
-    }
-
     public function getDesignationType(): string
     {
         return $this->designation->getType();
@@ -92,13 +77,5 @@ class Election
             $candidateGroup->setElection($this);
             $this->candidateGroups->add($candidateGroup);
         }
-    }
-
-    /**
-     * @return CandidateGroup[]
-     */
-    public function getCandidateGroups(): array
-    {
-        return $this->candidateGroups->toArray();
     }
 }

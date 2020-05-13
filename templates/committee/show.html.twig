@@ -119,7 +119,7 @@
             </div>
         </section>
     {% else %}
-        {% if is_canary_enabled() and has_role_adherent and committee.committeeElection and membership %}
+        {% if is_canary_enabled() and has_role_adherent and committee.hasActiveElection and membership %}
             {% include 'committee/_election_box.html.twig' %}
 
             <div id="modal-wrapper"></div>

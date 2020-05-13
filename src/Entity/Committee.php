@@ -467,4 +467,9 @@ class Committee extends BaseGroup implements SynchronizedEntity, ReferentTaggabl
     {
         $this->mailchimpId = $mailchimpId;
     }
+
+    public function hasActiveElection(): bool
+    {
+        return $this->committeeElection && $this->committeeElection->isActive();
+    }
 }

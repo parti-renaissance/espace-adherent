@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Entity\VotingPlatform\Designation\Designation;
-use App\VotingPlatform\Designation\ElectionStaticDate;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommitteeElection
 {
+    use EntityDesignationTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -25,13 +26,6 @@ class CommitteeElection
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $committee;
-
-    /**
-     * @var Designation
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
-     */
-    private $designation;
 
     public function __construct(Designation $designation = null)
     {
@@ -51,25 +45,5 @@ class CommitteeElection
     public function setCommittee(Committee $committee): void
     {
         $this->committee = $committee;
-    }
-
-    public function setDesignation(Designation $designation): void
-    {
-        $this->designation = $designation;
-    }
-
-    public function getCandidacyPeriodEndDate(): \DateTimeInterface
-    {
-        return ElectionStaticDate::getCandidacyPeriodEndDate();
-    }
-
-    public function getVoteStartDate(): \DateTimeInterface
-    {
-        return ElectionStaticDate::getVoteStartDate();
-    }
-
-    public function getVoteEndDate(): \DateTimeInterface
-    {
-        return ElectionStaticDate::getVoteEndDate();
     }
 }

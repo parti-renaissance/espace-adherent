@@ -2,30 +2,26 @@
 
 namespace App\VotingPlatform\Election\Listener;
 
-use App\Entity\Adherent;
-use App\Repository\VotingPlatform\VoteRepository;
-use App\Repository\VotingPlatform\VotersListRepository;
+use App\Repository\VotingPlatform\ElectionRepository;
+use App\Security\Voter\VotingPlatformAccessVoter;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Workflow\Event\GuardEvent;
 
 class GuardListener implements EventSubscriberInterface
 {
-    private $voteRepository;
-    private $security;
-
     private $isGranted = null;
-    private $votersListRepository;
+
+    private $electionRepository;
+    private $authorizationChecker;
 
     public function __construct(
-        VoteRepository $voteRepository,
-        VotersListRepository $votersListRepository,
-        Security $security
+        ElectionRepository $electionRepository,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->voteRepository = $voteRepository;
-        $this->votersListRepository = $votersListRepository;
-        $this->security = $security;
+        $this->electionRepository = $electionRepository;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public static function getSubscribedEvents()
@@ -46,23 +42,9 @@ class GuardListener implements EventSubscriberInterface
         /** @var VoteCommand $command */
         $command = $event->getSubject();
 
-        /** @var Adherent $adherent */
-        $adherent = $this->security->getUser();
-
-        $adherentIsInVotersList = $this->votersListRepository->existsForElection($adherent, $command->getElectionUuid());
-
-        if (!$adherentIsInVotersList) {
-            $this->isGranted = false;
-            $event->setBlocked(true);
-        }
-
-        $alreadyVoted = $this->voteRepository->alreadyVoted($adherent, $command->getElectionUuid());
-
-        if ($alreadyVoted) {
-            $this->isGranted = false;
-            $event->setBlocked(true);
-        }
-
-        $this->isGranted = true === $adherentIsInVotersList && false === $alreadyVoted;
+        $this->isGranted = $this->authorizationChecker->isGranted(
+            VotingPlatformAccessVoter::PERMISSION,
+            $this->electionRepository->findByUuid($command->getElectionUuid())
+        );
     }
 }
