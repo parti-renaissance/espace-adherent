@@ -76,53 +76,61 @@
 
         {{ form_row(form.postalAddress) }}
 
-        <div id="referent_person_link_coReferent">
-            {% for choice in form.coReferent %}
-                <div class="form__checkbox">
-                    {{ form_widget(choice, { label: choice.vars.label|trans|raw }) }}
-                    <label class="form form__label required" for="{{ choice.vars.id }}">
-                        {{ choice.vars.label|trans|raw }}
-                    </label>
+        <div class="em-form">
+            <div class="em-form__group">
+                <div id="referent_person_link_coReferent">
+                    {% for choice in form.coReferent %}
+                        <div class="form__checkbox">
+                            {{ form_widget(choice, { label: choice.vars.label|trans|raw }) }}
+                            <label class="form form__label required" for="{{ choice.vars.id }}">
+                                {{ choice.vars.label|trans|raw }}
+                            </label>
+                        </div>
+
+                        {% if 'referent.radio.limited_co_referent' == choice.vars.label %}
+                            <div class="form__subsection">
+                                <div class="form__row b__nudge--top-large">
+                                    <div class="em-form__type-and-select">
+                                        {{ form_label(form.restrictedCommittees_search, 'Aux comités', { required: true }) }}
+                                        {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité', class: 'form__field' } }) }}
+
+                                        {{ form_errors(form.restrictedCommittees) }}
+                                        <div class="type-and-select__tags">
+                                            {{ form_widget(form.restrictedCommittees) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form__row">
+                                    <div class="em-form__type-and-select">
+                                        {{ form_label(form.restrictedCities_search, 'Aux villes', { required: true }) }}
+                                        {{ form_widget(form.restrictedCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
+                                        {{ form_errors(form.restrictedCities) }}
+                                        <div class="type-and-select__tags">
+                                            {{ form_widget(form.restrictedCities) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
 
-                {% if 'referent.radio.limited_co_referent' == choice.vars.label %}
-                        <div class="form__row b__nudge--top">
-                            <div class="em-form__group em-form__type-and-select">
-                                {{ form_label(form.restrictedCommittees_search, 'Aux comités', { required: true }) }}
-                                {{ form_widget(form.restrictedCommittees_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher un comité', class: 'form__field' } }) }}
+                <div class="">
+                    <div class="form__checkbox">
+                        {{ form_widget(form.isJecouteManager) }}
+                        <label class="form form__label" for="{{ form.isJecouteManager.vars.id }}">
+                            {{ 'referent.checkbox.jecoute_manager'|trans|raw }}
+                        </label>
+                    </div>
 
-                                {{ form_errors(form.restrictedCommittees) }}
-                                <div class="type-and-select__tags">
-                                    {{ form_widget(form.restrictedCommittees) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form__row">
-                            <div class="em-form__group em-form__type-and-select">
-                                {{ form_label(form.restrictedCities_search, 'Aux villes', { required: true }) }}
-                                {{ form_widget(form.restrictedCities_search, { attr: { autocomplete: 'nope', placeholder: 'Rechercher une ville ou un code postal' } }) }}
-                                {{ form_errors(form.restrictedCities) }}
-                                <div class="type-and-select__tags">
-                                    {{ form_widget(form.restrictedCities) }}
-                                </div>
-                            </div>
-                        </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        <div class="form__checkbox">
-            {{ form_widget(form.isJecouteManager) }}
-            <label class="form form__label" for="{{ form.isJecouteManager.vars.id }}">
-                {{ 'referent.checkbox.jecoute_manager'|trans|raw }}
-            </label>
-        </div>
-
-        <div class="form__checkbox">
-            {{ form_widget(form.isMunicipalManagerSupervisor) }}
-            <label class="form form__label" for="{{ form.isMunicipalManagerSupervisor.vars.id }}">
-                {{ 'referent.checkbox.municipal_manager_supervisor'|trans|raw }}
-            </label>
+                    <div class="form__checkbox">
+                        {{ form_widget(form.isMunicipalManagerSupervisor) }}
+                        <label class="form form__label" for="{{ form.isMunicipalManagerSupervisor.vars.id }}">
+                            {{ 'referent.checkbox.municipal_manager_supervisor'|trans|raw }}
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="form__row text--center b__nudge--top-50">
