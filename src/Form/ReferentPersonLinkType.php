@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
-use App\Form\DataTransformer\CommitteeTransformer;
 use App\Repository\AdherentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -20,12 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ReferentPersonLinkType extends AbstractType
 {
     private $adherentRepository;
-    private $committeeTransformer;
 
-    public function __construct(AdherentRepository $adherentRepository, CommitteeTransformer $committeeTransformer)
+    public function __construct(AdherentRepository $adherentRepository)
     {
         $this->adherentRepository = $adherentRepository;
-        $this->committeeTransformer = $committeeTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
