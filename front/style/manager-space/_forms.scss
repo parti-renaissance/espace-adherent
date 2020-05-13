@@ -116,6 +116,52 @@
             line-height: 58px;
             pointer-events: none;
         }
+
+        .type-and-select {
+            &__tags {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                min-height: 39px;
+                margin-top: 12px;
+            }
+
+            &__item {
+                display: inline-block;
+                position: relative;
+                box-sizing: border-box;
+                height: 34px;
+                background-color: $inf-modl--bkg-blue;
+                padding: 0 35px 0 15px;
+                border-radius: 50px;
+                margin: 0 5px 5px 0;
+
+                &--value {
+                    display: block;
+                    font-family: $font-roboto;
+                    line-height: 34px;
+                    color: $inf-modl--text-blue;
+                    font-size: 15px;
+                }
+
+                &--remove {
+                    display: block;
+                    position: absolute;
+                    top: 8px;
+                    right: 10px;
+                    line-height: 0;
+                    opacity: 0.5;
+                    cursor: pointer;
+                    padding: 3px;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        opacity: 1;
+                        transform: rotate(-90deg);
+                    }
+                }
+            }
+        }
     }
 
     .form__group {

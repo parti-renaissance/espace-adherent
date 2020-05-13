@@ -238,7 +238,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     var committeeList = $('{{ idCommitteesListField|raw }}');
     var removeCommittee = function () {
-        var btn = $('.committee-remove');
+        var btn = $('.committee-remove, .type-and-select__item--remove');
 
         btn.unbind('click');
         btn.click(function () {
@@ -252,7 +252,7 @@ $(document).ready(function() {
 
         if (committee.length > 0) {
             var committeeCount = 0;
-            $('.summary-committee > input[type=hidden]').each(function () {
+            $('.summary-committee > input[type=hidden], .type-and-select__item > input[type=hidden]').each(function () {
                 committeeCount = Math.max(this.id.replace(/[^0-9]/g, ''), committeeCount);
             });
             committeeCount++;
@@ -263,7 +263,7 @@ $(document).ready(function() {
 
             $(newCommitteeWidget).appendTo(committeeList);
             $(committeeWidgetId).val(committee);
-            $(committeeWidgetId).parent().find('.committee-value').text(' ' + label);
+            $(committeeWidgetId).parent().find('.committee-value, .type-and-select__item--value').text(' ' + label);
 
             $('{{ idCommitteeSearchField|raw }}').val('');
             removeCommittee();
