@@ -51,6 +51,7 @@
         </service>
 
         <!-- Committee -->
+        <service id="App\Form\CommitteeUuidType"/>
         <service id="App\Committee\CommitteeMergeCommandHandler" public="true" />
         <service id="App\Form\Admin\CommitteeIdType"/>
 
