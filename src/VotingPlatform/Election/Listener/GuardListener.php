@@ -46,5 +46,7 @@ class GuardListener implements EventSubscriberInterface
             VotingPlatformAccessVoter::PERMISSION,
             $this->electionRepository->findByUuid($command->getElectionUuid())
         );
+
+        $event->setBlocked(!$this->isGranted);
     }
 }

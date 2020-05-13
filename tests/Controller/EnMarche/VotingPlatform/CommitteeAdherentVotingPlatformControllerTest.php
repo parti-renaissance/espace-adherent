@@ -15,7 +15,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 {
     use ControllerTestTrait;
 
-    private const ELECTION_URI_1 = '/elections/'.LoadVotingPlatformElectionData::ELECTION_UUID1;
+    private const ELECTION_URI_1 = '/elections/'.LoadVotingPlatformElectionData::ELECTION_UUID2;
 
     private const VOTER_1 = 'assesseur@en-marche-dev.fr';
 
@@ -32,7 +32,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
-        $this->assertClientIsRedirectedTo('/comites/en-marche-comite-de-rouen', $this->client);
+        $this->assertClientIsRedirectedTo('/comites/en-marche-comite-de-evry', $this->client);
     }
 
     public function testAsAdherentVoterICanAccessToVotingPlatform(): void
@@ -85,7 +85,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends WebTestCase
 
         $crawler = $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
-        $this->assertStringEndsWith('/comites/en-marche-comite-de-rouen', $crawler->getUri());
+        $this->assertStringEndsWith('/comites/en-marche-comite-de-evry', $crawler->getUri());
     }
 
     protected function setUp()
